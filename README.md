@@ -11,32 +11,28 @@ Ce plugin a été conçu et **validé de bout en bout** dans un environnement GL
 - GLPI 11.0.x
 - PHP 8.3+ (testé avec PHP 8.5)
 - MariaDB / MySQL
-- Composer (pour installer la dépendance PDF du plugin — Dompdf)
+- Composer **uniquement si vous développez sur le plugin** (pour relancer les tests, mettre à jour Dompdf...) — **pas nécessaire pour l'installer sur un GLPI**, voir note ci-dessous.
+
+Le dossier `vendor/` (Dompdf et ses dépendances, ~14 Mo, dépendances de production uniquement) est **commité directement dans ce dépôt** — volontairement, contrairement à la convention habituelle qui l'exclut via `.gitignore`. Un serveur GLPI de production n'a pas forcément composer installé (et ne devrait pas avoir besoin de l'installer juste pour ce plugin) : `git clone` (ou dézipper une release) suffit intégralement, sans aucune étape `composer install` sur le serveur cible. `composer.lock` est commité avec, pour que quiconque reconstruisant `vendor/` (mise à jour de Dompdf, par exemple) obtienne exactement les mêmes versions. Seul `require-dev` (PHPUnit) reste exclu de ce `vendor/` embarqué : il n'a aucune utilité en production, cf. section Tests plus bas pour le réinstaller si besoin de développement.
 
 ## Installation — sur votre stack Docker (Conserto)
 
 Votre GLPI tourne via `livraison/docker-stack.yml` avec un volume nommé `plugins` monté sur `/var/www/glpi/plugins`, lui-même lié sur l'hôte à `${PATH_BASE_GLPI_MIGR}/plugins`.
 
-1. Copiez le dossier `remise/` de ce dépôt dans `${PATH_BASE_GLPI_MIGR}/plugins/` sur l'hôte Docker (ou dans un pipeline CI qui construit une image incluant ce dossier).
-2. Installez les dépendances PHP du plugin **à l'intérieur du conteneur GLPI** (Dompdf n'est pas fourni par le cœur de GLPI) :
-   ```bash
-   docker exec -u root <container_glpi> sh -c "curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer"
-   docker exec -u root <container_glpi> sh -c "cd /var/www/glpi/plugins/remise && composer install --no-dev --no-interaction"
-   ```
-   *(À terme, mieux vaut intégrer cette étape dans `packaging/Dockerfile` pour ne pas la refaire à chaque déploiement.)*
-3. Installez puis activez le plugin :
+1. Copiez (ou `git clone`) le dossier `remise/` de ce dépôt dans `${PATH_BASE_GLPI_MIGR}/plugins/` sur l'hôte Docker, tel quel — `vendor/` est déjà inclus, aucune installation de dépendance n'est nécessaire sur le serveur cible.
+2. Installez puis activez le plugin :
    ```bash
    docker exec <container_glpi> php /var/www/glpi/bin/console plugin:install remise
    docker exec <container_glpi> php /var/www/glpi/bin/console plugin:activate remise
    ```
-4. Un menu **Administration > Remise & signature** apparaît (sous-entrées : Remises, Gabarits de remise, Configuration). Depuis **Configuration**, réglez :
+3. Un menu **Administration > Remise & signature** apparaît (sous-entrées : Remises, Gabarits de remise, Configuration). Depuis **Configuration**, réglez :
    - l'adresse d'expédition, le fournisseur de signature (`canvas` intégré par défaut — gratuit, aucune dépendance externe), les délais de relance, la durée de validité du lien,
    - **les types de matériel gérés** : décochez ce que vous ne voulez pas voir passer par le plugin (par défaut : ordinateurs, écrans, périphériques, téléphones). Vos **actifs personnalisés** (Configuration > Actifs personnalisés, GLPI 10.1+/11) apparaissent aussi automatiquement dans cette liste, dès qu'ils sont actifs — aucune modification du plugin n'est nécessaire pour en gérer un nouveau, il suffit de cocher la case correspondante. Ce mécanisme fonctionne car tout actif personnalisé possède toujours les champs "Utilisateur" et "État" comme les types natifs.
    - **les déclencheurs par affectation** (première affectation, réaffectation, restitution) — basés sur le champ "Utilisateur" du matériel, ce qui convient à la plupart des GLPI. Un transfert direct entre deux personnes (l'ancien détenteur n'est jamais repassé par "aucun") est traité comme une remise normale au nouveau détenteur — il n'existe pas de type "Échange" distinct (retiré, cf. notes techniques),
    - **les déclencheurs par État** (optionnel) — si votre organisation pilote plutôt le cycle de vie du matériel via son État (ex. "En prêt" / "Disponible") que via l'affectation directe, choisissez ici, parmi vos propres États existants, ceux qui doivent déclencher une remise ou une restitution. Le bénéficiaire notifié reste l'utilisateur actuellement affecté au matériel au moment du changement d'État. Ce mécanisme est indépendant des GLPI qui n'ont pas la même liste d'États : rien n'est présupposé, vous choisissez les vôtres.
    
    Si les deux mécanismes sont configurés et se déclenchent en même temps (un technicien change l'utilisateur *et* l'État dans la même action), une seule remise est créée — le déclenchement par affectation est prioritaire.
-5. Activez les notifications si ce n'est pas déjà fait : **Configuration > Notifications**, vérifiez que le mode "Email" est actif (`notifications_mailing`), et que votre serveur SMTP est configuré (**Configuration > Notifications > Paramètres**).
+4. Activez les notifications si ce n'est pas déjà fait : **Configuration > Notifications**, vérifiez que le mode "Email" est actif (`notifications_mailing`), et que votre serveur SMTP est configuré (**Configuration > Notifications > Paramètres**).
 
 ## Vérifier que ça fonctionne
 
