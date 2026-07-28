@@ -1,0 +1,199 @@
+<div class="row flex-nowrap align-items-start" style="gap: 1rem;">
+<div class="col" style="min-width: 320px;">
+<div class="card">
+  <div class="card-body">
+    <form method="post" action="/plugins/remise/front/config.php" enctype="multipart/form-data" id="remise-config-form">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="entities_id" value="{{ entity_id }}">
+
+      <h3>{{ __('Général', 'remise') }}</h3>
+
+      <div class="mb-3">
+        <label class="form-label">{{ __('Nom de l\'expéditeur', 'remise') }}</label>
+        <input type="text" name="sender_name" class="form-control" value="{{ config.sender_name|default('') }}">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">{{ __('E-mail de l\'expéditeur', 'remise') }}</label>
+        <input type="email" name="sender_email" class="form-control" value="{{ config.sender_email|default('') }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">{{ __('Logo à afficher sur les fiches PDF', 'remise') }}</label>
+        {% if logo_document %}
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <img src="/front/document.send.php?docid={{ logo_document.fields.id }}" alt="" style="max-height: 60px; max-width: 220px; border: 1px solid #ddd; padding: 4px; border-radius: 4px;">
+            <div class="form-check">
+              <input type="checkbox" name="remove_logo" value="1" class="form-check-input" id="remove_logo">
+              <label class="form-check-label" for="remove_logo">{{ __('Retirer le logo actuel', 'remise') }}</label>
+            </div>
+          </div>
+        {% endif %}
+        <input type="file" name="logo_file" id="remise-logo-file" class="form-control" accept="image/png,image/jpeg,image/gif,image/webp">
+        <div class="form-text">{{ __('Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo actuel.', 'remise') }}</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">{{ __('Lien vers la charte informatique complète', 'remise') }}</label>
+        <input type="url" name="charter_url" class="form-control" placeholder="https://intranet.exemple.fr/charte-informatique.pdf" value="{{ config.charter_url|default('') }}">
+        <div class="form-text">{{ __('Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit.', 'remise') }}</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">{{ __('Fournisseur de signature', 'remise') }}</label>
+        <select name="default_provider" class="form-select">
+          {% for key, label in providers %}
+            <option value="{{ key }}" {{ config.default_provider|default('canvas') == key ? 'selected' : '' }}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">{{ __('Délais de relance (jours, séparés par des virgules — ex: 3,7,7)', 'remise') }}</label>
+        <input type="text" name="reminder_delays" class="form-control" value="{{ config.reminder_delays|default('3,7,7') }}">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">{{ __('Nombre maximum de relances (0 = illimité)', 'remise') }}</label>
+        <input type="number" name="max_reminders" class="form-control" value="{{ config.max_reminders|default(0) }}" min="0">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">{{ __('Durée de validité du lien de signature (jours)', 'remise') }}</label>
+        <input type="number" name="link_validity_days" class="form-control" value="{{ config.link_validity_days|default(30) }}" min="1">
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="hidden" name="signature_required" value="0">
+        <input type="checkbox" name="signature_required" value="1" class="form-check-input" id="signature_required" {{ config.signature_required|default(1) ? 'checked' : '' }}>
+        <label class="form-check-label" for="signature_required">{{ __('Signature obligatoire', 'remise') }}</label>
+      </div>
+
+      <hr>
+      <h3>{{ __('Types de matériel gérés par le plugin', 'remise') }}</h3>
+      <p class="text-muted">{{ __('Décochez un type pour que le plugin n\'agisse jamais dessus, quelle que soit l\'affectation ou l\'État.', 'remise') }}</p>
+
+      {% for itemtype, label in itemtype_labels %}
+        <div class="mb-2 form-check">
+          <input type="checkbox" name="manage_{{ itemtype }}" value="1" class="form-check-input" id="manage_{{ itemtype }}" {{ itemtype in managed ? 'checked' : '' }}>
+          <label class="form-check-label" for="manage_{{ itemtype }}">{{ label }}</label>
+        </div>
+      {% endfor %}
+
+      <hr>
+      <h3>{{ __('Déclenchement par affectation d\'utilisateur', 'remise') }}</h3>
+      <p class="text-muted">{{ __('Basé sur le champ "Utilisateur" du matériel — fonctionne dans la plupart des GLPI.', 'remise') }}</p>
+
+      <div class="mb-3 form-check">
+        <input type="hidden" name="sign_on_assignment" value="0">
+        <input type="checkbox" name="sign_on_assignment" value="1" class="form-check-input" id="sign_on_assignment" {{ config.sign_on_assignment|default(1) ? 'checked' : '' }}>
+        <label class="form-check-label" for="sign_on_assignment">{{ __('Signature à la première affectation', 'remise') }}</label>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="hidden" name="sign_on_reassignment" value="0">
+        <input type="checkbox" name="sign_on_reassignment" value="1" class="form-check-input" id="sign_on_reassignment" {{ config.sign_on_reassignment|default(1) ? 'checked' : '' }}>
+        <label class="form-check-label" for="sign_on_reassignment">{{ __('Signature à chaque changement d\'utilisateur', 'remise') }}</label>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="hidden" name="sign_on_return" value="0">
+        <input type="checkbox" name="sign_on_return" value="1" class="form-check-input" id="sign_on_return" {{ config.sign_on_return|default(0) ? 'checked' : '' }}>
+        <label class="form-check-label" for="sign_on_return">{{ __('Signature lors de la restitution (désaffectation)', 'remise') }}</label>
+      </div>
+
+      <hr>
+      <h3>{{ __('Déclenchement par État du matériel (optionnel)', 'remise') }}</h3>
+      <p class="text-muted">{{ __('Tous les GLPI n\'utilisent pas les mêmes États : choisissez ici, parmi VOS États existants (Configuration > Listes déroulantes > États), ceux qui doivent déclencher une remise ou une restitution. Le bénéficiaire notifié reste l\'utilisateur actuellement affecté au matériel.', 'remise') }}</p>
+
+      {% if all_states|length == 0 %}
+        <p class="text-muted"><em>{{ __('Aucun État n\'est encore défini dans ce GLPI (Configuration > Listes déroulantes > États).', 'remise') }}</em></p>
+      {% else %}
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label d-block">{{ __('État(s) déclenchant une remise', 'remise') }}</label>
+            {% for id, name in all_states %}
+              <div class="form-check">
+                <input type="checkbox" name="handover_states[]" value="{{ id }}" class="form-check-input" id="handover_state_{{ id }}" {{ id in handover_states ? 'checked' : '' }}>
+                <label class="form-check-label" for="handover_state_{{ id }}">{{ name }}</label>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label d-block">{{ __('État(s) déclenchant une restitution', 'remise') }}</label>
+            {% for id, name in all_states %}
+              <div class="form-check">
+                <input type="checkbox" name="return_states[]" value="{{ id }}" class="form-check-input" id="return_state_{{ id }}" {{ id in return_states ? 'checked' : '' }}>
+                <label class="form-check-label" for="return_state_{{ id }}">{{ name }}</label>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <button type="submit" name="update" class="btn btn-primary">{{ __('Enregistrer', 'remise') }}</button>
+    </form>
+  </div>
+</div>
+</div>
+
+<div class="col" style="max-width: 420px; position: sticky; top: 1rem;">
+  <div class="card">
+    <div class="card-header">{{ __('Aperçu de la fiche générée', 'remise') }}</div>
+    <div class="card-body p-2">
+      <p class="text-muted small px-1">{{ __('Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. Le logo se met à jour dès que vous choisissez un fichier, avant même d\'enregistrer.', 'remise') }}</p>
+      <iframe id="remise-preview-frame" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+(function () {
+  var fileInput = document.getElementById('remise-logo-file');
+  var removeCheckbox = document.getElementById('remove_logo');
+  var frame = document.getElementById('remise-preview-frame');
+
+  function setPreviewLogo(dataUrl) {
+    if (!frame.contentDocument) {
+      return;
+    }
+    var img = frame.contentDocument.querySelector('.header-logo img');
+    var wrapper = frame.contentDocument.querySelector('.header-logo');
+    if (dataUrl) {
+      if (!wrapper) {
+        wrapper = frame.contentDocument.createElement('div');
+        wrapper.className = 'header-logo';
+        img = frame.contentDocument.createElement('img');
+        img.alt = '';
+        wrapper.appendChild(img);
+        frame.contentDocument.body.insertBefore(wrapper, frame.contentDocument.body.firstChild);
+      }
+      img.src = dataUrl;
+    } else if (wrapper) {
+      wrapper.remove();
+    }
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener('change', function () {
+      if (removeCheckbox) {
+        removeCheckbox.checked = false;
+      }
+      var file = fileInput.files && fileInput.files[0];
+      if (!file) {
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        setPreviewLogo(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (removeCheckbox) {
+    removeCheckbox.addEventListener('change', function () {
+      if (removeCheckbox.checked) {
+        fileInput.value = '';
+        setPreviewLogo(null);
+      }
+    });
+  }
+})();
+</script>

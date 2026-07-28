@@ -1,0 +1,375 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: remise\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Aucune remise enregistrée pour ce matériel."
+msgstr "Aucune remise enregistrée pour ce matériel."
+
+msgid "Statut"
+msgstr "Statut"
+
+msgid "Créée le"
+msgstr "Créée le"
+
+msgid "Signée le"
+msgstr "Signée le"
+
+msgid "Voir"
+msgstr "Voir"
+
+msgid "Général"
+msgstr "Général"
+
+msgid "Nom de l'expéditeur"
+msgstr "Nom de l'expéditeur"
+
+msgid "E-mail de l'expéditeur"
+msgstr "E-mail de l'expéditeur"
+
+msgid "Fournisseur de signature"
+msgstr "Fournisseur de signature"
+
+msgid "Délais de relance (jours, séparés par des virgules — ex: 3,7,7)"
+msgstr "Délais de relance (jours, séparés par des virgules — ex: 3,7,7)"
+
+msgid "Nombre maximum de relances (0 = illimité)"
+msgstr "Nombre maximum de relances (0 = illimité)"
+
+msgid "Durée de validité du lien de signature (jours)"
+msgstr "Durée de validité du lien de signature (jours)"
+
+msgid "Signature obligatoire"
+msgstr "Signature obligatoire"
+
+msgid "Types de matériel gérés par le plugin"
+msgstr "Types de matériel gérés par le plugin"
+
+msgid "Décochez un type pour que le plugin n'agisse jamais dessus, quelle que soit l'affectation ou l'État."
+msgstr "Décochez un type pour que le plugin n'agisse jamais dessus, quelle que soit l'affectation ou l'État."
+
+msgid "Déclenchement par affectation d'utilisateur"
+msgstr "Déclenchement par affectation d'utilisateur"
+
+msgid "Basé sur le champ \"Utilisateur\" du matériel — fonctionne dans la plupart des GLPI."
+msgstr "Basé sur le champ \"Utilisateur\" du matériel — fonctionne dans la plupart des GLPI."
+
+msgid "Signature à la première affectation"
+msgstr "Signature à la première affectation"
+
+msgid "Signature à chaque changement d'utilisateur"
+msgstr "Signature à chaque changement d'utilisateur"
+
+msgid "Signature lors de la restitution (désaffectation)"
+msgstr "Signature lors de la restitution (désaffectation)"
+
+msgid "Signature lors d'un échange direct entre deux utilisateurs"
+msgstr "Signature lors d'un échange direct entre deux utilisateurs"
+
+msgid "Déclenchement par État du matériel (optionnel)"
+msgstr "Déclenchement par État du matériel (optionnel)"
+
+msgid "Tous les GLPI n'utilisent pas les mêmes États : choisissez ici, parmi VOS États existants (Configuration > Listes déroulantes > États), ceux qui doivent déclencher une remise ou une restitution. Le bénéficiaire notifié reste l'utilisateur actuellement affecté au matériel."
+msgstr "Tous les GLPI n'utilisent pas les mêmes États : choisissez ici, parmi VOS États existants (Configuration > Listes déroulantes > États), ceux qui doivent déclencher une remise ou une restitution. Le bénéficiaire notifié reste l'utilisateur actuellement affecté au matériel."
+
+msgid "Aucun État n'est encore défini dans ce GLPI (Configuration > Listes déroulantes > États)."
+msgstr "Aucun État n'est encore défini dans ce GLPI (Configuration > Listes déroulantes > États)."
+
+msgid "État(s) déclenchant une remise"
+msgstr "État(s) déclenchant une remise"
+
+msgid "État(s) déclenchant une restitution"
+msgstr "État(s) déclenchant une restitution"
+
+msgid "Enregistrer"
+msgstr "Enregistrer"
+
+msgid "Matériel"
+msgstr "Matériel"
+
+msgid "Bénéficiaire"
+msgstr "Bénéficiaire"
+
+msgid "Envoyé le"
+msgstr "Envoyé le"
+
+msgid "Consulté le"
+msgstr "Consulté le"
+
+msgid "Signé le"
+msgstr "Signé le"
+
+msgid "Nombre de relances"
+msgstr "Nombre de relances"
+
+msgid "Relancer maintenant"
+msgstr "Relancer maintenant"
+
+msgid "Nom du gabarit"
+msgstr "Nom du gabarit"
+
+msgid "Type de remise concerné"
+msgstr "Type de remise concerné"
+
+msgid "Conditions générales (contrat)"
+msgstr "Conditions générales (contrat)"
+
+msgid "Charte informatique"
+msgstr "Charte informatique"
+
+msgid "Gabarit par défaut pour ce type"
+msgstr "Gabarit par défaut pour ce type"
+
+msgid "Actif"
+msgstr "Actif"
+
+msgid "Supprimer ce gabarit ?"
+msgstr "Supprimer ce gabarit ?"
+
+msgid "Supprimer"
+msgstr "Supprimer"
+
+msgid "Créer"
+msgstr "Créer"
+
+msgid "Signature de remise de matériel"
+msgstr "Signature de remise de matériel"
+
+msgid "Impossible d'afficher ce document"
+msgstr "Impossible d'afficher ce document"
+
+msgid "J'ai lu et j'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus."
+msgstr "J'ai lu et j'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus."
+
+msgid "Signez ci-dessous à la souris, au doigt ou au stylet :"
+msgstr "Signez ci-dessous à la souris, au doigt ou au stylet :"
+
+msgid "Effacer"
+msgstr "Effacer"
+
+msgid "Valider ma signature"
+msgstr "Valider ma signature"
+
+msgid "Ce lien est valable jusqu'au"
+msgstr "Ce lien est valable jusqu'au"
+
+msgid "et deviendra invalide dès la signature."
+msgstr "et deviendra invalide dès la signature."
+
+msgid "Impossible de charger le document"
+msgstr "Impossible de charger le document"
+
+msgid "Envoi en cours…"
+msgstr "Envoi en cours…"
+
+msgid "Erreur"
+msgstr "Erreur"
+
+msgid "Merci, votre signature a bien été enregistrée."
+msgstr "Merci, votre signature a bien été enregistrée."
+
+msgid "Erreur réseau, merci de réessayer."
+msgstr "Erreur réseau, merci de réessayer."
+
+msgid "Remise & signature"
+msgstr "Remise & signature"
+
+msgid "Remises en attente de signature"
+msgstr "Remises en attente de signature"
+
+msgid "Remises signées"
+msgstr "Remises signées"
+
+msgid "Remises expirées"
+msgstr "Remises expirées"
+
+msgid "Configuration enregistrée."
+msgstr "Configuration enregistrée."
+
+msgid "Purge les jetons de signature expirés ou invalides"
+msgstr "Purge les jetons de signature expirés ou invalides"
+
+msgid "Type de remise"
+msgstr "Type de remise"
+
+msgid "Par défaut"
+msgstr "Par défaut"
+
+msgid "Type de matériel"
+msgstr "Type de matériel"
+
+msgid "Date d'envoi"
+msgstr "Date d'envoi"
+
+msgid "Date de signature"
+msgstr "Date de signature"
+
+msgid "Remises"
+msgstr "Remises"
+
+msgid "Brouillon"
+msgstr "Brouillon"
+
+msgid "En attente"
+msgstr "En attente"
+
+msgid "Envoyé"
+msgstr "Envoyé"
+
+msgid "Consulté"
+msgstr "Consulté"
+
+msgid "Signé"
+msgstr "Signé"
+
+msgid "Expiré"
+msgstr "Expiré"
+
+msgid "Annulé"
+msgstr "Annulé"
+
+msgid "Remise"
+msgstr "Remise"
+
+msgid "Restitution"
+msgstr "Restitution"
+
+msgid "Échange"
+msgstr "Échange"
+
+msgid "Fiche de restitution de matériel"
+msgstr "Fiche de restitution de matériel"
+
+msgid "Matériel restitué"
+msgstr "Matériel restitué"
+
+msgid "Fiche d'échange de matériel"
+msgstr "Fiche d'échange de matériel"
+
+msgid "Matériel échangé"
+msgstr "Matériel échangé"
+
+msgid "Fiche de remise de matériel"
+msgstr "Fiche de remise de matériel"
+
+msgid "Matériel remis"
+msgstr "Matériel remis"
+
+msgid "signée"
+msgstr "signée"
+
+msgid "Envoie les relances de signature dues"
+msgstr "Envoie les relances de signature dues"
+
+msgid "Marque comme expirées les remises hors délai"
+msgstr "Marque comme expirées les remises hors délai"
+
+msgid "Nouvelle remise de matériel"
+msgstr "Nouvelle remise de matériel"
+
+msgid "Relance de signature"
+msgstr "Relance de signature"
+
+msgid "Document signé"
+msgstr "Document signé"
+
+msgid "Document expiré"
+msgstr "Document expiré"
+
+msgid "Technicien"
+msgstr "Technicien"
+
+msgid "Événement"
+msgstr "Événement"
+
+msgid "Identifiant"
+msgstr "Identifiant"
+
+msgid "Lien de signature"
+msgstr "Lien de signature"
+
+msgid "Date limite de signature"
+msgstr "Date limite de signature"
+
+msgid "Configuration remise & signature"
+msgstr "Configuration remise & signature"
+
+msgid "Signature intégrée (canvas)"
+msgstr "Signature intégrée (canvas)"
+
+msgid "Aucune verification de configuration bloquante."
+msgstr "Aucune verification de configuration bloquante."
+
+msgid "Logo à afficher sur les fiches PDF"
+msgstr "Logo à afficher sur les fiches PDF"
+
+msgid "Retirer le logo actuel"
+msgstr "Retirer le logo actuel"
+
+msgid "Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo actuel."
+msgstr "Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo actuel."
+
+msgid "Échec de l'envoi du logo."
+msgstr "Échec de l'envoi du logo."
+
+msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
+msgstr "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
+
+msgid "Lien vers la charte informatique complète"
+msgstr "Lien vers la charte informatique complète"
+
+msgid "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit."
+msgstr "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit."
+
+msgid "Aperçu de la fiche générée"
+msgstr "Aperçu de la fiche générée"
+
+msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. Le logo se met à jour dès que vous choisissez un fichier, avant même d'enregistrer."
+msgstr "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. Le logo se met à jour dès que vous choisissez un fichier, avant même d'enregistrer."
+
+msgid "Utilisez le bouton \"lien\" de la barre d'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici."
+msgstr "Utilisez le bouton \"lien\" de la barre d'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici."
+
+msgid "Accessoires remis"
+msgstr "Accessoires remis"
+
+msgid "Accessoire"
+msgstr "Accessoire"
+
+msgid "Quantité"
+msgstr "Quantité"
+
+msgid "Commentaire"
+msgstr "Commentaire"
+
+msgid "Retirer"
+msgstr "Retirer"
+
+msgid "Aucun accessoire remis pour le moment."
+msgstr "Aucun accessoire remis pour le moment."
+
+msgid "Ajouter un accessoire"
+msgstr "Ajouter un accessoire"
+
+msgid "Ajouter"
+msgstr "Ajouter"
+
+msgid "Remise"
+msgid_plural "Remises"
+msgstr[0] "Remise"
+msgstr[1] "Remises"
+
+msgid "Accessoire de remise"
+msgid_plural "Accessoires de remise"
+msgstr[0] "Accessoire de remise"
+msgstr[1] "Accessoires de remise"
+
+msgid "Gabarit de remise"
+msgid_plural "Gabarits de remise"
+msgstr[0] "Gabarit de remise"
+msgstr[1] "Gabarits de remise"
+

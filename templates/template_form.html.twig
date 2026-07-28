@@ -1,0 +1,53 @@
+{% import 'components/form/fields_macros.html.twig' as fields %}
+<div class="card">
+  <div class="card-body">
+    <form method="post" action="/plugins/remise/front/template.form.php">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="id" value="{{ item.fields.id|default(0) }}">
+
+      <div class="mb-3">
+        <label class="form-label">{{ __('Nom du gabarit', 'remise') }}</label>
+        <input type="text" name="name" class="form-control" value="{{ item.fields.name|default('') }}" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">{{ __('Type de remise concerné', 'remise') }}</label>
+        <select name="type" class="form-select">
+          {% for value, label in types %}
+            <option value="{{ value }}" {{ item.fields.type is defined and item.fields.type == value ? 'selected' : '' }}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        {{ fields.textareaField('content', item.fields.content|default(''), __('Conditions générales (contrat)', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
+      </div>
+
+      <div class="mb-3">
+        {{ fields.textareaField('charter_content', item.fields.charter_content|default(''), __('Charte informatique', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
+        <div class="form-text">{{ __('Utilisez le bouton "lien" de la barre d\'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici.', 'remise') }}</div>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="hidden" name="is_default" value="0">
+        <input type="checkbox" name="is_default" value="1" class="form-check-input" id="is_default" {{ item.fields.is_default|default(0) ? 'checked' : '' }}>
+        <label class="form-check-label" for="is_default">{{ __('Gabarit par défaut pour ce type', 'remise') }}</label>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="hidden" name="is_active" value="0">
+        <input type="checkbox" name="is_active" value="1" class="form-check-input" id="is_active" {{ item.fields.is_active|default(1) ? 'checked' : '' }}>
+        <label class="form-check-label" for="is_active">{{ __('Actif', 'remise') }}</label>
+      </div>
+
+      <div class="d-flex gap-2">
+        {% if item.fields.id is defined and item.fields.id %}
+          <button type="submit" name="update" class="btn btn-primary">{{ __('Enregistrer', 'remise') }}</button>
+          <button type="submit" name="purge" class="btn btn-outline-danger" onclick="return confirm('{{ __('Supprimer ce gabarit ?', 'remise')|e('js') }}');">{{ __('Supprimer', 'remise') }}</button>
+        {% else %}
+          <button type="submit" name="add" class="btn btn-primary">{{ __('Créer', 'remise') }}</button>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>

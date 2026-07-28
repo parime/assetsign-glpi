@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="card-body">
+    {% if remises|length == 0 %}
+      <p>{{ __('Aucune remise enregistrée pour ce matériel.', 'remise') }}</p>
+    {% else %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>{{ __('Statut', 'remise') }}</th>
+            <th>{{ __('Créée le', 'remise') }}</th>
+            <th>{{ __('Signée le', 'remise') }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in remises %}
+          <tr>
+            <td>{{ statuses[r.status] }}</td>
+            <td>{{ r.date_creation }}</td>
+            <td>{{ r.date_signed|default('-') }}</td>
+            <td><a href="/plugins/remise/front/remise.form.php?id={{ r.id }}">{{ __('Voir', 'remise') }}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+</div>

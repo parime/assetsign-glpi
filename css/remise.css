@@ -1,0 +1,13 @@
+/* Styles additionnels pour les pages d'administration du plugin remise.
+   La page publique de signature (front/sign.php) a son propre CSS inline
+   dans templates/sign_page.html.twig : elle ne partage pas le chrome GLPI. */
+
+.plugin-remise-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    padding: 2px 10px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+}

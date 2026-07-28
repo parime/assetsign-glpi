@@ -1,0 +1,27 @@
+{
+    "name": "conserto/glpi-remise",
+    "description": "Gestion des remises de materiel avec signature electronique et tracabilite pour GLPI",
+    "type": "glpi-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=8.3",
+        "dompdf/dompdf": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GlpiPlugin\\Remise\\": "src/GlpiPlugin/Remise/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GlpiPlugin\\Remise\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

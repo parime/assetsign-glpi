@@ -1,0 +1,91 @@
+{% set _now = "now"|date('d/m/Y') %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>{{ document_title }}</title>
+<style>
+    body { font-family: 'DejaVu Sans', sans-serif; font-size: 11px; color: #1c2b3a; }
+    h1 { font-size: 18px; margin-bottom: 2px; }
+    h2 { font-size: 13px; margin-top: 18px; margin-bottom: 6px; border-bottom: 1px solid #ccc; padding-bottom: 2px; }
+    .meta { color: #555; margin-bottom: 14px; }
+    table.info-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+    table.info-table th { text-align: left; width: 35%; padding: 3px 6px; background: #f2f2f2; font-weight: normal; color: #555; }
+    table.info-table td { padding: 3px 6px; }
+    ul.accessories { margin: 4px 0; padding-left: 18px; }
+    .legal-text { font-size: 9.5px; color: #333; line-height: 1.4; text-align: justify; }
+    .signature-zone { margin-top: 24px; border-top: 1px solid #ccc; padding-top: 10px; }
+    .signature-img { max-width: 220px; max-height: 90px; border-bottom: 1px solid #999; }
+    .proof { font-size: 8px; color: #888; margin-top: 6px; }
+    .footer { position: fixed; bottom: -20px; left: 0; right: 0; font-size: 8px; color: #999; text-align: center; }
+    .header-logo { text-align: right; margin-bottom: 4px; }
+    .header-logo img { max-height: 60px; max-width: 220px; }
+</style>
+</head>
+<body>
+
+{% if logo_data_uri %}
+<div class="header-logo"><img src="{{ logo_data_uri }}" alt=""></div>
+{% endif %}
+
+<h1>{{ page_title }}</h1>
+<p class="meta">Établie le {{ remise.date_creation|date('d/m/Y') }} — Référence remise n°{{ remise.id }}</p>
+
+<h2>Bénéficiaire</h2>
+<table class="info-table">
+    <tr><th>Nom</th><td>{{ user.firstname }} {{ user.realname }}</td></tr>
+    <tr><th>E-mail</th><td>{{ user.email }}</td></tr>
+</table>
+
+<h2>{{ material_heading }}</h2>
+<table class="info-table">
+    <tr><th>Type</th><td>{{ itemtype }}</td></tr>
+    <tr><th>Nom GLPI</th><td>{{ item.name }}</td></tr>
+    {% if item.manufacturer_name is defined and item.manufacturer_name %}
+    <tr><th>Marque</th><td>{{ item.manufacturer_name }}</td></tr>
+    {% endif %}
+    {% if item.model_name is defined and item.model_name %}
+    <tr><th>Modèle</th><td>{{ item.model_name }}</td></tr>
+    {% endif %}
+    <tr><th>N° de série</th><td>{{ item.serial|default('-') }}</td></tr>
+    <tr><th>N° d'inventaire</th><td>{{ item.otherserial|default('-') }}</td></tr>
+</table>
+
+{% if accessories|length %}
+<h2>Accessoires remis</h2>
+<ul class="accessories">
+    {% for a in accessories %}<li>{{ a.name }} &times; {{ a.quantity }}{% if a.comment %} — {{ a.comment }}{% endif %}</li>{% endfor %}
+</ul>
+{% endif %}
+
+<h2>Conditions générales</h2>
+<div class="legal-text">{{ contract|raw }}</div>
+
+{% if charter or charter_url %}
+<h2>Charte informatique</h2>
+{% if charter %}
+<div class="legal-text">{{ charter|raw }}</div>
+{% endif %}
+{% if charter_url %}
+<p class="legal-text">Charte informatique complète : <a href="{{ charter_url|e('html_attr') }}">{{ charter_url }}</a></p>
+{% endif %}
+{% endif %}
+
+<div class="signature-zone">
+    {% if signature_image %}
+        <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
+        <img src="{{ signature_image }}" class="signature-img">
+        <p class="proof">
+            Signataire : {{ user.firstname }} {{ user.realname }} ({{ user.email }})<br>
+            Adresse IP : {{ signer_ip }} — Horodatage : {{ signed_at }}
+        </p>
+    {% else %}
+        <p>Fait le {{ _now }}</p>
+        <p>Signature de l'utilisateur : ______________________________</p>
+    {% endif %}
+</div>
+
+<div class="footer">Remise #{{ remise.id }} — Document généré par GLPI (plugin remise)</div>
+
+</body>
+</html>

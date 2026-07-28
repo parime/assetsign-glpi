@@ -1,0 +1,101 @@
+<div class="card">
+  <div class="card-body">
+    <h2>{{ _n('Remise', 'Remises', 1, 'remise') }} #{{ item.fields.id }} — {{ types[item.fields.type] }}</h2>
+
+    <table class="table table-striped">
+      <tr>
+        <th>{{ __('Statut', 'remise') }}</th>
+        <td>{{ statuses[item.fields.status] }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Matériel', 'remise') }}</th>
+        <td>{{ item.fields.itemtype }} — {{ target_item.name|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Bénéficiaire', 'remise') }}</th>
+        <td>{{ beneficiary.firstname|default('') }} {{ beneficiary.realname|default('') }} ({{ beneficiary.email|default('') }})</td>
+      </tr>
+      <tr>
+        <th>{{ __('Envoyé le', 'remise') }}</th>
+        <td>{{ item.fields.date_sent|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Consulté le', 'remise') }}</th>
+        <td>{{ item.fields.date_viewed|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Signé le', 'remise') }}</th>
+        <td>{{ item.fields.date_signed|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Nombre de relances', 'remise') }}</th>
+        <td>{{ reminders }}</td>
+      </tr>
+    </table>
+
+    {% if can_remind %}
+      <form method="post" action="/plugins/remise/front/remise.form.php">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <button type="submit" name="relance" class="btn btn-primary">{{ __('Relancer maintenant', 'remise') }}</button>
+      </form>
+    {% endif %}
+
+    <h3 class="mt-4">{{ __('Accessoires remis', 'remise') }}</h3>
+    {% if accessories|length %}
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>{{ __('Accessoire', 'remise') }}</th>
+            <th>{{ __('Quantité', 'remise') }}</th>
+            <th>{{ __('Commentaire', 'remise') }}</th>
+            {% if can_edit_accessories %}<th></th>{% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in accessories %}
+            <tr>
+              <td>{{ a.name }}</td>
+              <td>{{ a.quantity }}</td>
+              <td>{{ a.comment|default('') }}</td>
+              {% if can_edit_accessories %}
+                <td>
+                  <form method="post" action="/plugins/remise/front/remise.form.php" class="d-inline">
+                    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="id" value="{{ item.fields.id }}">
+                    <input type="hidden" name="plugin_remise_accessories_id" value="{{ a.accessories_id }}">
+                    <button type="submit" name="remove_accessory" class="btn btn-sm btn-outline-danger">{{ __('Retirer', 'remise') }}</button>
+                  </form>
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-muted">{{ __('Aucun accessoire remis pour le moment.', 'remise') }}</p>
+    {% endif %}
+
+    {% if can_edit_accessories %}
+      <form method="post" action="/plugins/remise/front/remise.form.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Ajouter un accessoire', 'remise') }}</label>
+          {{ call('GlpiPlugin\\Remise\\Accessory::dropdown', [{'name': 'plugin_remise_accessories_id'}]) }}
+        </div>
+        <div class="col-auto">
+          <label class="form-label">{{ __('Quantité', 'remise') }}</label>
+          <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 90px;">
+        </div>
+        <div class="col-auto">
+          <label class="form-label">{{ __('Commentaire', 'remise') }}</label>
+          <input type="text" name="comment" class="form-control">
+        </div>
+        <div class="col-auto">
+          <button type="submit" name="add_accessory" class="btn btn-secondary">{{ __('Ajouter', 'remise') }}</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page_title|default('Signature de remise de matériel') }}</title>
+<style>
+  :root{ --ink:#16232f; --ink-soft:#5a6b78; --accent:#0d7a6e; --line:#d6dbd4; --paper:#f5f7f5; }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--paper); color:var(--ink); }
+  .wrap{ max-width:820px; margin:0 auto; padding:24px 16px 64px; }
+  header{ margin-bottom:20px; }
+  header h1{ font-size:1.3rem; margin:0 0 4px; }
+  header p{ color:var(--ink-soft); margin:0; font-size:.92rem; }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:8px; padding:20px; margin-bottom:20px; }
+  .error{ border-color:#b7472a; color:#b7472a; }
+  #pdf-container{ border:1px solid var(--line); border-radius:6px; overflow-y:auto; max-height:60vh; background:#eee; text-align:center; }
+  #pdf-container canvas{ max-width:100%; margin:8px auto; display:block; box-shadow:0 1px 4px rgba(0,0,0,.15); }
+  .sign-zone{ margin-top:16px; }
+  #signature-pad{ border:1px dashed var(--ink-soft); border-radius:6px; width:100%; height:180px; touch-action:none; background:#fff; }
+  .actions{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  button{ font:inherit; padding:10px 18px; border-radius:6px; border:1px solid var(--line); background:#fff; cursor:pointer; }
+  button.primary{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  button.danger{ background:#fff; color:#b7472a; border-color:#b7472a; }
+  button:disabled{ opacity:.5; cursor:not-allowed; }
+  label.consent{ display:flex; gap:8px; align-items:flex-start; font-size:.88rem; color:var(--ink-soft); margin-top:14px; }
+  #status-msg{ margin-top:14px; font-size:.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>{{ page_title|default(__('Signature de remise de matériel', 'remise')) }}</h1>
+    {% if not error %}<p>{{ __('Matériel', 'remise') }} : <strong>{{ item.name }}</strong> — {{ __('Bénéficiaire', 'remise') }} : <strong>{{ user.firstname }} {{ user.realname }}</strong></p>{% endif %}
+  </header>
+
+  {% if error %}
+    <div class="card error">
+      <p>{{ __('Impossible d\'afficher ce document', 'remise') }} : {{ error }}</p>
+    </div>
+  {% else %}
+    <div class="card">
+      <div id="pdf-container" data-pdf-url="{{ pdf_url }}"></div>
+    </div>
+
+    <div class="card sign-zone">
+      <label class="consent">
+        <input type="checkbox" id="consent-checkbox">
+        <span>{{ __('J\'ai lu et j\'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus.', 'remise') }}</span>
+      </label>
+
+      <p style="margin-top:14px;">{{ __('Signez ci-dessous à la souris, au doigt ou au stylet :', 'remise') }}</p>
+      <canvas id="signature-pad"></canvas>
+
+      <div class="actions">
+        <button type="button" id="btn-clear">{{ __('Effacer', 'remise') }}</button>
+        <button type="button" id="btn-submit" class="primary" disabled>{{ __('Valider ma signature', 'remise') }}</button>
+      </div>
+      <p id="status-msg"></p>
+      <p style="font-size:.78rem;color:var(--ink-soft);margin-top:10px;">{{ __('Ce lien est valable jusqu\'au', 'remise') }} {{ expiry|date('d/m/Y H:i') }} {{ __('et deviendra invalide dès la signature.', 'remise') }}</p>
+    </div>
+  {% endif %}
+</div>
+
+<script src="/plugins/remise/js/sign/vendor/pdf.min.js"></script>
+<script src="/plugins/remise/js/sign/vendor/signature_pad.umd.min.js"></script>
+<script>
+  window.REMISE_SIGN_TOKEN = {{ token|json_encode|raw }};
+  window.REMISE_CSRF_TOKEN = {{ csrf_token|default('')|json_encode|raw }};
+  window.REMISE_I18N = {
+    loadError: {{ __('Impossible de charger le document', 'remise')|json_encode|raw }},
+    sending: {{ __('Envoi en cours…', 'remise')|json_encode|raw }},
+    errorPrefix: {{ __('Erreur', 'remise')|json_encode|raw }},
+    signedOk: {{ __('Merci, votre signature a bien été enregistrée.', 'remise')|json_encode|raw }},
+    networkError: {{ __('Erreur réseau, merci de réessayer.', 'remise')|json_encode|raw }}
+  };
+</script>
+<script src="/plugins/remise/js/sign/sign.js"></script>
+</body>
+</html>

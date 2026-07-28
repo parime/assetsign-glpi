@@ -1,0 +1,375 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: remise\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Aucune remise enregistrée pour ce matériel."
+msgstr "No handover recorded for this asset."
+
+msgid "Statut"
+msgstr "Status"
+
+msgid "Créée le"
+msgstr "Created on"
+
+msgid "Signée le"
+msgstr "Signed on"
+
+msgid "Voir"
+msgstr "View"
+
+msgid "Général"
+msgstr "General"
+
+msgid "Nom de l'expéditeur"
+msgstr "Sender name"
+
+msgid "E-mail de l'expéditeur"
+msgstr "Sender email"
+
+msgid "Fournisseur de signature"
+msgstr "Signature provider"
+
+msgid "Délais de relance (jours, séparés par des virgules — ex: 3,7,7)"
+msgstr "Reminder delays (days, comma-separated — e.g. 3,7,7)"
+
+msgid "Nombre maximum de relances (0 = illimité)"
+msgstr "Maximum number of reminders (0 = unlimited)"
+
+msgid "Durée de validité du lien de signature (jours)"
+msgstr "Signature link validity period (days)"
+
+msgid "Signature obligatoire"
+msgstr "Signature required"
+
+msgid "Types de matériel gérés par le plugin"
+msgstr "Asset types managed by the plugin"
+
+msgid "Décochez un type pour que le plugin n'agisse jamais dessus, quelle que soit l'affectation ou l'État."
+msgstr "Uncheck a type so the plugin never acts on it, regardless of assignment or State changes."
+
+msgid "Déclenchement par affectation d'utilisateur"
+msgstr "Triggered by user assignment"
+
+msgid "Basé sur le champ \"Utilisateur\" du matériel — fonctionne dans la plupart des GLPI."
+msgstr "Based on the asset's \"User\" field — works in most GLPI setups."
+
+msgid "Signature à la première affectation"
+msgstr "Signature on first assignment"
+
+msgid "Signature à chaque changement d'utilisateur"
+msgstr "Signature on every user change"
+
+msgid "Signature lors de la restitution (désaffectation)"
+msgstr "Signature on return (unassignment)"
+
+msgid "Signature lors d'un échange direct entre deux utilisateurs"
+msgstr "Signature on a direct exchange between two users"
+
+msgid "Déclenchement par État du matériel (optionnel)"
+msgstr "Triggered by asset State (optional)"
+
+msgid "Tous les GLPI n'utilisent pas les mêmes États : choisissez ici, parmi VOS États existants (Configuration > Listes déroulantes > États), ceux qui doivent déclencher une remise ou une restitution. Le bénéficiaire notifié reste l'utilisateur actuellement affecté au matériel."
+msgstr "Not every GLPI uses the same States: choose here, among YOUR existing States (Setup > Dropdowns > States), which ones should trigger a handover or a return. The notified beneficiary remains the user currently assigned to the asset."
+
+msgid "Aucun État n'est encore défini dans ce GLPI (Configuration > Listes déroulantes > États)."
+msgstr "No State has been defined yet in this GLPI (Setup > Dropdowns > States)."
+
+msgid "État(s) déclenchant une remise"
+msgstr "State(s) triggering a handover"
+
+msgid "État(s) déclenchant une restitution"
+msgstr "State(s) triggering a return"
+
+msgid "Enregistrer"
+msgstr "Save"
+
+msgid "Matériel"
+msgstr "Asset"
+
+msgid "Bénéficiaire"
+msgstr "Beneficiary"
+
+msgid "Envoyé le"
+msgstr "Sent on"
+
+msgid "Consulté le"
+msgstr "Viewed on"
+
+msgid "Signé le"
+msgstr "Signed on"
+
+msgid "Nombre de relances"
+msgstr "Number of reminders"
+
+msgid "Relancer maintenant"
+msgstr "Send reminder now"
+
+msgid "Nom du gabarit"
+msgstr "Template name"
+
+msgid "Type de remise concerné"
+msgstr "Handover type"
+
+msgid "Conditions générales (contrat)"
+msgstr "General terms (contract)"
+
+msgid "Charte informatique"
+msgstr "IT charter"
+
+msgid "Gabarit par défaut pour ce type"
+msgstr "Default template for this type"
+
+msgid "Actif"
+msgstr "Active"
+
+msgid "Supprimer ce gabarit ?"
+msgstr "Delete this template?"
+
+msgid "Supprimer"
+msgstr "Delete"
+
+msgid "Créer"
+msgstr "Create"
+
+msgid "Signature de remise de matériel"
+msgstr "Equipment handover signature"
+
+msgid "Impossible d'afficher ce document"
+msgstr "Unable to display this document"
+
+msgid "J'ai lu et j'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus."
+msgstr "I have read and accept the general terms and the IT charter presented in the document above."
+
+msgid "Signez ci-dessous à la souris, au doigt ou au stylet :"
+msgstr "Sign below using your mouse, finger or stylus:"
+
+msgid "Effacer"
+msgstr "Clear"
+
+msgid "Valider ma signature"
+msgstr "Confirm my signature"
+
+msgid "Ce lien est valable jusqu'au"
+msgstr "This link is valid until"
+
+msgid "et deviendra invalide dès la signature."
+msgstr "and will become invalid once signed."
+
+msgid "Impossible de charger le document"
+msgstr "Unable to load the document"
+
+msgid "Envoi en cours…"
+msgstr "Sending…"
+
+msgid "Erreur"
+msgstr "Error"
+
+msgid "Merci, votre signature a bien été enregistrée."
+msgstr "Thank you, your signature has been recorded."
+
+msgid "Erreur réseau, merci de réessayer."
+msgstr "Network error, please try again."
+
+msgid "Remise & signature"
+msgstr "Handover & signature"
+
+msgid "Remises en attente de signature"
+msgstr "Handovers pending signature"
+
+msgid "Remises signées"
+msgstr "Signed handovers"
+
+msgid "Remises expirées"
+msgstr "Expired handovers"
+
+msgid "Configuration enregistrée."
+msgstr "Configuration saved."
+
+msgid "Purge les jetons de signature expirés ou invalides"
+msgstr "Purges expired or invalid signature tokens"
+
+msgid "Type de remise"
+msgstr "Handover type"
+
+msgid "Par défaut"
+msgstr "Default"
+
+msgid "Type de matériel"
+msgstr "Asset type"
+
+msgid "Date d'envoi"
+msgstr "Sent date"
+
+msgid "Date de signature"
+msgstr "Signature date"
+
+msgid "Remises"
+msgstr "Handovers"
+
+msgid "Brouillon"
+msgstr "Draft"
+
+msgid "En attente"
+msgstr "Pending"
+
+msgid "Envoyé"
+msgstr "Sent"
+
+msgid "Consulté"
+msgstr "Viewed"
+
+msgid "Signé"
+msgstr "Signed"
+
+msgid "Expiré"
+msgstr "Expired"
+
+msgid "Annulé"
+msgstr "Cancelled"
+
+msgid "Remise"
+msgstr "Handover"
+
+msgid "Restitution"
+msgstr "Return"
+
+msgid "Échange"
+msgstr "Exchange"
+
+msgid "Fiche de restitution de matériel"
+msgstr "Equipment return form"
+
+msgid "Matériel restitué"
+msgstr "Returned asset"
+
+msgid "Fiche d'échange de matériel"
+msgstr "Equipment exchange form"
+
+msgid "Matériel échangé"
+msgstr "Exchanged asset"
+
+msgid "Fiche de remise de matériel"
+msgstr "Equipment handover form"
+
+msgid "Matériel remis"
+msgstr "Handed over asset"
+
+msgid "signée"
+msgstr "signed"
+
+msgid "Envoie les relances de signature dues"
+msgstr "Sends due signature reminders"
+
+msgid "Marque comme expirées les remises hors délai"
+msgstr "Marks handovers past their deadline as expired"
+
+msgid "Nouvelle remise de matériel"
+msgstr "New equipment handover"
+
+msgid "Relance de signature"
+msgstr "Signature reminder"
+
+msgid "Document signé"
+msgstr "Document signed"
+
+msgid "Document expiré"
+msgstr "Document expired"
+
+msgid "Technicien"
+msgstr "Technician"
+
+msgid "Événement"
+msgstr "Event"
+
+msgid "Identifiant"
+msgstr "ID"
+
+msgid "Lien de signature"
+msgstr "Signature link"
+
+msgid "Date limite de signature"
+msgstr "Signature deadline"
+
+msgid "Configuration remise & signature"
+msgstr "Handover & signature configuration"
+
+msgid "Signature intégrée (canvas)"
+msgstr "Built-in signature (canvas)"
+
+msgid "Aucune verification de configuration bloquante."
+msgstr "No blocking configuration check."
+
+msgid "Logo à afficher sur les fiches PDF"
+msgstr "Logo to display on PDF forms"
+
+msgid "Retirer le logo actuel"
+msgstr "Remove current logo"
+
+msgid "Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo actuel."
+msgstr "PNG, JPG, GIF or WEBP image. Choose a file to replace the current logo."
+
+msgid "Échec de l'envoi du logo."
+msgstr "Failed to upload the logo."
+
+msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
+msgstr "The logo must be an image (PNG, JPG, GIF or WEBP)."
+
+msgid "Lien vers la charte informatique complète"
+msgstr "Link to the full IT charter"
+
+msgid "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit."
+msgstr "Optional: URL to an existing document or page (intranet, PDF already online...). If set, a clickable link appears on the PDF form, in addition to the charter text defined in the template."
+
+msgid "Aperçu de la fiche générée"
+msgstr "Preview of the generated form"
+
+msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. Le logo se met à jour dès que vous choisissez un fichier, avant même d'enregistrer."
+msgstr "Example with fictional data, same Twig templates as the real PDF. The logo updates as soon as you pick a file, even before saving."
+
+msgid "Utilisez le bouton \"lien\" de la barre d'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici."
+msgstr "Use the \"link\" toolbar button to point to an existing document (e.g. the full IT charter), rather than retyping everything here."
+
+msgid "Accessoires remis"
+msgstr "Accessories handed over"
+
+msgid "Accessoire"
+msgstr "Accessory"
+
+msgid "Quantité"
+msgstr "Quantity"
+
+msgid "Commentaire"
+msgstr "Comment"
+
+msgid "Retirer"
+msgstr "Remove"
+
+msgid "Aucun accessoire remis pour le moment."
+msgstr "No accessory handed over yet."
+
+msgid "Ajouter un accessoire"
+msgstr "Add an accessory"
+
+msgid "Ajouter"
+msgstr "Add"
+
+msgid "Remise"
+msgid_plural "Remises"
+msgstr[0] "Handover"
+msgstr[1] "Handovers"
+
+msgid "Accessoire de remise"
+msgid_plural "Accessoires de remise"
+msgstr[0] "Handover accessory"
+msgstr[1] "Handover accessories"
+
+msgid "Gabarit de remise"
+msgid_plural "Gabarits de remise"
+msgstr[0] "Handover template"
+msgstr[1] "Handover templates"
+
