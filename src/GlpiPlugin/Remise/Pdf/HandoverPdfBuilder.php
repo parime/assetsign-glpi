@@ -92,7 +92,7 @@ final class HandoverPdfBuilder
      */
     private function getLogoDataUri(int $entities_id): ?string
     {
-        $documents_id = (int) Config::getForEntity($entities_id)->fields['logo_documents_id'];
+        $documents_id = Config::getEffectiveLogoDocumentId($entities_id);
         if ($documents_id <= 0) {
             return null;
         }
