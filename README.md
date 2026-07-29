@@ -96,7 +96,15 @@ php bin/console plugin:activate remise
 
 ### 3. Configurer
 
-Un menu **Administration > Remise & signature** apparaît (Remises, Gabarits de remise, Configuration). Depuis **Configuration**, réglez notamment :
+Un menu **Administration > Remise & signature** apparaît (Remises, Gabarits de remise, Configuration).
+
+**La configuration est indépendante par entité, avec héritage automatique.** Deux façons d'y accéder, qui affichent le même formulaire :
+- la page **Administration > Remise & signature > Configuration**, qui édite l'entité actuellement active dans le sélecteur en haut de l'écran ;
+- l'onglet **« Remise & signature »** directement sur la fiche d'une entité (Configuration > Entités > *nom de l'entité*), pour éditer précisément la configuration de cette entité-là.
+
+Une entité qui n'a jamais été configurée hérite automatiquement des réglages de son entité parente la plus proche qui en a une (pas forcément la racine — une organisation à plusieurs niveaux peut configurer une entité intermédiaire et voir ses entités enfants en hériter). Une entité peut aussi n'écraser qu'une partie des réglages (par exemple juste son adresse d'expédition) tout en restant sur le même logo que le reste du groupe — voir plus bas la case **« Imposer ce logo à toutes les entités enfants »**, qui permet justement à une entité parente de forcer un réglage précis sur toute sa descendance même quand celle-ci a sa propre configuration.
+
+Depuis ce formulaire, réglez notamment :
 
 - l'adresse d'expédition, les délais de relance, la durée de validité du lien de signature,
 - **les types de matériel gérés** : décochez ce que vous ne voulez pas voir passer par le plugin (par défaut : ordinateurs, écrans, périphériques, téléphones). Vos actifs personnalisés apparaissent aussi automatiquement dans cette liste dès qu'ils sont actifs.
