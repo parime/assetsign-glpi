@@ -175,6 +175,14 @@ class Remise extends CommonDBTM
                 && \Session::haveRight(self::$rightname, UPDATE),
             'accessories'          => $this->isNewID($ID) ? [] : $this->getAccessories(),
             'can_edit_accessories' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
+            // Preuve de signature (adresse IP, empreinte du document...) : la seule
+            // trace de ces informations jusqu'ici etait a l'interieur du PDF signe
+            // lui-meme (cf. handover.html.twig) — rien ne les affichait cote GLPI,
+            // alors que glpi_plugin_remise_signatures les enregistre a chaque
+            // signature (Signature::recordProof(), appele par markSigned()).
+            'signature_proof' => (!$this->isNewID($ID) && (int) $this->fields['status'] === self::STATUS_SIGNED)
+                ? Signature::getForRemise((int) $ID)
+                : null,
             'csrf_token'   => \Session::getNewCSRFToken(),
         ]);
 

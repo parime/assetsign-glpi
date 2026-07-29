@@ -367,6 +367,27 @@ msgstr "Imposer ce logo à toutes les entités enfants (et leurs propres sous-en
 msgid "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo."
 msgstr "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo."
 
+msgid "Preuve de signature"
+msgstr "Preuve de signature"
+
+msgid "Signataire"
+msgstr "Signataire"
+
+msgid "Adresse IP"
+msgstr "Adresse IP"
+
+msgid "Navigateur / appareil"
+msgstr "Navigateur / appareil"
+
+msgid "Empreinte du document (SHA-256)"
+msgstr "Empreinte du document (SHA-256)"
+
+msgid "Horodatage"
+msgstr "Horodatage"
+
+msgid "Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n'a pas été modifié depuis (l'empreinte ci-dessus doit correspondre à celle du fichier)."
+msgstr "Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n'a pas été modifié depuis (l'empreinte ci-dessus doit correspondre à celle du fichier)."
+
 msgid "Remise"
 msgid_plural "Remises"
 msgstr[0] "Remise"
