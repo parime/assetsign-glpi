@@ -1,7 +1,7 @@
 {% import 'components/form/fields_macros.html.twig' as fields %}
 <div class="card">
   <div class="card-body">
-    <form method="post" action="/plugins/remise/front/template.form.php">
+    <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/template.form.php">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="id" value="{{ item.fields.id|default(0) }}">
 
@@ -20,11 +20,14 @@
       </div>
 
       <div class="mb-3">
-        {{ fields.textareaField('content', item.fields.content|default(''), __('Conditions générales (contrat)', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
+        {{ fields.textareaField('content', item.fields.content|default(default_content.content), __('Conditions générales (contrat)', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
+        {% if not (item.fields.id is defined and item.fields.id) %}
+          <div class="form-text">{{ __('Texte de départ pré-rempli à titre d\'exemple : modifiez-le ou effacez-le librement.', 'remise') }}</div>
+        {% endif %}
       </div>
 
       <div class="mb-3">
-        {{ fields.textareaField('charter_content', item.fields.charter_content|default(''), __('Charte informatique', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
+        {{ fields.textareaField('charter_content', item.fields.charter_content|default(default_content.charter_content), __('Charte informatique', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
         <div class="form-text">{{ __('Utilisez le bouton "lien" de la barre d\'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici.', 'remise') }}</div>
       </div>
 

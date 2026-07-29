@@ -391,6 +391,9 @@ msgstr "Document about to expire"
 msgid "Envoyer une relance de signature aux remises sélectionnées ?"
 msgstr "Send a signature reminder to the selected handovers?"
 
+msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
+msgstr "Pre-filled starting text, as an example: edit or clear it freely."
+
 msgid "Remise"
 msgid_plural "Remises"
 msgstr[0] "Handover"

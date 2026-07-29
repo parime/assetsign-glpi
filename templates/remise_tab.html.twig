@@ -18,7 +18,7 @@
             <td>{{ statuses[r.status] }}</td>
             <td>{{ r.date_creation }}</td>
             <td>{{ r.date_signed|default('-') }}</td>
-            <td><a href="/plugins/remise/front/remise.form.php?id={{ r.id }}">{{ __('Voir', 'remise') }}</a></td>
+            <td><a href="{{ config('root_doc') }}/plugins/remise/front/remise.form.php?id={{ r.id }}">{{ __('Voir', 'remise') }}</a></td>
           </tr>
           {% endfor %}
         </tbody>
