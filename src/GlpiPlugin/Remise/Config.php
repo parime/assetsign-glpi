@@ -22,6 +22,7 @@ class Config extends CommonDBTM
         'sender_name'                         => 'GLPI - Gestion du parc',
         'sender_email'                        => '',
         'logo_documents_id'                   => 0,
+        'logo_force_children'                 => 0,
         'charter_url'                         => '',
         'default_plugin_remise_templates_id'  => 0,
         'default_provider'                    => 'canvas',
@@ -68,11 +69,13 @@ class Config extends CommonDBTM
     {
         $config = self::getForEntity($entities_id);
 
+        $effectiveLogoId = self::getEffectiveLogoDocumentId($entities_id);
+        $logoIsForced = $effectiveLogoId > 0 && $effectiveLogoId !== (int) $config->fields['logo_documents_id'];
+
         $logoDocument = null;
-        $logoDocumentsId = (int) $config->fields['logo_documents_id'];
-        if ($logoDocumentsId > 0) {
+        if ($effectiveLogoId > 0) {
             $doc = new \Document();
-            if ($doc->getFromDB($logoDocumentsId)) {
+            if ($doc->getFromDB($effectiveLogoId)) {
                 $logoDocument = $doc;
             }
         }
@@ -95,6 +98,7 @@ class Config extends CommonDBTM
             'handover_states' => $config->getHandoverStates(),
             'return_states'   => $config->getReturnStates(),
             'logo_document'   => $logoDocument,
+            'logo_is_forced'  => $logoIsForced,
         ]);
     }
 
@@ -260,6 +264,55 @@ class Config extends CommonDBTM
     }
 
     /**
+     * Renvoie l'ID du Document a utiliser comme logo pour cette entite, en
+     * tenant compte d'un logo impose par une entite ANCETRE (champ
+     * `logo_force_children`) — qui l'emporte meme si l'entite elle-meme a deja
+     * son propre logo configure. getForEntity() n'hérite le logo (comme le
+     * reste de la config) que pour une entite qui n'a AUCUNE ligne propre :
+     * une entite qui a deja personnalise autre chose (ex: son propre e-mail
+     * d'expediteur) resterait sinon bloquee sur son propre logo — ou l'absence
+     * de logo — sans moyen pour une entite parente d'imposer malgre tout le
+     * sien a l'ensemble de ses filiales, quel que soit leur niveau de
+     * profondeur (`getAncestorsOf()` remonte toute la chaine, pas seulement le
+     * parent direct).
+     */
+    public static function getEffectiveLogoDocumentId(int $entities_id): int
+    {
+        global $DB;
+
+        if ($DB->tableExists(self::getTable())) {
+            $ancestorIds = getAncestorsOf('glpi_entities', $entities_id);
+
+            if ($ancestorIds !== []) {
+                $rows = iterator_to_array($DB->request([
+                    'FROM'  => self::getTable(),
+                    'WHERE' => [
+                        'entities_id'         => array_values($ancestorIds),
+                        'logo_force_children' => 1,
+                        ['logo_documents_id' => ['>', 0]],
+                    ],
+                ]));
+
+                if ($rows !== []) {
+                    // Plusieurs ancetres (sur des branches differentes de la
+                    // hierarchie) peuvent chacun imposer leur propre logo :
+                    // celui de l'ancetre le plus proche (level GLPI le plus
+                    // eleve) l'emporte, comme pour la resolution habituelle
+                    // de la config (cf. getForEntity()).
+                    $levels = [];
+                    foreach ($DB->request(['FROM' => 'glpi_entities', 'WHERE' => ['id' => array_column($rows, 'entities_id')]]) as $erow) {
+                        $levels[(int) $erow['id']] = (int) $erow['level'];
+                    }
+                    usort($rows, static fn($a, $b) => ($levels[(int) $b['entities_id']] ?? 0) <=> ($levels[(int) $a['entities_id']] ?? 0));
+                    return (int) $rows[0]['logo_documents_id'];
+                }
+            }
+        }
+
+        return (int) self::getForEntity($entities_id)->fields['logo_documents_id'];
+    }
+
+    /**
      * Cree ou met a jour la ligne de configuration d'une entite (formulaire d'onglet Entity).
      */
     public static function upsertForEntity(int $entities_id, array $input): void
@@ -275,6 +328,7 @@ class Config extends CommonDBTM
             'sender_name'          => $input['sender_name'] ?? '',
             'sender_email'         => $input['sender_email'] ?? '',
             'logo_documents_id'    => (int) ($input['logo_documents_id'] ?? 0),
+            'logo_force_children'  => (int) ($input['logo_force_children'] ?? 0),
             'charter_url'          => trim($input['charter_url'] ?? ''),
             'default_provider'     => $input['default_provider'] ?? 'canvas',
             'reminder_delays'      => $input['reminder_delays'] ?? '3,7,7',
@@ -337,6 +391,7 @@ class Config extends CommonDBTM
                 `sender_name` varchar(255) DEFAULT NULL,
                 `sender_email` varchar(255) DEFAULT NULL,
                 `logo_documents_id` int unsigned NOT NULL DEFAULT 0,
+                `logo_force_children` tinyint NOT NULL DEFAULT 0,
                 `charter_url` varchar(255) DEFAULT NULL,
                 `default_plugin_remise_templates_id` int unsigned NOT NULL DEFAULT 0,
                 `default_provider` varchar(32) NOT NULL DEFAULT 'canvas',
@@ -381,6 +436,10 @@ class Config extends CommonDBTM
             }
             if (!$DB->fieldExists($table, 'charter_url')) {
                 $migration->addField($table, 'charter_url', 'varchar(255)');
+                $migration->migrationOneTable($table);
+            }
+            if (!$DB->fieldExists($table, 'logo_force_children')) {
+                $migration->addField($table, 'logo_force_children', 'tinyint', ['value' => 0, 'after' => 'logo_documents_id']);
                 $migration->migrationOneTable($table);
             }
         }

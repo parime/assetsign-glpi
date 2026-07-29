@@ -19,17 +19,31 @@
 
       <div class="mb-3">
         <label class="form-label">{{ __('Logo à afficher sur les fiches PDF', 'remise') }}</label>
+        {% if logo_is_forced %}
+          <div class="alert alert-info py-2 px-3 mb-2">
+            {{ __('Le logo affiché ci-dessous est actuellement imposé par une entité parente (voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition est retirée.', 'remise') }}
+          </div>
+        {% endif %}
         {% if logo_document %}
           <div class="d-flex align-items-center gap-3 mb-2">
             <img src="/front/document.send.php?docid={{ logo_document.fields.id }}" alt="" style="max-height: 60px; max-width: 220px; border: 1px solid #ddd; padding: 4px; border-radius: 4px;">
-            <div class="form-check">
-              <input type="checkbox" name="remove_logo" value="1" class="form-check-input" id="remove_logo">
-              <label class="form-check-label" for="remove_logo">{{ __('Retirer le logo actuel', 'remise') }}</label>
-            </div>
+            {% if not logo_is_forced %}
+              <div class="form-check">
+                <input type="checkbox" name="remove_logo" value="1" class="form-check-input" id="remove_logo">
+                <label class="form-check-label" for="remove_logo">{{ __('Retirer le logo actuel', 'remise') }}</label>
+              </div>
+            {% endif %}
           </div>
         {% endif %}
         <input type="file" name="logo_file" id="remise-logo-file" class="form-control" accept="image/png,image/jpeg,image/gif,image/webp">
         <div class="form-text">{{ __('Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo actuel.', 'remise') }}</div>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="hidden" name="logo_force_children" value="0">
+        <input type="checkbox" name="logo_force_children" value="1" class="form-check-input" id="logo_force_children" {{ config.logo_force_children|default(0) ? 'checked' : '' }}>
+        <label class="form-check-label" for="logo_force_children">{{ __('Imposer ce logo à toutes les entités filles (et leurs propres sous-entités)', 'remise') }}</label>
+        <div class="form-text">{{ __('Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité fille a déjà envoyé son propre logo.', 'remise') }}</div>
       </div>
 
       <div class="mb-3">
