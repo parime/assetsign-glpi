@@ -388,6 +388,18 @@ msgstr "Horodatage"
 msgid "Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n'a pas été modifié depuis (l'empreinte ci-dessus doit correspondre à celle du fichier)."
 msgstr "Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n'a pas été modifié depuis (l'empreinte ci-dessus doit correspondre à celle du fichier)."
 
+msgid "Alerter le technicien avant expiration (jours avant, 0 = désactivé)"
+msgstr "Alerter le technicien avant expiration (jours avant, 0 = désactivé)"
+
+msgid "Le technicien à l'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop tard."
+msgstr "Le technicien à l'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop tard."
+
+msgid "Document sur le point d'expirer"
+msgstr "Document sur le point d'expirer"
+
+msgid "Envoyer une relance de signature aux remises sélectionnées ?"
+msgstr "Envoyer une relance de signature aux remises sélectionnées ?"
+
 msgid "Remise"
 msgid_plural "Remises"
 msgstr[0] "Remise"

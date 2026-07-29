@@ -156,6 +156,15 @@ function plugin_remise_install(): bool
         ]
     );
     CronTask::register(
+        Remise::class,
+        'remiseExpiryWarning',
+        DAY_TIMESTAMP,
+        [
+            'comment' => 'Alerte le technicien des remises sur le point d\'expirer (avant que ce soit trop tard pour agir)',
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
+    CronTask::register(
         Token::class,
         'remiseCleanupTokens',
         DAY_TIMESTAMP,

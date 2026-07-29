@@ -73,6 +73,11 @@
         <label class="form-label">{{ __('Durée de validité du lien de signature (jours)', 'remise') }}</label>
         <input type="number" name="link_validity_days" class="form-control" value="{{ config.link_validity_days|default(30) }}" min="1">
       </div>
+      <div class="mb-3">
+        <label class="form-label">{{ __('Alerter le technicien avant expiration (jours avant, 0 = désactivé)', 'remise') }}</label>
+        <input type="number" name="expiry_warning_days" class="form-control" value="{{ config.expiry_warning_days|default(3) }}" min="0">
+        <div class="form-text">{{ __('Le technicien à l\'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l\'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu\'il ne soit trop tard.', 'remise') }}</div>
+      </div>
 
       <div class="mb-3 form-check">
         <input type="hidden" name="signature_required" value="0">
