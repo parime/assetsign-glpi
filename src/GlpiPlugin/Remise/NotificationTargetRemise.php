@@ -41,23 +41,34 @@ class NotificationTargetRemise extends NotificationTarget
     public function getEvents(): array
     {
         return [
-            'new'      => __('Nouvelle remise de matériel', 'remise'),
-            'reminder' => __('Relance de signature', 'remise'),
-            'signed'   => __('Document signé', 'remise'),
-            'expired'  => __('Document expiré', 'remise'),
+            'new'           => __('Nouvelle remise de matériel', 'remise'),
+            'reminder'      => __('Relance de signature', 'remise'),
+            'signed'        => __('Document signé', 'remise'),
+            'expired'       => __('Document expiré', 'remise'),
+            'expiring_soon' => __('Document sur le point d\'expirer', 'remise'),
         ];
     }
 
     public function addAdditionalTargets($event = '')
     {
-        $this->addTarget(self::TARGET_BENEFICIARY, __('Bénéficiaire', 'remise'));
+        // Le beneficiaire recoit deja des relances periodiques pendant la meme
+        // fenetre (evenement "reminder", cf. Remise::runReminders()) : lui envoyer
+        // aussi "expiring_soon" (qui s'adresse au technicien, pas a lui) ferait
+        // doublon. Tous les autres evenements le concernent directement.
+        if ($event !== 'expiring_soon') {
+            $this->addTarget(self::TARGET_BENEFICIARY, __('Bénéficiaire', 'remise'));
+        }
 
         // Le technicien qui a declenche la remise (users_id_tech) est notifie sur
         // les evenements qui appellent une action de sa part : une fois signee (pour
-        // archivage/suivi), et surtout si elle expire sans signature (sans quoi
-        // personne cote IT n'est jamais informe qu'un document est reste sans suite —
-        // seul le beneficiaire, qui n'a justement pas signe, recevait l'e-mail).
-        if (in_array($event, ['signed', 'expired'], true)) {
+        // archivage/suivi), si elle expire sans signature (sans quoi personne cote IT
+        // n'est jamais informe qu'un document est reste sans suite — seul le
+        // beneficiaire, qui n'a justement pas signe, recevait l'e-mail), et surtout
+        // AVANT l'expiration reelle (evenement "expiring_soon", cf. Remise::
+        // runExpiryWarnings()) : sans cette alerte anticipee, le technicien n'apprend
+        // qu'un document est reste sans suite qu'une fois le lien deja invalide, trop
+        // tard pour relancer le beneficiaire autrement (appel, passage sur place).
+        if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
             $this->addTarget(self::TARGET_TECHNICIAN, __('Technicien', 'remise'));
         }
     }
@@ -233,6 +244,21 @@ class NotificationTargetRemise extends NotificationTarget
                         . '(##remise.user.name##) has expired without being signed.</p>',
                 ],
             ],
+            'expiring_soon' => [
+                'name'    => 'Remise : document sur le point d\'expirer',
+                'fr_FR'   => [
+                    'subject' => 'Document de remise bientôt expiré sans signature',
+                    'html'    => '<p>Le document de remise pour <strong>##remise.item.name##</strong> '
+                        . '(##remise.user.name##) n\'est toujours pas signé et expirera le ##remise.deadline##.</p>'
+                        . '<p>Pensez à relancer le bénéficiaire autrement (appel, passage sur place) avant l\'expiration du lien.</p>',
+                ],
+                'en_GB'   => [
+                    'subject' => 'Handover document soon to expire without signature',
+                    'html'    => '<p>The handover document for <strong>##remise.item.name##</strong> '
+                        . '(##remise.user.name##) is still unsigned and will expire on ##remise.deadline##.</p>'
+                        . '<p>Consider reaching out to the beneficiary another way (call, in person) before the link expires.</p>',
+                ],
+            ],
         ];
 
         foreach ($definitions as $event => $def) {
@@ -245,7 +271,7 @@ class NotificationTargetRemise extends NotificationTarget
                 // multilingue), sans toucher au reste ni recreer quoi que ce soit.
                 self::addMissingTranslation(self::getTemplateIdForEvent($event), 'en_GB', $def['en_GB']);
 
-                if (in_array($event, ['signed', 'expired'], true)) {
+                if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
                     self::migrateTechnicianTarget((int) $existing->getID());
                 }
                 continue;
@@ -289,13 +315,15 @@ class NotificationTargetRemise extends NotificationTarget
                 'notificationtemplates_id' => $templates_id,
             ]);
 
-            (new NotificationTarget())->add([
-                'notifications_id' => $notifications_id,
-                'type'             => Notification::USER_TYPE,
-                'items_id'         => self::TARGET_BENEFICIARY,
-            ]);
+            if ($event !== 'expiring_soon') {
+                (new NotificationTarget())->add([
+                    'notifications_id' => $notifications_id,
+                    'type'             => Notification::USER_TYPE,
+                    'items_id'         => self::TARGET_BENEFICIARY,
+                ]);
+            }
 
-            if (in_array($event, ['signed', 'expired'], true)) {
+            if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
                 (new NotificationTarget())->add([
                     'notifications_id' => $notifications_id,
                     'type'             => Notification::USER_TYPE,

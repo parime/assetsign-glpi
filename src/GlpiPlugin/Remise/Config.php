@@ -30,6 +30,7 @@ class Config extends CommonDBTM
         'reminder_delays'                     => '3,7,7',
         'max_reminders'                       => 0,
         'link_validity_days'                  => 30,
+        'expiry_warning_days'                  => 3,
         'signature_required'                  => 1,
         'sign_on_assignment'                  => 1,
         'sign_on_reassignment'                => 1,
@@ -339,6 +340,7 @@ class Config extends CommonDBTM
             'reminder_delays'      => $input['reminder_delays'] ?? '3,7,7',
             'max_reminders'        => (int) ($input['max_reminders'] ?? 0),
             'link_validity_days'   => (int) ($input['link_validity_days'] ?? 30),
+            'expiry_warning_days'  => (int) ($input['expiry_warning_days'] ?? 3),
             'signature_required'   => (int) ($input['signature_required'] ?? 0),
             'sign_on_assignment'   => (int) ($input['sign_on_assignment'] ?? 0),
             'sign_on_reassignment' => (int) ($input['sign_on_reassignment'] ?? 0),
@@ -404,6 +406,7 @@ class Config extends CommonDBTM
                 `reminder_delays` varchar(255) NOT NULL DEFAULT '3,7,7',
                 `max_reminders` int unsigned NOT NULL DEFAULT 0,
                 `link_validity_days` int unsigned NOT NULL DEFAULT 30,
+                `expiry_warning_days` int unsigned NOT NULL DEFAULT 3,
                 `signature_required` tinyint NOT NULL DEFAULT 1,
                 `sign_on_assignment` tinyint NOT NULL DEFAULT 1,
                 `sign_on_reassignment` tinyint NOT NULL DEFAULT 1,
@@ -424,6 +427,7 @@ class Config extends CommonDBTM
                 'sender_name'        => self::DEFAULTS['sender_name'],
                 'reminder_delays'    => self::DEFAULTS['reminder_delays'],
                 'link_validity_days' => self::DEFAULTS['link_validity_days'],
+                'expiry_warning_days' => self::DEFAULTS['expiry_warning_days'],
                 'signature_required' => 1,
                 'sign_on_assignment' => 1,
                 'sign_on_reassignment' => 1,
@@ -444,7 +448,16 @@ class Config extends CommonDBTM
                 $migration->migrationOneTable($table);
             }
             if (!$DB->fieldExists($table, 'logo_force_children')) {
-                $migration->addField($table, 'logo_force_children', 'tinyint', ['value' => 0, 'after' => 'logo_documents_id']);
+                // 'bool' (pas 'tinyint') : c'est un des rares types "logiques" reconnus
+                // par Migration::fieldFormat() pour lesquels 'value' construit reellement
+                // une clause DEFAULT — un type SQL brut passe tel quel sans NOT NULL ni
+                // DEFAULT, ce qui rendrait la colonne NULL par defaut (constate en
+                // conditions reelles : WHERE champ => 0 n'egale jamais NULL en SQL).
+                $migration->addField($table, 'logo_force_children', 'bool', ['value' => 0, 'after' => 'logo_documents_id']);
+                $migration->migrationOneTable($table);
+            }
+            if (!$DB->fieldExists($table, 'expiry_warning_days')) {
+                $migration->addField($table, 'expiry_warning_days', 'integer', ['value' => 3, 'after' => 'link_validity_days']);
                 $migration->migrationOneTable($table);
             }
         }

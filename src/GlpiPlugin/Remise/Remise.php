@@ -8,6 +8,7 @@ use CronTask;
 use Migration;
 use Document;
 use Document_Item;
+use MassiveAction;
 use NotificationEvent;
 use Session;
 use Glpi\Application\View\TemplateRenderer;
@@ -187,6 +188,59 @@ class Remise extends CommonDBTM
         ]);
 
         return true;
+    }
+
+    /**
+     * Action groupee "Relancer" depuis la liste des remises (Search::show(),
+     * cf. front/remise.php) : evite d'ouvrir chaque fiche une par une pour
+     * relancer plusieurs beneficiaires en attente de signature.
+     */
+    public function getSpecificMassiveActions($checkitem = null)
+    {
+        $actions = parent::getSpecificMassiveActions($checkitem);
+
+        if (Session::haveRight(self::$rightname, UPDATE)) {
+            $actions[self::class . MassiveAction::CLASS_ACTION_SEPARATOR . 'send_reminder']
+                = __('Relancer maintenant', 'remise');
+        }
+
+        return $actions;
+    }
+
+    public static function showMassiveActionsSubForm(MassiveAction $ma)
+    {
+        switch ($ma->getAction()) {
+            case 'send_reminder':
+                echo __('Envoyer une relance de signature aux remises sélectionnées ?', 'remise');
+                echo '<br><br>' . \Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+                return true;
+        }
+        return parent::showMassiveActionsSubForm($ma);
+    }
+
+    public static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids)
+    {
+        switch ($ma->getAction()) {
+            case 'send_reminder':
+                foreach ($ids as $id) {
+                    if (!$item->getFromDB($id)) {
+                        $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                        continue;
+                    }
+                    try {
+                        $item->sendReminderNow();
+                        $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
+                    } catch (\RuntimeException $e) {
+                        // Deja signee/expiree : la relance ne s'applique pas a cette
+                        // remise precise, ce n'est pas une erreur bloquante pour le
+                        // reste de la selection (cf. sendReminderNow()).
+                        $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                        $ma->addMessage($e->getMessage());
+                    }
+                }
+                return;
+        }
+        parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
     }
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string
@@ -803,9 +857,10 @@ class Remise extends CommonDBTM
     public static function cronInfo(string $name): array
     {
         return match ($name) {
-            'remiseReminders' => ['description' => __('Envoie les relances de signature dues', 'remise')],
-            'remiseExpire'    => ['description' => __('Marque comme expirées les remises hors délai', 'remise')],
-            default           => [],
+            'remiseReminders'     => ['description' => __('Envoie les relances de signature dues', 'remise')],
+            'remiseExpire'        => ['description' => __('Marque comme expirées les remises hors délai', 'remise')],
+            'remiseExpiryWarning' => ['description' => __('Alerte le technicien des remises sur le point d\'expirer', 'remise')],
+            default               => [],
         };
     }
 
@@ -940,6 +995,56 @@ class Remise extends CommonDBTM
         return $count;
     }
 
+    /**
+     * Alerte le technicien (users_id_tech) qu'une remise est sur le point
+     * d'expirer, quelques jours avant l'echeance reelle — sans quoi la seule
+     * notification liee a l'expiration arrive une fois le lien deja invalide
+     * (cf. l'evenement "expired"), trop tard pour que le technicien agisse
+     * autrement (appeler le beneficiaire, passer sur place...). Desactivable
+     * par entite (`expiry_warning_days` = 0). Envoyee une seule fois par
+     * remise (`expiry_warning_sent`), pas a chaque execution du cron.
+     */
+    public static function runExpiryWarnings(): int
+    {
+        global $DB;
+
+        $rows = $DB->request([
+            'FROM'  => self::getTable(),
+            'WHERE' => [
+                'status'               => self::STATUSES_AWAITING_SIGNATURE,
+                'is_deleted'           => 0,
+                'expiry_warning_sent'  => 0,
+            ],
+        ]);
+
+        $count = 0;
+        $configByEntity = [];
+        foreach ($rows as $row) {
+            $remise = new self();
+            $remise->fields = $row;
+
+            $entityId = (int) $row['entities_id'];
+            $remiseConfig = $configByEntity[$entityId] ??= Config::getForEntity($entityId);
+            $validity = (int) $remiseConfig->fields['link_validity_days'];
+            $warningDays = (int) $remiseConfig->fields['expiry_warning_days'];
+
+            if ($warningDays <= 0) {
+                continue; // alerte desactivee pour cette entite
+            }
+
+            $daysSinceSend = self::daysSince($remise->fields['date_sent']);
+            if ($daysSinceSend < $validity - $warningDays || $daysSinceSend > $validity) {
+                continue; // pas encore dans la fenetre d'alerte, ou deja hors delai (l'expiration s'en charge)
+            }
+
+            $remise->update(['id' => $remise->getID(), 'expiry_warning_sent' => 1]);
+            NotificationEvent::raiseEvent('expiring_soon', $remise);
+            $count++;
+        }
+
+        return $count;
+    }
+
     /** Nombre de jours pleins ecoules depuis une date (format GLPI 'Y-m-d H:i:s'). */
     private static function daysSince(string $dateTime): int
     {
@@ -949,6 +1054,13 @@ class Remise extends CommonDBTM
     public static function cronRemiseReminders(CronTask $task): int
     {
         $count = self::runReminders();
+        $task->addVolume($count);
+        return $count > 0 ? 1 : 0;
+    }
+
+    public static function cronRemiseExpiryWarning(CronTask $task): int
+    {
+        $count = self::runExpiryWarnings();
         $task->addVolume($count);
         return $count > 0 ? 1 : 0;
     }
@@ -990,6 +1102,7 @@ class Remise extends CommonDBTM
                 `date_viewed` timestamp NULL DEFAULT NULL,
                 `date_signed` timestamp NULL DEFAULT NULL,
                 `date_expired` timestamp NULL DEFAULT NULL,
+                `expiry_warning_sent` tinyint NOT NULL DEFAULT 0,
                 `comment` text,
                 `is_deleted` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
@@ -1006,6 +1119,12 @@ class Remise extends CommonDBTM
                 KEY `is_deleted` (`is_deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
             $DB->doQuery($query);
+        } elseif (!$DB->fieldExists($table, 'expiry_warning_sent')) {
+            // 'bool' (pas 'tinyint') : seul un type "logique" reconnu par
+            // Migration::fieldFormat() fait que 'value' produise reellement une
+            // clause DEFAULT — cf. le commentaire equivalent dans Config::install().
+            $migration->addField($table, 'expiry_warning_sent', 'bool', ['value' => 0, 'after' => 'date_expired']);
+            $migration->migrationOneTable($table);
         }
     }
 }
