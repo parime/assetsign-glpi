@@ -34,7 +34,7 @@
     </table>
 
     {% if can_remind %}
-      <form method="post" action="/plugins/remise/front/remise.form.php">
+      <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/remise.form.php">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <button type="submit" name="relance" class="btn btn-primary">{{ __('Relancer maintenant', 'remise') }}</button>
@@ -87,7 +87,7 @@
               <td>{{ a.comment|default('') }}</td>
               {% if can_edit_accessories %}
                 <td>
-                  <form method="post" action="/plugins/remise/front/remise.form.php" class="d-inline">
+                  <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/remise.form.php" class="d-inline">
                     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
                     <input type="hidden" name="id" value="{{ item.fields.id }}">
                     <input type="hidden" name="plugin_remise_accessories_id" value="{{ a.accessories_id }}">
@@ -104,7 +104,7 @@
     {% endif %}
 
     {% if can_edit_accessories %}
-      <form method="post" action="/plugins/remise/front/remise.form.php" class="row g-2 align-items-end">
+      <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/remise.form.php" class="row g-2 align-items-end">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">

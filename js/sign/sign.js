@@ -13,7 +13,12 @@
     }
 
     // --- Prévisualisation défilante du PDF via PDF.js -------------------------------
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/plugins/remise/js/sign/vendor/pdf.worker.min.js';
+    // window.REMISE_ROOT_DOC (injecte par sign_page.html.twig via config('root_doc'))
+    // tient compte d'une installation GLPI dans un sous-dossier (ex: /glpi) : un
+    // chemin absolu code en dur depuis la racine du domaine echouerait silencieusement
+    // dans ce cas, empechant tout le reste du script de s'executer (PDF.js et
+    // signature_pad dependent tous deux du bon chargement de ce worker).
+    pdfjsLib.GlobalWorkerOptions.workerSrc = (window.REMISE_ROOT_DOC || '') + '/plugins/remise/js/sign/vendor/pdf.worker.min.js';
 
     pdfjsLib.getDocument(container.dataset.pdfUrl).promise.then(function (pdf) {
         var renderPage = function (num) {

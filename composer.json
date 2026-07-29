@@ -1,5 +1,5 @@
 {
-    "name": "conserto/glpi-remise",
+    "name": "parime/remise-glpi",
     "description": "Gestion des remises de materiel avec signature electronique et tracabilite pour GLPI",
     "type": "glpi-plugin",
     "license": "GPL-2.0-or-later",

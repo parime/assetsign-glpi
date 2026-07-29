@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_REMISE_VERSION', '1.0.4');
+define('PLUGIN_REMISE_VERSION', '1.0.5');
 define('PLUGIN_REMISE_MIN_GLPI', '11.0.0');
 define('PLUGIN_REMISE_MAX_GLPI', '11.9.99');
 define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
@@ -118,7 +118,7 @@ function plugin_version_remise(): array
         'version'        => PLUGIN_REMISE_VERSION,
         'author'         => 'Vincent Guillotte',
         'license'        => 'GPLv2+',
-        'homepage'       => 'https://www.consertotech.pro',
+        'homepage'       => 'https://github.com/parime/remise-glpi',
         'requirements'   => [
             'glpi' => [
                 'min' => PLUGIN_REMISE_MIN_GLPI,

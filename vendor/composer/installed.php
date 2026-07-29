@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'conserto/glpi-remise',
+        'name' => 'parime/remise-glpi',
         'pretty_version' => '1.0.0+no-version-set',
         'version' => '1.0.0.0',
         'reference' => null,
@@ -10,7 +10,7 @@
         'dev' => false,
     ),
     'versions' => array(
-        'conserto/glpi-remise' => array(
+        'parime/remise-glpi' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'reference' => null,

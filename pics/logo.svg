@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d7a6e"/>
+      <stop offset="1" stop-color="#0a5c53"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="128" height="128" rx="28" fill="url(#bg)"/>
+
+  <!-- Ecran/materiel remis -->
+  <rect x="24" y="30" width="52" height="38" rx="4" fill="#ffffff" opacity="0.95"/>
+  <rect x="30" y="36" width="40" height="22" rx="2" fill="#0a5c53"/>
+  <rect x="36" y="68" width="28" height="5" rx="2" fill="#ffffff" opacity="0.95"/>
+
+  <!-- Trait de signature -->
+  <path d="M58 96 C 66 84, 74 108, 82 96 S 96 84, 104 96"
+        fill="none" stroke="#ffffff" stroke-width="6"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Coche de validation -->
+  <circle cx="98" cy="40" r="18" fill="#ffffff"/>
+  <path d="M90 40 L96 46 L108 32"
+        fill="none" stroke="#0d7a6e" stroke-width="6"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

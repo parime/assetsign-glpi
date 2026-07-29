@@ -391,6 +391,9 @@ msgstr "Document sur le point d'expirer"
 msgid "Envoyer une relance de signature aux remises sélectionnées ?"
 msgstr "Envoyer une relance de signature aux remises sélectionnées ?"
 
+msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
+msgstr "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
+
 msgid "Remise"
 msgid_plural "Remises"
 msgstr[0] "Remise"

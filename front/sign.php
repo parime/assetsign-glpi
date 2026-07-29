@@ -13,6 +13,8 @@ use GlpiPlugin\Remise\Api\SignController;
 use GlpiPlugin\Remise\Remise;
 use Glpi\Application\View\TemplateRenderer;
 
+global $CFG_GLPI;
+
 $token = $_GET['t'] ?? $_POST['t'] ?? '';
 $controller = new SignController();
 
@@ -77,7 +79,10 @@ try {
             Remise::TYPE_RETURN => __('Signature de restitution de matériel', 'remise'),
             default              => __('Signature de remise de matériel', 'remise'),
         },
-        'pdf_url'    => '/plugins/remise/front/sign.php?t=' . urlencode($token) . '&action=pdf',
+        // $CFG_GLPI['root_doc'] (pas un chemin fixe depuis la racine du domaine) :
+        // une installation GLPI dans un sous-dossier (ex: /glpi) casserait sinon
+        // silencieusement le chargement du PDF dans la page de signature.
+        'pdf_url'    => $CFG_GLPI['root_doc'] . '/plugins/remise/front/sign.php?t=' . urlencode($token) . '&action=pdf',
         'error'      => null,
     ]);
 } catch (\Throwable $e) {

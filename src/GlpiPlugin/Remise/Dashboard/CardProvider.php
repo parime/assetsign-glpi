@@ -29,7 +29,7 @@ final class CardProvider
 
     private static function countByStatus(array $statuses, string $label, array $params): array
     {
-        global $DB;
+        global $DB, $CFG_GLPI;
 
         // Restreint aux entites actives de la session, exactement comme le fait
         // Glpi\Dashboard\Provider::bigNumberItem() pour tout itemtype "entity
@@ -49,7 +49,7 @@ final class CardProvider
 
         return [
             'number' => $count,
-            'url'    => '/plugins/remise/front/remise.php',
+            'url'    => $CFG_GLPI['root_doc'] . '/plugins/remise/front/remise.php',
             'label'  => __($label, 'remise'),
             'icon'   => Remise::getIcon(),
         ];

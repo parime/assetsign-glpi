@@ -13,6 +13,33 @@ class Template extends CommonDBTM
 {
     public static $rightname = Profile::RIGHT_TEMPLATE;
 
+    private const DEFAULT_HANDOVER_CONTENT = '<p>Je soussigné(e) reconnais avoir reçu le matériel décrit ci-dessus, en bon état de fonctionnement, '
+        . 'et m\'engage à en assurer la garde, l\'usage raisonnable et la restitution en cas de départ ou de demande '
+        . 'de l\'équipe informatique.</p>';
+
+    private const DEFAULT_RETURN_CONTENT = '<p>Je soussigné(e) atteste avoir restitué le matériel décrit ci-dessus au service informatique.</p>';
+
+    private const DEFAULT_CHARTER_CONTENT = '<p>L\'utilisation du matériel informatique doit se conformer à la charte informatique en vigueur '
+        . 'dans l\'entreprise. Toute anomalie ou dysfonctionnement doit être signalé sans délai au service informatique.</p>';
+
+    /**
+     * Texte pre-rempli propose a l'administrateur pour un NOUVEAU gabarit — pas
+     * seulement pour le gabarit seme automatiquement a l'installation (cf.
+     * install()). Sans cela, un administrateur qui cree son propre gabarit
+     * partait d'un champ entierement vide, avec un risque reel de fiche de
+     * remise/restitution sans aucune condition generale ni charte affichee au
+     * beneficiaire — constate en conditions reelles. Le texte reste entierement
+     * modifiable (ou effaçable) via le formulaire, ce n'est qu'une valeur de
+     * depart.
+     */
+    public static function getDefaultContentFor(int $type): array
+    {
+        return match ($type) {
+            Remise::TYPE_RETURN => ['content' => self::DEFAULT_RETURN_CONTENT, 'charter_content' => ''],
+            default             => ['content' => self::DEFAULT_HANDOVER_CONTENT, 'charter_content' => self::DEFAULT_CHARTER_CONTENT],
+        };
+    }
+
     public static function getTypeName($nb = 0): string
     {
         return _n('Gabarit de remise', 'Gabarits de remise', $nb, 'remise');
@@ -43,10 +70,20 @@ class Template extends CommonDBTM
     {
         $this->initForm($ID, $options);
 
+        // Pour un NOUVEAU gabarit (pas encore en base), pre-remplit avec un texte
+        // par defaut raisonnable plutot que de laisser les champs vides — cf.
+        // getDefaultContentFor(). Le type par defaut du formulaire est
+        // TYPE_HANDOVER (premiere option du select) tant que l'administrateur n'a
+        // pas choisi ; il verra alors la version "restitution" si demandee.
+        $defaultContent = $this->isNewID($ID)
+            ? self::getDefaultContentFor(Remise::TYPE_HANDOVER)
+            : ['content' => $this->fields['content'] ?? '', 'charter_content' => $this->fields['charter_content'] ?? ''];
+
         \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/template_form.html.twig', [
-            'item'       => $this,
-            'types'      => Remise::getTypes(),
-            'csrf_token' => \Session::getNewCSRFToken(),
+            'item'            => $this,
+            'types'           => Remise::getTypes(),
+            'csrf_token'      => \Session::getNewCSRFToken(),
+            'default_content' => $defaultContent,
         ]);
 
         return true;
@@ -99,28 +136,27 @@ class Template extends CommonDBTM
                 KEY `is_active` (`is_active`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 
+            $handoverDefaults = self::getDefaultContentFor(\GlpiPlugin\Remise\Remise::TYPE_HANDOVER);
             $DB->insert($table, [
                 'entities_id'     => 0,
                 'is_recursive'    => 1,
                 'name'            => 'Gabarit de remise par défaut',
                 'type'            => \GlpiPlugin\Remise\Remise::TYPE_HANDOVER,
-                'content'         => '<p>Je soussigné(e) reconnais avoir reçu le matériel décrit ci-dessus, en bon état de fonctionnement, '
-                    . 'et m\'engage à en assurer la garde, l\'usage raisonnable et la restitution en cas de départ ou de demande '
-                    . 'de l\'équipe informatique.</p>',
-                'charter_content' => '<p>L\'utilisation du matériel informatique doit se conformer à la charte informatique en vigueur '
-                    . 'dans l\'entreprise. Toute anomalie ou dysfonctionnement doit être signalé sans délai au service informatique.</p>',
+                'content'         => $handoverDefaults['content'],
+                'charter_content' => $handoverDefaults['charter_content'],
                 'is_default'      => 1,
                 'is_active'       => 1,
                 'date_creation'   => date('Y-m-d H:i:s'),
             ]);
 
+            $returnDefaults = self::getDefaultContentFor(\GlpiPlugin\Remise\Remise::TYPE_RETURN);
             $DB->insert($table, [
                 'entities_id'     => 0,
                 'is_recursive'    => 1,
                 'name'            => 'Gabarit de restitution par défaut',
                 'type'            => \GlpiPlugin\Remise\Remise::TYPE_RETURN,
-                'content'         => '<p>Je soussigné(e) atteste avoir restitué le matériel décrit ci-dessus au service informatique.</p>',
-                'charter_content' => '',
+                'content'         => $returnDefaults['content'],
+                'charter_content' => $returnDefaults['charter_content'],
                 'is_default'      => 1,
                 'is_active'       => 1,
                 'date_creation'   => date('Y-m-d H:i:s'),
