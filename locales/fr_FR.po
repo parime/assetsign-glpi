@@ -67,9 +67,6 @@ msgstr "Signature à chaque changement d'utilisateur"
 msgid "Signature lors de la restitution (désaffectation)"
 msgstr "Signature lors de la restitution (désaffectation)"
 
-msgid "Signature lors d'un échange direct entre deux utilisateurs"
-msgstr "Signature lors d'un échange direct entre deux utilisateurs"
-
 msgid "Déclenchement par État du matériel (optionnel)"
 msgstr "Déclenchement par État du matériel (optionnel)"
 
@@ -138,6 +135,9 @@ msgstr "Créer"
 
 msgid "Signature de remise de matériel"
 msgstr "Signature de remise de matériel"
+
+msgid "Signature de restitution de matériel"
+msgstr "Signature de restitution de matériel"
 
 msgid "Impossible d'afficher ce document"
 msgstr "Impossible d'afficher ce document"
@@ -238,20 +238,11 @@ msgstr "Remise"
 msgid "Restitution"
 msgstr "Restitution"
 
-msgid "Échange"
-msgstr "Échange"
-
 msgid "Fiche de restitution de matériel"
 msgstr "Fiche de restitution de matériel"
 
 msgid "Matériel restitué"
 msgstr "Matériel restitué"
-
-msgid "Fiche d'échange de matériel"
-msgstr "Fiche d'échange de matériel"
-
-msgid "Matériel échangé"
-msgstr "Matériel échangé"
 
 msgid "Fiche de remise de matériel"
 msgstr "Fiche de remise de matériel"

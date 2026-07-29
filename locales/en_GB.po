@@ -67,9 +67,6 @@ msgstr "Signature on every user change"
 msgid "Signature lors de la restitution (désaffectation)"
 msgstr "Signature on return (unassignment)"
 
-msgid "Signature lors d'un échange direct entre deux utilisateurs"
-msgstr "Signature on a direct exchange between two users"
-
 msgid "Déclenchement par État du matériel (optionnel)"
 msgstr "Triggered by asset State (optional)"
 
@@ -138,6 +135,9 @@ msgstr "Create"
 
 msgid "Signature de remise de matériel"
 msgstr "Equipment handover signature"
+
+msgid "Signature de restitution de matériel"
+msgstr "Equipment return signature"
 
 msgid "Impossible d'afficher ce document"
 msgstr "Unable to display this document"
@@ -238,20 +238,11 @@ msgstr "Handover"
 msgid "Restitution"
 msgstr "Return"
 
-msgid "Échange"
-msgstr "Exchange"
-
 msgid "Fiche de restitution de matériel"
 msgstr "Equipment return form"
 
 msgid "Matériel restitué"
 msgstr "Returned asset"
-
-msgid "Fiche d'échange de matériel"
-msgstr "Equipment exchange form"
-
-msgid "Matériel échangé"
-msgstr "Exchanged asset"
 
 msgid "Fiche de remise de matériel"
 msgstr "Equipment handover form"
