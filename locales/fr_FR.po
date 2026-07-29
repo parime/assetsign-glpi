@@ -361,11 +361,11 @@ msgstr "Ajouter"
 msgid "Le logo affiché ci-dessous est actuellement imposé par une entité parente (voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition est retirée."
 msgstr "Le logo affiché ci-dessous est actuellement imposé par une entité parente (voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition est retirée."
 
-msgid "Imposer ce logo à toutes les entités filles (et leurs propres sous-entités)"
-msgstr "Imposer ce logo à toutes les entités filles (et leurs propres sous-entités)"
+msgid "Imposer ce logo à toutes les entités enfants (et leurs propres sous-entités)"
+msgstr "Imposer ce logo à toutes les entités enfants (et leurs propres sous-entités)"
 
-msgid "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité fille a déjà envoyé son propre logo."
-msgstr "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité fille a déjà envoyé son propre logo."
+msgid "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo."
+msgstr "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo."
 
 msgid "Remise"
 msgid_plural "Remises"
