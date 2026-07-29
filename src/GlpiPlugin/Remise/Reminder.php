@@ -11,7 +11,7 @@ use Migration;
  */
 class Reminder extends CommonDBTM
 {
-    public static $rightname = 'plugin_remise_remise';
+    public static $rightname = Profile::RIGHT_REMISE;
 
     public static function log(Remise $remise, int $number, string $channel = 'email'): void
     {

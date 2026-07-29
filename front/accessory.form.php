@@ -6,7 +6,7 @@ $item = new Accessory();
 
 if (isset($_POST['add'])) {
     $item->check(-1, CREATE, $_POST);
-    $newId = $item->add($_POST);
+    $item->add($_POST);
     Html::back();
 } elseif (isset($_POST['update'])) {
     $item->check($_POST['id'], UPDATE);

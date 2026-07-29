@@ -11,7 +11,7 @@ use Migration;
  */
 class Template extends CommonDBTM
 {
-    public static $rightname = 'plugin_remise_template';
+    public static $rightname = Profile::RIGHT_TEMPLATE;
 
     public static function getTypeName($nb = 0): string
     {

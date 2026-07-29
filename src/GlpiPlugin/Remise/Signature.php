@@ -12,7 +12,7 @@ use Migration;
  */
 class Signature extends CommonDBTM
 {
-    public static $rightname = 'plugin_remise_remise';
+    public static $rightname = Profile::RIGHT_REMISE;
 
     public static function recordProof(Remise $remise, array $proof): int
     {
@@ -31,18 +31,6 @@ class Signature extends CommonDBTM
             'signed_at'                => $proof['signed_at'] ?? date('Y-m-d H:i:s'),
             'date_creation'            => date('Y-m-d H:i:s'),
         ]) ? $DB->insertId() : 0;
-    }
-
-    public static function getForRemise(int $remises_id): ?array
-    {
-        global $DB;
-        $rows = iterator_to_array($DB->request([
-            'FROM'  => self::getTable(),
-            'WHERE' => ['plugin_remise_remises_id' => $remises_id],
-            'ORDER' => 'date_creation DESC',
-            'LIMIT' => 1,
-        ]));
-        return count($rows) ? reset($rows) : null;
     }
 
     public static function install(Migration $migration): void
