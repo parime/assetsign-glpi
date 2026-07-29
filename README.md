@@ -1,5 +1,7 @@
 # Plugin GLPI `remise` — Remise de matériel & signature électronique
 
+Créé par **Vincent Guillotte**, avec l'aide de [Claude Code](https://claude.com/claude-code).
+
 ## Qu'est-ce que ce plugin ?
 
 Quand un ordinateur, un écran, un téléphone ou tout autre matériel est remis à quelqu'un dans l'entreprise, il faut souvent une trace écrite : que le bénéficiaire reconnaît avoir reçu tel matériel, dans tel état, à telle date, et qu'il accepte les conditions d'usage (charte informatique, conditions générales...). En pratique, cette étape est souvent oubliée, faite sur papier et jamais archivée, ou gérée à la main dans un tableur.

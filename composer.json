@@ -3,6 +3,11 @@
     "description": "Gestion des remises de materiel avec signature electronique et tracabilite pour GLPI",
     "type": "glpi-plugin",
     "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Vincent Guillotte"
+        }
+    ],
     "require": {
         "php": ">=8.3",
         "dompdf/dompdf": "^3.0"
