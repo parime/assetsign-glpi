@@ -33,6 +33,19 @@ class Signature extends CommonDBTM
         ]) ? $DB->insertId() : 0;
     }
 
+    /** Preuve de signature la plus recente pour une remise, ou null si non signee. */
+    public static function getForRemise(int $remises_id): ?array
+    {
+        global $DB;
+        $rows = iterator_to_array($DB->request([
+            'FROM'  => self::getTable(),
+            'WHERE' => ['plugin_remise_remises_id' => $remises_id],
+            'ORDER' => 'date_creation DESC',
+            'LIMIT' => 1,
+        ]));
+        return count($rows) ? reset($rows) : null;
+    }
+
     public static function install(Migration $migration): void
     {
         global $DB;

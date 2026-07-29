@@ -367,6 +367,27 @@ msgstr "Enforce this logo on all child entities (and their own sub-entities)"
 msgid "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo."
 msgstr "Useful if several entities must display the same logo: this entity then enforces its own on its entire descendance, even if a child entity has already uploaded its own logo."
 
+msgid "Preuve de signature"
+msgstr "Signature proof"
+
+msgid "Signataire"
+msgstr "Signer"
+
+msgid "Adresse IP"
+msgstr "IP address"
+
+msgid "Navigateur / appareil"
+msgstr "Browser / device"
+
+msgid "Empreinte du document (SHA-256)"
+msgstr "Document fingerprint (SHA-256)"
+
+msgid "Horodatage"
+msgstr "Timestamp"
+
+msgid "Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n'a pas été modifié depuis (l'empreinte ci-dessus doit correspondre à celle du fichier)."
+msgstr "This information is recorded at the moment of signature and, in case of a dispute, allows verifying that the signed PDF has not been altered since (the fingerprint above must match the file's)."
+
 msgid "Remise"
 msgid_plural "Remises"
 msgstr[0] "Handover"
