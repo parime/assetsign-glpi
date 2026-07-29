@@ -216,7 +216,7 @@ class Config extends CommonDBTM
      * elle existe, sinon celle de l'ancetre le plus proche qui en a une (pas
      * seulement "elle-meme puis directement la racine" : une organisation avec
      * une hierarchie a plusieurs niveaux, ex. Racine > Region > Site, doit voir
-     * la config d'une entite intermediaire s'appliquer a ses entites filles qui
+     * la config d'une entite intermediaire s'appliquer a ses entites enfants qui
      * n'ont pas leur propre config, meme si la racine n'en a pas non plus).
      * Sinon, valeurs par defaut en memoire (le plugin fonctionne meme sans
      * configuration explicite).

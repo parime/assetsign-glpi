@@ -361,10 +361,10 @@ msgstr "Add"
 msgid "Le logo affiché ci-dessous est actuellement imposé par une entité parente (voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition est retirée."
 msgstr "The logo shown below is currently enforced by a parent entity (see below). A logo uploaded here will only be used once that enforcement is removed."
 
-msgid "Imposer ce logo à toutes les entités filles (et leurs propres sous-entités)"
+msgid "Imposer ce logo à toutes les entités enfants (et leurs propres sous-entités)"
 msgstr "Enforce this logo on all child entities (and their own sub-entities)"
 
-msgid "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité fille a déjà envoyé son propre logo."
+msgid "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo."
 msgstr "Useful if several entities must display the same logo: this entity then enforces its own on its entire descendance, even if a child entity has already uploaded its own logo."
 
 msgid "Remise"
