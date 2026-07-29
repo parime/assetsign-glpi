@@ -67,7 +67,16 @@ try {
         'user'       => $data['user'],
         'item'       => $data['item'],
         'expiry'     => $data['expiry'],
-        'page_title' => Remise::getPdfHeadings((int) $data['remise']->fields['type'])['page_title'],
+        // Volontairement DIFFERENT de Remise::getPdfHeadings() (fixe en francais,
+        // car c'est le contenu d'un PDF archive, cf. commentaire sur
+        // getCanonicalTypeLabel()) : cette page-ci est une interface consultee en
+        // direct par le beneficiaire, deja entierement traduite via __() ailleurs
+        // dans sign_page.html.twig (cf. le titre du navigateur et le <h1>) — y
+        // laisser fuiter un texte fixe y aurait ete incoherent avec le reste.
+        'page_title' => match ((int) $data['remise']->fields['type']) {
+            Remise::TYPE_RETURN => __('Signature de restitution de matériel', 'remise'),
+            default              => __('Signature de remise de matériel', 'remise'),
+        },
         'pdf_url'    => '/plugins/remise/front/sign.php?t=' . urlencode($token) . '&action=pdf',
         'error'      => null,
     ]);

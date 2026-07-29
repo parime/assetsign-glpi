@@ -169,7 +169,7 @@ function plugin_remise_install(): bool
         'remiseCleanupTokens',
         DAY_TIMESTAMP,
         [
-            'comment' => 'Purge les tokens de signature invalides ou perimes depuis plus de 90 jours',
+            'comment' => 'Purge les tokens de signature invalides ou perimes depuis plus de ' . Token::CLEANUP_RETENTION_DAYS . ' jours',
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );

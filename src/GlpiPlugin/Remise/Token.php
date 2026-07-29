@@ -20,6 +20,17 @@ class Token extends CommonDBTM
 {
     public static $rightname = Profile::RIGHT_REMISE;
 
+    /** Au-dela de ce nombre de tentatives d'acces, le jeton est desactive par securite. */
+    private const MAX_ATTEMPTS = 20;
+
+    /**
+     * Duree de conservation des jetons invalides/utilises avant purge automatique
+     * (jours). Public : reutilise tel quel dans la description du CronTask
+     * (hook.php) pour eviter de dupliquer cette valeur en toutes lettres a deux
+     * endroits qui pourraient diverger.
+     */
+    public const CLEANUP_RETENTION_DAYS = 90;
+
     public static function createForRemise(Remise $remise, int $validityDays): string
     {
         global $DB;
@@ -82,7 +93,7 @@ class Token extends CommonDBTM
             'ip_used'  => $_SERVER['REMOTE_ADDR'] ?? null,
         ], ['id' => $token->getID()]);
 
-        if ($token->fields['attempts'] + 1 > 20) {
+        if ($token->fields['attempts'] + 1 > self::MAX_ATTEMPTS) {
             $DB->update(self::getTable(), ['is_valid' => 0], ['id' => $token->getID()]);
             throw new RuntimeException('Trop de tentatives, lien désactivé par sécurité.');
         }
@@ -121,7 +132,7 @@ class Token extends CommonDBTM
         global $DB;
         $DB->delete(self::getTable(), [
             'is_valid' => 0,
-            new \QueryExpression('date_creation < DATE_SUB(NOW(), INTERVAL 90 DAY)'),
+            new \QueryExpression('date_creation < DATE_SUB(NOW(), INTERVAL ' . self::CLEANUP_RETENTION_DAYS . ' DAY)'),
         ]);
         $task->addVolume($DB->affectedRows());
         return 1;
