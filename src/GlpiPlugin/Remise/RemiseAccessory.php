@@ -11,7 +11,7 @@ use Migration;
  */
 class RemiseAccessory extends CommonDBTM
 {
-    public static $rightname = 'plugin_remise_remise';
+    public static $rightname = Profile::RIGHT_REMISE;
 
     public static function attach(int $remises_id, int $accessories_id, int $quantity = 1, string $comment = ''): void
     {

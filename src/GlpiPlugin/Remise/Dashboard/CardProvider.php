@@ -14,7 +14,7 @@ final class CardProvider
 {
     public static function pending(array $params = []): array
     {
-        return self::countByStatus([Remise::STATUS_SENT, Remise::STATUS_VIEWED], 'En attente de signature', $params);
+        return self::countByStatus(Remise::STATUSES_AWAITING_SIGNATURE, 'En attente de signature', $params);
     }
 
     public static function signed(array $params = []): array

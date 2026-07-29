@@ -18,7 +18,7 @@ use RuntimeException;
  */
 class Token extends CommonDBTM
 {
-    public static $rightname = 'plugin_remise_remise';
+    public static $rightname = Profile::RIGHT_REMISE;
 
     public static function createForRemise(Remise $remise, int $validityDays): string
     {
@@ -97,11 +97,6 @@ class Token extends CommonDBTM
             'is_valid'   => 0,
             'date_used'  => date('Y-m-d H:i:s'),
         ], ['id' => $this->getID()]);
-    }
-
-    public function invalidate(): void
-    {
-        $this->markUsed();
     }
 
     public static function getExpiryForRemise(int $remises_id): ?string

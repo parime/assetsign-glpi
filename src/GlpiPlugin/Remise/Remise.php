@@ -18,7 +18,7 @@ use Glpi\Application\View\TemplateRenderer;
  */
 class Remise extends CommonDBTM
 {
-    public static $rightname = 'plugin_remise_remise';
+    public static $rightname = Profile::RIGHT_REMISE;
 
     /**
      * Jeton de signature brut, valide uniquement le temps de la requete en cours
@@ -46,6 +46,21 @@ class Remise extends CommonDBTM
     // 2 volontairement inutilise (ancien TYPE_EXCHANGE, retire : un transfert direct
     // entre deux personnes est desormais traite comme une remise (TYPE_HANDOVER)
     // au nouveau detenteur, cf. handleUserBasedTrigger())
+
+    /**
+     * Statuts "envoyee mais pas encore signee" : utilise par le bouton "Relancer
+     * maintenant", les crons de relance/expiration, et le widget "En attente" du
+     * tableau de bord (Dashboard\CardProvider::pending()) — une seule definition
+     * partagee plutot que ce couple de statuts recopie a chaque endroit.
+     */
+    public const STATUSES_AWAITING_SIGNATURE = [self::STATUS_SENT, self::STATUS_VIEWED];
+
+    /**
+     * Statuts pour lesquels le PDF non signe peut encore etre modifie (accessoires,
+     * regeneration...) : tout ce qui precede une vraie signature. Une fois
+     * SIGNED/EXPIRED/CANCELLED, le PDF ne doit plus bouger (preuve figee).
+     */
+    private const STATUSES_STILL_EDITABLE = [self::STATUS_DRAFT, self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED];
 
     public static function getTypeName($nb = 0): string
     {
@@ -156,7 +171,7 @@ class Remise extends CommonDBTM
             'target_item'  => $this->isNewID($ID) ? [] : $this->getTargetItem(),
             'reminders'    => $this->isNewID($ID) ? 0 : Reminder::countForRemise((int) $ID),
             'can_remind'   => !$this->isNewID($ID)
-                && in_array((int) $this->fields['status'], [self::STATUS_SENT, self::STATUS_VIEWED], true)
+                && in_array((int) $this->fields['status'], self::STATUSES_AWAITING_SIGNATURE, true)
                 && \Session::haveRight(self::$rightname, UPDATE),
             'accessories'          => $this->isNewID($ID) ? [] : $this->getAccessories(),
             'can_edit_accessories' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
@@ -419,19 +434,12 @@ class Remise extends CommonDBTM
     {
         global $DB;
 
-        $stillPending = [
-            self::STATUS_DRAFT,
-            self::STATUS_PENDING,
-            self::STATUS_SENT,
-            self::STATUS_VIEWED,
-        ];
-
         foreach ($DB->request([
             'FROM'  => self::getTable(),
             'WHERE' => [
                 'itemtype'   => $item->getType(),
                 'items_id'   => $item->getID(),
-                'status'     => $stillPending,
+                'status'     => self::STATUSES_STILL_EDITABLE,
                 'is_deleted' => 0,
             ],
         ]) as $row) {
@@ -650,12 +658,7 @@ class Remise extends CommonDBTM
      */
     private function isStillEditable(): bool
     {
-        return in_array((int) $this->fields['status'], [
-            self::STATUS_DRAFT,
-            self::STATUS_PENDING,
-            self::STATUS_SENT,
-            self::STATUS_VIEWED,
-        ], true);
+        return in_array((int) $this->fields['status'], self::STATUSES_STILL_EDITABLE, true);
     }
 
     /**
@@ -720,11 +723,6 @@ class Remise extends CommonDBTM
         }
         $template = new Template();
         return $template->getFromDB($this->fields['plugin_remise_templates_id']) ? $template : null;
-    }
-
-    public function getConfig(): Config
-    {
-        return Config::getForEntity((int) $this->fields['entities_id']);
     }
 
     // ================================================================================
@@ -812,7 +810,7 @@ class Remise extends CommonDBTM
      */
     public function sendReminderNow(): void
     {
-        if (!in_array((int) $this->fields['status'], [self::STATUS_SENT, self::STATUS_VIEWED], true)) {
+        if (!in_array((int) $this->fields['status'], self::STATUSES_AWAITING_SIGNATURE, true)) {
             throw new \RuntimeException('Cette remise ne peut plus être relancée (déjà signée ou expirée).');
         }
 
@@ -840,31 +838,38 @@ class Remise extends CommonDBTM
 
         $rows = $DB->request([
             'FROM'  => self::getTable(),
-            'WHERE' => ['status' => [self::STATUS_SENT, self::STATUS_VIEWED], 'is_deleted' => 0],
+            'WHERE' => ['status' => self::STATUSES_AWAITING_SIGNATURE, 'is_deleted' => 0],
         ]);
 
         $count = 0;
+        $configByEntity = [];
         foreach ($rows as $row) {
+            // $row porte deja toutes les colonnes (pas de restriction SELECT ci-dessus) :
+            // reconstituer l'objet directement depuis la ligne evite une deuxieme
+            // requete (equivalente) que ferait getFromDB($row['id']).
             $remise = new self();
-            $remise->getFromDB($row['id']);
+            $remise->fields = $row;
 
             // Config resolue pour l'entite DE CETTE REMISE (pas un reglage global) :
             // deux entites peuvent avoir des delais de relance differents, cf.
-            // README section "Heritage de configuration par entite".
-            $remiseConfig = Config::getForEntity((int) $remise->fields['entities_id']);
+            // README section "Heritage de configuration par entite". Mise en cache
+            // le temps de cette boucle : plusieurs remises partagent souvent la
+            // meme entite, inutile de refaire la meme resolution pour chacune.
+            $entityId = (int) $row['entities_id'];
+            $remiseConfig = $configByEntity[$entityId] ??= Config::getForEntity($entityId);
 
             $provider = Provider\ProviderFactory::for($remiseConfig);
             if ($provider->managesReminders()) {
                 continue; // le prestataire (SaaS) gere ses propres relances
             }
 
-            $delays = array_map('intval', explode(',', $remiseConfig->fields['reminder_delays'] ?: '3,7,7'));
             $max = (int) $remiseConfig->fields['max_reminders'];
             if ($max > 0 && (int) $remise->fields['reminder_count'] >= $max) {
                 continue;
             }
 
-            $daysSinceSend = (int) floor((time() - strtotime($remise->fields['date_sent'])) / DAY_TIMESTAMP);
+            $delays = $remiseConfig->getReminderDelays();
+            $daysSinceSend = self::daysSince($remise->fields['date_sent']);
             $reminderIndex = (int) $remise->fields['reminder_count'];
             $delayIndex = min($reminderIndex, count($delays) - 1);
             $dueDay = array_sum(array_slice($delays, 0, $reminderIndex + 1, true)) ?: $delays[$delayIndex];
@@ -894,20 +899,22 @@ class Remise extends CommonDBTM
         $rows = $DB->request([
             'FROM'  => self::getTable(),
             'WHERE' => [
-                'status'     => [self::STATUS_SENT, self::STATUS_VIEWED],
+                'status'     => self::STATUSES_AWAITING_SIGNATURE,
                 'is_deleted' => 0,
             ],
         ]);
 
         $count = 0;
+        $configByEntity = [];
         foreach ($rows as $row) {
             $remise = new self();
-            $remise->getFromDB($row['id']);
+            $remise->fields = $row;
 
-            $remiseConfig = Config::getForEntity((int) $remise->fields['entities_id']);
+            $entityId = (int) $row['entities_id'];
+            $remiseConfig = $configByEntity[$entityId] ??= Config::getForEntity($entityId);
             $validity = (int) $remiseConfig->fields['link_validity_days'];
 
-            $daysSinceSend = (int) floor((time() - strtotime($remise->fields['date_sent'])) / DAY_TIMESTAMP);
+            $daysSinceSend = self::daysSince($remise->fields['date_sent']);
             if ($daysSinceSend <= $validity) {
                 continue;
             }
@@ -923,6 +930,12 @@ class Remise extends CommonDBTM
         }
 
         return $count;
+    }
+
+    /** Nombre de jours pleins ecoules depuis une date (format GLPI 'Y-m-d H:i:s'). */
+    private static function daysSince(string $dateTime): int
+    {
+        return (int) floor((time() - strtotime($dateTime)) / DAY_TIMESTAMP);
     }
 
     public static function cronRemiseReminders(CronTask $task): int

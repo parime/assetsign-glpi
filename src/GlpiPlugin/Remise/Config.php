@@ -13,7 +13,7 @@ use State;
  */
 class Config extends CommonDBTM
 {
-    public static $rightname = 'plugin_remise_config';
+    public static $rightname = Profile::RIGHT_CONFIG;
 
     private const DEFAULTS = [
         'id'                                  => 0,
@@ -69,7 +69,7 @@ class Config extends CommonDBTM
     {
         $config = self::getForEntity($entities_id);
 
-        $effectiveLogoId = self::getEffectiveLogoDocumentId($entities_id);
+        $effectiveLogoId = self::getEffectiveLogoDocumentId($entities_id, (int) $config->fields['logo_documents_id']);
         $logoIsForced = $effectiveLogoId > 0 && $effectiveLogoId !== (int) $config->fields['logo_documents_id'];
 
         $logoDocument = null;
@@ -235,20 +235,8 @@ class Config extends CommonDBTM
                 'WHERE' => ['entities_id' => array_values($candidateIds)],
             ]));
 
-            if (count($rows) === 1) {
-                $config->getFromDB((int) reset($rows)['id']);
-                return $config;
-            }
-
-            if (count($rows) > 1) {
-                // Plusieurs ancetres ont une config : on garde celle de l'entite
-                // la plus profonde (le "level" GLPI le plus eleve = la plus proche).
-                $levels = [];
-                foreach ($DB->request(['FROM' => 'glpi_entities', 'WHERE' => ['id' => array_column($rows, 'entities_id')]]) as $erow) {
-                    $levels[(int) $erow['id']] = (int) $erow['level'];
-                }
-                usort($rows, static fn($a, $b) => ($levels[(int) $b['entities_id']] ?? 0) <=> ($levels[(int) $a['entities_id']] ?? 0));
-                $config->getFromDB((int) $rows[0]['id']);
+            if ($rows !== []) {
+                $config->getFromDB((int) self::pickRowOfClosestEntity($rows)['id']);
                 return $config;
             }
         }
@@ -256,11 +244,6 @@ class Config extends CommonDBTM
         $config->fields = self::DEFAULTS;
         $config->fields['entities_id'] = $entities_id;
         return $config;
-    }
-
-    public static function getDefault(): self
-    {
-        return self::getForEntity(0);
     }
 
     /**
@@ -275,8 +258,12 @@ class Config extends CommonDBTM
      * sien a l'ensemble de ses filiales, quel que soit leur niveau de
      * profondeur (`getAncestorsOf()` remonte toute la chaine, pas seulement le
      * parent direct).
+     *
+     * @param int|null $ownLogoDocumentsId Logo propre de l'entite, si deja connu
+     *        de l'appelant (cf. showConfigForm()) : evite de rappeler getForEntity()
+     *        pour la meme entite quand aucun ancetre n'impose de logo.
      */
-    public static function getEffectiveLogoDocumentId(int $entities_id): int
+    public static function getEffectiveLogoDocumentId(int $entities_id, ?int $ownLogoDocumentsId = null): int
     {
         global $DB;
 
@@ -295,21 +282,39 @@ class Config extends CommonDBTM
 
                 if ($rows !== []) {
                     // Plusieurs ancetres (sur des branches differentes de la
-                    // hierarchie) peuvent chacun imposer leur propre logo :
-                    // celui de l'ancetre le plus proche (level GLPI le plus
-                    // eleve) l'emporte, comme pour la resolution habituelle
-                    // de la config (cf. getForEntity()).
-                    $levels = [];
-                    foreach ($DB->request(['FROM' => 'glpi_entities', 'WHERE' => ['id' => array_column($rows, 'entities_id')]]) as $erow) {
-                        $levels[(int) $erow['id']] = (int) $erow['level'];
-                    }
-                    usort($rows, static fn($a, $b) => ($levels[(int) $b['entities_id']] ?? 0) <=> ($levels[(int) $a['entities_id']] ?? 0));
-                    return (int) $rows[0]['logo_documents_id'];
+                    // hierarchie) peuvent chacun imposer leur propre logo : celui
+                    // de l'ancetre le plus proche l'emporte, comme pour la
+                    // resolution habituelle de la config (cf. getForEntity()).
+                    return (int) self::pickRowOfClosestEntity($rows)['logo_documents_id'];
                 }
             }
         }
 
-        return (int) self::getForEntity($entities_id)->fields['logo_documents_id'];
+        return $ownLogoDocumentsId ?? (int) self::getForEntity($entities_id)->fields['logo_documents_id'];
+    }
+
+    /**
+     * Parmi des lignes candidates portant chacune un champ 'entities_id', renvoie
+     * celle de l'entite la plus profonde (le "level" GLPI le plus eleve = la plus
+     * proche) — algorithme partage par getForEntity() (heritage ligne entiere) et
+     * getEffectiveLogoDocumentId() (imposition d'un champ precis), qui ont toutes
+     * deux besoin de departager plusieurs ancetres candidats de la meme facon.
+     */
+    private static function pickRowOfClosestEntity(array $rows): array
+    {
+        global $DB;
+
+        if (count($rows) === 1) {
+            return reset($rows);
+        }
+
+        $levels = [];
+        foreach ($DB->request(['FROM' => 'glpi_entities', 'WHERE' => ['id' => array_column($rows, 'entities_id')]]) as $erow) {
+            $levels[(int) $erow['id']] = (int) $erow['level'];
+        }
+        usort($rows, static fn($a, $b) => ($levels[(int) $b['entities_id']] ?? 0) <=> ($levels[(int) $a['entities_id']] ?? 0));
+
+        return $rows[0];
     }
 
     /**

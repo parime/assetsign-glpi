@@ -107,8 +107,7 @@ function plugin_init_remise(): void
     // Pas d'entree Hooks::MENU_TOADD ⇒ le plugin n'ajoute plus rien a la barre laterale.
 
     if (Plugin::isPluginActive('remise')) {
-        $PLUGIN_HOOKS['add_javascript']['remise'] = [];
-        $PLUGIN_HOOKS['add_css']['remise']        = ['css/remise.css'];
+        $PLUGIN_HOOKS['add_css']['remise'] = ['css/remise.css'];
     }
 }
 
