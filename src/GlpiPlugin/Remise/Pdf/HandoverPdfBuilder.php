@@ -61,7 +61,7 @@ final class HandoverPdfBuilder
             'vente_price'         => $venteDetails?->fields['price'] ?? null,
             'vente_sale_date'     => $venteDetails?->fields['sale_date'] ?? null,
             'damage_views'        => (bool) $config->fields['enable_damage_annotation']
-                ? $this->getDamageViewsWithMarkers($remise->getID())
+                ? $this->getDamageViewsForPdf($remise->getID())
                 : [],
             'page_title'          => $headings['page_title'],
             'material_heading'    => $headings['material_heading'],
@@ -71,37 +71,38 @@ final class HandoverPdfBuilder
     }
 
     /**
-     * Vues d'etat des lieux visuel a inclure dans le PDF : uniquement celles
-     * ayant au moins un marqueur (document plus compact). Image encodee en
-     * data URI, meme raison que le logo (cf. getLogoDataUri()) : ces images
-     * vivent dans public/images/ du plugin, hors de GLPI_DOC_DIR sur lequel
-     * Dompdf est chroote.
+     * Les 3 vues de reference sont TOUJOURS incluses dans le PDF des que le
+     * reglage est actif — meme sans aucun repere encore depose (comme un
+     * schema d'etat des lieux de location de vehicule, presente vierge par
+     * defaut) — pour que le rendu reel corresponde exactement a l'apercu, qui
+     * montre systematiquement les 3 vues. Chaque vue porte les repres reels
+     * qui lui sont propres (tableau vide si aucun). Image encodee en data
+     * URI, meme raison que le logo (cf. getLogoDataUri()) : ces images vivent
+     * dans public/images/ du plugin, hors de GLPI_DOC_DIR sur lequel Dompdf
+     * est chroote.
      *
      * @return array<int, array{label: string, image_data_uri: string, markers: array}>
      */
-    private function getDamageViewsWithMarkers(int $remises_id): array
+    private function getDamageViewsForPdf(int $remises_id): array
     {
         $byView = [];
         foreach (DamageMarker::getForRemise($remises_id) as $marker) {
             $byView[(int) $marker['view_index']][] = $marker;
-        }
-        if ($byView === []) {
-            return [];
         }
 
         $labels = DamageMarker::getCanonicalViewLabels();
         $filenames = DamageMarker::getViewImageFilenames();
 
         $views = [];
-        foreach ($byView as $viewIndex => $markers) {
-            $dataUri = $this->getDamageViewDataUri($filenames[$viewIndex] ?? '');
+        foreach ($filenames as $viewIndex => $filename) {
+            $dataUri = $this->getDamageViewDataUri($filename);
             if ($dataUri === null) {
                 continue;
             }
             $views[] = [
                 'label'          => $labels[$viewIndex] ?? '',
                 'image_data_uri' => $dataUri,
-                'markers'        => $markers,
+                'markers'        => $byView[$viewIndex] ?? [],
             ];
         }
         return $views;
