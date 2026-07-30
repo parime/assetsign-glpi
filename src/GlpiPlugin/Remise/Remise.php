@@ -85,30 +85,51 @@ class Remise extends CommonDBTM
         return 'ti ti-file-signature';
     }
 
-    public function getSearchOptions(): array
+    /**
+     * Nommee rawSearchOptions() (pas getSearchOptions(), qui n'existe pas dans
+     * l'API de recherche de GLPI 11) : CommonDBTM::searchOptions() — la
+     * methode reellement appelee par Search::getOptions() — est declaree
+     * `final`, donc impossible a surcharger ; c'est rawSearchOptions() qui est
+     * le point d'extension prevu. Bug reel corrige ici : sous l'ancien nom,
+     * ces colonnes n'etaient jamais vues par GLPI — la liste "Gestion des
+     * fiches" affichait ses lignes (case a cocher, pagination correcte) mais
+     * aucune colonne de donnee, ni le moindre en-tete, sans la moindre erreur
+     * visible. Constate en conditions reelles (page reellement chargee,
+     * <tbody> ne contenant qu'une case a cocher par ligne).
+     */
+    public function rawSearchOptions(): array
     {
-        $options = [];
+        $tab = [];
 
-        $options[1] = [
-            'table' => self::getTable(),
-            'field' => 'id',
-            'name'  => __('ID'),
+        $tab[] = [
+            'id'   => 'common',
+            'name' => self::getTypeName(1),
+        ];
+
+        $tab[] = [
+            'id'       => 1,
+            'table'    => self::getTable(),
+            'field'    => 'id',
+            'name'     => __('ID'),
             'datatype' => 'number',
         ];
-        $options[2] = [
+        $tab[] = [
+            'id'       => 2,
             'table'    => self::getTable(),
             'field'    => 'itemtype',
             'name'     => __('Type de matériel', 'remise'),
             'datatype' => 'itemtype',
         ];
-        $options[3] = [
+        $tab[] = [
+            'id'       => 3,
             'table'    => self::getTable(),
             'field'    => 'items_id',
             'name'     => __('Matériel', 'remise'),
             'datatype' => 'itemlink',
             'itemlink_type' => '',
         ];
-        $options[4] = [
+        $tab[] = [
+            'id'       => 4,
             'table'    => 'glpi_users',
             'field'    => 'name',
             'linkfield' => 'users_id',
@@ -116,33 +137,38 @@ class Remise extends CommonDBTM
             'datatype' => 'itemlink',
             'itemlink_type' => 'User',
         ];
-        $options[5] = [
+        $tab[] = [
+            'id'       => 5,
             'table'    => self::getTable(),
             'field'    => 'status',
             'name'     => __('Statut', 'remise'),
             'datatype' => 'specific',
             'searchtype' => 'equals',
         ];
-        $options[6] = [
+        $tab[] = [
+            'id'       => 6,
             'table'    => self::getTable(),
             'field'    => 'type',
             'name'     => __('Type de remise', 'remise'),
             'datatype' => 'specific',
             'searchtype' => 'equals',
         ];
-        $options[7] = [
+        $tab[] = [
+            'id'       => 7,
             'table'    => self::getTable(),
             'field'    => 'date_sent',
             'name'     => __('Date d\'envoi', 'remise'),
             'datatype' => 'datetime',
         ];
-        $options[8] = [
+        $tab[] = [
+            'id'       => 8,
             'table'    => self::getTable(),
             'field'    => 'date_signed',
             'name'     => __('Date de signature', 'remise'),
             'datatype' => 'datetime',
         ];
-        $options[9] = [
+        $tab[] = [
+            'id'       => 9,
             'table'    => self::getTable(),
             'field'    => 'reminder_count',
             'name'     => __('Nombre de relances', 'remise'),
@@ -152,14 +178,16 @@ class Remise extends CommonDBTM
         // ces deux colonnes ne servent qu'a afficher un lien de telechargement direct
         // depuis la liste (cf. getSpecificValueToDisplay()), sans avoir a ouvrir
         // chaque fiche pour retrouver le PDF correspondant.
-        $options[10] = [
+        $tab[] = [
+            'id'       => 10,
             'table'    => self::getTable(),
             'field'    => 'document_id_unsigned',
             'name'     => __('PDF non signé', 'remise'),
             'datatype' => 'specific',
             'nosearch' => true,
         ];
-        $options[11] = [
+        $tab[] = [
+            'id'       => 11,
             'table'    => self::getTable(),
             'field'    => 'document_id_signed',
             'name'     => __('PDF signé', 'remise'),
@@ -167,7 +195,7 @@ class Remise extends CommonDBTM
             'nosearch' => true,
         ];
 
-        return $options;
+        return $tab;
     }
 
     public static function getSpecificValueToDisplay($field, $values, array $options = [])

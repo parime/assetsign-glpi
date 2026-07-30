@@ -29,7 +29,7 @@
   .card p.hint{ color:var(--ink-soft); font-size:.85rem; margin:0 0 12px; }
   textarea.remise-comment{ width:100%; font:inherit; border:1px solid var(--line); border-radius:6px; padding:8px; resize:vertical; }
 </style>
-<link rel="stylesheet" href="{{ config('root_doc') }}/plugins/remise/css/remise.css">
+<link rel="stylesheet" href="{{ config('root_doc') }}/plugins/remise/css/remise.css?v={{ constant('PLUGIN_REMISE_VERSION') }}">
 </head>
 <body>
 <div class="wrap">
@@ -102,8 +102,8 @@
   {% endif %}
 </div>
 
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/vendor/pdf.min.js"></script>
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/vendor/signature_pad.umd.min.js"></script>
+<script src="{{ config('root_doc') }}/plugins/remise/js/sign/vendor/pdf.min.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+<script src="{{ config('root_doc') }}/plugins/remise/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 <script>
   window.REMISE_SIGN_TOKEN = {{ token|json_encode|raw }};
   window.REMISE_CSRF_TOKEN = {{ csrf_token|default('')|json_encode|raw }};
@@ -117,7 +117,7 @@
     backToHome: {{ __('Retour à l\'accueil GLPI', 'remise')|json_encode|raw }}
   };
 </script>
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/sign.js"></script>
+<script src="{{ config('root_doc') }}/plugins/remise/js/sign/sign.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 
 {% if damage_annotation_enabled and can_edit_damage_markers %}
   <script>
@@ -136,7 +136,7 @@
       deleteLabel: {{ __('Supprimer', 'remise')|json_encode|raw }}
     };
   </script>
-  <script src="{{ config('root_doc') }}/plugins/remise/js/sign/damage-annotation.js"></script>
+  <script src="{{ config('root_doc') }}/plugins/remise/js/sign/damage-annotation.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 {% endif %}
 
 {% if can_edit_comment %}

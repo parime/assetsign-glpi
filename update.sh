@@ -27,10 +27,24 @@ php bin/console cache:clear
 # echoue (topologie reseau inhabituelle), le rappel ci-dessous reste le filet
 # de securite.
 OPCACHE_RESET_OK=0
+OPCACHE_RESET_URL="http://localhost/plugins/remise/front/opcache_reset.php"
+# 3 tentatives, avec une courte pause : juste apres cache:clear ci-dessus
+# (qui vide aussi le cache de routage Symfony, cf. CacheManager::
+# resetAllCaches()), constate en conditions reelles un court delai ou GLPI
+# repond encore 404 le temps de reconstruire ce cache — la 2e ou 3e tentative
+# suffit. --fail (curl) / --server-response (wget, verifie manuellement) sont
+# necessaires : sans ca, un 404 compte comme un succes (la requete HTTP a bien
+# abouti, meme si le contenu est une page d'erreur).
 if command -v curl >/dev/null 2>&1; then
-    curl -s -o /dev/null -m 5 "http://localhost/plugins/remise/front/opcache_reset.php" && OPCACHE_RESET_OK=1
+    for i in 1 2 3; do
+        curl -s -f -o /dev/null -m 5 "$OPCACHE_RESET_URL" && { OPCACHE_RESET_OK=1; break; }
+        sleep 1
+    done
 elif command -v wget >/dev/null 2>&1; then
-    wget -q -O /dev/null -T 5 "http://localhost/plugins/remise/front/opcache_reset.php" && OPCACHE_RESET_OK=1
+    for i in 1 2 3; do
+        wget -q -O /dev/null -T 5 "$OPCACHE_RESET_URL" && { OPCACHE_RESET_OK=1; break; }
+        sleep 1
+    done
 fi
 
 echo ""

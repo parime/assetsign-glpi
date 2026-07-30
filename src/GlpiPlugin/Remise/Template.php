@@ -34,13 +34,17 @@ class Template extends CommonDBTM
         return _n('Gabarit de remise', 'Gabarits de remise', $nb, 'remise');
     }
 
-    public function getSearchOptions(): array
+    // rawSearchOptions() (pas getSearchOptions(), `final` dans CommonDBTM) :
+    // meme correctif que Remise::rawSearchOptions(), meme cause, meme
+    // symptome (liste "Gabarits de remise" sans colonnes ni en-tetes).
+    public function rawSearchOptions(): array
     {
         return [
-            1 => ['table' => self::getTable(), 'field' => 'name', 'name' => __('Nom'), 'datatype' => 'itemlink'],
-            2 => ['table' => self::getTable(), 'field' => 'type', 'name' => __('Type de remise', 'remise'), 'datatype' => 'specific'],
-            3 => ['table' => self::getTable(), 'field' => 'is_default', 'name' => __('Par défaut', 'remise'), 'datatype' => 'bool'],
-            4 => ['table' => self::getTable(), 'field' => 'is_active', 'name' => __('Actif'), 'datatype' => 'bool'],
+            ['id' => 'common', 'name' => self::getTypeName(1)],
+            ['id' => 1, 'table' => self::getTable(), 'field' => 'name', 'name' => __('Nom'), 'datatype' => 'itemlink'],
+            ['id' => 2, 'table' => self::getTable(), 'field' => 'type', 'name' => __('Type de remise', 'remise'), 'datatype' => 'specific'],
+            ['id' => 3, 'table' => self::getTable(), 'field' => 'is_default', 'name' => __('Par défaut', 'remise'), 'datatype' => 'bool'],
+            ['id' => 4, 'table' => self::getTable(), 'field' => 'is_active', 'name' => __('Actif'), 'datatype' => 'bool'],
         ];
     }
 
