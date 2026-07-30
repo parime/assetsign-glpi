@@ -47,6 +47,18 @@ class Remise extends CommonDBTM
     // 2 volontairement inutilise (ancien TYPE_EXCHANGE, retire : un transfert direct
     // entre deux personnes est desormais traite comme une remise (TYPE_HANDOVER)
     // au nouveau detenteur, cf. handleUserBasedTrigger())
+    public const TYPE_DON   = 3; // don de materiel (declenchement manuel, cf. createManual())
+    public const TYPE_VENTE = 4; // vente de materiel (declenchement manuel, prix/date cf. VenteDetails)
+
+    /**
+     * Types autorises pour une creation MANUELLE (cf. createManual()) : la
+     * remise/restitution restent exclusivement automatiques (hooks
+     * d'affectation/etat, cf. handleItemAssignment()) — un technicien ne doit
+     * pas pouvoir en creer une par ce canal, qui contournerait la deduplication
+     * faite par cancelPendingRemisesFor() et pourrait laisser des fiches
+     * orphelines pour un meme materiel.
+     */
+    private const MANUALLY_CREATABLE_TYPES = [self::TYPE_DON, self::TYPE_VENTE];
 
     /**
      * Statuts "envoyee mais pas encore signee" : utilise par le bouton "Relancer
@@ -136,6 +148,24 @@ class Remise extends CommonDBTM
             'name'     => __('Nombre de relances', 'remise'),
             'datatype' => 'number',
         ];
+        // 'nosearch' : un ID de Document interne n'a aucun sens a filtrer/rechercher,
+        // ces deux colonnes ne servent qu'a afficher un lien de telechargement direct
+        // depuis la liste (cf. getSpecificValueToDisplay()), sans avoir a ouvrir
+        // chaque fiche pour retrouver le PDF correspondant.
+        $options[10] = [
+            'table'    => self::getTable(),
+            'field'    => 'document_id_unsigned',
+            'name'     => __('PDF non signé', 'remise'),
+            'datatype' => 'specific',
+            'nosearch' => true,
+        ];
+        $options[11] = [
+            'table'    => self::getTable(),
+            'field'    => 'document_id_signed',
+            'name'     => __('PDF signé', 'remise'),
+            'datatype' => 'specific',
+            'nosearch' => true,
+        ];
 
         return $options;
     }
@@ -150,6 +180,15 @@ class Remise extends CommonDBTM
         }
         if ($field === 'type') {
             return self::getTypes()[$values['type']] ?? $values['type'];
+        }
+        if ($field === 'document_id_unsigned' || $field === 'document_id_signed') {
+            $documents_id = (int) ($values[$field] ?? 0);
+            if ($documents_id <= 0) {
+                return '';
+            }
+            global $CFG_GLPI;
+            $label = $field === 'document_id_signed' ? __('Télécharger (signé)', 'remise') : __('Télécharger (non signé)', 'remise');
+            return '<a href="' . $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documents_id . '" target="_blank">' . $label . '</a>';
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
     }
@@ -176,6 +215,26 @@ class Remise extends CommonDBTM
                 && \Session::haveRight(self::$rightname, UPDATE),
             'accessories'          => $this->isNewID($ID) ? [] : $this->getAccessories(),
             'can_edit_accessories' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
+            // Le champ Observations est desactivable globalement (Config::enable_observations) :
+            // une entite qui n'en a pas l'usage ne voit meme pas la section.
+            'observations_enabled' => !$this->isNewID($ID)
+                && (bool) Config::getForEntity((int) $this->fields['entities_id'])->fields['enable_observations'],
+            // Etat des lieux visuel (etat_des_lieux) : meme reglage/permission que
+            // les accessoires (isStillEditable() + droit UPDATE).
+            'damage_annotation_enabled' => !$this->isNewID($ID)
+                && (bool) Config::getForEntity((int) $this->fields['entities_id'])->fields['enable_damage_annotation'],
+            'damage_views'   => DamageMarker::getViewLabels(),
+            'damage_images'  => DamageMarker::getViewImageFilenames(),
+            'damage_markers_by_view' => $this->isNewID($ID) ? [] : self::groupMarkersByView(DamageMarker::getForRemise((int) $ID)),
+            'can_edit_damage_markers' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
+            // Prix/date de vente : editables apres coup, notamment pour une Vente
+            // declenchee automatiquement par changement d'Etat (aucun prix connu
+            // a la creation, cf. handleStateBasedTrigger()).
+            'type_vente'       => self::TYPE_VENTE,
+            'vente_details'    => (!$this->isNewID($ID) && (int) $this->fields['type'] === self::TYPE_VENTE)
+                ? VenteDetails::getForRemise((int) $ID)
+                : null,
+            'can_edit_vente_details' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
             // Preuve de signature (adresse IP, empreinte du document...) : la seule
             // trace de ces informations jusqu'ici etait a l'interieur du PDF signe
             // lui-meme (cf. handover.html.twig) — rien ne les affichait cote GLPI,
@@ -190,6 +249,16 @@ class Remise extends CommonDBTM
         return true;
     }
 
+    /** @return array<int, array> Marqueurs de dommages regroupes par view_index, pour remise_form.html.twig. */
+    private static function groupMarkersByView(array $markers): array
+    {
+        $byView = [];
+        foreach ($markers as $marker) {
+            $byView[(int) $marker['view_index']][] = $marker;
+        }
+        return $byView;
+    }
+
     /**
      * Action groupee "Relancer" depuis la liste des remises (Search::show(),
      * cf. front/remise.php) : evite d'ouvrir chaque fiche une par une pour
@@ -202,6 +271,8 @@ class Remise extends CommonDBTM
         if (Session::haveRight(self::$rightname, UPDATE)) {
             $actions[self::class . MassiveAction::CLASS_ACTION_SEPARATOR . 'send_reminder']
                 = __('Relancer maintenant', 'remise');
+            $actions[self::class . MassiveAction::CLASS_ACTION_SEPARATOR . 'cancel_request']
+                = __('Annuler la demande', 'remise');
         }
 
         return $actions;
@@ -212,6 +283,10 @@ class Remise extends CommonDBTM
         switch ($ma->getAction()) {
             case 'send_reminder':
                 echo __('Envoyer une relance de signature aux remises sélectionnées ?', 'remise');
+                echo '<br><br>' . \Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+                return true;
+            case 'cancel_request':
+                echo __('Annuler les demandes de signature sélectionnées ? Le lien envoyé au bénéficiaire deviendra invalide.', 'remise');
                 echo '<br><br>' . \Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
                 return true;
         }
@@ -234,6 +309,21 @@ class Remise extends CommonDBTM
                         // Deja signee/expiree : la relance ne s'applique pas a cette
                         // remise precise, ce n'est pas une erreur bloquante pour le
                         // reste de la selection (cf. sendReminderNow()).
+                        $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                        $ma->addMessage($e->getMessage());
+                    }
+                }
+                return;
+            case 'cancel_request':
+                foreach ($ids as $id) {
+                    if (!$item->getFromDB($id)) {
+                        $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                        continue;
+                    }
+                    try {
+                        $item->cancelRequest();
+                        $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
+                    } catch (\RuntimeException $e) {
                         $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                         $ma->addMessage($e->getMessage());
                     }
@@ -274,11 +364,28 @@ class Remise extends CommonDBTM
             'ORDER' => 'date_creation DESC',
         ]);
 
+        // Types a declenchement manuel disponibles depuis cet onglet (Don, puis
+        // Vente...), chacun derriere son propre reglage d'entite — un technicien
+        // ne voit le formulaire que si au moins un type est active ET qu'il a le
+        // droit de modification. Cf. Remise::createManual().
+        $config = Config::getForEntity((int) $item->fields['entities_id']);
+        $manualTypes = [];
+        if ($config->fields['enable_don']) {
+            $manualTypes[self::TYPE_DON] = Workflow\WorkflowTypeRegistry::get(self::TYPE_DON)->getLabel();
+        }
+        if ($config->fields['enable_vente']) {
+            $manualTypes[self::TYPE_VENTE] = Workflow\WorkflowTypeRegistry::get(self::TYPE_VENTE)->getLabel();
+        }
+
         $twig = \Glpi\Application\View\TemplateRenderer::getInstance();
         $twig->display('@remise/remise_tab.html.twig', [
-            'item'    => $item,
-            'remises' => iterator_to_array($rows),
-            'statuses' => self::getStatuses(),
+            'item'          => $item,
+            'remises'       => iterator_to_array($rows),
+            'statuses'      => self::getStatuses(),
+            'manual_types'  => $manualTypes,
+            'type_vente'    => self::TYPE_VENTE,
+            'can_create_manual' => $manualTypes !== [] && Session::haveRight(self::$rightname, UPDATE),
+            'csrf_token'    => \Session::getNewCSRFToken(),
         ]);
     }
 
@@ -295,19 +402,19 @@ class Remise extends CommonDBTM
         ];
     }
 
+    /**
+     * @return array<int, string> id => libelle traduit, un par type enregistre
+     *     aupres de Workflow\WorkflowTypeRegistry.
+     */
     public static function getTypes(): array
     {
-        return [
-            self::TYPE_HANDOVER => __('Remise', 'remise'),
-            self::TYPE_RETURN   => __('Restitution', 'remise'),
-        ];
+        $types = [];
+        foreach (Workflow\WorkflowTypeRegistry::all() as $type) {
+            $types[$type->getId()] = $type->getLabel();
+        }
+        return $types;
     }
 
-    /**
-     * Formulations pretes a l'emploi pour le PDF, par type de remise — evite de
-     * tenter des accords grammaticaux ("de" vs "d'echange", "remis" vs "echange")
-     * par concatenation dans le gabarit Twig.
-     */
     /**
      * Titres du PDF volontairement NON traduits via __() : contrairement a une
      * notification (localisee par destinataire, cf. NotificationTargetRemise),
@@ -325,16 +432,7 @@ class Remise extends CommonDBTM
      */
     public static function getPdfHeadings(int $type): array
     {
-        return match ($type) {
-            self::TYPE_RETURN => [
-                'page_title'       => 'Fiche de restitution de matériel',
-                'material_heading' => 'Matériel restitué',
-            ],
-            default => [
-                'page_title'       => 'Fiche de remise de matériel',
-                'material_heading' => 'Matériel remis',
-            ],
-        };
+        return Workflow\WorkflowTypeRegistry::get($type)->getPdfHeadings();
     }
 
     // ================================================================================
@@ -438,6 +536,21 @@ class Remise extends CommonDBTM
 
         if (in_array($newState, $config->getReturnStates(), true)) {
             self::createRemise($item, self::TYPE_RETURN, $currentUser);
+            return;
+        }
+
+        if (in_array($newState, $config->getDonationStates(), true)) {
+            self::createRemise($item, self::TYPE_DON, $currentUser);
+            return;
+        }
+
+        // Vente ainsi declenchee : AUCUNE VenteDetails n'est creee ici (contrairement
+        // a createManual(), qui recoit un prix/date saisis a la main) — le prix n'est
+        // pas connu au moment d'un changement d'Etat. handover.html.twig masque deja
+        // la section "Details de la vente" tant que vente_price est null ; un
+        // technicien la complete ensuite via Remise::updateVenteDetails().
+        if (in_array($newState, $config->getVenteStates(), true)) {
+            self::createRemise($item, self::TYPE_VENTE, $currentUser);
         }
     }
 
@@ -484,6 +597,69 @@ class Remise extends CommonDBTM
     }
 
     /**
+     * Point d'entree PUBLIC pour les types a declenchement manuel (Don, Vente) :
+     * contrairement a createRemise() (privee, appelee depuis les hooks
+     * d'affectation/etat), rien ne signale automatiquement "ce materiel est
+     * donne/vendu" — un technicien choisit explicitement de creer la fiche
+     * depuis l'onglet Remise du materiel (cf. remise_tab.html.twig,
+     * front/remise.form.php action "create_manual").
+     *
+     * @param array $extra Donnees specifiques au type ('price'/'sale_date' pour
+     *                      TYPE_VENTE, cf. VenteDetails) — ignorees pour les
+     *                      types qui n'en utilisent pas.
+     * @throws \InvalidArgumentException si $itemtype n'est pas un itemtype GLPI valide
+     * @throws \RuntimeException si le materiel est introuvable ou la creation echoue
+     */
+    public static function createManual(string $itemtype, int $items_id, int $type, int $users_id, array $extra = []): self
+    {
+        if (!in_array($type, self::MANUALLY_CREATABLE_TYPES, true)) {
+            throw new \InvalidArgumentException("Ce type de fiche ne peut pas être créé manuellement.");
+        }
+
+        if (!is_subclass_of($itemtype, CommonDBTM::class)) {
+            throw new \InvalidArgumentException("Type de materiel invalide : $itemtype");
+        }
+
+        $item = new $itemtype();
+        if (!$item->getFromDB($items_id)) {
+            throw new \RuntimeException('Matériel introuvable.');
+        }
+
+        $config = Config::getForEntity((int) $item->fields['entities_id']);
+        $template = Template::getDefaultFor($type, (int) $item->fields['entities_id']);
+
+        $remise = new self();
+        $id = $remise->add([
+            'entities_id'                 => $item->fields['entities_id'],
+            'itemtype'                    => $itemtype,
+            'items_id'                    => $items_id,
+            'users_id'                    => $users_id,
+            'users_id_tech'               => Session::getLoginUserID() ?: 0,
+            'locations_id'                => $item->fields['locations_id'] ?? 0,
+            'plugin_remise_templates_id'  => $template ? $template->getID() : 0,
+            'type'                        => $type,
+            'status'                      => self::STATUS_PENDING,
+            'comment'                     => '',
+        ]);
+
+        if (!$id) {
+            throw new \RuntimeException('Échec de la création de la fiche.');
+        }
+
+        $remise->getFromDB($id);
+
+        if ($type === self::TYPE_VENTE) {
+            // Cree AVANT launchWorkflow() : le PDF genere ci-dessous doit deja
+            // pouvoir lire le prix/la date de vente (cf. VenteDetails, HandoverPdfBuilder).
+            VenteDetails::createForRemise($id, (float) ($extra['price'] ?? 0), (string) ($extra['sale_date'] ?? date('Y-m-d')));
+        }
+
+        $remise->launchWorkflow($config);
+
+        return $remise;
+    }
+
+    /**
      * Annule toute remise encore en attente de signature pour ce materiel (statuts
      * DRAFT/PENDING/SENT/VIEWED) et invalide son jeton de signature.
      *
@@ -507,7 +683,40 @@ class Remise extends CommonDBTM
         ]) as $row) {
             $DB->update(self::getTable(), ['status' => self::STATUS_CANCELLED], ['id' => $row['id']]);
             Token::invalidateForRemise((int) $row['id']);
+            // Ecrit directement en SQL (pas via update()) pour eviter un aller-retour
+            // complet par remise dans une boucle de reaffectation : l'historique natif
+            // de CommonDBTM (declenche par update()) est donc court-circuite ici, on le
+            // reconstitue explicitement pour que l'onglet Historique de la fiche
+            // reflete quand meme cette annulation automatique.
+            \Log::history(
+                (int) $row['id'],
+                self::class,
+                ['0', '', __('Annulée automatiquement (matériel réaffecté avant signature)', 'remise')],
+                0,
+                \Log::HISTORY_LOG_SIMPLE_MESSAGE
+            );
         }
+    }
+
+    /**
+     * Annule manuellement une demande de signature encore en attente (bouton
+     * "Annuler" sur la fiche, ou action groupee "cancel_request" depuis
+     * Search::show(), cf. getSpecificMassiveActions()). Contrairement a
+     * cancelPendingRemisesFor() (declenchee automatiquement lors d'une
+     * reaffectation), celle-ci passe par update() : l'historique natif de
+     * CommonDBTM capture donc deja le changement de statut sans appel explicite
+     * a Log::history().
+     *
+     * @throws \RuntimeException si la remise est deja signee/expiree/annulee.
+     */
+    public function cancelRequest(): void
+    {
+        if (!$this->isStillEditable()) {
+            throw new \RuntimeException(__('Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà annulée).', 'remise'));
+        }
+
+        $this->update(['id' => $this->getID(), 'status' => self::STATUS_CANCELLED]);
+        Token::invalidateForRemise($this->getID());
     }
 
     /**
@@ -661,10 +870,7 @@ class Remise extends CommonDBTM
      */
     private static function getCanonicalTypeLabel(int $type): string
     {
-        return match ($type) {
-            self::TYPE_RETURN => 'Restitution',
-            default           => 'Remise',
-        };
+        return Workflow\WorkflowTypeRegistry::get($type)->getCanonicalLabel();
     }
 
     /**
@@ -714,11 +920,13 @@ class Remise extends CommonDBTM
 
     /**
      * Types de statuts pour lesquels le document PDF non signe peut encore
-     * etre modifie (accessoires, regeneration...) : tout ce qui precede une
-     * vraie signature. Une fois SIGNED/EXPIRED/CANCELLED, le PDF ne doit plus
-     * bouger (preuve figee).
+     * etre modifie (accessoires, observations, marqueurs de dommages,
+     * regeneration...) : tout ce qui precede une vraie signature. Une fois
+     * SIGNED/EXPIRED/CANCELLED, le PDF ne doit plus bouger (preuve figee).
+     * Publique : reutilisee hors de cette classe par front/damagemarker.php
+     * (verification avant d'accepter un ajout/suppression de marqueur).
      */
-    private function isStillEditable(): bool
+    public function isStillEditable(): bool
     {
         return in_array((int) $this->fields['status'], self::STATUSES_STILL_EDITABLE, true);
     }
@@ -746,6 +954,40 @@ class Remise extends CommonDBTM
             return;
         }
         RemiseAccessory::detach($this->getID(), $accessories_id);
+        $this->regenerateUnsignedPdf();
+    }
+
+    /**
+     * Met a jour le champ "Observations" (libre, ex: etat constate du materiel)
+     * et regenere le PDF non signe pour qu'il reflete le nouveau texte — meme
+     * logique que add/removeAccessory(). Sans effet si la remise est deja
+     * signee/expiree/annulee (le PDF signe est une preuve figee, cf.
+     * isStillEditable()) ; le reglage global "enable_observations" (cf. Config)
+     * est verifie cote formulaire/front, pas ici, pour que cette methode reste
+     * utilisable telle quelle si l'appelant a deja fait ce controle.
+     */
+    public function updateObservations(string $observations): void
+    {
+        if (!$this->isStillEditable()) {
+            return;
+        }
+        $this->update(['id' => $this->getID(), 'observations' => $observations]);
+        $this->regenerateUnsignedPdf();
+    }
+
+    /**
+     * Renseigne ou corrige le prix/la date d'une Vente, puis regenere le PDF
+     * non signe — necessaire pour une Vente declenchee automatiquement par
+     * changement d'Etat (cf. handleStateBasedTrigger()), qui ne connait aucun
+     * prix au moment de sa creation. Sans effet sur un autre type de fiche ou
+     * une fiche deja signee/expiree/annulee.
+     */
+    public function updateVenteDetails(float $price, string $saleDate): void
+    {
+        if ((int) $this->fields['type'] !== self::TYPE_VENTE || !$this->isStillEditable()) {
+            return;
+        }
+        VenteDetails::upsertForRemise($this->getID(), $price, $saleDate);
         $this->regenerateUnsignedPdf();
     }
 
@@ -1103,6 +1345,7 @@ class Remise extends CommonDBTM
                 `date_signed` timestamp NULL DEFAULT NULL,
                 `date_expired` timestamp NULL DEFAULT NULL,
                 `expiry_warning_sent` tinyint NOT NULL DEFAULT 0,
+                `observations` text,
                 `comment` text,
                 `is_deleted` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
@@ -1119,12 +1362,18 @@ class Remise extends CommonDBTM
                 KEY `is_deleted` (`is_deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
             $DB->doQuery($query);
-        } elseif (!$DB->fieldExists($table, 'expiry_warning_sent')) {
-            // 'bool' (pas 'tinyint') : seul un type "logique" reconnu par
-            // Migration::fieldFormat() fait que 'value' produise reellement une
-            // clause DEFAULT — cf. le commentaire equivalent dans Config::install().
-            $migration->addField($table, 'expiry_warning_sent', 'bool', ['value' => 0, 'after' => 'date_expired']);
-            $migration->migrationOneTable($table);
+        } else {
+            if (!$DB->fieldExists($table, 'expiry_warning_sent')) {
+                // 'bool' (pas 'tinyint') : seul un type "logique" reconnu par
+                // Migration::fieldFormat() fait que 'value' produise reellement une
+                // clause DEFAULT — cf. le commentaire equivalent dans Config::install().
+                $migration->addField($table, 'expiry_warning_sent', 'bool', ['value' => 0, 'after' => 'date_expired']);
+                $migration->migrationOneTable($table);
+            }
+            if (!$DB->fieldExists($table, 'observations')) {
+                $migration->addField($table, 'observations', 'text', ['after' => 'expiry_warning_sent']);
+                $migration->migrationOneTable($table);
+            }
         }
     }
 }

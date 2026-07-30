@@ -32,12 +32,18 @@ class Config extends CommonDBTM
         'link_validity_days'                  => 30,
         'expiry_warning_days'                  => 3,
         'signature_required'                  => 1,
+        'enable_observations'                 => 0,
+        'enable_don'                          => 0,
+        'enable_vente'                        => 0,
+        'enable_damage_annotation'            => 0,
         'sign_on_assignment'                  => 1,
         'sign_on_reassignment'                => 1,
         'sign_on_return'                      => 0,
         'managed_itemtypes'                   => '["Computer","Monitor","Peripheral","Phone"]',
         'handover_states'                     => '[]',
         'return_states'                       => '[]',
+        'donation_states'                     => '[]',
+        'vente_states'                        => '[]',
     ];
 
     public static function getTypeName($nb = 0): string
@@ -98,6 +104,8 @@ class Config extends CommonDBTM
             'all_states'      => self::getAllStates(),
             'handover_states' => $config->getHandoverStates(),
             'return_states'   => $config->getReturnStates(),
+            'donation_states' => $config->getDonationStates(),
+            'vente_states'    => $config->getVenteStates(),
             'logo_document'   => $logoDocument,
             'logo_is_forced'  => $logoIsForced,
         ]);
@@ -342,12 +350,18 @@ class Config extends CommonDBTM
             'link_validity_days'   => (int) ($input['link_validity_days'] ?? 30),
             'expiry_warning_days'  => (int) ($input['expiry_warning_days'] ?? 3),
             'signature_required'   => (int) ($input['signature_required'] ?? 0),
+            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
+            'enable_don'           => (int) ($input['enable_don'] ?? 0),
+            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
+            'enable_damage_annotation' => (int) ($input['enable_damage_annotation'] ?? 0),
             'sign_on_assignment'   => (int) ($input['sign_on_assignment'] ?? 0),
             'sign_on_reassignment' => (int) ($input['sign_on_reassignment'] ?? 0),
             'sign_on_return'       => (int) ($input['sign_on_return'] ?? 0),
             'managed_itemtypes'    => json_encode($managedItemtypes),
             'handover_states'      => json_encode(array_map('intval', $input['handover_states'] ?? [])),
             'return_states'        => json_encode(array_map('intval', $input['return_states'] ?? [])),
+            'donation_states'      => json_encode(array_map('intval', $input['donation_states'] ?? [])),
+            'vente_states'         => json_encode(array_map('intval', $input['vente_states'] ?? [])),
         ];
 
         $config = new self();
@@ -384,6 +398,20 @@ class Config extends CommonDBTM
         return is_array($decoded) ? array_map('intval', $decoded) : [];
     }
 
+    /** États GLPI (glpi_states) qui, une fois atteints, déclenchent un don. */
+    public function getDonationStates(): array
+    {
+        $decoded = json_decode($this->fields['donation_states'] ?? '', true);
+        return is_array($decoded) ? array_map('intval', $decoded) : [];
+    }
+
+    /** États GLPI (glpi_states) qui, une fois atteints, déclenchent une vente. */
+    public function getVenteStates(): array
+    {
+        $decoded = json_decode($this->fields['vente_states'] ?? '', true);
+        return is_array($decoded) ? array_map('intval', $decoded) : [];
+    }
+
     public static function install(Migration $migration): void
     {
         global $DB;
@@ -408,12 +436,18 @@ class Config extends CommonDBTM
                 `link_validity_days` int unsigned NOT NULL DEFAULT 30,
                 `expiry_warning_days` int unsigned NOT NULL DEFAULT 3,
                 `signature_required` tinyint NOT NULL DEFAULT 1,
+                `enable_observations` tinyint NOT NULL DEFAULT 0,
+                `enable_don` tinyint NOT NULL DEFAULT 0,
+                `enable_vente` tinyint NOT NULL DEFAULT 0,
+                `enable_damage_annotation` tinyint NOT NULL DEFAULT 0,
                 `sign_on_assignment` tinyint NOT NULL DEFAULT 1,
                 `sign_on_reassignment` tinyint NOT NULL DEFAULT 1,
                 `sign_on_return` tinyint NOT NULL DEFAULT 0,
                 `managed_itemtypes` text,
                 `handover_states` text,
                 `return_states` text,
+                `donation_states` text,
+                `vente_states` text,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -429,11 +463,17 @@ class Config extends CommonDBTM
                 'link_validity_days' => self::DEFAULTS['link_validity_days'],
                 'expiry_warning_days' => self::DEFAULTS['expiry_warning_days'],
                 'signature_required' => 1,
+                'enable_observations' => self::DEFAULTS['enable_observations'],
+                'enable_don'         => self::DEFAULTS['enable_don'],
+                'enable_vente'       => self::DEFAULTS['enable_vente'],
+                'enable_damage_annotation' => self::DEFAULTS['enable_damage_annotation'],
                 'sign_on_assignment' => 1,
                 'sign_on_reassignment' => 1,
                 'managed_itemtypes'  => self::DEFAULTS['managed_itemtypes'],
                 'handover_states'    => self::DEFAULTS['handover_states'],
                 'return_states'      => self::DEFAULTS['return_states'],
+                'donation_states'    => self::DEFAULTS['donation_states'],
+                'vente_states'       => self::DEFAULTS['vente_states'],
                 'date_creation'      => date('Y-m-d H:i:s'),
             ]);
         } else {
@@ -458,6 +498,27 @@ class Config extends CommonDBTM
             }
             if (!$DB->fieldExists($table, 'expiry_warning_days')) {
                 $migration->addField($table, 'expiry_warning_days', 'integer', ['value' => 3, 'after' => 'link_validity_days']);
+                $migration->migrationOneTable($table);
+            }
+            if (!$DB->fieldExists($table, 'enable_observations')) {
+                $migration->addField($table, 'enable_observations', 'bool', ['value' => 0, 'after' => 'signature_required']);
+                $migration->migrationOneTable($table);
+            }
+            if (!$DB->fieldExists($table, 'enable_don')) {
+                $migration->addField($table, 'enable_don', 'bool', ['value' => 0, 'after' => 'enable_observations']);
+                $migration->migrationOneTable($table);
+            }
+            if (!$DB->fieldExists($table, 'enable_vente')) {
+                $migration->addField($table, 'enable_vente', 'bool', ['value' => 0, 'after' => 'enable_don']);
+                $migration->migrationOneTable($table);
+            }
+            if (!$DB->fieldExists($table, 'enable_damage_annotation')) {
+                $migration->addField($table, 'enable_damage_annotation', 'bool', ['value' => 0, 'after' => 'enable_vente']);
+                $migration->migrationOneTable($table);
+            }
+            if (!$DB->fieldExists($table, 'donation_states')) {
+                $migration->addField($table, 'donation_states', 'text', ['after' => 'return_states']);
+                $migration->addField($table, 'vente_states', 'text', ['after' => 'donation_states']);
                 $migration->migrationOneTable($table);
             }
         }

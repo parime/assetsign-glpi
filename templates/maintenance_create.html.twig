@@ -1,0 +1,39 @@
+<div class="card mb-3">
+  <div class="card-header">{{ __('Nouvelle fiche de maintenance', 'remise') }}</div>
+  <div class="card-body">
+    <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/maintenance.form.php" class="row g-3">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+
+      <div class="col-md-4">
+        <label class="form-label">{{ __('Type de matériel', 'remise') }}</label>
+        {{ itemtype_dropdown_html|raw }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">{{ __('Matériel', 'remise') }}</label><br>
+        {{ item_dropdown_html|raw }}
+      </div>
+
+      <div class="col-12">
+        {% if checklist_items|length == 0 %}
+          <p class="text-muted">{{ __('Aucun point de contrôle configuré (Configuration > Intitulés > Points de contrôle de maintenance).', 'remise') }}</p>
+        {% else %}
+          {% for id, label in checklist_items %}
+            <div class="form-check">
+              <input type="checkbox" name="checklist[]" value="{{ id }}" class="form-check-input" id="new_checklist_{{ id }}">
+              <label class="form-check-label" for="new_checklist_{{ id }}">{{ label }}</label>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">{{ __('Commentaire', 'remise') }}</label>
+        <textarea name="comment" class="form-control" rows="3"></textarea>
+      </div>
+
+      <div class="col-12">
+        <button type="submit" name="create" class="btn btn-primary">{{ __('Créer la fiche', 'remise') }}</button>
+      </div>
+    </form>
+  </div>
+</div>

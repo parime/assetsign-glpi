@@ -81,7 +81,9 @@
 
         post('sign', { signature: signaturePad.toDataURL('image/png') }).then(function (data) {
             if (data.success) {
-                document.body.innerHTML = '<div class="wrap"><div class="card"><p>' + window.REMISE_I18N.signedOk + '</p></div></div>';
+                var homeUrl = (window.REMISE_ROOT_DOC || '') + '/front/central.php';
+                document.body.innerHTML = '<div class="wrap"><div class="card"><p>' + window.REMISE_I18N.signedOk
+                    + '</p><p><a href="' + homeUrl + '">' + window.REMISE_I18N.backToHome + '</a></p></div></div>';
             } else {
                 statusMsg.textContent = window.REMISE_I18N.errorPrefix + ' : ' + data.error;
                 btnSubmit.disabled = false;

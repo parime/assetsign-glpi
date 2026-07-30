@@ -13,15 +13,6 @@ class Template extends CommonDBTM
 {
     public static $rightname = Profile::RIGHT_TEMPLATE;
 
-    private const DEFAULT_HANDOVER_CONTENT = '<p>Je soussigné(e) reconnais avoir reçu le matériel décrit ci-dessus, en bon état de fonctionnement, '
-        . 'et m\'engage à en assurer la garde, l\'usage raisonnable et la restitution en cas de départ ou de demande '
-        . 'de l\'équipe informatique.</p>';
-
-    private const DEFAULT_RETURN_CONTENT = '<p>Je soussigné(e) atteste avoir restitué le matériel décrit ci-dessus au service informatique.</p>';
-
-    private const DEFAULT_CHARTER_CONTENT = '<p>L\'utilisation du matériel informatique doit se conformer à la charte informatique en vigueur '
-        . 'dans l\'entreprise. Toute anomalie ou dysfonctionnement doit être signalé sans délai au service informatique.</p>';
-
     /**
      * Texte pre-rempli propose a l'administrateur pour un NOUVEAU gabarit — pas
      * seulement pour le gabarit seme automatiquement a l'installation (cf.
@@ -30,14 +21,12 @@ class Template extends CommonDBTM
      * remise/restitution sans aucune condition generale ni charte affichee au
      * beneficiaire — constate en conditions reelles. Le texte reste entierement
      * modifiable (ou effaçable) via le formulaire, ce n'est qu'une valeur de
-     * depart.
+     * depart. Chaque type porte son propre texte par defaut (cf.
+     * Workflow\WorkflowTypeInterface::getDefaultTemplateContent()).
      */
     public static function getDefaultContentFor(int $type): array
     {
-        return match ($type) {
-            Remise::TYPE_RETURN => ['content' => self::DEFAULT_RETURN_CONTENT, 'charter_content' => ''],
-            default             => ['content' => self::DEFAULT_HANDOVER_CONTENT, 'charter_content' => self::DEFAULT_CHARTER_CONTENT],
-        };
+        return Workflow\WorkflowTypeRegistry::get($type)->getDefaultTemplateContent();
     }
 
     public static function getTypeName($nb = 0): string
@@ -70,20 +59,38 @@ class Template extends CommonDBTM
     {
         $this->initForm($ID, $options);
 
-        // Pour un NOUVEAU gabarit (pas encore en base), pre-remplit avec un texte
-        // par defaut raisonnable plutot que de laisser les champs vides — cf.
-        // getDefaultContentFor(). Le type par defaut du formulaire est
-        // TYPE_HANDOVER (premiere option du select) tant que l'administrateur n'a
-        // pas choisi ; il verra alors la version "restitution" si demandee.
+        // Pour un NOUVEAU gabarit (pas encore en base), pre-selectionne le type
+        // passe en parametre (lien "+ Nouveau gabarit" depuis l'onglet de
+        // configuration d'un type, cf. config_form.html.twig) — a defaut,
+        // TYPE_HANDOVER (premiere option du select).
+        $newTemplateType = (int) ($_GET['type'] ?? $options['type'] ?? Remise::TYPE_HANDOVER);
+        if ($this->isNewID($ID)) {
+            $this->fields['type'] = $newTemplateType;
+        }
+
+        // Pre-remplit avec un texte par defaut raisonnable plutot que de laisser
+        // les champs vides — cf. getDefaultContentFor().
         $defaultContent = $this->isNewID($ID)
-            ? self::getDefaultContentFor(Remise::TYPE_HANDOVER)
+            ? self::getDefaultContentFor($newTemplateType)
             : ['content' => $this->fields['content'] ?? '', 'charter_content' => $this->fields['charter_content'] ?? ''];
+
+        // Apercu initial (avant toute interaction JS, cf. live-preview.js) : reprend
+        // exactement ce que le formulaire affiche par defaut, pour un nouveau
+        // gabarit comme pour un existant.
+        $previewType = $this->isNewID($ID) ? $newTemplateType : (int) $this->fields['type'];
+        $previewHtml = (new Pdf\HandoverPdfBuilder())->renderPreview((int) ($this->fields['entities_id'] ?? 0), $previewType, [
+            'content'         => $defaultContent['content'],
+            'charter_content' => $defaultContent['charter_content'],
+            'include_content' => $this->isNewID($ID) ? true : (bool) $this->fields['include_content'],
+            'include_charter' => $this->isNewID($ID) ? true : (bool) $this->fields['include_charter'],
+        ]);
 
         \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/template_form.html.twig', [
             'item'            => $this,
             'types'           => Remise::getTypes(),
             'csrf_token'      => \Session::getNewCSRFToken(),
             'default_content' => $defaultContent,
+            'preview_html'    => $previewHtml,
         ]);
 
         return true;
@@ -123,6 +130,8 @@ class Template extends CommonDBTM
                 `type` tinyint NOT NULL DEFAULT 0,
                 `content` text,
                 `charter_content` text,
+                `include_content` tinyint NOT NULL DEFAULT 1,
+                `include_charter` tinyint NOT NULL DEFAULT 1,
                 `is_default` tinyint NOT NULL DEFAULT 0,
                 `is_active` tinyint NOT NULL DEFAULT 1,
                 `comment` text,
@@ -136,36 +145,64 @@ class Template extends CommonDBTM
                 KEY `is_active` (`is_active`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 
-            $handoverDefaults = self::getDefaultContentFor(\GlpiPlugin\Remise\Remise::TYPE_HANDOVER);
-            $DB->insert($table, [
-                'entities_id'     => 0,
-                'is_recursive'    => 1,
-                'name'            => 'Gabarit de remise par défaut',
-                'type'            => \GlpiPlugin\Remise\Remise::TYPE_HANDOVER,
-                'content'         => $handoverDefaults['content'],
-                'charter_content' => $handoverDefaults['charter_content'],
-                'is_default'      => 1,
-                'is_active'       => 1,
-                'date_creation'   => date('Y-m-d H:i:s'),
-            ]);
-
-            $returnDefaults = self::getDefaultContentFor(\GlpiPlugin\Remise\Remise::TYPE_RETURN);
-            $DB->insert($table, [
-                'entities_id'     => 0,
-                'is_recursive'    => 1,
-                'name'            => 'Gabarit de restitution par défaut',
-                'type'            => \GlpiPlugin\Remise\Remise::TYPE_RETURN,
-                'content'         => $returnDefaults['content'],
-                'charter_content' => $returnDefaults['charter_content'],
-                'is_default'      => 1,
-                'is_active'       => 1,
-                'date_creation'   => date('Y-m-d H:i:s'),
-            ]);
+            self::seedDefaultTemplate(\GlpiPlugin\Remise\Remise::TYPE_HANDOVER, 'Gabarit de remise par défaut');
+            self::seedDefaultTemplate(\GlpiPlugin\Remise\Remise::TYPE_RETURN, 'Gabarit de restitution par défaut');
+            self::seedDefaultTemplate(\GlpiPlugin\Remise\Remise::TYPE_DON, 'Gabarit de don par défaut');
+            self::seedDefaultTemplate(\GlpiPlugin\Remise\Remise::TYPE_VENTE, 'Gabarit de vente par défaut');
         } else {
             // Montee de version : desactive les gabarits de l'ancien type "Echange"
             // (valeur 2, retiree — cf. Remise::TYPE_EXCHANGE) sans les supprimer,
             // pour ne pas perdre l'historique tout en les sortant de la liste active.
             $DB->update($table, ['is_active' => 0], ['type' => 2]);
+
+            if (!$DB->fieldExists($table, 'include_content')) {
+                // Valeur par defaut 1 (pas 0) sur les DEUX colonnes : sans cela, tous
+                // les gabarits DEJA EN PRODUCTION verraient leurs mentions legales
+                // disparaitre silencieusement du PDF des le prochain document genere
+                // (cf. le commentaire equivalent sur getDefaultContentFor()).
+                $migration->addField($table, 'include_content', 'bool', ['value' => 1, 'after' => 'charter_content']);
+                $migration->addField($table, 'include_charter', 'bool', ['value' => 1, 'after' => 'include_content']);
+                $migration->migrationOneTable($table);
+            }
+
+            // Montee de version : seme le gabarit par defaut de tout type ajoute
+            // apres l'installation initiale d'une instance existante (sans cela,
+            // Template::getDefaultFor(...) renverrait null indefiniment pour ce
+            // type, et toute fiche serait generee sans aucune condition affichee).
+            self::seedIfMissing($table, \GlpiPlugin\Remise\Remise::TYPE_DON, 'Gabarit de don par défaut');
+            self::seedIfMissing($table, \GlpiPlugin\Remise\Remise::TYPE_VENTE, 'Gabarit de vente par défaut');
         }
+    }
+
+    private static function seedIfMissing(string $table, int $type, string $name): void
+    {
+        if (countElementsInTable($table, ['type' => $type]) === 0) {
+            self::seedDefaultTemplate($type, $name);
+        }
+    }
+
+    /**
+     * Seme un gabarit par defaut (entite racine, actif, par defaut pour son
+     * type) avec le texte fourni par le type lui-meme (cf.
+     * getDefaultContentFor()) — reutilise a l'installation initiale pour
+     * chaque type existant, et lors d'une montee de version pour tout type
+     * ajoute apres coup (cf. le seed differe du Don ci-dessus).
+     */
+    private static function seedDefaultTemplate(int $type, string $name): void
+    {
+        global $DB;
+
+        $defaults = self::getDefaultContentFor($type);
+        $DB->insert(self::getTable(), [
+            'entities_id'     => 0,
+            'is_recursive'    => 1,
+            'name'            => $name,
+            'type'            => $type,
+            'content'         => $defaults['content'],
+            'charter_content' => $defaults['charter_content'],
+            'is_default'      => 1,
+            'is_active'       => 1,
+            'date_creation'   => date('Y-m-d H:i:s'),
+        ]);
     }
 }

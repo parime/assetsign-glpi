@@ -20,6 +20,15 @@
     .footer { position: fixed; bottom: -20px; left: 0; right: 0; font-size: 8px; color: #999; text-align: center; }
     .header-logo { text-align: right; margin-bottom: 4px; }
     .header-logo img { max-height: 60px; max-width: 220px; }
+    .damage-pdf-views { margin-top: 6px; font-size: 0; }
+    .damage-pdf-col { display: inline-block; vertical-align: top; width: 31%; margin: 0 3.5% 10px 0; page-break-inside: avoid; font-size: 11px; }
+    .damage-pdf-col:last-child { margin-right: 0; }
+    .damage-pdf-view { position: relative; }
+    .damage-pdf-img { width: 100%; display: block; }
+    .damage-pdf-marker { position: absolute; width: 9px; height: 9px; margin-left: -5px; margin-top: -5px; border-radius: 50%; background: rgba(210, 40, 40, 0.85); border: 1px solid #fff; }
+    .damage-pdf-marker-major { background: rgba(140, 0, 0, 0.9); }
+    .damage-pdf-label { font-size: 9px; color: #555; text-align: center; margin: 4px 0 2px; }
+    .damage-pdf-desc { font-size: 8.5px; color: #333; margin: 0; padding-left: 14px; }
 </style>
 </head>
 <body>
@@ -58,10 +67,46 @@
 </ul>
 {% endif %}
 
+{% if vente_price is not null %}
+<h2>Détails de la vente</h2>
+<table class="info-table">
+    <tr><th>Prix</th><td>{{ vente_price|number_format(2, ',', ' ') }} €</td></tr>
+    <tr><th>Date de vente</th><td>{{ vente_sale_date|default('-') }}</td></tr>
+</table>
+{% endif %}
+
+{% if damage_views|length %}
+<h2>État des lieux visuel</h2>
+<div class="damage-pdf-views">
+{% for view in damage_views %}
+<div class="damage-pdf-col">
+    <div class="damage-pdf-view">
+        <img src="{{ view.image_data_uri }}" class="damage-pdf-img">
+        {% for marker in view.markers %}
+        <div class="damage-pdf-marker{{ marker.severity == 1 ? ' damage-pdf-marker-major' : '' }}"
+             style="left: {{ marker.x_percent }}%; top: {{ marker.y_percent }}%;"></div>
+        {% endfor %}
+    </div>
+    <p class="damage-pdf-label">{{ view.label }}</p>
+    {% set described = view.markers|filter(m => m.description) %}
+    {% if described|length %}
+    <ul class="damage-pdf-desc">
+        {% for marker in described %}
+        <li>{{ marker.description }}{% if marker.severity == 1 %} — majeure{% endif %}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
+{% if include_content %}
 <h2>Conditions générales</h2>
 <div class="legal-text">{{ contract|raw }}</div>
+{% endif %}
 
-{% if charter or charter_url %}
+{% if include_charter and (charter or charter_url) %}
 <h2>Charte informatique</h2>
 {% if charter %}
 <div class="legal-text">{{ charter|raw }}</div>
@@ -69,6 +114,18 @@
 {% if charter_url %}
 <p class="legal-text">Charte informatique complète : <a href="{{ charter_url|e('html_attr') }}">{{ charter_url }}</a></p>
 {% endif %}
+{% endif %}
+
+{% if enable_observations and observations %}
+<h2>Observations</h2>
+{# Pas de |raw ici volontairement : contrairement au contrat/charte (rediges par
+   un administrateur de confiance via l'editeur riche du gabarit), ce champ est
+   saisi librement par n'importe quel technicien ayant le droit de modification
+   sur la fiche — une population moins maitrisee, l'echappement automatique de
+   Twig s'applique donc normalement. "white-space: pre-line" (plutot qu'un
+   filtre nl2br, absent de Twig par defaut) rend les sauts de ligne saisis par
+   l'utilisateur sans avoir a produire du HTML depuis du texte brut. #}
+<p class="legal-text" style="white-space: pre-line;">{{ observations }}</p>
 {% endif %}
 
 <div class="signature-zone">

@@ -11,6 +11,10 @@ use GlpiPlugin\Remise\Config;
 use GlpiPlugin\Remise\Template;
 use GlpiPlugin\Remise\Accessory;
 use GlpiPlugin\Remise\RemiseAccessory;
+use GlpiPlugin\Remise\VenteDetails;
+use GlpiPlugin\Remise\DamageMarker;
+use GlpiPlugin\Remise\Maintenance;
+use GlpiPlugin\Remise\MaintenanceChecklistItem;
 use GlpiPlugin\Remise\Token;
 use GlpiPlugin\Remise\Signature;
 use GlpiPlugin\Remise\Reminder;
@@ -110,8 +114,9 @@ function plugin_remise_dashboard_cards(): array
 function plugin_remise_getDropdown(): array
 {
     return [
-        Template::class  => Template::getTypeName(2),
-        Accessory::class => Accessory::getTypeName(2),
+        Template::class                 => Template::getTypeName(2),
+        Accessory::class                => Accessory::getTypeName(2),
+        MaintenanceChecklistItem::class => MaintenanceChecklistItem::getTypeName(2),
     ];
 }
 
@@ -128,6 +133,10 @@ function plugin_remise_install(): bool
     Accessory::install($migration);
     Remise::install($migration);
     RemiseAccessory::install($migration);
+    VenteDetails::install($migration);
+    DamageMarker::install($migration);
+    MaintenanceChecklistItem::install($migration);
+    Maintenance::install($migration);
     Token::install($migration);
     Signature::install($migration);
     Reminder::install($migration);
@@ -186,7 +195,12 @@ function plugin_remise_uninstall(): bool
         'glpi_plugin_remise_signatures',
         'glpi_plugin_remise_tokens',
         'glpi_plugin_remise_remiseaccessories',
+        'glpi_plugin_remise_ventedetails',
+        'glpi_plugin_remise_damagemarkers',
         'glpi_plugin_remise_remises',
+        'glpi_plugin_remise_maintenancechecklistvalues',
+        'glpi_plugin_remise_maintenances',
+        'glpi_plugin_remise_maintenancechecklistitems',
         'glpi_plugin_remise_accessories',
         'glpi_plugin_remise_templates',
         'glpi_plugin_remise_configs',
