@@ -61,27 +61,39 @@
         updateSubmitState();
     });
 
-    function post(action, extra) {
-        var body = new URLSearchParams(Object.assign({
-            t: window.REMISE_SIGN_TOKEN,
-            action: action,
-            _glpi_csrf_token: window.REMISE_CSRF_TOKEN
-        }, extra || {}));
+    // File d'attente partagee avec damage-annotation.js/le script de la
+    // Remarque (meme jeton CSRF a usage unique, cf. leurs commentaires) :
+    // definie ici de facon idempotente au cas ou ce script se charge en
+    // premier sur la page (c'est le cas sur sign_page.html.twig).
+    window.REMISE_CSRF_QUEUE = window.REMISE_CSRF_QUEUE || Promise.resolve();
+    window.remiseQueuedFetch = window.remiseQueuedFetch || function (url, buildOptions) {
+        var run = function () {
+            return fetch(url, buildOptions()).then(function (res) {
+                var rotated = res.headers.get('X-Remise-Csrf-Token');
+                if (rotated) {
+                    window.REMISE_CSRF_TOKEN = rotated;
+                }
+                return res;
+            });
+        };
+        var next = window.REMISE_CSRF_QUEUE.then(run, run);
+        window.REMISE_CSRF_QUEUE = next.catch(function () {});
+        return next;
+    };
 
-        return fetch(window.location.pathname, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: body.toString()
-        }).then(function (res) {
-            // window.REMISE_CSRF_TOKEN (jeton a usage unique partage avec
-            // damage-annotation.js et le script de la Remarque sur cette meme
-            // page) : capture toute rotation pour un eventuel prochain appel.
-            var rotated = res.headers.get('X-Remise-Csrf-Token');
-            if (rotated) {
-                window.REMISE_CSRF_TOKEN = rotated;
-            }
-            return res.json();
-        });
+    function post(action, extra) {
+        return window.remiseQueuedFetch(window.location.pathname, function () {
+            var body = new URLSearchParams(Object.assign({
+                t: window.REMISE_SIGN_TOKEN,
+                action: action,
+                _glpi_csrf_token: window.REMISE_CSRF_TOKEN
+            }, extra || {}));
+            return {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body.toString()
+            };
+        }).then(function (res) { return res.json(); });
     }
 
     btnSubmit.addEventListener('click', function () {

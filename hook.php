@@ -192,9 +192,6 @@ function plugin_remise_install(): bool
     // version sur disque. Bug reel constate : plugin:install --force + cache:clear
     // manuel avaient tous les deux ete faits mais dans un contexte ou "manuel"
     // signifiait "oublie/mal cible" — l'automatiser ici retire ce risque humain.
-    // Ne dispense PAS de redemarrer PHP-FPM/Apache si OPcache est actif : ce
-    // script tourne en CLI (bin/console), dans un processus distinct de celui
-    // qui sert les vraies requetes web, il ne peut donc pas vider LEUR OPcache.
     (new CacheManager())->resetAllCaches();
 
     return true;
