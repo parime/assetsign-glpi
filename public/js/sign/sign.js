@@ -72,7 +72,16 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: body.toString()
-        }).then(function (res) { return res.json(); });
+        }).then(function (res) {
+            // window.REMISE_CSRF_TOKEN (jeton a usage unique partage avec
+            // damage-annotation.js et le script de la Remarque sur cette meme
+            // page) : capture toute rotation pour un eventuel prochain appel.
+            var rotated = res.headers.get('X-Remise-Csrf-Token');
+            if (rotated) {
+                window.REMISE_CSRF_TOKEN = rotated;
+            }
+            return res.json();
+        });
     }
 
     btnSubmit.addEventListener('click', function () {

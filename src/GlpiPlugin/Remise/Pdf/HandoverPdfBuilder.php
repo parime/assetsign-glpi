@@ -101,12 +101,40 @@ final class HandoverPdfBuilder
                 continue;
             }
             $views[] = [
-                'label'          => $labels[$viewIndex] ?? '',
-                'image_data_uri' => $dataUri,
-                'markers'        => $byView[$viewIndex] ?? [],
+                'label'                => $labels[$viewIndex] ?? '',
+                'image_data_uri'       => $dataUri,
+                'markers'              => $byView[$viewIndex] ?? [],
+                'aspect_ratio_percent' => $this->getDamageViewAspectRatioPercent($filename),
             ];
         }
         return $views;
+    }
+
+    /**
+     * Ratio hauteur/largeur (en %) de la vue de reference, utilise par
+     * handover.html.twig pour donner a .damage-pdf-view une hauteur EXPLICITE
+     * (technique CSS "boite a ratio d'aspect" : height:0 + padding-bottom en %
+     * de la LARGEUR, seule base que Dompdf resout correctement ici). Sans ca,
+     * .damage-pdf-view n'a qu'un position:relative et une hauteur "auto" (celle
+     * de l'image) — Dompdf ne parvient alors pas a etablir une base fiable pour
+     * les top/left en % des reperes (.damage-pdf-marker, eux aussi en position
+     * absolute) : un repere a top:5% s'affiche correctement pres du haut, mais
+     * un repere a top:85% atterrit tres loin en bas de la PAGE entiere, bien
+     * au-dela de la petite image — constate en conditions reelles en comparant
+     * plusieurs reperes a des hauteurs croissantes sur la meme vue, avec des PDF
+     * reellement generes (pas une simple lecture du gabarit).
+     */
+    private function getDamageViewAspectRatioPercent(string $filename): float
+    {
+        $pluginRoot = dirname(__DIR__, 4);
+        $fullpath = $pluginRoot . '/public/images/damage-views/' . $filename;
+
+        $size = @getimagesize($fullpath);
+        if ($size === false || (int) $size[0] <= 0) {
+            return 75.0; // repli (ratio 4:3) si l'image est illisible
+        }
+
+        return ((int) $size[1] / (int) $size[0]) * 100;
     }
 
     private function getDamageViewDataUri(string $filename): ?string
@@ -228,9 +256,10 @@ final class HandoverPdfBuilder
                 continue;
             }
             $views[] = [
-                'label'          => $labels[$index] ?? '',
-                'image_data_uri' => $dataUri,
-                'markers'        => [$sampleMarkers[$index] ?? $sampleMarkers[0]],
+                'label'                => $labels[$index] ?? '',
+                'image_data_uri'       => $dataUri,
+                'markers'              => [$sampleMarkers[$index] ?? $sampleMarkers[0]],
+                'aspect_ratio_percent' => $this->getDamageViewAspectRatioPercent($filename),
             ];
         }
 

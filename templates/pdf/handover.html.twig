@@ -23,8 +23,8 @@
     .damage-pdf-views { margin-top: 6px; font-size: 0; }
     .damage-pdf-col { display: inline-block; vertical-align: top; width: 31%; margin: 0 3.5% 10px 0; page-break-inside: avoid; font-size: 11px; }
     .damage-pdf-col:last-child { margin-right: 0; }
-    .damage-pdf-view { position: relative; }
-    .damage-pdf-img { width: 100%; display: block; }
+    .damage-pdf-view { position: relative; height: 0; overflow: hidden; }
+    .damage-pdf-img { position: absolute; top: 0; left: 0; width: 100%; display: block; }
     .damage-pdf-marker { position: absolute; width: 9px; height: 9px; margin-left: -5px; margin-top: -5px; border-radius: 50%; background: rgba(210, 40, 40, 0.85); border: 1px solid #fff; }
     .damage-pdf-marker-major { background: rgba(140, 0, 0, 0.9); }
     .damage-pdf-label { font-size: 9px; color: #555; text-align: center; margin: 4px 0 2px; }
@@ -80,7 +80,7 @@
 <div class="damage-pdf-views">
 {% for view in damage_views %}
 <div class="damage-pdf-col">
-    <div class="damage-pdf-view">
+    <div class="damage-pdf-view" style="padding-bottom: {{ view.aspect_ratio_percent }}%;">
         <img src="{{ view.image_data_uri }}" class="damage-pdf-img">
         {% for marker in view.markers %}
         <div class="damage-pdf-marker{{ marker.severity == 1 ? ' damage-pdf-marker-major' : '' }}"

@@ -21,6 +21,7 @@ use GlpiPlugin\Remise\Reminder;
 use GlpiPlugin\Remise\Profile;
 use GlpiPlugin\Remise\NotificationTargetRemise;
 use GlpiPlugin\Remise\Dashboard\CardProvider;
+use Glpi\Cache\CacheManager;
 
 // ----------------------------------------------------------------------------------
 // Callbacks de hooks (item_add / item_update / pre_item_purge)
@@ -182,6 +183,19 @@ function plugin_remise_install(): bool
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
+
+    // Vide le cache des gabarits Twig compiles (files/_cache/.../templates/) a
+    // chaque installation/mise a jour du plugin : sans ca, un fichier .twig
+    // modifie continue silencieusement de servir son ancienne version compilee
+    // en production (Glpi\Application\Environment::shouldExpectResourcesToChange()
+    // renvoie false), meme apres un `git pull` reussi et malgre le bon numero de
+    // version sur disque. Bug reel constate : plugin:install --force + cache:clear
+    // manuel avaient tous les deux ete faits mais dans un contexte ou "manuel"
+    // signifiait "oublie/mal cible" — l'automatiser ici retire ce risque humain.
+    // Ne dispense PAS de redemarrer PHP-FPM/Apache si OPcache est actif : ce
+    // script tourne en CLI (bin/console), dans un processus distinct de celui
+    // qui sert les vraies requetes web, il ne peut donc pas vider LEUR OPcache.
+    (new CacheManager())->resetAllCaches();
 
     return true;
 }
