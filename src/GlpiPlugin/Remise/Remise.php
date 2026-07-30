@@ -86,6 +86,26 @@ class Remise extends CommonDBTM
     }
 
     /**
+     * Faux negatif volontaire : CommonDBTM::maybeLocated() se contente de
+     * verifier la PRESENCE d'une colonne locations_id (`array_key_exists
+     * ('locations_id', $this->fields)`), sans se soucier de savoir si cet
+     * itemtype expose reellement une recherche/jointure Location exploitable.
+     * Ce champ existe ici uniquement pour archiver l'emplacement du materiel
+     * au moment de la remise (cf. createRemise()) — jamais recherche ni
+     * affiche. Sans ce correctif, GLPI propose quand meme le bouton "Afficher
+     * sur une carte" sur la liste "Gestion des fiches", qui plante en 500 des
+     * qu'on clique dessus (MySQL query error: Unknown column
+     * `glpi_locations`.`id`) puisqu'aucune jointure vers glpi_locations n'est
+     * configuree. Bug reel signale par un utilisateur reel (clic accidentel
+     * sur ce bouton, reste ensuite bloque en session sur la vue carte pour ce
+     * type tant que le parametre n'est pas force a 0 dans l'URL).
+     */
+    public function maybeLocated()
+    {
+        return false;
+    }
+
+    /**
      * Nommee rawSearchOptions() (pas getSearchOptions(), qui n'existe pas dans
      * l'API de recherche de GLPI 11) : CommonDBTM::searchOptions() — la
      * methode reellement appelee par Search::getOptions() — est declaree
