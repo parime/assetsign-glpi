@@ -32,14 +32,18 @@ class Maintenance extends CommonDBTM
         return 'ti ti-tool';
     }
 
-    public function getSearchOptions(): array
+    // rawSearchOptions() (pas getSearchOptions(), `final` dans CommonDBTM) :
+    // meme correctif que Remise::rawSearchOptions(), meme cause, meme
+    // symptome (liste "Fiches de maintenance" sans colonnes ni en-tetes).
+    public function rawSearchOptions(): array
     {
         return [
-            1 => ['table' => self::getTable(), 'field' => 'id', 'name' => __('ID'), 'datatype' => 'number'],
-            2 => ['table' => self::getTable(), 'field' => 'itemtype', 'name' => __('Type de matériel', 'remise'), 'datatype' => 'itemtype'],
-            3 => ['table' => self::getTable(), 'field' => 'items_id', 'name' => __('Matériel', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => ''],
-            4 => ['table' => 'glpi_users', 'field' => 'name', 'linkfield' => 'users_id_tech', 'name' => __('Technicien', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => 'User'],
-            5 => ['table' => self::getTable(), 'field' => 'date_creation', 'name' => __('Date'), 'datatype' => 'datetime'],
+            ['id' => 'common', 'name' => self::getTypeName(1)],
+            ['id' => 1, 'table' => self::getTable(), 'field' => 'id', 'name' => __('ID'), 'datatype' => 'number'],
+            ['id' => 2, 'table' => self::getTable(), 'field' => 'itemtype', 'name' => __('Type de matériel', 'remise'), 'datatype' => 'itemtype'],
+            ['id' => 3, 'table' => self::getTable(), 'field' => 'items_id', 'name' => __('Matériel', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => ''],
+            ['id' => 4, 'table' => 'glpi_users', 'field' => 'name', 'linkfield' => 'users_id_tech', 'name' => __('Technicien', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => 'User'],
+            ['id' => 5, 'table' => self::getTable(), 'field' => 'date_creation', 'name' => __('Date'), 'datatype' => 'datetime'],
         ];
     }
 

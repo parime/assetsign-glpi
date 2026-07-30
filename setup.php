@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_REMISE_VERSION', '1.7.2');
+define('PLUGIN_REMISE_VERSION', '1.7.3');
 define('PLUGIN_REMISE_MIN_GLPI', '11.0.0');
 define('PLUGIN_REMISE_MAX_GLPI', '11.9.99');
 define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
@@ -129,7 +129,7 @@ function plugin_init_remise(): void
     // "Gestion des fiches" (Search::show(Remise::class), cf. front/remise.php) : vue
     // transverse de toutes les remises/restitutions, tous materiels et beneficiaires
     // confondus, avec telechargement direct des PDF et annulation (cf. Remise::
-    // getSearchOptions()/cancelRequest()) — un onglet par materiel ne suffit plus des
+    // rawSearchOptions()/cancelRequest()) — un onglet par materiel ne suffit plus des
     // qu'il faut suivre l'ensemble des fiches en attente sans savoir a l'avance sur
     // quel materiel chercher.
     // "Fiches de maintenance" (Search::show(Maintenance::class), cf. front/maintenance.php) :
