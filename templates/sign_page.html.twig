@@ -37,6 +37,7 @@
   {% if error %}
     <div class="card error">
       <p>{{ __('Impossible d\'afficher ce document', 'remise') }} : {{ error }}</p>
+      <p><a href="{{ config('root_doc') }}/front/central.php">{{ __('Retour à l\'accueil GLPI', 'remise') }}</a></p>
     </div>
   {% else %}
     <div class="card">
@@ -73,7 +74,8 @@
     sending: {{ __('Envoi en cours…', 'remise')|json_encode|raw }},
     errorPrefix: {{ __('Erreur', 'remise')|json_encode|raw }},
     signedOk: {{ __('Merci, votre signature a bien été enregistrée.', 'remise')|json_encode|raw }},
-    networkError: {{ __('Erreur réseau, merci de réessayer.', 'remise')|json_encode|raw }}
+    networkError: {{ __('Erreur réseau, merci de réessayer.', 'remise')|json_encode|raw }},
+    backToHome: {{ __('Retour à l\'accueil GLPI', 'remise')|json_encode|raw }}
   };
 </script>
 <script src="{{ config('root_doc') }}/plugins/remise/js/sign/sign.js"></script>

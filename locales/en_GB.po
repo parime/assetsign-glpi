@@ -409,3 +409,229 @@ msgid_plural "Gabarits de remise"
 msgstr[0] "Handover template"
 msgstr[1] "Handover templates"
 
+msgid "Champ « Observations » libre sur chaque fiche"
+msgstr "Free-text \"Observations\" field on each form"
+
+msgid "Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n'est pas encore signée."
+msgstr "If enabled, a free-text field becomes available on each handover form (e.g. observed condition of the equipment) and appears on the PDF as long as the form is not yet signed."
+
+msgid "Inclure les conditions générales dans le PDF"
+msgstr "Include the general terms in the PDF"
+
+msgid "Inclure la charte informatique dans le PDF"
+msgstr "Include the IT charter in the PDF"
+
+msgid "Décochez pour ne jamais afficher cette section, y compris le lien vers la charte complète configuré au niveau de l'entité."
+msgstr "Uncheck to never display this section, including the link to the full charter configured at entity level."
+
+msgid "Observations"
+msgstr "Observations"
+
+msgid "Annuler cette demande de signature ?"
+msgstr "Cancel this signature request?"
+
+msgid "Annuler la demande"
+msgstr "Cancel the request"
+
+msgid "Annuler les demandes de signature sélectionnées ? Le lien envoyé au bénéficiaire deviendra invalide."
+msgstr "Cancel the selected signature requests? The link sent to the beneficiary will become invalid."
+
+msgid "Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà annulée)."
+msgstr "This request can no longer be cancelled (already signed, expired, or already cancelled)."
+
+msgid "Annulée automatiquement (matériel réaffecté avant signature)"
+msgstr "Automatically cancelled (equipment reassigned before signature)"
+
+msgid "PDF non signé"
+msgstr "Unsigned PDF"
+
+msgid "PDF signé"
+msgstr "Signed PDF"
+
+msgid "Télécharger (signé)"
+msgstr "Download (signed)"
+
+msgid "Télécharger (non signé)"
+msgstr "Download (unsigned)"
+
+msgid "Demande annulée."
+msgstr "Request cancelled."
+
+msgid "Retour à l'accueil GLPI"
+msgstr "Back to GLPI home"
+
+msgid "Exemple : petite rayure sur le capot, sans gravité."
+msgstr "Example: minor scratch on the lid, not serious."
+
+msgid "Don"
+msgstr "Donation"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Destinataire"
+msgstr "Recipient"
+
+msgid "Créer la fiche"
+msgstr "Create the form"
+
+msgid "Fiche créée."
+msgstr "Form created."
+
+msgid "Autoriser la création de fiches de don de matériel"
+msgstr "Allow creating equipment donation forms"
+
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Remise de chaque matériel géré par le plugin."
+msgstr "Adds a \"Create donation form\" button on the Handover tab of each asset managed by the plugin."
+
+msgid "Vente"
+msgstr "Sale"
+
+msgid "Prix"
+msgstr "Price"
+
+msgid "Date de vente"
+msgstr "Sale date"
+
+msgid "Autoriser la création de fiches de vente de matériel"
+msgstr "Allow creating equipment sale forms"
+
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Remise de chaque matériel géré par le plugin."
+msgstr "Adds a \"Create sale form\" button (with price and date) on the Handover tab of each asset managed by the plugin."
+
+msgid "État des lieux visuel"
+msgstr "Visual damage report"
+
+msgid "État des lieux visuel (annotation de dommages)"
+msgstr "Visual damage report (damage annotation)"
+
+msgid "Permet de repérer des dommages sur 8 vues génériques (avant, arrière, côtés, dessus, dessous, écran, clavier) et de les reporter sur le PDF."
+msgstr "Lets you mark damage on 8 generic views (front, back, sides, top, bottom, screen, keyboard) and report it on the PDF."
+
+msgid "Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner."
+msgstr "Click a view to drop a damage marker; click an existing marker to describe or delete it, drag it to reposition."
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Gravité"
+msgstr "Severity"
+
+msgid "Mineure"
+msgstr "Minor"
+
+msgid "Majeure"
+msgstr "Major"
+
+msgid "Cette fiche ne peut plus être modifiée."
+msgstr "This form can no longer be modified."
+
+msgid "Vue de face — écran ouvert"
+msgstr "Front view — screen open"
+
+msgid "Vue arrière — capot fermé"
+msgstr "Back view — lid closed"
+
+msgid "Côté gauche"
+msgstr "Left side"
+
+msgid "Côté droit"
+msgstr "Right side"
+
+msgid "Dessus — clavier"
+msgstr "Top — keyboard"
+
+msgid "Dessous"
+msgstr "Bottom"
+
+msgid "Écran (dalle)"
+msgstr "Screen (panel)"
+
+msgid "Clavier et pavé tactile"
+msgstr "Keyboard and trackpad"
+
+msgid "Fiche de maintenance"
+msgid_plural "Fiches de maintenance"
+msgstr[0] "Maintenance form"
+msgstr[1] "Maintenance forms"
+
+msgid "Point de contrôle de maintenance"
+msgid_plural "Points de contrôle de maintenance"
+msgstr[0] "Maintenance checklist item"
+msgstr[1] "Maintenance checklist items"
+
+msgid "Maintenance"
+msgstr "Maintenance"
+
+msgid "Aucune fiche de maintenance enregistrée pour ce matériel."
+msgstr "No maintenance form recorded for this asset."
+
+msgid "Nouvelle fiche de maintenance"
+msgstr "New maintenance form"
+
+msgid "Aucun point de contrôle configuré (Configuration > Intitulés > Points de contrôle de maintenance)."
+msgstr "No checklist item configured (Setup > Dropdowns > Maintenance checklist items)."
+
+msgid "Points de contrôle validés"
+msgstr "Checked items"
+
+msgid "Aucun point de contrôle validé."
+msgstr "No item checked."
+
+msgid "Fiche de maintenance créée."
+msgstr "Maintenance form created."
+
+msgid "État(s) déclenchant un don"
+msgstr "State(s) triggering a donation"
+
+msgid "État(s) déclenchant une vente"
+msgstr "State(s) triggering a sale"
+
+msgid "Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée."
+msgstr "The price and date are not known automatically: to be filled in afterwards on the created form."
+
+msgid "Détails de la vente"
+msgstr "Sale details"
+
+msgid "Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF ne mentionne pas encore la vente tant que ce prix n'est pas saisi."
+msgstr "No price entered yet (form created automatically): the PDF does not mention the sale until this price is entered."
+
+msgid "+ Nouveau gabarit"
+msgstr "+ New template"
+
+msgid "Compléments"
+msgstr "Extras"
+
+msgid "Gérer les gabarits de ce type"
+msgstr "Manage templates for this type"
+
+msgid "Gérer les points de contrôle"
+msgstr "Manage checklist items"
+
+msgid "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types."
+msgstr "Optional: URL to an existing document or page (intranet, PDF already online...). If set, a clickable link appears on the PDF, in addition to the charter text set in the template — shared by all types."
+
+msgid "Réglages transverses, applicables à tous les types de fiche signée."
+msgstr "Cross-cutting settings, applicable to all signed form types."
+
+msgid "Voir les fiches de maintenance"
+msgstr "View maintenance forms"
+
+msgid "La fiche de maintenance est un sous-système séparé (pas de signature, pas de bénéficiaire) : rien à activer ici, l'accès se gère par le droit dédié (Administration > Profils)."
+msgstr "The maintenance form is a separate subsystem (no signature, no beneficiary): nothing to enable here, access is managed through its dedicated right (Administration > Profiles)."
+
+msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d'onglet, avant même d'enregistrer."
+msgstr "Example with fictional data, same Twig templates as the real PDF. The preview updates automatically as soon as you change a setting or switch tabs, even before saving."
+
+msgid "Exemple avec des données fictives. L'aperçu se met à jour automatiquement dès que vous modifiez le texte ou une case à cocher, avant même d'enregistrer."
+msgstr "Example with fictional data. The preview updates automatically as soon as you change the text or a checkbox, even before saving."
+
+
+msgid "Choisissez d'abord un type de matériel ci-dessus."
+msgstr "First choose an asset type above."
+
+msgid "Exemple : touche cassée."
+msgstr "Example: broken key."
+
+msgid "Exemple : pied manquant."
+msgstr "Example: missing foot."

@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_REMISE_VERSION', '1.0.6');
+define('PLUGIN_REMISE_VERSION', '1.6.0');
 define('PLUGIN_REMISE_MIN_GLPI', '11.0.0');
 define('PLUGIN_REMISE_MAX_GLPI', '11.9.99');
 define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
@@ -29,6 +29,16 @@ function plugin_init_remise(): void
     global $PLUGIN_HOOKS;
 
     $PLUGIN_HOOKS[Hooks::CSRF_COMPLIANT]['remise'] = true;
+
+    // --- Types de fiche geres par le plugin ------------------------------------------
+    // Enregistres a chaque requete (comme le reste de cette fonction) : ajouter un
+    // futur type (Don, Vente...) se fera ici, sans toucher a Remise.php/Template.php/
+    // HandoverPdfBuilder qui consultent tous le registre (voir
+    // GlpiPlugin\Remise\Workflow\WorkflowTypeRegistry).
+    \GlpiPlugin\Remise\Workflow\WorkflowTypeRegistry::register(new \GlpiPlugin\Remise\Workflow\HandoverType());
+    \GlpiPlugin\Remise\Workflow\WorkflowTypeRegistry::register(new \GlpiPlugin\Remise\Workflow\ReturnType());
+    \GlpiPlugin\Remise\Workflow\WorkflowTypeRegistry::register(new \GlpiPlugin\Remise\Workflow\DonType());
+    \GlpiPlugin\Remise\Workflow\WorkflowTypeRegistry::register(new \GlpiPlugin\Remise\Workflow\VenteType());
 
     // --- Declenchement du workflow : affectation / restitution / echange -------------
     // Types geres en dur (Computer, Monitor, Peripheral, Phone) + tous les actifs
@@ -75,9 +85,18 @@ function plugin_init_remise(): void
         'addtabon' => ['Entity'],
     ]);
     Plugin::registerClass(\GlpiPlugin\Remise\Template::class);
-    // Accessory est un CommonDropdown standard : aucun attribut de registerClass
-    // requis, son comportement de liste deroulante vient de sa classe parente.
+    // Accessory/MaintenanceChecklistItem sont des CommonDropdown standards :
+    // aucun attribut de registerClass requis, leur comportement de liste
+    // deroulante vient de leur classe parente.
     Plugin::registerClass(\GlpiPlugin\Remise\Accessory::class);
+    Plugin::registerClass(\GlpiPlugin\Remise\MaintenanceChecklistItem::class);
+    // Maintenance : sous-systeme volontairement separe du moteur Remise (cf.
+    // Maintenance.php) — possede neanmoins son propre onglet sur les memes
+    // materiels geres, comme Remise, pour rester decouvrable depuis la fiche
+    // du materiel en plus de son propre menu (ci-dessous).
+    Plugin::registerClass(\GlpiPlugin\Remise\Maintenance::class, [
+        'addtabon' => $manageableItemtypes,
+    ]);
 
     // --- Notifications ------------------------------------------------------------
     // Rien a enregistrer explicitement : pour un itemtype namespace (GlpiPlugin\Remise\Remise),
@@ -96,15 +115,26 @@ function plugin_init_remise(): void
     // hook "auto", le nom de fonction est resolu par convention).
 
     // --- Menu d'administration --------------------------------------------------------
-    // Aucune entree de menu laterale pour ce plugin : chaque destination a deja un
-    // acces plus direct et plus decouvrable —
-    //   - Remise (liste des feuilles de remise) : onglet sur chaque materiel geré
-    //     (Computer/Monitor/Peripheral/Phone) + liens directs depuis les widgets de
-    //     tableau de bord (Hooks::DASHBOARD_CARDS ci-dessus) ;
+    // "Gestion des fiches" (Search::show(Remise::class), cf. front/remise.php) : vue
+    // transverse de toutes les remises/restitutions, tous materiels et beneficiaires
+    // confondus, avec telechargement direct des PDF et annulation (cf. Remise::
+    // getSearchOptions()/cancelRequest()) — un onglet par materiel ne suffit plus des
+    // qu'il faut suivre l'ensemble des fiches en attente sans savoir a l'avance sur
+    // quel materiel chercher.
+    // "Fiches de maintenance" (Search::show(Maintenance::class), cf. front/maintenance.php) :
+    // volontairement une entree de menu SEPAREE de "Gestion des fiches" (pas fusionnee),
+    // le sous-systeme de maintenance etant lui-meme structurellement independant du
+    // moteur de fiches signees (cf. Maintenance.php) — un tableau melant les deux
+    // brouillerait deux notions de statut/cycle de vie totalement differentes.
     //   - Config : icone "Configurer" + nom cliquable sur la ligne du plugin dans
     //     Configuration > Plugins (Hooks::CONFIG_PAGE plus haut) ;
-    //   - Template : page Configuration > Intitulés (ci-dessus).
-    // Pas d'entree Hooks::MENU_TOADD ⇒ le plugin n'ajoute plus rien a la barre laterale.
+    //   - Template/Points de controle de maintenance : page Configuration > Intitulés (ci-dessus).
+    // Format attendu par le coeur GLPI : une LISTE PLATE de classes par categorie
+    // (pas le format documente ['types'=>[...],'icon'=>'...']) — cf. README, section
+    // Notes techniques, piege deja rencontre et documente.
+    $PLUGIN_HOOKS[Hooks::MENU_TOADD]['remise'] = [
+        'tools' => [\GlpiPlugin\Remise\Remise::class, \GlpiPlugin\Remise\Maintenance::class],
+    ];
 
     if (Plugin::isPluginActive('remise')) {
         $PLUGIN_HOOKS['add_css']['remise'] = ['css/remise.css'];

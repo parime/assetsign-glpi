@@ -1,0 +1,12 @@
+<?php
+
+use GlpiPlugin\Remise\Maintenance;
+
+Session::checkRight(Maintenance::$rightname, READ);
+
+Html::header(Maintenance::getTypeName(2), $_SERVER['PHP_SELF'], 'admin', Maintenance::class);
+
+Maintenance::showCreateForm();
+Search::show(Maintenance::class);
+
+Html::footer();

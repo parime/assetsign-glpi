@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-body">
+    <h2>{{ _n('Fiche de maintenance', 'Fiches de maintenance', 1, 'remise') }} #{{ item.fields.id }}</h2>
+
+    <table class="table table-striped">
+      <tr>
+        <th>{{ __('Matériel', 'remise') }}</th>
+        <td>{{ item.fields.itemtype }} #{{ item.fields.items_id }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Date', 'remise') }}</th>
+        <td>{{ item.fields.date_creation }}</td>
+      </tr>
+    </table>
+
+    <h3 class="mt-4">{{ __('Points de contrôle validés', 'remise') }}</h3>
+    {% if checked_names|length %}
+      <ul>
+        {% for name in checked_names %}
+          <li>{{ name }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">{{ __('Aucun point de contrôle validé.', 'remise') }}</p>
+    {% endif %}
+
+    <h3 class="mt-4">{{ __('Commentaire', 'remise') }}</h3>
+    <p style="white-space: pre-line;">{{ item.fields.comment|default('') }}</p>
+  </div>
+</div>

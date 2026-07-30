@@ -11,11 +11,17 @@ use Migration;
  */
 class Profile
 {
-    public const RIGHT_REMISE   = 'plugin_remise_remise';
-    public const RIGHT_CONFIG   = 'plugin_remise_config';
-    public const RIGHT_TEMPLATE = 'plugin_remise_template';
+    public const RIGHT_REMISE      = 'plugin_remise_remise';
+    public const RIGHT_CONFIG      = 'plugin_remise_config';
+    public const RIGHT_TEMPLATE    = 'plugin_remise_template';
+    // Droit dedie (pas RIGHT_REMISE) : la fiche de maintenance est un sous-systeme
+    // structurellement separe du moteur de fiches signees (pas de bureaucratie
+    // partagee, cycle de vie totalement different — cf. Maintenance.php), une
+    // organisation peut vouloir l'ouvrir a des techniciens qui n'ont pas acces
+    // aux remises/signatures.
+    public const RIGHT_MAINTENANCE = 'plugin_remise_maintenance';
 
-    private const ALL_RIGHTS = [self::RIGHT_REMISE, self::RIGHT_CONFIG, self::RIGHT_TEMPLATE];
+    private const ALL_RIGHTS = [self::RIGHT_REMISE, self::RIGHT_CONFIG, self::RIGHT_TEMPLATE, self::RIGHT_MAINTENANCE];
 
     public static function install(Migration $migration): void
     {

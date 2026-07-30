@@ -1,0 +1,54 @@
+<div class="card">
+  <div class="card-body">
+    {% if maintenances|length == 0 %}
+      <p>{{ __('Aucune fiche de maintenance enregistrée pour ce matériel.', 'remise') }}</p>
+    {% else %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>{{ __('Date', 'remise') }}</th>
+            <th>{{ __('Commentaire', 'remise') }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in maintenances %}
+          <tr>
+            <td>{{ m.date_creation }}</td>
+            <td>{{ m.comment|default('')|slice(0, 80) }}</td>
+            <td><a href="{{ config('root_doc') }}/plugins/remise/front/maintenance.form.php?id={{ m.id }}">{{ __('Voir', 'remise') }}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+
+    {% if can_create %}
+      <hr>
+      <h3>{{ __('Nouvelle fiche de maintenance', 'remise') }}</h3>
+      <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/maintenance.form.php">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="itemtype" value="{{ item.getType() }}">
+        <input type="hidden" name="items_id" value="{{ item.getID() }}">
+
+        {% if checklist_items|length == 0 %}
+          <p class="text-muted">{{ __('Aucun point de contrôle configuré (Configuration > Intitulés > Points de contrôle de maintenance).', 'remise') }}</p>
+        {% else %}
+          {% for id, label in checklist_items %}
+            <div class="form-check">
+              <input type="checkbox" name="checklist[]" value="{{ id }}" class="form-check-input" id="checklist_{{ id }}">
+              <label class="form-check-label" for="checklist_{{ id }}">{{ label }}</label>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <div class="mb-2 mt-2">
+          <label class="form-label">{{ __('Commentaire', 'remise') }}</label>
+          <textarea name="comment" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" name="create" class="btn btn-secondary">{{ __('Créer la fiche', 'remise') }}</button>
+      </form>
+    {% endif %}
+  </div>
+</div>

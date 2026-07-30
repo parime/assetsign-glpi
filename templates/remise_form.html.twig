@@ -33,13 +33,22 @@
       </tr>
     </table>
 
-    {% if can_remind %}
-      <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/remise.form.php">
-        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
-        <input type="hidden" name="id" value="{{ item.fields.id }}">
-        <button type="submit" name="relance" class="btn btn-primary">{{ __('Relancer maintenant', 'remise') }}</button>
-      </form>
-    {% endif %}
+    <div class="d-flex gap-2">
+      {% if can_remind %}
+        <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/remise.form.php">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <button type="submit" name="relance" class="btn btn-primary">{{ __('Relancer maintenant', 'remise') }}</button>
+        </form>
+      {% endif %}
+      {% if can_edit_accessories %}
+        <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/remise.form.php">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <button type="submit" name="cancel_request" class="btn btn-outline-danger" onclick="return confirm('{{ __('Annuler cette demande de signature ?', 'remise')|e('js') }}');">{{ __('Annuler la demande', 'remise') }}</button>
+        </form>
+      {% endif %}
+    </div>
 
     {% if signature_proof %}
       <h3 class="mt-4">{{ __('Preuve de signature', 'remise') }}</h3>
@@ -66,6 +75,80 @@
         </tr>
       </table>
       <p class="text-muted small">{{ __('Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n\'a pas été modifié depuis (l\'empreinte ci-dessus doit correspondre à celle du fichier).', 'remise') }}</p>
+    {% endif %}
+
+    {% if item.fields.type == type_vente %}
+      <h3 class="mt-4">{{ __('Détails de la vente', 'remise') }}</h3>
+      {% if vente_details is null %}
+        <p class="text-muted small">{{ __('Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF ne mentionne pas encore la vente tant que ce prix n\'est pas saisi.', 'remise') }}</p>
+      {% endif %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/remise.form.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Prix', 'remise') }}</label>
+          <input type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;" value="{{ vente_details.fields.price|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
+        </div>
+        <div class="col-auto">
+          <label class="form-label">{{ __('Date de vente', 'remise') }}</label>
+          <input type="date" name="sale_date" class="form-control" value="{{ vente_details.fields.sale_date|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
+        </div>
+        {% if can_edit_vente_details %}
+          <div class="col-auto">
+            <button type="submit" name="update_vente_details" class="btn btn-secondary btn-sm">{{ __('Enregistrer', 'remise') }}</button>
+          </div>
+        {% endif %}
+      </form>
+    {% endif %}
+
+    {% if observations_enabled %}
+      <h3 class="mt-4">{{ __('Observations', 'remise') }}</h3>
+      <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/remise.form.php">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="mb-2">
+          <textarea name="observations" class="form-control" rows="3" {{ can_edit_accessories ? '' : 'readonly' }}>{{ item.fields.observations|default('') }}</textarea>
+        </div>
+        {% if can_edit_accessories %}
+          <button type="submit" name="update_observations" class="btn btn-secondary btn-sm">{{ __('Enregistrer', 'remise') }}</button>
+        {% endif %}
+      </form>
+    {% endif %}
+
+    {% if damage_annotation_enabled %}
+      <h3 class="mt-4">{{ __('État des lieux visuel', 'remise') }}</h3>
+      <p class="text-muted small">{{ __('Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner.', 'remise') }}</p>
+      <div class="damage-view-grid">
+        {% for index, label in damage_views %}
+          <div>
+            <div class="damage-view" data-remise-id="{{ item.fields.id }}" data-view-index="{{ index }}" data-editable="{{ can_edit_damage_markers ? '1' : '0' }}">
+              <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/remise/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
+              {% for marker in damage_markers_by_view[index]|default([]) %}
+                <div class="damage-marker{{ marker.severity == 1 ? ' damage-marker-major' : '' }}"
+                     data-id="{{ marker.id }}"
+                     style="left: {{ marker.x_percent }}%; top: {{ marker.y_percent }}%;"
+                     title="{{ marker.description|default('') }}"></div>
+              {% endfor %}
+            </div>
+            <div class="damage-view-label">{{ label }}</div>
+          </div>
+        {% endfor %}
+      </div>
+      {% if can_edit_damage_markers %}
+        <script>
+          window.REMISE_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
+          window.REMISE_DAMAGE_CSRF = {{ csrf_token|json_encode|raw }};
+          window.REMISE_DAMAGE_I18N = {
+            description: {{ __('Description', 'remise')|json_encode|raw }},
+            severity: {{ __('Gravité', 'remise')|json_encode|raw }},
+            minor: {{ __('Mineure', 'remise')|json_encode|raw }},
+            major: {{ __('Majeure', 'remise')|json_encode|raw }},
+            save: {{ __('Enregistrer', 'remise')|json_encode|raw }},
+            deleteLabel: {{ __('Supprimer', 'remise')|json_encode|raw }}
+          };
+        </script>
+        <script src="{{ config('root_doc') }}/plugins/remise/js/sign/damage-annotation.js"></script>
+      {% endif %}
     {% endif %}
 
     <h3 class="mt-4">{{ __('Accessoires remis', 'remise') }}</h3>

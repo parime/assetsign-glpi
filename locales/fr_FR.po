@@ -409,3 +409,229 @@ msgid_plural "Gabarits de remise"
 msgstr[0] "Gabarit de remise"
 msgstr[1] "Gabarits de remise"
 
+msgid "Champ « Observations » libre sur chaque fiche"
+msgstr "Champ « Observations » libre sur chaque fiche"
+
+msgid "Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n'est pas encore signée."
+msgstr "Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n'est pas encore signée."
+
+msgid "Inclure les conditions générales dans le PDF"
+msgstr "Inclure les conditions générales dans le PDF"
+
+msgid "Inclure la charte informatique dans le PDF"
+msgstr "Inclure la charte informatique dans le PDF"
+
+msgid "Décochez pour ne jamais afficher cette section, y compris le lien vers la charte complète configuré au niveau de l'entité."
+msgstr "Décochez pour ne jamais afficher cette section, y compris le lien vers la charte complète configuré au niveau de l'entité."
+
+msgid "Observations"
+msgstr "Observations"
+
+msgid "Annuler cette demande de signature ?"
+msgstr "Annuler cette demande de signature ?"
+
+msgid "Annuler la demande"
+msgstr "Annuler la demande"
+
+msgid "Annuler les demandes de signature sélectionnées ? Le lien envoyé au bénéficiaire deviendra invalide."
+msgstr "Annuler les demandes de signature sélectionnées ? Le lien envoyé au bénéficiaire deviendra invalide."
+
+msgid "Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà annulée)."
+msgstr "Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà annulée)."
+
+msgid "Annulée automatiquement (matériel réaffecté avant signature)"
+msgstr "Annulée automatiquement (matériel réaffecté avant signature)"
+
+msgid "PDF non signé"
+msgstr "PDF non signé"
+
+msgid "PDF signé"
+msgstr "PDF signé"
+
+msgid "Télécharger (signé)"
+msgstr "Télécharger (signé)"
+
+msgid "Télécharger (non signé)"
+msgstr "Télécharger (non signé)"
+
+msgid "Demande annulée."
+msgstr "Demande annulée."
+
+msgid "Retour à l'accueil GLPI"
+msgstr "Retour à l'accueil GLPI"
+
+msgid "Exemple : petite rayure sur le capot, sans gravité."
+msgstr "Exemple : petite rayure sur le capot, sans gravité."
+
+msgid "Don"
+msgstr "Don"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Destinataire"
+msgstr "Destinataire"
+
+msgid "Créer la fiche"
+msgstr "Créer la fiche"
+
+msgid "Fiche créée."
+msgstr "Fiche créée."
+
+msgid "Autoriser la création de fiches de don de matériel"
+msgstr "Autoriser la création de fiches de don de matériel"
+
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Remise de chaque matériel géré par le plugin."
+msgstr "Ajoute un bouton « Créer une fiche de don » sur l'onglet Remise de chaque matériel géré par le plugin."
+
+msgid "Vente"
+msgstr "Vente"
+
+msgid "Prix"
+msgstr "Prix"
+
+msgid "Date de vente"
+msgstr "Date de vente"
+
+msgid "Autoriser la création de fiches de vente de matériel"
+msgstr "Autoriser la création de fiches de vente de matériel"
+
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Remise de chaque matériel géré par le plugin."
+msgstr "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Remise de chaque matériel géré par le plugin."
+
+msgid "État des lieux visuel"
+msgstr "État des lieux visuel"
+
+msgid "État des lieux visuel (annotation de dommages)"
+msgstr "État des lieux visuel (annotation de dommages)"
+
+msgid "Permet de repérer des dommages sur 8 vues génériques (avant, arrière, côtés, dessus, dessous, écran, clavier) et de les reporter sur le PDF."
+msgstr "Permet de repérer des dommages sur 8 vues génériques (avant, arrière, côtés, dessus, dessous, écran, clavier) et de les reporter sur le PDF."
+
+msgid "Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner."
+msgstr "Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner."
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Gravité"
+msgstr "Gravité"
+
+msgid "Mineure"
+msgstr "Mineure"
+
+msgid "Majeure"
+msgstr "Majeure"
+
+msgid "Cette fiche ne peut plus être modifiée."
+msgstr "Cette fiche ne peut plus être modifiée."
+
+msgid "Vue de face — écran ouvert"
+msgstr "Vue de face — écran ouvert"
+
+msgid "Vue arrière — capot fermé"
+msgstr "Vue arrière — capot fermé"
+
+msgid "Côté gauche"
+msgstr "Côté gauche"
+
+msgid "Côté droit"
+msgstr "Côté droit"
+
+msgid "Dessus — clavier"
+msgstr "Dessus — clavier"
+
+msgid "Dessous"
+msgstr "Dessous"
+
+msgid "Écran (dalle)"
+msgstr "Écran (dalle)"
+
+msgid "Clavier et pavé tactile"
+msgstr "Clavier et pavé tactile"
+
+msgid "Fiche de maintenance"
+msgid_plural "Fiches de maintenance"
+msgstr[0] "Fiche de maintenance"
+msgstr[1] "Fiches de maintenance"
+
+msgid "Point de contrôle de maintenance"
+msgid_plural "Points de contrôle de maintenance"
+msgstr[0] "Point de contrôle de maintenance"
+msgstr[1] "Points de contrôle de maintenance"
+
+msgid "Maintenance"
+msgstr "Maintenance"
+
+msgid "Aucune fiche de maintenance enregistrée pour ce matériel."
+msgstr "Aucune fiche de maintenance enregistrée pour ce matériel."
+
+msgid "Nouvelle fiche de maintenance"
+msgstr "Nouvelle fiche de maintenance"
+
+msgid "Aucun point de contrôle configuré (Configuration > Intitulés > Points de contrôle de maintenance)."
+msgstr "Aucun point de contrôle configuré (Configuration > Intitulés > Points de contrôle de maintenance)."
+
+msgid "Points de contrôle validés"
+msgstr "Points de contrôle validés"
+
+msgid "Aucun point de contrôle validé."
+msgstr "Aucun point de contrôle validé."
+
+msgid "Fiche de maintenance créée."
+msgstr "Fiche de maintenance créée."
+
+msgid "État(s) déclenchant un don"
+msgstr "État(s) déclenchant un don"
+
+msgid "État(s) déclenchant une vente"
+msgstr "État(s) déclenchant une vente"
+
+msgid "Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée."
+msgstr "Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée."
+
+msgid "Détails de la vente"
+msgstr "Détails de la vente"
+
+msgid "Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF ne mentionne pas encore la vente tant que ce prix n'est pas saisi."
+msgstr "Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF ne mentionne pas encore la vente tant que ce prix n'est pas saisi."
+
+msgid "+ Nouveau gabarit"
+msgstr "+ Nouveau gabarit"
+
+msgid "Compléments"
+msgstr "Compléments"
+
+msgid "Gérer les gabarits de ce type"
+msgstr "Gérer les gabarits de ce type"
+
+msgid "Gérer les points de contrôle"
+msgstr "Gérer les points de contrôle"
+
+msgid "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types."
+msgstr "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types."
+
+msgid "Réglages transverses, applicables à tous les types de fiche signée."
+msgstr "Réglages transverses, applicables à tous les types de fiche signée."
+
+msgid "Voir les fiches de maintenance"
+msgstr "Voir les fiches de maintenance"
+
+msgid "La fiche de maintenance est un sous-système séparé (pas de signature, pas de bénéficiaire) : rien à activer ici, l'accès se gère par le droit dédié (Administration > Profils)."
+msgstr "La fiche de maintenance est un sous-système séparé (pas de signature, pas de bénéficiaire) : rien à activer ici, l'accès se gère par le droit dédié (Administration > Profils)."
+
+msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d'onglet, avant même d'enregistrer."
+msgstr "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d'onglet, avant même d'enregistrer."
+
+msgid "Exemple avec des données fictives. L'aperçu se met à jour automatiquement dès que vous modifiez le texte ou une case à cocher, avant même d'enregistrer."
+msgstr "Exemple avec des données fictives. L'aperçu se met à jour automatiquement dès que vous modifiez le texte ou une case à cocher, avant même d'enregistrer."
+
+msgid "Choisissez d'abord un type de matériel ci-dessus."
+msgstr "Choisissez d'abord un type de matériel ci-dessus."
+
+
+msgid "Exemple : touche cassée."
+msgstr "Exemple : touche cassée."
+
+msgid "Exemple : pied manquant."
+msgstr "Exemple : pied manquant."

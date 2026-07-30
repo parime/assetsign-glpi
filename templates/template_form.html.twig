@@ -1,9 +1,12 @@
 {% import 'components/form/fields_macros.html.twig' as fields %}
+<div class="row flex-nowrap align-items-start" style="gap: 1rem;">
+<div class="col" style="min-width: 320px;">
 <div class="card">
   <div class="card-body">
-    <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/template.form.php">
+    <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/template.form.php" id="remise-template-form" data-remise-preview-frame="remise-template-preview-frame">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="id" value="{{ item.fields.id|default(0) }}">
+      <input type="hidden" name="entities_id" value="{{ item.fields.entities_id|default(0) }}">
 
       <div class="mb-3">
         <label class="form-label">{{ __('Nom du gabarit', 'remise') }}</label>
@@ -19,6 +22,11 @@
         </select>
       </div>
 
+      <div class="mb-3 form-check">
+        <input type="hidden" name="include_content" value="0">
+        <input type="checkbox" name="include_content" value="1" class="form-check-input" id="include_content" {{ item.fields.include_content|default(1) ? 'checked' : '' }}>
+        <label class="form-check-label" for="include_content">{{ __('Inclure les conditions générales dans le PDF', 'remise') }}</label>
+      </div>
       <div class="mb-3">
         {{ fields.textareaField('content', item.fields.content|default(default_content.content), __('Conditions générales (contrat)', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
         {% if not (item.fields.id is defined and item.fields.id) %}
@@ -26,6 +34,12 @@
         {% endif %}
       </div>
 
+      <div class="mb-3 form-check">
+        <input type="hidden" name="include_charter" value="0">
+        <input type="checkbox" name="include_charter" value="1" class="form-check-input" id="include_charter" {{ item.fields.include_charter|default(1) ? 'checked' : '' }}>
+        <label class="form-check-label" for="include_charter">{{ __('Inclure la charte informatique dans le PDF', 'remise') }}</label>
+        <div class="form-text">{{ __('Décochez pour ne jamais afficher cette section, y compris le lien vers la charte complète configuré au niveau de l\'entité.', 'remise') }}</div>
+      </div>
       <div class="mb-3">
         {{ fields.textareaField('charter_content', item.fields.charter_content|default(default_content.charter_content), __('Charte informatique', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
         <div class="form-text">{{ __('Utilisez le bouton "lien" de la barre d\'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici.', 'remise') }}</div>
@@ -54,3 +68,20 @@
     </form>
   </div>
 </div>
+</div>
+
+<div class="col" style="max-width: 420px; position: sticky; top: 1rem;">
+  <div class="card">
+    <div class="card-header">{{ __('Aperçu de la fiche générée', 'remise') }}</div>
+    <div class="card-body p-2">
+      <p class="text-muted small px-1">{{ __('Exemple avec des données fictives. L\'aperçu se met à jour automatiquement dès que vous modifiez le texte ou une case à cocher, avant même d\'enregistrer.', 'remise') }}</p>
+      <iframe id="remise-template-preview-frame" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+  window.REMISE_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
+</script>
+<script src="{{ config('root_doc') }}/plugins/remise/js/sign/live-preview.js"></script>
