@@ -31,6 +31,10 @@ if (isset($_POST['add'])) {
         (int) ($_POST['severity'] ?? DamageMarker::SEVERITY_MINOR)
     );
 
+    if ($id > 0) {
+        $remise->refreshDamageAnnotationPdf();
+    }
+
     echo json_encode(['success' => $id > 0, 'id' => $id]);
     exit;
 }
@@ -49,12 +53,18 @@ if (isset($_POST['update'])) {
     }
 
     $success = DamageMarker::updateMarker((int) ($_POST['id'] ?? 0), $remisesId, $changes);
+    if ($success) {
+        $remise->refreshDamageAnnotationPdf();
+    }
     echo json_encode(['success' => $success]);
     exit;
 }
 
 if (isset($_POST['delete'])) {
     $success = DamageMarker::deleteMarker((int) ($_POST['id'] ?? 0), $remisesId);
+    if ($success) {
+        $remise->refreshDamageAnnotationPdf();
+    }
     echo json_encode(['success' => $success]);
     exit;
 }

@@ -992,6 +992,24 @@ class Remise extends CommonDBTM
     }
 
     /**
+     * Regenere le PDF non signe apres ajout/modification/suppression d'un
+     * repere d'etat des lieux visuel (DamageMarker). Les reperes sont geres
+     * directement par front/damagemarker.php (pas par des methodes dediees
+     * sur Remise, contrairement aux accessoires/observations/details de
+     * vente) : ce point d'entree public lui permet de declencher la meme
+     * regeneration qu'addAccessory()/updateObservations() sans exposer
+     * regenerateUnsignedPdf() elle-meme. Sans effet si la remise n'est plus
+     * editable. **Bug reel corrige** : sans cet appel, un repere ajoute par
+     * un technicien apres la creation de la remise n'apparaissait jamais
+     * sur le vrai PDF (contrairement a l'apercu, qui re-rend a chaque appel)
+     * — constate en conditions reelles par un premier usage humain.
+     */
+    public function refreshDamageAnnotationPdf(): void
+    {
+        $this->regenerateUnsignedPdf();
+    }
+
+    /**
      * Reconstruit le PDF non signe (nouveau Document, l'ancien est purge) a
      * partir de l'etat courant de la remise. Utilise apres toute modification
      * des accessoires ; n'a aucun effet sur une remise deja signee.

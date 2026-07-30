@@ -6,7 +6,7 @@ use GlpiPlugin\Remise\Remise;
 
 final class HandoverType implements WorkflowTypeInterface
 {
-    private const DEFAULT_CONTENT = '<p>Je soussigné(e) reconnais avoir reçu le matériel décrit ci-dessus, en bon état de fonctionnement, '
+    private const DEFAULT_CONTENT = '<p>Je reconnais avoir reçu le matériel décrit ci-dessus, en bon état de fonctionnement, '
         . 'et m\'engage à en assurer la garde, l\'usage raisonnable et la restitution en cas de départ ou de demande '
         . 'de l\'équipe informatique.</p>';
 

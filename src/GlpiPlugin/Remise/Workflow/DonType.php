@@ -12,7 +12,7 @@ use GlpiPlugin\Remise\Remise;
  */
 final class DonType implements WorkflowTypeInterface
 {
-    private const DEFAULT_CONTENT = '<p>Je soussigné(e) reconnais avoir reçu, à titre gratuit, le matériel décrit ci-dessus, '
+    private const DEFAULT_CONTENT = '<p>Je reconnais avoir reçu, à titre gratuit, le matériel décrit ci-dessus, '
         . 'sans garantie ni contrepartie de la part de l\'organisation qui me le remet.</p>';
 
     public function getId(): int

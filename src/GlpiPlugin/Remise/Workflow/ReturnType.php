@@ -6,7 +6,7 @@ use GlpiPlugin\Remise\Remise;
 
 final class ReturnType implements WorkflowTypeInterface
 {
-    private const DEFAULT_CONTENT = '<p>Je soussigné(e) atteste avoir restitué le matériel décrit ci-dessus au service informatique.</p>';
+    private const DEFAULT_CONTENT = '<p>Je reconnais avoir restitué le matériel décrit ci-dessus au service informatique.</p>';
 
     public function getId(): int
     {
