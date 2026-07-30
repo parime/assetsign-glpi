@@ -58,6 +58,7 @@ final class HandoverPdfBuilder
             'charter_url'         => $config->fields['charter_url'] ?: null,
             'enable_observations' => (bool) $config->fields['enable_observations'],
             'observations'        => $remise->fields['observations'] ?? '',
+            'beneficiary_comment' => $remise->fields['beneficiary_comment'] ?? '',
             'vente_price'         => $venteDetails?->fields['price'] ?? null,
             'vente_sale_date'     => $venteDetails?->fields['sale_date'] ?? null,
             'damage_views'        => (bool) $config->fields['enable_damage_annotation']

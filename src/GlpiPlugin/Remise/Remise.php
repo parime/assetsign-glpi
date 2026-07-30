@@ -249,8 +249,8 @@ class Remise extends CommonDBTM
         return true;
     }
 
-    /** @return array<int, array> Marqueurs de dommages regroupes par view_index, pour remise_form.html.twig. */
-    private static function groupMarkersByView(array $markers): array
+    /** @return array<int, array> Marqueurs de dommages regroupes par view_index, pour remise_form.html.twig et front/sign.php. */
+    public static function groupMarkersByView(array $markers): array
     {
         $byView = [];
         foreach ($markers as $marker) {
@@ -976,6 +976,25 @@ class Remise extends CommonDBTM
     }
 
     /**
+     * Distinct de updateObservations() : rempli par le BENEFICIAIRE lui-meme
+     * depuis la page de signature (front/sign.php), pas par le technicien.
+     * Meme garde (isStillEditable()) et meme regeneration du PDF non signe.
+     * Le controle d'identite (ce champ n'est modifiable que par le vrai
+     * beneficiaire de CETTE remise) est fait cote appelant
+     * (SignController::assertCurrentUserIsBeneficiary()), pas ici — comme
+     * updateObservations() qui delegue de meme le controle du reglage
+     * "enable_observations" a son appelant.
+     */
+    public function updateBeneficiaryComment(string $comment): void
+    {
+        if (!$this->isStillEditable()) {
+            return;
+        }
+        $this->update(['id' => $this->getID(), 'beneficiary_comment' => $comment]);
+        $this->regenerateUnsignedPdf();
+    }
+
+    /**
      * Renseigne ou corrige le prix/la date d'une Vente, puis regenere le PDF
      * non signe — necessaire pour une Vente declenchee automatiquement par
      * changement d'Etat (cf. handleStateBasedTrigger()), qui ne connait aucun
@@ -1364,6 +1383,7 @@ class Remise extends CommonDBTM
                 `date_expired` timestamp NULL DEFAULT NULL,
                 `expiry_warning_sent` tinyint NOT NULL DEFAULT 0,
                 `observations` text,
+                `beneficiary_comment` text,
                 `comment` text,
                 `is_deleted` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
@@ -1390,6 +1410,12 @@ class Remise extends CommonDBTM
             }
             if (!$DB->fieldExists($table, 'observations')) {
                 $migration->addField($table, 'observations', 'text', ['after' => 'expiry_warning_sent']);
+                $migration->migrationOneTable($table);
+            }
+            if (!$DB->fieldExists($table, 'beneficiary_comment')) {
+                // Distinct de 'observations' (rempli par le TECHNICIEN) : ce champ est
+                // rempli par le BENEFICIAIRE lui-meme depuis la page de signature.
+                $migration->addField($table, 'beneficiary_comment', 'text', ['after' => 'observations']);
                 $migration->migrationOneTable($table);
             }
         }

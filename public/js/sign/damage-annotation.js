@@ -7,10 +7,15 @@
     }
 
     var csrfToken = window.REMISE_DAMAGE_CSRF || '';
-    var endpoint = (window.REMISE_ROOT_DOC || '') + '/plugins/remise/front/damagemarker.php';
+    // Endpoint/parametres additionnels surchargeables : la page de signature
+    // (sign_page.html.twig) authentifie par jeton de signature (front/sign.php,
+    // pas de droit GLPI necessaire pour le beneficiaire) plutot que par
+    // front/damagemarker.php (droit RIGHT_REMISE, page admin).
+    var endpoint = window.REMISE_DAMAGE_ENDPOINT || ((window.REMISE_ROOT_DOC || '') + '/plugins/remise/front/damagemarker.php');
+    var extraParams = window.REMISE_DAMAGE_EXTRA_PARAMS || {};
 
     function post(action, params) {
-        var body = new URLSearchParams(Object.assign({
+        var body = new URLSearchParams(Object.assign({}, extraParams, {
             _glpi_csrf_token: csrfToken
         }, params));
         body.set(action, '1');
@@ -18,7 +23,16 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: body.toString()
-        }).then(function (res) { return res.json(); });
+        }).then(function (res) {
+            // Jeton a usage unique (cf. README) : chaque reponse en renvoie un
+            // nouveau, a utiliser pour le PROCHAIN appel — sans quoi un 2e clic
+            // (nouveau repere, ou modification apres un premier ajout) echoue en 403.
+            var rotated = res.headers.get('X-Remise-Csrf-Token');
+            if (rotated) {
+                csrfToken = rotated;
+            }
+            return res.json();
+        });
     }
 
     function percentFromEvent(container, clientX, clientY) {
