@@ -158,10 +158,13 @@ Chaque carte renvoie vers la liste filtrée correspondante en un clic, et respec
 
 Une modification du code (nouvelle fonctionnalité, correctif) ne se signale jamais automatiquement côté GLPI — le dépôt est privé, hors du Marketplace officiel. La marche à suivre :
 
-1. Sur le serveur GLPI : `cd plugins/remise && git pull`.
-2. Si le changement touche uniquement le comportement (pas la base de données), c'est terminé — GLPI sert le nouveau code au prochain chargement de page. **Attention à OPcache** si activé sur le serveur : un redémarrage de PHP-FPM/Apache ou un vidage de cache peut être nécessaire pour que le nouveau code soit réellement pris en compte.
-3. **Si le changement touche un fichier `.twig`** (gabarit de PDF, de page de configuration, d'e-mail...), videz le cache GLPI : `php bin/console cache:clear` (ou `glpi:cache:clear` selon la version). En environnement de production réel (pas un `git clone`), GLPI désactive volontairement l'auto-rechargement de Twig (`Glpi\Application\Environment::shouldExpectResourcesToChange()` renvoie `false`) : sans ce vidage, l'ancienne version compilée du gabarit continue d'être servie indéfiniment, **sans aucune erreur ni avertissement** — le nouveau fichier est bien sur le disque, mais jamais rendu. Piège rencontré et documenté plus loin (section Tests).
-4. Si le changement modifie la structure de la base (nouveau champ, nouvelle table), le nombre de version dans `setup.php` (`PLUGIN_REMISE_VERSION`) doit avoir été incrémenté : GLPI affiche alors le plugin comme nécessitant une mise à jour sur la page **Configuration > Plugins**, avec un bouton dédié qui relance proprement la migration.
+1. Sur le serveur GLPI : `cd plugins/remise && git pull` (ou re-téléchargez l'archive ZIP en remplaçant le dossier).
+2. Lancez `sh update.sh` (depuis `plugins/remise/`) : ce script regroupe les trois étapes qu'il est facile d'oublier ou de faire dans le mauvais ordre — migration de la base (`plugin:install --force`, sans risque si déjà à jour), réactivation, et vidage du cache GLPI (`cache:clear`).
+
+Le détail de ce que fait `update.sh`, et pourquoi chaque étape est nécessaire :
+- **Migration de la base** (`php bin/console plugin:install remise --force`) : nécessaire si le changement ajoute une table ou un champ. GLPI ne le fait jamais tout seul après un simple remplacement de fichiers, même si le numéro de version dans `setup.php` (`PLUGIN_REMISE_VERSION`) a été incrémenté (il l'est systématiquement à chaque changement de structure) — sans cette étape, GLPI affiche bien le plugin comme "à mettre à jour" sur **Configuration > Plugins**, mais les nouvelles tables/colonnes n'existent pas tant que le bouton (ou cette commande) n'a pas été actionné.
+- **Vidage du cache** (`php bin/console cache:clear`) : indispensable dès qu'un fichier `.twig` a changé (gabarit de PDF, de page de configuration, d'e-mail...). En environnement de production réel (pas un `git clone` sur poste de dev), GLPI désactive volontairement l'auto-rechargement de Twig (`Glpi\Application\Environment::shouldExpectResourcesToChange()` renvoie `false`) : sans ce vidage, l'ancienne version compilée du gabarit continue d'être servie indéfiniment, **sans aucune erreur ni avertissement** — le nouveau fichier est bien sur le disque, mais jamais rendu. Piège rencontré en conditions réelles (constaté après une mise à jour où la page de configuration affichait encore l'ancien texte d'aperçu, sans aucun onglet, malgré un `git pull` réussi et le bon numéro de version sur disque) et documenté plus loin (section Tests).
+- **OPcache**, si activé sur le serveur (fréquent en production, indépendant du cache GLPI ci-dessus) : un redémarrage de PHP-FPM/Apache peut rester nécessaire pour que le nouveau **code PHP** soit réellement rechargé — `update.sh` l'affiche en rappel à la fin, mais ne peut pas le faire lui-même (droits root généralement requis pour redémarrer un service).
 
 ## Tests automatisés
 
@@ -246,6 +249,7 @@ Cette section s'adresse à qui reprend ou modifie le code — elle documente les
 remise/
 ├── composer.json           # dépendance Dompdf (vendor/ commité, voir Prérequis)
 ├── setup.php / hook.php    # déclaration, hooks, install/uninstall
+├── update.sh               # migration + vidage de cache en une commande (voir Mettre à jour le plugin)
 ├── src/GlpiPlugin/Remise/  # classes métier (PSR-4)
 │   ├── Workflow/            # WorkflowTypeInterface/Registry + un type = une classe (Handover, Return, Don, Vente...)
 │   ├── Notification/        # contenu par défaut des e-mails (DefaultNotificationContent)
