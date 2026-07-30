@@ -262,5 +262,38 @@ class Maintenance extends CommonDBTM
                 CONSTRAINT `fk_mcv_checklistitem` FOREIGN KEY (`plugin_remise_maintenancechecklistitems_id`) REFERENCES `glpi_plugin_remise_maintenancechecklistitems` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
         }
+
+        self::seedDefaultDisplayPreferences();
+    }
+
+    /**
+     * Meme raison que Remise::seedDefaultDisplayPreferences() : sans ca, la
+     * liste "Fiches de maintenance" n'affiche par defaut que la colonne ID.
+     * Seme une seule fois (jamais si une ligne existe deja pour cet itemtype).
+     */
+    private static function seedDefaultDisplayPreferences(): void
+    {
+        global $DB;
+
+        $alreadySeeded = $DB->request([
+            'FROM'  => 'glpi_displaypreferences',
+            'WHERE' => ['itemtype' => self::class],
+            'LIMIT' => 1,
+        ])->count() > 0;
+
+        if ($alreadySeeded) {
+            return;
+        }
+
+        $rank = 1;
+        foreach ([2, 3, 4, 5] as $searchOptionId) {
+            $DB->insert('glpi_displaypreferences', [
+                'itemtype'  => self::class,
+                'num'       => $searchOptionId,
+                'rank'      => $rank++,
+                'users_id'  => 0,
+                'interface' => 'central',
+            ]);
+        }
     }
 }

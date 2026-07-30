@@ -176,6 +176,39 @@ class Template extends CommonDBTM
             self::seedIfMissing($table, \GlpiPlugin\Remise\Remise::TYPE_DON, 'Gabarit de don par défaut');
             self::seedIfMissing($table, \GlpiPlugin\Remise\Remise::TYPE_VENTE, 'Gabarit de vente par défaut');
         }
+
+        self::seedDefaultDisplayPreferences();
+    }
+
+    /**
+     * Meme raison que Remise::seedDefaultDisplayPreferences() : sans ca, la
+     * liste "Gabarits de remise" n'affiche par defaut que la colonne ID.
+     * Seme une seule fois (jamais si une ligne existe deja pour cet itemtype).
+     */
+    private static function seedDefaultDisplayPreferences(): void
+    {
+        global $DB;
+
+        $alreadySeeded = $DB->request([
+            'FROM'  => 'glpi_displaypreferences',
+            'WHERE' => ['itemtype' => self::class],
+            'LIMIT' => 1,
+        ])->count() > 0;
+
+        if ($alreadySeeded) {
+            return;
+        }
+
+        $rank = 1;
+        foreach ([1, 2, 3, 4] as $searchOptionId) {
+            $DB->insert('glpi_displaypreferences', [
+                'itemtype'  => self::class,
+                'num'       => $searchOptionId,
+                'rank'      => $rank++,
+                'users_id'  => 0,
+                'interface' => 'central',
+            ]);
+        }
     }
 
     private static function seedIfMissing(string $table, int $type, string $name): void
