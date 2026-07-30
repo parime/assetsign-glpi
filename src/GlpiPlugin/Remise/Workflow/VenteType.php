@@ -12,7 +12,7 @@ use GlpiPlugin\Remise\Remise;
  */
 final class VenteType implements WorkflowTypeInterface
 {
-    private const DEFAULT_CONTENT = '<p>Je soussigné(e) reconnais avoir acheté, aux conditions indiquées ci-dessus, le matériel décrit '
+    private const DEFAULT_CONTENT = '<p>Je reconnais avoir acheté, aux conditions indiquées ci-dessus, le matériel décrit '
         . 'ci-dessus, cédé en l\'état par l\'organisation qui me le vend, sans garantie au-delà de ce qui serait légalement obligatoire.</p>';
 
     public function getId(): int
