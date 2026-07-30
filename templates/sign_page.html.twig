@@ -145,7 +145,6 @@
       var btn = document.getElementById('btn-save-comment');
       var textarea = document.getElementById('beneficiary-comment');
       var status = document.getElementById('comment-status-msg');
-      var csrfToken = {{ csrf_token|default('')|json_encode|raw }};
 
       btn.addEventListener('click', function () {
         btn.disabled = true;
@@ -153,7 +152,11 @@
           t: window.REMISE_SIGN_TOKEN,
           update_comment: '1',
           comment: textarea.value,
-          _glpi_csrf_token: csrfToken
+          // window.REMISE_CSRF_TOKEN (pas une copie locale) : ce jeton a usage
+          // unique est aussi utilise/rote par damage-annotation.js et sign.js
+          // sur cette meme page — une copie locale ici manquerait leurs
+          // rotations et echouerait en 403 des que l'un d'eux a deja tourne.
+          _glpi_csrf_token: window.REMISE_CSRF_TOKEN
         });
         fetch(window.location.pathname, {
           method: 'POST',
@@ -162,7 +165,7 @@
         }).then(function (res) {
           var rotated = res.headers.get('X-Remise-Csrf-Token');
           if (rotated) {
-            csrfToken = rotated;
+            window.REMISE_CSRF_TOKEN = rotated;
           }
           return res.json();
         }).then(function (data) {

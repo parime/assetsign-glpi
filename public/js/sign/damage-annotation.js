@@ -6,7 +6,21 @@
         return; // rien a cabler (aucune vue editable sur cette page)
     }
 
-    var csrfToken = window.REMISE_DAMAGE_CSRF || '';
+    // Jeton CSRF partage via window.REMISE_CSRF_TOKEN plutot qu'une variable
+    // locale : sur la page de signature, sign.js (soumission de la signature)
+    // et le petit script inline de la Remarque font AUSSI des POST vers
+    // front/sign.php, avec le meme jeton a usage unique cote session GLPI. Une
+    // copie locale ici ne verrait jamais la rotation faite par ces autres
+    // appels (et inversement) — constate en conditions reelles : apres avoir
+    // ajoute des reperes puis enregistre une remarque, cliquer sur "Valider ma
+    // signature" echouait en 403 (affiche a tort comme "Erreur reseau" par
+    // sign.js) car son jeton etait perime. window.REMISE_CSRF_TOKEN est deja
+    // defini par sign_page.html.twig (page de signature) ; sur la fiche admin
+    // (remise_form.html.twig, un seul script sur la page), on retombe sur
+    // REMISE_DAMAGE_CSRF, absent de ce cas partage.
+    if (!window.REMISE_CSRF_TOKEN) {
+        window.REMISE_CSRF_TOKEN = window.REMISE_DAMAGE_CSRF || '';
+    }
     // Endpoint/parametres additionnels surchargeables : la page de signature
     // (sign_page.html.twig) authentifie par jeton de signature (front/sign.php,
     // pas de droit GLPI necessaire pour le beneficiaire) plutot que par
@@ -16,7 +30,7 @@
 
     function post(action, params) {
         var body = new URLSearchParams(Object.assign({}, extraParams, {
-            _glpi_csrf_token: csrfToken
+            _glpi_csrf_token: window.REMISE_CSRF_TOKEN
         }, params));
         body.set(action, '1');
         return fetch(endpoint, {
@@ -29,7 +43,7 @@
             // (nouveau repere, ou modification apres un premier ajout) echoue en 403.
             var rotated = res.headers.get('X-Remise-Csrf-Token');
             if (rotated) {
-                csrfToken = rotated;
+                window.REMISE_CSRF_TOKEN = rotated;
             }
             return res.json();
         });
