@@ -1447,5 +1447,45 @@ class Remise extends CommonDBTM
                 $migration->migrationOneTable($table);
             }
         }
+
+        self::seedDefaultDisplayPreferences();
+    }
+
+    /**
+     * Sans ca, la liste "Gestion des fiches" (Administration > Remise &
+     * signature > Remises) n'affiche par defaut QUE la colonne ID (repli
+     * standard de GLPI quand aucune preference d'affichage n'existe pour un
+     * itemtype, cf. SearchOption::getDefaultToView()) — un administrateur
+     * doit alors deviner qu'il faut ouvrir le selecteur de colonnes pour
+     * retrouver, par exemple, les liens de telechargement des PDF. Seme une
+     * seule fois (ligne users_id=0 = preference par defaut, cf.
+     * DisplayPreference::getForTypeUser()) : ne s'execute plus des qu'au
+     * moins une ligne existe deja pour cet itemtype, pour ne jamais ecraser
+     * une personnalisation (globale ou par utilisateur) deja faite.
+     */
+    private static function seedDefaultDisplayPreferences(): void
+    {
+        global $DB;
+
+        $alreadySeeded = $DB->request([
+            'FROM'  => 'glpi_displaypreferences',
+            'WHERE' => ['itemtype' => self::class],
+            'LIMIT' => 1,
+        ])->count() > 0;
+
+        if ($alreadySeeded) {
+            return;
+        }
+
+        $rank = 1;
+        foreach ([4, 5, 6, 7, 10, 11] as $searchOptionId) {
+            $DB->insert('glpi_displaypreferences', [
+                'itemtype'  => self::class,
+                'num'       => $searchOptionId,
+                'rank'      => $rank++,
+                'users_id'  => 0,
+                'interface' => 'central',
+            ]);
+        }
     }
 }
