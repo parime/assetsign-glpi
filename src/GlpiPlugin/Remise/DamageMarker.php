@@ -28,8 +28,8 @@ class DamageMarker extends CommonDBTM
     public static function getViewLabels(): array
     {
         return [
-            0 => __('Vue arrière — capot fermé', 'remise'),
-            1 => __('Vue de face — écran ouvert', 'remise'),
+            0 => __('Vue arrière', 'remise'),
+            1 => __('Vue de face', 'remise'),
             2 => __('Dessous', 'remise'),
         ];
     }
@@ -45,8 +45,8 @@ class DamageMarker extends CommonDBTM
     public static function getCanonicalViewLabels(): array
     {
         return [
-            0 => 'Vue arrière — capot fermé',
-            1 => 'Vue de face — écran ouvert',
+            0 => 'Vue arrière',
+            1 => 'Vue de face',
             2 => 'Dessous',
         ];
     }

@@ -635,3 +635,15 @@ msgstr "Exemple : touche cassée."
 
 msgid "Exemple : pied manquant."
 msgstr "Exemple : pied manquant."
+
+msgid "Remarque"
+msgstr "Remarque"
+
+msgid "Une précision à ajouter avant de signer (optionnel)."
+msgstr "Une précision à ajouter avant de signer (optionnel)."
+
+msgid "Remarque enregistrée."
+msgstr "Remarque enregistrée."
+
+msgid "Remarque du bénéficiaire"
+msgstr "Remarque du bénéficiaire"

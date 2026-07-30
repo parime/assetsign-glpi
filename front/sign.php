@@ -11,6 +11,7 @@
 
 use GlpiPlugin\Remise\Api\SignController;
 use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Remise\DamageMarker;
 use Glpi\Application\View\TemplateRenderer;
 
 global $CFG_GLPI;
@@ -31,6 +32,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && ($_GET['action'] ?? '') === 'pdf') {
         readfile($path);
     } catch (\Throwable $e) {
         http_response_code(404);
+    }
+    exit;
+}
+
+// --- Reperes d'etat des lieux visuel + remarque libre, geres par le BENEFICIAIRE
+// lui-meme depuis cette page (avant de signer) — meme actions que
+// front/damagemarker.php (reserve au technicien via un droit GLPI), mais
+// authentifiees par le jeton de signature + assertCurrentUserIsBeneficiary(),
+// pas par un droit GLPI que le beneficiaire n'a pas forcement. -------------------
+if ($_SERVER['REQUEST_METHOD'] === 'POST'
+    && (isset($_POST['add']) || isset($_POST['update']) || isset($_POST['delete']) || isset($_POST['update_comment']))
+) {
+    header('Content-Type: application/json');
+
+    try {
+        $remise = $controller->loadAuthorizedRemise($token);
+        if (!$remise->isStillEditable()) {
+            throw new RuntimeException('Cette fiche ne peut plus être modifiée.');
+        }
+
+        if (isset($_POST['add'])) {
+            $viewIndex = (int) ($_POST['view_index'] ?? -1);
+            if ($viewIndex < 0 || $viewIndex >= DamageMarker::VIEW_COUNT) {
+                throw new RuntimeException('Vue invalide.');
+            }
+            $id = DamageMarker::addMarker(
+                $remise->getID(),
+                $viewIndex,
+                (float) ($_POST['x'] ?? 0),
+                (float) ($_POST['y'] ?? 0),
+                (string) ($_POST['description'] ?? ''),
+                (int) ($_POST['severity'] ?? DamageMarker::SEVERITY_MINOR)
+            );
+            if ($id > 0) {
+                $remise->refreshDamageAnnotationPdf();
+            }
+            $result = ['success' => $id > 0, 'id' => $id];
+        } elseif (isset($_POST['update'])) {
+            $changes = [];
+            if (isset($_POST['x']) && isset($_POST['y'])) {
+                $changes['x_percent'] = (float) $_POST['x'];
+                $changes['y_percent'] = (float) $_POST['y'];
+            }
+            if (isset($_POST['description'])) {
+                $changes['description'] = (string) $_POST['description'];
+            }
+            if (isset($_POST['severity'])) {
+                $changes['severity'] = (int) $_POST['severity'];
+            }
+            $success = DamageMarker::updateMarker((int) ($_POST['id'] ?? 0), $remise->getID(), $changes);
+            if ($success) {
+                $remise->refreshDamageAnnotationPdf();
+            }
+            $result = ['success' => $success];
+        } elseif (isset($_POST['delete'])) {
+            $success = DamageMarker::deleteMarker((int) ($_POST['id'] ?? 0), $remise->getID());
+            if ($success) {
+                $remise->refreshDamageAnnotationPdf();
+            }
+            $result = ['success' => $success];
+        } else {
+            $remise->updateBeneficiaryComment((string) ($_POST['comment'] ?? ''));
+            $result = ['success' => true];
+        }
+
+        // Jeton CSRF a usage unique (cf. README) : sans rotation, un deuxieme clic
+        // (ajouter un 2e repere, ou modifier apres avoir commente) echouerait en 403.
+        header('X-Remise-Csrf-Token: ' . Session::getNewCSRFToken());
+        echo json_encode($result);
+    } catch (\Throwable $e) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
     exit;
 }
@@ -62,13 +135,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // --- Affichage de la page de signature --------------------------------------------
 try {
     $data = $controller->show($token);
+    $remise = $data['remise'];
+    $config = \GlpiPlugin\Remise\Config::getForEntity((int) $remise->fields['entities_id']);
+    $damageEnabled = (bool) $config->fields['enable_damage_annotation'];
+
     TemplateRenderer::getInstance()->display('@remise/sign_page.html.twig', [
         'token'      => $token,
         'csrf_token' => Session::getNewCSRFToken(),
-        'remise'     => $data['remise']->fields,
+        'remise'     => $remise->fields,
         'user'       => $data['user'],
         'item'       => $data['item'],
         'expiry'     => $data['expiry'],
+        'can_edit_damage_markers' => $remise->isStillEditable(),
+        'damage_annotation_enabled' => $damageEnabled,
+        'damage_views'   => $damageEnabled ? DamageMarker::getViewLabels() : [],
+        'damage_images'  => $damageEnabled ? DamageMarker::getViewImageFilenames() : [],
+        'damage_markers_by_view' => $damageEnabled ? Remise::groupMarkersByView(DamageMarker::getForRemise($remise->getID())) : [],
+        'beneficiary_comment'    => $remise->fields['beneficiary_comment'] ?? '',
+        'can_edit_comment'       => $remise->isStillEditable(),
         // Volontairement DIFFERENT de Remise::getPdfHeadings() (fixe en francais,
         // car c'est le contenu d'un PDF archive, cf. commentaire sur
         // getCanonicalTypeLabel()) : cette page-ci est une interface consultee en

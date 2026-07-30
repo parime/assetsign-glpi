@@ -25,7 +25,11 @@
   button:disabled{ opacity:.5; cursor:not-allowed; }
   label.consent{ display:flex; gap:8px; align-items:flex-start; font-size:.88rem; color:var(--ink-soft); margin-top:14px; }
   #status-msg{ margin-top:14px; font-size:.9rem; }
+  .card h2{ font-size:1rem; margin:0 0 6px; }
+  .card p.hint{ color:var(--ink-soft); font-size:.85rem; margin:0 0 12px; }
+  textarea.remise-comment{ width:100%; font:inherit; border:1px solid var(--line); border-radius:6px; padding:8px; resize:vertical; }
 </style>
+<link rel="stylesheet" href="{{ config('root_doc') }}/plugins/remise/css/remise.css">
 </head>
 <body>
 <div class="wrap">
@@ -42,6 +46,41 @@
   {% else %}
     <div class="card">
       <div id="pdf-container" data-pdf-url="{{ pdf_url }}"></div>
+    </div>
+
+    {% if damage_annotation_enabled %}
+      <div class="card">
+        <h2>{{ __('État des lieux visuel', 'remise') }}</h2>
+        <p class="hint">{{ __('Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner.', 'remise') }}</p>
+        <div class="damage-view-grid">
+          {% for index, label in damage_views %}
+            <div>
+              <div class="damage-view" data-remise-id="{{ remise.id }}" data-view-index="{{ index }}" data-editable="{{ can_edit_damage_markers ? '1' : '0' }}">
+                <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/remise/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
+                {% for marker in damage_markers_by_view[index]|default([]) %}
+                  <div class="damage-marker{{ marker.severity == 1 ? ' damage-marker-major' : '' }}"
+                       data-id="{{ marker.id }}"
+                       style="left: {{ marker.x_percent }}%; top: {{ marker.y_percent }}%;"
+                       title="{{ marker.description|default('') }}"></div>
+                {% endfor %}
+              </div>
+              <div class="damage-view-label">{{ label }}</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="card">
+      <h2>{{ __('Remarque', 'remise') }}</h2>
+      <p class="hint">{{ __('Une précision à ajouter avant de signer (optionnel).', 'remise') }}</p>
+      <textarea id="beneficiary-comment" class="remise-comment" rows="3" {{ can_edit_comment ? '' : 'readonly' }}>{{ beneficiary_comment }}</textarea>
+      {% if can_edit_comment %}
+        <div class="actions">
+          <button type="button" id="btn-save-comment">{{ __('Enregistrer', 'remise') }}</button>
+        </div>
+        <p id="comment-status-msg" style="font-size:.85rem;color:var(--ink-soft);"></p>
+      {% endif %}
     </div>
 
     <div class="card sign-zone">
@@ -79,5 +118,65 @@
   };
 </script>
 <script src="{{ config('root_doc') }}/plugins/remise/js/sign/sign.js"></script>
+
+{% if damage_annotation_enabled and can_edit_damage_markers %}
+  <script>
+    // Reperes d'etat des lieux, geres par le beneficiaire lui-meme depuis cette
+    // page : meme script que la fiche admin (damage-annotation.js), mais pointe
+    // vers front/sign.php (authentification par jeton, pas par droit GLPI).
+    window.REMISE_DAMAGE_CSRF = {{ csrf_token|default('')|json_encode|raw }};
+    window.REMISE_DAMAGE_ENDPOINT = {{ config('root_doc')|json_encode|raw }} + '/plugins/remise/front/sign.php';
+    window.REMISE_DAMAGE_EXTRA_PARAMS = { t: {{ token|json_encode|raw }} };
+    window.REMISE_DAMAGE_I18N = {
+      description: {{ __('Description', 'remise')|json_encode|raw }},
+      severity: {{ __('Gravité', 'remise')|json_encode|raw }},
+      minor: {{ __('Mineure', 'remise')|json_encode|raw }},
+      major: {{ __('Majeure', 'remise')|json_encode|raw }},
+      save: {{ __('Enregistrer', 'remise')|json_encode|raw }},
+      deleteLabel: {{ __('Supprimer', 'remise')|json_encode|raw }}
+    };
+  </script>
+  <script src="{{ config('root_doc') }}/plugins/remise/js/sign/damage-annotation.js"></script>
+{% endif %}
+
+{% if can_edit_comment %}
+  <script>
+    (function () {
+      var btn = document.getElementById('btn-save-comment');
+      var textarea = document.getElementById('beneficiary-comment');
+      var status = document.getElementById('comment-status-msg');
+      var csrfToken = {{ csrf_token|default('')|json_encode|raw }};
+
+      btn.addEventListener('click', function () {
+        btn.disabled = true;
+        var body = new URLSearchParams({
+          t: window.REMISE_SIGN_TOKEN,
+          update_comment: '1',
+          comment: textarea.value,
+          _glpi_csrf_token: csrfToken
+        });
+        fetch(window.location.pathname, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString()
+        }).then(function (res) {
+          var rotated = res.headers.get('X-Remise-Csrf-Token');
+          if (rotated) {
+            csrfToken = rotated;
+          }
+          return res.json();
+        }).then(function (data) {
+          status.textContent = data.success
+            ? {{ __('Remarque enregistrée.', 'remise')|json_encode|raw }}
+            : ({{ __('Erreur', 'remise')|json_encode|raw }} + ' : ' + data.error);
+          btn.disabled = false;
+        }).catch(function () {
+          status.textContent = window.REMISE_I18N.networkError;
+          btn.disabled = false;
+        });
+      });
+    })();
+  </script>
+{% endif %}
 </body>
 </html>

@@ -128,6 +128,13 @@
 <p class="legal-text" style="white-space: pre-line;">{{ observations }}</p>
 {% endif %}
 
+{% if beneficiary_comment %}
+<h2>Remarque du bénéficiaire</h2>
+{# Pas de |raw : saisi librement par le beneficiaire lui-meme depuis la page
+   de signature, echappement automatique de Twig applique normalement. #}
+<p class="legal-text" style="white-space: pre-line;">{{ beneficiary_comment }}</p>
+{% endif %}
+
 <div class="signature-zone">
     {% if signature_image %}
         <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
