@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_REMISE_VERSION', '1.7.1');
+define('PLUGIN_REMISE_VERSION', '1.7.2');
 define('PLUGIN_REMISE_MIN_GLPI', '11.0.0');
 define('PLUGIN_REMISE_MAX_GLPI', '11.9.99');
 define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
@@ -75,6 +75,17 @@ function plugin_init_remise(): void
         'remise',
         '#^/front/sign\.php#',
         \Glpi\Http\Firewall::STRATEGY_AUTHENTICATED
+    );
+
+    // --- Vidage automatique d'OPcache apres mise a jour --------------------------------
+    // front/opcache_reset.php (appele automatiquement par plugin_remise_install(),
+    // cf. hook.php) restreint lui-meme l'acces a 127.0.0.1/::1 : aucune session
+    // GLPI n'existe a ce moment (script CLI), STRATEGY_NO_CHECK est donc necessaire
+    // ici — le controle de securite reste fait par le endpoint lui-meme.
+    \Glpi\Http\Firewall::addPluginStrategyForLegacyScripts(
+        'remise',
+        '#^/front/opcache_reset\.php#',
+        \Glpi\Http\Firewall::STRATEGY_NO_CHECK
     );
 
     // --- Enregistrement des classes -------------------------------------------------

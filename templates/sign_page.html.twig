@@ -146,29 +146,43 @@
       var textarea = document.getElementById('beneficiary-comment');
       var status = document.getElementById('comment-status-msg');
 
+      // File d'attente partagee avec damage-annotation.js/sign.js (meme jeton
+      // CSRF a usage unique) : definie ici de facon idempotente au cas ou
+      // aucun des deux autres scripts n'est present sur cette page (ex. etat
+      // des lieux visuel desactive pour cette entite).
+      window.REMISE_CSRF_QUEUE = window.REMISE_CSRF_QUEUE || Promise.resolve();
+      window.remiseQueuedFetch = window.remiseQueuedFetch || function (url, buildOptions) {
+        var run = function () {
+          return fetch(url, buildOptions()).then(function (res) {
+            var rotated = res.headers.get('X-Remise-Csrf-Token');
+            if (rotated) {
+              window.REMISE_CSRF_TOKEN = rotated;
+            }
+            return res;
+          });
+        };
+        var next = window.REMISE_CSRF_QUEUE.then(run, run);
+        window.REMISE_CSRF_QUEUE = next.catch(function () {});
+        return next;
+      };
+
       btn.addEventListener('click', function () {
         btn.disabled = true;
-        var body = new URLSearchParams({
-          t: window.REMISE_SIGN_TOKEN,
-          update_comment: '1',
-          comment: textarea.value,
-          // window.REMISE_CSRF_TOKEN (pas une copie locale) : ce jeton a usage
-          // unique est aussi utilise/rote par damage-annotation.js et sign.js
-          // sur cette meme page — une copie locale ici manquerait leurs
-          // rotations et echouerait en 403 des que l'un d'eux a deja tourne.
-          _glpi_csrf_token: window.REMISE_CSRF_TOKEN
-        });
-        fetch(window.location.pathname, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: body.toString()
-        }).then(function (res) {
-          var rotated = res.headers.get('X-Remise-Csrf-Token');
-          if (rotated) {
-            window.REMISE_CSRF_TOKEN = rotated;
-          }
-          return res.json();
-        }).then(function (data) {
+        window.remiseQueuedFetch(window.location.pathname, function () {
+          return {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+              t: window.REMISE_SIGN_TOKEN,
+              update_comment: '1',
+              comment: textarea.value,
+              // window.REMISE_CSRF_TOKEN lu ICI (pas avant) : construit au
+              // moment reel de l'envoi, apres que remiseQueuedFetch ait
+              // attendu la fin de tout appel precedent encore en cours.
+              _glpi_csrf_token: window.REMISE_CSRF_TOKEN
+            }).toString()
+          };
+        }).then(function (res) { return res.json(); }).then(function (data) {
           status.textContent = data.success
             ? {{ __('Remarque enregistrée.', 'remise')|json_encode|raw }}
             : ({{ __('Erreur', 'remise')|json_encode|raw }} + ' : ' + data.error);
