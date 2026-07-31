@@ -580,3 +580,21 @@ msgstr "Remarque enregistrée."
 
 msgid "Remarque du bénéficiaire"
 msgstr "Remarque du bénéficiaire"
+
+msgid "Type de saisie"
+msgstr "Type de saisie"
+
+msgid "Case à cocher"
+msgstr "Case à cocher"
+
+msgid "Texte libre"
+msgstr "Texte libre"
+
+msgid "Menu déroulant"
+msgstr "Menu déroulant"
+
+msgid "Options du menu déroulant (une par ligne)"
+msgstr "Options du menu déroulant (une par ligne)"
+
+msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
+msgstr "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."

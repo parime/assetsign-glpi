@@ -94,24 +94,34 @@ class Maintenance extends CommonDBTM
         $this->initForm($ID, $options);
 
         TemplateRenderer::getInstance()->display('@remise/maintenance_form.html.twig', [
-            'item'          => $this,
-            // Noms des points coches lus depuis la jointure, PAS depuis
+            'item'              => $this,
+            // Resultats lus depuis la jointure, PAS depuis
             // getActiveChecklistItems() : un point desactive APRES la creation
             // de cette fiche doit rester visible sur ce constat historique.
-            'checked_names' => $this->isNewID($ID) ? [] : $this->getCheckedItemNames(),
+            'checklist_results' => $this->isNewID($ID) ? [] : $this->getChecklistResults(),
         ]);
 
         return true;
     }
 
-    /** @return string[] Noms des points de controle coches (actifs ou non), pour l'affichage. */
-    public function getCheckedItemNames(): array
+    /**
+     * Points de controle renseignes sur cette fiche (actifs ou non au moment
+     * de la consultation), avec leur type et la valeur enregistree : texte
+     * saisi ou option choisie pour text/select, null pour checkbox (sa seule
+     * presence en base signifie "coche").
+     * @return array<int, array{name: string, type: int, value: ?string}>
+     */
+    public function getChecklistResults(): array
     {
         global $DB;
 
-        $names = [];
+        $results = [];
         foreach ($DB->request([
-            'SELECT' => ['glpi_plugin_remise_maintenancechecklistitems.name'],
+            'SELECT' => [
+                'glpi_plugin_remise_maintenancechecklistitems.name',
+                'glpi_plugin_remise_maintenancechecklistitems.type',
+                'glpi_plugin_remise_maintenancechecklistvalues.value',
+            ],
             'FROM'   => 'glpi_plugin_remise_maintenancechecklistvalues',
             'INNER JOIN' => [
                 'glpi_plugin_remise_maintenancechecklistitems' => [
@@ -124,9 +134,13 @@ class Maintenance extends CommonDBTM
             'WHERE' => ['glpi_plugin_remise_maintenancechecklistvalues.plugin_remise_maintenances_id' => $this->getID()],
             'ORDER' => 'glpi_plugin_remise_maintenancechecklistitems.name',
         ]) as $row) {
-            $names[] = $row['name'];
+            $results[] = [
+                'name'  => $row['name'],
+                'type'  => (int) $row['type'],
+                'value' => $row['value'],
+            ];
         }
-        return $names;
+        return $results;
     }
 
     /**
@@ -179,23 +193,32 @@ class Maintenance extends CommonDBTM
         ]);
     }
 
-    /** @return array<int, string> Tous les points de controle actifs (id => nom). */
+    /** @return array<int, array{name: string, type: int, options: string[]}> Tous les points de controle actifs, par id. */
     public static function getActiveChecklistItems(): array
     {
         global $DB;
 
         $items = [];
         foreach ($DB->request(['FROM' => MaintenanceChecklistItem::getTable(), 'WHERE' => ['is_active' => 1], 'ORDER' => 'name']) as $row) {
-            $items[(int) $row['id']] = $row['name'];
+            $checklistItem = new MaintenanceChecklistItem();
+            $checklistItem->getFromResultSet($row);
+            $items[(int) $row['id']] = [
+                'name'    => $row['name'],
+                'type'    => (int) $row['type'],
+                'options' => $checklistItem->getOptionsArray(),
+            ];
         }
         return $items;
     }
 
     /**
-     * Cree une fiche de maintenance avec les points de controle coches fournis.
-     * @param int[] $checkedItemIds
+     * Cree une fiche de maintenance a partir des valeurs soumises pour
+     * chaque point de controle actif : $itemValues est le tableau brut
+     * $_POST['checklist'] (id => valeur soumise), interprete selon le type
+     * propre de chaque point (case a cocher / texte libre / menu deroulant).
+     * @param array<int|string, mixed> $itemValues
      */
-    public static function createWithChecklist(string $itemtype, int $items_id, int $entities_id, array $checkedItemIds, string $comment): int
+    public static function createWithChecklist(string $itemtype, int $items_id, int $entities_id, array $itemValues, string $comment): int
     {
         global $DB;
 
@@ -212,11 +235,28 @@ class Maintenance extends CommonDBTM
             return 0;
         }
 
-        $activeIds = array_keys(self::getActiveChecklistItems());
-        foreach (array_intersect($checkedItemIds, $activeIds) as $checklistItemId) {
+        foreach (self::getActiveChecklistItems() as $checklistItemId => $checklistItem) {
+            if (!array_key_exists($checklistItemId, $itemValues) && !array_key_exists((string) $checklistItemId, $itemValues)) {
+                continue;
+            }
+            $submitted = $itemValues[$checklistItemId] ?? $itemValues[(string) $checklistItemId];
+
+            $value = match ($checklistItem['type']) {
+                MaintenanceChecklistItem::TYPE_TEXT, MaintenanceChecklistItem::TYPE_SELECT => trim((string) $submitted),
+                default => null,
+            };
+
+            // Case a cocher : presence de la cle suffit (valeur '1' du
+            // <input type="checkbox">). Texte/select : seule une valeur non
+            // vide est enregistree, sinon le point est considere non renseigne.
+            if ($checklistItem['type'] !== MaintenanceChecklistItem::TYPE_CHECKBOX && $value === '') {
+                continue;
+            }
+
             $DB->insert('glpi_plugin_remise_maintenancechecklistvalues', [
                 'plugin_remise_maintenances_id'          => $id,
                 'plugin_remise_maintenancechecklistitems_id' => $checklistItemId,
+                'value'                                   => $value,
             ]);
         }
 
@@ -255,12 +295,17 @@ class Maintenance extends CommonDBTM
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                 `plugin_remise_maintenances_id` int unsigned NOT NULL,
                 `plugin_remise_maintenancechecklistitems_id` int unsigned NOT NULL,
+                `value` text,
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `unicity` (`plugin_remise_maintenances_id`,`plugin_remise_maintenancechecklistitems_id`),
                 KEY `plugin_remise_maintenancechecklistitems_id` (`plugin_remise_maintenancechecklistitems_id`),
                 CONSTRAINT `fk_mcv_maintenance` FOREIGN KEY (`plugin_remise_maintenances_id`) REFERENCES `glpi_plugin_remise_maintenances` (`id`) ON DELETE CASCADE,
                 CONSTRAINT `fk_mcv_checklistitem` FOREIGN KEY (`plugin_remise_maintenancechecklistitems_id`) REFERENCES `glpi_plugin_remise_maintenancechecklistitems` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+        }
+
+        if (!$DB->fieldExists($valuesTable, 'value')) {
+            $migration->addField($valuesTable, 'value', 'text');
         }
 
         self::seedDefaultDisplayPreferences();
