@@ -63,4 +63,47 @@ abstract class RemiseTestCase extends TestCase
 
         return $id;
     }
+
+    /**
+     * Cree un Etat GLPI (glpi_states) directement en base, meme motif et
+     * meme raison que createTestEntity() : State est aussi un CommonTreeDropdown
+     * (level/ancestors_cache), mais rien dans ce plugin ne parcourt la
+     * hierarchie des Etats — seul un id valide a referencer dans states_id
+     * est necessaire ici.
+     */
+    protected function createTestState(string $name): int
+    {
+        global $DB;
+
+        static $nextId = null;
+        if ($nextId === null) {
+            $nextId = random_int(600000, 699999);
+        }
+        $id = $nextId++;
+
+        $DB->insert('glpi_states', [
+            'id'              => $id,
+            'name'            => $name,
+            'completename'    => $name,
+            'entities_id'     => 0,
+            'states_id'       => 0,
+            'level'           => 1,
+            'ancestors_cache' => '[]',
+            'sons_cache'      => '[]',
+        ]);
+
+        return $id;
+    }
+
+    /** Cree un Computer minimal (nom + entite), pour les tests de declenchement. */
+    protected function createTestComputer(int $entitiesId, string $name): \Computer
+    {
+        $computer = new \Computer();
+        $id = (int) $computer->add([
+            'name'        => $name,
+            'entities_id' => $entitiesId,
+        ]);
+        $computer->getFromDB($id);
+        return $computer;
+    }
 }
