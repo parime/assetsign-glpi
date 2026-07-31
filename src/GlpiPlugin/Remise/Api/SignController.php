@@ -91,7 +91,7 @@ final class SignController
         SignatureImageValidator::assertValid($signatureImagePng);
 
         $stamper = new SignatureStamper();
-        $result = $stamper->apply($remise, $signatureImagePng, $meta);
+        $result = $stamper->apply($remise, $signatureImagePng);
 
         $user = $remise->getBeneficiary();
 

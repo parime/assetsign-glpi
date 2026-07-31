@@ -18,14 +18,13 @@ final class SignatureStamper
     /**
      * @return array{path:string,hash:string} chemin du PDF final (dans GLPI_TMP_DIR) et son empreinte SHA-256
      */
-    public function apply(\GlpiPlugin\Remise\Remise $remise, string $signaturePngDataUrl, array $meta = []): array
+    public function apply(\GlpiPlugin\Remise\Remise $remise, string $signaturePngDataUrl): array
     {
         $signedAt = date('Y-m-d H:i:s');
 
         $html = $this->builder->renderHtml($remise, [
             'signature_image' => $signaturePngDataUrl,
             'signed_at'       => $signedAt,
-            'signer_ip'       => $meta['ip'] ?? '',
         ]);
 
         $binary = $this->builder->renderPdf($html);

@@ -140,8 +140,7 @@
         <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">
-            Signataire : {{ user.firstname }} {{ user.realname }} ({{ user.email }})<br>
-            Adresse IP : {{ signer_ip }} — Horodatage : {{ signed_at }}
+            Signataire : {{ user.firstname }} {{ user.realname }} ({{ user.email }})
         </p>
     {% else %}
         <p>Fait le {{ _now }}</p>
