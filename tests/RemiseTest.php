@@ -2,6 +2,7 @@
 
 namespace GlpiPlugin\Remise\Tests;
 
+use GlpiPlugin\Remise\Accessory;
 use GlpiPlugin\Remise\Config;
 use GlpiPlugin\Remise\Remise;
 use GlpiPlugin\Remise\VenteDetails;
@@ -207,6 +208,120 @@ class RemiseTest extends RemiseTestCase
         $secondRemise = $this->findRemiseFor($computer, $firstRemiseId);
         $this->assertNotNull($secondRemise);
         $this->assertSame(3, (int) $secondRemise['users_id']);
+    }
+
+    public function testUpdateObservationsPersistsAndRegeneratesPdf(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Observations');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Observations');
+        $remise = Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+        $documentBefore = (int) $remise->fields['document_id_unsigned'];
+
+        $remise->updateObservations('Écran rayé constaté au moment de la remise.');
+
+        $remise->getFromDB($remise->getID());
+        $this->assertSame('Écran rayé constaté au moment de la remise.', $remise->fields['observations']);
+        $this->assertNotSame($documentBefore, (int) $remise->fields['document_id_unsigned']);
+    }
+
+    public function testUpdateObservationsHasNoEffectOnceSigned(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Observations Signed');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Observations Signed');
+        $remise = Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+        $remise->update(['id' => $remise->getID(), 'status' => Remise::STATUS_SIGNED]);
+
+        $remise->updateObservations('Ne devrait jamais être enregistré.');
+
+        $remise->getFromDB($remise->getID());
+        $this->assertEmpty($remise->fields['observations'], "Une fiche signee ne doit plus pouvoir etre modifiee, meme via cette methode.");
+    }
+
+    public function testUpdateBeneficiaryCommentPersists(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Beneficiary Comment');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Beneficiary Comment');
+        $remise = Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+
+        $remise->updateBeneficiaryComment('Livré avec une rayure sur le côté.');
+
+        $remise->getFromDB($remise->getID());
+        $this->assertSame('Livré avec une rayure sur le côté.', $remise->fields['beneficiary_comment']);
+    }
+
+    public function testAddAndRemoveAccessory(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Accessory');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Accessory');
+        $remise = Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+
+        $accessory = new Accessory();
+        $accessoryId = (int) $accessory->add(['entities_id' => 0, 'name' => 'PHPUnit Chargeur', 'is_active' => 1]);
+
+        $remise->addAccessory($accessoryId, 2, 'Chargeur 65W');
+        $accessories = $remise->getAccessories();
+        $this->assertCount(1, $accessories);
+        $this->assertSame(2, (int) $accessories[0]['quantity']);
+
+        $remise->removeAccessory($accessoryId);
+        $this->assertCount(0, $remise->getAccessories());
+    }
+
+    public function testUpdateVenteDetailsUpsertsWhenNoneExisted(): void
+    {
+        // Reproduit une Vente declenchee automatiquement par changement d'Etat
+        // (cf. handleStateBasedTrigger()) : aucune VenteDetails n'existe encore
+        // au moment de la creation, le prix est renseigne apres coup.
+        $entityId = $this->createTestEntity(0, 'PHPUnit Vente Upsert');
+        $donationStateId = $this->createTestState('PHPUnit Etat Avant Vente');
+        $venteStateId = $this->createTestState('PHPUnit Etat Vente');
+        Config::upsertForEntity($entityId, ['vente_states' => [$venteStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Vente Upsert');
+        $computer->oldvalues = ['states_id' => $donationStateId];
+        $computer->fields['users_id'] = 2;
+        $computer->fields['states_id'] = $venteStateId;
+        Remise::handleItemAssignment($computer);
+
+        $created = $this->findRemiseFor($computer);
+        $this->assertNotNull($created);
+        $this->assertNull(VenteDetails::getForRemise((int) $created['id']), 'Aucun prix connu a la creation automatique.');
+
+        $remise = new Remise();
+        $remise->getFromDB((int) $created['id']);
+        $remise->updateVenteDetails(299.99, '2026-02-01');
+
+        $details = VenteDetails::getForRemise($remise->getID());
+        $this->assertNotNull($details);
+        $this->assertSame('299.99', $details->fields['price']);
+
+        // Un deuxieme appel doit METTRE A JOUR la meme ligne, pas en creer une deuxieme.
+        $remise->updateVenteDetails(199.99, '2026-02-15');
+        $this->assertSame('199.99', VenteDetails::getForRemise($remise->getID())->fields['price']);
+    }
+
+    public function testCancelRequestMarksRemiseCancelled(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Cancel Request');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Cancel Request');
+        $remise = Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+
+        $remise->cancelRequest();
+
+        $remise->getFromDB($remise->getID());
+        $this->assertSame(Remise::STATUS_CANCELLED, (int) $remise->fields['status']);
+        $this->assertFalse($remise->isStillEditable());
+    }
+
+    public function testCancelRequestThrowsWhenAlreadySigned(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Cancel Signed');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Cancel Signed');
+        $remise = Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+        $remise->update(['id' => $remise->getID(), 'status' => Remise::STATUS_SIGNED]);
+
+        $this->expectException(RuntimeException::class);
+        $remise->cancelRequest();
     }
 
     /** Derniere remise (par id) pour ce materiel, ou null. $excludeId ignore un id precis (ex: l'ancienne remise annulee). */
