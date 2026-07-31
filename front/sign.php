@@ -52,49 +52,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
             throw new RuntimeException('Cette fiche ne peut plus être modifiée.');
         }
 
-        if (isset($_POST['add'])) {
-            $viewIndex = (int) ($_POST['view_index'] ?? -1);
-            if ($viewIndex < 0 || $viewIndex >= DamageMarker::VIEW_COUNT) {
-                throw new RuntimeException('Vue invalide.');
-            }
-            $id = DamageMarker::addMarker(
-                $remise->getID(),
-                $viewIndex,
-                (float) ($_POST['x'] ?? 0),
-                (float) ($_POST['y'] ?? 0),
-                (string) ($_POST['description'] ?? ''),
-                (int) ($_POST['severity'] ?? DamageMarker::SEVERITY_MINOR)
-            );
-            if ($id > 0) {
-                $remise->refreshDamageAnnotationPdf();
-            }
-            $result = ['success' => $id > 0, 'id' => $id];
-        } elseif (isset($_POST['update'])) {
-            $changes = [];
-            if (isset($_POST['x']) && isset($_POST['y'])) {
-                $changes['x_percent'] = (float) $_POST['x'];
-                $changes['y_percent'] = (float) $_POST['y'];
-            }
-            if (isset($_POST['description'])) {
-                $changes['description'] = (string) $_POST['description'];
-            }
-            if (isset($_POST['severity'])) {
-                $changes['severity'] = (int) $_POST['severity'];
-            }
-            $success = DamageMarker::updateMarker((int) ($_POST['id'] ?? 0), $remise->getID(), $changes);
-            if ($success) {
-                $remise->refreshDamageAnnotationPdf();
-            }
-            $result = ['success' => $success];
-        } elseif (isset($_POST['delete'])) {
-            $success = DamageMarker::deleteMarker((int) ($_POST['id'] ?? 0), $remise->getID());
-            if ($success) {
-                $remise->refreshDamageAnnotationPdf();
-            }
-            $result = ['success' => $success];
-        } else {
+        if (isset($_POST['update_comment'])) {
             $remise->updateBeneficiaryComment((string) ($_POST['comment'] ?? ''));
             $result = ['success' => true];
+        } else {
+            // Logique d'ajout/modification/suppression de repere partagee avec
+            // front/damagemarker.php (cf. DamageMarker::handleMutationRequest()) :
+            // seule l'autorisation ci-dessus (jeton de signature, pas un droit
+            // GLPI) differe entre les deux.
+            $result = DamageMarker::handleMutationRequest($remise, $_POST);
         }
 
         // Jeton CSRF a usage unique (cf. README) : sans rotation, un deuxieme clic

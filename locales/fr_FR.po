@@ -69,19 +69,6 @@ msgstr "Signature lors de la restitution (désaffectation)"
 
 msgid "Déclenchement par État du matériel (optionnel)"
 msgstr "Déclenchement par État du matériel (optionnel)"
-
-msgid "Tous les GLPI n'utilisent pas les mêmes États : choisissez ici, parmi VOS États existants (Configuration > Listes déroulantes > États), ceux qui doivent déclencher une remise ou une restitution. Le bénéficiaire notifié reste l'utilisateur actuellement affecté au matériel."
-msgstr "Tous les GLPI n'utilisent pas les mêmes États : choisissez ici, parmi VOS États existants (Configuration > Listes déroulantes > États), ceux qui doivent déclencher une remise ou une restitution. Le bénéficiaire notifié reste l'utilisateur actuellement affecté au matériel."
-
-msgid "Aucun État n'est encore défini dans ce GLPI (Configuration > Listes déroulantes > États)."
-msgstr "Aucun État n'est encore défini dans ce GLPI (Configuration > Listes déroulantes > États)."
-
-msgid "État(s) déclenchant une remise"
-msgstr "État(s) déclenchant une remise"
-
-msgid "État(s) déclenchant une restitution"
-msgstr "État(s) déclenchant une restitution"
-
 msgid "Enregistrer"
 msgstr "Enregistrer"
 
@@ -237,22 +224,6 @@ msgstr "Remise"
 
 msgid "Restitution"
 msgstr "Restitution"
-
-msgid "Fiche de restitution de matériel"
-msgstr "Fiche de restitution de matériel"
-
-msgid "Matériel restitué"
-msgstr "Matériel restitué"
-
-msgid "Fiche de remise de matériel"
-msgstr "Fiche de remise de matériel"
-
-msgid "Matériel remis"
-msgstr "Matériel remis"
-
-msgid "signée"
-msgstr "signée"
-
 msgid "Envoie les relances de signature dues"
 msgstr "Envoie les relances de signature dues"
 
@@ -312,16 +283,8 @@ msgstr "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
 
 msgid "Lien vers la charte informatique complète"
 msgstr "Lien vers la charte informatique complète"
-
-msgid "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit."
-msgstr "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit."
-
 msgid "Aperçu de la fiche générée"
 msgstr "Aperçu de la fiche générée"
-
-msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. Le logo se met à jour dès que vous choisissez un fichier, avant même d'enregistrer."
-msgstr "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. Le logo se met à jour dès que vous choisissez un fichier, avant même d'enregistrer."
-
 msgid "Utilisez le bouton \"lien\" de la barre d'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici."
 msgstr "Utilisez le bouton \"lien\" de la barre d'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici."
 
@@ -525,31 +488,8 @@ msgstr "Majeure"
 
 msgid "Cette fiche ne peut plus être modifiée."
 msgstr "Cette fiche ne peut plus être modifiée."
-
-msgid "Vue de face — écran ouvert"
-msgstr "Vue de face — écran ouvert"
-
-msgid "Vue arrière — capot fermé"
-msgstr "Vue arrière — capot fermé"
-
-msgid "Côté gauche"
-msgstr "Côté gauche"
-
-msgid "Côté droit"
-msgstr "Côté droit"
-
-msgid "Dessus — clavier"
-msgstr "Dessus — clavier"
-
 msgid "Dessous"
 msgstr "Dessous"
-
-msgid "Écran (dalle)"
-msgstr "Écran (dalle)"
-
-msgid "Clavier et pavé tactile"
-msgstr "Clavier et pavé tactile"
-
 msgid "Fiche de maintenance"
 msgid_plural "Fiches de maintenance"
 msgstr[0] "Fiche de maintenance"
@@ -580,13 +520,6 @@ msgstr "Aucun point de contrôle validé."
 
 msgid "Fiche de maintenance créée."
 msgstr "Fiche de maintenance créée."
-
-msgid "État(s) déclenchant un don"
-msgstr "État(s) déclenchant un don"
-
-msgid "État(s) déclenchant une vente"
-msgstr "État(s) déclenchant une vente"
-
 msgid "Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée."
 msgstr "Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée."
 
