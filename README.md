@@ -1,5 +1,7 @@
 # Plugin GLPI `remise` — Remise de matériel & signature électronique
 
+<p align="center"><img src="docs/banner.png" alt="Remise de matériel — Signature, suivi, traçabilité" width="180"></p>
+
 Créé par **Vincent Guillotte**, avec l'aide de [Claude Code](https://claude.com/claude-code).
 
 ## Sommaire

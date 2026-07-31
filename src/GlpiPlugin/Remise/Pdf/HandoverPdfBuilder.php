@@ -29,8 +29,8 @@ final class HandoverPdfBuilder
     }
 
     /**
-     * @param array $extra Variables additionnelles (ex: signature_image, signed_at,
-     *                      signer_ip) fusionnees dans le contexte Twig — utilise par
+     * @param array $extra Variables additionnelles (ex: signature_image, signed_at)
+     *                      fusionnees dans le contexte Twig — utilise par
      *                      SignatureStamper pour re-rendre le meme gabarit avec la
      *                      signature incrustee, plutot que de superposer des calques
      *                      sur un PDF deja rendu (plus simple, plus robuste).
