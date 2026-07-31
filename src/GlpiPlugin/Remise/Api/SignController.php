@@ -96,17 +96,12 @@ final class SignController
         $user = $remise->getBeneficiary();
 
         $remise->markSigned($result['path'], [
-            'provider'      => 'canvas',
             'signer_name'   => trim(($user['firstname'] ?? '') . ' ' . ($user['realname'] ?? '')),
             'signer_email'  => $user['email'] ?? '',
             'ip_address'    => $meta['ip'] ?? '',
             'user_agent'    => $meta['user_agent'] ?? '',
             'document_hash' => $result['hash'],
             'signed_at'     => $result['signed_at'],
-            'proof_data'    => [
-                'method'          => 'canvas_signature_pad',
-                'glpi_users_id'   => Session::getLoginUserID(),
-            ],
         ]);
 
         $token->markUsed();

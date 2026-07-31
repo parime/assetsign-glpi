@@ -24,7 +24,6 @@ class Config extends CommonDBTM
         'logo_documents_id'                   => 0,
         'logo_force_children'                 => 0,
         'charter_url'                         => '',
-        'default_plugin_remise_templates_id'  => 0,
         'default_provider'                    => 'canvas',
         'provider_config'                     => '',
         'reminder_delays'                     => '3,7,7',
@@ -428,7 +427,6 @@ class Config extends CommonDBTM
                 `logo_documents_id` int unsigned NOT NULL DEFAULT 0,
                 `logo_force_children` tinyint NOT NULL DEFAULT 0,
                 `charter_url` varchar(255) DEFAULT NULL,
-                `default_plugin_remise_templates_id` int unsigned NOT NULL DEFAULT 0,
                 `default_provider` varchar(32) NOT NULL DEFAULT 'canvas',
                 `provider_config` text,
                 `reminder_delays` varchar(255) NOT NULL DEFAULT '3,7,7',
@@ -520,6 +518,13 @@ class Config extends CommonDBTM
                 $migration->addField($table, 'donation_states', 'text', ['after' => 'return_states']);
                 $migration->addField($table, 'vente_states', 'text', ['after' => 'donation_states']);
                 $migration->migrationOneTable($table);
+            }
+            // Audit code mort : jamais branchee (aucun formulaire ne la soumet,
+            // upsertForEntity() ne l'ecrit jamais) — le mecanisme de gabarit par
+            // defaut reellement utilise est Template::getDefaultFor(), base sur
+            // la colonne is_default de glpi_plugin_remise_templates.
+            if ($DB->fieldExists($table, 'default_plugin_remise_templates_id')) {
+                $migration->dropField($table, 'default_plugin_remise_templates_id');
             }
         }
     }

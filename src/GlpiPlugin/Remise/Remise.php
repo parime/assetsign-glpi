@@ -86,26 +86,6 @@ class Remise extends CommonDBTM
     }
 
     /**
-     * Faux negatif volontaire : CommonDBTM::maybeLocated() se contente de
-     * verifier la PRESENCE d'une colonne locations_id (`array_key_exists
-     * ('locations_id', $this->fields)`), sans se soucier de savoir si cet
-     * itemtype expose reellement une recherche/jointure Location exploitable.
-     * Ce champ existe ici uniquement pour archiver l'emplacement du materiel
-     * au moment de la remise (cf. createRemise()) — jamais recherche ni
-     * affiche. Sans ce correctif, GLPI propose quand meme le bouton "Afficher
-     * sur une carte" sur la liste "Gestion des fiches", qui plante en 500 des
-     * qu'on clique dessus (MySQL query error: Unknown column
-     * `glpi_locations`.`id`) puisqu'aucune jointure vers glpi_locations n'est
-     * configuree. Bug reel signale par un utilisateur reel (clic accidentel
-     * sur ce bouton, reste ensuite bloque en session sur la vue carte pour ce
-     * type tant que le parametre n'est pas force a 0 dans l'URL).
-     */
-    public function maybeLocated()
-    {
-        return false;
-    }
-
-    /**
      * Nommee rawSearchOptions() (pas getSearchOptions(), qui n'existe pas dans
      * l'API de recherche de GLPI 11) : CommonDBTM::searchOptions() — la
      * methode reellement appelee par Search::getOptions() — est declaree
@@ -628,11 +608,9 @@ class Remise extends CommonDBTM
             'items_id'                    => $item->getID(),
             'users_id'                    => $users_id,
             'users_id_tech'               => Session::getLoginUserID() ?: 0,
-            'locations_id'                => $item->fields['locations_id'] ?? 0,
             'plugin_remise_templates_id'  => $template ? $template->getID() : 0,
             'type'                        => $type,
             'status'                      => self::STATUS_PENDING,
-            'comment'                     => '',
         ]);
 
         if (!$id) {
@@ -683,11 +661,9 @@ class Remise extends CommonDBTM
             'items_id'                    => $items_id,
             'users_id'                    => $users_id,
             'users_id_tech'               => Session::getLoginUserID() ?: 0,
-            'locations_id'                => $item->fields['locations_id'] ?? 0,
             'plugin_remise_templates_id'  => $template ? $template->getID() : 0,
             'type'                        => $type,
             'status'                      => self::STATUS_PENDING,
-            'comment'                     => '',
         ]);
 
         if (!$id) {
@@ -1212,7 +1188,7 @@ class Remise extends CommonDBTM
         NotificationEvent::raiseEvent('reminder', $this);
 
         $newCount = (int) $this->fields['reminder_count'] + 1;
-        Reminder::log($this, $newCount);
+        Reminder::log($this);
         $this->update(['id' => $this->getID(), 'reminder_count' => $newCount]);
     }
 
@@ -1418,7 +1394,6 @@ class Remise extends CommonDBTM
                 `items_id` int unsigned NOT NULL DEFAULT 0,
                 `users_id` int unsigned NOT NULL DEFAULT 0,
                 `users_id_tech` int unsigned NOT NULL DEFAULT 0,
-                `locations_id` int unsigned NOT NULL DEFAULT 0,
                 `plugin_remise_templates_id` int unsigned NOT NULL DEFAULT 0,
                 `type` tinyint NOT NULL DEFAULT 0,
                 `status` tinyint NOT NULL DEFAULT 0,
@@ -1432,7 +1407,6 @@ class Remise extends CommonDBTM
                 `expiry_warning_sent` tinyint NOT NULL DEFAULT 0,
                 `observations` text,
                 `beneficiary_comment` text,
-                `comment` text,
                 `is_deleted` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
@@ -1465,6 +1439,16 @@ class Remise extends CommonDBTM
                 // rempli par le BENEFICIAIRE lui-meme depuis la page de signature.
                 $migration->addField($table, 'beneficiary_comment', 'text', ['after' => 'observations']);
                 $migration->migrationOneTable($table);
+            }
+            // Audit code mort : 'locations_id' (archivage jamais recherche/affiche,
+            // cf. l'ancien commentaire de maybeLocated()) et 'comment' (toujours
+            // insere vide par createRemise()/createManual(), jamais lu nulle part)
+            // n'ont jamais ete exploites — colonnes retirees.
+            if ($DB->fieldExists($table, 'locations_id')) {
+                $migration->dropField($table, 'locations_id');
+            }
+            if ($DB->fieldExists($table, 'comment')) {
+                $migration->dropField($table, 'comment');
             }
         }
 

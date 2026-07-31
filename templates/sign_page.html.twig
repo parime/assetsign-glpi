@@ -122,6 +122,7 @@
     backToHome: {{ __('Retour à l\'accueil GLPI', 'remise')|json_encode|raw }}
   };
 </script>
+<script src="{{ config('root_doc') }}/plugins/remise/js/sign/csrf-queue.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 <script src="{{ config('root_doc') }}/plugins/remise/js/sign/sign.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 
 {% if damage_annotation_enabled and can_edit_damage_markers %}
@@ -153,26 +154,9 @@
       var textarea = document.getElementById('beneficiary-comment');
       var status = document.getElementById('comment-status-msg');
 
-      // File d'attente partagee avec damage-annotation.js/sign.js (meme jeton
-      // CSRF a usage unique) : definie ici de facon idempotente au cas ou
-      // aucun des deux autres scripts n'est present sur cette page (ex. etat
-      // des lieux visuel desactive pour cette entite).
-      window.REMISE_CSRF_QUEUE = window.REMISE_CSRF_QUEUE || Promise.resolve();
-      window.remiseQueuedFetch = window.remiseQueuedFetch || function (url, buildOptions) {
-        var run = function () {
-          return fetch(url, buildOptions()).then(function (res) {
-            var rotated = res.headers.get('X-Remise-Csrf-Token');
-            if (rotated) {
-              window.REMISE_CSRF_TOKEN = rotated;
-            }
-            return res;
-          });
-        };
-        var next = window.REMISE_CSRF_QUEUE.then(run, run);
-        window.REMISE_CSRF_QUEUE = next.catch(function () {});
-        return next;
-      };
-
+      // window.remiseQueuedFetch : defini par csrf-queue.js, charge
+      // inconditionnellement plus haut sur cette page (avant sign.js) —
+      // partage avec ce dernier et damage-annotation.js.
       btn.addEventListener('click', function () {
         btn.disabled = true;
         window.remiseQueuedFetch(window.location.pathname, function () {

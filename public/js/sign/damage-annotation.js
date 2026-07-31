@@ -19,42 +19,10 @@
         window.REMISE_CSRF_TOKEN = window.REMISE_DAMAGE_CSRF || '';
     }
 
-    // File d'attente partagee (idempotent : le premier script charge sur la
-    // page — sign.js ou celui-ci selon le contexte — la definit, les suivants
-    // la reutilisent telle quelle) : un jeton CSRF GLPI est a usage unique.
-    // Sans serialisation, deux clics rapproches (ajouter 2 reperes vite, ou
-    // glisser un repere juste apres un ajout) lisent tous les deux LE MEME
-    // jeton avant que le premier appel n'ait eu le temps de le faire tourner
-    // — le serveur accepte le premier, rejette le second en 403 (rejete par
-    // le pare-feu GLPI lui-meme, avant meme d'atteindre notre code, donc pas
-    // du JSON : res.json() plante, la promesse est rejetee silencieusement,
-    // ET window.REMISE_CSRF_TOKEN ne tourne jamais). Consequence en cascade :
-    // TOUT appel suivant (repere, remarque, signature) echoue ensuite avec le
-    // meme jeton perime, jusqu'au rechargement de la page. Constate en
-    // conditions reelles (2 requetes lancees en parallele avec le meme
-    // jeton : la premiere reussit, la seconde recoit bien la page "Acces
-    // refuse" de GLPI). Corrige en forcant chaque appel a attendre que le
-    // precedent soit termine (succes ou echec) avant de partir, et en ne
-    // construisant le corps de la requete (donc en lisant le jeton) qu'a cet
-    // instant-la, jamais au moment du clic.
-    window.REMISE_CSRF_QUEUE = window.REMISE_CSRF_QUEUE || Promise.resolve();
-    window.remiseQueuedFetch = window.remiseQueuedFetch || function (url, buildOptions) {
-        var run = function () {
-            return fetch(url, buildOptions()).then(function (res) {
-                var rotated = res.headers.get('X-Remise-Csrf-Token');
-                if (rotated) {
-                    window.REMISE_CSRF_TOKEN = rotated;
-                }
-                return res;
-            });
-        };
-        // .then(run, run) : la file continue meme si l'appel precedent a
-        // echoue (reseau, 403...) — sinon un seul echec bloquerait tous les
-        // appels suivants indefiniment.
-        var next = window.REMISE_CSRF_QUEUE.then(run, run);
-        window.REMISE_CSRF_QUEUE = next.catch(function () {});
-        return next;
-    };
+    // window.remiseQueuedFetch : serialise les appels touchant le jeton CSRF
+    // a usage unique (defini par csrf-queue.js, charge avant ce script aussi
+    // bien sur remise_form.html.twig que sign_page.html.twig — cf. le
+    // commentaire de csrf-queue.js pour le detail du bug de course qu'il evite).
 
     // Endpoint/parametres additionnels surchargeables : la page de signature
     // (sign_page.html.twig) authentifie par jeton de signature (front/sign.php,
