@@ -69,19 +69,6 @@ msgstr "Signature on return (unassignment)"
 
 msgid "Déclenchement par État du matériel (optionnel)"
 msgstr "Triggered by asset State (optional)"
-
-msgid "Tous les GLPI n'utilisent pas les mêmes États : choisissez ici, parmi VOS États existants (Configuration > Listes déroulantes > États), ceux qui doivent déclencher une remise ou une restitution. Le bénéficiaire notifié reste l'utilisateur actuellement affecté au matériel."
-msgstr "Not every GLPI uses the same States: choose here, among YOUR existing States (Setup > Dropdowns > States), which ones should trigger a handover or a return. The notified beneficiary remains the user currently assigned to the asset."
-
-msgid "Aucun État n'est encore défini dans ce GLPI (Configuration > Listes déroulantes > États)."
-msgstr "No State has been defined yet in this GLPI (Setup > Dropdowns > States)."
-
-msgid "État(s) déclenchant une remise"
-msgstr "State(s) triggering a handover"
-
-msgid "État(s) déclenchant une restitution"
-msgstr "State(s) triggering a return"
-
 msgid "Enregistrer"
 msgstr "Save"
 
@@ -237,22 +224,6 @@ msgstr "Handover"
 
 msgid "Restitution"
 msgstr "Return"
-
-msgid "Fiche de restitution de matériel"
-msgstr "Equipment return form"
-
-msgid "Matériel restitué"
-msgstr "Returned asset"
-
-msgid "Fiche de remise de matériel"
-msgstr "Equipment handover form"
-
-msgid "Matériel remis"
-msgstr "Handed over asset"
-
-msgid "signée"
-msgstr "signed"
-
 msgid "Envoie les relances de signature dues"
 msgstr "Sends due signature reminders"
 
@@ -312,16 +283,8 @@ msgstr "The logo must be an image (PNG, JPG, GIF or WEBP)."
 
 msgid "Lien vers la charte informatique complète"
 msgstr "Link to the full IT charter"
-
-msgid "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit."
-msgstr "Optional: URL to an existing document or page (intranet, PDF already online...). If set, a clickable link appears on the PDF form, in addition to the charter text defined in the template."
-
 msgid "Aperçu de la fiche générée"
 msgstr "Preview of the generated form"
-
-msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. Le logo se met à jour dès que vous choisissez un fichier, avant même d'enregistrer."
-msgstr "Example with fictional data, same Twig templates as the real PDF. The logo updates as soon as you pick a file, even before saving."
-
 msgid "Utilisez le bouton \"lien\" de la barre d'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici."
 msgstr "Use the \"link\" toolbar button to point to an existing document (e.g. the full IT charter), rather than retyping everything here."
 
@@ -525,31 +488,8 @@ msgstr "Major"
 
 msgid "Cette fiche ne peut plus être modifiée."
 msgstr "This form can no longer be modified."
-
-msgid "Vue de face — écran ouvert"
-msgstr "Front view — screen open"
-
-msgid "Vue arrière — capot fermé"
-msgstr "Back view — lid closed"
-
-msgid "Côté gauche"
-msgstr "Left side"
-
-msgid "Côté droit"
-msgstr "Right side"
-
-msgid "Dessus — clavier"
-msgstr "Top — keyboard"
-
 msgid "Dessous"
 msgstr "Bottom"
-
-msgid "Écran (dalle)"
-msgstr "Screen (panel)"
-
-msgid "Clavier et pavé tactile"
-msgstr "Keyboard and trackpad"
-
 msgid "Fiche de maintenance"
 msgid_plural "Fiches de maintenance"
 msgstr[0] "Maintenance form"
@@ -580,13 +520,6 @@ msgstr "No item checked."
 
 msgid "Fiche de maintenance créée."
 msgstr "Maintenance form created."
-
-msgid "État(s) déclenchant un don"
-msgstr "State(s) triggering a donation"
-
-msgid "État(s) déclenchant une vente"
-msgstr "State(s) triggering a sale"
-
 msgid "Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée."
 msgstr "The price and date are not known automatically: to be filled in afterwards on the created form."
 

@@ -114,6 +114,70 @@ class DamageMarker extends CommonDBTM
         return $marker->delete(['id' => $id]);
     }
 
+    /**
+     * Traite une action d'ajout/modification/suppression de repere a partir
+     * des donnees POST brutes — partage par front/damagemarker.php
+     * (technicien, droit RIGHT_REMISE) et les actions de repere de
+     * front/sign.php (beneficiaire, jeton de signature) : ces deux points
+     * d'entree ne different QUE par la maniere dont $remise est autorisee,
+     * geree par l'appelant avant cet appel (ici, $remise est deja supposee
+     * verifiee et editable). Auparavant recopie a l'identique dans les deux
+     * front controllers ; extrait ici apres l'avoir remarque en cherchant
+     * du code mort/duplique dans tout le plugin.
+     *
+     * @return array{success: bool, error?: string, id?: int}
+     */
+    public static function handleMutationRequest(Remise $remise, array $post): array
+    {
+        if (isset($post['add'])) {
+            $viewIndex = (int) ($post['view_index'] ?? -1);
+            if ($viewIndex < 0 || $viewIndex >= self::VIEW_COUNT) {
+                return ['success' => false, 'error' => 'Vue invalide.'];
+            }
+            $id = self::addMarker(
+                $remise->getID(),
+                $viewIndex,
+                (float) ($post['x'] ?? 0),
+                (float) ($post['y'] ?? 0),
+                (string) ($post['description'] ?? ''),
+                (int) ($post['severity'] ?? self::SEVERITY_MINOR)
+            );
+            if ($id > 0) {
+                $remise->refreshDamageAnnotationPdf();
+            }
+            return ['success' => $id > 0, 'id' => $id];
+        }
+
+        if (isset($post['update'])) {
+            $changes = [];
+            if (isset($post['x']) && isset($post['y'])) {
+                $changes['x_percent'] = (float) $post['x'];
+                $changes['y_percent'] = (float) $post['y'];
+            }
+            if (isset($post['description'])) {
+                $changes['description'] = (string) $post['description'];
+            }
+            if (isset($post['severity'])) {
+                $changes['severity'] = (int) $post['severity'];
+            }
+            $success = self::updateMarker((int) ($post['id'] ?? 0), $remise->getID(), $changes);
+            if ($success) {
+                $remise->refreshDamageAnnotationPdf();
+            }
+            return ['success' => $success];
+        }
+
+        if (isset($post['delete'])) {
+            $success = self::deleteMarker((int) ($post['id'] ?? 0), $remise->getID());
+            if ($success) {
+                $remise->refreshDamageAnnotationPdf();
+            }
+            return ['success' => $success];
+        }
+
+        return ['success' => false, 'error' => 'Action inconnue.'];
+    }
+
     public static function install(Migration $migration): void
     {
         global $DB;
