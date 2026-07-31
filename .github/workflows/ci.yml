@@ -43,26 +43,45 @@ jobs:
           docker run -d --name glpi --network remise-ci \
             -e TIMEZONE=Europe/Paris \
             -e GLPI_DB_HOST=mariadb \
+            -e GLPI_DB_PORT=3306 \
             -e GLPI_DB_NAME=glpidb \
             -e GLPI_DB_USER=glpi_user \
             -e GLPI_DB_PASSWORD=glpi_password \
             "$GLPI_IMAGE"
 
-          echo "Attente que le noyau GLPI soit pret (auto-installation en cours)..."
+          # Piege reel rencontre au premier lancement de ce workflow :
+          # GLPI_DB_PORT manquant faisait considerer la config DB comme
+          # "incomplete" par l'entrypoint de l'image, qui desactivait alors
+          # silencieusement l'auto-installation (GLPI_SKIP_AUTOINSTALL force
+          # a true) — le noyau GLPI demarre quand meme sans DB configuree,
+          # donc une simple verification "le noyau demarre" ne suffit pas a
+          # detecter ce cas : on attend explicitement le fichier que
+          # l'auto-installation cree en dernier (config_db.php), avec un
+          # arret net et les logs du conteneur si ca n'arrive jamais.
+          echo "Attente que l'auto-installation de GLPI soit terminee..."
+          ready=0
           for i in $(seq 1 60); do
-            docker exec glpi php -r "
-              require '/var/www/glpi/vendor/autoload.php';
-              \$k = new \Glpi\Kernel\Kernel('production');
-              \$k->boot();
-              echo 'ready';
-            " 2>/dev/null | grep -q ready && break
+            docker exec glpi test -f /var/glpi/config/config_db.php && { ready=1; break; }
             sleep 5
           done
+          if [ "$ready" != "1" ]; then
+            echo "::error::GLPI n'a jamais termine son auto-installation (config_db.php absent)."
+            docker logs glpi --tail 200
+            exit 1
+          fi
 
       - name: Copie le plugin dans le conteneur GLPI
         run: |
           docker exec glpi mkdir -p /var/www/glpi/plugins/remise
           docker cp ./. glpi:/var/www/glpi/plugins/remise
+          # Les fichiers copies appartiennent a root (l'utilisateur du
+          # checkout), pas www-data (l'utilisateur sous lequel tourne PHP
+          # dans ce conteneur, cf. les autres `docker exec` sans -u) : sans ce
+          # chown, composer install echoue plus loin en tentant de creer de
+          # nouveaux dossiers dans vendor/ ("does not exist and could not be
+          # created" alors meme que le dossier a bien les droits d'ecriture
+          # pour son PROPRE proprietaire root, juste pas pour www-data).
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/remise
 
       - name: Lint PHP
         run: |
@@ -73,6 +92,29 @@ jobs:
               php -l "$f" > /tmp/lintout 2>&1 || { cat /tmp/lintout; fail=1; }
             done
             exit $fail
+          '
+
+      - name: Installe les dépendances de dev du plugin (PHPUnit)
+        # Le vendor/ commite dans le depot n'embarque volontairement QUE les
+        # dependances de production (cf. README, section Prerequis) : PHPUnit
+        # n'y est jamais present, il faut le recuperer ici. composer n'est pas
+        # fourni par l'image glpi/glpi -> installe a la volee dans /tmp.
+        # COMPOSER_HOME doit deja exister et etre exporte AVANT meme le script
+        # d'installation de composer.phar lui-meme (pas seulement pour
+        # `composer install` ensuite) : sans ca, ce script tente d'ecrire dans
+        # le HOME par defaut de www-data, non inscriptible dans ce conteneur.
+        run: |
+          docker exec glpi sh -c '
+            export COMPOSER_HOME=/tmp/composer-home
+            mkdir -p "$COMPOSER_HOME"
+            cd /tmp
+            php -r "copy(\"https://getcomposer.org/installer\", \"composer-setup.php\");"
+            php composer-setup.php --install-dir=/tmp --filename=composer.phar
+          '
+          docker exec glpi sh -c '
+            export COMPOSER_HOME=/tmp/composer-home
+            cd /var/www/glpi/plugins/remise
+            php /tmp/composer.phar install --no-interaction --prefer-dist
           '
 
       - name: Installe et active le plugin
