@@ -77,6 +77,24 @@
         }).then(function (res) { return res.json(); });
     }
 
+    // Message d'erreur transitoire (pas de panneau ouvert dans ce cas : glisser
+    // un repere, ou en ajouter un nouveau) : affiche sous la vue concernee,
+    // disparait tout seul apres quelques secondes.
+    function showTransientError(container, message) {
+        var wrapper = container.parentElement;
+        var existing = wrapper.querySelector('.damage-marker-panel-error');
+        if (existing) {
+            existing.remove();
+        }
+        var el = document.createElement('p');
+        el.className = 'damage-marker-panel-error';
+        el.textContent = message;
+        wrapper.appendChild(el);
+        window.setTimeout(function () {
+            el.remove();
+        }, 4000);
+    }
+
     function percentFromEvent(container, clientX, clientY) {
         var rect = container.getBoundingClientRect();
         var x = ((clientX - rect.left) / rect.width) * 100;
@@ -103,11 +121,17 @@
         var remisesId = container.dataset.remiseId;
         var dragging = false;
         var moved = false;
+        var dragStartLeft = null;
+        var dragStartTop = null;
 
         marker.addEventListener('mousedown', function (evt) {
             evt.stopPropagation();
             dragging = true;
             moved = false;
+            // Position de depart, pour pouvoir remettre le repere a sa place
+            // si l'enregistrement du deplacement echoue cote serveur.
+            dragStartLeft = marker.style.left;
+            dragStartTop = marker.style.top;
         });
 
         document.addEventListener('mousemove', function (evt) {
@@ -127,7 +151,22 @@
             dragging = false;
             if (moved) {
                 var pos = percentFromEvent(container, evt.clientX, evt.clientY);
-                post('update', { id: marker.dataset.id, remises_id: remisesId, x: pos.x, y: pos.y });
+                // Bug reel corrige ici : la reponse n'etait jamais verifiee, le
+                // repere restait visuellement a sa nouvelle position (deja
+                // deplace par mousemove ci-dessus) meme quand l'enregistrement
+                // echouait cote serveur — meme illusion de succes que le
+                // panneau d'edition, cf. commentaire de showPanelError().
+                post('update', { id: marker.dataset.id, remises_id: remisesId, x: pos.x, y: pos.y }).then(function (data) {
+                    if (!data.success) {
+                        marker.style.left = dragStartLeft;
+                        marker.style.top = dragStartTop;
+                        showTransientError(container, (window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
+                    }
+                }).catch(function () {
+                    marker.style.left = dragStartLeft;
+                    marker.style.top = dragStartTop;
+                    showTransientError(container, window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
+                });
             } else {
                 openMarkerPanel(container, marker);
             }
@@ -227,7 +266,15 @@
                 .then(function (data) {
                     if (data.success) {
                         createMarkerElement(container, data.id, pos.x, pos.y, '', 0);
+                    } else {
+                        // Meme principe que les deux autres correctifs de ce fichier :
+                        // sans ca, un clic qui echoue (fiche plus editable, jeton
+                        // perime...) ne fait simplement rien, sans que l'utilisateur
+                        // sache si son clic a ete pris en compte ou non.
+                        showTransientError(container, (window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
                     }
+                }).catch(function () {
+                    showTransientError(container, window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
                 });
         });
     });
