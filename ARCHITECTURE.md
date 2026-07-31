@@ -1,0 +1,87 @@
+# Architecture
+
+Ce document s'adresse à qui veut comprendre comment le plugin est construit, contribuer au code, ou faire tourner sa suite de tests — pas à l'utilisateur final (voir plutôt le [README](README.md) pour l'installation et l'usage). Pour les pièges rencontrés et leurs correctifs, voir [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
+
+## Sommaire
+
+- [Structure du plugin](#structure-du-plugin)
+- [Vue d'ensemble des sous-systèmes](#vue-densemble-des-sous-systèmes)
+- [Sécurité et qualité du dépôt](#sécurité-et-qualité-du-dépôt)
+- [Tests automatisés](#tests-automatisés)
+
+## Structure du plugin
+
+```
+remise/
+├── composer.json           # dépendance Dompdf (vendor/ commité, voir README > Prérequis)
+├── setup.php / hook.php    # déclaration, hooks, install/uninstall
+├── update.sh               # migration + vidage de cache en une commande (voir README > Mettre à jour le plugin)
+├── src/GlpiPlugin/Remise/  # classes métier (PSR-4)
+│   ├── Workflow/            # WorkflowTypeInterface/Registry + un type = une classe (Handover, Return, Don, Vente...)
+│   ├── Notification/        # contenu par défaut des e-mails (DefaultNotificationContent)
+│   ├── Pdf/                 # génération du PDF (Dompdf)
+│   ├── Provider/             # fournisseurs de signature (canvas natif, point d'extension)
+│   ├── Maintenance.php, MaintenanceChecklistItem.php  # sous-système séparé (checklist interne, non signée)
+│   ├── VenteDetails.php, DamageMarker.php             # données spécifiques Vente / état des lieux visuel
+│   └── Api/SignController.php                          # logique partagée par front/sign.php
+├── front/                  # contrôleurs (remise, template, config, sign public, maintenance, damagemarker AJAX)
+├── templates/               # gabarits Twig (admin + PDF + page de signature)
+├── public/                  # ressources statiques (obligatoire depuis GLPI 11, cf. TROUBLESHOOTING.md)
+│   ├── js/sign/              # signature_pad.js, PDF.js, sign.js, damage-annotation.js, csrf-queue.js
+│   ├── css/                  # feuille de style des pages d'administration du plugin
+│   └── images/damage-views/  # 3 vraies vues de référence pour l'état des lieux visuel (JPG)
+├── locales/                 # traductions (fr_FR, en_GB)
+└── tests/                   # suite PHPUnit (voir "Tests automatisés" plus bas)
+```
+
+## Vue d'ensemble des sous-systèmes
+
+- **`Remise`** est la classe centrale : une ligne = une fiche (remise, restitution, don ou vente), avec son propre cycle de vie de statuts (`DRAFT` → `PENDING` → `SENT` → `VIEWED` → `SIGNED`, ou `EXPIRED`/`CANCELLED`). Deux mécanismes de déclenchement automatique cohabitent (`handleUserBasedTrigger()` par affectation d'utilisateur, `handleStateBasedTrigger()` par changement d'État), plus un canal manuel restreint (`createManual()`, réservé à Don/Vente via `MANUALLY_CREATABLE_TYPES`).
+- **`Maintenance`/`MaintenanceChecklistItem`** forment un sous-système **délibérément séparé** de `Remise` : pas de bénéficiaire, pas de jeton, pas de signature, pas de PDF — juste un technicien qui remplit une checklist configurable (case à cocher / texte libre / menu déroulant par point).
+- **`Provider\SignatureProviderInterface`** abstrait le prestataire de signature. Seul `CanvasProvider` (signature à l'écran, aucun service externe) est réellement implémenté ; l'interface reste en place comme point d'extension pour un futur fournisseur externe (Yousign, DocuSeal...).
+- **`Token`** gère le jeton de signature à usage unique : seul son hash SHA-256 est stocké en base, jamais le jeton en clair — une relance en génère toujours un nouveau plutôt que de "renvoyer" l'ancien.
+- **`Api\SignController`** porte toute la logique de `front/sign.php` (page publique de signature) : validation du jeton, vérification que l'utilisateur connecté est bien le bénéficiaire, soumission de la signature.
+- **`Workflow\WorkflowTypeRegistry`** centralise ce qui varie par type de fiche (libellés, titres de PDF, texte par défaut d'un gabarit) — un nouveau type s'ajoute en créant une classe `WorkflowTypeInterface` plutôt qu'en dispersant des `match($type)` dans tout le code.
+- **`Pdf\HandoverPdfBuilder`** génère à la fois le vrai PDF et son aperçu en direct (`renderPreview()`, avec un mécanisme d'overrides pour prévisualiser un réglage pas encore enregistré) — les deux passent par les mêmes gabarits Twig, garantissant que l'aperçu ressemble à 100% au document réel.
+
+## Sécurité et qualité du dépôt
+
+Le dépôt GitHub (public) a les protections suivantes activées :
+
+- **Dependabot** : alertes de vulnérabilité + correctifs de sécurité automatiques sur les dépendances (`composer.json`), et mises à jour hebdomadaires proposées en Pull Request pour les dépendances Composer et les actions GitHub utilisées par le CI (`.github/dependabot.yml`).
+- **Secret scanning + push protection** : détecte les secrets (clés API, jetons...) déjà commités, et **bloque le push** d'un nouveau secret détecté avant même qu'il n'atteigne le dépôt.
+- **Protection de la branche `main`** : toute modification par un compte qui n'est **pas administrateur** du dépôt doit passer par une Pull Request avec au moins une revue approuvée — un compte compromis ou un collaborateur ajouté par erreur ne peut pas pousser directement sur `main`. Les administrateurs (le propriétaire du dépôt) continuent de pousser directement, sans changement de flux de travail. **Limite connue** : GitHub ne permet de restreindre le push à une liste nominative de comptes que sur un dépôt d'organisation, pas un compte personnel — la protection ici passe donc par l'exigence de Pull Request plutôt que par une liste blanche explicite.
+- **CodeQL (analyse de code statique)** envisagé mais **non applicable** : PHP ne fait pas partie des langages supportés par CodeQL (seuls C/C++, C#, Go, Java/Kotlin, JavaScript/TypeScript, Python, Ruby et Swift le sont) — l'action `github/codeql-action` échoue explicitement ("Did not recognize the following languages: php") si on l'utilise malgré tout.
+- **SECURITY.md** : procédure de signalement d'une vulnérabilité via un avis de sécurité privé GitHub plutôt qu'une issue publique.
+- **Workflow recommandé pour toute contribution** : une branche `dev` existe pour accumuler le travail en cours ; les changements y sont poussés puis fusionnés vers `main` via Pull Request une fois la CI verte, plutôt que d'être poussés directement sur `main`.
+
+## Tests automatisés
+
+**Intégration continue (`.github/workflows/ci.yml`)** : à chaque push et pull request, une action GitHub relance automatiquement le lint PHP puis la suite PHPUnit ci-dessous, dans un environnement jetable (conteneurs `glpi/glpi:11.0.7` + `mariadb:11`, reconstruit à chaque exécution) — reproduit fidèlement l'environnement de test utilisé manuellement en développement.
+
+Le socle PHPUnit (`phpunit.xml`, `tests/bootstrap.php`) démarre un vrai noyau GLPI (`Glpi\Kernel\Kernel`) — GLPI 11 n'a plus de bootstrap léger, `inc/includes.php` ne fait plus que des vérifications de rétrocompatibilité. C'est le même mécanisme que `bin/console`, ça donne accès à une vraie connexion DB, à l'autoload des classes GLPI/plugin et aux `PLUGIN_HOOKS`, sans dépendre d'une requête HTTP.
+
+**⚠️ À lancer uniquement contre une instance GLPI dédiée aux tests, jamais en production.** La plupart des tests écrivent en base (création d'entités, de configuration...) ; ils sont enveloppés dans une transaction annulée en `tearDown()` (`RemiseTestCase`), mais ce n'est pas un filet de sécurité absolu — une requête qui déclencherait un COMMIT implicite (DDL) y échapperait.
+
+Installation et lancement (le plugin doit déjà être installé et actif sur l'instance de test) :
+```bash
+docker exec -u www-data <container_glpi> sh -c "cd /var/www/glpi/plugins/remise && composer install"
+docker exec -u www-data <container_glpi> sh -c "cd /var/www/glpi/plugins/remise && vendor/bin/phpunit"
+```
+Si le plugin n'est pas installé dans `<glpi>/plugins/remise/` (donc à 3 niveaux sous la racine GLPI), définissez `GLPI_ROOT_DIR` :
+```bash
+GLPI_ROOT_DIR=/chemin/vers/glpi vendor/bin/phpunit
+```
+
+Ce qui est couvert aujourd'hui :
+- `ConfigTest` : héritage de configuration par entité (une entité sans config propre hérite de son ancêtre le plus proche, pas directement de la racine ; une config directe prend le pas sur celle d'un ancêtre).
+- `TemplateTest` : repli sur le gabarit par défaut de l'entité racine, et absence de plantage quand aucun gabarit n'existe pour un type donné.
+- `SignatureImageValidatorTest` : rejet d'un canevas vide/transparent, d'un format invalide, d'une image trop petite ; acceptance d'un vrai tracé — logique pure (GD), aucun accès base.
+- `RemiseTest` : garde-fous de `createManual()` (types automatiques rejetés, matériel introuvable) ; création manuelle Don/Vente jusqu'au bout (`launchWorkflow()` réellement exécuté : vrai PDF généré, statut `SENT`, `VenteDetails` avec prix/date) ; `isStillEditable()` avant/après signature ; les deux mécanismes de déclenchement automatique (par affectation d'utilisateur, y compris désactivé par la configuration, et par changement d'État) ; annulation automatique d'une remise encore en attente lors d'une réaffectation (`cancelPendingRemisesFor()`) ; `updateObservations()`/`updateBeneficiaryComment()` ; ajout/retrait d'accessoire ; `updateVenteDetails()`/`VenteDetails::upsertForRemise()` ; `cancelRequest()`.
+- `MaintenanceTest` : les trois types de saisie d'un point de contrôle (case à cocher/texte libre/menu déroulant) via `getActiveChecklistItems()`/`createWithChecklist()`/`getChecklistResults()`.
+- `TokenTest` : cycle de vie complet du jeton de signature à usage unique (création, validation, expiration, jeton déjà utilisé, régénération invalidant l'ancien, désactivation après `MAX_ATTEMPTS` tentatives).
+- `DamageMarkerTest` : CRUD des repères d'état des lieux, contrôle d'appartenance à la bonne remise (sécurité), forme stable de `getCanonicalViewLabels()`, régénération réelle du PDF via `handleMutationRequest()`.
+- `RemiseCronTest` : logique de dates de `runReminders()`/`runExpiration()`/`runExpiryWarnings()` (délai/validité/fenêtre d'alerte, `max_reminders`, alerte non renvoyée deux fois, désactivable par entité) et garde-fou de `sendReminderNow()`.
+- `SignControllerTest` : contrôle d'identité de la page de signature (`assertCurrentUserIsBeneficiary()`) — refus si personne n'est connecté ou si l'utilisateur connecté n'est pas le bénéficiaire de CETTE remise précise.
+
+Couverture volontairement partielle au-delà de cette liste (actions groupées `MassiveAction`, notifications, contrôleurs `front/*.php` eux-mêmes) — à étendre au fil des évolutions. Voir [TROUBLESHOOTING.md](TROUBLESHOOTING.md) pour le piège de cache Twig rencontré en testant.
