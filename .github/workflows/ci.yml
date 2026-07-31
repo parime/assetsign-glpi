@@ -1,0 +1,88 @@
+name: CI
+
+# Reproduit exactement l'environnement de test utilise manuellement en
+# developpement (image officielle glpi/glpi + MariaDB, cf. README section
+# Tests automatises) : lint PHP, migration reelle du plugin, puis PHPUnit.
+# Sans ce fichier, la seule verification avant un push etait manuelle (lancee
+# a la main dans un conteneur Docker local) -- rien ne la relancait
+# automatiquement, ni n'alertait en cas d'oubli.
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  GLPI_IMAGE: glpi/glpi:11.0.7
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupère le code du plugin
+        uses: actions/checkout@v4
+
+      - name: Démarre MariaDB
+        run: |
+          docker network create remise-ci
+          docker run -d --name mariadb --network remise-ci \
+            -e MARIADB_ROOT_PASSWORD=glpi_password \
+            -e MARIADB_DATABASE=glpidb \
+            -e MARIADB_USER=glpi_user \
+            -e MARIADB_PASSWORD=glpi_password \
+            mariadb:11
+
+          echo "Attente que MariaDB accepte les connexions..."
+          for i in $(seq 1 30); do
+            docker exec mariadb mariadb-admin ping -h 127.0.0.1 -u root -pglpi_password --silent && break
+            sleep 2
+          done
+
+      - name: Démarre GLPI (auto-installation via l'image officielle)
+        run: |
+          docker run -d --name glpi --network remise-ci \
+            -e TIMEZONE=Europe/Paris \
+            -e GLPI_DB_HOST=mariadb \
+            -e GLPI_DB_NAME=glpidb \
+            -e GLPI_DB_USER=glpi_user \
+            -e GLPI_DB_PASSWORD=glpi_password \
+            "$GLPI_IMAGE"
+
+          echo "Attente que le noyau GLPI soit pret (auto-installation en cours)..."
+          for i in $(seq 1 60); do
+            docker exec glpi php -r "
+              require '/var/www/glpi/vendor/autoload.php';
+              \$k = new \Glpi\Kernel\Kernel('production');
+              \$k->boot();
+              echo 'ready';
+            " 2>/dev/null | grep -q ready && break
+            sleep 5
+          done
+
+      - name: Copie le plugin dans le conteneur GLPI
+        run: |
+          docker exec glpi mkdir -p /var/www/glpi/plugins/remise
+          docker cp ./. glpi:/var/www/glpi/plugins/remise
+
+      - name: Lint PHP
+        run: |
+          docker exec glpi sh -c '
+            cd /var/www/glpi/plugins/remise
+            fail=0
+            for f in $(find src front -name "*.php"); do
+              php -l "$f" > /tmp/lintout 2>&1 || { cat /tmp/lintout; fail=1; }
+            done
+            exit $fail
+          '
+
+      - name: Installe et active le plugin
+        run: |
+          docker exec glpi php bin/console plugin:install remise --force --no-interaction
+          docker exec glpi php bin/console plugin:activate remise --no-interaction
+
+      - name: Lance PHPUnit
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/remise && vendor/bin/phpunit"
+
+      - name: Logs GLPI (en cas d'échec)
+        if: failure()
+        run: docker logs glpi --tail 200
