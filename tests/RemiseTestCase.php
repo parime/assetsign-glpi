@@ -106,4 +106,42 @@ abstract class RemiseTestCase extends TestCase
         $computer->getFromDB($id);
         return $computer;
     }
+
+    /**
+     * Cree une Remise minimale par insertion directe (pas via createManual()/
+     * createRemise(), qui appellent launchWorkflow() et generent un vrai PDF) :
+     * pour les tests dont la logique testee ne depend pas du PDF/du workflow
+     * (Token, DamageMarker, Reminder...), evite le cout et les effets de bord
+     * d'une generation PDF a chaque test.
+     */
+    protected function createBareRemise(int $entitiesId, int $type = 0, int $status = 1, int $usersId = 2): \GlpiPlugin\Remise\Remise
+    {
+        $remise = new \GlpiPlugin\Remise\Remise();
+        $id = (int) $remise->add([
+            'entities_id' => $entitiesId,
+            'itemtype'    => 'Computer',
+            'items_id'    => 1,
+            'users_id'    => $usersId,
+            'type'        => $type,
+            'status'      => $status,
+        ]);
+        $remise->getFromDB($id);
+        return $remise;
+    }
+
+    /**
+     * Vide toutes les remises actuellement en attente de signature (SENT/VIEWED),
+     * a l'interieur de la transaction du test en cours (donc sans effet reel,
+     * annule au tearDown) : necessaire avant de tester runReminders()/
+     * runExpiration()/runExpiryWarnings(), qui parcourent TOUTE la table sans
+     * filtre d'entite — sans ce nettoyage, d'anciennes remises de tests
+     * manuels deja presentes fausseraient le compte retourne.
+     */
+    protected function clearAwaitingSignatureRemises(): void
+    {
+        global $DB;
+        $DB->update('glpi_plugin_remise_remises', ['status' => \GlpiPlugin\Remise\Remise::STATUS_CANCELLED], [
+            'status' => \GlpiPlugin\Remise\Remise::STATUSES_AWAITING_SIGNATURE,
+        ]);
+    }
 }
