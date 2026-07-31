@@ -161,15 +161,36 @@
 
         container.parentElement.appendChild(panel);
 
+        // Message d'erreur affiche DANS le panneau (pas une alerte bloquante) :
+        // le panneau reste ouvert avec la description deja saisie, l'utilisateur
+        // n'a qu'a reessayer plutot que tout retaper.
+        function showPanelError(message) {
+            var existingError = panel.querySelector('.damage-marker-panel-error');
+            if (!existingError) {
+                existingError = document.createElement('p');
+                existingError.className = 'damage-marker-panel-error';
+                panel.appendChild(existingError);
+            }
+            existingError.textContent = message;
+        }
+
         panel.querySelector('.damage-marker-save').addEventListener('click', function () {
             var description = panel.querySelector('.damage-marker-desc').value;
             var severity = panel.querySelector('.damage-marker-severity').value;
             post('update', { id: marker.dataset.id, remises_id: remisesId, description: description, severity: severity }).then(function (data) {
+                // Bug reel corrige ici : le panneau se fermait avant meme en cas
+                // d'echec (jeton CSRF perime, fiche plus editable...), donnant
+                // l'illusion que la description avait ete enregistree alors
+                // qu'elle ne l'etait pas — constate en conditions reelles.
                 if (data.success) {
                     marker.title = description;
                     marker.classList.toggle('damage-marker-major', severity === '1');
+                    panel.remove();
+                } else {
+                    showPanelError((window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
                 }
-                panel.remove();
+            }).catch(function () {
+                showPanelError(window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
             });
         });
 
@@ -177,8 +198,12 @@
             post('delete', { id: marker.dataset.id, remises_id: remisesId }).then(function (data) {
                 if (data.success) {
                     marker.remove();
+                    panel.remove();
+                } else {
+                    showPanelError((window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
                 }
-                panel.remove();
+            }).catch(function () {
+                showPanelError(window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
             });
         });
     }

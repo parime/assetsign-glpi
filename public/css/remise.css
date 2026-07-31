@@ -53,14 +53,18 @@
     margin-left: -8px;
     margin-top: -8px;
     border-radius: 50%;
-    background: rgba(220, 50, 50, 0.75);
+    /* Mineure (par defaut) : jaune. Majeure : rouge, cf. .damage-marker-major
+       ci-dessous — deux couleurs distinctes plutot que deux nuances de rouge,
+       pour reperer la gravite d'un coup d'œil sans avoir a cliquer sur chaque
+       repere. */
+    background: rgba(240, 180, 20, 0.9);
     border: 2px solid #fff;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     cursor: grab;
 }
 
 .damage-marker-major {
-    background: rgba(150, 0, 0, 0.85);
+    background: rgba(210, 40, 40, 0.9);
 }
 
 .damage-marker-panel {
@@ -72,6 +76,12 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+.damage-marker-panel-error {
+    color: #b7472a;
+    font-size: 0.82rem;
+    margin: 2px 0 0;
 }
 
 .damage-marker-panel-actions {
