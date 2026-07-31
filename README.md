@@ -79,13 +79,12 @@ Le dossier `vendor/` (Dompdf et ses dépendances, ~14 Mo, dépendances de produc
 
 ### 1. Récupérer le code sur le serveur GLPI
 
-Le dépôt étant privé, il faut vous authentifier sur le serveur GLPI cible :
+Le dépôt est public : un simple `git clone` suffit, sans authentification :
 
 ```bash
 cd /chemin/vers/glpi/plugins
 git clone https://github.com/parime/remise-glpi.git remise
 ```
-Quand git demande vos identifiants : le nom d'utilisateur importe peu, le mot de passe doit être un [token d'accès personnel](https://github.com/settings/tokens?type=beta) GitHub (accès en lecture seule sur ce dépôt suffit) — GitHub n'accepte plus les mots de passe classiques pour les opérations git.
 
 Important : le dossier doit impérativement s'appeler **`remise`** — GLPI déduit la clé du plugin (`plugin_version_remise()`, etc.) du nom du dossier dans `plugins/`.
 
@@ -157,7 +156,7 @@ Chaque carte renvoie vers la liste filtrée correspondante en un clic, et respec
 
 ## Mettre à jour le plugin
 
-Une modification du code (nouvelle fonctionnalité, correctif) ne se signale jamais automatiquement côté GLPI — le dépôt est privé, hors du Marketplace officiel. La marche à suivre :
+Une modification du code (nouvelle fonctionnalité, correctif) ne se signale jamais automatiquement côté GLPI — ce dépôt est hors du Marketplace officiel. La marche à suivre :
 
 1. Sur le serveur GLPI : `cd plugins/remise && git pull` (ou re-téléchargez l'archive ZIP en remplaçant le dossier).
 2. Lancez `sh update.sh` (depuis `plugins/remise/`) : ce script regroupe les trois étapes qu'il est facile d'oublier ou de faire dans le mauvais ordre — migration de la base (`plugin:install --force`, sans risque si déjà à jour), réactivation, et vidage du cache GLPI (`cache:clear`).
@@ -166,6 +165,16 @@ Le détail de ce que fait `update.sh`, et pourquoi chaque étape est nécessaire
 - **Migration de la base** (`php bin/console plugin:install remise --force`) : nécessaire si le changement ajoute une table ou un champ. GLPI ne le fait jamais tout seul après un simple remplacement de fichiers, même si le numéro de version dans `setup.php` (`PLUGIN_REMISE_VERSION`) a été incrémenté (il l'est systématiquement à chaque changement de structure) — sans cette étape, GLPI affiche bien le plugin comme "à mettre à jour" sur **Configuration > Plugins**, mais les nouvelles tables/colonnes n'existent pas tant que le bouton (ou cette commande) n'a pas été actionné.
 - **Vidage du cache** (`php bin/console cache:clear`) : indispensable dès qu'un fichier `.twig` a changé (gabarit de PDF, de page de configuration, d'e-mail...). En environnement de production réel (pas un `git clone` sur poste de dev), GLPI désactive volontairement l'auto-rechargement de Twig (`Glpi\Application\Environment::shouldExpectResourcesToChange()` renvoie `false`) : sans ce vidage, l'ancienne version compilée du gabarit continue d'être servie indéfiniment, **sans aucune erreur ni avertissement** — le nouveau fichier est bien sur le disque, mais jamais rendu. Piège rencontré en conditions réelles (constaté après une mise à jour où la page de configuration affichait encore l'ancien texte d'aperçu, sans aucun onglet, malgré un `git pull` réussi et le bon numéro de version sur disque) et documenté plus loin (section Tests).
 - **OPcache**, si activé sur le serveur (fréquent en production, indépendant du cache GLPI ci-dessus) : `update.sh` tente désormais de le vider automatiquement lui-même (3 essais avec courte pause) en appelant `front/opcache_reset.php` juste après la réactivation du plugin — ce endpoint s'exécute dans le pool web (Apache/PHP-FPM), où OPcache est une mémoire réellement partagée entre tous les workers, contrairement au processus CLI de `update.sh` lui-même. Si cet appel échoue (serveur web injoignable en `localhost`, `curl`/`wget` absents...), `update.sh` l'indique clairement et affiche alors le rappel habituel : un redémarrage manuel de PHP-FPM/Apache peut rester nécessaire pour que le nouveau **code PHP** soit réellement rechargé (droits root généralement requis, `update.sh` ne peut pas le faire lui-même dans ce cas).
+
+## Sécurité et qualité du dépôt
+
+Le dépôt GitHub (public) a les protections suivantes activées :
+
+- **Dependabot** : alertes de vulnérabilité + correctifs de sécurité automatiques sur les dépendances (`composer.json`), et mises à jour hebdomadaires proposées en Pull Request pour les dépendances Composer et les actions GitHub utilisées par le CI (`.github/dependabot.yml`).
+- **Secret scanning + push protection** : détecte les secrets (clés API, jetons...) déjà commités, et **bloque le push** d'un nouveau secret détecté avant même qu'il n'atteigne le dépôt.
+- **Protection de la branche `main`** : toute modification par un compte qui n'est **pas administrateur** du dépôt doit passer par une Pull Request avec au moins une revue approuvée — un compte compromis ou un collaborateur ajouté par erreur ne peut pas pousser directement sur `main`. Les administrateurs (le propriétaire du dépôt) continuent de pousser directement, sans changement de flux de travail. **Limite connue** : GitHub ne permet de restreindre le push à une liste nominative de comptes que sur un dépôt d'organisation, pas un compte personnel — la protection ici passe donc par l'exigence de Pull Request plutôt que par une liste blanche explicite.
+- **CodeQL (analyse de code statique)** envisagé mais **non applicable** : PHP ne fait pas partie des langages supportés par CodeQL (seuls C/C++, C#, Go, Java/Kotlin, JavaScript/TypeScript, Python, Ruby et Swift le sont) — l'action `github/codeql-action` échoue explicitement ("Did not recognize the following languages: php") si on l'utilise malgré tout.
+- **SECURITY.md** : procédure de signalement d'une vulnérabilité via un avis de sécurité privé GitHub plutôt qu'une issue publique.
 
 ## Tests automatisés
 
