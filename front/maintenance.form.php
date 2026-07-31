@@ -17,7 +17,7 @@ if (isset($_POST['create'])) {
         Html::displayNotFoundError();
     }
 
-    $checklist = array_map('intval', $_POST['checklist'] ?? []);
+    $checklist = is_array($_POST['checklist'] ?? null) ? $_POST['checklist'] : [];
     Maintenance::createWithChecklist($itemtype, $items_id, (int) $target->fields['entities_id'], $checklist, (string) ($_POST['comment'] ?? ''));
 
     Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'remise'));

@@ -14,10 +14,10 @@
     </table>
 
     <h3 class="mt-4">{{ __('Points de contrôle validés', 'remise') }}</h3>
-    {% if checked_names|length %}
+    {% if checklist_results|length %}
       <ul>
-        {% for name in checked_names %}
-          <li>{{ name }}</li>
+        {% for result in checklist_results %}
+          <li>{{ result.name }}{% if result.value is not null and result.value != '' %} : {{ result.value }}{% endif %}</li>
         {% endfor %}
       </ul>
     {% else %}

@@ -580,3 +580,21 @@ msgstr "Note saved."
 
 msgid "Remarque du bénéficiaire"
 msgstr "Beneficiary's note"
+
+msgid "Type de saisie"
+msgstr "Input type"
+
+msgid "Case à cocher"
+msgstr "Checkbox"
+
+msgid "Texte libre"
+msgstr "Free text"
+
+msgid "Menu déroulant"
+msgstr "Dropdown menu"
+
+msgid "Options du menu déroulant (une par ligne)"
+msgstr "Dropdown menu options (one per line)"
+
+msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
+msgstr "Only used if the input type is \"Dropdown menu\"."
