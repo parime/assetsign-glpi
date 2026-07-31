@@ -82,7 +82,11 @@ class Remise extends CommonDBTM
 
     public static function getIcon(): string
     {
-        return 'ti ti-file-signature';
+        // 'ti-file-signature' n'existe pas dans la version de Tabler Icons
+        // livree avec GLPI 11 (verifie directement dans public/lib/tabler.css) :
+        // l'icone du menu Outils > Remises restait silencieusement vide, sans
+        // la moindre erreur. 'ti-signature' existe bien.
+        return 'ti ti-signature';
     }
 
     /**
