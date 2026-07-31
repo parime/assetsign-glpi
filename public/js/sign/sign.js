@@ -103,8 +103,22 @@
         post('sign', { signature: signaturePad.toDataURL('image/png') }).then(function (data) {
             if (data.success) {
                 var homeUrl = (window.REMISE_ROOT_DOC || '') + '/front/central.php';
-                document.body.innerHTML = '<div class="wrap"><div class="card"><p>' + window.REMISE_I18N.signedOk
-                    + '</p><p><a href="' + homeUrl + '">' + window.REMISE_I18N.backToHome + '</a></p></div></div>';
+                var wrap = document.createElement('div');
+                wrap.className = 'wrap';
+                var card = document.createElement('div');
+                card.className = 'card';
+                var p1 = document.createElement('p');
+                p1.textContent = window.REMISE_I18N.signedOk;
+                var p2 = document.createElement('p');
+                var link = document.createElement('a');
+                link.href = homeUrl;
+                link.textContent = window.REMISE_I18N.backToHome;
+                p2.appendChild(link);
+                card.appendChild(p1);
+                card.appendChild(p2);
+                wrap.appendChild(card);
+                document.body.textContent = '';
+                document.body.appendChild(wrap);
             } else {
                 statusMsg.textContent = window.REMISE_I18N.errorPrefix + ' : ' + data.error;
                 btnSubmit.disabled = false;
