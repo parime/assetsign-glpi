@@ -63,23 +63,9 @@
     var endpoint = window.REMISE_DAMAGE_ENDPOINT || ((window.REMISE_ROOT_DOC || '') + '/plugins/remise/front/damagemarker.php');
     var extraParams = window.REMISE_DAMAGE_EXTRA_PARAMS || {};
 
-    function post(action, params) {
-        return window.remiseQueuedFetch(endpoint, function () {
-            var body = new URLSearchParams(Object.assign({}, extraParams, {
-                _glpi_csrf_token: window.REMISE_CSRF_TOKEN
-            }, params));
-            body.set(action, '1');
-            return {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: body.toString()
-            };
-        }).then(function (res) { return res.json(); });
-    }
-
-    // Message d'erreur transitoire (pas de panneau ouvert dans ce cas : glisser
-    // un repere, ou en ajouter un nouveau) : affiche sous la vue concernee,
-    // disparait tout seul apres quelques secondes.
+    // Message d'erreur transitoire (pas de panneau ouvert : glisser un repere,
+    // ou en ajouter un nouveau) : affiche sous la vue concernee, disparait
+    // tout seul apres quelques secondes.
     function showTransientError(container, message) {
         var wrapper = container.parentElement;
         var existing = wrapper.querySelector('.damage-marker-panel-error');
@@ -93,6 +79,56 @@
         window.setTimeout(function () {
             el.remove();
         }, 4000);
+    }
+
+    /**
+     * Trois bugs reels corriges dans ce fichier (glisser un repere, en
+     * ajouter un, et le panneau d'edition) partageaient la meme cause : post()
+     * se contentait de renvoyer la reponse du serveur, laissant chaque appelant
+     * decider s'il verifiait vraiment `data.success` — certains l'ont fait,
+     * d'autres non, avec pour consequence un echec (jeton perime, fiche plus
+     * modifiable...) totalement invisible pour l'utilisateur. Plutot que de
+     * compter sur la discipline de chaque futur appel, post() affiche
+     * desormais un message d'erreur PAR DEFAUT des que `data.success` est
+     * faux ou que la requete echoue (reseau/CSRF) : un appelant doit
+     * explicitement passer `{ silent: true }` pour desactiver ce comportement
+     * et gerer lui-meme l'affichage (cas du panneau d'edition, qui affiche
+     * l'erreur DANS le panneau plutot que sous la vue). Un nouvel appel qui
+     * oublierait de gerer les erreurs echoue donc desormais de façon visible
+     * par defaut, jamais silencieusement.
+     *
+     * @param {object} [opts.container] Element sous lequel afficher l'erreur
+     *                                   par defaut (ignore si opts.silent).
+     * @param {boolean} [opts.silent] Desactive l'affichage automatique.
+     */
+    function post(action, params, opts) {
+        opts = opts || {};
+        function reportError(message) {
+            if (!opts.silent && opts.container) {
+                showTransientError(opts.container, message);
+            }
+        }
+        return window.remiseQueuedFetch(endpoint, function () {
+            var body = new URLSearchParams(Object.assign({}, extraParams, {
+                _glpi_csrf_token: window.REMISE_CSRF_TOKEN
+            }, params));
+            body.set(action, '1');
+            return {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body.toString()
+            };
+        }).then(function (res) {
+            return res.json();
+        }).then(function (data) {
+            if (!data.success) {
+                reportError((window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
+            }
+            return data;
+        }).catch(function (err) {
+            reportError(window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
+            throw err;
+        });
     }
 
     function percentFromEvent(container, clientX, clientY) {
@@ -151,22 +187,17 @@
             dragging = false;
             if (moved) {
                 var pos = percentFromEvent(container, evt.clientX, evt.clientY);
-                // Bug reel corrige ici : la reponse n'etait jamais verifiee, le
-                // repere restait visuellement a sa nouvelle position (deja
-                // deplace par mousemove ci-dessus) meme quand l'enregistrement
-                // echouait cote serveur — meme illusion de succes que le
-                // panneau d'edition, cf. commentaire de showPanelError().
-                post('update', { id: marker.dataset.id, remises_id: remisesId, x: pos.x, y: pos.y }).then(function (data) {
-                    if (!data.success) {
+                post('update', { id: marker.dataset.id, remises_id: remisesId, x: pos.x, y: pos.y }, { container: container })
+                    .then(function (data) {
+                        if (!data.success) {
+                            marker.style.left = dragStartLeft;
+                            marker.style.top = dragStartTop;
+                        }
+                    })
+                    .catch(function () {
                         marker.style.left = dragStartLeft;
                         marker.style.top = dragStartTop;
-                        showTransientError(container, (window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
-                    }
-                }).catch(function () {
-                    marker.style.left = dragStartLeft;
-                    marker.style.top = dragStartTop;
-                    showTransientError(container, window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
-                });
+                    });
             } else {
                 openMarkerPanel(container, marker);
             }
@@ -200,9 +231,11 @@
 
         container.parentElement.appendChild(panel);
 
-        // Message d'erreur affiche DANS le panneau (pas une alerte bloquante) :
-        // le panneau reste ouvert avec la description deja saisie, l'utilisateur
-        // n'a qu'a reessayer plutot que tout retaper.
+        // Message d'erreur affiche DANS le panneau (pas la transitoire sous la
+        // vue) : le panneau reste ouvert avec la description deja saisie,
+        // l'utilisateur n'a qu'a reessayer plutot que tout retaper. D'ou
+        // { silent: true } sur les deux appels post() ci-dessous : le
+        // comportement par defaut (message sous la vue) ne convient pas ici.
         function showPanelError(message) {
             var existingError = panel.querySelector('.damage-marker-panel-error');
             if (!existingError) {
@@ -216,34 +249,34 @@
         panel.querySelector('.damage-marker-save').addEventListener('click', function () {
             var description = panel.querySelector('.damage-marker-desc').value;
             var severity = panel.querySelector('.damage-marker-severity').value;
-            post('update', { id: marker.dataset.id, remises_id: remisesId, description: description, severity: severity }).then(function (data) {
-                // Bug reel corrige ici : le panneau se fermait avant meme en cas
-                // d'echec (jeton CSRF perime, fiche plus editable...), donnant
-                // l'illusion que la description avait ete enregistree alors
-                // qu'elle ne l'etait pas — constate en conditions reelles.
-                if (data.success) {
-                    marker.title = description;
-                    marker.classList.toggle('damage-marker-major', severity === '1');
-                    panel.remove();
-                } else {
-                    showPanelError((window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
-                }
-            }).catch(function () {
-                showPanelError(window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
-            });
+            post('update', { id: marker.dataset.id, remises_id: remisesId, description: description, severity: severity }, { silent: true })
+                .then(function (data) {
+                    if (data.success) {
+                        marker.title = description;
+                        marker.classList.toggle('damage-marker-major', severity === '1');
+                        panel.remove();
+                    } else {
+                        showPanelError((window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
+                    }
+                })
+                .catch(function () {
+                    showPanelError(window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
+                });
         });
 
         panel.querySelector('.damage-marker-delete').addEventListener('click', function () {
-            post('delete', { id: marker.dataset.id, remises_id: remisesId }).then(function (data) {
-                if (data.success) {
-                    marker.remove();
-                    panel.remove();
-                } else {
-                    showPanelError((window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
-                }
-            }).catch(function () {
-                showPanelError(window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
-            });
+            post('delete', { id: marker.dataset.id, remises_id: remisesId }, { silent: true })
+                .then(function (data) {
+                    if (data.success) {
+                        marker.remove();
+                        panel.remove();
+                    } else {
+                        showPanelError((window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
+                    }
+                })
+                .catch(function () {
+                    showPanelError(window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
+                });
         });
     }
 
@@ -262,20 +295,13 @@
                 return; // clic sur un marqueur existant, deja gere par wireMarker/mouseup
             }
             var pos = percentFromEvent(container, evt.clientX, evt.clientY);
-            post('add', { remises_id: remisesId, view_index: viewIndex, x: pos.x, y: pos.y, description: '', severity: 0 })
+            post('add', { remises_id: remisesId, view_index: viewIndex, x: pos.x, y: pos.y, description: '', severity: 0 }, { container: container })
                 .then(function (data) {
                     if (data.success) {
                         createMarkerElement(container, data.id, pos.x, pos.y, '', 0);
-                    } else {
-                        // Meme principe que les deux autres correctifs de ce fichier :
-                        // sans ca, un clic qui echoue (fiche plus editable, jeton
-                        // perime...) ne fait simplement rien, sans que l'utilisateur
-                        // sache si son clic a ete pris en compte ou non.
-                        showTransientError(container, (window.REMISE_DAMAGE_I18N.errorPrefix || 'Erreur') + ' : ' + (data.error || '?'));
                     }
-                }).catch(function () {
-                    showTransientError(container, window.REMISE_DAMAGE_I18N.networkError || 'Erreur réseau');
-                });
+                })
+                .catch(function () {});
         });
     });
 })();
