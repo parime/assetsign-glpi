@@ -13,26 +13,9 @@ use GlpiPlugin\Remise\Token;
  */
 final class CanvasProvider extends AbstractProvider
 {
-    public function getKey(): string
-    {
-        return 'canvas';
-    }
-
-    public function createRequest(Remise $remise, string $pdfPath): SignatureRequestResult
+    public function createRequest(Remise $remise, string $pdfPath): void
     {
         $raw = Token::regenerateForRemise($remise, $this->linkValidityDays);
         $remise->_current_raw_token = $raw;
-
-        return new SignatureRequestResult(
-            reference: null,
-            signUrl: $remise->getSignUrl($raw),
-        );
-    }
-
-    public function handleCallback(array $payload): SignatureCallbackResult
-    {
-        // Le canvas natif ne recoit jamais de webhook : la signature est traitee
-        // en synchrone par Api\SignController::submit() sur notre propre page publique.
-        return SignatureCallbackResult::ignored();
     }
 }

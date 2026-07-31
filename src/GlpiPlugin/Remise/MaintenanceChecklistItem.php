@@ -37,9 +37,8 @@ class MaintenanceChecklistItem extends CommonDropdown
     }
 
     /** @return string[] Options du menu deroulant (une par ligne dans le champ 'options'), sans lignes vides. */
-    public function getOptionsArray(): array
+    public static function parseOptions(string $raw): array
     {
-        $raw = (string) ($this->fields['options'] ?? '');
         $lines = array_map('trim', explode("\n", str_replace("\r", '', $raw)));
         return array_values(array_filter($lines, static fn ($line) => $line !== ''));
     }

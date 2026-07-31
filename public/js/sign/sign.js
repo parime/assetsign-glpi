@@ -61,26 +61,9 @@
         updateSubmitState();
     });
 
-    // File d'attente partagee avec damage-annotation.js/le script de la
-    // Remarque (meme jeton CSRF a usage unique, cf. leurs commentaires) :
-    // definie ici de facon idempotente au cas ou ce script se charge en
-    // premier sur la page (c'est le cas sur sign_page.html.twig).
-    window.REMISE_CSRF_QUEUE = window.REMISE_CSRF_QUEUE || Promise.resolve();
-    window.remiseQueuedFetch = window.remiseQueuedFetch || function (url, buildOptions) {
-        var run = function () {
-            return fetch(url, buildOptions()).then(function (res) {
-                var rotated = res.headers.get('X-Remise-Csrf-Token');
-                if (rotated) {
-                    window.REMISE_CSRF_TOKEN = rotated;
-                }
-                return res;
-            });
-        };
-        var next = window.REMISE_CSRF_QUEUE.then(run, run);
-        window.REMISE_CSRF_QUEUE = next.catch(function () {});
-        return next;
-    };
-
+    // window.remiseQueuedFetch : defini par csrf-queue.js (charge avant ce
+    // script, cf. sign_page.html.twig), partage avec damage-annotation.js et
+    // le script inline de la Remarque.
     function post(action, extra) {
         return window.remiseQueuedFetch(window.location.pathname, function () {
             var body = new URLSearchParams(Object.assign({

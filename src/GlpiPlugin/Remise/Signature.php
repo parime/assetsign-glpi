@@ -20,14 +20,11 @@ class Signature extends CommonDBTM
 
         return $DB->insert(self::getTable(), [
             'plugin_remise_remises_id' => $remise->getID(),
-            'provider'                 => $proof['provider'] ?? 'canvas',
-            'provider_reference'       => $proof['provider_reference'] ?? null,
             'signer_name'              => $proof['signer_name'] ?? null,
             'signer_email'             => $proof['signer_email'] ?? null,
             'ip_address'               => $proof['ip_address'] ?? null,
             'user_agent'               => $proof['user_agent'] ?? null,
             'document_hash'            => $proof['document_hash'] ?? null,
-            'proof_data'               => json_encode($proof['proof_data'] ?? []),
             'signed_at'                => $proof['signed_at'] ?? date('Y-m-d H:i:s'),
             'date_creation'            => date('Y-m-d H:i:s'),
         ]) ? $DB->insertId() : 0;
@@ -56,21 +53,29 @@ class Signature extends CommonDBTM
             $DB->doQuery("CREATE TABLE `$table` (
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                 `plugin_remise_remises_id` int unsigned NOT NULL,
-                `provider` varchar(32) NOT NULL,
-                `provider_reference` varchar(255) DEFAULT NULL,
                 `signer_name` varchar(255) DEFAULT NULL,
                 `signer_email` varchar(255) DEFAULT NULL,
                 `ip_address` varchar(46) DEFAULT NULL,
                 `user_agent` varchar(512) DEFAULT NULL,
                 `document_hash` char(64) DEFAULT NULL,
-                `proof_data` text,
                 `signed_at` timestamp NULL DEFAULT NULL,
                 `date_creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`),
                 KEY `plugin_remise_remises_id` (`plugin_remise_remises_id`),
-                KEY `provider` (`provider`),
                 CONSTRAINT `fk_signature_remise` FOREIGN KEY (`plugin_remise_remises_id`) REFERENCES `glpi_plugin_remise_remises` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+        } else {
+            // Audit code mort : 'provider'/'provider_reference'/'proof_data'
+            // n'etaient jamais lus (seuls signer_name/signer_email/ip_address/
+            // user_agent/document_hash/signed_at sont affiches, cf.
+            // remise_form.html.twig) — provider_reference en particulier ne
+            // recevait jamais que null, CanvasProvider (seul fournisseur reel)
+            // ne renseignant pas de reference externe.
+            foreach (['provider', 'provider_reference', 'proof_data'] as $obsoleteField) {
+                if ($DB->fieldExists($table, $obsoleteField)) {
+                    $migration->dropField($table, $obsoleteField);
+                }
+            }
         }
     }
 }

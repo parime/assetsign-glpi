@@ -200,12 +200,10 @@ class Maintenance extends CommonDBTM
 
         $items = [];
         foreach ($DB->request(['FROM' => MaintenanceChecklistItem::getTable(), 'WHERE' => ['is_active' => 1], 'ORDER' => 'name']) as $row) {
-            $checklistItem = new MaintenanceChecklistItem();
-            $checklistItem->getFromResultSet($row);
             $items[(int) $row['id']] = [
                 'name'    => $row['name'],
                 'type'    => (int) $row['type'],
-                'options' => $checklistItem->getOptionsArray(),
+                'options' => MaintenanceChecklistItem::parseOptions((string) ($row['options'] ?? '')),
             ];
         }
         return $items;
