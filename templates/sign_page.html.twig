@@ -41,7 +41,12 @@
   {% if error %}
     <div class="card error">
       <p>{{ __('Impossible d\'afficher ce document', 'remise') }} : {{ error }}</p>
-      <p><a href="{{ config('root_doc') }}/front/central.php">{{ __('Retour à l\'accueil GLPI', 'remise') }}</a></p>
+      {# Racine de GLPI, pas /front/central.php en dur : ce dernier est la page
+         par defaut de l'INTERFACE "centrale" (agents), pas forcement la vraie
+         page d'accueil configuree pour cet utilisateur (self-service,
+         tableau de bord personnalise...) — la racine se charge de rediriger
+         chacun vers SA propre page d'accueil reelle. #}
+      <p><a href="{{ config('root_doc') }}/">{{ __('Retour à l\'accueil GLPI', 'remise') }}</a></p>
     </div>
   {% else %}
     <div class="card">
@@ -133,7 +138,9 @@
       minor: {{ __('Mineure', 'remise')|json_encode|raw }},
       major: {{ __('Majeure', 'remise')|json_encode|raw }},
       save: {{ __('Enregistrer', 'remise')|json_encode|raw }},
-      deleteLabel: {{ __('Supprimer', 'remise')|json_encode|raw }}
+      deleteLabel: {{ __('Supprimer', 'remise')|json_encode|raw }},
+      errorPrefix: {{ __('Erreur', 'remise')|json_encode|raw }},
+      networkError: {{ __('Erreur réseau, merci de réessayer.', 'remise')|json_encode|raw }}
     };
   </script>
   <script src="{{ config('root_doc') }}/plugins/remise/js/sign/damage-annotation.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>

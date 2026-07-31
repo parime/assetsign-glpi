@@ -149,7 +149,9 @@
             minor: {{ __('Mineure', 'remise')|json_encode|raw }},
             major: {{ __('Majeure', 'remise')|json_encode|raw }},
             save: {{ __('Enregistrer', 'remise')|json_encode|raw }},
-            deleteLabel: {{ __('Supprimer', 'remise')|json_encode|raw }}
+            deleteLabel: {{ __('Supprimer', 'remise')|json_encode|raw }},
+            errorPrefix: {{ __('Erreur', 'remise')|json_encode|raw }},
+            networkError: {{ __('Erreur réseau, merci de réessayer.', 'remise')|json_encode|raw }}
           };
         </script>
         <script src="{{ config('root_doc') }}/plugins/remise/js/sign/damage-annotation.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>

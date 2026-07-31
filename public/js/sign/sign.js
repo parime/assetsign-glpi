@@ -102,7 +102,10 @@
 
         post('sign', { signature: signaturePad.toDataURL('image/png') }).then(function (data) {
             if (data.success) {
-                var homeUrl = (window.REMISE_ROOT_DOC || '') + '/front/central.php';
+                // Racine de GLPI (pas /front/central.php en dur, page par defaut de
+                // l'interface "centrale" mais pas forcement de CET utilisateur) :
+                // la racine redirige chacun vers sa vraie page d'accueil configuree.
+                var homeUrl = (window.REMISE_ROOT_DOC || '') + '/';
                 var wrap = document.createElement('div');
                 wrap.className = 'wrap';
                 var card = document.createElement('div');
