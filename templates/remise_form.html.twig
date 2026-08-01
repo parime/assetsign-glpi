@@ -13,7 +13,13 @@
       </tr>
       <tr>
         <th>{{ __('Bénéficiaire', 'remise') }}</th>
-        <td>{{ beneficiary.firstname|default('') }} {{ beneficiary.realname|default('') }} ({{ beneficiary.email|default('') }})</td>
+        <td>
+          {{ (beneficiary.firstname|default('') ~ ' ' ~ beneficiary.realname|default(''))|trim }}
+          ({{ beneficiary.email|default('') }})
+          {% if item.fields.beneficiary_type == 1 %}
+            <span class="badge bg-secondary">{{ __('Externe', 'remise') }}</span>
+          {% endif %}
+        </td>
       </tr>
       <tr>
         <th>{{ __('Envoyé le', 'remise') }}</th>

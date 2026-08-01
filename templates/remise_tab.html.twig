@@ -31,18 +31,32 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="itemtype" value="{{ item.getType() }}">
         <input type="hidden" name="items_id" value="{{ item.getID() }}">
-        <div class="col-auto">
-          <label class="form-label">{{ __('Type', 'remise') }}</label>
-          <select name="type" class="form-select" id="remise-manual-type">
-            {% for value, label in manual_types %}
-              <option value="{{ value }}">{{ label }}</option>
-            {% endfor %}
-          </select>
+        <input type="hidden" name="create_manual" value="1">
+        <input type="hidden" name="type" id="remise-manual-type" value="{{ manual_types|keys|first }}">
+
+        <div class="col-12">
+          <label class="form-label">{{ __('Bénéficiaire', 'remise') }}</label>
+          <div class="btn-group" role="group">
+            <input type="radio" class="btn-check" name="beneficiary_type" id="remise-beneficiary-internal" value="0" checked autocomplete="off">
+            <label class="btn btn-outline-secondary" for="remise-beneficiary-internal">{{ __('Interne (compte GLPI)', 'remise') }}</label>
+            <input type="radio" class="btn-check" name="beneficiary_type" id="remise-beneficiary-external" value="1" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="remise-beneficiary-external">{{ __('Externe', 'remise') }}</label>
+          </div>
         </div>
-        <div class="col-auto">
+
+        <div class="col-auto remise-manual-internal-field">
           <label class="form-label">{{ __('Destinataire', 'remise') }}</label>
           {{ call('User::dropdown', [{'name': 'users_id'}]) }}
         </div>
+        <div class="col-auto remise-manual-external-field" style="display: none;">
+          <label class="form-label">{{ __('Nom du bénéficiaire externe', 'remise') }}</label>
+          <input type="text" name="external_name" class="form-control" placeholder="{{ __('Ex. Association Locale, Jean Dupont...', 'remise') }}">
+        </div>
+        <div class="col-auto remise-manual-external-field" style="display: none;">
+          <label class="form-label">{{ __('Contact (facultatif)', 'remise') }}</label>
+          <input type="text" name="external_contact" class="form-control" placeholder="{{ __('E-mail ou téléphone', 'remise') }}">
+        </div>
+
         <div class="col-auto remise-manual-vente-field" style="display: none;">
           <label class="form-label">{{ __('Prix', 'remise') }}</label>
           <input type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;">
@@ -51,20 +65,50 @@
           <label class="form-label">{{ __('Date de vente', 'remise') }}</label>
           <input type="date" name="sale_date" class="form-control">
         </div>
+
         <div class="col-auto">
-          <button type="submit" name="create_manual" class="btn btn-secondary">{{ __('Créer la fiche', 'remise') }}</button>
+          {% for value, label in manual_types %}
+            <button type="submit" class="btn btn-secondary remise-manual-type-btn" data-type="{{ value }}">
+              {{ __('Créer une fiche de %s', 'remise')|format(label|lower) }}
+            </button>
+          {% endfor %}
         </div>
       </form>
       <script>
         (function () {
-          var typeSelect = document.getElementById('remise-manual-type');
-          var venteFields = document.querySelectorAll('#remise-manual-form .remise-manual-vente-field');
+          var form = document.getElementById('remise-manual-form');
+          var typeInput = document.getElementById('remise-manual-type');
+          var venteFields = form.querySelectorAll('.remise-manual-vente-field');
+          var internalFields = form.querySelectorAll('.remise-manual-internal-field');
+          var externalFields = form.querySelectorAll('.remise-manual-external-field');
+          var beneficiaryRadios = form.querySelectorAll('input[name="beneficiary_type"]');
+
           function toggleVenteFields() {
-            var isVente = typeSelect.value === '{{ type_vente }}';
+            var isVente = typeInput.value === '{{ type_vente }}';
             venteFields.forEach(function (el) { el.style.display = isVente ? '' : 'none'; });
           }
-          typeSelect.addEventListener('change', toggleVenteFields);
+
+          // Chaque bouton "Créer une fiche de X" fixe le type AVANT la soumission
+          // (au lieu d'un menu déroulant séparé) : un bouton par type disponible
+          // est plus explicite qu'un menu générique + un unique bouton "Créer".
+          form.querySelectorAll('.remise-manual-type-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              typeInput.value = btn.dataset.type;
+              toggleVenteFields();
+            });
+          });
+
+          function toggleBeneficiaryFields() {
+            var isExternal = form.querySelector('input[name="beneficiary_type"]:checked').value === '1';
+            internalFields.forEach(function (el) { el.style.display = isExternal ? 'none' : ''; });
+            externalFields.forEach(function (el) { el.style.display = isExternal ? '' : 'none'; });
+          }
+          beneficiaryRadios.forEach(function (radio) {
+            radio.addEventListener('change', toggleBeneficiaryFields);
+          });
+
           toggleVenteFields();
+          toggleBeneficiaryFields();
         })();
       </script>
     {% endif %}

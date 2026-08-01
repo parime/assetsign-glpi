@@ -48,6 +48,7 @@ final class HandoverPdfBuilder
         return TemplateRenderer::getInstance()->render('@remise/pdf/handover.html.twig', array_merge([
             'remise'              => $remise->fields,
             'user'                => $remise->getBeneficiary(),
+            'beneficiary_is_external' => (int) ($remise->fields['beneficiary_type'] ?? Remise::BENEFICIARY_INTERNAL) === Remise::BENEFICIARY_EXTERNAL,
             'item'                => $remise->getTargetItem(),
             'itemtype'            => Remise::getCanonicalItemtypeLabel($remise->fields['itemtype']),
             'accessories'         => $remise->getAccessories(),

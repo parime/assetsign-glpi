@@ -14,8 +14,11 @@ if (isset($_POST['create_manual'])) {
             (int) ($_POST['type'] ?? -1),
             (int) ($_POST['users_id'] ?? 0),
             [
-                'price'     => $_POST['price'] ?? 0,
-                'sale_date' => $_POST['sale_date'] ?? date('Y-m-d'),
+                'price'             => $_POST['price'] ?? 0,
+                'sale_date'         => $_POST['sale_date'] ?? date('Y-m-d'),
+                'beneficiary_type'  => (int) ($_POST['beneficiary_type'] ?? 0),
+                'external_name'     => (string) ($_POST['external_name'] ?? ''),
+                'external_contact'  => (string) ($_POST['external_contact'] ?? ''),
             ]
         );
         Session::addMessageAfterRedirect(__('Fiche créée.', 'remise'));
