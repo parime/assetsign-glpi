@@ -206,7 +206,7 @@
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
           <label class="form-label">{{ __('Ajouter un accessoire', 'remise') }}</label>
-          {{ call('GlpiPlugin\\Remise\\Accessory::dropdown', [{'name': 'plugin_remise_accessories_id'}]) }}
+          {% do call('GlpiPlugin\\Remise\\Accessory::dropdown', [{'name': 'plugin_remise_accessories_id'}]) %}
         </div>
         <div class="col-auto">
           <label class="form-label">{{ __('Quantité', 'remise') }}</label>
