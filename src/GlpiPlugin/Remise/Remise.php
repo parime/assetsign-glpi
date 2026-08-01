@@ -40,6 +40,28 @@ class Remise extends CommonDBTM
     // 5 volontairement inutilise (ancien STATUS_REFUSED, retire : pas de refus possible)
     public const STATUS_EXPIRED   = 6;
     public const STATUS_CANCELLED = 7;
+    /**
+     * Don/vente a un beneficiaire EXTERNE (pas de compte GLPI, cf.
+     * BENEFICIARY_EXTERNAL) : aucune signature electronique n'est possible
+     * dans ce cas (choix assume, pas de lien de signature sans connexion —
+     * cf. README), le document genere devient directement le document final.
+     * Statut terminal distinct de STATUS_SIGNED expres : une vraie signature
+     * electronique n'a jamais eu lieu, melanger les deux serait trompeur pour
+     * qui consulte l'historique (preuve de signature, export...).
+     */
+    public const STATUS_COMPLETED_NO_SIGNATURE = 8;
+
+    // --- Beneficiaire ---------------------------------------------------------------
+    /** Beneficiaire = un compte utilisateur GLPI existant (`users_id`). */
+    public const BENEFICIARY_INTERNAL = 0;
+    /**
+     * Beneficiaire = une personne EXTERIEURE a l'entreprise, sans compte GLPI
+     * (nom/contact en texte libre, cf. external_beneficiary_name/_contact) —
+     * pertinent pour un Don ou une Vente (createManual() uniquement, jamais
+     * pour une Remise/Restitution automatique qui suppose toujours un vrai
+     * utilisateur GLPI affecte au materiel).
+     */
+    public const BENEFICIARY_EXTERNAL = 1;
 
     // --- Types --------------------------------------------------------------------
     public const TYPE_HANDOVER = 0; // remise
@@ -197,6 +219,18 @@ class Remise extends CommonDBTM
             'name'     => __('PDF signé', 'remise'),
             'datatype' => 'specific',
             'nosearch' => true,
+        ];
+        // Colonne dediee (plutot que de recycler la colonne 4, jointe sur
+        // glpi_users) : un beneficiaire EXTERNE (cf. BENEFICIARY_EXTERNAL) n'a
+        // justement pas de ligne dans glpi_users, la colonne 4 y serait donc
+        // toujours vide pour ces lignes. 'string' simple sur la propre table
+        // de Remise : pas de jointure, filtrable/triable nativement.
+        $tab[] = [
+            'id'       => 12,
+            'table'    => self::getTable(),
+            'field'    => 'external_beneficiary_name',
+            'name'     => __('Bénéficiaire externe', 'remise'),
+            'datatype' => 'string',
         ];
 
         return $tab;
@@ -431,6 +465,7 @@ class Remise extends CommonDBTM
             self::STATUS_SIGNED    => __('Signé', 'remise'),
             self::STATUS_EXPIRED   => __('Expiré', 'remise'),
             self::STATUS_CANCELLED => __('Annulé', 'remise'),
+            self::STATUS_COMPLETED_NO_SIGNATURE => __('Remis (bénéficiaire externe, sans signature)', 'remise'),
         ];
     }
 
@@ -557,8 +592,35 @@ class Remise extends CommonDBTM
         }
 
         $currentUser = (int) ($item->fields['users_id'] ?? 0);
+
+        // Don/Vente sans utilisateur assigne (materiel en stock, jamais affecte
+        // a personne) : cas legitime — contrairement a Remise/Restitution, un don
+        // ou une vente n'a pas forcement de "detenteur GLPI" prealable, et peut
+        // tres bien concerner un beneficiaire EXTERNE (cf. BENEFICIARY_EXTERNAL,
+        // createManual()). Le declenchement automatique, lui, ne connait que
+        // l'utilisateur GLPI courant : sans lui, il ne peut rien creer tout seul.
+        // Plutot que d'ignorer silencieusement ce changement d'Etat comme avant
+        // (le technicien n'avait alors aucun moyen de savoir qu'une fiche etait
+        // attendue), un message oriente vers la creation manuelle — seul canal
+        // qui sait gerer un beneficiaire externe ou un choix explicite d'utilisateur.
+        if (
+            $currentUser === 0
+            && (in_array($newState, $config->getDonationStates(), true) || in_array($newState, $config->getVenteStates(), true))
+        ) {
+            $isDon = in_array($newState, $config->getDonationStates(), true);
+            \Session::addMessageAfterRedirect(
+                sprintf(
+                    __('Ce matériel n\'a pas d\'utilisateur assigné : créez manuellement une fiche de %s depuis l\'onglet "Remises" ci-dessous (bénéficiaire interne ou externe).', 'remise'),
+                    $isDon ? __('don', 'remise') : __('vente', 'remise')
+                ),
+                false,
+                INFO
+            );
+            return;
+        }
+
         if ($currentUser === 0) {
-            return; // personne a notifier
+            return; // Remise/Restitution : personne a notifier
         }
 
         if (in_array($newState, $config->getHandoverStates(), true)) {
@@ -636,14 +698,34 @@ class Remise extends CommonDBTM
      *
      * @param array $extra Donnees specifiques au type ('price'/'sale_date' pour
      *                      TYPE_VENTE, cf. VenteDetails) — ignorees pour les
-     *                      types qui n'en utilisent pas.
-     * @throws \InvalidArgumentException si $itemtype n'est pas un itemtype GLPI valide
+     *                      types qui n'en utilisent pas. 'beneficiary_type'
+     *                      (BENEFICIARY_INTERNAL par defaut, ou
+     *                      BENEFICIARY_EXTERNAL), et dans ce dernier cas
+     *                      'external_name' (obligatoire)/'external_contact'
+     *                      (facultatif, email ou telephone en texte libre) —
+     *                      un don/une vente peut concerner quelqu'un hors de
+     *                      l'entreprise, sans compte GLPI.
+     * @throws \InvalidArgumentException si $itemtype n'est pas un itemtype GLPI valide,
+     *                                    ou si le beneficiaire (interne ou externe) est manquant
      * @throws \RuntimeException si le materiel est introuvable ou la creation echoue
      */
     public static function createManual(string $itemtype, int $items_id, int $type, int $users_id, array $extra = []): self
     {
         if (!in_array($type, self::MANUALLY_CREATABLE_TYPES, true)) {
             throw new \InvalidArgumentException("Ce type de fiche ne peut pas être créé manuellement.");
+        }
+
+        $beneficiaryType = (int) ($extra['beneficiary_type'] ?? self::BENEFICIARY_INTERNAL);
+        $externalName = trim((string) ($extra['external_name'] ?? ''));
+        $externalContact = trim((string) ($extra['external_contact'] ?? ''));
+
+        if ($beneficiaryType === self::BENEFICIARY_EXTERNAL) {
+            if ($externalName === '') {
+                throw new \InvalidArgumentException('Le nom du bénéficiaire externe est obligatoire.');
+            }
+            $users_id = 0;
+        } elseif ($users_id <= 0) {
+            throw new \InvalidArgumentException('Le bénéficiaire (utilisateur GLPI) est obligatoire.');
         }
 
         if (!is_subclass_of($itemtype, CommonDBTM::class)) {
@@ -660,14 +742,17 @@ class Remise extends CommonDBTM
 
         $remise = new self();
         $id = $remise->add([
-            'entities_id'                 => $item->fields['entities_id'],
-            'itemtype'                    => $itemtype,
-            'items_id'                    => $items_id,
-            'users_id'                    => $users_id,
-            'users_id_tech'               => Session::getLoginUserID() ?: 0,
-            'plugin_remise_templates_id'  => $template ? $template->getID() : 0,
-            'type'                        => $type,
-            'status'                      => self::STATUS_PENDING,
+            'entities_id'                   => $item->fields['entities_id'],
+            'itemtype'                      => $itemtype,
+            'items_id'                      => $items_id,
+            'users_id'                      => $users_id,
+            'users_id_tech'                 => Session::getLoginUserID() ?: 0,
+            'beneficiary_type'              => $beneficiaryType,
+            'external_beneficiary_name'     => $beneficiaryType === self::BENEFICIARY_EXTERNAL ? $externalName : '',
+            'external_beneficiary_contact'  => $beneficiaryType === self::BENEFICIARY_EXTERNAL ? $externalContact : '',
+            'plugin_remise_templates_id'    => $template ? $template->getID() : 0,
+            'type'                          => $type,
+            'status'                        => self::STATUS_PENDING,
         ]);
 
         if (!$id) {
@@ -762,6 +847,24 @@ class Remise extends CommonDBTM
             'document_id_unsigned' => $document->getID(),
         ]);
 
+        if ((int) $this->fields['beneficiary_type'] === self::BENEFICIARY_EXTERNAL) {
+            // Beneficiaire externe (cf. BENEFICIARY_EXTERNAL) : pas de compte
+            // GLPI, donc pas de connexion possible pour signer (le systeme de
+            // signature exige une session GLPI authentifiee, cf.
+            // Firewall::STRATEGY_AUTHENTICATED sur front/sign.php — choix
+            // assume, cf. README). Le document genere devient directement le
+            // document final, sans jeton ni notification d'invitation a
+            // signer. STATUS_COMPLETED_NO_SIGNATURE, jamais STATUS_SIGNED :
+            // aucune signature electronique n'a reellement eu lieu.
+            $this->update([
+                'id'                 => $this->getID(),
+                'document_id_signed' => $document->getID(),
+                'status'             => self::STATUS_COMPLETED_NO_SIGNATURE,
+                'date_signed'        => date('Y-m-d H:i:s'),
+            ]);
+            return;
+        }
+
         // Delegue au fournisseur configure (uniquement le canvas natif pour l'instant,
         // cf. Provider\ProviderFactory).
         // Le jeton brut n'est jamais stocke : il transite en propriete volatile le temps
@@ -799,6 +902,21 @@ class Remise extends CommonDBTM
 
     public function getBeneficiary(): array
     {
+        if ((int) ($this->fields['beneficiary_type'] ?? self::BENEFICIARY_INTERNAL) === self::BENEFICIARY_EXTERNAL) {
+            // Beneficiaire externe (cf. BENEFICIARY_EXTERNAL) : pas de ligne
+            // glpi_users a joindre, le nom/contact vient du texte libre saisi
+            // a la creation (cf. createManual()). Meme forme de tableau que le
+            // cas interne ci-dessous (firstname/realname/email) pour que les
+            // gabarits (PDF, fiche admin) n'aient pas a distinguer les deux cas.
+            return [
+                'id'        => 0,
+                'firstname' => '',
+                'realname'  => (string) ($this->fields['external_beneficiary_name'] ?? ''),
+                'name'      => '',
+                'email'     => (string) ($this->fields['external_beneficiary_contact'] ?? ''),
+            ];
+        }
+
         $user = new \User();
         $user->getFromDB((int) $this->fields['users_id']);
         // glpi_users ne porte pas de colonne email (elle vit dans glpi_useremails) :
@@ -1398,6 +1516,9 @@ class Remise extends CommonDBTM
                 `items_id` int unsigned NOT NULL DEFAULT 0,
                 `users_id` int unsigned NOT NULL DEFAULT 0,
                 `users_id_tech` int unsigned NOT NULL DEFAULT 0,
+                `beneficiary_type` tinyint unsigned NOT NULL DEFAULT 0,
+                `external_beneficiary_name` varchar(255) DEFAULT NULL,
+                `external_beneficiary_contact` varchar(255) DEFAULT NULL,
                 `plugin_remise_templates_id` int unsigned NOT NULL DEFAULT 0,
                 `type` tinyint NOT NULL DEFAULT 0,
                 `status` tinyint NOT NULL DEFAULT 0,
@@ -1454,6 +1575,19 @@ class Remise extends CommonDBTM
             if ($DB->fieldExists($table, 'comment')) {
                 $migration->dropField($table, 'comment');
             }
+            if (!$DB->fieldExists($table, 'beneficiary_type')) {
+                // Don/Vente a un beneficiaire EXTERIEUR a l'entreprise (sans
+                // compte GLPI), en plus du cas interne existant (users_id) —
+                // cf. BENEFICIARY_INTERNAL/BENEFICIARY_EXTERNAL, createManual().
+                // 'bool'-like ('integer', pas le type SQL brut 'tinyint') :
+                // seul un type "logique" reconnu par Migration::fieldFormat()
+                // fait que 'value' produise reellement une clause DEFAULT —
+                // meme piege deja documenté sur expiry_warning_sent ci-dessus.
+                $migration->addField($table, 'beneficiary_type', 'integer', ['value' => 0, 'after' => 'users_id_tech']);
+                $migration->addField($table, 'external_beneficiary_name', 'string', ['after' => 'beneficiary_type']);
+                $migration->addField($table, 'external_beneficiary_contact', 'string', ['after' => 'external_beneficiary_name']);
+                $migration->migrationOneTable($table);
+            }
         }
 
         self::seedDefaultDisplayPreferences();
@@ -1486,7 +1620,7 @@ class Remise extends CommonDBTM
         }
 
         $rank = 1;
-        foreach ([4, 5, 6, 7, 10, 11] as $searchOptionId) {
+        foreach ([4, 5, 6, 7, 10, 11, 12] as $searchOptionId) {
             $DB->insert('glpi_displaypreferences', [
                 'itemtype'  => self::class,
                 'num'       => $searchOptionId,

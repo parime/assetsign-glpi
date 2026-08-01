@@ -40,10 +40,10 @@
 <h1>{{ page_title }}</h1>
 <p class="meta">Établie le {{ remise.date_creation|date('d/m/Y') }} — Référence remise n°{{ remise.id }}</p>
 
-<h2>Bénéficiaire</h2>
+<h2>Bénéficiaire{% if beneficiary_is_external %} (externe, sans compte GLPI){% endif %}</h2>
 <table class="info-table">
-    <tr><th>Nom</th><td>{{ user.firstname }} {{ user.realname }}</td></tr>
-    <tr><th>E-mail</th><td>{{ user.email }}</td></tr>
+    <tr><th>Nom</th><td>{{ (user.firstname ~ ' ' ~ user.realname)|trim }}</td></tr>
+    <tr><th>{{ beneficiary_is_external ? 'Contact' : 'E-mail' }}</th><td>{{ user.email }}</td></tr>
 </table>
 
 <h2>{{ material_heading }}</h2>
@@ -140,8 +140,14 @@
         <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">
-            Signataire : {{ user.firstname }} {{ user.realname }} ({{ user.email }})
+            Signataire : {{ (user.firstname ~ ' ' ~ user.realname)|trim }} ({{ user.email }})
         </p>
+    {% elseif beneficiary_is_external %}
+        {# Beneficiaire externe : aucune signature electronique possible (pas
+           de compte GLPI pour se connecter), le document genere EST le
+           document final des sa creation — pas de ligne de signature vide qui
+           laisserait croire qu'une signature reste a recueillir. #}
+        <p>Fait le {{ _now }}</p>
     {% else %}
         <p>Fait le {{ _now }}</p>
         <p>Signature de l'utilisateur : ______________________________</p>
