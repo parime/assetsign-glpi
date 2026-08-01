@@ -8,14 +8,14 @@ if (isset($_POST['create'])) {
     $itemtype = (string) ($_POST['itemtype'] ?? '');
     $items_id = (int) ($_POST['items_id'] ?? 0);
 
-    if (!is_subclass_of($itemtype, CommonDBTM::class)) {
-        Html::displayNotFoundError();
-    }
+   if (!is_subclass_of($itemtype, CommonDBTM::class)) {
+       Html::displayNotFoundError();
+   }
 
     $target = new $itemtype();
-    if (!$target->getFromDB($items_id)) {
-        Html::displayNotFoundError();
-    }
+   if (!$target->getFromDB($items_id)) {
+       Html::displayNotFoundError();
+   }
 
     $checklist = is_array($_POST['checklist'] ?? null) ? $_POST['checklist'] : [];
     Maintenance::createWithChecklist($itemtype, $items_id, (int) $target->fields['entities_id'], $checklist, (string) ($_POST['comment'] ?? ''));

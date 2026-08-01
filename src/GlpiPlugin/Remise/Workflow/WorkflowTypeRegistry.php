@@ -11,12 +11,11 @@ namespace GlpiPlugin\Remise\Workflow;
 final class WorkflowTypeRegistry
 {
     /** @var array<int, WorkflowTypeInterface> */
-    private static array $types = [];
+   private static array $types = [];
 
-    public static function register(WorkflowTypeInterface $type): void
-    {
-        self::$types[$type->getId()] = $type;
-    }
+   public static function register(WorkflowTypeInterface $type): void {
+       self::$types[$type->getId()] = $type;
+   }
 
     /**
      * @throws \RuntimeException si aucun type n'est enregistre sous cet id —
@@ -24,15 +23,13 @@ final class WorkflowTypeRegistry
      *     migration) qui doit remonter immediatement plutot que de se rabattre
      *     silencieusement sur un type par defaut.
      */
-    public static function get(int $id): WorkflowTypeInterface
-    {
-        return self::$types[$id]
-            ?? throw new \RuntimeException("Plugin remise : type de workflow inconnu (id=$id).");
-    }
+   public static function get(int $id): WorkflowTypeInterface {
+       return self::$types[$id]
+           ?? throw new \RuntimeException("Plugin remise : type de workflow inconnu (id=$id).");
+   }
 
     /** @return array<int, WorkflowTypeInterface> */
-    public static function all(): array
-    {
-        return self::$types;
-    }
+   public static function all(): array {
+       return self::$types;
+   }
 }

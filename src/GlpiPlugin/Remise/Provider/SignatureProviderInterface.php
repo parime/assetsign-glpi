@@ -12,8 +12,8 @@ use GlpiPlugin\Remise\Remise;
 interface SignatureProviderInterface
 {
     /** Initie une demande de signature pour la remise donnee. */
-    public function createRequest(Remise $remise, string $pdfPath): void;
+   public function createRequest(Remise $remise, string $pdfPath): void;
 
     /** true si ce fournisseur gere lui-meme les relances (SaaS), false si le plugin doit les piloter. */
-    public function managesReminders(): bool;
+   public function managesReminders(): bool;
 }
