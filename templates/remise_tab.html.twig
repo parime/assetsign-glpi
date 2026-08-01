@@ -46,7 +46,7 @@
 
         <div class="col-auto remise-manual-internal-field">
           <label class="form-label">{{ __('Destinataire', 'remise') }}</label>
-          {{ call('User::dropdown', [{'name': 'users_id'}]) }}
+          {% do call('User::dropdown', [{'name': 'users_id'}]) %}
         </div>
         <div class="col-auto remise-manual-external-field" style="display: none;">
           <label class="form-label">{{ __('Nom du bénéficiaire externe', 'remise') }}</label>
