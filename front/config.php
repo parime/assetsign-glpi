@@ -17,14 +17,14 @@ if (isset($_POST['update'])) {
     // doit donc jamais etre interpretee comme "retirer le logo").
     $input['logo_documents_id'] = (int) Config::getForEntity($entities_id)->fields['logo_documents_id'];
 
-    if (!empty($_POST['remove_logo'])) {
-        $input['logo_documents_id'] = 0;
-    } elseif (!empty($_FILES['logo_file']['name'] ?? '')) {
-        $newLogoId = Config::uploadLogo($_FILES['logo_file'], $entities_id);
-        if ($newLogoId > 0) {
-            $input['logo_documents_id'] = $newLogoId;
-        }
-    }
+   if (!empty($_POST['remove_logo'])) {
+       $input['logo_documents_id'] = 0;
+   } else if (!empty($_FILES['logo_file']['name'] ?? '')) {
+       $newLogoId = Config::uploadLogo($_FILES['logo_file'], $entities_id);
+      if ($newLogoId > 0) {
+          $input['logo_documents_id'] = $newLogoId;
+      }
+   }
 
     Config::upsertForEntity($entities_id, $input);
     Session::addMessageAfterRedirect(__('Configuration enregistrée.', 'remise'));

@@ -24,8 +24,7 @@ define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
 // Types d'actifs geres par defaut (surchargeable via la configuration)
 const PLUGIN_REMISE_DEFAULT_ITEMTYPES = ['Computer', 'Monitor', 'Peripheral', 'Phone'];
 
-function plugin_init_remise(): void
-{
+function plugin_init_remise(): void {
     global $PLUGIN_HOOKS;
 
     $PLUGIN_HOOKS[Hooks::CSRF_COMPLIANT]['remise'] = true;
@@ -152,8 +151,7 @@ function plugin_init_remise(): void
     }
 }
 
-function plugin_version_remise(): array
-{
+function plugin_version_remise(): array {
     return [
         'name'           => 'Remise & Signature',
         'version'        => PLUGIN_REMISE_VERSION,
@@ -172,25 +170,23 @@ function plugin_version_remise(): array
     ];
 }
 
-function plugin_remise_check_prerequisites(): bool
-{
-    if (version_compare(PHP_VERSION, PLUGIN_REMISE_MIN_PHP, '<')) {
-        echo 'Ce plugin necessite PHP ' . PLUGIN_REMISE_MIN_PHP . ' ou superieur.';
-        return false;
-    }
+function plugin_remise_check_prerequisites(): bool {
+   if (version_compare(PHP_VERSION, PLUGIN_REMISE_MIN_PHP, '<')) {
+       echo 'Ce plugin necessite PHP ' . PLUGIN_REMISE_MIN_PHP . ' ou superieur.';
+       return false;
+   }
 
-    if (!is_dir(__DIR__ . '/vendor')) {
-        echo 'Dependances manquantes : executez "composer install" dans le dossier du plugin.';
-        return false;
-    }
+   if (!is_dir(__DIR__ . '/vendor')) {
+       echo 'Dependances manquantes : executez "composer install" dans le dossier du plugin.';
+       return false;
+   }
 
     return true;
 }
 
-function plugin_remise_check_config(bool $verbose = false): bool
-{
-    if ($verbose) {
-        echo __('Aucune verification de configuration bloquante.', 'remise');
-    }
+function plugin_remise_check_config(bool $verbose = false): bool {
+   if ($verbose) {
+       echo __('Aucune verification de configuration bloquante.', 'remise');
+   }
     return true;
 }

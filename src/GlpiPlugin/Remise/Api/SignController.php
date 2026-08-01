@@ -2,10 +2,10 @@
 
 namespace GlpiPlugin\Remise\Api;
 
+use GlpiPlugin\Remise\Pdf\SignatureImageValidator;
+use GlpiPlugin\Remise\Pdf\SignatureStamper;
 use GlpiPlugin\Remise\Remise;
 use GlpiPlugin\Remise\Token;
-use GlpiPlugin\Remise\Pdf\SignatureStamper;
-use GlpiPlugin\Remise\Pdf\SignatureImageValidator;
 use RuntimeException;
 use Session;
 
@@ -29,96 +29,92 @@ final class SignController
      * @throws RuntimeException si le jeton est invalide/expire/deja utilise,
      *                          ou si l'utilisateur connecte n'est pas le beneficiaire
      */
-    public function loadAuthorizedRemise(string $rawToken): Remise
-    {
-        $token = Token::validate($rawToken);
+   public function loadAuthorizedRemise(string $rawToken): Remise {
+       $token = Token::validate($rawToken);
 
-        $remise = new Remise();
-        if (!$remise->getFromDB((int) $token->fields['plugin_remise_remises_id'])) {
-            throw new RuntimeException('Remise introuvable.');
-        }
+       $remise = new Remise();
+      if (!$remise->getFromDB((int) $token->fields['plugin_remise_remises_id'])) {
+          throw new \RuntimeException('Remise introuvable.');
+      }
 
-        $this->assertCurrentUserIsBeneficiary($remise);
+       $this->assertCurrentUserIsBeneficiary($remise);
 
-        return $remise;
-    }
+       return $remise;
+   }
 
     /**
      * @throws RuntimeException si le jeton est invalide/expire/deja utilise,
      *                          ou si l'utilisateur connecte n'est pas le beneficiaire
      */
-    public function show(string $rawToken): array
-    {
-        $token = Token::validate($rawToken);
+   public function show(string $rawToken): array {
+       $token = Token::validate($rawToken);
 
-        $remise = new Remise();
-        if (!$remise->getFromDB((int) $token->fields['plugin_remise_remises_id'])) {
-            throw new RuntimeException('Remise introuvable.');
-        }
+       $remise = new Remise();
+      if (!$remise->getFromDB((int) $token->fields['plugin_remise_remises_id'])) {
+          throw new \RuntimeException('Remise introuvable.');
+      }
 
-        $this->assertCurrentUserIsBeneficiary($remise);
+       $this->assertCurrentUserIsBeneficiary($remise);
 
-        if ((int) $remise->fields['status'] === Remise::STATUS_SENT) {
-            $remise->markViewed();
-        }
+      if ((int) $remise->fields['status'] === Remise::STATUS_SENT) {
+          $remise->markViewed();
+      }
 
-        return [
-            'remise' => $remise,
-            'user'   => $remise->getBeneficiary(),
-            'item'   => $remise->getTargetItem(),
-            'expiry' => $token->fields['date_expiration'],
-        ];
-    }
+       return [
+           'remise' => $remise,
+           'user'   => $remise->getBeneficiary(),
+           'item'   => $remise->getTargetItem(),
+           'expiry' => $token->fields['date_expiration'],
+       ];
+   }
 
     /**
      * @param string $signatureImagePng Image PNG encodee en base64 (data URI complet)
      * @throws RuntimeException
      */
-    public function submit(string $rawToken, string $signatureImagePng, array $meta): void
-    {
-        $token = Token::validate($rawToken);
+   public function submit(string $rawToken, string $signatureImagePng, array $meta): void {
+       $token = Token::validate($rawToken);
 
-        $remise = new Remise();
-        if (!$remise->getFromDB((int) $token->fields['plugin_remise_remises_id'])) {
-            throw new RuntimeException('Remise introuvable.');
-        }
+       $remise = new Remise();
+      if (!$remise->getFromDB((int) $token->fields['plugin_remise_remises_id'])) {
+          throw new \RuntimeException('Remise introuvable.');
+      }
 
-        $this->assertCurrentUserIsBeneficiary($remise);
+       $this->assertCurrentUserIsBeneficiary($remise);
 
-        // Le controle cote client (signature_pad.isEmpty()) ne protege que contre
-        // les erreurs d'usage normales ; un appel direct (ou un client modifie)
-        // pourrait envoyer n'importe quoi, d'ou cette verification independante.
-        SignatureImageValidator::assertValid($signatureImagePng);
+       // Le controle cote client (signature_pad.isEmpty()) ne protege que contre
+       // les erreurs d'usage normales ; un appel direct (ou un client modifie)
+       // pourrait envoyer n'importe quoi, d'ou cette verification independante.
+       SignatureImageValidator::assertValid($signatureImagePng);
 
-        $stamper = new SignatureStamper();
-        $result = $stamper->apply($remise, $signatureImagePng);
+       $stamper = new SignatureStamper();
+       $result = $stamper->apply($remise, $signatureImagePng);
 
-        $user = $remise->getBeneficiary();
+       $user = $remise->getBeneficiary();
 
-        $remise->markSigned($result['path'], [
-            'signer_name'   => trim(($user['firstname'] ?? '') . ' ' . ($user['realname'] ?? '')),
-            'signer_email'  => $user['email'] ?? '',
-            'ip_address'    => $meta['ip'] ?? '',
-            'user_agent'    => $meta['user_agent'] ?? '',
-            'document_hash' => $result['hash'],
-            'signed_at'     => $result['signed_at'],
-        ]);
+       $remise->markSigned($result['path'], [
+           'signer_name'   => trim(($user['firstname'] ?? '') . ' ' . ($user['realname'] ?? '')),
+           'signer_email'  => $user['email'] ?? '',
+           'ip_address'    => $meta['ip'] ?? '',
+           'user_agent'    => $meta['user_agent'] ?? '',
+           'document_hash' => $result['hash'],
+           'signed_at'     => $result['signed_at'],
+       ]);
 
-        $token->markUsed();
-    }
+       $token->markUsed();
+   }
 
-    private function assertCurrentUserIsBeneficiary(Remise $remise): void
-    {
-        $currentUserId = (int) Session::getLoginUserID();
+   private function assertCurrentUserIsBeneficiary(Remise $remise): void {
+       $currentUserId = (int) Session::getLoginUserID();
 
-        if ($currentUserId <= 0) {
-            // Ne devrait pas arriver (Firewall::STRATEGY_AUTHENTICATED impose deja
-            // une session) ; filet de securite si jamais l'appel se fait autrement.
-            throw new RuntimeException('Vous devez être connecté pour accéder à ce document.');
-        }
+      if ($currentUserId <= 0) {
+          // Ne devrait pas arriver (Firewall::STRATEGY_AUTHENTICATED impose deja
+          // une session) ; filet de securite si jamais l'appel se fait autrement.
+          throw new \RuntimeException('Vous devez être connecté pour accéder à ce document.');
+      }
 
-        if ($currentUserId !== (int) $remise->fields['users_id']) {
-            throw new RuntimeException('Ce document ne correspond pas à votre compte utilisateur.');
-        }
-    }
+      if ($currentUserId !== (int) $remise->fields['users_id']) {
+          throw new \RuntimeException('Ce document ne correspond pas à votre compte utilisateur.');
+      }
+   }
 }

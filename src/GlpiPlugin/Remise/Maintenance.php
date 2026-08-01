@@ -4,9 +4,9 @@ namespace GlpiPlugin\Remise;
 
 use CommonDBTM;
 use CommonGLPI;
+use Glpi\Application\View\TemplateRenderer;
 use Migration;
 use Session;
-use Glpi\Application\View\TemplateRenderer;
 
 /**
  * Fiche de maintenance/preparation interne : checklist de points de controle
@@ -20,89 +20,82 @@ use Glpi\Application\View\TemplateRenderer;
  */
 class Maintenance extends CommonDBTM
 {
-    public static $rightname = Profile::RIGHT_MAINTENANCE;
+   public static $rightname = Profile::RIGHT_MAINTENANCE;
 
-    public static function getTypeName($nb = 0): string
-    {
-        return _n('Fiche de maintenance', 'Fiches de maintenance', $nb, 'remise');
-    }
+   public static function getTypeName($nb = 0): string {
+       return _n('Fiche de maintenance', 'Fiches de maintenance', $nb, 'remise');
+   }
 
-    public static function getIcon(): string
-    {
-        return 'ti ti-tool';
-    }
+   public static function getIcon(): string {
+       return 'ti ti-tool';
+   }
 
     // rawSearchOptions() (pas getSearchOptions(), `final` dans CommonDBTM) :
     // meme correctif que Remise::rawSearchOptions(), meme cause, meme
     // symptome (liste "Fiches de maintenance" sans colonnes ni en-tetes).
-    public function rawSearchOptions(): array
-    {
-        return [
-            ['id' => 'common', 'name' => self::getTypeName(1)],
-            ['id' => 1, 'table' => self::getTable(), 'field' => 'id', 'name' => __('ID'), 'datatype' => 'number'],
-            ['id' => 2, 'table' => self::getTable(), 'field' => 'itemtype', 'name' => __('Type de matériel', 'remise'), 'datatype' => 'itemtype'],
-            ['id' => 3, 'table' => self::getTable(), 'field' => 'items_id', 'name' => __('Matériel', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => ''],
-            ['id' => 4, 'table' => 'glpi_users', 'field' => 'name', 'linkfield' => 'users_id_tech', 'name' => __('Technicien', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => 'User'],
-            ['id' => 5, 'table' => self::getTable(), 'field' => 'date_creation', 'name' => __('Date'), 'datatype' => 'datetime'],
-        ];
-    }
+   public function rawSearchOptions(): array {
+       return [
+           ['id' => 'common', 'name' => self::getTypeName(1)],
+           ['id' => 1, 'table' => self::getTable(), 'field' => 'id', 'name' => __('ID'), 'datatype' => 'number'],
+           ['id' => 2, 'table' => self::getTable(), 'field' => 'itemtype', 'name' => __('Type de matériel', 'remise'), 'datatype' => 'itemtype'],
+           ['id' => 3, 'table' => self::getTable(), 'field' => 'items_id', 'name' => __('Matériel', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => ''],
+           ['id' => 4, 'table' => 'glpi_users', 'field' => 'name', 'linkfield' => 'users_id_tech', 'name' => __('Technicien', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => 'User'],
+           ['id' => 5, 'table' => self::getTable(), 'field' => 'date_creation', 'name' => __('Date'), 'datatype' => 'datetime'],
+       ];
+   }
 
-    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string
-    {
-        if (!in_array($item->getType(), Config::getAllManageableItemtypes(), true)) {
-            return '';
-        }
-        $count = countElementsInTable(self::getTable(), ['itemtype' => $item->getType(), 'items_id' => $item->getID()]);
-        return self::createTabEntry(__('Maintenance', 'remise'), $count);
-    }
+   public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
+      if (!in_array($item->getType(), Config::getAllManageableItemtypes(), true)) {
+          return '';
+      }
+       $count = countElementsInTable(self::getTable(), ['itemtype' => $item->getType(), 'items_id' => $item->getID()]);
+       return self::createTabEntry(__('Maintenance', 'remise'), $count);
+   }
 
-    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool
-    {
-        if (!($item instanceof CommonDBTM)) {
-            return false;
-        }
-        self::showForItem($item);
-        return true;
-    }
+   public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool {
+      if (!($item instanceof CommonDBTM)) {
+          return false;
+      }
+       self::showForItem($item);
+       return true;
+   }
 
-    public static function showForItem(CommonDBTM $item): void
-    {
-        global $DB;
+   public static function showForItem(CommonDBTM $item): void {
+       global $DB;
 
-        $rows = $DB->request([
-            'FROM'  => self::getTable(),
-            'WHERE' => ['itemtype' => $item->getType(), 'items_id' => $item->getID()],
-            'ORDER' => 'date_creation DESC',
-        ]);
+       $rows = $DB->request([
+           'FROM'  => self::getTable(),
+           'WHERE' => ['itemtype' => $item->getType(), 'items_id' => $item->getID()],
+           'ORDER' => 'date_creation DESC',
+       ]);
 
-        TemplateRenderer::getInstance()->display('@remise/maintenance_tab.html.twig', [
-            'item'            => $item,
-            'maintenances'    => iterator_to_array($rows),
-            'checklist_items' => self::getActiveChecklistItems(),
-            'can_create'      => Session::haveRight(self::$rightname, CREATE),
-            'csrf_token'      => Session::getNewCSRFToken(),
-        ]);
-    }
+       TemplateRenderer::getInstance()->display('@remise/maintenance_tab.html.twig', [
+           'item'            => $item,
+           'maintenances'    => iterator_to_array($rows),
+           'checklist_items' => self::getActiveChecklistItems(),
+           'can_create'      => Session::haveRight(self::$rightname, CREATE),
+           'csrf_token'      => Session::getNewCSRFToken(),
+       ]);
+   }
 
     /**
      * Fiche en lecture seule : une fois creee, une fiche de maintenance n'est
      * pas destinee a etre modifiee (c'est un constat a un instant donne, pas
      * un document qui evolue) — meme logique que Remise::showForm().
      */
-    public function showForm($ID, array $options = []): bool
-    {
-        $this->initForm($ID, $options);
+   public function showForm($ID, array $options = []): bool {
+       $this->initForm($ID, $options);
 
-        TemplateRenderer::getInstance()->display('@remise/maintenance_form.html.twig', [
-            'item'              => $this,
-            // Resultats lus depuis la jointure, PAS depuis
-            // getActiveChecklistItems() : un point desactive APRES la creation
-            // de cette fiche doit rester visible sur ce constat historique.
-            'checklist_results' => $this->isNewID($ID) ? [] : $this->getChecklistResults(),
-        ]);
+       TemplateRenderer::getInstance()->display('@remise/maintenance_form.html.twig', [
+           'item'              => $this,
+           // Resultats lus depuis la jointure, PAS depuis
+           // getActiveChecklistItems() : un point desactive APRES la creation
+           // de cette fiche doit rester visible sur ce constat historique.
+           'checklist_results' => $this->isNewID($ID) ? [] : $this->getChecklistResults(),
+       ]);
 
-        return true;
-    }
+       return true;
+   }
 
     /**
      * Points de controle renseignes sur cette fiche (actifs ou non au moment
@@ -111,37 +104,36 @@ class Maintenance extends CommonDBTM
      * presence en base signifie "coche").
      * @return array<int, array{name: string, type: int, value: ?string}>
      */
-    public function getChecklistResults(): array
-    {
-        global $DB;
+   public function getChecklistResults(): array {
+       global $DB;
 
-        $results = [];
-        foreach ($DB->request([
-            'SELECT' => [
-                'glpi_plugin_remise_maintenancechecklistitems.name',
-                'glpi_plugin_remise_maintenancechecklistitems.type',
-                'glpi_plugin_remise_maintenancechecklistvalues.value',
-            ],
-            'FROM'   => 'glpi_plugin_remise_maintenancechecklistvalues',
-            'INNER JOIN' => [
-                'glpi_plugin_remise_maintenancechecklistitems' => [
-                    'FKEY' => [
-                        'glpi_plugin_remise_maintenancechecklistvalues'  => 'plugin_remise_maintenancechecklistitems_id',
-                        'glpi_plugin_remise_maintenancechecklistitems'   => 'id',
-                    ],
-                ],
-            ],
-            'WHERE' => ['glpi_plugin_remise_maintenancechecklistvalues.plugin_remise_maintenances_id' => $this->getID()],
-            'ORDER' => 'glpi_plugin_remise_maintenancechecklistitems.name',
-        ]) as $row) {
-            $results[] = [
-                'name'  => $row['name'],
-                'type'  => (int) $row['type'],
-                'value' => $row['value'],
-            ];
-        }
-        return $results;
-    }
+       $results = [];
+      foreach ($DB->request([
+           'SELECT' => [
+               'glpi_plugin_remise_maintenancechecklistitems.name',
+               'glpi_plugin_remise_maintenancechecklistitems.type',
+               'glpi_plugin_remise_maintenancechecklistvalues.value',
+           ],
+           'FROM'   => 'glpi_plugin_remise_maintenancechecklistvalues',
+           'INNER JOIN' => [
+               'glpi_plugin_remise_maintenancechecklistitems' => [
+                   'FKEY' => [
+                       'glpi_plugin_remise_maintenancechecklistvalues'  => 'plugin_remise_maintenancechecklistitems_id',
+                       'glpi_plugin_remise_maintenancechecklistitems'   => 'id',
+                   ],
+               ],
+           ],
+           'WHERE' => ['glpi_plugin_remise_maintenancechecklistvalues.plugin_remise_maintenances_id' => $this->getID()],
+           'ORDER' => 'glpi_plugin_remise_maintenancechecklistitems.name',
+       ]) as $row) {
+          $results[] = [
+              'name'  => $row['name'],
+              'type'  => (int) $row['type'],
+              'value' => $row['value'],
+          ];
+      }
+       return $results;
+   }
 
     /**
      * Formulaire de creation autonome, affiche sur front/maintenance.php (en
@@ -152,62 +144,60 @@ class Maintenance extends CommonDBTM
      * + ajax/dropdownAllItems.php, meme convention que Item_Enclosure/Item_Rack
      * dans le cœur GLPI) plutot que d'ecrire un composant de recherche maison.
      */
-    public static function showCreateForm(): void
-    {
-        if (!Session::haveRight(self::$rightname, CREATE)) {
-            return;
-        }
+   public static function showCreateForm(): void {
+      if (!Session::haveRight(self::$rightname, CREATE)) {
+          return;
+      }
 
-        global $CFG_GLPI;
+       global $CFG_GLPI;
 
-        $rand = mt_rand();
+       $rand = mt_rand();
 
-        ob_start();
-        \Dropdown::showFromArray('itemtype', Config::getItemtypeLabels(), [
-            'display_emptychoice' => true,
-            'rand'                => $rand,
-        ]);
-        $itemtypeDropdownHtml = ob_get_clean();
+       ob_start();
+       \Dropdown::showFromArray('itemtype', Config::getItemtypeLabels(), [
+           'display_emptychoice' => true,
+           'rand'                => $rand,
+       ]);
+       $itemtypeDropdownHtml = ob_get_clean();
 
-        ob_start();
-        echo '<span id="remise-maintenance-items-container">'
-            . __('Choisissez d\'abord un type de matériel ci-dessus.', 'remise')
-            . '</span>';
-        \Ajax::updateItemOnSelectEvent(
-            "dropdown_itemtype$rand",
-            'remise-maintenance-items-container',
-            $CFG_GLPI['root_doc'] . '/ajax/dropdownAllItems.php',
-            [
-                'idtable' => '__VALUE__',
-                'name'    => 'items_id',
-                'rand'    => $rand,
-            ]
-        );
-        $itemDropdownHtml = ob_get_clean();
+       ob_start();
+       echo '<span id="remise-maintenance-items-container">'
+           . __('Choisissez d\'abord un type de matériel ci-dessus.', 'remise')
+           . '</span>';
+       \Ajax::updateItemOnSelectEvent(
+           "dropdown_itemtype$rand",
+           'remise-maintenance-items-container',
+           $CFG_GLPI['root_doc'] . '/ajax/dropdownAllItems.php',
+           [
+               'idtable' => '__VALUE__',
+               'name'    => 'items_id',
+               'rand'    => $rand,
+           ]
+       );
+       $itemDropdownHtml = ob_get_clean();
 
-        TemplateRenderer::getInstance()->display('@remise/maintenance_create.html.twig', [
-            'itemtype_dropdown_html' => $itemtypeDropdownHtml,
-            'item_dropdown_html'     => $itemDropdownHtml,
-            'checklist_items'        => self::getActiveChecklistItems(),
-            'csrf_token'             => Session::getNewCSRFToken(),
-        ]);
-    }
+       TemplateRenderer::getInstance()->display('@remise/maintenance_create.html.twig', [
+           'itemtype_dropdown_html' => $itemtypeDropdownHtml,
+           'item_dropdown_html'     => $itemDropdownHtml,
+           'checklist_items'        => self::getActiveChecklistItems(),
+           'csrf_token'             => Session::getNewCSRFToken(),
+       ]);
+   }
 
     /** @return array<int, array{name: string, type: int, options: string[]}> Tous les points de controle actifs, par id. */
-    public static function getActiveChecklistItems(): array
-    {
-        global $DB;
+   public static function getActiveChecklistItems(): array {
+       global $DB;
 
-        $items = [];
-        foreach ($DB->request(['FROM' => MaintenanceChecklistItem::getTable(), 'WHERE' => ['is_active' => 1], 'ORDER' => 'name']) as $row) {
-            $items[(int) $row['id']] = [
-                'name'    => $row['name'],
-                'type'    => (int) $row['type'],
-                'options' => MaintenanceChecklistItem::parseOptions((string) ($row['options'] ?? '')),
-            ];
-        }
-        return $items;
-    }
+       $items = [];
+      foreach ($DB->request(['FROM' => MaintenanceChecklistItem::getTable(), 'WHERE' => ['is_active' => 1], 'ORDER' => 'name']) as $row) {
+          $items[(int) $row['id']] = [
+              'name'    => $row['name'],
+              'type'    => (int) $row['type'],
+              'options' => MaintenanceChecklistItem::parseOptions((string) ($row['options'] ?? '')),
+          ];
+      }
+       return $items;
+   }
 
     /**
      * Cree une fiche de maintenance a partir des valeurs soumises pour
@@ -216,59 +206,57 @@ class Maintenance extends CommonDBTM
      * propre de chaque point (case a cocher / texte libre / menu deroulant).
      * @param array<int|string, mixed> $itemValues
      */
-    public static function createWithChecklist(string $itemtype, int $items_id, int $entities_id, array $itemValues, string $comment): int
-    {
-        global $DB;
+   public static function createWithChecklist(string $itemtype, int $items_id, int $entities_id, array $itemValues, string $comment): int {
+       global $DB;
 
-        $maintenance = new self();
-        $id = (int) $maintenance->add([
-            'entities_id'   => $entities_id,
-            'itemtype'      => $itemtype,
-            'items_id'      => $items_id,
-            'users_id_tech' => Session::getLoginUserID() ?: 0,
-            'comment'       => $comment,
-        ]);
+       $maintenance = new self();
+       $id = (int) $maintenance->add([
+           'entities_id'   => $entities_id,
+           'itemtype'      => $itemtype,
+           'items_id'      => $items_id,
+           'users_id_tech' => Session::getLoginUserID() ?: 0,
+           'comment'       => $comment,
+       ]);
 
-        if ($id <= 0) {
-            return 0;
-        }
+      if ($id <= 0) {
+          return 0;
+      }
 
-        foreach (self::getActiveChecklistItems() as $checklistItemId => $checklistItem) {
-            if (!array_key_exists($checklistItemId, $itemValues) && !array_key_exists((string) $checklistItemId, $itemValues)) {
-                continue;
-            }
-            $submitted = $itemValues[$checklistItemId] ?? $itemValues[(string) $checklistItemId];
+      foreach (self::getActiveChecklistItems() as $checklistItemId => $checklistItem) {
+         if (!array_key_exists($checklistItemId, $itemValues) && !array_key_exists((string) $checklistItemId, $itemValues)) {
+             continue;
+         }
+          $submitted = $itemValues[$checklistItemId] ?? $itemValues[(string) $checklistItemId];
 
-            $value = match ($checklistItem['type']) {
-                MaintenanceChecklistItem::TYPE_TEXT, MaintenanceChecklistItem::TYPE_SELECT => trim((string) $submitted),
-                default => null,
-            };
+          $value = match ($checklistItem['type']) {
+              MaintenanceChecklistItem::TYPE_TEXT, MaintenanceChecklistItem::TYPE_SELECT => trim((string) $submitted),
+              default => null,
+          };
 
             // Case a cocher : presence de la cle suffit (valeur '1' du
             // <input type="checkbox">). Texte/select : seule une valeur non
             // vide est enregistree, sinon le point est considere non renseigne.
-            if ($checklistItem['type'] !== MaintenanceChecklistItem::TYPE_CHECKBOX && $value === '') {
-                continue;
-            }
+         if ($checklistItem['type'] !== MaintenanceChecklistItem::TYPE_CHECKBOX && $value === '') {
+             continue;
+         }
 
             $DB->insert('glpi_plugin_remise_maintenancechecklistvalues', [
-                'plugin_remise_maintenances_id'          => $id,
-                'plugin_remise_maintenancechecklistitems_id' => $checklistItemId,
-                'value'                                   => $value,
+              'plugin_remise_maintenances_id'          => $id,
+              'plugin_remise_maintenancechecklistitems_id' => $checklistItemId,
+              'value'                                   => $value,
             ]);
-        }
+      }
 
-        return $id;
-    }
+       return $id;
+   }
 
-    public static function install(Migration $migration): void
-    {
-        global $DB;
-        $table = self::getTable();
+   public static function install(Migration $migration): void {
+       global $DB;
+       $table = self::getTable();
 
-        if (!$DB->tableExists($table)) {
-            $migration->displayMessage('Création de la table ' . $table);
-            $DB->doQuery("CREATE TABLE `$table` (
+      if (!$DB->tableExists($table)) {
+          $migration->displayMessage('Création de la table ' . $table);
+          $DB->doQuery("CREATE TABLE `$table` (
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                 `entities_id` int unsigned NOT NULL DEFAULT 0,
                 `is_recursive` tinyint NOT NULL DEFAULT 0,
@@ -284,12 +272,12 @@ class Maintenance extends CommonDBTM
                 KEY `is_recursive` (`is_recursive`),
                 KEY `users_id_tech` (`users_id_tech`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
-        }
+      }
 
-        $valuesTable = 'glpi_plugin_remise_maintenancechecklistvalues';
-        if (!$DB->tableExists($valuesTable)) {
-            $migration->displayMessage('Création de la table ' . $valuesTable);
-            $DB->doQuery("CREATE TABLE `$valuesTable` (
+       $valuesTable = 'glpi_plugin_remise_maintenancechecklistvalues';
+      if (!$DB->tableExists($valuesTable)) {
+          $migration->displayMessage('Création de la table ' . $valuesTable);
+          $DB->doQuery("CREATE TABLE `$valuesTable` (
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                 `plugin_remise_maintenances_id` int unsigned NOT NULL,
                 `plugin_remise_maintenancechecklistitems_id` int unsigned NOT NULL,
@@ -300,43 +288,42 @@ class Maintenance extends CommonDBTM
                 CONSTRAINT `fk_mcv_maintenance` FOREIGN KEY (`plugin_remise_maintenances_id`) REFERENCES `glpi_plugin_remise_maintenances` (`id`) ON DELETE CASCADE,
                 CONSTRAINT `fk_mcv_checklistitem` FOREIGN KEY (`plugin_remise_maintenancechecklistitems_id`) REFERENCES `glpi_plugin_remise_maintenancechecklistitems` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
-        }
+      }
 
-        if (!$DB->fieldExists($valuesTable, 'value')) {
-            $migration->addField($valuesTable, 'value', 'text');
-        }
+      if (!$DB->fieldExists($valuesTable, 'value')) {
+          $migration->addField($valuesTable, 'value', 'text');
+      }
 
-        self::seedDefaultDisplayPreferences();
-    }
+       self::seedDefaultDisplayPreferences();
+   }
 
     /**
      * Meme raison que Remise::seedDefaultDisplayPreferences() : sans ca, la
      * liste "Fiches de maintenance" n'affiche par defaut que la colonne ID.
      * Seme une seule fois (jamais si une ligne existe deja pour cet itemtype).
      */
-    private static function seedDefaultDisplayPreferences(): void
-    {
-        global $DB;
+   private static function seedDefaultDisplayPreferences(): void {
+       global $DB;
 
-        $alreadySeeded = $DB->request([
-            'FROM'  => 'glpi_displaypreferences',
-            'WHERE' => ['itemtype' => self::class],
-            'LIMIT' => 1,
-        ])->count() > 0;
+       $alreadySeeded = $DB->request([
+           'FROM'  => 'glpi_displaypreferences',
+           'WHERE' => ['itemtype' => self::class],
+           'LIMIT' => 1,
+       ])->count() > 0;
 
-        if ($alreadySeeded) {
-            return;
-        }
+      if ($alreadySeeded) {
+          return;
+      }
 
-        $rank = 1;
-        foreach ([2, 3, 4, 5] as $searchOptionId) {
-            $DB->insert('glpi_displaypreferences', [
-                'itemtype'  => self::class,
-                'num'       => $searchOptionId,
-                'rank'      => $rank++,
-                'users_id'  => 0,
-                'interface' => 'central',
-            ]);
-        }
-    }
+       $rank = 1;
+      foreach ([2, 3, 4, 5] as $searchOptionId) {
+          $DB->insert('glpi_displaypreferences', [
+              'itemtype'  => self::class,
+              'num'       => $searchOptionId,
+              'rank'      => $rank++,
+              'users_id'  => 0,
+              'interface' => 'central',
+          ]);
+      }
+   }
 }
