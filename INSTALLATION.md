@@ -14,7 +14,7 @@ Le dossier `vendor/` (Dompdf et ses dépendances, ~14 Mo, dépendances de produc
 
 ### 1. Récupérer le code sur le serveur GLPI
 
-Deux façons de faire, au choix :
+Trois façons de faire, au choix :
 
 **a) `git clone`** (pratique pour ensuite `git pull` lors des mises à jour) :
 ```bash
@@ -29,7 +29,17 @@ unzip remise-glpi-X.Y.Z.zip
 ```
 L'archive contient déjà un dossier `remise/` à la racine — pas d'étape supplémentaire de renommage.
 
-Important, dans les deux cas : le dossier doit impérativement s'appeler **`remise`** — GLPI déduit la clé du plugin (`plugin_version_remise()`, etc.) du nom du dossier dans `plugins/`.
+**c) Sans `git` ni `unzip` disponibles sur le serveur** (ex: conteneur minimal) — récupère l'archive de la branche `main` via `curl` et l'extension PHP `ZipArchive` (quasi toujours présente, GLPI lui-même en dépend) :
+```bash
+cd /chemin/vers/glpi/plugins
+curl -L -o remise.zip https://github.com/parime/remise-glpi/archive/refs/heads/main.zip
+php -r '$z = new ZipArchive; $z->open("remise.zip"); $z->extractTo("."); $z->close();'
+mv remise-glpi-main remise
+rm remise.zip
+```
+Contrairement à l'archive de release (b), celle-ci contient un dossier `remise-glpi-main/` à renommer — c'est l'archive brute générée par GitHub pour la branche, pas une release construite par ce dépôt. Elle exclut malgré tout les fichiers de développement/CI (`tests/`, `.github/`...) grâce au même mécanisme `.gitattributes` que les releases.
+
+Important, dans les trois cas : le dossier doit impérativement s'appeler **`remise`** — GLPI déduit la clé du plugin (`plugin_version_remise()`, etc.) du nom du dossier dans `plugins/`.
 
 ### 2. Installer et activer dans GLPI
 
@@ -79,7 +89,19 @@ Vérifiez aussi que les notifications GLPI sont actives (**Configuration > Notif
 
 Une modification du code (nouvelle fonctionnalité, correctif) ne se signale jamais automatiquement côté GLPI — ce dépôt est hors du Marketplace officiel. La marche à suivre :
 
-1. Sur le serveur GLPI : `cd plugins/remise && git pull` (ou re-téléchargez l'archive ZIP en remplaçant le dossier).
+1. Sur le serveur GLPI, récupérez le nouveau code par la même méthode qu'à l'installation (voir [Installation](#installation) ci-dessus) :
+   - `git pull` si vous avez cloné le dépôt ;
+   - ou re-téléchargez l'archive ZIP en remplaçant le dossier `remise/` par son contenu ;
+   - ou, sans `git` disponible, re-jouez la méthode `curl` + `ZipArchive` (méthode c) en écrasant l'ancien dossier :
+     ```bash
+     cd /chemin/vers/glpi/plugins
+     rm -rf remise
+     curl -L -o remise.zip https://github.com/parime/remise-glpi/archive/refs/heads/main.zip
+     php -r '$z = new ZipArchive; $z->open("remise.zip"); $z->extractTo(".");  $z->close();'
+     mv remise-glpi-main remise
+     rm remise.zip
+     ```
+     `rm -rf remise` avant de ré-extraire (plutôt que d'extraire par-dessus) : une simple extraction par-dessus ne supprime jamais un fichier qu'une version plus récente aurait retiré, ne laissant que des fichiers orphelins inoffensifs mais jamais un dossier réellement à jour.
 2. Lancez `sh update.sh` (depuis `plugins/remise/`) : ce script regroupe les trois étapes qu'il est facile d'oublier ou de faire dans le mauvais ordre — migration de la base (`plugin:install --force`, sans risque si déjà à jour), réactivation, et vidage du cache GLPI (`cache:clear`).
 
 Le détail de ce que fait `update.sh`, et pourquoi chaque étape est nécessaire :
