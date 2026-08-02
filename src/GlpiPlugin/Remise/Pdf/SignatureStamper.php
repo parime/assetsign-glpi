@@ -15,7 +15,7 @@ final class SignatureStamper
    }
 
     /**
-     * @return array{path:string,hash:string} chemin du PDF final (dans GLPI_TMP_DIR) et son empreinte SHA-256
+     * @return array{path:string,hash:string,signed_at:string} chemin du PDF final (dans GLPI_TMP_DIR), son empreinte SHA-256 et l'horodatage de signature
      */
    public function apply(\GlpiPlugin\Remise\Remise $remise, string $signaturePngDataUrl): array {
        $signedAt = date('Y-m-d H:i:s');
