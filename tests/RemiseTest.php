@@ -225,9 +225,14 @@ class RemiseTest extends RemiseTestCase
             $this->findRemiseFor($computer),
             'Aucune fiche automatique sans utilisateur : createManual() est le seul canal possible ici.'
         );
+        // __('don', 'remise') plutot que le mot francais en dur : le message
+        // reel est construit avec la meme cle de traduction (cf.
+        // handleStateBasedTrigger()) - ce test doit rester valable quelle que
+        // soit la langue de l'environnement d'execution (echec reel constate
+        // en CI, qui rend en anglais).
         $messages = implode(' ', $_SESSION['MESSAGE_AFTER_REDIRECT'][INFO] ?? []);
         $this->assertStringContainsString(
-            'don',
+            __('don', 'remise'),
             $messages,
             "Un message INFO doit inviter a creer la fiche de don manuellement (cf. TROUBLESHOOTING.md)."
         );

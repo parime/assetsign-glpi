@@ -219,9 +219,6 @@ msgstr "Expired"
 msgid "Annulé"
 msgstr "Cancelled"
 
-msgid "Remise"
-msgstr "Handover"
-
 msgid "Restitution"
 msgstr "Return"
 msgid "Envoie les relances de signature dues"
@@ -429,9 +426,6 @@ msgstr "Example: minor scratch on the lid, not serious."
 msgid "Don"
 msgstr "Donation"
 
-msgid "Type"
-msgstr "Type"
-
 msgid "Destinataire"
 msgstr "Recipient"
 
@@ -598,3 +592,72 @@ msgstr "Dropdown menu options (one per line)"
 
 msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
 msgstr "Only used if the input type is \"Dropdown menu\"."
+
+msgid "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue."
+msgstr "This asset has no user assigned: this status change therefore cannot generate a handover or return sheet. Assign a user on the asset's record if a signature is expected."
+
+msgid "Échecs de création (30 derniers jours)"
+msgstr "Creation failures (last 30 days)"
+
+msgid "Accessoires de remise"
+msgstr "Handover accessories"
+
+msgid "Alerte le technicien des remises sur le point d'expirer"
+msgstr "Warns the technician about handovers about to expire"
+
+msgid "Bénéficiaire externe"
+msgstr "External beneficiary"
+
+msgid "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche de %s depuis l'onglet \"Remises\" ci-dessous (bénéficiaire interne ou externe)."
+msgstr "This asset has no user assigned: manually create a %s record from the \"Handovers\" tab below (internal or external beneficiary)."
+
+msgid "Contact (facultatif)"
+msgstr "Contact (optional)"
+
+msgid "Créer une fiche de %s"
+msgstr "Create a %s record"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "E-mail ou téléphone"
+msgstr "Email or phone number"
+
+msgid "Ex. Association Locale, Jean Dupont..."
+msgstr "E.g. Local Association, John Smith..."
+
+msgid "Externe"
+msgstr "External"
+
+msgid "Fiches de maintenance"
+msgstr "Maintenance records"
+
+msgid "Gabarits de remise"
+msgstr "Handover templates"
+
+msgid "Interne (compte GLPI)"
+msgstr "Internal (GLPI account)"
+
+msgid "Nom du bénéficiaire externe"
+msgstr "External beneficiary name"
+
+msgid "Points de contrôle de maintenance"
+msgstr "Maintenance checklist items"
+
+msgid "Remis (bénéficiaire externe, sans signature)"
+msgstr "Handed over (external beneficiary, no signature)"
+
+msgid "Tous les GLPI n'utilisent pas les mêmes États : choisissez parmi VOS États existants (Configuration > Listes déroulantes > États)."
+msgstr "Not every GLPI instance uses the same Statuses: choose among YOUR existing Statuses (Setup > Dropdowns > Statuses)."
+
+msgid "Vue arrière"
+msgstr "Rear view"
+
+msgid "Vue de face"
+msgstr "Front view"
+
+msgid "don"
+msgstr "donation"
+
+msgid "vente"
+msgstr "sale"

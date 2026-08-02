@@ -219,9 +219,6 @@ msgstr "Expiré"
 msgid "Annulé"
 msgstr "Annulé"
 
-msgid "Remise"
-msgstr "Remise"
-
 msgid "Restitution"
 msgstr "Restitution"
 msgid "Envoie les relances de signature dues"
@@ -429,9 +426,6 @@ msgstr "Exemple : petite rayure sur le capot, sans gravité."
 msgid "Don"
 msgstr "Don"
 
-msgid "Type"
-msgstr "Type"
-
 msgid "Destinataire"
 msgstr "Destinataire"
 
@@ -598,3 +592,72 @@ msgstr "Options du menu déroulant (une par ligne)"
 
 msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
 msgstr "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
+
+msgid "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue."
+msgstr "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue."
+
+msgid "Échecs de création (30 derniers jours)"
+msgstr "Échecs de création (30 derniers jours)"
+
+msgid "Accessoires de remise"
+msgstr "Accessoires de remise"
+
+msgid "Alerte le technicien des remises sur le point d'expirer"
+msgstr "Alerte le technicien des remises sur le point d'expirer"
+
+msgid "Bénéficiaire externe"
+msgstr "Bénéficiaire externe"
+
+msgid "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche de %s depuis l'onglet \"Remises\" ci-dessous (bénéficiaire interne ou externe)."
+msgstr "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche de %s depuis l'onglet \"Remises\" ci-dessous (bénéficiaire interne ou externe)."
+
+msgid "Contact (facultatif)"
+msgstr "Contact (facultatif)"
+
+msgid "Créer une fiche de %s"
+msgstr "Créer une fiche de %s"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "E-mail ou téléphone"
+msgstr "E-mail ou téléphone"
+
+msgid "Ex. Association Locale, Jean Dupont..."
+msgstr "Ex. Association Locale, Jean Dupont..."
+
+msgid "Externe"
+msgstr "Externe"
+
+msgid "Fiches de maintenance"
+msgstr "Fiches de maintenance"
+
+msgid "Gabarits de remise"
+msgstr "Gabarits de remise"
+
+msgid "Interne (compte GLPI)"
+msgstr "Interne (compte GLPI)"
+
+msgid "Nom du bénéficiaire externe"
+msgstr "Nom du bénéficiaire externe"
+
+msgid "Points de contrôle de maintenance"
+msgstr "Points de contrôle de maintenance"
+
+msgid "Remis (bénéficiaire externe, sans signature)"
+msgstr "Remis (bénéficiaire externe, sans signature)"
+
+msgid "Tous les GLPI n'utilisent pas les mêmes États : choisissez parmi VOS États existants (Configuration > Listes déroulantes > États)."
+msgstr "Tous les GLPI n'utilisent pas les mêmes États : choisissez parmi VOS États existants (Configuration > Listes déroulantes > États)."
+
+msgid "Vue arrière"
+msgstr "Vue arrière"
+
+msgid "Vue de face"
+msgstr "Vue de face"
+
+msgid "don"
+msgstr "don"
+
+msgid "vente"
+msgstr "vente"
