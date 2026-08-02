@@ -142,7 +142,7 @@ function plugin_remise_getDropdown(): array {
 // ----------------------------------------------------------------------------------
 
 function plugin_remise_install(): bool {
-    $migration = new Migration((int) str_replace('.', '', PLUGIN_REMISE_VERSION));
+    $migration = new Migration(str_replace('.', '', PLUGIN_REMISE_VERSION));
 
     Config::install($migration);
     Template::install($migration);
@@ -214,7 +214,7 @@ function plugin_remise_install(): bool {
 }
 
 function plugin_remise_uninstall(): bool {
-    $migration = new Migration((int) str_replace('.', '', PLUGIN_REMISE_VERSION));
+    $migration = new Migration(str_replace('.', '', PLUGIN_REMISE_VERSION));
 
    foreach ([
         'glpi_plugin_remise_reminders',

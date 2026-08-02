@@ -130,7 +130,7 @@ class NotificationTargetRemise extends NotificationTarget
 
        $events = $this->getAllEvents();
        $this->data['##remise.action##'] = $events[$event] ?? '';
-       $this->data['##remise.id##']     = $remise->getID();
+       $this->data['##remise.id##']     = (string) $remise->getID();
        $this->data['##remise.type##']   = Remise::getTypes()[(int) $remise->fields['type']] ?? '';
 
        $item = $remise->getTargetItem();
