@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Récupère le code du plugin
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
 
       - name: Analyse de sécurité du dépôt (Trivy — secrets, mauvaises configurations et vulnérabilités)
         # --scanners vuln,secret,misconfig : le scan de vulnerabilites fait ici
@@ -235,7 +235,7 @@ jobs:
       image: semgrep/semgrep
     steps:
       - name: Récupère le code du plugin
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
       - run: semgrep ci --config auto
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}

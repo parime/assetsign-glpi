@@ -21,7 +21,7 @@ jobs:
       contents: write
     steps:
       - name: Récupère le code du plugin
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
 
       - name: Vérifie que le tag correspond a PLUGIN_REMISE_VERSION
         # Empeche une release qui ne correspondrait pas a la version reellement
