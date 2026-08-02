@@ -8,6 +8,11 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "composer"
+    # 7 jours avant de proposer une version tout juste publiée (cf. Semgrep
+    # dependabot-missing-cooldown) : laisse le temps a la communaute de
+    # detecter un paquet compromis/instable avant qu'on ne l'adopte.
+    cooldown:
+      default-days: 7
 
   # Actions utilisées par .github/workflows/ci.yml (actions/checkout...).
   - package-ecosystem: "github-actions"
@@ -16,6 +21,8 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "ci"
+    cooldown:
+      default-days: 7
 
   # Bibliotheques JS vendorisees dans public/js/sign/vendor/ (PDF.js, signature_pad),
   # copiees a la main plutot que via un bundler npm (pas de build JS dans ce plugin) -
@@ -30,3 +37,5 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "js-vendor"
+    cooldown:
+      default-days: 7
