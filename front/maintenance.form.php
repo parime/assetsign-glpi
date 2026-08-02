@@ -26,9 +26,9 @@ if (isset($_POST['create'])) {
     // defensif : une valeur absente/invalide devient simplement aucun marqueur,
     // jamais une fiche non creee pour un probleme sur ce point secondaire.
     $damageMarkers = json_decode((string) ($_POST['damage_markers'] ?? '[]'), true);
-    if (!is_array($damageMarkers)) {
-        $damageMarkers = [];
-    }
+   if (!is_array($damageMarkers)) {
+       $damageMarkers = [];
+   }
 
     Maintenance::createWithChecklist($itemtype, $items_id, (int) $target->fields['entities_id'], $checklist, (string) ($_POST['comment'] ?? ''), $damageMarkers);
 
