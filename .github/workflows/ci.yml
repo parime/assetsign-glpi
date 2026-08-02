@@ -22,6 +22,18 @@ jobs:
       - name: Récupère le code du plugin
         uses: actions/checkout@v7
 
+      - name: Valide composer.json/composer.lock
+        # Rapide (pas besoin de PHP/Docker), echoue avant meme de demarrer les
+        # conteneurs si le fichier est mal forme ou desynchronise du lock.
+        # Composer lui-meme n'est fourni ni par le runner ni par l'image
+        # glpi/glpi (meme piege que l'etape "Installe les dependances de dev"
+        # plus bas, qui l'installe de la meme facon) : recupere directement
+        # via getcomposer.org, sans dependre d'une action tierce non verifiee.
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php --install-dir=/tmp --filename=composer.phar
+          php /tmp/composer.phar validate
+
       - name: Démarre MariaDB
         run: |
           docker network create remise-ci
@@ -116,6 +128,21 @@ jobs:
             cd /var/www/glpi/plugins/remise
             php /tmp/composer.phar install --no-interaction --prefer-dist
           '
+
+      - name: Vérifie le standard de codage officiel GLPI
+        # phpcs (pas phpcbf) : echoue la CI plutot que de corriger en silence,
+        # jusqu'ici seulement lance manuellement en local (cf. TROUBLESHOOTING.md).
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/remise && vendor/bin/phpcs --standard=vendor/glpi-project/coding-standard/GlpiStandard/ruleset.xml src front hook.php setup.php"
+
+      - name: Audit de sécurité des dépendances Composer
+        # --no-dev : le vendor/ livre en production ne contient QUE les
+        # dependances de prod (cf. README > Prerequis) ; sans ce filtre,
+        # composer audit echoue systematiquement a cause de
+        # glpi-project/coding-standard (dependance dev), marquee "abandoned"
+        # sur Packagist - sans lien avec la securite, mais suffisant pour
+        # faire echouer la commande (verifie en local avant d'ecrire cette
+        # etape). Jusqu'ici seulement lance manuellement (cf. TROUBLESHOOTING.md).
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/remise && export COMPOSER_HOME=/tmp/composer-home && php /tmp/composer.phar audit --no-dev"
 
       - name: Installe et active le plugin
         run: |
