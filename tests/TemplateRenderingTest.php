@@ -15,23 +15,16 @@ use GlpiPlugin\Remise\Remise;
  * affichee comme un nombre parasite juste apres le menu deroulant. Corrige en
  * {% do call(...) %} (execute l'appel sans imprimer son retour).
  *
- * Le garde-fou ci-dessous ne se contente pas de verifier l'absence du nombre
- * observe a l'epoque (different a chaque appel, cf. field_id aleatoire) : il
- * recherche la FORME du defaut (un entier de 5 chiffres ou plus comme seul
- * contenu d'un noeud texte, entre deux balises) pour rester valable si un
- * futur {{ call(...) }} mal utilise reapparait ailleurs dans ces gabarits.
+ * Le garde-fou utilise (assertNoStrayNumericTextNode(), sur RemiseTestCase,
+ * partage avec OtherTemplateRenderingTest) ne se contente pas de verifier
+ * l'absence du nombre observe a l'epoque (different a chaque appel, cf.
+ * field_id aleatoire) : il recherche la FORME du defaut (un entier de 5
+ * chiffres ou plus comme seul contenu d'un noeud texte, entre deux balises)
+ * pour rester valable si un futur {{ call(...) }} mal utilise reapparait
+ * ailleurs dans ces gabarits.
  */
 class TemplateRenderingTest extends RemiseTestCase
 {
-    private function assertNoStrayNumericTextNode(string $html, string $message): void
-    {
-        $this->assertDoesNotMatchRegularExpression(
-            '/>\s*\d{5,}\s*</',
-            $html,
-            $message . " (recherche d'un entier de 5+ chiffres isole entre deux balises, signature d'une valeur de retour de call() imprimee par erreur)"
-        );
-    }
-
     public function testRemiseTabTemplateDoesNotLeakDropdownFieldId(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering RemiseTab');

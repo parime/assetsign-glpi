@@ -23,7 +23,8 @@ use Notification;
  */
 class NotificationTargetRemiseTest extends RemiseTestCase
 {
-    private function beneficiaryTargets(NotificationTargetRemise $target): array
+    /** @return array Cibles de type utilisateur (Beneficiaire ET/OU Technicien) proposees pour cet evenement. */
+    private function availableUserTargets(NotificationTargetRemise $target): array
     {
         return $target->notification_targets_labels[Notification::USER_TYPE] ?? [];
     }
@@ -34,7 +35,7 @@ class NotificationTargetRemiseTest extends RemiseTestCase
         $remise = $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
 
         $target = new NotificationTargetRemise($entityId, 'new', $remise);
-        $targets = $this->beneficiaryTargets($target);
+        $targets = $this->availableUserTargets($target);
 
         $this->assertArrayHasKey(NotificationTargetRemise::TARGET_BENEFICIARY, $targets);
         $this->assertArrayNotHasKey(NotificationTargetRemise::TARGET_TECHNICIAN, $targets);
@@ -46,7 +47,7 @@ class NotificationTargetRemiseTest extends RemiseTestCase
         $remise = $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
 
         $target = new NotificationTargetRemise($entityId, 'expiring_soon', $remise);
-        $targets = $this->beneficiaryTargets($target);
+        $targets = $this->availableUserTargets($target);
 
         // Le beneficiaire recoit deja des relances periodiques pendant la meme
         // fenetre ; lui envoyer aussi expiring_soon (adresse au technicien)
@@ -61,7 +62,7 @@ class NotificationTargetRemiseTest extends RemiseTestCase
         $remise = $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SIGNED);
 
         $target = new NotificationTargetRemise($entityId, 'signed', $remise);
-        $targets = $this->beneficiaryTargets($target);
+        $targets = $this->availableUserTargets($target);
 
         $this->assertArrayHasKey(NotificationTargetRemise::TARGET_BENEFICIARY, $targets);
         $this->assertArrayHasKey(NotificationTargetRemise::TARGET_TECHNICIAN, $targets);
