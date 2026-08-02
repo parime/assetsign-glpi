@@ -18,7 +18,19 @@ if (isset($_POST['create'])) {
    }
 
     $checklist = is_array($_POST['checklist'] ?? null) ? $_POST['checklist'] : [];
-    Maintenance::createWithChecklist($itemtype, $items_id, (int) $target->fields['entities_id'], $checklist, (string) ($_POST['comment'] ?? ''));
+
+    // Marqueurs d'etat des lieux : deposes cote client avant meme la creation
+    // de la fiche (cf. public/js/sign/damage-annotation-local.js), soumis en
+    // JSON dans un champ cache plutot qu'en tableau POST classique (forme
+    // variable, view_index/x/y/description/severity par marqueur). Decodage
+    // defensif : une valeur absente/invalide devient simplement aucun marqueur,
+    // jamais une fiche non creee pour un probleme sur ce point secondaire.
+    $damageMarkers = json_decode((string) ($_POST['damage_markers'] ?? '[]'), true);
+   if (!is_array($damageMarkers)) {
+       $damageMarkers = [];
+   }
+
+    Maintenance::createWithChecklist($itemtype, $items_id, (int) $target->fields['entities_id'], $checklist, (string) ($_POST['comment'] ?? ''), $damageMarkers);
 
     Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'remise'));
     Html::back();

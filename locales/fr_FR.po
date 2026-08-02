@@ -462,8 +462,8 @@ msgstr "État des lieux visuel"
 msgid "État des lieux visuel (annotation de dommages)"
 msgstr "État des lieux visuel (annotation de dommages)"
 
-msgid "Permet de repérer des dommages sur 8 vues génériques (avant, arrière, côtés, dessus, dessous, écran, clavier) et de les reporter sur le PDF."
-msgstr "Permet de repérer des dommages sur 8 vues génériques (avant, arrière, côtés, dessus, dessous, écran, clavier) et de les reporter sur le PDF."
+msgid "Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance."
+msgstr "Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance."
 
 msgid "Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner."
 msgstr "Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner."

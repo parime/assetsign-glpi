@@ -151,9 +151,15 @@ function plugin_remise_install(): bool {
     Remise::install($migration);
     RemiseAccessory::install($migration);
     VenteDetails::install($migration);
-    DamageMarker::install($migration);
     MaintenanceChecklistItem::install($migration);
     Maintenance::install($migration);
+    // Apres Maintenance : la contrainte de cle etrangere ajoutee par
+    // DamageMarker::install() vers glpi_plugin_remise_maintenances exige que
+    // cette table existe deja (piege reel rencontre en testant - l'ALTER
+    // TABLE echouait silencieusement, laissant la colonne
+    // plugin_remise_maintenances_id absente sans qu'aucune erreur ne
+    // remonte jusqu'a l'ecran d'installation).
+    DamageMarker::install($migration);
     Token::install($migration);
     Signature::install($migration);
     Reminder::install($migration);
