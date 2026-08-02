@@ -59,7 +59,10 @@ class OtherTemplateRenderingTest extends RemiseTestCase
         Config::showConfigForm($entityId);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString('Nom de l', $html, "Le formulaire de configuration doit s'afficher.");
+        // name="sender_name" (pas un libelle traduit) : le test doit rester
+        // valable quelle que soit la langue de l'environnement d'execution
+        // (echec reel constate en CI, qui rend en anglais).
+        $this->assertStringContainsString('name="sender_name"', $html, "Le formulaire de configuration doit s'afficher.");
         $this->assertNoStrayNumericTextNode($html, 'config_form.html.twig');
     }
 

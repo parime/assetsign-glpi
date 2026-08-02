@@ -43,7 +43,10 @@ class TemplateRenderingTest extends RemiseTestCase
             'csrf_token'         => 'phpunit-test-token',
         ]);
 
-        $this->assertStringContainsString('Destinataire', $html, 'Le formulaire de creation manuelle doit etre rendu pour que ce test ait un sens.');
+        // name="users_id" (pas un libelle traduit) : le test doit rester valable
+        // quelle que soit la langue de l'environnement d'execution (echec reel
+        // constate en CI, qui rend en anglais - "Destinataire" n'y apparait pas).
+        $this->assertStringContainsString('name="users_id"', $html, 'Le formulaire de creation manuelle doit etre rendu pour que ce test ait un sens.');
         $this->assertNoStrayNumericTextNode($html, 'remise_tab.html.twig (menu Destinataire)');
     }
 
@@ -78,7 +81,9 @@ class TemplateRenderingTest extends RemiseTestCase
             'csrf_token'                => 'phpunit-test-token',
         ]);
 
-        $this->assertStringContainsString('Ajouter un accessoire', $html, 'Le formulaire d\'ajout d\'accessoire doit etre rendu pour que ce test ait un sens.');
+        // name="plugin_remise_accessories_id" (pas un libelle traduit) : meme
+        // raison que ci-dessus (independance a la langue de l'environnement).
+        $this->assertStringContainsString('name="plugin_remise_accessories_id"', $html, 'Le formulaire d\'ajout d\'accessoire doit etre rendu pour que ce test ait un sens.');
         $this->assertNoStrayNumericTextNode($html, 'remise_form.html.twig (menu Ajouter un accessoire)');
     }
 }
