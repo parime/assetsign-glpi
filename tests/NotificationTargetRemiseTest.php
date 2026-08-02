@@ -87,7 +87,7 @@ class NotificationTargetRemiseTest extends RemiseTestCase
         $target = new NotificationTargetRemise($entityId, 'new', $remise);
         $target->addDataForTemplate('new');
 
-        $this->assertSame($id, $target->data['##remise.id##']);
+        $this->assertSame((string) $id, $target->data['##remise.id##']);
         $this->assertSame(Remise::getTypes()[Remise::TYPE_HANDOVER], $target->data['##remise.type##']);
         $this->assertSame('PHPUnit PC NotifTarget', $target->data['##remise.item.name##']);
         $this->assertArrayHasKey('##remise.user.name##', $target->data);

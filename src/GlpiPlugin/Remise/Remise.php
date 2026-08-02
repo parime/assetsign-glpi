@@ -514,7 +514,7 @@ class Remise extends CommonDBTM
        // Rien n'a change sur le champ users_id (ex: mise a jour d'un autre champ) ;
        // pour un nouvel element (item_add), il n'y a pas d'oldvalues du tout, on
        // considere alors l'ancien detenteur comme "aucun" (0).
-      if (!array_key_exists('users_id', $item->oldvalues ?? []) && $item->isNewItem() === false) {
+      if (!array_key_exists('users_id', $item->oldvalues) && $item->isNewItem() === false) {
           return false;
       }
 
@@ -541,6 +541,10 @@ class Remise extends CommonDBTM
           return false;
       }
 
+      // Toujours vrai a ce point precis (les 3 autres cas - egalite, old=0,
+      // new=0 - viennent d'etre exclus ci-dessus) ; conserve pour la symetrie
+      // de lecture avec les branches precedentes plutot qu'un simple else.
+      // @phpstan-ignore notIdentical.alwaysTrue
       if ($old_user !== 0 && $new_user !== 0) {
           // Un transfert direct entre deux personnes (l'ancien detenteur n'est
           // jamais passe par 0) est traite comme une remise normale au nouveau
@@ -563,7 +567,7 @@ class Remise extends CommonDBTM
      * rien n'est presuppose ici : l'administrateur choisit ses propres Etats.
      */
    private static function handleStateBasedTrigger(CommonDBTM $item, Config $config): void {
-      if (!array_key_exists('states_id', $item->oldvalues ?? [])) {
+      if (!array_key_exists('states_id', $item->oldvalues)) {
           return;
       }
 
