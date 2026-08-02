@@ -22,19 +22,19 @@ jobs:
       - name: Récupère le code du plugin
         uses: actions/checkout@v7
 
-      - name: Analyse de sécurité du dépôt (Trivy — secrets et mauvaises configurations)
-        # Ne fait volontairement PAS double emploi avec composer/npm audit
-        # (deja plus bas) : --scanners secret,misconfig exclut expres le scan
-        # de vulnerabilites des dependances (meme source de donnees que ces
-        # deux audits), et se concentre sur ce qu'eux ne couvrent pas - une
-        # cle/API secrete commitee par erreur, un fichier de config mal
-        # protege. Tourne directement sur le checkout, avant meme Docker :
-        # aucun besoin de GLPI pour ce scan. Binaire officiel recupere via son
-        # script d'installation HTTPS (meme logique que composer.phar plus
-        # bas : pas de dependance a une action tierce non verifiee).
+      - name: Analyse de sécurité du dépôt (Trivy — secrets, mauvaises configurations et vulnérabilités)
+        # --scanners vuln,secret,misconfig : le scan de vulnerabilites fait ici
+        # double emploi avec composer/npm audit plus bas (meme source de
+        # donnees pour la partie dependances), mais volontairement conserve -
+        # deux verifications valent mieux qu'aucune en cas de defaillance ou
+        # de decalage de l'une des deux. Tourne directement sur le checkout,
+        # avant meme Docker : aucun besoin de GLPI pour ce scan. Binaire
+        # officiel recupere via son script d'installation HTTPS (meme logique
+        # que composer.phar plus bas : pas de dependance a une action tierce
+        # non verifiee).
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-          trivy fs --scanners secret,misconfig --exit-code 1 .
+          trivy fs --scanners vuln,secret,misconfig --exit-code 1 .
 
       - name: Audit de sécurité des bibliothèques JS vendorisées
         # package.json/package-lock.json ne declarent QUE les versions des
