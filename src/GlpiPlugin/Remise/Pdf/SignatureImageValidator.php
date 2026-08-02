@@ -38,22 +38,18 @@ final class SignatureImageValidator
           throw new \RuntimeException(__('Signature illisible.', 'remise'));
       }
 
-      try {
-          $width = imagesx($image);
-          $height = imagesy($image);
+       $width = imagesx($image);
+       $height = imagesy($image);
 
-         if ($width < self::MIN_WIDTH || $height < self::MIN_HEIGHT) {
-             throw new \RuntimeException(__('Signature trop petite, merci de recommencer.', 'remise'));
-         }
+      if ($width < self::MIN_WIDTH || $height < self::MIN_HEIGHT) {
+          throw new \RuntimeException(__('Signature trop petite, merci de recommencer.', 'remise'));
+      }
 
-          $inkPixels = self::countInkPixels($image, $width, $height);
-          $ratio = $inkPixels / ($width * $height);
+       $inkPixels = self::countInkPixels($image, $width, $height);
+       $ratio = $inkPixels / ($width * $height);
 
-         if ($inkPixels < self::MIN_INK_PIXELS || $ratio < self::MIN_INK_RATIO) {
-             throw new \RuntimeException(__('Signature vide ou trop peu tracée, merci de signer à nouveau.', 'remise'));
-         }
-      } finally {
-          imagedestroy($image);
+      if ($inkPixels < self::MIN_INK_PIXELS || $ratio < self::MIN_INK_RATIO) {
+          throw new \RuntimeException(__('Signature vide ou trop peu tracée, merci de signer à nouveau.', 'remise'));
       }
    }
 
