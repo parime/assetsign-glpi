@@ -36,11 +36,21 @@ class Token extends CommonDBTM
 
        $raw = self::generateRaw();
 
+       // date_expiration calculee cote base (DATE_ADD(NOW(), ...)), pas via
+       // PHP time() : un serveur/conteneur dont l'horloge derive (piege reel
+       // signale par un utilisateur - cf. TROUBLESHOOTING.md) rendrait sinon
+       // un jeton fraichement cree deja "expire" des qu'une autre instance
+       // PHP (une autre requete web, un cron sur un autre conteneur...) avec
+       // une horloge legerement differente le valide juste apres. S'appuyer
+       // sur l'horloge du SERVEUR DE BASE DE DONNEES (une source unique,
+       // partagee par tous les processus PHP qui s'y connectent) elimine ce
+       // risque de derive inter-processus/conteneurs. date_creation n'est pas
+       // non plus fournie explicitement : la colonne a deja un DEFAULT
+       // CURRENT_TIMESTAMP (meme raisonnement).
        $DB->insert(self::getTable(), [
            'plugin_remise_remises_id' => $remise->getID(),
            'token_hash'               => self::hash($raw),
-           'date_creation'            => date('Y-m-d H:i:s'),
-           'date_expiration'          => date('Y-m-d H:i:s', time() + $validityDays * DAY_TIMESTAMP),
+           'date_expiration'          => new \QueryExpression('DATE_ADD(NOW(), INTERVAL ' . (int) $validityDays . ' DAY)'),
            'is_valid'                 => 1,
            'ip_created'               => $_SERVER['REMOTE_ADDR'] ?? null,
        ]);
@@ -77,7 +87,9 @@ class Token extends CommonDBTM
       if (!$token->fields['is_valid']) {
           throw new \RuntimeException(__('Ce lien de signature n\'est plus valide.', 'remise'));
       }
-      if (strtotime($token->fields['date_expiration']) < time()) {
+      // Comparaison contre l'horloge de la base (pas PHP time()) : meme
+      // raisonnement qu'a la creation du jeton, cf. createForRemise().
+      if (strtotime($token->fields['date_expiration']) < strtotime(self::dbNow())) {
           throw new \RuntimeException(__('Ce lien de signature a expiré.', 'remise'));
       }
       if (!empty($token->fields['date_used'])) {
@@ -128,6 +140,16 @@ class Token extends CommonDBTM
        ]);
        $task->addVolume($DB->affectedRows());
        return 1;
+   }
+
+    /**
+     * Horloge du serveur de base de donnees plutot que celle du processus PHP
+     * courant (time()) — cf. le commentaire detaille sur createForRemise().
+     */
+   private static function dbNow(): string {
+       global $DB;
+       $result = $DB->doQuery('SELECT NOW() AS n');
+       return $DB->fetchAssoc($result)['n'];
    }
 
    private static function generateRaw(): string {
