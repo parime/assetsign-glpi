@@ -12,6 +12,23 @@ use GlpiPlugin\Remise\Config;
  */
 class ConfigTest extends RemiseTestCase
 {
+    /**
+     * Garde-fou structurel : User ne doit JAMAIS figurer parmi les types geres
+     * par le plugin (Config::getAllManageableItemtypes()), puisque setup.php
+     * enregistre les hooks ITEM_ADD/ITEM_UPDATE precisement a partir de cette
+     * liste. Si User y figurait, un simple changement de nom (mariage,
+     * divorce...) sur une fiche utilisateur declencherait a tort le
+     * mecanisme de detection d'affectation (handleUserBasedTrigger()) et
+     * generarait une fiche de remise/restitution parasite. Le nom affiche
+     * ailleurs (fiche admin, notifications futures) reste a jour via un
+     * appel direct a User::getFromDB() dans Remise::getBeneficiary() - aucun
+     * declenchement necessaire pour ca.
+     */
+    public function testUserIsNeverAManagedItemtype(): void
+    {
+        $this->assertNotContains('User', Config::getAllManageableItemtypes());
+    }
+
     public function testChildEntityInheritsClosestAncestorConfigNotRoot(): void
     {
         $regionId = $this->createTestEntity(0, 'PHPUnit Region');

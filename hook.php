@@ -9,6 +9,7 @@
 use Glpi\Cache\CacheManager;
 use GlpiPlugin\Remise\Accessory;
 use GlpiPlugin\Remise\Config;
+use GlpiPlugin\Remise\CreationFailure;
 use GlpiPlugin\Remise\DamageMarker;
 use GlpiPlugin\Remise\Dashboard\CardProvider;
 use GlpiPlugin\Remise\Maintenance;
@@ -50,6 +51,18 @@ function plugin_remise_item_assignment(CommonDBTM $item): void {
                $e->getTraceAsString()
            ),
            true
+       );
+       // Type Remise attendu inconnu a ce niveau (l'exception peut venir de
+       // n'importe quel point de handleItemAssignment()) : null, cf.
+       // CreationFailure::record(). Le fichier de log ci-dessus reste la seule
+       // source de la trace complete ; cette ligne ne sert qu'a rendre
+       // l'echec COMPTABLE sur la carte de tableau de bord dediee.
+       CreationFailure::record(
+           $item->getType(),
+           $item->getID(),
+           (int) ($item->fields['entities_id'] ?? 0),
+           null,
+           $e->getMessage()
        );
    }
 }
@@ -97,6 +110,13 @@ function plugin_remise_dashboard_cards(): array {
             'provider'   => CardProvider::class . '::expired',
             'filters'    => [],
         ],
+        'remise_creation_failures' => [
+            'widgettype' => ['bigNumber'],
+            'group'      => $group,
+            'label'      => __('Échecs de création (30 derniers jours)', 'remise'),
+            'provider'   => CardProvider::class . '::failures',
+            'filters'    => [],
+        ],
     ];
 }
 
@@ -127,6 +147,7 @@ function plugin_remise_install(): bool {
     Config::install($migration);
     Template::install($migration);
     Accessory::install($migration);
+    CreationFailure::install($migration);
     Remise::install($migration);
     RemiseAccessory::install($migration);
     VenteDetails::install($migration);

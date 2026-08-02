@@ -2,6 +2,7 @@
 
 namespace GlpiPlugin\Remise\Dashboard;
 
+use GlpiPlugin\Remise\CreationFailure;
 use GlpiPlugin\Remise\Remise;
 
 /**
@@ -22,6 +23,42 @@ final class CardProvider
 
    public static function expired(array $params = []): array {
        return self::countByStatus([Remise::STATUS_EXPIRED], 'Expirées', $params);
+   }
+
+    /**
+     * Echecs de creation automatique (createRemise()/launchWorkflow()) des
+     * self::RECENT_WINDOW_DAYS derniers jours - cf. CreationFailure, demande
+     * explicite pour rendre visible un mecanisme jusqu'ici isole en silence
+     * (par design, cf. TROUBLESHOOTING.md) pour ne jamais faire planter la
+     * sauvegarde du materiel, mais du coup invisible sans consulter
+     * files/_log/remise.log a la main.
+     */
+   public static function failures(array $params = []): array {
+       global $DB, $CFG_GLPI;
+
+       // Dernier argument false (contrairement a countByStatus() ci-dessous) :
+       // cette table n'a pas de colonne is_recursive (ce n'est pas un item
+       // GLPI a part entiere, juste un journal d'evenements) - true y ferait
+       // echouer la requete en SQL invalide.
+       $where = ['date_creation' => ['>', date('Y-m-d H:i:s', strtotime('-' . CreationFailure::RECENT_WINDOW_DAYS . ' days'))]]
+           + getEntitiesRestrictCriteria(CreationFailure::getTable(), '', '', false);
+
+       $count = (int) $DB->request([
+           'COUNT' => 'cpt',
+           'FROM'  => CreationFailure::getTable(),
+           'WHERE' => $where,
+       ])->current()['cpt'];
+
+       return [
+           'number' => $count,
+           // Pas de liste dediee pour ces echecs (perimetre volontairement
+           // limite a une carte de tableau de bord, cf. TROUBLESHOOTING.md) :
+           // renvoie vers la configuration du plugin plutot que vers la liste
+           // des remises, qui ne contient justement PAS ces echecs.
+           'url'    => $CFG_GLPI['root_doc'] . '/plugins/remise/front/config.php',
+           'label'  => __('Échecs de création (30 derniers jours)', 'remise'),
+           'icon'   => 'ti ti-alert-triangle',
+       ];
    }
 
    private static function countByStatus(array $statuses, string $label, array $params): array {
