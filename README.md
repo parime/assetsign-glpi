@@ -235,11 +235,12 @@ php bin/console plugins:remise:warn-expiring
 
 ## Tableau de bord
 
-Trois cartes natives (widgets « grand nombre ») apparaissent dans le groupe **« Remise & signature »** de l'éditeur de tableau de bord GLPI (menu Tableau de bord > Modifier > Ajouter une carte) :
+Quatre cartes natives (widgets « grand nombre ») apparaissent dans le groupe **« Remise & signature »** de l'éditeur de tableau de bord GLPI (menu Tableau de bord > Modifier > Ajouter une carte) :
 
 - Remises en attente de signature
 - Remises signées
 - Remises expirées
+- Échecs de création (30 derniers jours) — un échec de création automatique (rare : génération PDF, envoi du jeton...) n'interrompt jamais la sauvegarde du matériel qui l'a déclenché, mais reste sinon invisible sans consulter le fichier de log du plugin ; cette carte le rend visible d'un coup d'œil.
 
 Chaque carte renvoie vers la liste filtrée correspondante en un clic, et respecte l'entité active sélectionnée.
 
