@@ -160,11 +160,34 @@ jobs:
           # regression reelle constatee au passage a glpi/glpi:11.0.8 - la
           # presence de config_db.php (utilisee plus haut pour detecter la fin
           # de l'auto-installation) ne garantit plus a elle seule que le schema
-          # est totalement migre sur cette image. Sans cette etape, l'un des
-          # deux runs (push/pull_request) du meme commit echouait de maniere
-          # non deterministe ("The update of the GLPI database is necessary"),
-          # l'autre reussissait - signe d'une course, pas d'un bug de code.
-          docker exec glpi php bin/console database:update --force --no-interaction
+          # est totalement migre sur cette image.
+          #
+          # Boucle de nouvelle tentative plutot qu'un appel unique : un
+          # premier correctif (appel simple de database:update) s'est revele
+          # INSUFFISANT en conditions reelles (echec constate sur le push de
+          # fusion vers main, cf. TROUBLESHOOTING.md) - a ce stade, la colonne
+          # version de glpi_configs peut encore contenir le marqueur interne
+          # "FILLED AT INSTALL" (l'auto-installation de l'image n'a pas fini
+          # d'ecrire sa PROPRE configuration), que database:update refuse de
+          # traiter ("Upgrade from version lower than 0.85.5 is not
+          # supported"). config_db.php ne suffit donc pas non plus a detecter
+          # CETTE etape-la de l'auto-installation. Plutot que d'essayer de
+          # deviner un nouveau signal de fin plus fiable, une boucle de
+          # nouvelles tentatives (jusqu'a 12 x 5s) absorbe cette course
+          # quelle que soit sa cause exacte.
+          ready=0
+          for i in $(seq 1 12); do
+            if docker exec glpi php bin/console database:update --force --no-interaction; then
+              ready=1
+              break
+            fi
+            echo "database:update pas encore pret (tentative $i/12), nouvel essai dans 5s..."
+            sleep 5
+          done
+          if [ "$ready" != "1" ]; then
+            echo "::error::database:update a echoue apres 12 tentatives."
+            exit 1
+          fi
           docker exec glpi php bin/console plugin:install remise --force --no-interaction
           docker exec glpi php bin/console plugin:activate remise --no-interaction
 
