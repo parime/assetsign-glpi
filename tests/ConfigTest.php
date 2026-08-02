@@ -7,8 +7,7 @@ use GlpiPlugin\Remise\Config;
 /**
  * Verifie l'heritage de configuration par entite : une entite sans config
  * propre doit heriter de son ancetre le PLUS PROCHE qui en a une (pas
- * directement de la racine), cf. README.md section "Heritage de configuration
- * par entite".
+ * directement de la racine), cf. INSTALLATION.md, section "3. Configurer".
  */
 class ConfigTest extends RemiseTestCase
 {

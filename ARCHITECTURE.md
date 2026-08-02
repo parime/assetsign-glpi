@@ -1,6 +1,6 @@
 # Architecture
 
-Ce document s'adresse à qui veut comprendre comment le plugin est construit, contribuer au code, ou faire tourner sa suite de tests — pas à l'utilisateur final (voir plutôt le [README](README.md) pour l'installation et l'usage). Pour les pièges rencontrés et leurs correctifs, voir [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
+Ce document s'adresse à qui veut comprendre comment le plugin est construit, contribuer au code, ou faire tourner sa suite de tests — pas à l'utilisateur final (voir plutôt [INSTALLATION.md](INSTALLATION.md) et [USER_GUIDE.md](USER_GUIDE.md)). Pour les pièges rencontrés et leurs correctifs, voir [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
 ## Sommaire
 
@@ -13,9 +13,9 @@ Ce document s'adresse à qui veut comprendre comment le plugin est construit, co
 
 ```
 remise/
-├── composer.json           # dépendance Dompdf (vendor/ commité, voir README > Prérequis)
+├── composer.json           # dépendance Dompdf (vendor/ commité, voir INSTALLATION.md > Prérequis)
 ├── setup.php / hook.php    # déclaration, hooks, install/uninstall
-├── update.sh               # migration + vidage de cache en une commande (voir README > Mettre à jour le plugin)
+├── update.sh               # migration + vidage de cache en une commande (voir INSTALLATION.md > Mettre à jour le plugin)
 ├── src/GlpiPlugin/Remise/  # classes métier (PSR-4)
 │   ├── Workflow/            # WorkflowTypeInterface/Registry + un type = une classe (Handover, Return, Don, Vente...)
 │   ├── Notification/        # contenu par défaut des e-mails (DefaultNotificationContent)
