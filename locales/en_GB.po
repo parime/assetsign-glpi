@@ -462,8 +462,8 @@ msgstr "Visual damage report"
 msgid "État des lieux visuel (annotation de dommages)"
 msgstr "Visual damage report (damage annotation)"
 
-msgid "Permet de repérer des dommages sur 8 vues génériques (avant, arrière, côtés, dessus, dessous, écran, clavier) et de les reporter sur le PDF."
-msgstr "Lets you mark damage on 8 generic views (front, back, sides, top, bottom, screen, keyboard) and report it on the PDF."
+msgid "Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance."
+msgstr "Lets you mark damage on 3 generic views (back, front, bottom): reported on the PDF for signed forms, and shown directly on the record for maintenance forms."
 
 msgid "Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner."
 msgstr "Click a view to drop a damage marker; click an existing marker to describe or delete it, drag it to reposition."

@@ -3,15 +3,18 @@
 namespace GlpiPlugin\Remise\Tests;
 
 use GlpiPlugin\Remise\DamageMarker;
+use GlpiPlugin\Remise\Maintenance;
 use GlpiPlugin\Remise\Remise;
 
 /**
  * Couvre les reperes d'etat des lieux visuel : CRUD direct (addMarker/
  * updateMarker/deleteMarker), le controle d'appartenance a la bonne remise
  * (securite : un id devine ne doit pas permettre de toucher au repere d'une
- * AUTRE remise), et le contrat POST partage par front/damagemarker.php et
- * front/sign.php (handleMutationRequest()) — jamais couvert par une suite
- * automatisee jusqu'ici.
+ * AUTRE remise), le contrat POST partage par front/damagemarker.php et
+ * front/sign.php (handleMutationRequest()), et l'enregistrement en bloc des
+ * marqueurs d'une fiche de maintenance (createMarkersForMaintenance() -
+ * chemin distinct, jamais par AJAX, cf. Maintenance.php) en verifiant au
+ * passage l'isolation entre les deux types de fiche parente.
  */
 class DamageMarkerTest extends RemiseTestCase
 {
@@ -160,5 +163,75 @@ class DamageMarkerTest extends RemiseTestCase
 
         $this->assertGreaterThan(0, $documentAfter);
         $this->assertNotSame($documentBefore, $documentAfter, "Le PDF non signe doit avoir ete regenere (nouveau Document) apres l'ajout d'un repere.");
+    }
+
+    public function testCreateMarkersForMaintenancePersistsAllValidMarkers(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Maintenance');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC DamageMarker Maintenance');
+        $maintenanceId = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '');
+
+        DamageMarker::createMarkersForMaintenance($maintenanceId, [
+            ['view_index' => 0, 'x' => 12.5, 'y' => 87.0, 'description' => 'Vue arrière abîmée', 'severity' => DamageMarker::SEVERITY_MAJOR],
+            ['view_index' => 2, 'x' => 50.0, 'y' => 50.0, 'description' => '', 'severity' => DamageMarker::SEVERITY_MINOR],
+        ]);
+
+        $markers = DamageMarker::getForMaintenance($maintenanceId);
+        $this->assertCount(2, $markers);
+        $this->assertSame(0, (int) $markers[0]['view_index']);
+        $this->assertSame('Vue arrière abîmée', $markers[0]['description']);
+        $this->assertSame(DamageMarker::SEVERITY_MAJOR, (int) $markers[0]['severity']);
+        $this->assertSame(2, (int) $markers[1]['view_index']);
+    }
+
+    public function testCreateMarkersForMaintenanceIgnoresInvalidViewIndex(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Maintenance Invalid');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC DamageMarker Maintenance Invalid');
+        $maintenanceId = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '');
+
+        DamageMarker::createMarkersForMaintenance($maintenanceId, [
+            ['view_index' => DamageMarker::VIEW_COUNT, 'x' => 10, 'y' => 10, 'description' => 'Hors bornes', 'severity' => 0],
+            ['view_index' => -1, 'x' => 10, 'y' => 10, 'description' => 'Negatif', 'severity' => 0],
+        ]);
+
+        $this->assertCount(0, DamageMarker::getForMaintenance($maintenanceId), "Un view_index hors bornes ne doit jamais etre enregistre.");
+    }
+
+    public function testCreateMarkersForMaintenanceClampsCoordinatesAndSeverity(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Maintenance Clamp');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC DamageMarker Maintenance Clamp');
+        $maintenanceId = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '');
+
+        DamageMarker::createMarkersForMaintenance($maintenanceId, [
+            ['view_index' => 0, 'x' => -10, 'y' => 150, 'description' => '', 'severity' => 99],
+        ]);
+
+        $markers = DamageMarker::getForMaintenance($maintenanceId);
+        $this->assertSame('0.00', $markers[0]['x_percent'], 'Une coordonnee negative doit etre ramenee a 0.');
+        $this->assertSame('100.00', $markers[0]['y_percent'], 'Une coordonnee superieure a 100 doit etre ramenee a 100.');
+        $this->assertSame(DamageMarker::SEVERITY_MINOR, (int) $markers[0]['severity'], 'Une gravite invalide doit se replier sur SEVERITY_MINOR.');
+    }
+
+    public function testMaintenanceAndRemiseMarkersAreIsolatedFromEachOther(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Isolation');
+        $remise = $this->createBareRemise($entityId);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC DamageMarker Isolation');
+        $maintenanceId = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '');
+
+        DamageMarker::addMarker($remise->getID(), 0, 10, 10, 'Marqueur remise', DamageMarker::SEVERITY_MINOR);
+        DamageMarker::createMarkersForMaintenance($maintenanceId, [
+            ['view_index' => 0, 'x' => 20, 'y' => 20, 'description' => 'Marqueur maintenance', 'severity' => 0],
+        ]);
+
+        $remiseMarkers = DamageMarker::getForRemise($remise->getID());
+        $maintenanceMarkers = DamageMarker::getForMaintenance($maintenanceId);
+
+        $this->assertCount(1, $remiseMarkers);
+        $this->assertCount(1, $maintenanceMarkers);
+        $this->assertSame('Marqueur remise', $remiseMarkers[0]['description']);
+        $this->assertSame('Marqueur maintenance', $maintenanceMarkers[0]['description']);
     }
 }

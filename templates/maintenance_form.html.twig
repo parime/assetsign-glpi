@@ -26,5 +26,26 @@
 
     <h3 class="mt-4">{{ __('Commentaire', 'remise') }}</h3>
     <p style="white-space: pre-line;">{{ item.fields.comment|default('') }}</p>
+
+    {% if damage_annotation_enabled %}
+      {# Lecture seule uniquement : fiche immuable des sa creation (cf. Maintenance.php),
+         aucun JS d'edition charge ici contrairement a remise_form.html.twig. #}
+      <h3 class="mt-4">{{ __('État des lieux visuel', 'remise') }}</h3>
+      <div class="damage-view-grid">
+        {% for index, label in damage_views %}
+          <div>
+            <div class="damage-view" data-editable="0">
+              <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/remise/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
+              {% for marker in damage_markers_by_view[index]|default([]) %}
+                <div class="damage-marker{{ marker.severity == 1 ? ' damage-marker-major' : '' }}"
+                     style="left: {{ marker.x_percent }}%; top: {{ marker.y_percent }}%;"
+                     title="{{ marker.description|default('') }}"></div>
+              {% endfor %}
+            </div>
+            <div class="damage-view-label">{{ label }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
 </div>
