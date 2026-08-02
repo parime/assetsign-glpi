@@ -14,7 +14,7 @@ use RuntimeException;
  * ses garde-fous, et surtout les deux mecanismes de declenchement automatique
  * (affectation d'utilisateur / changement d'Etat) — la partie la moins
  * couverte jusqu'ici (verifiee uniquement via des scripts Docker manuels,
- * jamais par une suite automatisee), cf. README section Tests.
+ * jamais par une suite automatisee), cf. ARCHITECTURE.md section Tests automatisés.
  */
 class RemiseTest extends RemiseTestCase
 {
@@ -132,7 +132,7 @@ class RemiseTest extends RemiseTestCase
 
         // Desactive explicitement le declenchement par affectation pour cette
         // entite (upsertForEntity remet a 0/defaut tout champ absent du tableau
-        // partiel, cf. README "notes techniques" — sans consequence ici, seul
+        // partiel, cf. TROUBLESHOOTING.md — sans consequence ici, seul
         // sign_on_assignment nous interesse pour ce test).
         Config::upsertForEntity($entityId, ['sign_on_assignment' => 0]);
 

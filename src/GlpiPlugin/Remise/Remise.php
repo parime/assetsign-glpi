@@ -44,7 +44,7 @@ class Remise extends CommonDBTM
      * Don/vente a un beneficiaire EXTERNE (pas de compte GLPI, cf.
      * BENEFICIARY_EXTERNAL) : aucune signature electronique n'est possible
      * dans ce cas (choix assume, pas de lien de signature sans connexion —
-     * cf. README), le document genere devient directement le document final.
+     * cf. USER_GUIDE.md), le document genere devient directement le document final.
      * Statut terminal distinct de STATUS_SIGNED expres : une vraie signature
      * electronique n'a jamais eu lieu, melanger les deux serait trompeur pour
      * qui consulte l'historique (preuve de signature, export...).
@@ -857,7 +857,7 @@ class Remise extends CommonDBTM
           // GLPI, donc pas de connexion possible pour signer (le systeme de
           // signature exige une session GLPI authentifiee, cf.
           // Firewall::STRATEGY_AUTHENTICATED sur front/sign.php — choix
-          // assume, cf. README). Le document genere devient directement le
+          // assume, cf. USER_GUIDE.md). Le document genere devient directement le
           // document final, sans jeton ni notification d'invitation a
           // signer. STATUS_COMPLETED_NO_SIGNATURE, jamais STATUS_SIGNED :
           // aucune signature electronique n'a reellement eu lieu.
@@ -1298,8 +1298,8 @@ class Remise extends CommonDBTM
     /**
      * Logique de relance automatique, independante de tout mecanisme de
      * planification — appelee par le CronTask GLPI (cronRemiseReminders) et par
-     * la commande console plugins:remise:run-reminders (cf. README, section
-     * "Alternative au cron GLPI").
+     * la commande console plugins:remise:run-reminders (cf. USER_GUIDE.md,
+     * section "Alternative au cron GLPI").
      */
    public static function runReminders(): int {
        global $DB;
@@ -1324,7 +1324,7 @@ class Remise extends CommonDBTM
 
           // Config resolue pour l'entite DE CETTE REMISE (pas un reglage global) :
           // deux entites peuvent avoir des delais de relance differents, cf.
-          // README section "Heritage de configuration par entite". Mise en cache
+          // INSTALLATION.md, section "3. Configurer". Mise en cache
           // le temps de cette boucle : plusieurs remises partagent souvent la
           // meme entite, inutile de refaire la meme resolution pour chacune.
           $entityId = (int) $row['entities_id'];
@@ -1366,7 +1366,7 @@ class Remise extends CommonDBTM
        // Le filtre de delai ne peut plus se faire dans le SQL (comme avant) :
        // chaque remise doit etre comparee a la duree de validite resolue pour
        // SA PROPRE entite (Config::getForEntity()), pas une valeur globale
-       // unique — cf. README section "Heritage de configuration par entite".
+       // unique — cf. INSTALLATION.md, section "3. Configurer".
        $rows = $DB->request([
            'FROM'  => self::getTable(),
            'WHERE' => [

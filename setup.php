@@ -140,8 +140,8 @@ function plugin_init_remise(): void {
     //     Configuration > Plugins (Hooks::CONFIG_PAGE plus haut) ;
     //   - Template/Points de controle de maintenance : page Configuration > Intitulés (ci-dessus).
     // Format attendu par le coeur GLPI : une LISTE PLATE de classes par categorie
-    // (pas le format documente ['types'=>[...],'icon'=>'...']) — cf. README, section
-    // Notes techniques, piege deja rencontre et documente.
+    // (pas le format documente ['types'=>[...],'icon'=>'...']) — piege deja
+    // rencontre et documente dans TROUBLESHOOTING.md.
     $PLUGIN_HOOKS[Hooks::MENU_TOADD]['remise'] = [
         'tools' => [\GlpiPlugin\Remise\Remise::class, \GlpiPlugin\Remise\Maintenance::class],
     ];
