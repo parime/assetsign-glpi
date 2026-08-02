@@ -15,17 +15,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RunExpirationCommand extends Command
 {
-    protected function configure(): void
-    {
-        $this->setName('plugins:remise:run-expiration');
-        $this->setDescription('Marque comme expirées les remises hors délai (alternative au CronTask GLPI)');
-    }
+   protected function configure(): void {
+       $this->setName('plugins:remise:run-expiration');
+       $this->setDescription('Marque comme expirées les remises hors délai (alternative au CronTask GLPI)');
+   }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $count = Remise::runExpiration();
-        $output->writeln(sprintf('%d remise(s) marquée(s) comme expirée(s).', $count));
+   protected function execute(InputInterface $input, OutputInterface $output): int {
+       $count = Remise::runExpiration();
+       $output->writeln(sprintf('%d remise(s) marquée(s) comme expirée(s).', $count));
 
-        return Command::SUCCESS;
-    }
+       return Command::SUCCESS;
+   }
 }

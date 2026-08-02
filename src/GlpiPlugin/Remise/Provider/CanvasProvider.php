@@ -13,9 +13,8 @@ use GlpiPlugin\Remise\Token;
  */
 final class CanvasProvider extends AbstractProvider
 {
-    public function createRequest(Remise $remise, string $pdfPath): void
-    {
-        $raw = Token::regenerateForRemise($remise, $this->linkValidityDays);
-        $remise->_current_raw_token = $raw;
-    }
+   public function createRequest(Remise $remise, string $pdfPath): void {
+       $raw = Token::regenerateForRemise($remise, $this->linkValidityDays);
+       $remise->_current_raw_token = $raw;
+   }
 }

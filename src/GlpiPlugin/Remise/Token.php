@@ -18,10 +18,10 @@ use RuntimeException;
  */
 class Token extends CommonDBTM
 {
-    public static $rightname = Profile::RIGHT_REMISE;
+   public static $rightname = Profile::RIGHT_REMISE;
 
     /** Au-dela de ce nombre de tentatives d'acces, le jeton est desactive par securite. */
-    private const MAX_ATTEMPTS = 20;
+   private const MAX_ATTEMPTS = 20;
 
     /**
      * Duree de conservation des jetons invalides/utilises avant purge automatique
@@ -29,133 +29,122 @@ class Token extends CommonDBTM
      * (hook.php) pour eviter de dupliquer cette valeur en toutes lettres a deux
      * endroits qui pourraient diverger.
      */
-    public const CLEANUP_RETENTION_DAYS = 90;
+   public const CLEANUP_RETENTION_DAYS = 90;
 
-    public static function createForRemise(Remise $remise, int $validityDays): string
-    {
-        global $DB;
+   public static function createForRemise(Remise $remise, int $validityDays): string {
+       global $DB;
 
-        $raw = self::generateRaw();
+       $raw = self::generateRaw();
 
-        $DB->insert(self::getTable(), [
-            'plugin_remise_remises_id' => $remise->getID(),
-            'token_hash'               => self::hash($raw),
-            'date_creation'            => date('Y-m-d H:i:s'),
-            'date_expiration'          => date('Y-m-d H:i:s', time() + $validityDays * DAY_TIMESTAMP),
-            'is_valid'                 => 1,
-            'ip_created'               => $_SERVER['REMOTE_ADDR'] ?? null,
-        ]);
+       $DB->insert(self::getTable(), [
+           'plugin_remise_remises_id' => $remise->getID(),
+           'token_hash'               => self::hash($raw),
+           'date_creation'            => date('Y-m-d H:i:s'),
+           'date_expiration'          => date('Y-m-d H:i:s', time() + $validityDays * DAY_TIMESTAMP),
+           'is_valid'                 => 1,
+           'ip_created'               => $_SERVER['REMOTE_ADDR'] ?? null,
+       ]);
 
-        return $raw;
-    }
+       return $raw;
+   }
 
     /**
      * Invalide les jetons existants et en emet un nouveau (utilise pour les relances).
      */
-    public static function regenerateForRemise(Remise $remise, int $validityDays): string
-    {
-        self::invalidateForRemise($remise->getID());
-        return self::createForRemise($remise, $validityDays);
-    }
+   public static function regenerateForRemise(Remise $remise, int $validityDays): string {
+       self::invalidateForRemise($remise->getID());
+       return self::createForRemise($remise, $validityDays);
+   }
 
-    public static function invalidateForRemise(int $remises_id): void
-    {
-        global $DB;
-        $DB->update(self::getTable(), ['is_valid' => 0], ['plugin_remise_remises_id' => $remises_id]);
-    }
+   public static function invalidateForRemise(int $remises_id): void {
+       global $DB;
+       $DB->update(self::getTable(), ['is_valid' => 0], ['plugin_remise_remises_id' => $remises_id]);
+   }
 
     /**
      * Valide un jeton recu depuis la page publique de signature.
      * @throws RuntimeException si absent, expire, deja utilise ou invalide.
      */
-    public static function validate(string $raw): self
-    {
-        global $DB;
+   public static function validate(string $raw): self {
+       global $DB;
 
-        $token = new self();
-        $found = $token->getFromDBByCrit(['token_hash' => self::hash($raw)]);
+       $token = new self();
+       $found = $token->getFromDBByCrit(['token_hash' => self::hash($raw)]);
 
-        if (!$found) {
-            throw new RuntimeException('Lien de signature inconnu.');
-        }
-        if (!$token->fields['is_valid']) {
-            throw new RuntimeException('Ce lien de signature n\'est plus valide.');
-        }
-        if (strtotime($token->fields['date_expiration']) < time()) {
-            throw new RuntimeException('Ce lien de signature a expiré.');
-        }
-        if (!empty($token->fields['date_used'])) {
-            throw new RuntimeException('Ce document a déjà été traité.');
-        }
+      if (!$found) {
+          throw new \RuntimeException(__('Lien de signature inconnu.', 'remise'));
+      }
+      if (!$token->fields['is_valid']) {
+          throw new \RuntimeException(__('Ce lien de signature n\'est plus valide.', 'remise'));
+      }
+      if (strtotime($token->fields['date_expiration']) < time()) {
+          throw new \RuntimeException(__('Ce lien de signature a expiré.', 'remise'));
+      }
+      if (!empty($token->fields['date_used'])) {
+          throw new \RuntimeException(__('Ce document a déjà été traité.', 'remise'));
+      }
 
-        $DB->update(self::getTable(), [
-            'attempts' => $token->fields['attempts'] + 1,
-            'ip_used'  => $_SERVER['REMOTE_ADDR'] ?? null,
-        ], ['id' => $token->getID()]);
+       $DB->update(self::getTable(), [
+           'attempts' => $token->fields['attempts'] + 1,
+           'ip_used'  => $_SERVER['REMOTE_ADDR'] ?? null,
+       ], ['id' => $token->getID()]);
 
-        if ($token->fields['attempts'] + 1 > self::MAX_ATTEMPTS) {
-            $DB->update(self::getTable(), ['is_valid' => 0], ['id' => $token->getID()]);
-            throw new RuntimeException('Trop de tentatives, lien désactivé par sécurité.');
-        }
+      if ($token->fields['attempts'] + 1 > self::MAX_ATTEMPTS) {
+          $DB->update(self::getTable(), ['is_valid' => 0], ['id' => $token->getID()]);
+          throw new \RuntimeException(__('Trop de tentatives, lien désactivé par sécurité.', 'remise'));
+      }
 
-        return $token;
-    }
+       return $token;
+   }
 
-    public function markUsed(): void
-    {
-        global $DB;
-        $DB->update(self::getTable(), [
-            'is_valid'   => 0,
-            'date_used'  => date('Y-m-d H:i:s'),
-        ], ['id' => $this->getID()]);
-    }
+   public function markUsed(): void {
+       global $DB;
+       $DB->update(self::getTable(), [
+           'is_valid'   => 0,
+           'date_used'  => date('Y-m-d H:i:s'),
+       ], ['id' => $this->getID()]);
+   }
 
-    public static function getExpiryForRemise(int $remises_id): ?string
-    {
-        global $DB;
-        $rows = iterator_to_array($DB->request([
-            'FROM'  => self::getTable(),
-            'WHERE' => ['plugin_remise_remises_id' => $remises_id, 'is_valid' => 1],
-            'ORDER' => 'date_creation DESC',
-            'LIMIT' => 1,
-        ]));
-        return count($rows) ? reset($rows)['date_expiration'] : null;
-    }
+   public static function getExpiryForRemise(int $remises_id): ?string {
+       global $DB;
+       $rows = iterator_to_array($DB->request([
+           'FROM'  => self::getTable(),
+           'WHERE' => ['plugin_remise_remises_id' => $remises_id, 'is_valid' => 1],
+           'ORDER' => 'date_creation DESC',
+           'LIMIT' => 1,
+       ]));
+       return count($rows) ? reset($rows)['date_expiration'] : null;
+   }
 
-    public static function cronInfo(string $name): array
-    {
-        return ['description' => __('Purge les jetons de signature expirés ou invalides', 'remise')];
-    }
+   public static function cronInfo(string $name): array {
+       return ['description' => __('Purge les jetons de signature expirés ou invalides', 'remise')];
+   }
 
-    public static function cronRemiseCleanupTokens(\CronTask $task): int
-    {
-        global $DB;
-        $DB->delete(self::getTable(), [
-            'is_valid' => 0,
-            new \QueryExpression('date_creation < DATE_SUB(NOW(), INTERVAL ' . self::CLEANUP_RETENTION_DAYS . ' DAY)'),
-        ]);
-        $task->addVolume($DB->affectedRows());
-        return 1;
-    }
+   public static function cronRemiseCleanupTokens(\CronTask $task): int {
+       global $DB;
+       $DB->delete(self::getTable(), [
+           'is_valid' => 0,
+           new \QueryExpression('date_creation < DATE_SUB(NOW(), INTERVAL ' . self::CLEANUP_RETENTION_DAYS . ' DAY)'),
+       ]);
+       $task->addVolume($DB->affectedRows());
+       return 1;
+   }
 
-    private static function generateRaw(): string
-    {
-        return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
-    }
+   private static function generateRaw(): string {
+       return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+   }
 
-    private static function hash(string $raw): string
-    {
-        return hash('sha256', $raw);
-    }
+   private static function hash(string $raw): string {
+       return hash('sha256', $raw);
+   }
 
-    public static function install(Migration $migration): void
-    {
-        global $DB;
-        $table = self::getTable();
+   public static function install(Migration $migration): void {
+       global $DB;
+       $table = self::getTable();
 
-        if (!$DB->tableExists($table)) {
-            $migration->displayMessage('Création de la table ' . $table);
-            $DB->doQuery("CREATE TABLE `$table` (
+      if (!$DB->tableExists($table)) {
+          $migration->displayMessage('Création de la table ' . $table);
+          $DB->doQuery("CREATE TABLE `$table` (
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                 `plugin_remise_remises_id` int unsigned NOT NULL,
                 `token_hash` char(64) NOT NULL,
@@ -173,6 +162,6 @@ class Token extends CommonDBTM
                 KEY `is_valid` (`is_valid`),
                 CONSTRAINT `fk_token_remise` FOREIGN KEY (`plugin_remise_remises_id`) REFERENCES `glpi_plugin_remise_remises` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
-        }
-    }
+      }
+   }
 }

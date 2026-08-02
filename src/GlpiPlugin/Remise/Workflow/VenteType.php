@@ -12,36 +12,31 @@ use GlpiPlugin\Remise\Remise;
  */
 final class VenteType implements WorkflowTypeInterface
 {
-    private const DEFAULT_CONTENT = '<p>Je reconnais avoir acheté, aux conditions indiquées ci-dessus, le matériel décrit '
+   private const DEFAULT_CONTENT = '<p>Je reconnais avoir acheté, aux conditions indiquées ci-dessus, le matériel décrit '
         . 'ci-dessus, cédé en l\'état par l\'organisation qui me le vend, sans garantie au-delà de ce qui serait légalement obligatoire.</p>';
 
-    public function getId(): int
-    {
-        return Remise::TYPE_VENTE;
-    }
+   public function getId(): int {
+       return Remise::TYPE_VENTE;
+   }
 
-    public function getLabel(): string
-    {
-        return __('Vente', 'remise');
-    }
+   public function getLabel(): string {
+       return __('Vente', 'remise');
+   }
 
-    public function getCanonicalLabel(): string
-    {
-        return 'Vente';
-    }
+   public function getCanonicalLabel(): string {
+       return 'Vente';
+   }
 
-    public function getPdfHeadings(): array
-    {
-        return [
-            'page_title'       => 'Fiche de vente de matériel',
-            'material_heading' => 'Matériel vendu',
-        ];
-    }
+   public function getPdfHeadings(): array {
+       return [
+           'page_title'       => 'Fiche de vente de matériel',
+           'material_heading' => 'Matériel vendu',
+       ];
+   }
 
-    public function getDefaultTemplateContent(): array
-    {
-        // Pas de charte informatique par defaut : comme pour le Don, le
-        // materiel sort definitivement du parc.
-        return ['content' => self::DEFAULT_CONTENT, 'charter_content' => ''];
-    }
+   public function getDefaultTemplateContent(): array {
+       // Pas de charte informatique par defaut : comme pour le Don, le
+       // materiel sort definitivement du parc.
+       return ['content' => self::DEFAULT_CONTENT, 'charter_content' => ''];
+   }
 }

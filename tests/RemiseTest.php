@@ -102,6 +102,29 @@ class RemiseTest extends RemiseTestCase
         $this->assertSame(2, (int) $created['users_id']);
     }
 
+    public function testHandleItemAssignmentSkipsWhenOtherFieldChangedButUserAndStateUntouched(): void
+    {
+        // Cas reel : un technicien modifie un champ sans rapport (ex: commentaire,
+        // numero de serie) sur la fiche d'un materiel deja affecte, et enregistre -
+        // sans jamais toucher au detenteur ni a l'Etat. GLPI ne place alors AUCUNE
+        // cle 'users_id'/'states_id' dans oldvalues (seuls les champs reellement
+        // soumis ET differents de la valeur en base y figurent) : aucune remise ne
+        // doit etre creee, contrairement a une reaffectation reelle.
+        $entityId = $this->createTestEntity(0, 'PHPUnit Assignment Untouched');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Assignment Untouched');
+        $computer->fields['users_id'] = 2;
+
+        $computer->oldvalues = ['comment' => 'Ancien commentaire'];
+        $computer->fields['comment'] = 'Nouveau commentaire';
+
+        Remise::handleItemAssignment($computer);
+
+        $this->assertNull(
+            $this->findRemiseFor($computer),
+            "Modifier un autre champ sans toucher au detenteur ni a l'Etat ne doit jamais declencher de fiche de remise."
+        );
+    }
+
     public function testHandleItemAssignmentSkipsWhenSignOnAssignmentDisabled(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Assignment Disabled');
@@ -178,6 +201,79 @@ class RemiseTest extends RemiseTestCase
         Remise::handleItemAssignment($computer);
 
         $this->assertNull($this->findRemiseFor($computer), "Un changement d'Etat non configure ne doit rien declencher.");
+    }
+
+    public function testHandleStateBasedTriggerWarnsWhenDonationHasNoUser(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit State Donation NoUser');
+        $oldStateId = $this->createTestState('PHPUnit Etat Avant Don SansUser');
+        $donationStateId = $this->createTestState('PHPUnit Etat Don SansUser');
+
+        Config::upsertForEntity($entityId, ['donation_states' => [$donationStateId]]);
+
+        // Materiel en stock, jamais affecte a personne (cas legitime pour un
+        // don/une vente, cf. commentaire de handleStateBasedTrigger()).
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Donation NoUser');
+        $computer->oldvalues = ['states_id' => $oldStateId];
+        $computer->fields['users_id'] = 0;
+        $computer->fields['states_id'] = $donationStateId;
+
+        $_SESSION['MESSAGE_AFTER_REDIRECT'] = [];
+        Remise::handleItemAssignment($computer);
+
+        $this->assertNull(
+            $this->findRemiseFor($computer),
+            'Aucune fiche automatique sans utilisateur : createManual() est le seul canal possible ici.'
+        );
+        // __('don', 'remise') plutot que le mot francais en dur : le message
+        // reel est construit avec la meme cle de traduction (cf.
+        // handleStateBasedTrigger()) - ce test doit rester valable quelle que
+        // soit la langue de l'environnement d'execution (echec reel constate
+        // en CI, qui rend en anglais).
+        $messages = implode(' ', $_SESSION['MESSAGE_AFTER_REDIRECT'][INFO] ?? []);
+        $this->assertStringContainsString(
+            __('don', 'remise'),
+            $messages,
+            "Un message INFO doit inviter a creer la fiche de don manuellement (cf. TROUBLESHOOTING.md)."
+        );
+    }
+
+    public function testHandleStateBasedTriggerWarnsWhenHandoverHasNoUser(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit State Handover NoUser');
+        $oldStateId = $this->createTestState('PHPUnit Etat Avant Handover SansUser');
+        $handoverStateId = $this->createTestState('PHPUnit Etat Handover SansUser');
+
+        Config::upsertForEntity($entityId, ['handover_states' => [$handoverStateId]]);
+
+        // Meme situation que le don sans utilisateur (cf. test precedent), mais
+        // pour Remise/Restitution : contrairement au don, aucune creation
+        // manuelle n'est possible pour ce type (MANUALLY_CREATABLE_TYPES exclut
+        // Remise/Restitution) - le message doit donc orienter vers l'assignation
+        // de l'utilisateur, pas vers une fiche manuelle qui n'existe pas.
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Handover NoUser');
+        $computer->oldvalues = ['states_id' => $oldStateId];
+        $computer->fields['users_id'] = 0;
+        $computer->fields['states_id'] = $handoverStateId;
+
+        $_SESSION['MESSAGE_AFTER_REDIRECT'] = [];
+        Remise::handleItemAssignment($computer);
+
+        $this->assertNull(
+            $this->findRemiseFor($computer),
+            "Aucune fiche automatique sans utilisateur : Remise::MANUALLY_CREATABLE_TYPES n'inclut pas Remise/Restitution."
+        );
+        // __() avec la meme chaine source que handleStateBasedTrigger() (Remise.php)
+        // plutot que le texte francais en dur : ce test doit rester valable quelle
+        // que soit la langue de l'environnement d'execution (meme piege que pour
+        // 'don' ci-dessus, echec reel constate en CI, qui rend en anglais - deja
+        // trouve une fois sur ce meme fichier, corrige ici pour de bon).
+        $messages = implode(' ', $_SESSION['MESSAGE_AFTER_REDIRECT'][INFO] ?? []);
+        $this->assertStringContainsString(
+            __('Ce matériel n\'a pas d\'utilisateur assigné : ce changement d\'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue.', 'remise'),
+            $messages,
+            "Un message INFO doit orienter vers l'assignation d'un utilisateur (pas de creation manuelle possible pour ce type)."
+        );
     }
 
     public function testCancelPendingRemisesForCancelsPreviousRemiseOnReassignment(): void

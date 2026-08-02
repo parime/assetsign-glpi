@@ -14,11 +14,10 @@ use GlpiPlugin\Remise\Config;
  */
 final class ProviderFactory
 {
-    public static function for(Config $config): SignatureProviderInterface
-    {
-        $providerConfig = json_decode($config->fields['provider_config'] ?? '', true) ?: [];
-        $validityDays = (int) $config->fields['link_validity_days'];
+   public static function for(Config $config): SignatureProviderInterface {
+       $providerConfig = json_decode($config->fields['provider_config'] ?? '', true) ?: [];
+       $validityDays = (int) $config->fields['link_validity_days'];
 
-        return new CanvasProvider($providerConfig, $validityDays);
-    }
+       return new CanvasProvider($providerConfig, $validityDays);
+   }
 }

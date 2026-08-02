@@ -7,24 +7,24 @@ use GlpiPlugin\Remise\Remise;
 // sinon avec displayNotFoundError() pour id=0).
 if (isset($_POST['create_manual'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
-    try {
-        Remise::createManual(
-            (string) ($_POST['itemtype'] ?? ''),
-            (int) ($_POST['items_id'] ?? 0),
-            (int) ($_POST['type'] ?? -1),
-            (int) ($_POST['users_id'] ?? 0),
-            [
-                'price'             => $_POST['price'] ?? 0,
-                'sale_date'         => $_POST['sale_date'] ?? date('Y-m-d'),
-                'beneficiary_type'  => (int) ($_POST['beneficiary_type'] ?? 0),
-                'external_name'     => (string) ($_POST['external_name'] ?? ''),
-                'external_contact'  => (string) ($_POST['external_contact'] ?? ''),
-            ]
-        );
-        Session::addMessageAfterRedirect(__('Fiche créée.', 'remise'));
-    } catch (\Throwable $e) {
-        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
-    }
+   try {
+       Remise::createManual(
+           (string) ($_POST['itemtype'] ?? ''),
+           (int) ($_POST['items_id'] ?? 0),
+           (int) ($_POST['type'] ?? -1),
+           (int) ($_POST['users_id'] ?? 0),
+           [
+               'price'             => $_POST['price'] ?? 0,
+               'sale_date'         => $_POST['sale_date'] ?? date('Y-m-d'),
+               'beneficiary_type'  => (int) ($_POST['beneficiary_type'] ?? 0),
+               'external_name'     => (string) ($_POST['external_name'] ?? ''),
+               'external_contact'  => (string) ($_POST['external_contact'] ?? ''),
+           ]
+       );
+       Session::addMessageAfterRedirect(__('Fiche créée.', 'remise'));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
     Html::back();
 }
 
@@ -37,23 +37,23 @@ if (!$remise->getFromDB($id) || !$remise->can($id, READ)) {
 
 if (isset($_POST['relance'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
-    try {
-        $remise->sendReminderNow();
-        Session::addMessageAfterRedirect('Relance envoyée.');
-    } catch (\Throwable $e) {
-        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
-    }
+   try {
+       $remise->sendReminderNow();
+       Session::addMessageAfterRedirect('Relance envoyée.');
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
     Html::back();
 }
 
 if (isset($_POST['cancel_request'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
-    try {
-        $remise->cancelRequest();
-        Session::addMessageAfterRedirect(__('Demande annulée.', 'remise'));
-    } catch (\Throwable $e) {
-        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
-    }
+   try {
+       $remise->cancelRequest();
+       Session::addMessageAfterRedirect(__('Demande annulée.', 'remise'));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
     Html::back();
 }
 

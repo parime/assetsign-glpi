@@ -15,46 +15,42 @@ use Migration;
  */
 class VenteDetails extends CommonDBTM
 {
-    public static $rightname = Profile::RIGHT_REMISE;
+   public static $rightname = Profile::RIGHT_REMISE;
 
-    public static function createForRemise(int $remises_id, float $price, string $saleDate): void
-    {
-        (new self())->add([
-            'plugin_remise_remises_id' => $remises_id,
-            'price'                    => $price,
-            'sale_date'                => $saleDate,
-        ]);
-    }
+   public static function createForRemise(int $remises_id, float $price, string $saleDate): void {
+       (new self())->add([
+           'plugin_remise_remises_id' => $remises_id,
+           'price'                    => $price,
+           'sale_date'                => $saleDate,
+       ]);
+   }
 
-    public static function getForRemise(int $remises_id): ?self
-    {
-        $details = new self();
-        return $details->getFromDBByCrit(['plugin_remise_remises_id' => $remises_id]) ? $details : null;
-    }
+   public static function getForRemise(int $remises_id): ?self {
+       $details = new self();
+       return $details->getFromDBByCrit(['plugin_remise_remises_id' => $remises_id]) ? $details : null;
+   }
 
     /**
      * Cree la ligne si elle n'existe pas encore (cas d'une Vente declenchee
      * automatiquement par changement d'Etat, cf. Remise::handleStateBasedTrigger()
      * — aucun prix connu au moment de la creation), sinon la met a jour.
      */
-    public static function upsertForRemise(int $remises_id, float $price, string $saleDate): void
-    {
-        $existing = self::getForRemise($remises_id);
-        if ($existing !== null) {
-            $existing->update(['id' => $existing->getID(), 'price' => $price, 'sale_date' => $saleDate]);
-            return;
-        }
-        self::createForRemise($remises_id, $price, $saleDate);
-    }
+   public static function upsertForRemise(int $remises_id, float $price, string $saleDate): void {
+       $existing = self::getForRemise($remises_id);
+      if ($existing !== null) {
+          $existing->update(['id' => $existing->getID(), 'price' => $price, 'sale_date' => $saleDate]);
+          return;
+      }
+       self::createForRemise($remises_id, $price, $saleDate);
+   }
 
-    public static function install(Migration $migration): void
-    {
-        global $DB;
-        $table = self::getTable();
+   public static function install(Migration $migration): void {
+       global $DB;
+       $table = self::getTable();
 
-        if (!$DB->tableExists($table)) {
-            $migration->displayMessage('Création de la table ' . $table);
-            $DB->doQuery("CREATE TABLE `$table` (
+      if (!$DB->tableExists($table)) {
+          $migration->displayMessage('Création de la table ' . $table);
+          $DB->doQuery("CREATE TABLE `$table` (
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                 `plugin_remise_remises_id` int unsigned NOT NULL,
                 `price` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -63,6 +59,6 @@ class VenteDetails extends CommonDBTM
                 UNIQUE KEY `unicity` (`plugin_remise_remises_id`),
                 CONSTRAINT `fk_vd_remise` FOREIGN KEY (`plugin_remise_remises_id`) REFERENCES `glpi_plugin_remise_remises` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
-        }
-    }
+      }
+   }
 }

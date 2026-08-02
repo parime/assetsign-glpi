@@ -17,22 +17,21 @@ use Migration;
  */
 class DamageMarker extends CommonDBTM
 {
-    public static $rightname = Profile::RIGHT_REMISE;
+   public static $rightname = Profile::RIGHT_REMISE;
 
-    public const SEVERITY_MINOR = 0;
-    public const SEVERITY_MAJOR = 1;
+   public const SEVERITY_MINOR = 0;
+   public const SEVERITY_MAJOR = 1;
 
     /** Nombre de vues de reference disponibles (cf. public/images/damage-views/). */
-    public const VIEW_COUNT = 3;
+   public const VIEW_COUNT = 3;
 
-    public static function getViewLabels(): array
-    {
-        return [
-            0 => __('Vue arrière', 'remise'),
-            1 => __('Vue de face', 'remise'),
-            2 => __('Dessous', 'remise'),
-        ];
-    }
+   public static function getViewLabels(): array {
+       return [
+           0 => __('Vue arrière', 'remise'),
+           1 => __('Vue de face', 'remise'),
+           2 => __('Dessous', 'remise'),
+       ];
+   }
 
     /**
      * Libelles fixes (toujours en francais), pour le PDF (reel ou apercu)
@@ -42,77 +41,71 @@ class DamageMarker extends CommonDBTM
      * signature (session du beneficiaire) — le contenu archive ne doit pas
      * dependre de la langue de qui l'a declenche.
      */
-    public static function getCanonicalViewLabels(): array
-    {
-        return [
-            0 => 'Vue arrière',
-            1 => 'Vue de face',
-            2 => 'Dessous',
-        ];
-    }
+   public static function getCanonicalViewLabels(): array {
+       return [
+           0 => 'Vue arrière',
+           1 => 'Vue de face',
+           2 => 'Dessous',
+       ];
+   }
 
-    public static function getViewImageFilenames(): array
-    {
-        return [
-            0 => 'arriere.jpg',
-            1 => 'avant.jpg',
-            2 => 'dessous.jpg',
-        ];
-    }
+   public static function getViewImageFilenames(): array {
+       return [
+           0 => 'arriere.jpg',
+           1 => 'avant.jpg',
+           2 => 'dessous.jpg',
+       ];
+   }
 
     /** @return self[] Toutes les vues et markers pour une remise, une entree par view_index. */
-    public static function getForRemise(int $remises_id): array
-    {
-        global $DB;
+   public static function getForRemise(int $remises_id): array {
+       global $DB;
 
-        $markers = [];
-        foreach ($DB->request([
-            'FROM'  => self::getTable(),
-            'WHERE' => ['plugin_remise_remises_id' => $remises_id],
-            'ORDER' => 'view_index, id',
-        ]) as $row) {
-            $markers[] = $row;
-        }
-        return $markers;
-    }
+       $markers = [];
+      foreach ($DB->request([
+           'FROM'  => self::getTable(),
+           'WHERE' => ['plugin_remise_remises_id' => $remises_id],
+           'ORDER' => 'view_index, id',
+       ]) as $row) {
+          $markers[] = $row;
+      }
+       return $markers;
+   }
 
-    public static function addMarker(int $remises_id, int $viewIndex, float $x, float $y, string $description, int $severity): int
-    {
-        $marker = new self();
-        return (int) $marker->add([
-            'plugin_remise_remises_id' => $remises_id,
-            'view_index'               => $viewIndex,
-            'x_percent'                => $x,
-            'y_percent'                => $y,
-            'description'              => $description,
-            'severity'                 => $severity,
-        ]);
-    }
+   public static function addMarker(int $remises_id, int $viewIndex, float $x, float $y, string $description, int $severity): int {
+       $marker = new self();
+       return (int) $marker->add([
+           'plugin_remise_remises_id' => $remises_id,
+           'view_index'               => $viewIndex,
+           'x_percent'                => $x,
+           'y_percent'                => $y,
+           'description'              => $description,
+           'severity'                 => $severity,
+       ]);
+   }
 
     /**
      * Met a jour la position (glisser-deposer) et/ou la description/gravite
      * d'un marqueur existant. Meme verification d'appartenance que deleteMarker().
      */
-    public static function updateMarker(int $id, int $remises_id, array $changes): bool
-    {
-        $marker = new self();
-        if (!$marker->getFromDB($id) || (int) $marker->fields['plugin_remise_remises_id'] !== $remises_id) {
-            return false;
-        }
-        return (bool) $marker->update(['id' => $id] + $changes);
-    }
+   public static function updateMarker(int $id, int $remises_id, array $changes): bool {
+       $marker = new self();
+      if (!$marker->getFromDB($id) || (int) $marker->fields['plugin_remise_remises_id'] !== $remises_id) {
+          return false;
+      }
+       return (bool) $marker->update(['id' => $id] + $changes);
+   }
 
-    public static function deleteMarker(int $id, int $remises_id): bool
-    {
-        $marker = new self();
-        // Verifie l'appartenance a CETTE remise avant de supprimer : sans cela,
-        // un id de marqueur devine (numerotation auto-incrementee) permettrait
-        // de supprimer le marqueur d'une AUTRE remise.
-        if (!$marker->getFromDB($id) || (int) $marker->fields['plugin_remise_remises_id'] !== $remises_id) {
-            return false;
-        }
-        return $marker->delete(['id' => $id]);
-    }
+   public static function deleteMarker(int $id, int $remises_id): bool {
+       $marker = new self();
+       // Verifie l'appartenance a CETTE remise avant de supprimer : sans cela,
+       // un id de marqueur devine (numerotation auto-incrementee) permettrait
+       // de supprimer le marqueur d'une AUTRE remise.
+      if (!$marker->getFromDB($id) || (int) $marker->fields['plugin_remise_remises_id'] !== $remises_id) {
+          return false;
+      }
+       return $marker->delete(['id' => $id]);
+   }
 
     /**
      * Traite une action d'ajout/modification/suppression de repere a partir
@@ -127,65 +120,63 @@ class DamageMarker extends CommonDBTM
      *
      * @return array{success: bool, error?: string, id?: int}
      */
-    public static function handleMutationRequest(Remise $remise, array $post): array
-    {
-        if (isset($post['add'])) {
-            $viewIndex = (int) ($post['view_index'] ?? -1);
-            if ($viewIndex < 0 || $viewIndex >= self::VIEW_COUNT) {
-                return ['success' => false, 'error' => 'Vue invalide.'];
-            }
-            $id = self::addMarker(
-                $remise->getID(),
-                $viewIndex,
-                (float) ($post['x'] ?? 0),
-                (float) ($post['y'] ?? 0),
-                (string) ($post['description'] ?? ''),
-                (int) ($post['severity'] ?? self::SEVERITY_MINOR)
-            );
-            if ($id > 0) {
-                $remise->refreshDamageAnnotationPdf();
-            }
-            return ['success' => $id > 0, 'id' => $id];
-        }
+   public static function handleMutationRequest(Remise $remise, array $post): array {
+      if (isset($post['add'])) {
+          $viewIndex = (int) ($post['view_index'] ?? -1);
+         if ($viewIndex < 0 || $viewIndex >= self::VIEW_COUNT) {
+            return ['success' => false, 'error' => 'Vue invalide.'];
+         }
+          $id = self::addMarker(
+              $remise->getID(),
+              $viewIndex,
+              (float) ($post['x'] ?? 0),
+              (float) ($post['y'] ?? 0),
+              (string) ($post['description'] ?? ''),
+              (int) ($post['severity'] ?? self::SEVERITY_MINOR)
+          );
+         if ($id > 0) {
+            $remise->refreshDamageAnnotationPdf();
+         }
+          return ['success' => $id > 0, 'id' => $id];
+      }
 
-        if (isset($post['update'])) {
-            $changes = [];
-            if (isset($post['x']) && isset($post['y'])) {
-                $changes['x_percent'] = (float) $post['x'];
-                $changes['y_percent'] = (float) $post['y'];
-            }
-            if (isset($post['description'])) {
-                $changes['description'] = (string) $post['description'];
-            }
-            if (isset($post['severity'])) {
-                $changes['severity'] = (int) $post['severity'];
-            }
-            $success = self::updateMarker((int) ($post['id'] ?? 0), $remise->getID(), $changes);
-            if ($success) {
-                $remise->refreshDamageAnnotationPdf();
-            }
-            return ['success' => $success];
-        }
+      if (isset($post['update'])) {
+          $changes = [];
+         if (isset($post['x']) && isset($post['y'])) {
+             $changes['x_percent'] = (float) $post['x'];
+             $changes['y_percent'] = (float) $post['y'];
+         }
+         if (isset($post['description'])) {
+             $changes['description'] = (string) $post['description'];
+         }
+         if (isset($post['severity'])) {
+             $changes['severity'] = (int) $post['severity'];
+         }
+          $success = self::updateMarker((int) ($post['id'] ?? 0), $remise->getID(), $changes);
+         if ($success) {
+             $remise->refreshDamageAnnotationPdf();
+         }
+          return ['success' => $success];
+      }
 
-        if (isset($post['delete'])) {
-            $success = self::deleteMarker((int) ($post['id'] ?? 0), $remise->getID());
-            if ($success) {
-                $remise->refreshDamageAnnotationPdf();
-            }
-            return ['success' => $success];
-        }
+      if (isset($post['delete'])) {
+          $success = self::deleteMarker((int) ($post['id'] ?? 0), $remise->getID());
+         if ($success) {
+             $remise->refreshDamageAnnotationPdf();
+         }
+          return ['success' => $success];
+      }
 
-        return ['success' => false, 'error' => 'Action inconnue.'];
-    }
+       return ['success' => false, 'error' => 'Action inconnue.'];
+   }
 
-    public static function install(Migration $migration): void
-    {
-        global $DB;
-        $table = self::getTable();
+   public static function install(Migration $migration): void {
+       global $DB;
+       $table = self::getTable();
 
-        if (!$DB->tableExists($table)) {
-            $migration->displayMessage('Création de la table ' . $table);
-            $DB->doQuery("CREATE TABLE `$table` (
+      if (!$DB->tableExists($table)) {
+          $migration->displayMessage('Création de la table ' . $table);
+          $DB->doQuery("CREATE TABLE `$table` (
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                 `plugin_remise_remises_id` int unsigned NOT NULL,
                 `view_index` tinyint unsigned NOT NULL DEFAULT 0,
@@ -197,6 +188,6 @@ class DamageMarker extends CommonDBTM
                 KEY `plugin_remise_remises_id` (`plugin_remise_remises_id`),
                 CONSTRAINT `fk_dm_remise` FOREIGN KEY (`plugin_remise_remises_id`) REFERENCES `glpi_plugin_remise_remises` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
-        }
-    }
+      }
+   }
 }

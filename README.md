@@ -61,6 +61,54 @@ Le même mécanisme fonctionne aussi en sens inverse : quand un matériel est **
 
 ![Formulaire de fiche de maintenance avec types de saisie variés](docs/screenshots/maintenance.png)
 
+### Les intitulés (Configuration > Intitulés)
+
+Trois listes déroulantes configurables par l'administrateur apparaissent comme n'importe quel autre intitulé natif de GLPI (Configuration > Intitulés), sans écran séparé à connaître :
+
+**Accessoires de remise** — le catalogue proposé lors de l'ajout d'un accessoire sur une fiche (chargeur, sacoche, souris...) :
+
+![Liste des accessoires de remise dans Intitulés](docs/screenshots/intitules-accessoires.png)
+
+**Gabarits de remise** — un gabarit par type de fiche (Remise/Restitution/Don/Vente), avec son propre texte de conditions générales et son statut par défaut :
+
+![Liste des gabarits de remise dans Intitulés](docs/screenshots/intitules-gabarits.png)
+
+**Points de contrôle de maintenance** — chaque point définit son propre type de saisie (case à cocher, texte libre, ou menu déroulant avec ses propres options), configuré directement depuis cette liste :
+
+![Liste des points de contrôle de maintenance dans Intitulés](docs/screenshots/intitules-checklist-maintenance.png)
+
+### Les listes transverses (Outils > Remises / Fiches de maintenance)
+
+**Outils > Remises ("Gestion des fiches")** : toutes les remises/restitutions/dons/ventes de tout le parc, quel que soit le matériel ou le bénéficiaire, avec téléchargement direct des PDF (non signé et signé) et annulation en action groupée. Cette liste sert de tableau de bord central pour le technicien qui n'a pas besoin de rouvrir chaque fiche matériel une par une :
+
+![Liste transverse de toutes les remises](docs/screenshots/liste-remises.png)
+
+**Outils > Fiches de maintenance** : la même logique, mais pour les fiches de maintenance internes (sans bénéficiaire ni signature) — un second point d'entrée vers la même liste que l'onglet Maintenance d'un matériel donné :
+
+![Liste transverse de toutes les fiches de maintenance](docs/screenshots/liste-maintenance.png)
+
+### L'onglet « Remises » sur la fiche d'un matériel
+
+Chaque matériel géré par le plugin (ordinateur, écran, périphérique, téléphone, ou un actif personnalisé) gagne un onglet **Remises** dans son menu latéral, à côté des onglets natifs de GLPI. Il liste l'historique des remises déjà faites sur ce matériel, et propose un formulaire de création manuelle pour un Don ou une Vente — avec le choix entre un bénéficiaire interne (un compte GLPI existant, via le menu déroulant) ou externe (nom et contact en texte libre, pour une personne ou une association sans compte GLPI) :
+
+![Onglet Remises d'un ordinateur avec le formulaire de création Don/Vente](docs/screenshots/onglet-ordinateur-remise-creation.png)
+
+Une fois une remise signée, la même fiche affiche son statut, ses dates, et le bénéficiaire réel :
+
+![Onglet Remises d'un ordinateur avec une remise déjà signée](docs/screenshots/onglet-ordinateur-remise-signee.png)
+
+### L'onglet « Maintenance » sur la fiche d'un matériel
+
+Un second onglet dédié, indépendant des remises signées (pas de bénéficiaire, pas de signature), avec le formulaire de nouvelle fiche de maintenance directement accessible — chaque point de contrôle affiche son propre type de saisie (case à cocher, champ texte, menu déroulant) tel que défini dans Intitulés :
+
+![Onglet Maintenance d'un ordinateur avec le formulaire de checklist](docs/screenshots/onglet-ordinateur-maintenance.png)
+
+### L'onglet « Remises » sur la fiche d'un utilisateur
+
+Le même onglet Remises existe aussi côté utilisateur (fiche d'un compte GLPI, Administration > Utilisateurs) : pratique pour retrouver d'un coup d'œil tout ce qu'une personne a reçu, sans avoir à connaître à l'avance sur quel matériel chercher :
+
+![Onglet Remises sur la fiche d'un utilisateur](docs/screenshots/onglet-utilisateur-remise.png)
+
 ## Comment ça marche, vu par chaque personne
 
 **L'administrateur** configure une fois pour toutes (Configuration > Remise & signature) : quels types de matériel sont concernés, quand une signature est déclenchée (affectation, réaffectation, restitution, ou changement d'État), les délais de relance, le logo et la charte à afficher sur les PDF.
@@ -187,11 +235,12 @@ php bin/console plugins:remise:warn-expiring
 
 ## Tableau de bord
 
-Trois cartes natives (widgets « grand nombre ») apparaissent dans le groupe **« Remise & signature »** de l'éditeur de tableau de bord GLPI (menu Tableau de bord > Modifier > Ajouter une carte) :
+Quatre cartes natives (widgets « grand nombre ») apparaissent dans le groupe **« Remise & signature »** de l'éditeur de tableau de bord GLPI (menu Tableau de bord > Modifier > Ajouter une carte) :
 
 - Remises en attente de signature
 - Remises signées
 - Remises expirées
+- Échecs de création (30 derniers jours) — un échec de création automatique (rare : génération PDF, envoi du jeton...) n'interrompt jamais la sauvegarde du matériel qui l'a déclenché, mais reste sinon invisible sans consulter le fichier de log du plugin ; cette carte le rend visible d'un coup d'œil.
 
 Chaque carte renvoie vers la liste filtrée correspondante en un clic, et respecte l'entité active sélectionnée.
 

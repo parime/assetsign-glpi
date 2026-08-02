@@ -12,10 +12,10 @@ namespace GlpiPlugin\Remise\Workflow;
  */
 interface WorkflowTypeInterface
 {
-    public function getId(): int;
+   public function getId(): int;
 
     /** Libelle traduit (session courante) : listes, formulaires, tableau de bord. */
-    public function getLabel(): string;
+   public function getLabel(): string;
 
     /**
      * Libelle fixe, JAMAIS traduit via __() : utilise pour le contenu du PDF
@@ -25,11 +25,11 @@ interface WorkflowTypeInterface
      * produirait un document dont la langue varie selon qui l'a genere (deja
      * constate en conditions reelles, cf. Remise::getCanonicalTypeLabel()).
      */
-    public function getCanonicalLabel(): string;
+   public function getCanonicalLabel(): string;
 
     /** @return array{page_title: string, material_heading: string} */
-    public function getPdfHeadings(): array;
+   public function getPdfHeadings(): array;
 
     /** @return array{content: string, charter_content: string} */
-    public function getDefaultTemplateContent(): array;
+   public function getDefaultTemplateContent(): array;
 }

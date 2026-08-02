@@ -2,11 +2,6 @@
 
 namespace GlpiPlugin\Remise;
 
-use NotificationTarget;
-use Notification;
-use NotificationTemplate;
-use NotificationTemplateTranslation;
-use Notification_NotificationTemplate;
 // Qualifie explicitement (plutot que "Notification\DefaultNotificationContent") :
 // le "use Notification;" ci-dessus fait resoudre tout prefixe "Notification\..."
 // contre la classe globale \Notification importee, pas contre le sous-namespace
@@ -14,6 +9,11 @@ use Notification_NotificationTemplate;
 // --force echouait avec "Attempted to load class DefaultNotificationContent from
 // namespace Notification").
 use GlpiPlugin\Remise\Notification\DefaultNotificationContent;
+use Notification;
+use Notification_NotificationTemplate;
+use NotificationTarget;
+use NotificationTemplate;
+use NotificationTemplateTranslation;
 
 /**
  * Cible et contenu des notifications de remise. Resolue automatiquement par
@@ -42,58 +42,55 @@ class NotificationTargetRemise extends NotificationTarget
      * l'adresse e-mail de l'utilisateur, sans exiger de droits GLPI
      * (cf. addSpecificTargets()).
      */
-    public const TARGET_BENEFICIARY = 900001;
-    public const TARGET_TECHNICIAN  = 900002;
+   public const TARGET_BENEFICIARY = 900001;
+   public const TARGET_TECHNICIAN  = 900002;
 
-    public function getEvents(): array
-    {
-        return [
-            'new'           => __('Nouvelle remise de matériel', 'remise'),
-            'reminder'      => __('Relance de signature', 'remise'),
-            'signed'        => __('Document signé', 'remise'),
-            'expired'       => __('Document expiré', 'remise'),
-            'expiring_soon' => __('Document sur le point d\'expirer', 'remise'),
-        ];
-    }
+   public function getEvents(): array {
+       return [
+           'new'           => __('Nouvelle remise de matériel', 'remise'),
+           'reminder'      => __('Relance de signature', 'remise'),
+           'signed'        => __('Document signé', 'remise'),
+           'expired'       => __('Document expiré', 'remise'),
+           'expiring_soon' => __('Document sur le point d\'expirer', 'remise'),
+       ];
+   }
 
-    public function addAdditionalTargets($event = '')
-    {
-        // Le beneficiaire recoit deja des relances periodiques pendant la meme
-        // fenetre (evenement "reminder", cf. Remise::runReminders()) : lui envoyer
-        // aussi "expiring_soon" (qui s'adresse au technicien, pas a lui) ferait
-        // doublon. Tous les autres evenements le concernent directement.
-        if ($event !== 'expiring_soon') {
-            $this->addTarget(self::TARGET_BENEFICIARY, __('Bénéficiaire', 'remise'));
-        }
+   public function addAdditionalTargets($event = '') {
+       // Le beneficiaire recoit deja des relances periodiques pendant la meme
+       // fenetre (evenement "reminder", cf. Remise::runReminders()) : lui envoyer
+       // aussi "expiring_soon" (qui s'adresse au technicien, pas a lui) ferait
+       // doublon. Tous les autres evenements le concernent directement.
+      if ($event !== 'expiring_soon') {
+          $this->addTarget(self::TARGET_BENEFICIARY, __('Bénéficiaire', 'remise'));
+      }
 
-        // Le technicien qui a declenche la remise (users_id_tech) est notifie sur
-        // les evenements qui appellent une action de sa part : une fois signee (pour
-        // archivage/suivi), si elle expire sans signature (sans quoi personne cote IT
-        // n'est jamais informe qu'un document est reste sans suite — seul le
-        // beneficiaire, qui n'a justement pas signe, recevait l'e-mail), et surtout
-        // AVANT l'expiration reelle (evenement "expiring_soon", cf. Remise::
-        // runExpiryWarnings()) : sans cette alerte anticipee, le technicien n'apprend
-        // qu'un document est reste sans suite qu'une fois le lien deja invalide, trop
-        // tard pour relancer le beneficiaire autrement (appel, passage sur place).
-        if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
-            $this->addTarget(self::TARGET_TECHNICIAN, __('Technicien', 'remise'));
-        }
-    }
+       // Le technicien qui a declenche la remise (users_id_tech) est notifie sur
+       // les evenements qui appellent une action de sa part : une fois signee (pour
+       // archivage/suivi), si elle expire sans signature (sans quoi personne cote IT
+       // n'est jamais informe qu'un document est reste sans suite — seul le
+       // beneficiaire, qui n'a justement pas signe, recevait l'e-mail), et surtout
+       // AVANT l'expiration reelle (evenement "expiring_soon", cf. Remise::
+       // runExpiryWarnings()) : sans cette alerte anticipee, le technicien n'apprend
+       // qu'un document est reste sans suite qu'une fois le lien deja invalide, trop
+       // tard pour relancer le beneficiaire autrement (appel, passage sur place).
+      if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
+          $this->addTarget(self::TARGET_TECHNICIAN, __('Technicien', 'remise'));
+      }
+   }
 
     /**
      * Point d'extension appele par NotificationTarget::addForTarget() pour tout
      * type de cible non reconnu nativement — ici, nos TARGET_BENEFICIARY/TECHNICIAN.
      */
-    public function addSpecificTargets($data, $options)
-    {
-        $target = (int) ($data['items_id'] ?? 0);
+   public function addSpecificTargets($data, $options) {
+       $target = (int) ($data['items_id'] ?? 0);
 
-        if ($target === self::TARGET_BENEFICIARY) {
-            $this->addUserFieldByEmail('users_id');
-        } elseif ($target === self::TARGET_TECHNICIAN) {
-            $this->addUserFieldByEmail('users_id_tech');
-        }
-    }
+      if ($target === self::TARGET_BENEFICIARY) {
+          $this->addUserFieldByEmail('users_id');
+      } else if ($target === self::TARGET_TECHNICIAN) {
+          $this->addUserFieldByEmail('users_id_tech');
+      }
+   }
 
     /**
      * Notifie directement l'utilisateur porte par le champ $field de la remise
@@ -101,78 +98,75 @@ class NotificationTargetRemise extends NotificationTarget
      * mecanisme de jointure sur profil de GLPI (cf. le commentaire sur
      * TARGET_BENEFICIARY/TARGET_TECHNICIAN plus haut).
      */
-    private function addUserFieldByEmail(string $field): void
-    {
-        /** @var Remise $remise */
-        $remise = $this->obj;
+   private function addUserFieldByEmail(string $field): void {
+       /** @var Remise $remise */
+       $remise = $this->obj;
 
-        $usersId = (int) ($remise->fields[$field] ?? 0);
-        if ($usersId <= 0) {
-            return;
-        }
+       $usersId = (int) ($remise->fields[$field] ?? 0);
+      if ($usersId <= 0) {
+          return;
+      }
 
-        $user = new \User();
-        if (!$user->getFromDB($usersId)) {
-            return;
-        }
+       $user = new \User();
+      if (!$user->getFromDB($usersId)) {
+          return;
+      }
 
-        $email = \UserEmail::getDefaultForUser($user->getID());
-        if (empty($email)) {
-            return; // cf. gestion d'erreur "utilisateur sans e-mail" (section 6 de la spec)
-        }
+       $email = \UserEmail::getDefaultForUser($user->getID());
+      if (empty($email)) {
+          return; // cf. gestion d'erreur "utilisateur sans e-mail" (section 6 de la spec)
+      }
 
-        $this->addToRecipientsList([
-            'language' => $user->fields['language'] ?: ($GLOBALS['CFG_GLPI']['language'] ?? 'en_GB'),
-            'name'     => formatUserName(0, $user->fields['name'], $user->fields['realname'], $user->fields['firstname']),
-            'email'    => $email,
-        ]);
-    }
+       $this->addToRecipientsList([
+           'language' => $user->fields['language'] ?: ($GLOBALS['CFG_GLPI']['language'] ?? 'en_GB'),
+           'name'     => formatUserName(0, $user->fields['name'], $user->fields['realname'], $user->fields['firstname']),
+           'email'    => $email,
+       ]);
+   }
 
-    public function addDataForTemplate($event, $options = [])
-    {
-        /** @var Remise $remise */
-        $remise = $this->obj;
+   public function addDataForTemplate($event, $options = []) {
+       /** @var Remise $remise */
+       $remise = $this->obj;
 
-        $events = $this->getAllEvents();
-        $this->data['##remise.action##'] = $events[$event] ?? '';
-        $this->data['##remise.id##']     = $remise->getID();
-        $this->data['##remise.type##']   = Remise::getTypes()[(int) $remise->fields['type']] ?? '';
+       $events = $this->getAllEvents();
+       $this->data['##remise.action##'] = $events[$event] ?? '';
+       $this->data['##remise.id##']     = $remise->getID();
+       $this->data['##remise.type##']   = Remise::getTypes()[(int) $remise->fields['type']] ?? '';
 
-        $item = $remise->getTargetItem();
-        $this->data['##remise.item.name##'] = $item['name'] ?? '';
+       $item = $remise->getTargetItem();
+       $this->data['##remise.item.name##'] = $item['name'] ?? '';
 
-        $user = $remise->getBeneficiary();
-        $this->data['##remise.user.name##'] = formatUserName(0, $user['name'] ?? '', $user['realname'] ?? '', $user['firstname'] ?? '');
+       $user = $remise->getBeneficiary();
+       $this->data['##remise.user.name##'] = formatUserName(0, $user['name'] ?? '', $user['realname'] ?? '', $user['firstname'] ?? '');
 
-        $this->data['##remise.sign_url##'] = $remise->getSignUrl();
-        $this->data['##remise.deadline##'] = $remise->getExpiryDate() ?? '';
+       $this->data['##remise.sign_url##'] = $remise->getSignUrl();
+       $this->data['##remise.deadline##'] = $remise->getExpiryDate() ?? '';
 
-        $this->getTags();
-        foreach ($this->tag_descriptions[NotificationTarget::TAG_LANGUAGE] as $tag => $values) {
-            if (!isset($this->data[$tag])) {
-                $this->data[$tag] = $values['label'];
-            }
-        }
-    }
+       $this->getTags();
+      foreach ($this->tag_descriptions[NotificationTarget::TAG_LANGUAGE] as $tag => $values) {
+         if (!isset($this->data[$tag])) {
+            $this->data[$tag] = $values['label'];
+         }
+      }
+   }
 
-    public function getTags()
-    {
-        $tags = [
-            'remise.action'    => __('Événement', 'remise'),
-            'remise.id'        => __('Identifiant', 'remise'),
-            'remise.type'      => __('Type de remise', 'remise'),
-            'remise.item.name' => __('Matériel', 'remise'),
-            'remise.user.name' => __('Bénéficiaire', 'remise'),
-            'remise.sign_url'  => __('Lien de signature', 'remise'),
-            'remise.deadline'  => __('Date limite de signature', 'remise'),
-        ];
+   public function getTags() {
+       $tags = [
+           'remise.action'    => __('Événement', 'remise'),
+           'remise.id'        => __('Identifiant', 'remise'),
+           'remise.type'      => __('Type de remise', 'remise'),
+           'remise.item.name' => __('Matériel', 'remise'),
+           'remise.user.name' => __('Bénéficiaire', 'remise'),
+           'remise.sign_url'  => __('Lien de signature', 'remise'),
+           'remise.deadline'  => __('Date limite de signature', 'remise'),
+       ];
 
-        foreach ($tags as $tag => $label) {
-            $this->addTagToList(['tag' => $tag, 'label' => $label, 'value' => true]);
-        }
+       foreach ($tags as $tag => $label) {
+           $this->addTagToList(['tag' => $tag, 'label' => $label, 'value' => true]);
+       }
 
-        asort($this->tag_descriptions);
-    }
+       asort($this->tag_descriptions);
+   }
 
     /**
      * Seme les 5 notifications par defaut a l'installation (editables ensuite
@@ -188,85 +182,84 @@ class NotificationTargetRemise extends NotificationTarget
      * anglais recevrait quand meme l'e-mail en francais — contrairement a
      * l'interface web du plugin (deja traduite via locales/en_GB.po).
      */
-    public static function install(): void
-    {
-        // Une seule notification par evenement, valable pour tous les types de
-        // fiche (Remise, Restitution, et les types a venir) : le mot de type
-        // exact est insere via le tag ##remise.type## (deja resolu par
-        // addDataForTemplate() ci-dessus), pas besoin d'une notification par
-        // type — cf. Notification\DefaultNotificationContent pour le contenu.
-        foreach (array_keys((new self())->getEvents()) as $event) {
-            $def = DefaultNotificationContent::forEvent($event);
-            $existing = new Notification();
-            $alreadyInstalled = $existing->getFromDBByCrit(['itemtype' => Remise::class, 'event' => $event]);
+   public static function install(): void {
+       // Une seule notification par evenement, valable pour tous les types de
+       // fiche (Remise, Restitution, et les types a venir) : le mot de type
+       // exact est insere via le tag ##remise.type## (deja resolu par
+       // addDataForTemplate() ci-dessus), pas besoin d'une notification par
+       // type — cf. Notification\DefaultNotificationContent pour le contenu.
+      foreach (array_keys((new self())->getEvents()) as $event) {
+          $def = DefaultNotificationContent::forEvent($event);
+          $existing = new Notification();
+          $alreadyInstalled = $existing->getFromDBByCrit(['itemtype' => Remise::class, 'event' => $event]);
 
-            if ($alreadyInstalled) {
-                // Montee de version : ajoute uniquement la traduction en_GB manquante
-                // sur une installation existante (semee avant l'ajout du support
-                // multilingue), sans toucher au reste ni recreer quoi que ce soit.
-                self::addMissingTranslation(self::getTemplateIdForEvent($event), 'en_GB', $def['en_GB']);
-
-                if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
-                    self::migrateTechnicianTarget((int) $existing->getID());
-                }
-                continue;
-            }
-
-            $template = new NotificationTemplate();
-            $templates_id = $template->add([
-                'name'     => $def['name'],
-                'itemtype' => Remise::class,
-            ]);
-
-            (new NotificationTemplateTranslation())->add([
-                'notificationtemplates_id' => $templates_id,
-                'language'                 => '',
-                'subject'                  => $def['fr_FR']['subject'],
-                'content_html'             => $def['fr_FR']['html'],
-                'content_text'             => strip_tags(str_replace('</p>', "\n", $def['fr_FR']['html'])),
-            ]);
-
-            (new NotificationTemplateTranslation())->add([
-                'notificationtemplates_id' => $templates_id,
-                'language'                 => 'en_GB',
-                'subject'                  => $def['en_GB']['subject'],
-                'content_html'             => $def['en_GB']['html'],
-                'content_text'             => strip_tags(str_replace('</p>', "\n", $def['en_GB']['html'])),
-            ]);
-
-            $notification = new Notification();
-            $notifications_id = $notification->add([
-                'name'         => $def['name'],
-                'entities_id'  => 0,
-                'is_recursive' => 1,
-                'itemtype'     => Remise::class,
-                'event'        => $event,
-                'is_active'    => 1,
-            ]);
-
-            (new Notification_NotificationTemplate())->add([
-                'notifications_id'         => $notifications_id,
-                'mode'                     => \Notification_NotificationTemplate::MODE_MAIL, // 'mailing', pas 'mail'
-                'notificationtemplates_id' => $templates_id,
-            ]);
-
-            if ($event !== 'expiring_soon') {
-                (new NotificationTarget())->add([
-                    'notifications_id' => $notifications_id,
-                    'type'             => Notification::USER_TYPE,
-                    'items_id'         => self::TARGET_BENEFICIARY,
-                ]);
-            }
+         if ($alreadyInstalled) {
+            // Montee de version : ajoute uniquement la traduction en_GB manquante
+            // sur une installation existante (semee avant l'ajout du support
+            // multilingue), sans toucher au reste ni recreer quoi que ce soit.
+            self::addMissingTranslation(self::getTemplateIdForEvent($event), 'en_GB', $def['en_GB']);
 
             if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
-                (new NotificationTarget())->add([
-                    'notifications_id' => $notifications_id,
-                    'type'             => Notification::USER_TYPE,
-                    'items_id'         => self::TARGET_TECHNICIAN,
-                ]);
+                self::migrateTechnicianTarget((int) $existing->getID());
             }
-        }
-    }
+            continue;
+         }
+
+          $template = new NotificationTemplate();
+          $templates_id = $template->add([
+              'name'     => $def['name'],
+              'itemtype' => Remise::class,
+          ]);
+
+          (new NotificationTemplateTranslation())->add([
+              'notificationtemplates_id' => $templates_id,
+              'language'                 => '',
+              'subject'                  => $def['fr_FR']['subject'],
+              'content_html'             => $def['fr_FR']['html'],
+              'content_text'             => strip_tags(str_replace('</p>', "\n", $def['fr_FR']['html'])),
+          ]);
+
+          (new NotificationTemplateTranslation())->add([
+              'notificationtemplates_id' => $templates_id,
+              'language'                 => 'en_GB',
+              'subject'                  => $def['en_GB']['subject'],
+              'content_html'             => $def['en_GB']['html'],
+              'content_text'             => strip_tags(str_replace('</p>', "\n", $def['en_GB']['html'])),
+          ]);
+
+          $notification = new Notification();
+          $notifications_id = $notification->add([
+              'name'         => $def['name'],
+              'entities_id'  => 0,
+              'is_recursive' => 1,
+              'itemtype'     => Remise::class,
+              'event'        => $event,
+              'is_active'    => 1,
+          ]);
+
+          (new Notification_NotificationTemplate())->add([
+              'notifications_id'         => $notifications_id,
+              'mode'                     => \Notification_NotificationTemplate::MODE_MAIL, // 'mailing', pas 'mail'
+              'notificationtemplates_id' => $templates_id,
+          ]);
+
+         if ($event !== 'expiring_soon') {
+            (new NotificationTarget())->add([
+              'notifications_id' => $notifications_id,
+              'type'             => Notification::USER_TYPE,
+              'items_id'         => self::TARGET_BENEFICIARY,
+            ]);
+         }
+
+         if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
+            (new NotificationTarget())->add([
+                'notifications_id' => $notifications_id,
+                'type'             => Notification::USER_TYPE,
+                'items_id'         => self::TARGET_TECHNICIAN,
+            ]);
+         }
+      }
+   }
 
     /**
      * Montee de version : remplace, pour une notification 'signed'/'expired'
@@ -275,72 +268,69 @@ class NotificationTargetRemise extends NotificationTarget
      * l'entite, cf. commentaire sur TARGET_TECHNICIAN) par notre cible
      * personnalisee TARGET_TECHNICIAN. Idempotent.
      */
-    private static function migrateTechnicianTarget(int $notifications_id): void
-    {
-        global $DB;
+   private static function migrateTechnicianTarget(int $notifications_id): void {
+       global $DB;
 
-        $DB->delete(NotificationTarget::getTable(), [
-            'notifications_id' => $notifications_id,
-            'items_id'         => Notification::ITEM_TECH_IN_CHARGE,
-        ]);
+       $DB->delete(NotificationTarget::getTable(), [
+           'notifications_id' => $notifications_id,
+           'items_id'         => Notification::ITEM_TECH_IN_CHARGE,
+       ]);
 
-        $target = new NotificationTarget();
-        if ($target->getFromDBByCrit(['notifications_id' => $notifications_id, 'items_id' => self::TARGET_TECHNICIAN])) {
-            return;
-        }
+       $target = new NotificationTarget();
+      if ($target->getFromDBByCrit(['notifications_id' => $notifications_id, 'items_id' => self::TARGET_TECHNICIAN])) {
+          return;
+      }
 
-        $target->add([
-            'notifications_id' => $notifications_id,
-            'type'             => Notification::USER_TYPE,
-            'items_id'         => self::TARGET_TECHNICIAN,
-        ]);
-    }
+       $target->add([
+           'notifications_id' => $notifications_id,
+           'type'             => Notification::USER_TYPE,
+           'items_id'         => self::TARGET_TECHNICIAN,
+       ]);
+   }
 
     /**
      * Retrouve le gabarit associe a l'evenement (via Notification_NotificationTemplate).
      */
-    private static function getTemplateIdForEvent(string $event): int
-    {
-        global $DB;
+   private static function getTemplateIdForEvent(string $event): int {
+       global $DB;
 
-        $notification = new Notification();
-        if (!$notification->getFromDBByCrit(['itemtype' => Remise::class, 'event' => $event])) {
-            return 0;
-        }
+       $notification = new Notification();
+      if (!$notification->getFromDBByCrit(['itemtype' => Remise::class, 'event' => $event])) {
+          return 0;
+      }
 
-        foreach ($DB->request([
-            'FROM'  => Notification_NotificationTemplate::getTable(),
-            'WHERE' => ['notifications_id' => $notification->getID()],
-        ]) as $row) {
-            return (int) $row['notificationtemplates_id'];
-        }
+      foreach ($DB->request([
+           'FROM'  => Notification_NotificationTemplate::getTable(),
+           'WHERE' => ['notifications_id' => $notification->getID()],
+       ]) as $row) {
+          return (int) $row['notificationtemplates_id'];
+      }
 
-        return 0;
-    }
+       return 0;
+   }
 
     /**
      * Ajoute la traduction $language pour le gabarit $templates_id si elle
      * n'existe pas deja (montee de version, idempotent).
      */
-    private static function addMissingTranslation(int $templates_id, string $language, array $content): void
-    {
-        if ($templates_id <= 0) {
-            return;
-        }
+   private static function addMissingTranslation(int $templates_id, string $language, array $content): void {
+      if ($templates_id <= 0) {
+          return;
+      }
 
-        $translation = new NotificationTemplateTranslation();
-        if ($translation->getFromDBByCrit(['notificationtemplates_id' => $templates_id, 'language' => $language])) {
-            return;
-        }
+       $translation = new NotificationTemplateTranslation();
+      if ($translation->getFromDBByCrit(['notificationtemplates_id' => $templates_id, 'language' => $language])) {
+          return;
+      }
 
-        $translation->add([
-            'notificationtemplates_id' => $templates_id,
-            'language'                 => $language,
-            'subject'                  => $content['subject'],
-            'content_html'             => $content['html'],
-            'content_text'             => strip_tags(str_replace('</p>', "\n", $content['html'])),
-        ]);
-    }
+       $translation->add([
+           'notificationtemplates_id' => $templates_id,
+           'language'                 => $language,
+           'subject'                  => $content['subject'],
+           'content_html'             => $content['html'],
+           'content_text'             => strip_tags(str_replace('</p>', "\n", $content['html'])),
+       ]);
+   }
 
     /**
      * Retire les notifications, gabarits et cibles semes par install().
@@ -348,34 +338,33 @@ class NotificationTargetRemise extends NotificationTarget
      * lignes en place et le garde-fou d'idempotence d'install() empeche
      * toute correction ulterieure du seed (ex: changement de type de cible).
      */
-    public static function uninstall(): void
-    {
-        global $DB;
+   public static function uninstall(): void {
+       global $DB;
 
-        $notifIds = [];
-        foreach ($DB->request(['FROM' => Notification::getTable(), 'WHERE' => ['itemtype' => Remise::class]]) as $row) {
-            $notifIds[] = (int) $row['id'];
-        }
+       $notifIds = [];
+      foreach ($DB->request(['FROM' => Notification::getTable(), 'WHERE' => ['itemtype' => Remise::class]]) as $row) {
+          $notifIds[] = (int) $row['id'];
+      }
 
-        if ($notifIds === []) {
-            return;
-        }
+      if ($notifIds === []) {
+          return;
+      }
 
-        $templateIds = [];
-        foreach ($DB->request([
-            'FROM'  => Notification_NotificationTemplate::getTable(),
-            'WHERE' => ['notifications_id' => $notifIds],
-        ]) as $row) {
-            $templateIds[] = (int) $row['notificationtemplates_id'];
-        }
+       $templateIds = [];
+      foreach ($DB->request([
+           'FROM'  => Notification_NotificationTemplate::getTable(),
+           'WHERE' => ['notifications_id' => $notifIds],
+       ]) as $row) {
+          $templateIds[] = (int) $row['notificationtemplates_id'];
+      }
 
-        $DB->delete(NotificationTarget::getTable(), ['notifications_id' => $notifIds]);
-        $DB->delete(Notification_NotificationTemplate::getTable(), ['notifications_id' => $notifIds]);
-        $DB->delete(Notification::getTable(), ['id' => $notifIds]);
+       $DB->delete(NotificationTarget::getTable(), ['notifications_id' => $notifIds]);
+       $DB->delete(Notification_NotificationTemplate::getTable(), ['notifications_id' => $notifIds]);
+       $DB->delete(Notification::getTable(), ['id' => $notifIds]);
 
-        if ($templateIds !== []) {
-            $DB->delete(NotificationTemplateTranslation::getTable(), ['notificationtemplates_id' => $templateIds]);
-            $DB->delete(NotificationTemplate::getTable(), ['id' => $templateIds]);
-        }
-    }
+      if ($templateIds !== []) {
+          $DB->delete(NotificationTemplateTranslation::getTable(), ['notificationtemplates_id' => $templateIds]);
+          $DB->delete(NotificationTemplate::getTable(), ['id' => $templateIds]);
+      }
+   }
 }

@@ -1,9 +1,9 @@
 <?php
 
 use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\Template;
-use GlpiPlugin\Remise\Remise;
 use GlpiPlugin\Remise\Pdf\HandoverPdfBuilder;
+use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Remise\Template;
 
 // Utilise aussi bien depuis la page de configuration (droit Config) que depuis
 // la page de gabarit (droit Template) : l'un ou l'autre suffit, ce n'est que
@@ -27,14 +27,14 @@ $type = (int) ($_POST['type'] ?? Remise::TYPE_HANDOVER);
 
 $overrides = [];
 foreach (['include_content', 'include_charter', 'enable_observations', 'enable_damage_annotation'] as $boolField) {
-    if (isset($_POST[$boolField])) {
-        $overrides[$boolField] = $_POST[$boolField] === '1';
-    }
+   if (isset($_POST[$boolField])) {
+       $overrides[$boolField] = $_POST[$boolField] === '1';
+   }
 }
 foreach (['content', 'charter_content', 'charter_url'] as $textField) {
-    if (isset($_POST[$textField])) {
-        $overrides[$textField] = (string) $_POST[$textField];
-    }
+   if (isset($_POST[$textField])) {
+       $overrides[$textField] = (string) $_POST[$textField];
+   }
 }
 
 echo (new HandoverPdfBuilder())->renderPreview($entities_id, $type, $overrides);

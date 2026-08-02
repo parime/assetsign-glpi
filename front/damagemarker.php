@@ -1,7 +1,7 @@
 <?php
 
-use GlpiPlugin\Remise\Remise;
 use GlpiPlugin\Remise\DamageMarker;
+use GlpiPlugin\Remise\Remise;
 
 header('Content-Type: application/json');
 
