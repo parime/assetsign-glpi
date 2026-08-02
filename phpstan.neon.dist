@@ -1,0 +1,24 @@
+parameters:
+    level: 5
+    paths:
+        - src
+        - front
+        - hook.php
+        - setup.php
+    bootstrapFiles:
+        - .phpstan-bootstrap.php
+    ignoreErrors:
+        -
+            # Les methodes de hook GLPI (getTabNameForItem, displayTabContentForItem,
+            # processMassiveActionsForOneItemtype) typent obligatoirement leur
+            # parametre a la classe parente (CommonGLPI/CommonDBTM) pour respecter
+            # la signature exacte imposee par le coeur GLPI - alors meme que ce
+            # plugin ne les enregistre (Plugin::registerClass) que pour des
+            # itemtypes concrets qui possedent reellement ces methodes. Faux
+            # positif garanti par construction, jamais atteignable avec un autre
+            # type a l'execution.
+            message: '#Call to an undefined method (CommonGLPI|CommonDBTM)::(getID|sendReminderNow|cancelRequest)\(\)#'
+            paths:
+                - src/GlpiPlugin/Remise/Remise.php
+                - src/GlpiPlugin/Remise/Config.php
+                - src/GlpiPlugin/Remise/Maintenance.php
