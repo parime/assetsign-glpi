@@ -12,7 +12,7 @@ use RuntimeException;
  * Couvre la logique de relance/expiration/alerte automatiques (runReminders(),
  * runExpiration(), runExpiryWarnings()) : de la logique de dates fragile, deja
  * source d'un bug reel par le passe (resolution de config globale au lieu de
- * par-remise, cf. README), jamais verifiee par une suite automatisee jusqu'ici.
+ * par-remise, cf. TROUBLESHOOTING.md), jamais verifiee par une suite automatisee jusqu'ici.
  */
 class RemiseCronTest extends RemiseTestCase
 {

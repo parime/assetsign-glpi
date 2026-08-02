@@ -15,7 +15,7 @@ if (!$remise->getFromDB($remisesId) || !$remise->can($remisesId, UPDATE) || !$re
     exit;
 }
 
-// Jeton CSRF a usage unique (cf. README) : sans rotation, ajouter/modifier plus
+// Jeton CSRF a usage unique (cf. TROUBLESHOOTING.md) : sans rotation, ajouter/modifier plus
 // d'un repere par chargement de page echouerait en 403 des le 2e appel.
 header('X-Remise-Csrf-Token: ' . Session::getNewCSRFToken());
 
