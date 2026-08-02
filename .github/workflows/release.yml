@@ -1,0 +1,140 @@
+name: Release
+
+# Declenche sur un tag de version (v1.2.3) : construit l'archive de
+# distribution du plugin, verifie qu'elle s'installe reellement sur une
+# instance GLPI fraiche (memes conteneurs que ci.yml), puis publie la
+# GitHub Release avec cette archive en piece jointe et un changelog genere
+# automatiquement a partir des Pull Requests fusionnees depuis le tag
+# precedent.
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  GLPI_IMAGE: glpi/glpi:11.0.8
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Récupère le code du plugin
+        uses: actions/checkout@v7
+
+      - name: Vérifie que le tag correspond a PLUGIN_REMISE_VERSION
+        # Empeche une release qui ne correspondrait pas a la version reellement
+        # ecrite dans le code (ex: tag pousse avant/apres avoir oublie de
+        # mettre a jour setup.php) - ferait cohabiter une archive et un numero
+        # de version incoherents.
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          CODE_VERSION="$(grep -oP "define\('PLUGIN_REMISE_VERSION', '\K[^']+" setup.php)"
+          echo "Tag : $TAG_VERSION -- setup.php : $CODE_VERSION"
+          if [ "$TAG_VERSION" != "$CODE_VERSION" ]; then
+            echo "::error::Le tag $GITHUB_REF_NAME ne correspond pas a PLUGIN_REMISE_VERSION ($CODE_VERSION) dans setup.php."
+            exit 1
+          fi
+
+      - name: Valide composer.json/composer.lock
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php --install-dir=/tmp --filename=composer.phar
+          php /tmp/composer.phar validate
+
+      - name: Construit l'archive de distribution
+        # git archive (pas un simple zip du checkout) : construit exactement a
+        # partir du contenu commite au tag, exclut automatiquement ce qui est
+        # marque `export-ignore` dans .gitattributes (tests/, .github/,
+        # config CI/qualite...) - rien d'accidentel du repertoire de travail
+        # ne peut s'y retrouver. Prefixe `remise/` : l'archive s'extrait
+        # directement sous `plugins/` sur une instance GLPI (structure exigee
+        # par le coeur GLPI, cf. ARCHITECTURE.md).
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "ARCHIVE_NAME=remise-glpi-${VERSION}.zip" >> "$GITHUB_ENV"
+          git archive --format=zip --prefix=remise/ -o "remise-glpi-${VERSION}.zip" "$GITHUB_REF_NAME"
+
+      - name: Démarre MariaDB
+        run: |
+          docker network create remise-ci
+          docker run -d --name mariadb --network remise-ci \
+            -e MARIADB_ROOT_PASSWORD=glpi_password \
+            -e MARIADB_DATABASE=glpidb \
+            -e MARIADB_USER=glpi_user \
+            -e MARIADB_PASSWORD=glpi_password \
+            mariadb:11
+
+          echo "Attente que MariaDB accepte les connexions..."
+          for i in $(seq 1 30); do
+            docker exec mariadb mariadb-admin ping -h 127.0.0.1 -u root -pglpi_password --silent && break
+            sleep 2
+          done
+
+      - name: Démarre GLPI (auto-installation via l'image officielle)
+        run: |
+          docker run -d --name glpi --network remise-ci \
+            -e TIMEZONE=Europe/Paris \
+            -e GLPI_DB_HOST=mariadb \
+            -e GLPI_DB_PORT=3306 \
+            -e GLPI_DB_NAME=glpidb \
+            -e GLPI_DB_USER=glpi_user \
+            -e GLPI_DB_PASSWORD=glpi_password \
+            "$GLPI_IMAGE"
+
+          echo "Attente que l'auto-installation de GLPI soit terminee..."
+          ready=0
+          for i in $(seq 1 60); do
+            docker exec glpi test -f /var/glpi/config/config_db.php && { ready=1; break; }
+            sleep 5
+          done
+          if [ "$ready" != "1" ]; then
+            echo "::error::GLPI n'a jamais termine son auto-installation (config_db.php absent)."
+            docker logs glpi --tail 200
+            exit 1
+          fi
+
+      - name: Valide la structure de l'archive sur une vraie instance GLPI
+        # Validation la plus fiable de "cette archive est une structure GLPI
+        # valide" : l'extraire tel quel (comme le ferait un administrateur
+        # GLPI) sous plugins/, et verifier que plugin:install/plugin:activate
+        # reussissent reellement - pas une simple verification heuristique de
+        # presence de fichiers.
+        run: |
+          mkdir -p /tmp/archive-extraite
+          unzip -q "$ARCHIVE_NAME" -d /tmp/archive-extraite
+          docker cp /tmp/archive-extraite/remise glpi:/var/www/glpi/plugins/remise
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/remise
+
+          ready=0
+          for i in $(seq 1 12); do
+            if docker exec glpi php bin/console database:update --force --no-interaction; then
+              ready=1
+              break
+            fi
+            sleep 5
+          done
+          if [ "$ready" != "1" ]; then
+            echo "::error::database:update a echoue apres 12 tentatives."
+            exit 1
+          fi
+          docker exec glpi php bin/console plugin:install remise --force --no-interaction
+          docker exec glpi php bin/console plugin:activate remise --no-interaction
+
+      - name: Logs GLPI (en cas d'échec)
+        if: failure()
+        run: docker logs glpi --tail 200
+
+      - name: Publie la GitHub Release
+        # --generate-notes : changelog automatique a partir des titres des
+        # Pull Requests fusionnees depuis le tag precedent (fonctionnalite
+        # native GitHub) plutot qu'un script maison de parsing de commits -
+        # zero maintenance, et coherent avec le flux Pull Request deja utilise
+        # pour tout changement (cf. ARCHITECTURE.md).
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "$ARCHIVE_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
