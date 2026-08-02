@@ -1,0 +1,13 @@
+# Marque ce qui est utile au developpement/CI mais pas a l'execution du
+# plugin : exclu par `git archive` (utilise par .github/workflows/release.yml
+# pour construire l'archive de release), sans avoir a maintenir une liste
+# d'exclusion separee dans le workflow lui-meme.
+/.github export-ignore
+/tests export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.phpstan-bootstrap.php export-ignore
+/phpstan.neon.dist export-ignore
+/phpunit.xml export-ignore
+/package.json export-ignore
+/package-lock.json export-ignore
