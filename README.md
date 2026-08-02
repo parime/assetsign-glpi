@@ -156,7 +156,7 @@ Le même onglet Remises existe aussi côté utilisateur (fiche d'un compte GLPI,
 
 ## Prérequis
 
-- GLPI 11.0.x
+- GLPI 11.0.x — **11.0.8 ou plus récent recommandé** (corrige plusieurs failles de sécurité critiques du cœur GLPI lui-même : RCE, injection SQL, contournement MFA — sans lien avec ce plugin, mais applicable à toute instance GLPI 11).
 - PHP 8.3+ (testé avec PHP 8.5)
 - MariaDB / MySQL
 - Un serveur SMTP configuré dans GLPI (pour l'envoi des e-mails de remise et de relance)
