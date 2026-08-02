@@ -600,6 +600,25 @@ class Remise extends CommonDBTM
           return;
       }
 
+      if ($currentUser === 0
+           && (in_array($newState, $config->getHandoverStates(), true) || in_array($newState, $config->getReturnStates(), true))
+       ) {
+          // Contrairement a Don/Vente ci-dessus, aucun message ne peut orienter
+          // vers une creation manuelle : Remise::MANUALLY_CREATABLE_TYPES exclut
+          // volontairement Remise/Restitution de ce canal (cf. commentaire sur
+          // cette constante) — une remise/restitution automatique a toujours
+          // besoin d'un detenteur GLPI reel (avant ou apres le changement), que
+          // seul le declenchement par affectation (handleUserBasedTrigger())
+          // sait fournir. Le seul geste utile ici est donc d'assigner (ou de
+          // retirer) l'utilisateur sur la fiche du materiel lui-meme.
+          \Session::addMessageAfterRedirect(
+              __('Ce matériel n\'a pas d\'utilisateur assigné : ce changement d\'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue.', 'remise'),
+              false,
+              INFO
+          );
+          return;
+      }
+
       if ($currentUser === 0) {
           return; // Remise/Restitution : personne a notifier
       }
@@ -660,6 +679,13 @@ class Remise extends CommonDBTM
 
       if (!$id) {
           trigger_error('Plugin remise : echec de creation de la remise pour ' . $item->getType() . ' #' . $item->getID(), E_USER_WARNING);
+          CreationFailure::record(
+              $item->getType(),
+              $item->getID(),
+              (int) $item->fields['entities_id'],
+              $type,
+              'Echec de l\'insertion en base (add() a renvoyé 0).'
+          );
           return;
       }
 
