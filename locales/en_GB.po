@@ -661,3 +661,63 @@ msgstr "donation"
 
 msgid "vente"
 msgstr "sale"
+
+msgid "Ce document a déjà été traité."
+msgstr "This document has already been processed."
+
+msgid "Ce document ne correspond pas à votre compte utilisateur."
+msgstr "This document does not match your user account."
+
+msgid "Ce lien de signature a expiré."
+msgstr "This signature link has expired."
+
+msgid "Ce lien de signature n'est plus valide."
+msgstr "This signature link is no longer valid."
+
+msgid "Ce type de fiche ne peut pas être créé manuellement."
+msgstr "This record type cannot be created manually."
+
+msgid "Cette remise ne peut plus être relancée (déjà signée ou expirée)."
+msgstr "This handover can no longer be reminded (already signed or expired)."
+
+msgid "Format de signature invalide."
+msgstr "Invalid signature format."
+
+msgid "Le bénéficiaire (utilisateur GLPI) est obligatoire."
+msgstr "The beneficiary (GLPI user) is required."
+
+msgid "Le nom du bénéficiaire externe est obligatoire."
+msgstr "The external beneficiary name is required."
+
+msgid "Lien de signature inconnu."
+msgstr "Unknown signature link."
+
+msgid "Matériel introuvable."
+msgstr "Asset not found."
+
+msgid "Remise introuvable."
+msgstr "Handover not found."
+
+msgid "Signature illisible."
+msgstr "Unreadable signature."
+
+msgid "Signature manquante."
+msgstr "Missing signature."
+
+msgid "Signature trop petite, merci de recommencer."
+msgstr "Signature too small, please try again."
+
+msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
+msgstr "Empty or barely-drawn signature, please sign again."
+
+msgid "Trop de tentatives, lien désactivé par sécurité."
+msgstr "Too many attempts, link disabled for security."
+
+msgid "Type de matériel invalide : %s"
+msgstr "Invalid asset type: %s"
+
+msgid "Vous devez être connecté pour accéder à ce document."
+msgstr "You must be logged in to access this document."
+
+msgid "Échec de la création de la fiche."
+msgstr "Failed to create the record."

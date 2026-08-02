@@ -43,6 +43,7 @@ remise/
 - **`Api\SignController`** porte toute la logique de `front/sign.php` (page publique de signature) : validation du jeton, vérification que l'utilisateur connecté est bien le bénéficiaire, soumission de la signature.
 - **`Workflow\WorkflowTypeRegistry`** centralise ce qui varie par type de fiche (libellés, titres de PDF, texte par défaut d'un gabarit) — un nouveau type s'ajoute en créant une classe `WorkflowTypeInterface` plutôt qu'en dispersant des `match($type)` dans tout le code.
 - **`Pdf\HandoverPdfBuilder`** génère à la fois le vrai PDF et son aperçu en direct (`renderPreview()`, avec un mécanisme d'overrides pour prévisualiser un réglage pas encore enregistré) — les deux passent par les mêmes gabarits Twig, garantissant que l'aperçu ressemble à 100% au document réel.
+- **`CreationFailure`** journalise les échecs de création automatique d'une fiche (`Remise::createRemise()`/`launchWorkflow()`) — ces échecs sont déjà isolés pour ne jamais faire planter la sauvegarde du matériel (cf. le `try`/`catch` de `plugin_remise_item_assignment()` dans `hook.php`), mais restaient jusqu'ici invisibles sans consulter `files/_log/remise.log` à la main. Simple table satellite (même catégorie que `Token`/`Signature`/`Reminder` : pas d'écran CRUD dédié), comptée par `Dashboard\CardProvider::failures()` sur une fenêtre glissante de 30 jours.
 
 ## Sécurité et qualité du dépôt
 

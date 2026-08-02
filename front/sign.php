@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
    try {
        $remise = $controller->loadAuthorizedRemise($token);
       if (!$remise->isStillEditable()) {
-          throw new \RuntimeException('Cette fiche ne peut plus être modifiée.');
+          throw new \RuntimeException(__('Cette fiche ne peut plus être modifiée.', 'remise'));
       }
 
       if (isset($_POST['update_comment'])) {
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
        $signatureImage = $_POST['signature'] ?? '';
        if ($signatureImage === '') {
-           throw new \RuntimeException('Signature manquante.');
+           throw new \RuntimeException(__('Signature manquante.', 'remise'));
        }
        $controller->submit($token, $signatureImage, $meta);
 

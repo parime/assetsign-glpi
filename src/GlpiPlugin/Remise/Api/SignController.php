@@ -34,7 +34,7 @@ final class SignController
 
        $remise = new Remise();
       if (!$remise->getFromDB((int) $token->fields['plugin_remise_remises_id'])) {
-          throw new \RuntimeException('Remise introuvable.');
+          throw new \RuntimeException(__('Remise introuvable.', 'remise'));
       }
 
        $this->assertCurrentUserIsBeneficiary($remise);
@@ -51,7 +51,7 @@ final class SignController
 
        $remise = new Remise();
       if (!$remise->getFromDB((int) $token->fields['plugin_remise_remises_id'])) {
-          throw new \RuntimeException('Remise introuvable.');
+          throw new \RuntimeException(__('Remise introuvable.', 'remise'));
       }
 
        $this->assertCurrentUserIsBeneficiary($remise);
@@ -77,7 +77,7 @@ final class SignController
 
        $remise = new Remise();
       if (!$remise->getFromDB((int) $token->fields['plugin_remise_remises_id'])) {
-          throw new \RuntimeException('Remise introuvable.');
+          throw new \RuntimeException(__('Remise introuvable.', 'remise'));
       }
 
        $this->assertCurrentUserIsBeneficiary($remise);
@@ -110,11 +110,11 @@ final class SignController
       if ($currentUserId <= 0) {
           // Ne devrait pas arriver (Firewall::STRATEGY_AUTHENTICATED impose deja
           // une session) ; filet de securite si jamais l'appel se fait autrement.
-          throw new \RuntimeException('Vous devez être connecté pour accéder à ce document.');
+          throw new \RuntimeException(__('Vous devez être connecté pour accéder à ce document.', 'remise'));
       }
 
       if ($currentUserId !== (int) $remise->fields['users_id']) {
-          throw new \RuntimeException('Ce document ne correspond pas à votre compte utilisateur.');
+          throw new \RuntimeException(__('Ce document ne correspond pas à votre compte utilisateur.', 'remise'));
       }
    }
 }
