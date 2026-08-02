@@ -15,17 +15,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class WarnExpiringCommand extends Command
 {
-    protected function configure(): void
-    {
-        $this->setName('plugins:remise:warn-expiring');
-        $this->setDescription('Alerte le technicien des remises sur le point d\'expirer (alternative au CronTask GLPI)');
-    }
+   protected function configure(): void {
+       $this->setName('plugins:remise:warn-expiring');
+       $this->setDescription('Alerte le technicien des remises sur le point d\'expirer (alternative au CronTask GLPI)');
+   }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $count = Remise::runExpiryWarnings();
-        $output->writeln(sprintf('%d alerte(s) de pré-expiration envoyée(s).', $count));
+   protected function execute(InputInterface $input, OutputInterface $output): int {
+       $count = Remise::runExpiryWarnings();
+       $output->writeln(sprintf('%d alerte(s) de pré-expiration envoyée(s).', $count));
 
-        return Command::SUCCESS;
-    }
+       return Command::SUCCESS;
+   }
 }

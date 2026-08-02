@@ -9,10 +9,10 @@
  * l'URL ne suffit pas à elle seule.
  */
 
-use GlpiPlugin\Remise\Api\SignController;
-use GlpiPlugin\Remise\Remise;
-use GlpiPlugin\Remise\DamageMarker;
 use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Remise\Api\SignController;
+use GlpiPlugin\Remise\DamageMarker;
+use GlpiPlugin\Remise\Remise;
 
 global $CFG_GLPI;
 
@@ -21,18 +21,18 @@ $controller = new SignController();
 
 // --- Flux binaire du PDF non signé, consommé par PDF.js côté client -------------
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && ($_GET['action'] ?? '') === 'pdf') {
-    try {
-        $remise = $controller->loadAuthorizedRemise($token);
-        $document = new Document();
-        $document->getFromDB((int) $remise->fields['document_id_unsigned']);
-        $path = GLPI_DOC_DIR . '/' . $document->fields['filepath'];
+   try {
+       $remise = $controller->loadAuthorizedRemise($token);
+       $document = new Document();
+       $document->getFromDB((int) $remise->fields['document_id_unsigned']);
+       $path = GLPI_DOC_DIR . '/' . $document->fields['filepath'];
 
-        header('Content-Type: application/pdf');
-        header('Content-Length: ' . filesize($path));
-        readfile($path);
-    } catch (\Throwable $e) {
-        http_response_code(404);
-    }
+       header('Content-Type: application/pdf');
+       header('Content-Length: ' . filesize($path));
+       readfile($path);
+   } catch (\Throwable $e) {
+       http_response_code(404);
+   }
     exit;
 }
 
@@ -46,31 +46,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 ) {
     header('Content-Type: application/json');
 
-    try {
-        $remise = $controller->loadAuthorizedRemise($token);
-        if (!$remise->isStillEditable()) {
-            throw new RuntimeException('Cette fiche ne peut plus être modifiée.');
-        }
+   try {
+       $remise = $controller->loadAuthorizedRemise($token);
+      if (!$remise->isStillEditable()) {
+          throw new \RuntimeException(__('Cette fiche ne peut plus être modifiée.', 'remise'));
+      }
 
-        if (isset($_POST['update_comment'])) {
-            $remise->updateBeneficiaryComment((string) ($_POST['comment'] ?? ''));
-            $result = ['success' => true];
-        } else {
-            // Logique d'ajout/modification/suppression de repere partagee avec
-            // front/damagemarker.php (cf. DamageMarker::handleMutationRequest()) :
-            // seule l'autorisation ci-dessus (jeton de signature, pas un droit
-            // GLPI) differe entre les deux.
-            $result = DamageMarker::handleMutationRequest($remise, $_POST);
-        }
+      if (isset($_POST['update_comment'])) {
+          $remise->updateBeneficiaryComment((string) ($_POST['comment'] ?? ''));
+          $result = ['success' => true];
+      } else {
+          // Logique d'ajout/modification/suppression de repere partagee avec
+          // front/damagemarker.php (cf. DamageMarker::handleMutationRequest()) :
+          // seule l'autorisation ci-dessus (jeton de signature, pas un droit
+          // GLPI) differe entre les deux.
+          $result = DamageMarker::handleMutationRequest($remise, $_POST);
+      }
 
-        // Jeton CSRF a usage unique (cf. README) : sans rotation, un deuxieme clic
-        // (ajouter un 2e repere, ou modifier apres avoir commente) echouerait en 403.
-        header('X-Remise-Csrf-Token: ' . Session::getNewCSRFToken());
-        echo json_encode($result);
-    } catch (\Throwable $e) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-    }
+       // Jeton CSRF a usage unique (cf. README) : sans rotation, un deuxieme clic
+       // (ajouter un 2e repere, ou modifier apres avoir commente) echouerait en 403.
+       header('X-Remise-Csrf-Token: ' . Session::getNewCSRFToken());
+       echo json_encode($result);
+   } catch (\Throwable $e) {
+       http_response_code(400);
+       echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+   }
     exit;
 }
 
@@ -78,23 +78,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
 
-    try {
-        $meta = [
-            'ip'         => $_SERVER['REMOTE_ADDR'] ?? '',
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
-        ];
+   try {
+       $meta = [
+           'ip'         => $_SERVER['REMOTE_ADDR'] ?? '',
+           'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+       ];
 
-        $signatureImage = $_POST['signature'] ?? '';
-        if ($signatureImage === '') {
-            throw new RuntimeException('Signature manquante.');
-        }
-        $controller->submit($token, $signatureImage, $meta);
+       $signatureImage = $_POST['signature'] ?? '';
+       if ($signatureImage === '') {
+           throw new \RuntimeException(__('Signature manquante.', 'remise'));
+       }
+       $controller->submit($token, $signatureImage, $meta);
 
-        echo json_encode(['success' => true]);
-    } catch (\Throwable $e) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-    }
+       echo json_encode(['success' => true]);
+   } catch (\Throwable $e) {
+       http_response_code(400);
+       echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+   }
     exit;
 }
 

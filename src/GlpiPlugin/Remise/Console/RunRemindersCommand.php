@@ -22,17 +22,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RunRemindersCommand extends Command
 {
-    protected function configure(): void
-    {
-        $this->setName('plugins:remise:run-reminders');
-        $this->setDescription('Envoie les relances de signature dues (alternative au CronTask GLPI)');
-    }
+   protected function configure(): void {
+       $this->setName('plugins:remise:run-reminders');
+       $this->setDescription('Envoie les relances de signature dues (alternative au CronTask GLPI)');
+   }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $count = Remise::runReminders();
-        $output->writeln(sprintf('%d relance(s) envoyée(s).', $count));
+   protected function execute(InputInterface $input, OutputInterface $output): int {
+       $count = Remise::runReminders();
+       $output->writeln(sprintf('%d relance(s) envoyée(s).', $count));
 
-        return Command::SUCCESS;
-    }
+       return Command::SUCCESS;
+   }
 }

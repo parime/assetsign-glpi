@@ -6,22 +6,23 @@
  * dans src/GlpiPlugin/Remise/ qui portent la vraie logique metier.
  */
 
-use GlpiPlugin\Remise\Remise;
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\Template;
+use Glpi\Cache\CacheManager;
 use GlpiPlugin\Remise\Accessory;
-use GlpiPlugin\Remise\RemiseAccessory;
-use GlpiPlugin\Remise\VenteDetails;
+use GlpiPlugin\Remise\Config;
+use GlpiPlugin\Remise\CreationFailure;
 use GlpiPlugin\Remise\DamageMarker;
+use GlpiPlugin\Remise\Dashboard\CardProvider;
 use GlpiPlugin\Remise\Maintenance;
 use GlpiPlugin\Remise\MaintenanceChecklistItem;
-use GlpiPlugin\Remise\Token;
-use GlpiPlugin\Remise\Signature;
-use GlpiPlugin\Remise\Reminder;
-use GlpiPlugin\Remise\Profile;
 use GlpiPlugin\Remise\NotificationTargetRemise;
-use GlpiPlugin\Remise\Dashboard\CardProvider;
-use Glpi\Cache\CacheManager;
+use GlpiPlugin\Remise\Profile;
+use GlpiPlugin\Remise\Reminder;
+use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Remise\RemiseAccessory;
+use GlpiPlugin\Remise\Signature;
+use GlpiPlugin\Remise\Template;
+use GlpiPlugin\Remise\Token;
+use GlpiPlugin\Remise\VenteDetails;
 
 // ----------------------------------------------------------------------------------
 // Callbacks de hooks (item_add / item_update / pre_item_purge)
@@ -36,46 +37,55 @@ use Glpi\Cache\CacheManager;
  * reaffecte un simple ordinateur se prendrait une erreur 500 sur SA sauvegarde
  * a cause d'un probleme qui ne concerne que le plugin).
  */
-function plugin_remise_item_assignment(CommonDBTM $item): void
-{
-    try {
-        Remise::handleItemAssignment($item);
-    } catch (\Throwable $e) {
-        \Toolbox::logInFile(
-            'remise',
-            sprintf(
-                "Echec du declenchement remise pour %s #%d : %s\n%s",
-                $item->getType(),
-                $item->getID(),
-                $e->getMessage(),
-                $e->getTraceAsString()
-            ),
-            true
-        );
-    }
+function plugin_remise_item_assignment(CommonDBTM $item): void {
+   try {
+       Remise::handleItemAssignment($item);
+   } catch (\Throwable $e) {
+       \Toolbox::logInFile(
+           'remise',
+           sprintf(
+               "Echec du declenchement remise pour %s #%d : %s\n%s",
+               $item->getType(),
+               $item->getID(),
+               $e->getMessage(),
+               $e->getTraceAsString()
+           ),
+           true
+       );
+       // Type Remise attendu inconnu a ce niveau (l'exception peut venir de
+       // n'importe quel point de handleItemAssignment()) : null, cf.
+       // CreationFailure::record(). Le fichier de log ci-dessus reste la seule
+       // source de la trace complete ; cette ligne ne sert qu'a rendre
+       // l'echec COMPTABLE sur la carte de tableau de bord dediee.
+       CreationFailure::record(
+           $item->getType(),
+           $item->getID(),
+           (int) ($item->fields['entities_id'] ?? 0),
+           null,
+           $e->getMessage()
+       );
+   }
 }
 
-function plugin_remise_item_pre_purge(CommonDBTM $item): void
-{
-    try {
-        Remise::archiveForPurgedItem($item);
-    } catch (\Throwable $e) {
-        \Toolbox::logInFile(
-            'remise',
-            sprintf(
-                "Echec de l'archivage des remises pour %s #%d : %s\n%s",
-                $item->getType(),
-                $item->getID(),
-                $e->getMessage(),
-                $e->getTraceAsString()
-            ),
-            true
-        );
-    }
+function plugin_remise_item_pre_purge(CommonDBTM $item): void {
+   try {
+       Remise::archiveForPurgedItem($item);
+   } catch (\Throwable $e) {
+       \Toolbox::logInFile(
+           'remise',
+           sprintf(
+               "Echec de l'archivage des remises pour %s #%d : %s\n%s",
+               $item->getType(),
+               $item->getID(),
+               $e->getMessage(),
+               $e->getTraceAsString()
+           ),
+           true
+       );
+   }
 }
 
-function plugin_remise_dashboard_cards(): array
-{
+function plugin_remise_dashboard_cards(): array {
     $group = __('Remise & signature', 'remise');
 
     return [
@@ -100,6 +110,13 @@ function plugin_remise_dashboard_cards(): array
             'provider'   => CardProvider::class . '::expired',
             'filters'    => [],
         ],
+        'remise_creation_failures' => [
+            'widgettype' => ['bigNumber'],
+            'group'      => $group,
+            'label'      => __('Échecs de création (30 derniers jours)', 'remise'),
+            'provider'   => CardProvider::class . '::failures',
+            'filters'    => [],
+        ],
     ];
 }
 
@@ -112,8 +129,7 @@ function plugin_remise_dashboard_cards(): array
  * remise a la page Configuration > Intitulés plutot que dans le menu Administration,
  * comme n'importe quelle autre liste deroulante de GLPI.
  */
-function plugin_remise_getDropdown(): array
-{
+function plugin_remise_getDropdown(): array {
     return [
         Template::class                 => Template::getTypeName(2),
         Accessory::class                => Accessory::getTypeName(2),
@@ -125,13 +141,13 @@ function plugin_remise_getDropdown(): array
 // Installation / desinstallation
 // ----------------------------------------------------------------------------------
 
-function plugin_remise_install(): bool
-{
+function plugin_remise_install(): bool {
     $migration = new Migration((int) str_replace('.', '', PLUGIN_REMISE_VERSION));
 
     Config::install($migration);
     Template::install($migration);
     Accessory::install($migration);
+    CreationFailure::install($migration);
     Remise::install($migration);
     RemiseAccessory::install($migration);
     VenteDetails::install($migration);
@@ -197,11 +213,10 @@ function plugin_remise_install(): bool
     return true;
 }
 
-function plugin_remise_uninstall(): bool
-{
+function plugin_remise_uninstall(): bool {
     $migration = new Migration((int) str_replace('.', '', PLUGIN_REMISE_VERSION));
 
-    foreach ([
+   foreach ([
         'glpi_plugin_remise_reminders',
         'glpi_plugin_remise_signatures',
         'glpi_plugin_remise_tokens',
@@ -215,9 +230,10 @@ function plugin_remise_uninstall(): bool
         'glpi_plugin_remise_accessories',
         'glpi_plugin_remise_templates',
         'glpi_plugin_remise_configs',
+        'glpi_plugin_remise_creationfailures',
     ] as $table) {
-        $migration->dropTable($table);
-    }
+       $migration->dropTable($table);
+   }
 
     Profile::uninstall();
     NotificationTargetRemise::uninstall();

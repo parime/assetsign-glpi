@@ -102,17 +102,22 @@ class TokenTest extends RemiseTestCase
             Token::validate($raw);
             $this->fail('La 21e tentative aurait du etre rejetee (MAX_ATTEMPTS depasse).');
         } catch (RuntimeException $e) {
-            $this->assertStringContainsString('tentatives', $e->getMessage());
+            // __() avec la meme chaine source que Token::validate() plutot que le
+            // texte francais en dur : ce test doit rester valable quelle que soit
+            // la langue de l'environnement d'execution (meme piege que deja
+            // rencontre et corrige sur RemiseTest.php - cf. TROUBLESHOOTING.md).
+            $this->assertSame(__('Trop de tentatives, lien désactivé par sécurité.', 'remise'), $e->getMessage());
         }
 
         // Le jeton est desormais desactive : meme un appel "propre" (dans la
         // limite du nombre de tentatives) doit continuer a echouer, avec le
-        // message "plus valide" plutot que "trop de tentatives" cette fois.
+        // message "plus valide" (jeton invalide) plutot que "trop de tentatives"
+        // cette fois - deux chaines source distinctes, verifiees separement.
         try {
             Token::validate($raw);
             $this->fail('Le jeton desactive ne doit plus jamais etre accepte.');
         } catch (RuntimeException $e) {
-            $this->assertStringContainsString('plus valide', $e->getMessage());
+            $this->assertSame(__('Ce lien de signature n\'est plus valide.', 'remise'), $e->getMessage());
         }
     }
 
