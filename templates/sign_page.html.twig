@@ -107,12 +107,12 @@
   {% endif %}
 </div>
 
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/vendor/pdf.min.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 <script src="{{ config('root_doc') }}/plugins/remise/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 <script>
   window.REMISE_SIGN_TOKEN = {{ token|json_encode|raw }};
   window.REMISE_CSRF_TOKEN = {{ csrf_token|default('')|json_encode|raw }};
   window.REMISE_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
+  window.REMISE_PLUGIN_VERSION = {{ constant('PLUGIN_REMISE_VERSION')|json_encode|raw }};
   window.REMISE_I18N = {
     loadError: {{ __('Impossible de charger le document', 'remise')|json_encode|raw }},
     sending: {{ __('Envoi en cours…', 'remise')|json_encode|raw }},
@@ -123,7 +123,7 @@
   };
 </script>
 <script src="{{ config('root_doc') }}/plugins/remise/js/sign/csrf-queue.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/sign.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+<script type="module" src="{{ config('root_doc') }}/plugins/remise/js/sign/sign.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 
 {% if damage_annotation_enabled and can_edit_damage_markers %}
   <script>

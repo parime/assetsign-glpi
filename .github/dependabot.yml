@@ -16,3 +16,17 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "ci"
+
+  # Bibliotheques JS vendorisees dans public/js/sign/vendor/ (PDF.js, signature_pad),
+  # copiees a la main plutot que via un bundler npm (pas de build JS dans ce plugin) -
+  # package.json/package-lock.json n'existent QUE pour permettre ce suivi de version
+  # (cf. package.json, TROUBLESHOOTING.md). Une PR Dependabot ici signale une nouvelle
+  # version disponible mais ne met PAS a jour les fichiers vendorises automatiquement -
+  # ca reste une mise a jour manuelle (verification des changements cassants, test
+  # complet du flux de signature au navigateur avant de vendoriser la nouvelle version).
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "js-vendor"

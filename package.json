@@ -1,0 +1,9 @@
+{
+  "name": "remise-glpi-vendored-js",
+  "private": true,
+  "description": "Declare uniquement les versions des bibliotheques JS vendorisees dans public/js/sign/vendor/ (copiees a la main, pas de bundling npm dans ce plugin) - sert a permettre le suivi de version par Dependabot et l'audit de securite (npm audit) en CI, cf. TROUBLESHOOTING.md. Ne pas lancer `npm install` en pensant obtenir un build fonctionnel : ces fichiers restent geres manuellement.",
+  "dependencies": {
+    "pdfjs-dist": "6.1.200",
+    "signature_pad": "5.1.3"
+  }
+}
