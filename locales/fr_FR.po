@@ -661,3 +661,63 @@ msgstr "don"
 
 msgid "vente"
 msgstr "vente"
+
+msgid "Ce document a déjà été traité."
+msgstr "Ce document a déjà été traité."
+
+msgid "Ce document ne correspond pas à votre compte utilisateur."
+msgstr "Ce document ne correspond pas à votre compte utilisateur."
+
+msgid "Ce lien de signature a expiré."
+msgstr "Ce lien de signature a expiré."
+
+msgid "Ce lien de signature n'est plus valide."
+msgstr "Ce lien de signature n'est plus valide."
+
+msgid "Ce type de fiche ne peut pas être créé manuellement."
+msgstr "Ce type de fiche ne peut pas être créé manuellement."
+
+msgid "Cette remise ne peut plus être relancée (déjà signée ou expirée)."
+msgstr "Cette remise ne peut plus être relancée (déjà signée ou expirée)."
+
+msgid "Format de signature invalide."
+msgstr "Format de signature invalide."
+
+msgid "Le bénéficiaire (utilisateur GLPI) est obligatoire."
+msgstr "Le bénéficiaire (utilisateur GLPI) est obligatoire."
+
+msgid "Le nom du bénéficiaire externe est obligatoire."
+msgstr "Le nom du bénéficiaire externe est obligatoire."
+
+msgid "Lien de signature inconnu."
+msgstr "Lien de signature inconnu."
+
+msgid "Matériel introuvable."
+msgstr "Matériel introuvable."
+
+msgid "Remise introuvable."
+msgstr "Remise introuvable."
+
+msgid "Signature illisible."
+msgstr "Signature illisible."
+
+msgid "Signature manquante."
+msgstr "Signature manquante."
+
+msgid "Signature trop petite, merci de recommencer."
+msgstr "Signature trop petite, merci de recommencer."
+
+msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
+msgstr "Signature vide ou trop peu tracée, merci de signer à nouveau."
+
+msgid "Trop de tentatives, lien désactivé par sécurité."
+msgstr "Trop de tentatives, lien désactivé par sécurité."
+
+msgid "Type de matériel invalide : %s"
+msgstr "Type de matériel invalide : %s"
+
+msgid "Vous devez être connecté pour accéder à ce document."
+msgstr "Vous devez être connecté pour accéder à ce document."
+
+msgid "Échec de la création de la fiche."
+msgstr "Échec de la création de la fiche."

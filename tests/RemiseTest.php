@@ -263,9 +263,14 @@ class RemiseTest extends RemiseTestCase
             $this->findRemiseFor($computer),
             "Aucune fiche automatique sans utilisateur : Remise::MANUALLY_CREATABLE_TYPES n'inclut pas Remise/Restitution."
         );
+        // __() avec la meme chaine source que handleStateBasedTrigger() (Remise.php)
+        // plutot que le texte francais en dur : ce test doit rester valable quelle
+        // que soit la langue de l'environnement d'execution (meme piege que pour
+        // 'don' ci-dessus, echec reel constate en CI, qui rend en anglais - deja
+        // trouve une fois sur ce meme fichier, corrige ici pour de bon).
         $messages = implode(' ', $_SESSION['MESSAGE_AFTER_REDIRECT'][INFO] ?? []);
         $this->assertStringContainsString(
-            'Assignez un utilisateur',
+            __('Ce matériel n\'a pas d\'utilisateur assigné : ce changement d\'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue.', 'remise'),
             $messages,
             "Un message INFO doit orienter vers l'assignation d'un utilisateur (pas de creation manuelle possible pour ce type)."
         );

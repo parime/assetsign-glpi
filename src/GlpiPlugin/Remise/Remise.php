@@ -716,7 +716,7 @@ class Remise extends CommonDBTM
      */
    public static function createManual(string $itemtype, int $items_id, int $type, int $users_id, array $extra = []): self {
       if (!in_array($type, self::MANUALLY_CREATABLE_TYPES, true)) {
-          throw new \InvalidArgumentException("Ce type de fiche ne peut pas être créé manuellement.");
+          throw new \InvalidArgumentException(__('Ce type de fiche ne peut pas être créé manuellement.', 'remise'));
       }
 
        $beneficiaryType = (int) ($extra['beneficiary_type'] ?? self::BENEFICIARY_INTERNAL);
@@ -725,20 +725,20 @@ class Remise extends CommonDBTM
 
       if ($beneficiaryType === self::BENEFICIARY_EXTERNAL) {
          if ($externalName === '') {
-             throw new \InvalidArgumentException('Le nom du bénéficiaire externe est obligatoire.');
+             throw new \InvalidArgumentException(__('Le nom du bénéficiaire externe est obligatoire.', 'remise'));
          }
           $users_id = 0;
       } else if ($users_id <= 0) {
-          throw new \InvalidArgumentException('Le bénéficiaire (utilisateur GLPI) est obligatoire.');
+          throw new \InvalidArgumentException(__('Le bénéficiaire (utilisateur GLPI) est obligatoire.', 'remise'));
       }
 
       if (!is_subclass_of($itemtype, CommonDBTM::class)) {
-          throw new \InvalidArgumentException("Type de materiel invalide : $itemtype");
+          throw new \InvalidArgumentException(sprintf(__('Type de matériel invalide : %s', 'remise'), $itemtype));
       }
 
        $item = new $itemtype();
       if (!$item->getFromDB($items_id)) {
-          throw new \RuntimeException('Matériel introuvable.');
+          throw new \RuntimeException(__('Matériel introuvable.', 'remise'));
       }
 
        $config = Config::getForEntity((int) $item->fields['entities_id']);
@@ -760,7 +760,7 @@ class Remise extends CommonDBTM
        ]);
 
       if (!$id) {
-          throw new \RuntimeException('Échec de la création de la fiche.');
+          throw new \RuntimeException(__('Échec de la création de la fiche.', 'remise'));
       }
 
        $remise->getFromDB($id);
@@ -1276,7 +1276,7 @@ class Remise extends CommonDBTM
      */
    public function sendReminderNow(): void {
       if (!in_array((int) $this->fields['status'], self::STATUSES_AWAITING_SIGNATURE, true)) {
-          throw new \RuntimeException('Cette remise ne peut plus être relancée (déjà signée ou expirée).');
+          throw new \RuntimeException(__('Cette remise ne peut plus être relancée (déjà signée ou expirée).', 'remise'));
       }
 
        $config = Config::getForEntity((int) $this->fields['entities_id']);

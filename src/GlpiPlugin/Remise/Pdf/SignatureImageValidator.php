@@ -25,17 +25,17 @@ final class SignatureImageValidator
      */
    public static function assertValid(string $dataUri): void {
       if (!preg_match('/^data:image\/png;base64,(.+)$/', $dataUri, $matches)) {
-          throw new \RuntimeException('Format de signature invalide.');
+          throw new \RuntimeException(__('Format de signature invalide.', 'remise'));
       }
 
        $binary = base64_decode($matches[1], true);
       if ($binary === false || $binary === '') {
-          throw new \RuntimeException('Signature illisible.');
+          throw new \RuntimeException(__('Signature illisible.', 'remise'));
       }
 
        $image = @imagecreatefromstring($binary);
       if ($image === false) {
-          throw new \RuntimeException('Signature illisible.');
+          throw new \RuntimeException(__('Signature illisible.', 'remise'));
       }
 
       try {
@@ -43,14 +43,14 @@ final class SignatureImageValidator
           $height = imagesy($image);
 
          if ($width < self::MIN_WIDTH || $height < self::MIN_HEIGHT) {
-             throw new \RuntimeException('Signature trop petite, merci de recommencer.');
+             throw new \RuntimeException(__('Signature trop petite, merci de recommencer.', 'remise'));
          }
 
           $inkPixels = self::countInkPixels($image, $width, $height);
           $ratio = $inkPixels / ($width * $height);
 
          if ($inkPixels < self::MIN_INK_PIXELS || $ratio < self::MIN_INK_RATIO) {
-             throw new \RuntimeException('Signature vide ou trop peu tracée, merci de signer à nouveau.');
+             throw new \RuntimeException(__('Signature vide ou trop peu tracée, merci de signer à nouveau.', 'remise'));
          }
       } finally {
           imagedestroy($image);

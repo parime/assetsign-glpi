@@ -72,16 +72,16 @@ class Token extends CommonDBTM
        $found = $token->getFromDBByCrit(['token_hash' => self::hash($raw)]);
 
       if (!$found) {
-          throw new \RuntimeException('Lien de signature inconnu.');
+          throw new \RuntimeException(__('Lien de signature inconnu.', 'remise'));
       }
       if (!$token->fields['is_valid']) {
-          throw new \RuntimeException('Ce lien de signature n\'est plus valide.');
+          throw new \RuntimeException(__('Ce lien de signature n\'est plus valide.', 'remise'));
       }
       if (strtotime($token->fields['date_expiration']) < time()) {
-          throw new \RuntimeException('Ce lien de signature a expiré.');
+          throw new \RuntimeException(__('Ce lien de signature a expiré.', 'remise'));
       }
       if (!empty($token->fields['date_used'])) {
-          throw new \RuntimeException('Ce document a déjà été traité.');
+          throw new \RuntimeException(__('Ce document a déjà été traité.', 'remise'));
       }
 
        $DB->update(self::getTable(), [
@@ -91,7 +91,7 @@ class Token extends CommonDBTM
 
       if ($token->fields['attempts'] + 1 > self::MAX_ATTEMPTS) {
           $DB->update(self::getTable(), ['is_valid' => 0], ['id' => $token->getID()]);
-          throw new \RuntimeException('Trop de tentatives, lien désactivé par sécurité.');
+          throw new \RuntimeException(__('Trop de tentatives, lien désactivé par sécurité.', 'remise'));
       }
 
        return $token;

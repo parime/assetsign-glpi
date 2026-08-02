@@ -230,6 +230,7 @@ function plugin_remise_uninstall(): bool {
         'glpi_plugin_remise_accessories',
         'glpi_plugin_remise_templates',
         'glpi_plugin_remise_configs',
+        'glpi_plugin_remise_creationfailures',
     ] as $table) {
        $migration->dropTable($table);
    }
