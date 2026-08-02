@@ -221,3 +221,22 @@ jobs:
       - name: Logs GLPI (en cas d'échec)
         if: failure()
         run: docker logs glpi --tail 200
+
+  semgrep:
+    # Analyse par motifs (SAST) : distincte de Trivy plus haut, qui couvre
+    # secrets/mauvaises configurations/vulnérabilités connues des dépendances
+    # mais ne détecte pas des patterns de code dangereux (ex: injection SQL,
+    # usage risqué d'une fonction PHP) - deux outils complémentaires, pas
+    # redondants. Job séparé (pas une étape du job "test") : ne nécessite ni
+    # PHP ni Docker/GLPI, s'exécute directement sur le checkout, indépendamment
+    # du reste de la CI.
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - name: Récupère le code du plugin
+        uses: actions/checkout@v7
+      - run: semgrep ci --config auto
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+        continue-on-error: true
