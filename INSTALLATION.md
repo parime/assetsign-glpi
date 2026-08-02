@@ -45,6 +45,10 @@ php bin/console plugin:activate remise
 
 Un menu **Administration > Remise & signature** apparaît (Remises, Gabarits de remise, Configuration).
 
+Le formulaire de configuration est organisé en onglets (un par type de fiche, plus un onglet Général et un onglet Compléments), chacun avec un aperçu du PDF qui se met à jour automatiquement dès qu'un réglage change, avant même d'enregistrer :
+
+![Page de configuration avec onglets et aperçu en direct](docs/screenshots/config.png)
+
 **La configuration est indépendante par entité, avec héritage automatique.** Deux façons d'y accéder, qui affichent le même formulaire :
 - la page **Administration > Remise & signature > Configuration**, qui édite l'entité actuellement active dans le sélecteur en haut de l'écran ;
 - l'onglet **« Remise & signature »** directement sur la fiche d'une entité (Configuration > Entités > *nom de l'entité*), pour éditer précisément la configuration de cette entité-là.
@@ -59,8 +63,6 @@ Depuis ce formulaire, réglez notamment :
 - **les déclencheurs par État** (optionnel) — si votre organisation pilote plutôt le cycle de vie du matériel via son État (ex. "En prêt" / "Disponible") que via l'affectation directe, choisissez ici, parmi vos propres États existants, ceux qui doivent déclencher une remise, une restitution, un don ou une vente.
 
 Si les deux mécanismes sont configurés et se déclenchent en même temps, une seule remise est créée — le déclenchement par affectation est prioritaire.
-
-Le formulaire de configuration est organisé en onglets (un par type de fiche, plus un onglet Général et un onglet Compléments) : chaque onglet affiche un aperçu du PDF qui se met à jour automatiquement dès qu'un réglage change, avant même d'enregistrer.
 
 Vérifiez aussi que les notifications GLPI sont actives (**Configuration > Notifications**, mode "Email"), et que le serveur SMTP est configuré.
 
