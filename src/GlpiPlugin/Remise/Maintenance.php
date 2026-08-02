@@ -69,11 +69,21 @@ class Maintenance extends CommonDBTM
            'ORDER' => 'date_creation DESC',
        ]);
 
+       $entities_id = (int) ($item->fields['entities_id'] ?? Session::getActiveEntity());
+
        TemplateRenderer::getInstance()->display('@remise/maintenance_tab.html.twig', [
            'item'            => $item,
            'maintenances'    => iterator_to_array($rows),
            'checklist_items' => self::getActiveChecklistItems(),
            'can_create'      => Session::haveRight(self::$rightname, CREATE),
+           // Etat des lieux visuel : meme reglage que sur les fiches signees
+           // (Config::enable_damage_annotation, cf. Remise::showForm()) -
+           // deposes cote client AVANT la creation de la fiche (jamais
+           // modifiables ensuite, cf. DamageMarker), soumis d'un bloc avec le
+           // reste du formulaire.
+           'damage_annotation_enabled' => (bool) Config::getForEntity($entities_id)->fields['enable_damage_annotation'],
+           'damage_views'    => DamageMarker::getViewLabels(),
+           'damage_images'   => DamageMarker::getViewImageFilenames(),
            'csrf_token'      => Session::getNewCSRFToken(),
        ]);
    }
@@ -92,6 +102,14 @@ class Maintenance extends CommonDBTM
            // getActiveChecklistItems() : un point desactive APRES la creation
            // de cette fiche doit rester visible sur ce constat historique.
            'checklist_results' => $this->isNewID($ID) ? [] : $this->getChecklistResults(),
+           // Etat des lieux visuel : purement en lecture (fiche immuable des
+           // sa creation, cf. commentaire de classe) - jamais de JS d'edition
+           // charge ici, contrairement a remise_form.html.twig.
+           'damage_annotation_enabled' => !$this->isNewID($ID)
+               && (bool) Config::getForEntity((int) $this->fields['entities_id'])->fields['enable_damage_annotation'],
+           'damage_views'   => DamageMarker::getViewLabels(),
+           'damage_images'  => DamageMarker::getViewImageFilenames(),
+           'damage_markers_by_view' => $this->isNewID($ID) ? [] : Remise::groupMarkersByView(DamageMarker::getForMaintenance((int) $ID)),
        ]);
 
        return true;
@@ -180,6 +198,14 @@ class Maintenance extends CommonDBTM
            'itemtype_dropdown_html' => $itemtypeDropdownHtml,
            'item_dropdown_html'     => $itemDropdownHtml,
            'checklist_items'        => self::getActiveChecklistItems(),
+           // Le materiel n'est pas encore choisi a ce stade (formulaire
+           // autonome, cf. commentaire de methode) : son entite n'est donc pas
+           // encore connue - on se rabat sur l'entite active de la session,
+           // meme logique que la plupart des reglages GLPI resolus avant
+           // qu'une cible precise ne soit selectionnee.
+           'damage_annotation_enabled' => (bool) Config::getForEntity(Session::getActiveEntity())->fields['enable_damage_annotation'],
+           'damage_views'    => DamageMarker::getViewLabels(),
+           'damage_images'   => DamageMarker::getViewImageFilenames(),
            'csrf_token'             => Session::getNewCSRFToken(),
        ]);
    }
@@ -204,9 +230,13 @@ class Maintenance extends CommonDBTM
      * chaque point de controle actif : $itemValues est le tableau brut
      * $_POST['checklist'] (id => valeur soumise), interprete selon le type
      * propre de chaque point (case a cocher / texte libre / menu deroulant).
+     * $damageMarkers : marqueurs d'etat des lieux deposes cote client AVANT
+     * cette creation (cf. DamageMarker::createMarkersForMaintenance()) - deja
+     * decodes depuis le JSON soumis par damage-annotation-local.js.
      * @param array<int|string, mixed> $itemValues
+     * @param array<int, array<string, mixed>> $damageMarkers
      */
-   public static function createWithChecklist(string $itemtype, int $items_id, int $entities_id, array $itemValues, string $comment): int {
+   public static function createWithChecklist(string $itemtype, int $items_id, int $entities_id, array $itemValues, string $comment, array $damageMarkers = []): int {
        global $DB;
 
        $maintenance = new self();
@@ -220,6 +250,10 @@ class Maintenance extends CommonDBTM
 
       if ($id <= 0) {
           return 0;
+      }
+
+      if ($damageMarkers !== []) {
+          DamageMarker::createMarkersForMaintenance($id, $damageMarkers);
       }
 
       foreach (self::getActiveChecklistItems() as $checklistItemId => $checklistItem) {

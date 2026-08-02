@@ -62,6 +62,8 @@
           <textarea name="comment" class="form-control" rows="3"></textarea>
         </div>
 
+        {% include '@remise/damage_annotation_edit.html.twig' %}
+
         <button type="submit" name="create" class="btn btn-secondary">{{ __('Créer la fiche', 'remise') }}</button>
       </form>
     {% endif %}

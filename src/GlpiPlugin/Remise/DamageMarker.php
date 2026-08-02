@@ -6,14 +6,28 @@ use CommonDBTM;
 use Migration;
 
 /**
- * Marqueur de dommage depose par un technicien sur l'une des 3 vues de
- * reference generiques (public/images/damage-views/, illustrations fournies
- * par l'utilisateur — pas des croquis maison) : "etat des lieux visuel".
- * Coordonnees stockees en POURCENTAGE de l'image (pas en pixels) :
- * independant de la taille d'affichage a l'ecran ET de la taille de rendu
- * dans le PDF, qui ne sont jamais identiques (cf. HandoverPdfBuilder).
- * Pas de front dedie : gere via front/damagemarker.php (AJAX, cf.
- * public/js/sign/damage-annotation.js) et affiche dans remise_form.html.twig.
+ * Marqueur de dommage depose sur l'une des 3 vues de reference generiques
+ * (public/images/damage-views/, illustrations fournies par l'utilisateur —
+ * pas des croquis maison) : "etat des lieux visuel". Coordonnees stockees en
+ * POURCENTAGE de l'image (pas en pixels) : independant de la taille
+ * d'affichage a l'ecran ET de la taille de rendu dans le PDF, qui ne sont
+ * jamais identiques (cf. HandoverPdfBuilder).
+ *
+ * Rattache a EXACTEMENT UNE fiche parente parmi deux possibles (colonnes
+ * `plugin_remise_remises_id`/`plugin_remise_maintenances_id`, toutes deux
+ * nullables plutot qu'un couple itemtype/items_id polymorphe generique —
+ * seulement deux types de parent possibles, un vrai polymorphisme aurait ete
+ * une abstraction superflue ici) :
+ * - Remise (Remise/Restitution/Don/Vente) : marqueurs modifiables par AJAX
+ *   tant que la fiche est `isStillEditable()` (front/damagemarker.php,
+ *   public/js/sign/damage-annotation.js), et reportes sur le PDF genere
+ *   (HandoverPdfBuilder).
+ * - Maintenance : fiche immuable des sa creation (cf. Maintenance.php) - les
+ *   marqueurs sont donc deposes cote client AVANT meme que la fiche existe
+ *   (public/js/sign/damage-annotation-local.js, purement local, aucun appel
+ *   serveur), puis soumis d'un bloc avec le reste du formulaire et enregistres
+ *   par createMarkersForMaintenance() ; jamais modifiables ensuite (affichage
+ *   lecture seule uniquement, pas de PDF - Maintenance n'en genere aucun).
  */
 class DamageMarker extends CommonDBTM
 {
@@ -96,6 +110,56 @@ class DamageMarker extends CommonDBTM
        return (bool) $marker->update(['id' => $id] + $changes);
    }
 
+    /** @return self[] Toutes les vues et markers pour une fiche de maintenance, une entree par view_index. */
+   public static function getForMaintenance(int $maintenances_id): array {
+       global $DB;
+
+       $markers = [];
+      foreach ($DB->request([
+           'FROM'  => self::getTable(),
+           'WHERE' => ['plugin_remise_maintenances_id' => $maintenances_id],
+           'ORDER' => 'view_index, id',
+       ]) as $row) {
+          $markers[] = $row;
+      }
+       return $markers;
+   }
+
+    /**
+     * Enregistre en bloc les marqueurs deposes cote client PENDANT la
+     * creation d'une fiche de maintenance (avant meme que son id existe,
+     * contrairement au flux Remise qui modifie une fiche deja existante par
+     * AJAX) - appelee une seule fois par Maintenance::createWithChecklist(),
+     * juste apres l'insertion de la fiche elle-meme. $markers est le tableau
+     * deja decode du JSON soumis par damage-annotation-local.js (une entree
+     * par marqueur : view_index/x/y/description/severity) : defensif face a
+     * une entree malformee (index invalide, coordonnee hors bornes...) plutot
+     * que de faire planter toute la creation de la fiche pour un seul
+     * marqueur invalide - ignore silencieusement l'entree en cause.
+     * @param array<int, array<string, mixed>> $markers
+     */
+   public static function createMarkersForMaintenance(int $maintenances_id, array $markers): void {
+      foreach ($markers as $marker) {
+          $viewIndex = (int) ($marker['view_index'] ?? -1);
+         if ($viewIndex < 0 || $viewIndex >= self::VIEW_COUNT) {
+             continue;
+         }
+          $severity = (int) ($marker['severity'] ?? self::SEVERITY_MINOR) === self::SEVERITY_MAJOR
+              ? self::SEVERITY_MAJOR
+              : self::SEVERITY_MINOR;
+
+          $instance = new self();
+          $instance->add([
+              'plugin_remise_maintenances_id' => $maintenances_id,
+              'view_index'                    => $viewIndex,
+              'x_percent'                      => min(100.0, max(0.0, (float) ($marker['x'] ?? 0))),
+              'y_percent'                      => min(100.0, max(0.0, (float) ($marker['y'] ?? 0))),
+              'description'                    => (string) ($marker['description'] ?? ''),
+              'severity'                       => $severity,
+          ]);
+      }
+   }
+
    public static function deleteMarker(int $id, int $remises_id): bool {
        $marker = new self();
        // Verifie l'appartenance a CETTE remise avant de supprimer : sans cela,
@@ -176,9 +240,14 @@ class DamageMarker extends CommonDBTM
 
       if (!$DB->tableExists($table)) {
           $migration->displayMessage('Création de la table ' . $table);
+          // plugin_remise_remises_id NULLABLE des la creation (pas seulement
+          // sur les installations mises a jour ci-dessous) : une ligne
+          // n'appartient plus forcement a une Remise, cf. commentaire de
+          // classe. Meme schema, que l'installation soit neuve ou mise a jour.
           $DB->doQuery("CREATE TABLE `$table` (
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
-                `plugin_remise_remises_id` int unsigned NOT NULL,
+                `plugin_remise_remises_id` int unsigned DEFAULT NULL,
+                `plugin_remise_maintenances_id` int unsigned DEFAULT NULL,
                 `view_index` tinyint unsigned NOT NULL DEFAULT 0,
                 `x_percent` decimal(5,2) NOT NULL DEFAULT 0.00,
                 `y_percent` decimal(5,2) NOT NULL DEFAULT 0.00,
@@ -186,8 +255,31 @@ class DamageMarker extends CommonDBTM
                 `severity` tinyint unsigned NOT NULL DEFAULT 0,
                 PRIMARY KEY (`id`),
                 KEY `plugin_remise_remises_id` (`plugin_remise_remises_id`),
-                CONSTRAINT `fk_dm_remise` FOREIGN KEY (`plugin_remise_remises_id`) REFERENCES `glpi_plugin_remise_remises` (`id`) ON DELETE CASCADE
+                KEY `plugin_remise_maintenances_id` (`plugin_remise_maintenances_id`),
+                CONSTRAINT `fk_dm_remise` FOREIGN KEY (`plugin_remise_remises_id`) REFERENCES `glpi_plugin_remise_remises` (`id`) ON DELETE CASCADE,
+                CONSTRAINT `fk_dm_maintenance` FOREIGN KEY (`plugin_remise_maintenances_id`) REFERENCES `glpi_plugin_remise_maintenances` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+      }
+
+      // Installation existante (mise a jour depuis une version qui ne
+      // connaissait que les marqueurs de Remise) : assouplit la contrainte
+      // NOT NULL d'origine (une ligne peut desormais appartenir a une
+      // Maintenance a la place), puis ajoute la nouvelle colonne + sa cle
+      // etrangere. Tout en SQL brut, EXECUTE IMMEDIATEMENT (pas via
+      // Migration::addField()/changeField(), qui se contentent de FILE
+      // D'ATTENTE la modification jusqu'a l'appel de executeMigration() en
+      // toute fin de plugin_remise_install(), cf. hook.php) : la contrainte
+      // ci-dessous reference plugin_remise_maintenances_id, qui doit deja
+      // exister au moment ou CETTE ligne s'execute, pas seulement a la toute
+      // fin de l'installation - piege reel rencontre en testant (la colonne
+      // n'apparaissait jamais, la contrainte echouait silencieusement contre
+      // une colonne pas encore creee).
+      if (!$DB->fieldExists($table, 'plugin_remise_maintenances_id')) {
+          $migration->displayMessage("Mise à jour de $table pour les marqueurs de Maintenance");
+          $DB->doQuery("ALTER TABLE `$table` MODIFY `plugin_remise_remises_id` int unsigned DEFAULT NULL");
+          $DB->doQuery("ALTER TABLE `$table` ADD COLUMN `plugin_remise_maintenances_id` int unsigned DEFAULT NULL AFTER `plugin_remise_remises_id`");
+          $DB->doQuery("ALTER TABLE `$table` ADD KEY `plugin_remise_maintenances_id` (`plugin_remise_maintenances_id`)");
+          $DB->doQuery("ALTER TABLE `$table` ADD CONSTRAINT `fk_dm_maintenance` FOREIGN KEY (`plugin_remise_maintenances_id`) REFERENCES `glpi_plugin_remise_maintenances` (`id`) ON DELETE CASCADE");
       }
    }
 }

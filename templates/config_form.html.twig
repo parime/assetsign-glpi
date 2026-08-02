@@ -213,7 +213,7 @@
             <input type="hidden" name="enable_damage_annotation" value="0">
             <input type="checkbox" name="enable_damage_annotation" value="1" class="form-check-input" id="enable_damage_annotation" {{ config.enable_damage_annotation|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_damage_annotation">{{ __('État des lieux visuel (annotation de dommages)', 'remise') }}</label>
-            <div class="form-text">{{ __('Permet de repérer des dommages sur 8 vues génériques (avant, arrière, côtés, dessus, dessous, écran, clavier) et de les reporter sur le PDF.', 'remise') }}</div>
+            <div class="form-text">{{ __('Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance.', 'remise') }}</div>
           </div>
         </div>
 
