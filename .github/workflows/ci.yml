@@ -156,6 +156,15 @@ jobs:
 
       - name: Installe et active le plugin
         run: |
+          # database:update en amont, idempotent (no-op si deja a jour) :
+          # regression reelle constatee au passage a glpi/glpi:11.0.8 - la
+          # presence de config_db.php (utilisee plus haut pour detecter la fin
+          # de l'auto-installation) ne garantit plus a elle seule que le schema
+          # est totalement migre sur cette image. Sans cette etape, l'un des
+          # deux runs (push/pull_request) du meme commit echouait de maniere
+          # non deterministe ("The update of the GLPI database is necessary"),
+          # l'autre reussissait - signe d'une course, pas d'un bug de code.
+          docker exec glpi php bin/console database:update --force --no-interaction
           docker exec glpi php bin/console plugin:install remise --force --no-interaction
           docker exec glpi php bin/console plugin:activate remise --no-interaction
 
