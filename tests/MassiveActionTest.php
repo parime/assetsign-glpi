@@ -2,6 +2,7 @@
 
 namespace GlpiPlugin\Remise\Tests;
 
+use GlpiPlugin\Remise\Reminder;
 use GlpiPlugin\Remise\Remise;
 use MassiveAction;
 
@@ -48,7 +49,7 @@ class MassiveActionTest extends RemiseTestCase
         $this->assertSame(0, $results['ko']);
         $this->assertSame(
             1,
-            \GlpiPlugin\Remise\Reminder::countForRemise($remise->getID()),
+            Reminder::countForRemise($remise->getID()),
             'sendReminderNow() doit avoir ete reellement execute, pas seulement marque OK.'
         );
     }

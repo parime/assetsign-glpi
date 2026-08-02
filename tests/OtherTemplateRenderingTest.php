@@ -16,23 +16,14 @@ use Session;
  * chemin de code exact utilise en production, pas une reconstruction manuelle
  * du contexte qui pourrait diverger silencieusement de la vraie methode.
  *
- * Meme garde-fou que TemplateRenderingTest (aucun entier isole de 5+ chiffres
- * entre deux balises) : aucun de ces gabarits n'utilise {{ call(...) }}
- * aujourd'hui (verifie par grep avant d'ecrire ce test), mais si l'un d'eux
- * en gagnait un plus tard sans passer par {% do call(...) %}, ce test
- * l'attraperait sans modification.
+ * Meme garde-fou que TemplateRenderingTest (assertNoStrayNumericTextNode(),
+ * factorisee sur RemiseTestCase) : aucun de ces gabarits n'utilise
+ * {{ call(...) }} aujourd'hui (verifie par grep avant d'ecrire ce test), mais
+ * si l'un d'eux en gagnait un plus tard sans passer par {% do call(...) %},
+ * ce test l'attraperait sans modification.
  */
 class OtherTemplateRenderingTest extends RemiseTestCase
 {
-    private function assertNoStrayNumericTextNode(string $html, string $message): void
-    {
-        $this->assertDoesNotMatchRegularExpression(
-            '/>\s*\d{5,}\s*</',
-            $html,
-            $message . " (recherche d'un entier de 5+ chiffres isole entre deux balises, signature d'une valeur de retour de call() imprimee par erreur)"
-        );
-    }
-
     /**
      * showForm() -> initForm() -> check() exige a la fois un droit
      * (CREATE/READ selon le cas, couvert par Session::callAsSystem()) ET un
@@ -121,7 +112,11 @@ class OtherTemplateRenderingTest extends RemiseTestCase
         // showCreateForm() retourne sans rien afficher si l'appelant n'a pas
         // le droit Maintenance::CREATE (cf. Maintenance.php) : contourne par
         // Session::callAsSystem() plutot que de construire un vrai profil
-        // actif complet, hors de portee d'un test unitaire cible.
+        // actif complet, hors de portee d'un test unitaire cible. Contrairement
+        // aux deux tests precedents, PAS besoin de withEntityAccessAndBypassedRights()
+        // ici : ce formulaire n'est lie a aucun item existant (choix du materiel
+        // fait APRES coup, dans le formulaire lui-meme), donc aucun appel a
+        // checkEntity() ne peut se produire pendant son rendu.
         $html = Session::callAsSystem(static function (): string {
             ob_start();
             Maintenance::showCreateForm();

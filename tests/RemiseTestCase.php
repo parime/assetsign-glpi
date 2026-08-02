@@ -130,6 +130,24 @@ abstract class RemiseTestCase extends TestCase
     }
 
     /**
+     * Verifie l'absence d'un entier isole de 5+ chiffres entre deux balises
+     * dans un HTML rendu — la signature d'un {{ call(...) }} Twig qui aurait
+     * imprime par erreur la valeur de retour d'un Dropdown::show() sous-jacent
+     * (cf. TemplateRenderingTest/OtherTemplateRenderingTest, bug reel corrige
+     * en {% do call(...) %}, documente dans TROUBLESHOOTING.md). Partagee par
+     * les deux classes de test qui rendent des gabarits d'administration,
+     * plutot que dupliquee dans chacune.
+     */
+    protected function assertNoStrayNumericTextNode(string $html, string $message): void
+    {
+        $this->assertDoesNotMatchRegularExpression(
+            '/>\s*\d{5,}\s*</',
+            $html,
+            $message . " (recherche d'un entier de 5+ chiffres isole entre deux balises, signature d'une valeur de retour de call() imprimee par erreur)"
+        );
+    }
+
+    /**
      * Vide toutes les remises actuellement en attente de signature (SENT/VIEWED),
      * a l'interieur de la transaction du test en cours (donc sans effet reel,
      * annule au tearDown) : necessaire avant de tester runReminders()/
