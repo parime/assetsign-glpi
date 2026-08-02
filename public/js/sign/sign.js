@@ -1,4 +1,4 @@
-(function () {
+(async function () {
     'use strict';
 
     var container = document.getElementById('pdf-container');
@@ -13,14 +13,45 @@
     }
 
     // --- Prévisualisation défilante du PDF via PDF.js -------------------------------
+    // Depuis PDF.js 5 (cf. TROUBLESHOOTING.md), plus aucun build UMD n'est distribué :
+    // pdf.min.js est desormais un module ES, importe dynamiquement ici plutot que
+    // charge via une balise <script> classique separee (qui echouerait, "export" etant
+    // invalide hors contexte module). import() dynamique plutot qu'un `import` statique
+    // en tete de fichier : un `import` statique n'accepte pas de chaine calculee, donc
+    // pas de parametre `?v=` de cache-busting (meme piege deja documente et corrige
+    // pour les balises <script> classiques) - le numero de version du plugin
+    // (window.REMISE_PLUGIN_VERSION, injecte par sign_page.html.twig) est ainsi
+    // repercute sur l'URL importee, exactement comme sur les balises <script>.
+    var pdfjsLib = await import(
+        (window.REMISE_ROOT_DOC || '') + '/plugins/remise/js/sign/vendor/pdf.min.js?v=' + encodeURIComponent(window.REMISE_PLUGIN_VERSION || '')
+    );
+
     // window.REMISE_ROOT_DOC (injecte par sign_page.html.twig via config('root_doc'))
     // tient compte d'une installation GLPI dans un sous-dossier (ex: /glpi) : un
     // chemin absolu code en dur depuis la racine du domaine echouerait silencieusement
     // dans ce cas, empechant tout le reste du script de s'executer (PDF.js et
     // signature_pad dependent tous deux du bon chargement de ce worker).
-    pdfjsLib.GlobalWorkerOptions.workerSrc = (window.REMISE_ROOT_DOC || '') + '/plugins/remise/js/sign/vendor/pdf.worker.min.js';
+    //
+    // GlobalWorkerOptions.workerSrc (simple chaine d'URL) ne suffit plus depuis le
+    // passage a PDF.js 6 (build module ES) : PDF.js decide en interne si le worker
+    // doit demarrer en mode module via l'EXTENSION du fichier (`.mjs`) - or ce
+    // fichier reste volontairement nomme `.js` ici (l'image Docker officielle GLPI
+    // sert `.mjs` avec un Content-Type incorrect, `text/plain`, `.htaccess` desactive
+    // par defaut - `AllowOverride None` - donc pas de correctif local possible cote
+    // plugin). Avec `workerSrc`, PDF.js demarrait alors un worker CLASSIQUE (non
+    // module) a partir d'un contenu qui contient pourtant `import`/`export`, echouant
+    // en "Cannot use 'import.meta' outside a module". Corrige en construisant le
+    // Worker nous-memes avec `{ type: 'module' }` explicite, assigne via
+    // `workerPort` plutot que `workerSrc` (API alternative documentee par PDF.js).
+    var pdfWorker = new Worker(
+        (window.REMISE_ROOT_DOC || '') + '/plugins/remise/js/sign/vendor/pdf.worker.min.js?v=' + encodeURIComponent(window.REMISE_PLUGIN_VERSION || ''),
+        { type: 'module' }
+    );
+    pdfjsLib.GlobalWorkerOptions.workerPort = pdfWorker;
 
-    pdfjsLib.getDocument(container.dataset.pdfUrl).promise.then(function (pdf) {
+    // { url: ... } explicite plutot qu'une chaine nue en argument direct : plus
+    // fiable inter-versions (forme documentee sans ambiguite par PDF.js).
+    pdfjsLib.getDocument({ url: container.dataset.pdfUrl }).promise.then(function (pdf) {
         var renderPage = function (num) {
             pdf.getPage(num).then(function (page) {
                 var viewport = page.getViewport({ scale: 1.4 });

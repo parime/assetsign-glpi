@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 env:
-  GLPI_IMAGE: glpi/glpi:11.0.7
+  GLPI_IMAGE: glpi/glpi:11.0.8
 
 jobs:
   test:
@@ -21,6 +21,16 @@ jobs:
     steps:
       - name: Récupère le code du plugin
         uses: actions/checkout@v7
+
+      - name: Audit de sécurité des bibliothèques JS vendorisées
+        # package.json/package-lock.json ne declarent QUE les versions des
+        # bibliotheques copiees a la main dans public/js/sign/vendor/ (PDF.js,
+        # signature_pad) - aucun build/bundling npm dans ce plugin, cf.
+        # package.json. npm audit reste pertinent malgre tout : il verifie ces
+        # versions declarees contre la base d'avisories npm, exactement comme
+        # composer audit le fait cote PHP. Node.js est deja fourni par le
+        # runner ubuntu-latest, pas besoin de Docker pour cette etape.
+        run: npm audit
 
       - name: Valide composer.json/composer.lock
         # Rapide (pas besoin de PHP/Docker), echoue avant meme de demarrer les
