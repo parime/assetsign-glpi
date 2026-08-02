@@ -741,7 +741,17 @@ class Remise extends CommonDBTM
       }
 
        $item = new $itemtype();
-      if (!$item->getFromDB($items_id)) {
+       // !can($items_id, READ) regroupe a la fois le droit GLPI natif sur ce
+       // type de materiel ET l'appartenance a une entite accessible par
+       // l'utilisateur courant - sans ce second controle, le seul droit
+       // "Remise & signature" (verifie par l'appelant, non restreint par
+       // entite) suffisait a creer une fiche pour N'IMPORTE QUEL materiel de
+       // N'IMPORTE QUELLE entite de l'instance, y compris hors de la portee
+       // de l'utilisateur (faille reelle trouvee et corrigee en conditions
+       // reelles, cf. TROUBLESHOOTING.md). Meme message que "introuvable" que
+       // le materiel n'existe pas du tout, volontairement : ne pas laisser
+       // deviner qu'un id existe ailleurs mais est hors de portee.
+      if (!$item->getFromDB($items_id) || !$item->can($items_id, READ)) {
           throw new \RuntimeException(__('Matériel introuvable.', 'remise'));
       }
 

@@ -35,6 +35,42 @@ class RemiseTest extends RemiseTestCase
         Remise::createManual('Computer', 999999999, Remise::TYPE_DON, 2);
     }
 
+    /**
+     * Faille reelle trouvee et corrigee en conditions reelles (cf.
+     * TROUBLESHOOTING.md) : un utilisateur qui possede le droit generique
+     * "Remise & signature" (verifie par l'appelant, front/remise.form.php,
+     * jamais restreint par entite) pouvait avant ce correctif creer une
+     * fiche pour N'IMPORTE QUEL materiel de N'IMPORTE QUELLE entite de
+     * l'instance, y compris hors de la portee de son propre profil -
+     * contournement complet de la segregation par entite, coeur du modele
+     * multi-societes/multi-sites que ce plugin cible pourtant explicitement
+     * (logo/config par entite...). Simule ici une entite volontairement
+     * absente de $_SESSION['glpiactiveentities'] (insertion directe, sans
+     * passer par createTestEntity() qui l'y enregistre automatiquement) :
+     * exactement la situation d'un utilisateur n'ayant pas acces a cette
+     * entite precise.
+     */
+    public function testCreateManualRejectsItemInEntityOutsideCurrentAccess(): void
+    {
+        global $DB;
+
+        $inaccessibleEntityId = random_int(700000, 799999);
+        $DB->insert('glpi_entities', [
+            'id'           => $inaccessibleEntityId,
+            'name'         => 'PHPUnit Entite Inaccessible',
+            'completename' => 'PHPUnit Entite Inaccessible',
+            'entities_id'  => 0,
+            'level'        => 2,
+        ]);
+        // Jamais ajoutee a $_SESSION['glpiactiveentities'] : simule un
+        // utilisateur qui n'a pas acces a cette entite precise.
+        $computer = $this->createTestComputer($inaccessibleEntityId, 'PHPUnit PC Hors Portee');
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(__('Matériel introuvable.', 'remise'));
+        Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+    }
+
     public function testCreateManualLaunchesWorkflowAndMarksSent(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit CreateManual Don');

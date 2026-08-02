@@ -13,7 +13,12 @@ if (isset($_POST['create'])) {
    }
 
     $target = new $itemtype();
-   if (!$target->getFromDB($items_id)) {
+    // !can($items_id, READ) : sans ce controle, le droit generique
+    // Maintenance::$rightname (verifie ci-dessus, non restreint par entite)
+    // suffisait a creer une fiche pour n'importe quel materiel de n'importe
+    // quelle entite de l'instance - meme faille reelle que celle corrigee
+    // dans Remise::createManual(), cf. TROUBLESHOOTING.md.
+   if (!$target->getFromDB($items_id) || !$target->can($items_id, READ)) {
        Html::displayNotFoundError();
    }
 

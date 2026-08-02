@@ -20,6 +20,25 @@ abstract class RemiseTestCase extends TestCase
 
         global $DB;
         $DB->beginTransaction();
+
+        // tests/bootstrap.php ne simule aucune connexion : $_SESSION reste
+        // entierement vide (verifie en conditions reelles - Kernel::boot()
+        // seul n'etablit rien). Sans droits GLPI natifs (Computer READ...),
+        // CommonDBTM::can() echoue TOUJOURS, meme pour un test parfaitement
+        // legitime - jusqu'ici invisible car aucun test n'appelait can()
+        // avant les controles d'entite ajoutes dans Remise::createManual()/
+        // Maintenance::createWithChecklist() (cf. TROUBLESHOOTING.md, faille
+        // d'acces croise entre entites). Reproduit ici les droits du profil
+        // Super-Admin (le seul realiste pour des tests qui manipulent tout
+        // type de fiche) plutot que d'enumerer un a un chaque module touche.
+        if (!isset($_SESSION['glpiactiveprofile'])) {
+            $_SESSION['glpiactiveprofile'] = ['interface' => 'central'];
+           foreach ($DB->request(['FROM' => 'glpi_profilerights', 'WHERE' => ['profiles_id' => 4]]) as $row) {
+               $_SESSION['glpiactiveprofile'][$row['name']] = (int) $row['rights'];
+           }
+        }
+        $_SESSION['glpiactiveentities'] ??= [0];
+        $_SESSION['glpiactiveentities_string'] ??= '0';
     }
 
     protected function tearDown(): void
@@ -47,19 +66,43 @@ abstract class RemiseTestCase extends TestCase
         $id = $nextId++;
 
         $parentLevel = 1;
+        $ancestors = [0];
         if ($parentId !== 0) {
             foreach ($DB->request(['FROM' => 'glpi_entities', 'WHERE' => ['id' => $parentId]]) as $row) {
                 $parentLevel = (int) $row['level'];
+                $ancestors = array_merge(
+                    json_decode((string) ($row['ancestors_cache'] ?? '[]'), true) ?: [],
+                    [$parentId]
+                );
             }
         }
 
         $DB->insert('glpi_entities', [
-            'id'           => $id,
-            'name'         => $name,
-            'completename' => $name,
-            'entities_id'  => $parentId,
-            'level'        => $parentLevel + 1,
+            'id'              => $id,
+            'name'            => $name,
+            'completename'    => $name,
+            'entities_id'     => $parentId,
+            'level'           => $parentLevel + 1,
+            // ancestors_cache correctement rempli (meme mecanisme que
+            // createTestState() pour glpi_states) : necessaire pour un vrai
+            // arbre d'entites coherent, meme si ce n'est PAS ce que verifie
+            // Session::haveAccessToEntity() ci-dessous (elle ne regarde que
+            // $_SESSION['glpiactiveentities'], jamais ce cache directement).
+            'ancestors_cache' => json_encode($ancestors),
         ]);
+
+        // tests/bootstrap.php ne simule aucune connexion (pas de session GLPI
+        // au sens normal) : $_SESSION['glpiactiveentities'] n'existe donc pas,
+        // et Session::haveAccessToEntity() - utilisee par CommonDBTM::can(),
+        // donc par les controles d'entite ajoutes dans Remise::createManual()/
+        // Maintenance::createWithChecklist() (cf. TROUBLESHOOTING.md, faille
+        // d'acces croise entre entites) - renverrait toujours faux, y compris
+        // pour un test parfaitement legitime. On enregistre donc chaque entite
+        // de test au fil de sa creation, plutot que de contourner le controle
+        // avec Session::callAsSystem() qui desactiverait aussi ce qu'on
+        // cherche justement a tester.
+        $_SESSION['glpiactiveentities'][] = $id;
+        $_SESSION['glpiactiveentities_string'] = implode("','", $_SESSION['glpiactiveentities']);
 
         return $id;
     }
