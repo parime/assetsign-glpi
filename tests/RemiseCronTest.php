@@ -152,6 +152,66 @@ class RemiseCronTest extends RemiseTestCase
         $remise->sendReminderNow();
     }
 
+    /**
+     * Garde-fou defensif ajoute suite a un vrai crash rencontre en testant les
+     * commandes console (plugins:remise:run-reminders/run-expiration/warn-expiring) :
+     * une remise au statut Envoye/Consulte sans date_sent (donnee corrompue -
+     * structurellement impossible via launchWorkflow(), mais rencontree en
+     * pratique avec une ligne manipulee directement en base) faisait planter
+     * TOUT le lot avec une TypeError, bloquant les relances/expirations de
+     * TOUTES les autres remises du meme passage. createBareRemise() (comme la
+     * ligne corrompue reelle) ne renseigne jamais date_sent.
+     */
+    public function testRunRemindersSkipsRemiseWithMissingDateSentWithoutCrashing(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Cron Reminder MissingDateSent');
+        $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
+
+        $count = Remise::runReminders();
+
+        $this->assertSame(0, $count, 'La remise sans date_sent doit etre ignoree, pas relancee.');
+    }
+
+    public function testRunExpirationSkipsRemiseWithMissingDateSentWithoutCrashing(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Cron Expiration MissingDateSent');
+        $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
+
+        $count = Remise::runExpiration();
+
+        $this->assertSame(0, $count, 'La remise sans date_sent doit etre ignoree, pas marquee expiree.');
+    }
+
+    public function testRunExpiryWarningsSkipsRemiseWithMissingDateSentWithoutCrashing(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Cron ExpiryWarning MissingDateSent');
+        $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
+
+        $count = Remise::runExpiryWarnings();
+
+        $this->assertSame(0, $count, 'La remise sans date_sent doit etre ignoree, pas alertee.');
+    }
+
+    /**
+     * Une remise sans date_sent ne doit pas non plus empecher les AUTRES
+     * remises (legitimes) du meme lot d'etre correctement traitees - c'est le
+     * scenario exact rencontre en conditions reelles (test des commandes
+     * console avec plusieurs remises de test presentes en meme temps).
+     */
+    public function testRunRemindersProcessesOtherRemisesDespiteOneWithMissingDateSent(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Cron Reminder Mixed');
+        $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Cron Reminder Mixed Legit');
+        $legit = Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+        $this->backdateSentDate($legit, 4);
+
+        $count = Remise::runReminders();
+
+        $this->assertSame(1, $count, 'La remise legitime doit etre relancee malgre la ligne corrompue dans le meme lot.');
+    }
+
     private function backdateSentDate(Remise $remise, int $daysAgo): void
     {
         $remise->update([

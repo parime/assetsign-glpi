@@ -1314,6 +1314,10 @@ class Remise extends CommonDBTM
           $remise = new self();
           $remise->fields = $row;
 
+         if (self::hasMissingDateSent($remise->fields)) {
+             continue;
+         }
+
           // Config resolue pour l'entite DE CETTE REMISE (pas un reglage global) :
           // deux entites peuvent avoir des delais de relance differents, cf.
           // README section "Heritage de configuration par entite". Mise en cache
@@ -1373,6 +1377,10 @@ class Remise extends CommonDBTM
           $remise = new self();
           $remise->fields = $row;
 
+         if (self::hasMissingDateSent($remise->fields)) {
+             continue;
+         }
+
           $entityId = (int) $row['entities_id'];
           $remiseConfig = $configByEntity[$entityId] ??= Config::getForEntity($entityId);
           $validity = (int) $remiseConfig->fields['link_validity_days'];
@@ -1422,6 +1430,10 @@ class Remise extends CommonDBTM
           $remise = new self();
           $remise->fields = $row;
 
+         if (self::hasMissingDateSent($remise->fields)) {
+             continue;
+         }
+
           $entityId = (int) $row['entities_id'];
           $remiseConfig = $configByEntity[$entityId] ??= Config::getForEntity($entityId);
           $validity = (int) $remiseConfig->fields['link_validity_days'];
@@ -1447,6 +1459,30 @@ class Remise extends CommonDBTM
     /** Nombre de jours pleins ecoules depuis une date (format GLPI 'Y-m-d H:i:s'). */
    private static function daysSince(string $dateTime): int {
        return (int) floor((time() - strtotime($dateTime)) / DAY_TIMESTAMP);
+   }
+
+    /**
+     * Garde-fou defensif pour runReminders()/runExpiration()/runExpiryWarnings() :
+     * une remise au statut Envoye/Consulte DOIT toujours avoir date_sent
+     * renseignee (launchWorkflow() met a jour status et date_sent ensemble,
+     * dans le meme update() - cf. plus haut), donc structurellement impossible
+     * via le code reel du plugin. Mais une ligne corrompue ou importee a la
+     * main (constate en pratique avec des donnees de test manipulees
+     * directement en base) ferait sinon planter TOUT le lot avec une
+     * TypeError (daysSince() exige un string, pas null), bloquant les
+     * relances/expirations de toutes les AUTRES remises du meme passage.
+     * Ignoree et journalisee plutot que de laisser planter le lot entier.
+     */
+   private static function hasMissingDateSent(array $fields): bool {
+      if ($fields['date_sent'] !== null) {
+          return false;
+      }
+       \Toolbox::logInFile('remise', sprintf(
+           "Remise #%d (statut %d) sans date_sent : donnée incohérente, ignorée pour les tâches planifiées.\n",
+           $fields['id'],
+           $fields['status']
+       ));
+       return true;
    }
 
    public static function cronRemiseReminders(CronTask $task): int {
