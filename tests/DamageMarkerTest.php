@@ -97,7 +97,7 @@ class DamageMarkerTest extends RemiseTestCase
         // getCanonicalViewLabels() (utilisee par le PDF) doit rester fixe,
         // contrairement a getViewLabels() (traduite, ecran d'annotation) —
         // un vrai bug avait fait fuiter la langue de session dans le PDF
-        // archive, cf. README. Verifie juste que les deux jeux existent et
+        // archive, cf. TROUBLESHOOTING.md. Verifie juste que les deux jeux existent et
         // ont la meme forme (memes cles 0/1/2), pas leur contenu traduit.
         $canonical = DamageMarker::getCanonicalViewLabels();
         $translated = DamageMarker::getViewLabels();
@@ -138,7 +138,7 @@ class DamageMarkerTest extends RemiseTestCase
     {
         // Seul test de ce fichier a passer par createManual() (vrai PDF) : verifie
         // le vrai bug corrige par le passe (un repere ajoute via ce point d'entree
-        // n'apparaissait jamais sur la vraie fiche PDF, cf. README) — a savoir que
+        // n'apparaissait jamais sur la vraie fiche PDF, cf. TROUBLESHOOTING.md) — a savoir que
         // handleMutationRequest() declenche bien refreshDamageAnnotationPdf().
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Regenerate');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC DamageMarker');

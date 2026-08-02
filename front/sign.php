@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
           $result = DamageMarker::handleMutationRequest($remise, $_POST);
       }
 
-       // Jeton CSRF a usage unique (cf. README) : sans rotation, un deuxieme clic
+       // Jeton CSRF a usage unique (cf. TROUBLESHOOTING.md) : sans rotation, un deuxieme clic
        // (ajouter un 2e repere, ou modifier apres avoir commente) echouerait en 403.
        header('X-Remise-Csrf-Token: ' . Session::getNewCSRFToken());
        echo json_encode($result);

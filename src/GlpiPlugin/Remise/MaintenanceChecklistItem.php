@@ -125,7 +125,7 @@ class MaintenanceChecklistItem extends CommonDropdown
        // Installation existante (mise a jour) : le type 'integer' (et non
        // 'tinyint' brut) est necessaire pour que Migration::addField() pose
        // vraiment un DEFAULT 0/NOT NULL — piege deja rencontre ailleurs dans
-       // ce plugin (cf. README, notes techniques).
+       // ce plugin (cf. TROUBLESHOOTING.md).
       if (!$DB->fieldExists($table, 'type')) {
           $migration->addField($table, 'type', 'integer', ['value' => self::TYPE_CHECKBOX]);
       }

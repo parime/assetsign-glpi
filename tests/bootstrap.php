@@ -14,7 +14,7 @@
  * TESTS (jamais une instance de production), avec le plugin remise installe
  * et actif. La plupart des tests ecrivent en base — ils sont enveloppes dans
  * une transaction annulee en tearDown (cf. RemiseTestCase), mais ce n'est pas
- * une garantie absolue (voir avertissement dans le README).
+ * une garantie absolue (voir avertissement dans ARCHITECTURE.md, section Tests automatises).
  *
  * Variable d'environnement GLPI_ROOT_DIR : chemin absolu vers la racine GLPI
  * (le dossier contenant vendor/, src/, bin/console...). Par defaut, suppose

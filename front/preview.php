@@ -15,7 +15,7 @@ if (!Session::haveRight(Config::$rightname, READ) && !Session::haveRight(Templat
 header('Content-Type: text/html; charset=UTF-8');
 
 // Le jeton CSRF envoye par ce POST vient d'etre consomme par le pare-feu GLPI
-// (a usage unique, cf. README) : sans en fournir un nouveau, le PROCHAIN appel
+// (a usage unique, cf. TROUBLESHOOTING.md) : sans en fournir un nouveau, le PROCHAIN appel
 // de live-preview.js (a la frappe suivante) serait rejete en 403 — constate en
 // conditions reelles en enchainant plusieurs appels avec le meme jeton. Le
 // nouveau jeton est renvoye en en-tete pour que le JS mette a jour son

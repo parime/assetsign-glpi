@@ -2,7 +2,7 @@
 
 ## Versions supportées
 
-Seule la dernière version publiée sur la branche `main` est maintenue. Aucune version antérieure ne reçoit de correctif de sécurité séparé — mettez à jour vers la dernière version (`git pull && sh update.sh`, voir le README) avant de signaler un problème.
+Seule la dernière version publiée sur la branche `main` est maintenue. Aucune version antérieure ne reçoit de correctif de sécurité séparé — mettez à jour vers la dernière version (`git pull && sh update.sh`, voir [INSTALLATION.md](INSTALLATION.md#mettre-à-jour-le-plugin)) avant de signaler un problème.
 
 ## Signaler une vulnérabilité
 
