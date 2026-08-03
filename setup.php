@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_REMISE_VERSION', '1.11.1');
+define('PLUGIN_REMISE_VERSION', '1.12.0');
 define('PLUGIN_REMISE_MIN_GLPI', '11.0.0');
 define('PLUGIN_REMISE_MAX_GLPI', '11.9.99');
 define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
@@ -88,8 +88,12 @@ function plugin_init_remise(): void {
     );
 
     // --- Enregistrement des classes -------------------------------------------------
+    // 'User' en plus des materiels geres : onglet Remises cote beneficiaire
+    // (Remise::getTabNameForItem()/showForUser() filtrent alors par users_id
+    // plutot que par itemtype/items_id) - retrouver d'un coup d'œil tout ce
+    // qu'une personne a recu, sans avoir a savoir sur quel materiel chercher.
     Plugin::registerClass(\GlpiPlugin\Remise\Remise::class, [
-        'addtabon' => $manageableItemtypes,
+        'addtabon' => array_merge($manageableItemtypes, ['User']),
     ]);
     Plugin::registerClass(\GlpiPlugin\Remise\Config::class, [
         'addtabon' => ['Entity'],
