@@ -122,5 +122,26 @@
         })();
       </script>
     {% endif %}
+
+    {% if can_assign_asset %}
+      <hr>
+      <h3>{{ __('Assigner un matériel à cet utilisateur', 'remise') }}</h3>
+      <p class="text-muted small">{{ __('L\'affectation déclenche automatiquement la création d\'une remise, comme depuis la fiche du matériel.', 'remise') }}</p>
+      <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/assign_user_asset.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="users_id" value="{{ target_user_id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Type de matériel', 'remise') }}</label>
+          {{ itemtype_dropdown_html|raw }}
+        </div>
+        <div class="col-auto">
+          <label class="form-label">{{ __('Matériel', 'remise') }}</label><br>
+          {{ item_dropdown_html|raw }}
+        </div>
+        <div class="col-auto">
+          <button type="submit" name="assign" class="btn btn-secondary">{{ __('Assigner', 'remise') }}</button>
+        </div>
+      </form>
+    {% endif %}
   </div>
 </div>

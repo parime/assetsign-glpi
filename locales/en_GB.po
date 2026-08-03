@@ -748,3 +748,18 @@ msgstr "You must be logged in to access this document."
 
 msgid "Échec de la création de la fiche."
 msgstr "Failed to create the record."
+
+msgid "Variables disponibles, remplacées automatiquement sur le PDF :"
+msgstr "Available placeholders, replaced automatically on the PDF:"
+
+msgid "Assigner un matériel à cet utilisateur"
+msgstr "Assign an asset to this user"
+
+msgid "L'affectation déclenche automatiquement la création d'une remise, comme depuis la fiche du matériel."
+msgstr "Assigning it automatically creates a handover, just like from the asset's own page."
+
+msgid "Assigner"
+msgstr "Assign"
+
+msgid "Matériel assigné."
+msgstr "Asset assigned."
