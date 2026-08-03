@@ -93,4 +93,40 @@ class MassiveActionTest extends RemiseTestCase
         $this->assertSame(0, $results['ok']);
         $this->assertSame(1, $results['ko']);
     }
+
+    /**
+     * Faille reelle trouvee et corrigee en conditions reelles (cf.
+     * TROUBLESHOOTING.md), meme famille que celle de Remise::createManual() :
+     * le framework MassiveAction de GLPI ne filtre PAS lui-meme les ids
+     * soumis par entite pour une action specifique de plugin - c'est a
+     * processMassiveActionsForOneItemtype() de le faire. Simule ici une
+     * remise dans une entite volontairement absente de
+     * $_SESSION['glpiactiveentities'] (insertion directe, sans passer par
+     * createTestEntity() qui l'y enregistre automatiquement).
+     */
+    public function testSendReminderAndCancelRequestRejectRemiseInEntityOutsideCurrentAccess(): void
+    {
+        global $DB;
+
+        $inaccessibleEntityId = random_int(700000, 799999);
+        $DB->insert('glpi_entities', [
+            'id'           => $inaccessibleEntityId,
+            'name'         => 'PHPUnit MassiveAction Entite Inaccessible',
+            'completename' => 'PHPUnit MassiveAction Entite Inaccessible',
+            'entities_id'  => 0,
+            'level'        => 2,
+        ]);
+        $remise = $this->createBareRemise($inaccessibleEntityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
+
+        $results = $this->runMassiveAction('send_reminder', [$remise->getID()]);
+        $this->assertSame(0, $results['ok']);
+        $this->assertSame(1, $results['noright']);
+        $this->assertSame(0, Reminder::countForRemise($remise->getID()), "La relance n'aurait jamais du etre envoyee.");
+
+        $results = $this->runMassiveAction('cancel_request', [$remise->getID()]);
+        $this->assertSame(0, $results['ok']);
+        $this->assertSame(1, $results['noright']);
+        $remise->getFromDB($remise->getID());
+        $this->assertSame(Remise::STATUS_SENT, (int) $remise->fields['status'], "La remise n'aurait jamais du etre annulee.");
+    }
 }

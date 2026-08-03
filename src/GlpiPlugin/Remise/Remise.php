@@ -359,6 +359,19 @@ class Remise extends CommonDBTM
                   $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                   continue;
                }
+                // can($id, UPDATE) regroupe le droit GLPI natif ET l'acces a
+                // l'entite de CETTE remise precise - sans ce controle, le
+                // framework MassiveAction ne filtre PAS lui-meme les ids par
+                // entite pour une action specifique de plugin (verifie en
+                // conditions reelles) : le seul droit generique du plugin
+                // (deja verifie ailleurs, jamais restreint par entite)
+                // suffisait a relancer/annuler N'IMPORTE QUELLE remise de
+                // N'IMPORTE QUELLE entite - meme faille que celle corrigee
+                // dans createManual(), cf. TROUBLESHOOTING.md.
+               if (!$item->can($id, UPDATE)) {
+                  $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                  continue;
+               }
                try {
                     $item->sendReminderNow();
                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
@@ -375,6 +388,10 @@ class Remise extends CommonDBTM
             foreach ($ids as $id) {
                if (!$item->getFromDB($id)) {
                    $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                   continue;
+               }
+               if (!$item->can($id, UPDATE)) {
+                   $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
                    continue;
                }
                try {
