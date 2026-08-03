@@ -68,14 +68,14 @@ Un second onglet dédié, indépendant des remises signées (pas de bénéficiai
 
 ### L'onglet « Remises » sur la fiche d'un utilisateur
 
-Le même onglet Remises existe aussi côté utilisateur (fiche d'un compte GLPI, Administration > Utilisateurs) — filtré cette fois par bénéficiaire plutôt que par matériel, avec une colonne supplémentaire indiquant à quel matériel chaque ligne correspond (une même personne ayant pu recevoir plusieurs matériels différents dans le temps) : pratique pour retrouver d'un coup d'œil tout ce qu'une personne a reçu, télécharger directement chaque PDF, sans avoir à connaître à l'avance sur quel matériel chercher :
+Le même onglet Remises existe aussi côté utilisateur (fiche d'un compte GLPI, Administration > Utilisateurs) — filtré cette fois par bénéficiaire plutôt que par matériel, avec une colonne supplémentaire indiquant à quel matériel chaque ligne correspond (une même personne ayant pu recevoir plusieurs matériels différents dans le temps) : pratique pour retrouver d'un coup d'œil tout ce qu'une personne a reçu, télécharger directement chaque PDF, sans avoir à connaître à l'avance sur quel matériel chercher. Un raccourci **"Assigner un matériel à cet utilisateur"** permet en plus d'affecter directement un matériel depuis cet écran (choix du type puis du matériel) — l'affectation déclenche automatiquement la création d'une remise, exactement comme changer le champ "Utilisateur" depuis la fiche du matériel :
 
 ![Onglet Remises sur la fiche d'un utilisateur](docs/screenshots/onglet-utilisateur-remise.png)
 
 ## Fonctionnalités
 
 - Détection automatique de l'affectation/réaffectation/restitution d'un matériel, sans action manuelle du technicien.
-- Génération PDF (fiche de remise ou de restitution) avec gabarits personnalisables (conditions générales, charte informatique) — un nouveau gabarit part d'un texte par défaut modifiable plutôt que d'un champ vide.
+- Génération PDF (fiche de remise ou de restitution) avec gabarits personnalisables (conditions générales, charte informatique) — un nouveau gabarit part d'un texte par défaut modifiable plutôt que d'un champ vide. Variables disponibles dans ce texte libre (`{beneficiaire}`, `{technicien}`, `{materiel}`, `{date}`, `{entite}`), remplacées automatiquement sur le PDF : un seul gabarit rédigé une fois plutôt qu'une variante par cas.
 - Signature à l'écran intégrée (aucun service externe requis, aucun coût de licence) — souris, doigt ou stylet, avec prévisualisation du PDF avant de signer.
 - Relances automatiques en cas d'inaction, avec limite de nombre configurable, puis expiration automatique du lien passé un certain délai.
 - Relance manuelle à tout moment depuis la fiche d'une remise, ou en action groupée sur plusieurs remises sélectionnées depuis la liste (Administration > Remise & signature > Remises).

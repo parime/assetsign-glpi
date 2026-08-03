@@ -43,16 +43,29 @@ final class HandoverPdfBuilder
            ? VenteDetails::getForRemise($remise->getID())
            : null;
 
+       $user = $remise->getBeneficiary();
+       $item = $remise->getTargetItem();
+       $technician = new \User();
+       $technician->getFromDB((int) $remise->fields['users_id_tech']);
+
+       $placeholders = [
+           'beneficiaire' => trim(($user['firstname'] ?? '') . ' ' . ($user['realname'] ?? '')),
+           'technicien'   => trim(($technician->fields['firstname'] ?? '') . ' ' . ($technician->fields['realname'] ?? '')),
+           'materiel'     => $item['name'] ?? '',
+           'date'         => $remise->fields['date_creation'] ? date('d/m/Y', strtotime($remise->fields['date_creation'])) : date('d/m/Y'),
+           'entite'       => \Dropdown::getDropdownName('glpi_entities', (int) $remise->fields['entities_id']),
+       ];
+
        return TemplateRenderer::getInstance()->render('@remise/pdf/handover.html.twig', array_merge([
            'remise'              => $remise->fields,
-           'user'                => $remise->getBeneficiary(),
+           'user'                => $user,
            'beneficiary_is_external' => (int) ($remise->fields['beneficiary_type'] ?? Remise::BENEFICIARY_INTERNAL) === Remise::BENEFICIARY_EXTERNAL,
-           'item'                => $remise->getTargetItem(),
+           'item'                => $item,
            'itemtype'            => Remise::getCanonicalItemtypeLabel($remise->fields['itemtype']),
            'accessories'         => $remise->getAccessories(),
-           'contract'            => $template?->fields['content'] ?? '',
+           'contract'            => $this->resolvePlaceholders($template?->fields['content'] ?? '', $placeholders),
            'include_content'     => (bool) ($template?->fields['include_content'] ?? true),
-           'charter'             => $template?->fields['charter_content'] ?? '',
+           'charter'             => $this->resolvePlaceholders($template?->fields['charter_content'] ?? '', $placeholders),
            'include_charter'     => (bool) ($template?->fields['include_charter'] ?? true),
            'charter_url'         => $config->fields['charter_url'] ?: null,
            'enable_observations' => (bool) $config->fields['enable_observations'],
@@ -112,15 +125,26 @@ final class HandoverPdfBuilder
            ? (bool) $overrides['enable_damage_annotation']
            : (bool) $config->fields['enable_damage_annotation'];
 
+       // Donnees fictives (cf. commentaire de methode) : le nom d'entite est,
+       // lui, reel (utile pour verifier que {entite} se resout correctement
+       // sans avoir a enregistrer quoi que ce soit).
+       $placeholders = [
+           'beneficiaire' => 'Alex Dupont',
+           'technicien'   => 'Sophie Martin',
+           'materiel'     => 'PC-EXEMPLE-001',
+           'date'         => date('d/m/Y'),
+           'entite'       => \Dropdown::getDropdownName('glpi_entities', $entities_id),
+       ];
+
        return TemplateRenderer::getInstance()->render('@remise/pdf/handover.html.twig', [
            'remise'              => ['id' => 0, 'date_creation' => date('Y-m-d H:i:s')],
            'user'                => ['firstname' => 'Alex', 'realname' => 'Dupont', 'name' => 'adupont', 'email' => 'alex.dupont@exemple.fr'],
            'item'                => ['name' => 'PC-EXEMPLE-001', 'serial' => 'SN-EXEMPLE-042', 'otherserial' => 'INV-1234', 'manufacturer_name' => 'Dell', 'model_name' => 'Latitude 5440'],
            'itemtype'            => Remise::getCanonicalItemtypeLabel('Computer'),
            'accessories'         => [],
-           'contract'            => array_key_exists('content', $overrides) ? (string) $overrides['content'] : ($template?->fields['content'] ?? ''),
+           'contract'            => $this->resolvePlaceholders(array_key_exists('content', $overrides) ? (string) $overrides['content'] : ($template?->fields['content'] ?? ''), $placeholders),
            'include_content'     => $includeContent,
-           'charter'             => array_key_exists('charter_content', $overrides) ? (string) $overrides['charter_content'] : ($template?->fields['charter_content'] ?? ''),
+           'charter'             => $this->resolvePlaceholders(array_key_exists('charter_content', $overrides) ? (string) $overrides['charter_content'] : ($template?->fields['charter_content'] ?? ''), $placeholders),
            'include_charter'     => $includeCharter,
            'charter_url'         => $charterUrl,
            'enable_observations' => $observationsEnabled,
@@ -133,6 +157,28 @@ final class HandoverPdfBuilder
            'document_title'      => 'Aperçu',
            'logo_data_uri'       => $this->getLogoDataUri($entities_id),
        ]);
+   }
+
+    /**
+     * Remplace {beneficiaire}/{technicien}/{materiel}/{date}/{entite} dans le
+     * contrat/la charte (texte libre saisi par l'administrateur dans le
+     * gabarit, cf. Template::class) — permet de rediger un texte generique
+     * une seule fois plutot que de dupliquer un gabarit par variante. Simple
+     * str_replace sur le HTML brut (contenu riche TinyMCE) : la syntaxe
+     * {xxx} n'entre jamais en collision avec du HTML/texte normal.
+     * @param array<string, string> $values
+     */
+   private function resolvePlaceholders(string $text, array $values): string {
+      if ($text === '' || !str_contains($text, '{')) {
+          return $text;
+      }
+       $search = [];
+       $replace = [];
+      foreach ($values as $key => $value) {
+          $search[] = '{' . $key . '}';
+          $replace[] = $value;
+      }
+       return str_replace($search, $replace, $text);
    }
 
    private function storeAsDocument(Remise $remise, string $pdfBinary, string $filename): Document {
