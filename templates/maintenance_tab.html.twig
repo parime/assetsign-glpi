@@ -9,6 +9,7 @@
             <th>{{ __('Date', 'remise') }}</th>
             <th>{{ __('Commentaire', 'remise') }}</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -17,6 +18,7 @@
             <td>{{ m.date_creation }}</td>
             <td>{{ m.comment|default('')|slice(0, 80) }}</td>
             <td><a href="{{ config('root_doc') }}/plugins/remise/front/maintenance.form.php?id={{ m.id }}">{{ __('Voir', 'remise') }}</a></td>
+            <td>{% if m.document_id %}<a href="{{ config('root_doc') }}/front/document.send.php?docid={{ m.document_id }}" target="_blank">{{ __('Télécharger en PDF', 'remise') }}</a>{% endif %}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -63,6 +65,8 @@
         </div>
 
         {% include '@remise/damage_annotation_edit.html.twig' %}
+
+        {% include '@remise/technician_signature_edit.html.twig' %}
 
         <button type="submit" name="create" class="btn btn-secondary">{{ __('Créer la fiche', 'remise') }}</button>
       </form>

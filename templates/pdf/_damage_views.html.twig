@@ -1,0 +1,31 @@
+{# Partagee entre handover.html.twig (Remise) et maintenance.html.twig
+   (Maintenance) : meme rendu de l'etat des lieux visuel dans les deux PDF,
+   garantit qu'ils restent visuellement identiques sans les faire deriver
+   independamment. Attend une variable `damage_views` dans le contexte
+   appelant (Twig partage le scope parent par defaut sur un include sans
+   `only`). #}
+{% if damage_views|length %}
+<h2>État des lieux visuel</h2>
+<div class="damage-pdf-views">
+{% for view in damage_views %}
+<div class="damage-pdf-col">
+    <div class="damage-pdf-view" style="padding-bottom: {{ view.aspect_ratio_percent }}%;">
+        <img src="{{ view.image_data_uri }}" class="damage-pdf-img">
+        {% for marker in view.markers %}
+        <div class="damage-pdf-marker{{ marker.severity == 1 ? ' damage-pdf-marker-major' : '' }}"
+             style="left: {{ marker.x_percent }}%; top: {{ marker.y_percent }}%;"></div>
+        {% endfor %}
+    </div>
+    <p class="damage-pdf-label">{{ view.label }}</p>
+    {% set described = view.markers|filter(m => m.description) %}
+    {% if described|length %}
+    <ul class="damage-pdf-desc">
+        {% for marker in described %}
+        <li>{{ marker.description }}{% if marker.severity == 1 %} — majeure{% endif %}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endfor %}
+</div>
+{% endif %}
