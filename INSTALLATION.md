@@ -87,6 +87,8 @@ Vérifiez aussi que les notifications GLPI sont actives (**Configuration > Notif
 
 ## Mettre à jour le plugin
 
+> ⚠️ **Ne cliquez jamais sur « Désinstaller » (Configuration > Plugins) pour mettre à jour.** Dans GLPI, « Désinstaller » un plugin supprime **définitivement toutes ses tables** — toutes les remises, fiches de maintenance, signatures, gabarits, réglages déjà enregistrés disparaissent, sans sauvegarde ni confirmation détaillée du contenu perdu (c'est le comportement standard de tout plugin GLPI, pas un bug de celui-ci). Une mise à jour ne nécessite **jamais** de désinstaller : remplacez simplement les fichiers puis suivez la procédure ci-dessous (`update.sh`, ou juste « Réactiver » sur Configuration > Plugins) — vos données restent intactes. Réservez « Désinstaller » au seul cas où vous voulez vraiment supprimer le plugin et tout son contenu.
+
 Une modification du code (nouvelle fonctionnalité, correctif) ne se signale jamais automatiquement côté GLPI — ce dépôt est hors du Marketplace officiel. La marche à suivre :
 
 1. Sur le serveur GLPI, récupérez le nouveau code par la même méthode qu'à l'installation (voir [Installation](#installation) ci-dessus) :

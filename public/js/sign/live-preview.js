@@ -9,6 +9,17 @@
  * Convention : un formulaire avec [data-remise-preview-frame="<id de l'iframe>"]
  * est surveille dans son ensemble (tous ses champs sont renvoyes tels quels a
  * front/preview.php, qui n'utilise que ceux qu'il connait).
+ *
+ * Jeton CSRF : ce canal utilise SON PROPRE jeton (window.REMISE_PREVIEW_CSRF_TOKEN,
+ * injecte par la page, cf. Config::showConfigForm()/Template::showForm()),
+ * jamais celui du champ _glpi_csrf_token du formulaire lui-meme. Les deux
+ * jetons GLPI sont a usage unique : partager le meme champ que le vrai
+ * bouton Enregistrer faisait echouer l'un des deux en "Accès refusé" des que
+ * l'utilisateur enchainait plusieurs cases a cocher puis cliquait
+ * Enregistrer avant qu'une reponse d'apercu en vol n'ait fini de faire
+ * tourner ce champ partage (constate en conditions reelles). Un jeton
+ * totalement independant, jamais ecrit dans le DOM du formulaire, elimine
+ * cette course structurellement.
  */
 (function () {
     'use strict';
@@ -21,6 +32,12 @@
         if (!frame) {
             return;
         }
+
+        // Jeton propre a CE formulaire d'apercu, jamais lu ni ecrit dans le
+        // champ _glpi_csrf_token du formulaire (cf. commentaire d'en-tete) :
+        // une variable JS locale, pas le DOM, pour que le vrai bouton
+        // Enregistrer ne soit jamais affecte par la rotation de ce jeton.
+        var previewToken = window.REMISE_PREVIEW_CSRF_TOKEN || '';
 
         var timer = null;
 
@@ -39,6 +56,10 @@
             form.querySelectorAll('input[type="file"]').forEach(function (fileInput) {
                 data.delete(fileInput.name);
             });
+            // Remplace le jeton du formulaire (destine au vrai Enregistrer) par
+            // le jeton dedie a l'apercu, quoi que FormData ait recopie depuis
+            // le DOM du champ _glpi_csrf_token.
+            data.set('_glpi_csrf_token', previewToken);
             var body = new URLSearchParams(data);
             fetch(endpoint, {
                 method: 'POST',
@@ -49,12 +70,11 @@
                     // Le jeton CSRF de ce POST est a usage unique (deja consomme par le
                     // pare-feu GLPI) : sans le remplacer ici par celui renvoye en
                     // en-tete, le PROCHAIN appel serait rejete (403) des la frappe suivante.
+                    // Mis a jour uniquement dans cette variable locale — jamais dans le
+                    // DOM du formulaire (cf. commentaire d'en-tete).
                     var freshToken = res.headers.get('X-Remise-Csrf-Token');
                     if (freshToken) {
-                        var tokenInput = form.querySelector('[name="_glpi_csrf_token"]');
-                        if (tokenInput) {
-                            tokenInput.value = freshToken;
-                        }
+                        previewToken = freshToken;
                     }
                     return res.text();
                 })

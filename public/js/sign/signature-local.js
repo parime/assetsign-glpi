@@ -15,7 +15,14 @@
     // damage-annotation-local.js le fait pour les marqueurs d'etat des lieux.
     wrappers.forEach(function (wrapper) {
         var canvas = wrapper.querySelector('.remise-signature-pad');
-        var hiddenInput = wrapper.querySelector('.remise-signature-input');
+        // hiddenInput/clearBtn sont des FRERES de wrapper (tous deux enfants
+        // directs du meme conteneur .mb-3, cf. signature_edit.html.twig), pas
+        // des descendants de wrapper lui-meme (qui ne contient que le
+        // <canvas>) : chercher via wrapper.querySelector() ici renverrait
+        // toujours null et ferait echouer silencieusement la mise a jour du
+        // champ cache a la soumission (bug reel constate : signature tracee
+        // mais jamais transmise au serveur, rejetee comme "obligatoire").
+        var hiddenInput = wrapper.parentElement.querySelector('.remise-signature-input');
         var clearBtn = wrapper.parentElement.querySelector('.remise-signature-clear');
         var required = wrapper.dataset.required === '1';
 
