@@ -27,7 +27,8 @@ use Migration;
  *   (public/js/sign/damage-annotation-local.js, purement local, aucun appel
  *   serveur), puis soumis d'un bloc avec le reste du formulaire et enregistres
  *   par createMarkersForMaintenance() ; jamais modifiables ensuite (affichage
- *   lecture seule uniquement, pas de PDF - Maintenance n'en genere aucun).
+ *   lecture seule uniquement, un seul PDF genere une fois pour toutes a la
+ *   creation, cf. MaintenancePdfBuilder).
  */
 class DamageMarker extends CommonDBTM
 {

@@ -120,6 +120,81 @@ class MaintenanceTest extends RemiseTestCase
         $this->assertNotContains('PHPUnit Inactif Ignore', $names, "Un point desactive AVANT la creation de la fiche ne doit pas pouvoir y etre ajoute.");
     }
 
+    public function testCreateWithChecklistGeneratesPdfDocument(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Maintenance PDF');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Maintenance PDF');
+        $checkboxId = $this->createChecklistItem('PHPUnit Checkbox PDF', MaintenanceChecklistItem::TYPE_CHECKBOX);
+
+        $id = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [$checkboxId => '1'], 'Commentaire PDF');
+
+        $maintenance = new Maintenance();
+        $maintenance->getFromDB($id);
+
+        $documentsId = (int) $maintenance->fields['document_id'];
+        $this->assertGreaterThan(0, $documentsId, "createWithChecklist() doit generer un PDF et enregistrer son document_id.");
+
+        $document = new \Document();
+        $this->assertTrue($document->getFromDB($documentsId));
+        $this->assertSame($entityId, (int) $document->fields['entities_id'], "Le PDF doit appartenir a la meme entite que la fiche de maintenance.");
+
+        $fullpath = GLPI_DOC_DIR . '/' . $document->fields['filepath'];
+        $this->assertFileExists($fullpath, 'Le fichier PDF genere doit reellement exister sur disque.');
+        $this->assertGreaterThan(0, filesize($fullpath));
+    }
+
+    public function testGetTargetItemIncludesManufacturerAndModel(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Maintenance TargetItem');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC TargetItem');
+
+        $id = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '');
+        $maintenance = new Maintenance();
+        $maintenance->getFromDB($id);
+
+        $item = $maintenance->getTargetItem();
+
+        $this->assertSame('PHPUnit PC TargetItem', $item['name']);
+        // Ni marque ni modele configures sur ce Computer minimal : les deux
+        // cles doivent exister quand meme (Remise::resolveManufacturerName()/
+        // resolveModelName() renvoient une chaine vide, jamais une absence de
+        // cle), pour que le gabarit PDF (qui teste juste leur troncature)
+        // ne plante pas sur une cle manquante.
+        $this->assertArrayHasKey('manufacturer_name', $item);
+        $this->assertArrayHasKey('model_name', $item);
+        $this->assertSame('', $item['manufacturer_name']);
+    }
+
+    public function testGetTechnicianReturnsTheUserWhoCreatedTheRecord(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Maintenance Technician');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Technician');
+
+        // $_SESSION['glpiID'] : createWithChecklist() y lit users_id_tech via
+        // Session::getLoginUserID() (cf. son propre code) - la session de test
+        // n'authentifie personne par defaut (cf. RemiseTestCase::setUp()),
+        // simule ici la connexion du compte 'glpi' (id=2) comme technicien.
+        $_SESSION['glpiID'] = 2;
+
+        $id = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '');
+        $maintenance = new Maintenance();
+        $maintenance->getFromDB($id);
+
+        $this->assertSame(2, (int) $maintenance->fields['users_id_tech']);
+
+        $technician = $maintenance->getTechnician();
+        $this->assertSame('glpi', $technician['name']);
+        $this->assertNotEmpty($technician['email'], "L'e-mail du technicien doit etre fusionne depuis glpi_useremails (absent de glpi_users).");
+    }
+
+    public function testGetSpecificValueToDisplayRendersDownloadLinkForDocumentId(): void
+    {
+        $html = Maintenance::getSpecificValueToDisplay('document_id', ['document_id' => 42]);
+        $this->assertStringContainsString('document.send.php?docid=42', $html);
+
+        $this->assertSame('', Maintenance::getSpecificValueToDisplay('document_id', ['document_id' => 0]), 'Aucun document : aucun lien a afficher.');
+    }
+
     private function createChecklistItem(string $name, int $type, string $options = ''): int
     {
         $item = new MaintenanceChecklistItem();

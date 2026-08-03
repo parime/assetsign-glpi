@@ -13,6 +13,12 @@
       </tr>
     </table>
 
+    {% if item.fields.document_id %}
+      <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id }}" class="btn btn-secondary" target="_blank">
+        <i class="ti ti-file-download"></i> {{ __('Télécharger le PDF', 'remise') }}
+      </a>
+    {% endif %}
+
     <h3 class="mt-4">{{ __('Points de contrôle validés', 'remise') }}</h3>
     {% if checklist_results|length %}
       <ul>

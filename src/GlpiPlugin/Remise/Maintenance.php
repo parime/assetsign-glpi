@@ -5,6 +5,7 @@ namespace GlpiPlugin\Remise;
 use CommonDBTM;
 use CommonGLPI;
 use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Remise\Pdf\MaintenancePdfBuilder;
 use Migration;
 use Session;
 
@@ -41,7 +42,28 @@ class Maintenance extends CommonDBTM
            ['id' => 3, 'table' => self::getTable(), 'field' => 'items_id', 'name' => __('Matériel', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => ''],
            ['id' => 4, 'table' => 'glpi_users', 'field' => 'name', 'linkfield' => 'users_id_tech', 'name' => __('Technicien', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => 'User'],
            ['id' => 5, 'table' => self::getTable(), 'field' => 'date_creation', 'name' => __('Date'), 'datatype' => 'datetime'],
+           // 'nosearch' : un ID de Document interne n'a aucun sens a filtrer,
+           // cette colonne ne sert qu'a afficher un lien de telechargement
+           // direct depuis la liste (cf. getSpecificValueToDisplay()), meme
+           // motif que Remise::rawSearchOptions() (colonnes 10/11).
+           ['id' => 6, 'table' => self::getTable(), 'field' => 'document_id', 'name' => __('Compte-rendu (PDF)', 'remise'), 'datatype' => 'specific', 'nosearch' => true],
        ];
+   }
+
+   public static function getSpecificValueToDisplay($field, $values, array $options = []) {
+      if (!is_array($values)) {
+          $values = [$field => $values];
+      }
+      if ($field === 'document_id') {
+          $documents_id = (int) ($values['document_id'] ?? 0);
+         if ($documents_id <= 0) {
+             return '';
+         }
+          global $CFG_GLPI;
+          return '<a href="' . $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documents_id . '" target="_blank">'
+              . __('Télécharger le PDF', 'remise') . '</a>';
+      }
+       return parent::getSpecificValueToDisplay($field, $values, $options);
    }
 
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
@@ -151,6 +173,34 @@ class Maintenance extends CommonDBTM
           ];
       }
        return $results;
+   }
+
+    /** @return array Champs du materiel cible, enrichis de marque/modele — meme forme que Remise::getTargetItem(). */
+   public function getTargetItem(): array {
+       $itemtype = $this->fields['itemtype'];
+       $item = new $itemtype();
+       $item->getFromDB((int) $this->fields['items_id']);
+
+       $fields = $item->fields;
+       $fields['manufacturer_name'] = Remise::resolveManufacturerName($item);
+       $fields['model_name'] = Remise::resolveModelName($item);
+
+       return $fields;
+   }
+
+    /**
+     * Technicien ayant realise la maintenance (users_id_tech, renseigne
+     * automatiquement a la creation par createWithChecklist() — c'est
+     * toujours celui qui a rempli la checklist, jamais saisi separement).
+     * Meme forme de tableau que Remise::getBeneficiary() (fusion de l'e-mail,
+     * absent de glpi_users) pour que le gabarit PDF n'ait rien a distinguer.
+     */
+   public function getTechnician(): array {
+       $user = new \User();
+       $user->getFromDB((int) $this->fields['users_id_tech']);
+       $fields = $user->fields;
+       $fields['email'] = \UserEmail::getDefaultForUser((int) $this->fields['users_id_tech']) ?: '';
+       return $fields;
    }
 
     /**
@@ -281,6 +331,14 @@ class Maintenance extends CommonDBTM
             ]);
       }
 
+       // PDF genere une seule fois, ici, juste apres que la checklist et les
+       // marqueurs d'etat des lieux soient en base : contrairement a Remise,
+       // une fiche de maintenance n'est jamais modifiee ensuite (cf. commentaire
+       // de showForm()), un seul PDF suffit donc pour toute sa vie - pas de
+       // mecanisme de regeneration comme Remise::regenerateUnsignedPdf().
+       $document = (new MaintenancePdfBuilder())->build($maintenance);
+       $maintenance->update(['id' => $id, 'document_id' => $document->getID()]);
+
        return $id;
    }
 
@@ -298,6 +356,7 @@ class Maintenance extends CommonDBTM
                 `items_id` int unsigned NOT NULL DEFAULT 0,
                 `users_id_tech` int unsigned NOT NULL DEFAULT 0,
                 `comment` text,
+                `document_id` int unsigned NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -306,6 +365,12 @@ class Maintenance extends CommonDBTM
                 KEY `is_recursive` (`is_recursive`),
                 KEY `users_id_tech` (`users_id_tech`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+      } else if (!$DB->fieldExists($table, 'document_id')) {
+          // Montee de version : ajoute la colonne sans recreer la table -
+          // 'integer' (pas 'int unsigned' brut) pour que Migration::addField()
+          // pose reellement un DEFAULT 0/NOT NULL, meme piege deja documente
+          // ailleurs dans ce plugin (cf. TROUBLESHOOTING.md).
+          $migration->addField($table, 'document_id', 'integer', ['value' => 0, 'after' => 'comment']);
       }
 
        $valuesTable = 'glpi_plugin_remise_maintenancechecklistvalues';
@@ -350,7 +415,7 @@ class Maintenance extends CommonDBTM
       }
 
        $rank = 1;
-      foreach ([2, 3, 4, 5] as $searchOptionId) {
+      foreach ([2, 3, 4, 5, 6] as $searchOptionId) {
           $DB->insert('glpi_displaypreferences', [
               'itemtype'  => self::class,
               'num'       => $searchOptionId,

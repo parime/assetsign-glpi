@@ -972,7 +972,7 @@ class Remise extends CommonDBTM
      * actifs standards (Computer, Monitor, Peripheral, Phone) et aux actifs
      * personnalises qui l'activent.
      */
-   private static function resolveManufacturerName(CommonDBTM $item): string {
+   public static function resolveManufacturerName(CommonDBTM $item): string {
        $manufacturers_id = (int) ($item->fields['manufacturers_id'] ?? 0);
       if ($manufacturers_id <= 0) {
           return '';
@@ -985,7 +985,7 @@ class Remise extends CommonDBTM
      * (computermodels_id, monitormodels_id...) — CommonDBTM::getModelClass()
      * resout cette convention generiquement pour n'importe quel itemtype.
      */
-   private static function resolveModelName(CommonDBTM $item): string {
+   public static function resolveModelName(CommonDBTM $item): string {
        $modelClass = $item->getModelClass();
       if ($modelClass === null) {
           return '';
