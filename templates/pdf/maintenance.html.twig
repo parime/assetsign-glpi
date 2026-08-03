@@ -1,0 +1,76 @@
+{% set _now = "now"|date('d/m/Y') %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>{{ document_title }}</title>
+{% include '@remise/pdf/_pdf_style.html.twig' %}
+</head>
+<body>
+
+{% if logo_data_uri %}
+<div class="header-logo"><img src="{{ logo_data_uri }}" alt=""></div>
+{% endif %}
+
+<h1>Fiche de maintenance</h1>
+<p class="meta">Établie le {{ maintenance.date_creation|date('d/m/Y') }} — Référence fiche n°{{ maintenance.id }}</p>
+
+<h2>Technicien</h2>
+<table class="info-table">
+    <tr><th>Nom</th><td>{{ (technician.firstname ~ ' ' ~ technician.realname)|trim|default('-') }}</td></tr>
+</table>
+
+<h2>Matériel</h2>
+<table class="info-table">
+    <tr><th>Type</th><td>{{ itemtype }}</td></tr>
+    <tr><th>Nom GLPI</th><td>{{ item.name }}</td></tr>
+    {% if item.manufacturer_name is defined and item.manufacturer_name %}
+    <tr><th>Marque</th><td>{{ item.manufacturer_name }}</td></tr>
+    {% endif %}
+    {% if item.model_name is defined and item.model_name %}
+    <tr><th>Modèle</th><td>{{ item.model_name }}</td></tr>
+    {% endif %}
+    <tr><th>N° de série</th><td>{{ item.serial|default('-') }}</td></tr>
+    <tr><th>N° d'inventaire</th><td>{{ item.otherserial|default('-') }}</td></tr>
+</table>
+
+<h2>Points de contrôle</h2>
+{% if checklist_results|length %}
+<ul class="checklist">
+    {% for result in checklist_results %}
+    <li>{{ result.name }}{% if result.value is not null and result.value != '' %} : <span class="value">{{ result.value }}</span>{% endif %}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="legal-text">Aucun point de contrôle validé.</p>
+{% endif %}
+
+{% if comment %}
+<h2>Commentaire</h2>
+{# Pas de |raw : saisi librement par le technicien, echappement automatique
+   de Twig applique normalement (meme raison que beneficiary_comment dans
+   handover.html.twig). #}
+<p class="legal-text" style="white-space: pre-line;">{{ comment }}</p>
+{% endif %}
+
+{% include '@remise/pdf/_damage_views.html.twig' %}
+
+{% if signature_required %}
+<div class="signature-zone">
+    {% if signature_image %}
+        <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
+        <img src="{{ signature_image }}" class="signature-img">
+        <p class="proof">
+            Signataire : {{ (technician.firstname ~ ' ' ~ technician.realname)|trim }}
+        </p>
+    {% else %}
+        <p>Fait le {{ _now }}</p>
+        <p>Signature du technicien : ______________________________</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="footer">Fiche de maintenance #{{ maintenance.id }} — Document généré par GLPI (plugin remise)</div>
+
+</body>
+</html>

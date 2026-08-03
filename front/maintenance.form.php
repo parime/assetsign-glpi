@@ -22,6 +22,8 @@ if (isset($_POST['create'])) {
        Html::displayNotFoundError();
    }
 
+    $entities_id = (int) $target->fields['entities_id'];
+
     $checklist = is_array($_POST['checklist'] ?? null) ? $_POST['checklist'] : [];
 
     // Marqueurs d'etat des lieux : deposes cote client avant meme la creation
@@ -35,9 +37,31 @@ if (isset($_POST['create'])) {
        $damageMarkers = [];
    }
 
-    Maintenance::createWithChecklist($itemtype, $items_id, (int) $target->fields['entities_id'], $checklist, (string) ($_POST['comment'] ?? ''), $damageMarkers);
-
-    Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'remise'));
+    // Signature du technicien : capturee cote client (canvas, meme flux "local"
+    // que l'etat des lieux visuel ci-dessus) et soumise dans ce meme POST -
+    // jamais de jeton ni d'e-mail, le technicien est deja authentifie sur CETTE
+    // requete. Validee par Maintenance::createWithChecklist() lui-meme (pas ici) -
+    // meme convention que Remise::createManual() : le modele leve une
+    // RuntimeException AVANT toute ecriture en base si la signature est
+    // activee pour l'entite mais absente/trop peu tracee, capturee ci-dessous.
+   try {
+       Maintenance::createWithChecklist(
+           $itemtype,
+           $items_id,
+           $entities_id,
+           $checklist,
+           (string) ($_POST['comment'] ?? ''),
+           $damageMarkers,
+           (string) ($_POST['technician_signature'] ?? '') ?: null,
+           [
+               'ip'         => $_SERVER['REMOTE_ADDR'] ?? '',
+               'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+           ]
+       );
+       Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'remise'));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
     Html::back();
 }
 

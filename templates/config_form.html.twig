@@ -219,7 +219,13 @@
 
         {# ---------------------------------------------------------------- Maintenance #}
         <div class="tab-pane fade" id="tab-maintenance" role="tabpanel">
-          <p class="text-muted">{{ __('La fiche de maintenance est un sous-système séparé (pas de signature, pas de bénéficiaire) : rien à activer ici, l\'accès se gère par le droit dédié (Administration > Profils).', 'remise') }}</p>
+          <p class="text-muted">{{ __('La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d\'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l\'option ci-dessous est activée. L\'accès se gère par le droit dédié (Administration > Profils).', 'remise') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_maintenance_signature" value="0">
+            <input type="checkbox" name="enable_maintenance_signature" value="1" class="form-check-input" id="enable_maintenance_signature" {{ config.enable_maintenance_signature|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_maintenance_signature">{{ __('Faire signer le technicien sur la fiche de maintenance', 'remise') }}</label>
+            <div class="form-text">{{ __('Si activé, un pavé de signature (identique à celui d\'une vente) apparaît sur le formulaire de création : la fiche ne peut pas être créée sans signature. Le technicien est déjà connecté, aucun e-mail ni page séparée n\'est utilisé.', 'remise') }}</div>
+          </div>
           <a href="{{ config('root_doc') }}/front/dropdown.php?itemtype=GlpiPlugin%5CRemise%5CMaintenanceChecklistItem" class="btn btn-outline-secondary">{{ __('Gérer les points de contrôle', 'remise') }}</a>
           <a href="{{ config('root_doc') }}/plugins/remise/front/maintenance.php" class="btn btn-outline-secondary">{{ __('Voir les fiches de maintenance', 'remise') }}</a>
         </div>

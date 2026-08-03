@@ -544,8 +544,35 @@ msgstr "Réglages transverses, applicables à tous les types de fiche signée."
 msgid "Voir les fiches de maintenance"
 msgstr "Voir les fiches de maintenance"
 
-msgid "La fiche de maintenance est un sous-système séparé (pas de signature, pas de bénéficiaire) : rien à activer ici, l'accès se gère par le droit dédié (Administration > Profils)."
-msgstr "La fiche de maintenance est un sous-système séparé (pas de signature, pas de bénéficiaire) : rien à activer ici, l'accès se gère par le droit dédié (Administration > Profils)."
+msgid "La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l'option ci-dessous est activée. L'accès se gère par le droit dédié (Administration > Profils)."
+msgstr "La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l'option ci-dessous est activée. L'accès se gère par le droit dédié (Administration > Profils)."
+
+msgid "Faire signer le technicien sur la fiche de maintenance"
+msgstr "Faire signer le technicien sur la fiche de maintenance"
+
+msgid "Si activé, un pavé de signature (identique à celui d'une vente) apparaît sur le formulaire de création : la fiche ne peut pas être créée sans signature. Le technicien est déjà connecté, aucun e-mail ni page séparée n'est utilisé."
+msgstr "Si activé, un pavé de signature (identique à celui d'une vente) apparaît sur le formulaire de création : la fiche ne peut pas être créée sans signature. Le technicien est déjà connecté, aucun e-mail ni page séparée n'est utilisé."
+
+msgid "Fiche PDF"
+msgstr "Fiche PDF"
+
+msgid "Merci de signer avant de créer la fiche."
+msgstr "Merci de signer avant de créer la fiche."
+
+msgid "PDF"
+msgstr "PDF"
+
+msgid "Signature du technicien"
+msgstr "Signature du technicien"
+
+msgid "Signez ci-dessous avant de créer la fiche."
+msgstr "Signez ci-dessous avant de créer la fiche."
+
+msgid "Télécharger"
+msgstr "Télécharger"
+
+msgid "Télécharger en PDF"
+msgstr "Télécharger en PDF"
 
 msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d'onglet, avant même d'enregistrer."
 msgstr "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d'onglet, avant même d'enregistrer."
