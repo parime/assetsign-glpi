@@ -53,5 +53,32 @@
         {% endfor %}
       </div>
     {% endif %}
+
+    {% if signature_proof %}
+      <h3 class="mt-4">{{ __('Preuve de signature', 'remise') }}</h3>
+      <table class="table table-striped">
+        <tr>
+          <th>{{ __('Signataire', 'remise') }}</th>
+          <td>{{ signature_proof.signer_name|default('') }} ({{ signature_proof.signer_email|default('') }})</td>
+        </tr>
+        <tr>
+          <th>{{ __('Adresse IP', 'remise') }}</th>
+          <td>{{ signature_proof.ip_address|default('') }}</td>
+        </tr>
+        <tr>
+          <th>{{ __('Navigateur / appareil', 'remise') }}</th>
+          <td>{{ signature_proof.user_agent|default('') }}</td>
+        </tr>
+        <tr>
+          <th>{{ __('Empreinte du document (SHA-256)', 'remise') }}</th>
+          <td><code>{{ signature_proof.document_hash|default('') }}</code></td>
+        </tr>
+        <tr>
+          <th>{{ __('Horodatage', 'remise') }}</th>
+          <td>{{ signature_proof.signed_at|default('') }}</td>
+        </tr>
+      </table>
+      <p class="text-muted small">{{ __('Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF n\'a pas été modifié depuis (l\'empreinte ci-dessus doit correspondre à celle du fichier).', 'remise') }}</p>
+    {% endif %}
   </div>
 </div>

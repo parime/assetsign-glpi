@@ -16,6 +16,9 @@
     .footer { position: fixed; bottom: -20px; left: 0; right: 0; font-size: 8px; color: #999; text-align: center; }
     .header-logo { text-align: right; margin-bottom: 4px; }
     .header-logo img { max-height: 60px; max-width: 220px; }
+    .signature-zone { margin-top: 24px; border-top: 1px solid #ccc; padding-top: 10px; }
+    .signature-img { max-width: 220px; max-height: 90px; border-bottom: 1px solid #999; }
+    .proof { font-size: 8px; color: #888; margin-top: 6px; }
     .damage-pdf-views { margin-top: 6px; font-size: 0; }
     .damage-pdf-col { display: inline-block; vertical-align: top; width: 31%; margin: 0 3.5% 10px 0; page-break-inside: avoid; font-size: 11px; }
     .damage-pdf-col:last-child { margin-right: 0; }
@@ -101,6 +104,14 @@
 {% if comment %}
 <h2>Commentaire</h2>
 <p class="legal-text" style="white-space: pre-line;">{{ comment }}</p>
+{% endif %}
+
+{% if signature_image %}
+<div class="signature-zone">
+    <p>Signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
+    <img src="{{ signature_image }}" class="signature-img">
+    <p class="proof">Signataire : {{ (technician.firstname ~ ' ' ~ technician.realname)|trim }} ({{ technician.email }})</p>
+</div>
 {% endif %}
 
 <div class="footer">Maintenance #{{ maintenance.id }} — Document généré par GLPI (plugin remise)</div>

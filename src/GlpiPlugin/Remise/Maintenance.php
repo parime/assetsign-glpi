@@ -6,6 +6,7 @@ use CommonDBTM;
 use CommonGLPI;
 use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Remise\Pdf\MaintenancePdfBuilder;
+use GlpiPlugin\Remise\Pdf\SignatureImageValidator;
 use Migration;
 use Session;
 
@@ -14,10 +15,13 @@ use Session;
  * (configurables sans code, cf. MaintenanceChecklistItem) + commentaire libre.
  *
  * Sous-systeme VOLONTAIREMENT separe du moteur de fiches signees (Remise) :
- * pas de beneficiaire, pas de jeton, pas de signature, pas de notification,
- * pas de PDF — juste un technicien qui coche une checklist. Partager la table
- * glpi_plugin_remise_remises aurait melange deux cycles de vie tres
- * differents dans le meme enregistrement (decision actee avec l'utilisateur).
+ * pas de beneficiaire, pas de jeton, pas de notification — juste un
+ * technicien qui coche une checklist, avec une signature OPTIONNELLE de sa
+ * part (activable via Config::maintenance_signature_required, auquel cas
+ * elle devient obligatoire pour creer la fiche — cf. createWithChecklist()).
+ * Partager la table glpi_plugin_remise_remises aurait melange deux cycles de
+ * vie tres differents dans le meme enregistrement (decision actee avec
+ * l'utilisateur).
  */
 class Maintenance extends CommonDBTM
 {
@@ -92,6 +96,7 @@ class Maintenance extends CommonDBTM
        ]);
 
        $entities_id = (int) ($item->fields['entities_id'] ?? Session::getActiveEntity());
+       $config = Config::getForEntity($entities_id);
 
        TemplateRenderer::getInstance()->display('@remise/maintenance_tab.html.twig', [
            'item'            => $item,
@@ -103,9 +108,15 @@ class Maintenance extends CommonDBTM
            // deposes cote client AVANT la creation de la fiche (jamais
            // modifiables ensuite, cf. DamageMarker), soumis d'un bloc avec le
            // reste du formulaire.
-           'damage_annotation_enabled' => (bool) Config::getForEntity($entities_id)->fields['enable_damage_annotation'],
+           'damage_annotation_enabled' => (bool) $config->fields['enable_damage_annotation'],
            'damage_views'    => DamageMarker::getViewLabels(),
            'damage_images'   => DamageMarker::getViewImageFilenames(),
+           // Signature du technicien : un seul reglage pilote a la fois l'affichage
+           // et le caractere obligatoire (pas de troisieme etat "propose mais
+           // facultatif", cf. demande utilisateur/TROUBLESHOOTING.md) — capturee
+           // cote client, soumise d'un bloc avec le reste du formulaire de
+           // creation (cf. signature_edit.html.twig).
+           'maintenance_signature_required' => (bool) $config->fields['maintenance_signature_required'],
            'csrf_token'      => Session::getNewCSRFToken(),
        ]);
    }
@@ -132,6 +143,9 @@ class Maintenance extends CommonDBTM
            'damage_views'   => DamageMarker::getViewLabels(),
            'damage_images'  => DamageMarker::getViewImageFilenames(),
            'damage_markers_by_view' => $this->isNewID($ID) ? [] : Remise::groupMarkersByView(DamageMarker::getForMaintenance((int) $ID)),
+           // Preuve de signature du technicien, si la fiche en comporte une —
+           // meme presentation que remise_form.html.twig (Signature::getForRemise()).
+           'signature_proof' => $this->isNewID($ID) ? null : Signature::getForMaintenance((int) $ID),
        ]);
 
        return true;
@@ -244,18 +258,21 @@ class Maintenance extends CommonDBTM
        );
        $itemDropdownHtml = ob_get_clean();
 
+       // Le materiel n'est pas encore choisi a ce stade (formulaire
+       // autonome, cf. commentaire de methode) : son entite n'est donc pas
+       // encore connue - on se rabat sur l'entite active de la session,
+       // meme logique que la plupart des reglages GLPI resolus avant
+       // qu'une cible precise ne soit selectionnee.
+       $config = Config::getForEntity(Session::getActiveEntity());
+
        TemplateRenderer::getInstance()->display('@remise/maintenance_create.html.twig', [
            'itemtype_dropdown_html' => $itemtypeDropdownHtml,
            'item_dropdown_html'     => $itemDropdownHtml,
            'checklist_items'        => self::getActiveChecklistItems(),
-           // Le materiel n'est pas encore choisi a ce stade (formulaire
-           // autonome, cf. commentaire de methode) : son entite n'est donc pas
-           // encore connue - on se rabat sur l'entite active de la session,
-           // meme logique que la plupart des reglages GLPI resolus avant
-           // qu'une cible precise ne soit selectionnee.
-           'damage_annotation_enabled' => (bool) Config::getForEntity(Session::getActiveEntity())->fields['enable_damage_annotation'],
+           'damage_annotation_enabled' => (bool) $config->fields['enable_damage_annotation'],
            'damage_views'    => DamageMarker::getViewLabels(),
            'damage_images'   => DamageMarker::getViewImageFilenames(),
+           'maintenance_signature_required' => (bool) $config->fields['maintenance_signature_required'],
            'csrf_token'             => Session::getNewCSRFToken(),
        ]);
    }
@@ -283,11 +300,30 @@ class Maintenance extends CommonDBTM
      * $damageMarkers : marqueurs d'etat des lieux deposes cote client AVANT
      * cette creation (cf. DamageMarker::createMarkersForMaintenance()) - deja
      * decodes depuis le JSON soumis par damage-annotation-local.js.
+     * $signatureImage : data URI PNG de la signature du technicien, capturee
+     * cote client (cf. signature_edit.html.twig / signature-local.js) et
+     * soumise d'un bloc avec le reste du formulaire, comme les marqueurs
+     * d'etat des lieux — chaine vide si aucune signature n'a ete tracee.
      * @param array<int|string, mixed> $itemValues
      * @param array<int, array<string, mixed>> $damageMarkers
+     * @throws \RuntimeException si la signature est obligatoire (cf.
+     *         Config::maintenance_signature_required) mais absente, ou si une
+     *         signature fournie est invalide (cf. SignatureImageValidator) —
+     *         meme idiome que Remise::createManual(), attrape par le
+     *         controleur front (cf. front/maintenance.form.php).
      */
-   public static function createWithChecklist(string $itemtype, int $items_id, int $entities_id, array $itemValues, string $comment, array $damageMarkers = []): int {
+   public static function createWithChecklist(string $itemtype, int $items_id, int $entities_id, array $itemValues, string $comment, array $damageMarkers = [], string $signatureImage = ''): int {
        global $DB;
+
+       $config = Config::getForEntity($entities_id);
+       $signatureImage = trim($signatureImage);
+
+      if ((bool) $config->fields['maintenance_signature_required'] && $signatureImage === '') {
+          throw new \RuntimeException(__('La signature du technicien est obligatoire pour valider cette fiche.', 'remise'));
+      }
+      if ($signatureImage !== '') {
+          SignatureImageValidator::assertValid($signatureImage);
+      }
 
        $maintenance = new self();
        $id = (int) $maintenance->add([
@@ -331,13 +367,28 @@ class Maintenance extends CommonDBTM
             ]);
       }
 
+       $signedAt = $signatureImage !== '' ? date('Y-m-d H:i:s') : null;
+
        // PDF genere une seule fois, ici, juste apres que la checklist et les
        // marqueurs d'etat des lieux soient en base : contrairement a Remise,
        // une fiche de maintenance n'est jamais modifiee ensuite (cf. commentaire
        // de showForm()), un seul PDF suffit donc pour toute sa vie - pas de
        // mecanisme de regeneration comme Remise::regenerateUnsignedPdf().
-       $document = (new MaintenancePdfBuilder())->build($maintenance);
+       $document = (new MaintenancePdfBuilder())->build($maintenance, $signatureImage, $signedAt);
        $maintenance->update(['id' => $id, 'document_id' => $document->getID()]);
+
+      if ($signatureImage !== '') {
+          $technician = $maintenance->getTechnician();
+          $fullpath = GLPI_DOC_DIR . '/' . $document->fields['filepath'];
+          Signature::recordProofForMaintenance($id, [
+              'signer_name'   => trim(($technician['firstname'] ?? '') . ' ' . ($technician['realname'] ?? '')),
+              'signer_email'  => $technician['email'] ?? '',
+              'ip_address'    => $_SERVER['REMOTE_ADDR'] ?? null,
+              'user_agent'    => $_SERVER['HTTP_USER_AGENT'] ?? null,
+              'document_hash' => hash('sha256', (string) file_get_contents($fullpath)),
+              'signed_at'     => $signedAt,
+          ]);
+      }
 
        return $id;
    }

@@ -35,9 +35,23 @@ if (isset($_POST['create'])) {
        $damageMarkers = [];
    }
 
-    Maintenance::createWithChecklist($itemtype, $items_id, (int) $target->fields['entities_id'], $checklist, (string) ($_POST['comment'] ?? ''), $damageMarkers);
-
-    Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'remise'));
+   try {
+       Maintenance::createWithChecklist(
+           $itemtype,
+           $items_id,
+           (int) $target->fields['entities_id'],
+           $checklist,
+           (string) ($_POST['comment'] ?? ''),
+           $damageMarkers,
+           (string) ($_POST['signature'] ?? '')
+       );
+       Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'remise'));
+   } catch (\Throwable $e) {
+       // Meme idiome que front/remise.form.php (create_manual) : la signature
+       // obligatoire absente/invalide (cf. createWithChecklist()) ne doit pas
+       // planter la page, juste empecher la creation et afficher pourquoi.
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
     Html::back();
 }
 

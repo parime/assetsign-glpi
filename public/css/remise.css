@@ -89,3 +89,18 @@
     gap: 8px;
     margin-top: 4px;
 }
+
+/* Signature du technicien sur une fiche de maintenance — cf. signature-local.js */
+.remise-signature-pad-wrapper {
+    max-width: 400px;
+    border: 1px dashed #999;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.remise-signature-pad {
+    display: block;
+    width: 100%;
+    height: 150px;
+    touch-action: none;
+}

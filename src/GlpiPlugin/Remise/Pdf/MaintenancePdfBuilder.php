@@ -11,30 +11,39 @@ use GlpiPlugin\Remise\Remise;
 
 /**
  * Construit le compte-rendu PDF d'une fiche de maintenance, calque sur
- * HandoverPdfBuilder (meme logo, meme mise en page) mais sans rien de propre
- * au flux signe (pas de beneficiaire, pas de signature, pas de gabarit/charte)
- * — cf. le commentaire de classe de Maintenance : un sous-systeme separe, qui
- * n'a longtemps genere aucun PDF, jusqu'a cette fonctionnalite. Un seul PDF
- * est genere, une seule fois, juste apres la creation de la fiche (cf.
- * Maintenance::createWithChecklist()) : contrairement a Remise, une fiche de
- * maintenance n'est jamais modifiee ensuite, pas besoin de mecanisme de
- * regeneration.
+ * HandoverPdfBuilder (meme logo, meme mise en page, meme incrustation de
+ * signature) mais sans rien de propre au flux de Remise (pas de beneficiaire,
+ * pas de gabarit/charte, pas de jeton envoye par e-mail — la signature, quand
+ * elle existe, est deja recueillie AVANT l'appel a build(), cf.
+ * Maintenance::createWithChecklist()). Un seul PDF est genere, une seule
+ * fois, juste apres la creation de la fiche : contrairement a Remise, une
+ * fiche de maintenance n'est jamais modifiee ensuite, pas besoin de
+ * mecanisme de regeneration/re-estampillage differe (SignatureStamper).
  */
 final class MaintenancePdfBuilder
 {
    use PdfRendering;
 
-   public function build(Maintenance $maintenance): Document {
-       $html = $this->renderHtml($maintenance);
+    /**
+     * @param string $signatureImage Data URI PNG de la signature du
+     *        technicien (deja validee, cf. Maintenance::createWithChecklist()),
+     *        ou chaine vide si aucune signature n'a ete recueillie.
+     */
+   public function build(Maintenance $maintenance, string $signatureImage = '', ?string $signedAt = null): Document {
+       $extra = $signatureImage !== ''
+           ? ['signature_image' => $signatureImage, 'signed_at' => $signedAt]
+           : [];
+
+       $html = $this->renderHtml($maintenance, $extra);
        $binary = $this->renderPdf($html);
 
        return $this->storeAsDocument($maintenance, $binary);
    }
 
-   private function renderHtml(Maintenance $maintenance): string {
+   private function renderHtml(Maintenance $maintenance, array $extra = []): string {
        $config = Config::getForEntity((int) $maintenance->fields['entities_id']);
 
-       return TemplateRenderer::getInstance()->render('@remise/pdf/maintenance.html.twig', [
+       return TemplateRenderer::getInstance()->render('@remise/pdf/maintenance.html.twig', array_merge([
            'maintenance'      => $maintenance->fields,
            'technician'       => $maintenance->getTechnician(),
            'item'             => $maintenance->getTargetItem(),
@@ -45,7 +54,7 @@ final class MaintenancePdfBuilder
                ? $this->getDamageViewsForPdf(DamageMarker::getForMaintenance($maintenance->getID()))
                : [],
            'logo_data_uri'    => $this->getLogoDataUri((int) $maintenance->fields['entities_id']),
-       ]);
+       ], $extra));
    }
 
    private function storeAsDocument(Maintenance $maintenance, string $pdfBinary): Document {

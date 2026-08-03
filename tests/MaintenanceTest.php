@@ -2,8 +2,10 @@
 
 namespace GlpiPlugin\Remise\Tests;
 
+use GlpiPlugin\Remise\Config;
 use GlpiPlugin\Remise\Maintenance;
 use GlpiPlugin\Remise\MaintenanceChecklistItem;
+use GlpiPlugin\Remise\Signature;
 
 /**
  * Couvre la checklist de maintenance a types multiples (case a cocher / texte
@@ -204,6 +206,75 @@ class MaintenanceTest extends RemiseTestCase
         $this->assertSame('', Maintenance::getSpecificValueToDisplay('document_id', ['document_id' => 0]), 'Aucun document : aucun lien a afficher.');
     }
 
+    public function testCreateWithChecklistSucceedsWithoutSignatureWhenNotRequired(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Maintenance Signature Optionnelle');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Signature Optionnelle');
+
+        // 'maintenance_signature_required' vaut 0 par defaut (cf. Config::DEFAULTS) :
+        // pas besoin de configurer quoi que ce soit pour ce cas.
+        $id = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '', [], '');
+
+        $this->assertGreaterThan(0, $id, "Sans signature requise, la fiche doit se creer meme sans signature fournie.");
+        $this->assertNull(Signature::getForMaintenance($id), "Aucune signature fournie : aucune preuve ne doit etre enregistree.");
+    }
+
+    public function testCreateWithChecklistThrowsWhenSignatureRequiredButMissing(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Maintenance Signature Obligatoire Manquante');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Signature Obligatoire Manquante');
+        Config::upsertForEntity($entityId, ['maintenance_signature_required' => 1]);
+
+        $this->expectException(\RuntimeException::class);
+        Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '', [], '');
+    }
+
+    public function testCreateWithChecklistRejectsAnInvalidSignatureImage(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Maintenance Signature Invalide');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Signature Invalide');
+
+        // Signature requise ou non, une image fournie mais invalide (canevas
+        // vide/trop petit) doit etre rejetee par SignatureImageValidator - la
+        // verification cote serveur s'applique independamment du reglage.
+        $this->expectException(\RuntimeException::class);
+        Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '', [], self::emptySignatureDataUri());
+    }
+
+    public function testCreateWithChecklistRecordsSignatureProofAndEmbedsItInThePdf(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Maintenance Signature Valide');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Signature Valide');
+        Config::upsertForEntity($entityId, ['maintenance_signature_required' => 1]);
+
+        $_SESSION['glpiID'] = 2;
+        $userEmail = new \UserEmail();
+        if (!$userEmail->getFromDBByCrit(['users_id' => 2])) {
+            $userEmail->add(['users_id' => 2, 'email' => 'phpunit-technician@example.com', 'is_default' => 1]);
+        }
+        // firstname/realname (vides par defaut sur le compte 'glpi') : necessaires
+        // pour verifier que signer_name reflete bien le technicien (users_id_tech),
+        // pas juste une chaine vide qui masquerait un mauvais champ source.
+        $technicianUser = new \User();
+        $technicianUser->update(['id' => 2, 'firstname' => 'PHPUnit', 'realname' => 'Technicien']);
+
+        $id = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '', [], self::signedCanvasDataUri());
+
+        $this->assertGreaterThan(0, $id);
+
+        $proof = Signature::getForMaintenance($id);
+        $this->assertNotNull($proof, "Une signature valide fournie doit etre enregistree comme preuve.");
+        $this->assertSame('PHPUnit Technicien', $proof['signer_name'] ?? null, "Le signataire enregistre doit etre le technicien (users_id_tech), pas un champ saisi separement.");
+        $this->assertNotEmpty($proof['document_hash'], "L'empreinte doit correspondre au PDF final (incluant la signature).");
+
+        $maintenance = new Maintenance();
+        $maintenance->getFromDB($id);
+        $document = new \Document();
+        $document->getFromDB((int) $maintenance->fields['document_id']);
+        $fullpath = GLPI_DOC_DIR . '/' . $document->fields['filepath'];
+        $this->assertSame($proof['document_hash'], hash('sha256', (string) file_get_contents($fullpath)), "L'empreinte enregistree doit correspondre au fichier PDF reellement genere.");
+    }
+
     private function createChecklistItem(string $name, int $type, string $options = ''): int
     {
         $item = new MaintenanceChecklistItem();
@@ -214,5 +285,39 @@ class MaintenanceTest extends RemiseTestCase
             'type'        => $type,
             'options'     => $options,
         ]);
+    }
+
+    private static function emptySignatureDataUri(): string
+    {
+        $image = imagecreatetruecolor(300, 100);
+        imagesavealpha($image, true);
+        $transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
+        imagefill($image, 0, 0, $transparent);
+
+        return self::toDataUri($image);
+    }
+
+    private static function signedCanvasDataUri(): string
+    {
+        $image = imagecreatetruecolor(300, 100);
+        imagesavealpha($image, true);
+        $transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
+        imagefill($image, 0, 0, $transparent);
+
+        $ink = imagecolorallocatealpha($image, 0, 0, 0, 0);
+        imageline($image, 20, 50, 280, 50, $ink);
+        imageline($image, 100, 15, 150, 85, $ink);
+
+        return self::toDataUri($image);
+    }
+
+    private static function toDataUri($image): string
+    {
+        ob_start();
+        imagepng($image);
+        $binary = ob_get_clean();
+        imagedestroy($image);
+
+        return 'data:image/png;base64,' . base64_encode($binary);
     }
 }

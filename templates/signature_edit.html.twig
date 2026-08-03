@@ -1,0 +1,26 @@
+{# Signature du technicien, mode CREATION (fiche de maintenance pas encore
+   enregistree) : tracee cote client (signature-local.js) sur un <canvas>
+   signature_pad, serialisee dans #maintenance_signature_input, soumise d'un
+   bloc avec le reste du formulaire — jamais d'appel AJAX ici, contrairement
+   au flux differe de Remise (cf. front/sign.php / public/js/sign/sign.js).
+   Un seul reglage (maintenance_signature_required) pilote a la fois
+   l'affichage de ce bloc et son caractere obligatoire : pas de troisieme
+   etat "proposee mais facultative". #}
+{% if maintenance_signature_required %}
+  <div class="mb-3">
+    <label class="form-label">{{ __('Signature du technicien', 'remise') }} *</label>
+    <p class="text-muted small">{{ __('Signez avec la souris, le doigt ou un stylet pour valider cette fiche.', 'remise') }}</p>
+    <div class="remise-signature-pad-wrapper" data-mode="local" data-required="1">
+      <canvas class="remise-signature-pad"></canvas>
+    </div>
+    <button type="button" class="btn btn-sm btn-outline-secondary mt-1 remise-signature-clear">{{ __('Effacer', 'remise') }}</button>
+    <input type="hidden" name="signature" class="remise-signature-input" value="">
+    <script>
+      window.REMISE_SIGNATURE_I18N = {
+        required: {{ __('La signature du technicien est obligatoire pour valider cette fiche.', 'remise')|json_encode|raw }}
+      };
+    </script>
+    <script src="{{ config('root_doc') }}/plugins/remise/js/sign/vendor/signature_pad.umd.min.js"></script>
+    <script src="{{ config('root_doc') }}/plugins/remise/js/sign/signature-local.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+  </div>
+{% endif %}

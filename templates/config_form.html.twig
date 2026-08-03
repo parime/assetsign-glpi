@@ -219,7 +219,13 @@
 
         {# ---------------------------------------------------------------- Maintenance #}
         <div class="tab-pane fade" id="tab-maintenance" role="tabpanel">
-          <p class="text-muted">{{ __('La fiche de maintenance est un sous-système séparé (pas de signature, pas de bénéficiaire) : rien à activer ici, l\'accès se gère par le droit dédié (Administration > Profils).', 'remise') }}</p>
+          <p class="text-muted">{{ __('La fiche de maintenance est un sous-système séparé (pas de bénéficiaire, pas de gabarit) : l\'accès se gère par le droit dédié (Administration > Profils).', 'remise') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="maintenance_signature_required" value="0">
+            <input type="checkbox" name="maintenance_signature_required" value="1" class="form-check-input" id="maintenance_signature_required" {{ config.maintenance_signature_required|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="maintenance_signature_required">{{ __('Signature du technicien obligatoire', 'remise') }}</label>
+            <div class="form-text">{{ __('Si activé, le technicien doit signer la fiche (canvas tactile/souris) au moment de la création pour pouvoir la valider. Si désactivé, aucune signature n\'est demandée.', 'remise') }}</div>
+          </div>
           <a href="{{ config('root_doc') }}/front/dropdown.php?itemtype=GlpiPlugin%5CRemise%5CMaintenanceChecklistItem" class="btn btn-outline-secondary">{{ __('Gérer les points de contrôle', 'remise') }}</a>
           <a href="{{ config('root_doc') }}/plugins/remise/front/maintenance.php" class="btn btn-outline-secondary">{{ __('Voir les fiches de maintenance', 'remise') }}</a>
         </div>
