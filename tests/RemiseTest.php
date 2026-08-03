@@ -459,16 +459,26 @@ class RemiseTest extends RemiseTestCase
     public function testGetTabNameForItemCountsByUsersIdOnUserItemtype(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Tab User Count');
-        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Tab User Count');
-        $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SIGNED, 2);
 
         $user = new \User();
         $user->getFromDB(2);
 
         $remise = new Remise();
-        $tabName = $remise->getTabNameForItem($user);
+        // Compte AVANT/APRES (plutot qu'une valeur absolue) : la base de test
+        // partagee de ce conteneur Docker contient deja de nombreuses remises
+        // laissees par d'anciennes sessions manuelles pour l'utilisateur #2
+        // (glpi), une assertion sur un decompte exact serait fragile.
+        $countBefore = self::extractBadgeCount($remise->getTabNameForItem($user));
 
-        $this->assertStringContainsString('Remises', $tabName);
+        $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SIGNED, 2);
+
+        // Pas de chaine traduite ici (echec reel constate en CI, qui rend en
+        // anglais - "Remises" devient "Handovers") : seule la presence du
+        // badge de decompte est verifiee, structure HTML stable quelle que
+        // soit la langue de l'environnement d'execution.
+        $tabName = $remise->getTabNameForItem($user);
+        $this->assertNotSame('', $tabName, "L'onglet doit etre enregistre pour l'itemtype User.");
+        $this->assertSame($countBefore + 1, self::extractBadgeCount($tabName));
     }
 
     public function testShowForUserFiltersByUsersIdAndShowsMaterialAndDownloadLink(): void
@@ -510,6 +520,13 @@ class RemiseTest extends RemiseTestCase
     }
 
     /** Derniere remise (par id) pour ce materiel, ou null. $excludeId ignore un id precis (ex: l'ancienne remise annulee). */
+    /** Extrait le nombre affiche dans le badge de decompte d'un libelle d'onglet (cf. CommonGLPI::createTabEntry()). */
+    private static function extractBadgeCount(string $tabName): int
+    {
+        preg_match('/data-testid="tab-count-badge">(\d+)</', $tabName, $matches);
+        return isset($matches[1]) ? (int) $matches[1] : -1;
+    }
+
     private function findRemiseFor(\Computer $computer, ?int $excludeId = null): ?array
     {
         global $DB;
