@@ -520,11 +520,17 @@ class RemiseTest extends RemiseTestCase
     }
 
     /** Derniere remise (par id) pour ce materiel, ou null. $excludeId ignore un id precis (ex: l'ancienne remise annulee). */
-    /** Extrait le nombre affiche dans le badge de decompte d'un libelle d'onglet (cf. CommonGLPI::createTabEntry()). */
+    /**
+     * Extrait le nombre affiche dans le badge de decompte d'un libelle
+     * d'onglet (cf. CommonGLPI::createTabEntry()) — 0 si absent (echec reel
+     * constate en CI, sur une base fraiche sans aucune remise prealable pour
+     * l'utilisateur : createTabEntry() n'affiche alors aucun badge du tout,
+     * pas un badge a "0").
+     */
     private static function extractBadgeCount(string $tabName): int
     {
         preg_match('/data-testid="tab-count-badge">(\d+)</', $tabName, $matches);
-        return isset($matches[1]) ? (int) $matches[1] : -1;
+        return isset($matches[1]) ? (int) $matches[1] : 0;
     }
 
     private function findRemiseFor(\Computer $computer, ?int $excludeId = null): ?array
