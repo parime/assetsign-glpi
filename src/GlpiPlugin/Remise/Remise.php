@@ -408,6 +408,10 @@ class Remise extends CommonDBTM
    }
 
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
+      if ($item->getType() === 'User') {
+          $count = countElementsInTable(self::getTable(), ['users_id' => $item->getID(), 'is_deleted' => 0]);
+          return self::createTabEntry(__('Remises', 'remise'), $count);
+      }
       if (!in_array($item->getType(), Config::getAllManageableItemtypes(), true)) {
           return '';
       }
@@ -421,6 +425,10 @@ class Remise extends CommonDBTM
    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool {
       if (!($item instanceof CommonDBTM)) {
           return false;
+      }
+      if ($item->getType() === 'User') {
+          self::showForUser((int) $item->getID());
+          return true;
       }
        self::showForItem($item);
        return true;
@@ -456,8 +464,59 @@ class Remise extends CommonDBTM
            'manual_types'  => $manualTypes,
            'type_vente'    => self::TYPE_VENTE,
            'can_create_manual' => $manualTypes !== [] && Session::haveRight(self::$rightname, UPDATE),
+           'show_item_column' => false,
            'csrf_token'    => \Session::getNewCSRFToken(),
        ]);
+   }
+
+    /**
+     * Onglet Remises cote beneficiaire (fiche d'un compte GLPI, Administration >
+     * Utilisateurs) : filtre par `users_id` (le beneficiaire) plutot que par
+     * itemtype/items_id (le materiel cible, sens inverse de showForItem()) -
+     * une meme personne ayant pu recevoir plusieurs materiels differents dans
+     * le temps, chaque ligne affiche donc EN PLUS quel materiel elle concerne
+     * (cf. 'show_item_column', absent de showForItem() ou le materiel est
+     * toujours le meme et deja visible dans le titre de la fiche). Lecture
+     * seule uniquement : la creation manuelle (Don/Vente) exige de choisir un
+     * materiel cible precis, hors de propos depuis la fiche d'un utilisateur.
+     */
+   public static function showForUser(int $users_id): void {
+       global $DB;
+
+       $rows = iterator_to_array($DB->request([
+           'FROM'  => self::getTable(),
+           'WHERE' => ['users_id' => $users_id, 'is_deleted' => 0],
+           'ORDER' => 'date_creation DESC',
+       ]));
+
+      foreach ($rows as &$row) {
+          $row['item_display'] = self::resolveItemDisplayName($row['itemtype'], (int) $row['items_id']);
+      }
+       unset($row);
+
+       \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/remise_tab.html.twig', [
+           'remises'           => $rows,
+           'statuses'          => self::getStatuses(),
+           'manual_types'      => [],
+           'can_create_manual' => false,
+           'show_item_column'  => true,
+       ]);
+   }
+
+    /**
+     * Libelle lisible d'un materiel arbitraire (type canonique + nom), pour la
+     * colonne "Materiel" de showForUser() — un materiel peut avoir ete purge
+     * depuis, d'ou le repli sur "type #id" plutot qu'un nom vide ou une erreur.
+     */
+   private static function resolveItemDisplayName(string $itemtype, int $items_id): string {
+      if (!is_subclass_of($itemtype, CommonDBTM::class)) {
+          return $itemtype . ' #' . $items_id;
+      }
+       $item = new $itemtype();
+      if (!$item->getFromDB($items_id)) {
+          return $itemtype . ' #' . $items_id;
+      }
+       return self::getCanonicalItemtypeLabel($itemtype) . ' — ' . ($item->fields['name'] ?: ('#' . $items_id));
    }
 
    public static function getStatuses(): array {

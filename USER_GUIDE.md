@@ -52,7 +52,7 @@ Trois listes déroulantes configurables par l'administrateur apparaissent comme 
 
 ### L'onglet « Remises » sur la fiche d'un matériel
 
-Chaque matériel géré par le plugin (ordinateur, écran, périphérique, téléphone, ou un actif personnalisé) gagne un onglet **Remises** dans son menu latéral, à côté des onglets natifs de GLPI. Il liste l'historique des remises déjà faites sur ce matériel, et propose un formulaire de création manuelle pour un Don ou une Vente — avec le choix entre un bénéficiaire interne (un compte GLPI existant, via le menu déroulant) ou externe (nom et contact en texte libre, pour une personne ou une association sans compte GLPI) :
+Chaque matériel géré par le plugin (ordinateur, écran, périphérique, téléphone, ou un actif personnalisé) gagne un onglet **Remises** dans son menu latéral, à côté des onglets natifs de GLPI. Il liste l'historique des remises déjà faites sur ce matériel — avec, pour chaque ligne, un lien de téléchargement direct du PDF (non signé et/ou signé selon l'avancement) sans avoir à ouvrir la fiche — et propose un formulaire de création manuelle pour un Don ou une Vente — avec le choix entre un bénéficiaire interne (un compte GLPI existant, via le menu déroulant) ou externe (nom et contact en texte libre, pour une personne ou une association sans compte GLPI) :
 
 ![Onglet Remises d'un ordinateur avec le formulaire de création Don/Vente](docs/screenshots/onglet-ordinateur-remise-creation.png)
 
@@ -68,7 +68,7 @@ Un second onglet dédié, indépendant des remises signées (pas de bénéficiai
 
 ### L'onglet « Remises » sur la fiche d'un utilisateur
 
-Le même onglet Remises existe aussi côté utilisateur (fiche d'un compte GLPI, Administration > Utilisateurs) : pratique pour retrouver d'un coup d'œil tout ce qu'une personne a reçu, sans avoir à connaître à l'avance sur quel matériel chercher :
+Le même onglet Remises existe aussi côté utilisateur (fiche d'un compte GLPI, Administration > Utilisateurs) — filtré cette fois par bénéficiaire plutôt que par matériel, avec une colonne supplémentaire indiquant à quel matériel chaque ligne correspond (une même personne ayant pu recevoir plusieurs matériels différents dans le temps) : pratique pour retrouver d'un coup d'œil tout ce qu'une personne a reçu, télécharger directement chaque PDF, sans avoir à connaître à l'avance sur quel matériel chercher :
 
 ![Onglet Remises sur la fiche d'un utilisateur](docs/screenshots/onglet-utilisateur-remise.png)
 
