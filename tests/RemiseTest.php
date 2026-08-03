@@ -4,7 +4,9 @@ namespace GlpiPlugin\Remise\Tests;
 
 use GlpiPlugin\Remise\Accessory;
 use GlpiPlugin\Remise\Config;
+use GlpiPlugin\Remise\Pdf\HandoverPdfBuilder;
 use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Remise\Template;
 use GlpiPlugin\Remise\VenteDetails;
 use InvalidArgumentException;
 use RuntimeException;
@@ -479,6 +481,62 @@ class RemiseTest extends RemiseTestCase
         $tabName = $remise->getTabNameForItem($user);
         $this->assertNotSame('', $tabName, "L'onglet doit etre enregistre pour l'itemtype User.");
         $this->assertSame($countBefore + 1, self::extractBadgeCount($tabName));
+    }
+
+    public function testRenderHtmlSubstitutesPlaceholdersInContractAndCharter(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Placeholders');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Placeholders');
+
+        $template = new Template();
+        $templateId = (int) $template->add([
+            'entities_id'     => $entityId,
+            'type'            => Remise::TYPE_HANDOVER,
+            'name'            => 'PHPUnit Template Placeholders',
+            'content'         => 'Materiel : {materiel} - Date : {date} - Entite : {entite}.',
+            'charter_content' => 'Beneficiaire : {beneficiaire} - Technicien : {technicien}.',
+            'include_content' => 1,
+            'include_charter' => 1,
+        ]);
+        $this->assertGreaterThan(0, $templateId);
+
+        $remise = new Remise();
+        $remiseId = (int) $remise->add([
+            'entities_id'                => $entityId,
+            'itemtype'                   => 'Computer',
+            'items_id'                   => $computer->getID(),
+            'users_id'                   => 2,
+            'users_id_tech'              => 2,
+            'type'                       => Remise::TYPE_HANDOVER,
+            'status'                     => Remise::STATUS_SIGNED,
+            'plugin_remise_templates_id' => $templateId,
+        ]);
+        $remise->getFromDB($remiseId);
+
+        $html = (new HandoverPdfBuilder())->renderHtml($remise);
+
+        // Aucun jeton de substitution ne doit survivre, quel que soit le
+        // contenu de remplacement (y compris une chaine vide, ex: un
+        // beneficiaire de test sans prenom/nom renseigne).
+        foreach (['{materiel}', '{date}', '{entite}', '{beneficiaire}', '{technicien}'] as $placeholder) {
+            $this->assertStringNotContainsString($placeholder, $html, "Le placeholder $placeholder doit avoir ete remplace.");
+        }
+        $this->assertStringContainsString('Materiel : PHPUnit PC Placeholders', $html);
+        $this->assertStringContainsString('Entite : PHPUnit Placeholders', $html);
+    }
+
+    public function testRenderPreviewSubstitutesPlaceholdersWithFictionalData(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Preview Placeholders');
+
+        $html = (new HandoverPdfBuilder())->renderPreview($entityId, Remise::TYPE_HANDOVER, [
+            'content' => 'Remis a {beneficiaire} (technicien {technicien}), materiel {materiel}, entite {entite}.',
+        ]);
+
+        $this->assertStringContainsString(
+            'Remis a Alex Dupont (technicien Sophie Martin), materiel PC-EXEMPLE-001, entite PHPUnit Preview Placeholders.',
+            $html
+        );
     }
 
     public function testShowForUserFiltersByUsersIdAndShowsMaterialAndDownloadLink(): void

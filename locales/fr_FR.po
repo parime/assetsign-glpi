@@ -748,3 +748,18 @@ msgstr "Vous devez être connecté pour accéder à ce document."
 
 msgid "Échec de la création de la fiche."
 msgstr "Échec de la création de la fiche."
+
+msgid "Variables disponibles, remplacées automatiquement sur le PDF :"
+msgstr "Variables disponibles, remplacées automatiquement sur le PDF :"
+
+msgid "Assigner un matériel à cet utilisateur"
+msgstr "Assigner un matériel à cet utilisateur"
+
+msgid "L'affectation déclenche automatiquement la création d'une remise, comme depuis la fiche du matériel."
+msgstr "L'affectation déclenche automatiquement la création d'une remise, comme depuis la fiche du matériel."
+
+msgid "Assigner"
+msgstr "Assigner"
+
+msgid "Matériel assigné."
+msgstr "Matériel assigné."

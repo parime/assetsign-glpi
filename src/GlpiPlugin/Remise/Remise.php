@@ -481,7 +481,7 @@ class Remise extends CommonDBTM
      * materiel cible precis, hors de propos depuis la fiche d'un utilisateur.
      */
    public static function showForUser(int $users_id): void {
-       global $DB;
+       global $DB, $CFG_GLPI;
 
        $rows = iterator_to_array($DB->request([
            'FROM'  => self::getTable(),
@@ -494,12 +494,51 @@ class Remise extends CommonDBTM
       }
        unset($row);
 
+       // Assigner un materiel directement depuis cet onglet (raccourci) :
+       // meme droit que la creation manuelle Don/Vente ci-dessus, la vraie
+       // portee de securite est de toute facon revalidee par $item->can($id,
+       // UPDATE) cote serveur (cf. front/assign_user_asset.php).
+       $canAssign = Session::haveRight(self::$rightname, UPDATE);
+       $itemtypeDropdownHtml = '';
+       $itemDropdownHtml = '';
+      if ($canAssign) {
+          $rand = mt_rand();
+
+          ob_start();
+          \Dropdown::showFromArray('itemtype', Config::getItemtypeLabels(), [
+              'display_emptychoice' => true,
+              'rand'                => $rand,
+          ]);
+          $itemtypeDropdownHtml = ob_get_clean();
+
+          ob_start();
+          echo '<span id="remise-assign-items-container">'
+              . __('Choisissez d\'abord un type de matériel ci-dessus.', 'remise')
+              . '</span>';
+          \Ajax::updateItemOnSelectEvent(
+              "dropdown_itemtype$rand",
+              'remise-assign-items-container',
+              $CFG_GLPI['root_doc'] . '/ajax/dropdownAllItems.php',
+              [
+                  'idtable' => '__VALUE__',
+                  'name'    => 'items_id',
+                  'rand'    => $rand,
+              ]
+          );
+          $itemDropdownHtml = ob_get_clean();
+      }
+
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/remise_tab.html.twig', [
-           'remises'           => $rows,
-           'statuses'          => self::getStatuses(),
-           'manual_types'      => [],
-           'can_create_manual' => false,
-           'show_item_column'  => true,
+           'remises'                => $rows,
+           'statuses'               => self::getStatuses(),
+           'manual_types'           => [],
+           'can_create_manual'      => false,
+           'show_item_column'       => true,
+           'can_assign_asset'       => $canAssign,
+           'target_user_id'         => $users_id,
+           'itemtype_dropdown_html' => $itemtypeDropdownHtml,
+           'item_dropdown_html'     => $itemDropdownHtml,
+           'csrf_token'             => \Session::getNewCSRFToken(),
        ]);
    }
 
