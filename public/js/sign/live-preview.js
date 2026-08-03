@@ -9,6 +9,16 @@
  * Convention : un formulaire avec [data-remise-preview-frame="<id de l'iframe>"]
  * est surveille dans son ensemble (tous ses champs sont renvoyes tels quels a
  * front/preview.php, qui n'utilise que ceux qu'il connait).
+ *
+ * window.remiseQueuedFetch (cf. csrf-queue.js, charge juste avant ce script) :
+ * indispensable ici, pas juste une precaution — deux frappes rapprochees
+ * declenchent chacune un debounce puis un fetch ; sans serialisation, le
+ * second peut lire le jeton CSRF AVANT que le premier ne l'ait fait tourner
+ * (rotation via l'en-tete X-Remise-Csrf-Token ci-dessous), et se fait rejeter
+ * en 403 par Session::checkCSRF() — la reponse d'erreur (page HTML complete)
+ * atterrit alors telle quelle dans l'iframe d'apercu. remiseQueuedFetch()
+ * serialise les appels et ne construit le corps de la requete (donc ne lit le
+ * jeton) qu'au moment reel de l'envoi, jamais au moment du debounce.
  */
 (function () {
     'use strict';
@@ -32,19 +42,27 @@
                 window.tinymce.triggerSave();
             }
 
-            var data = new FormData(form);
-            // Ne jamais renvoyer un fichier (ex: logo) a chaque frappe : preview.php
-            // ne s'en sert pas, et le reenvoyer sur chaque debounce serait couteux
-            // pour rien des qu'un fichier est selectionne dans le formulaire.
-            form.querySelectorAll('input[type="file"]').forEach(function (fileInput) {
-                data.delete(fileInput.name);
-            });
-            var body = new URLSearchParams(data);
-            fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: body.toString()
-            })
+            // buildOptions n'est appelee par remiseQueuedFetch qu'au moment reel
+            // de l'envoi (apres que tout appel precedent en file ait fini de
+            // faire tourner le jeton) : construire le FormData ICI, pas avant
+            // l'appel a remiseQueuedFetch, est ce qui garantit que le champ
+            // cache _glpi_csrf_token est lu a jour plutot qu'au moment du debounce.
+            function buildOptions() {
+                var data = new FormData(form);
+                // Ne jamais renvoyer un fichier (ex: logo) a chaque frappe : preview.php
+                // ne s'en sert pas, et le reenvoyer sur chaque debounce serait couteux
+                // pour rien des qu'un fichier est selectionne dans le formulaire.
+                form.querySelectorAll('input[type="file"]').forEach(function (fileInput) {
+                    data.delete(fileInput.name);
+                });
+                return {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(data).toString()
+                };
+            }
+
+            window.remiseQueuedFetch(endpoint, buildOptions)
                 .then(function (res) {
                     // Le jeton CSRF de ce POST est a usage unique (deja consomme par le
                     // pare-feu GLPI) : sans le remplacer ici par celui renvoye en
