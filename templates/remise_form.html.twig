@@ -37,6 +37,20 @@
         <th>{{ __('Nombre de relances', 'remise') }}</th>
         <td>{{ reminders }}</td>
       </tr>
+      {% if item.fields.document_id_unsigned or item.fields.document_id_signed %}
+      <tr>
+        <th>{{ __('PDF', 'remise') }}</th>
+        <td>
+          {% if item.fields.document_id_signed %}
+            <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_signed }}" target="_blank">{{ __('Télécharger (signé)', 'remise') }}</a>
+          {% endif %}
+          {% if item.fields.document_id_unsigned %}
+            {% if item.fields.document_id_signed %} — {% endif %}
+            <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_unsigned }}" target="_blank">{{ __('Télécharger (non signé)', 'remise') }}</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endif %}
     </table>
 
     <div class="d-flex gap-2">

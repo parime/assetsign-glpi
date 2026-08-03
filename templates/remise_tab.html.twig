@@ -6,19 +6,29 @@
       <table class="table table-striped">
         <thead>
           <tr>
+            {% if show_item_column %}<th>{{ __('Matériel', 'remise') }}</th>{% endif %}
             <th>{{ __('Statut', 'remise') }}</th>
             <th>{{ __('Créée le', 'remise') }}</th>
             <th>{{ __('Signée le', 'remise') }}</th>
             <th></th>
+            <th>{{ __('PDF', 'remise') }}</th>
           </tr>
         </thead>
         <tbody>
           {% for r in remises %}
           <tr>
+            {% if show_item_column %}<td>{{ r.item_display|default('') }}</td>{% endif %}
             <td>{{ statuses[r.status] }}</td>
             <td>{{ r.date_creation }}</td>
             <td>{{ r.date_signed|default('-') }}</td>
             <td><a href="{{ config('root_doc') }}/plugins/remise/front/remise.form.php?id={{ r.id }}">{{ __('Voir', 'remise') }}</a></td>
+            <td>
+              {% if r.document_id_signed %}
+                <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ r.document_id_signed }}" target="_blank">{{ __('Télécharger (signé)', 'remise') }}</a>
+              {% elseif r.document_id_unsigned %}
+                <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ r.document_id_unsigned }}" target="_blank">{{ __('Télécharger (non signé)', 'remise') }}</a>
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>

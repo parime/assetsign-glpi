@@ -456,7 +456,83 @@ class RemiseTest extends RemiseTestCase
         $remise->cancelRequest();
     }
 
+    public function testGetTabNameForItemCountsByUsersIdOnUserItemtype(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Tab User Count');
+
+        $user = new \User();
+        $user->getFromDB(2);
+
+        $remise = new Remise();
+        // Compte AVANT/APRES (plutot qu'une valeur absolue) : la base de test
+        // partagee de ce conteneur Docker contient deja de nombreuses remises
+        // laissees par d'anciennes sessions manuelles pour l'utilisateur #2
+        // (glpi), une assertion sur un decompte exact serait fragile.
+        $countBefore = self::extractBadgeCount($remise->getTabNameForItem($user));
+
+        $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SIGNED, 2);
+
+        // Pas de chaine traduite ici (echec reel constate en CI, qui rend en
+        // anglais - "Remises" devient "Handovers") : seule la presence du
+        // badge de decompte est verifiee, structure HTML stable quelle que
+        // soit la langue de l'environnement d'execution.
+        $tabName = $remise->getTabNameForItem($user);
+        $this->assertNotSame('', $tabName, "L'onglet doit etre enregistre pour l'itemtype User.");
+        $this->assertSame($countBefore + 1, self::extractBadgeCount($tabName));
+    }
+
+    public function testShowForUserFiltersByUsersIdAndShowsMaterialAndDownloadLink(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit ShowForUser');
+        // Pas createBareRemise() ici : elle fixe items_id a 1 en dur (sans
+        // rapport avec le materiel reellement teste), alors que ce test
+        // verifie precisement la resolution du libelle du BON materiel.
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC ShowForUser');
+        $remise = new Remise();
+        $remiseId = (int) $remise->add([
+            'entities_id'        => $entityId,
+            'itemtype'           => 'Computer',
+            'items_id'           => $computer->getID(),
+            'users_id'           => 2,
+            'type'               => Remise::TYPE_HANDOVER,
+            'status'             => Remise::STATUS_SIGNED,
+            'document_id_signed' => 999,
+        ]);
+        $this->assertGreaterThan(0, $remiseId);
+
+        // Une remise pour un AUTRE utilisateur ne doit jamais apparaitre ici.
+        $otherComputer = $this->createTestComputer($entityId, 'PHPUnit PC ShowForUser Other');
+        (new Remise())->add([
+            'entities_id' => $entityId,
+            'itemtype'    => 'Computer',
+            'items_id'    => $otherComputer->getID(),
+            'users_id'    => 3,
+            'type'        => Remise::TYPE_HANDOVER,
+            'status'      => Remise::STATUS_SIGNED,
+        ]);
+
+        ob_start();
+        Remise::showForUser(2);
+        $html = ob_get_clean();
+
+        $this->assertStringContainsString('PHPUnit PC ShowForUser', $html, "Le materiel concerne doit etre affiche par son nom sur l'onglet Remises d'un utilisateur.");
+        $this->assertStringContainsString('docid=999', $html, 'Le lien de telechargement du PDF signe doit pointer vers le bon document.');
+    }
+
     /** Derniere remise (par id) pour ce materiel, ou null. $excludeId ignore un id precis (ex: l'ancienne remise annulee). */
+    /**
+     * Extrait le nombre affiche dans le badge de decompte d'un libelle
+     * d'onglet (cf. CommonGLPI::createTabEntry()) — 0 si absent (echec reel
+     * constate en CI, sur une base fraiche sans aucune remise prealable pour
+     * l'utilisateur : createTabEntry() n'affiche alors aucun badge du tout,
+     * pas un badge a "0").
+     */
+    private static function extractBadgeCount(string $tabName): int
+    {
+        preg_match('/data-testid="tab-count-badge">(\d+)</', $tabName, $matches);
+        return isset($matches[1]) ? (int) $matches[1] : 0;
+    }
+
     private function findRemiseFor(\Computer $computer, ?int $excludeId = null): ?array
     {
         global $DB;
