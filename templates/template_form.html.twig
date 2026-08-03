@@ -84,4 +84,5 @@
 <script>
   window.REMISE_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
 </script>
+<script src="{{ config('root_doc') }}/plugins/remise/js/sign/csrf-queue.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 <script src="{{ config('root_doc') }}/plugins/remise/js/sign/live-preview.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
