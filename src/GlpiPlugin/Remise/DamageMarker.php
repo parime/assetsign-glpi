@@ -71,7 +71,7 @@ class DamageMarker extends CommonDBTM
        ];
    }
 
-    /** @return self[] Toutes les vues et markers pour une remise, une entree par view_index. */
+    /** @return array<int, array<string, mixed>> Lignes brutes (pas des instances self), une entree par marqueur. */
    public static function getForRemise(int $remises_id): array {
        global $DB;
 
@@ -110,7 +110,7 @@ class DamageMarker extends CommonDBTM
        return (bool) $marker->update(['id' => $id] + $changes);
    }
 
-    /** @return self[] Toutes les vues et markers pour une fiche de maintenance, une entree par view_index. */
+    /** @return array<int, array<string, mixed>> Lignes brutes (pas des instances self), une entree par marqueur. */
    public static function getForMaintenance(int $maintenances_id): array {
        global $DB;
 

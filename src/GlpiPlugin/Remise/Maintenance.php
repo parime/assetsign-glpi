@@ -13,10 +13,18 @@ use Session;
  * (configurables sans code, cf. MaintenanceChecklistItem) + commentaire libre.
  *
  * Sous-systeme VOLONTAIREMENT separe du moteur de fiches signees (Remise) :
- * pas de beneficiaire, pas de jeton, pas de signature, pas de notification,
- * pas de PDF — juste un technicien qui coche une checklist. Partager la table
- * glpi_plugin_remise_remises aurait melange deux cycles de vie tres
- * differents dans le meme enregistrement (decision actee avec l'utilisateur).
+ * pas de beneficiaire, pas de jeton, pas de notification — juste un technicien
+ * qui coche une checklist. Partager la table glpi_plugin_remise_remises aurait
+ * melange deux cycles de vie tres differents dans le meme enregistrement
+ * (decision actee avec l'utilisateur).
+ *
+ * Genere neanmoins un PDF (meme gabarit visuel que Remise, cf.
+ * Pdf\MaintenancePdfBuilder et Pdf\PdfRenderingHelpers) et supporte OPTIONNELLEMENT
+ * une signature du technicien (Config::enable_maintenance_signature, defaut
+ * desactive) : contrairement au flux beneficiaire (jeton + page publique +
+ * e-mail), le technicien est deja authentifie et signe directement sur CE
+ * MEME formulaire de creation, en une seule requete (pas de jeton, pas
+ * d'e-mail, pas de page separee - decision actee avec l'utilisateur).
  */
 class Maintenance extends CommonDBTM
 {
@@ -41,7 +49,27 @@ class Maintenance extends CommonDBTM
            ['id' => 3, 'table' => self::getTable(), 'field' => 'items_id', 'name' => __('Matériel', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => ''],
            ['id' => 4, 'table' => 'glpi_users', 'field' => 'name', 'linkfield' => 'users_id_tech', 'name' => __('Technicien', 'remise'), 'datatype' => 'itemlink', 'itemlink_type' => 'User'],
            ['id' => 5, 'table' => self::getTable(), 'field' => 'date_creation', 'name' => __('Date'), 'datatype' => 'datetime'],
+           // 'nosearch' : un ID de Document interne n'a aucun sens a filtrer,
+           // cette colonne ne sert qu'a afficher un lien de telechargement
+           // direct depuis la liste (cf. getSpecificValueToDisplay()), meme
+           // convention que Remise::rawSearchOptions().
+           ['id' => 6, 'table' => self::getTable(), 'field' => 'document_id', 'name' => __('PDF', 'remise'), 'datatype' => 'specific', 'nosearch' => true],
        ];
+   }
+
+   public static function getSpecificValueToDisplay($field, $values, array $options = []) {
+      if (!is_array($values)) {
+          $values = [$field => $values];
+      }
+      if ($field === 'document_id') {
+          $documents_id = (int) ($values[$field] ?? 0);
+         if ($documents_id <= 0) {
+             return '';
+         }
+          global $CFG_GLPI;
+          return '<a href="' . $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documents_id . '" target="_blank">' . __('Télécharger', 'remise') . '</a>';
+      }
+       return parent::getSpecificValueToDisplay($field, $values, $options);
    }
 
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
@@ -84,6 +112,11 @@ class Maintenance extends CommonDBTM
            'damage_annotation_enabled' => (bool) Config::getForEntity($entities_id)->fields['enable_damage_annotation'],
            'damage_views'    => DamageMarker::getViewLabels(),
            'damage_images'   => DamageMarker::getViewImageFilenames(),
+           // Signature du technicien : optionnelle (Config::enable_maintenance_signature,
+           // defaut desactivee), capturee cote client (canvas) AVANT la creation
+           // de la fiche et soumise d'un bloc avec le reste du formulaire — meme
+           // logique que l'etat des lieux visuel ci-dessus, jamais d'AJAX ici.
+           'signature_required' => (bool) Config::getForEntity($entities_id)->fields['enable_maintenance_signature'],
            'csrf_token'      => Session::getNewCSRFToken(),
        ]);
    }
@@ -110,9 +143,55 @@ class Maintenance extends CommonDBTM
            'damage_views'   => DamageMarker::getViewLabels(),
            'damage_images'  => DamageMarker::getViewImageFilenames(),
            'damage_markers_by_view' => $this->isNewID($ID) ? [] : Remise::groupMarkersByView(DamageMarker::getForMaintenance((int) $ID)),
+           'signature_proof' => $this->isNewID($ID) ? null : Signature::getForMaintenance((int) $ID),
        ]);
 
        return true;
+   }
+
+    /**
+     * Materiel concerne, avec marque/modele resolus — meme forme que
+     * Remise::getTargetItem() (reutilise ses resolveurs statiques, la
+     * resolution ne depend pas du type de fiche parente).
+     */
+   public function getTargetItem(): array {
+       $itemtype = $this->fields['itemtype'];
+       $item = new $itemtype();
+       $item->getFromDB((int) $this->fields['items_id']);
+
+       $fields = $item->fields;
+       $fields['manufacturer_name'] = Remise::resolveManufacturerName($item);
+       $fields['model_name'] = Remise::resolveModelName($item);
+
+       return $fields;
+   }
+
+    /** Technicien ayant realise cette fiche, avec son e-mail fusionne (meme logique que Remise::getBeneficiary()). */
+   public function getTechnician(): array {
+       $user = new \User();
+       $user->getFromDB((int) $this->fields['users_id_tech']);
+       $fields = $user->fields;
+       $fields['email'] = \UserEmail::getDefaultForUser((int) $this->fields['users_id_tech']) ?: '';
+       return $fields;
+   }
+
+    /**
+     * Titre lisible utilise pour nommer le Document GLPI du PDF genere : meme
+     * principe que Remise::getDocumentTitle() (date en tete pour le tri
+     * chronologique, texte fixe en francais car un nom de Document est fige
+     * a sa creation et ne doit pas dependre de la session de qui declenche
+     * la generation).
+     */
+   public function getDocumentTitle(): string {
+       $tech = $this->getTechnician();
+       $techName = trim(\formatUserName(0, $tech['name'] ?? '', $tech['realname'] ?? '', $tech['firstname'] ?? ''));
+
+       $item = $this->getTargetItem();
+       $itemName = $item['name'] ?? '';
+
+       $date = $this->fields['date_creation'] ? date('Y-m-d', strtotime($this->fields['date_creation'])) : date('Y-m-d');
+
+       return trim(sprintf('%s — Maintenance — %s (%s)', $date, $itemName ?: $this->fields['itemtype'], $techName ?: '?'));
    }
 
     /**
@@ -206,6 +285,7 @@ class Maintenance extends CommonDBTM
            'damage_annotation_enabled' => (bool) Config::getForEntity(Session::getActiveEntity())->fields['enable_damage_annotation'],
            'damage_views'    => DamageMarker::getViewLabels(),
            'damage_images'   => DamageMarker::getViewImageFilenames(),
+           'signature_required' => (bool) Config::getForEntity(Session::getActiveEntity())->fields['enable_maintenance_signature'],
            'csrf_token'             => Session::getNewCSRFToken(),
        ]);
    }
@@ -233,11 +313,41 @@ class Maintenance extends CommonDBTM
      * $damageMarkers : marqueurs d'etat des lieux deposes cote client AVANT
      * cette creation (cf. DamageMarker::createMarkersForMaintenance()) - deja
      * decodes depuis le JSON soumis par damage-annotation-local.js.
+     *
+     * Genere systematiquement le PDF de la fiche (Config::
+     * enable_maintenance_signature ne conditionne QUE la presence d'une
+     * signature dedans, pas la generation du PDF lui-meme, cf. USER_GUIDE.md).
+     * $signatureImage : data URI PNG brute soumise par le formulaire, validee
+     * ICI (pas par l'appelant) quand la signature est activee pour l'entite -
+     * meme convention que Remise::createManual() (valide et leve AVANT toute
+     * ecriture en base, cf. front/maintenance.form.php qui se contente d'un
+     * try/catch autour de cet appel). Ignoree si la signature n'est pas activee.
+     * $signatureMeta : 'ip'/'user_agent' du technicien signataire, memes cles
+     * que le $meta de Api\SignController::submit() (cf. front/sign.php) -
+     * lus depuis $_SERVER par l'appelant, jamais ici (le modele ne lit pas les
+     * superglobales directement).
+     *
      * @param array<int|string, mixed> $itemValues
      * @param array<int, array<string, mixed>> $damageMarkers
+     * @param array{ip?: string, user_agent?: string} $signatureMeta
+     * @throws \RuntimeException si la signature est activee pour l'entite mais absente/invalide
      */
-   public static function createWithChecklist(string $itemtype, int $items_id, int $entities_id, array $itemValues, string $comment, array $damageMarkers = []): int {
+   public static function createWithChecklist(
+       string $itemtype,
+       int $items_id,
+       int $entities_id,
+       array $itemValues,
+       string $comment,
+       array $damageMarkers = [],
+       ?string $signatureImage = null,
+       array $signatureMeta = []
+   ): int {
        global $DB;
+
+       $signatureEnabled = (bool) Config::getForEntity($entities_id)->fields['enable_maintenance_signature'];
+      if ($signatureEnabled) {
+          Pdf\SignatureImageValidator::assertValid((string) $signatureImage);
+      }
 
        $maintenance = new self();
        $id = (int) $maintenance->add([
@@ -281,6 +391,26 @@ class Maintenance extends CommonDBTM
             ]);
       }
 
+       $maintenance->getFromDB($id);
+       $signedAt = $signatureEnabled ? date('Y-m-d H:i:s') : null;
+
+       $builder = new Pdf\MaintenancePdfBuilder();
+       $result = $builder->build($maintenance, $signatureEnabled ? $signatureImage : null, $signedAt);
+
+       $maintenance->update(['id' => $id, 'document_id' => $result['document']->getID()]);
+
+      if ($signatureEnabled) {
+          $tech = $maintenance->getTechnician();
+          Signature::recordProofForMaintenance($maintenance, [
+              'signer_name'   => trim(($tech['firstname'] ?? '') . ' ' . ($tech['realname'] ?? '')),
+              'signer_email'  => $tech['email'] ?? '',
+              'ip_address'    => $signatureMeta['ip'] ?? '',
+              'user_agent'    => $signatureMeta['user_agent'] ?? '',
+              'document_hash' => $result['hash'],
+              'signed_at'     => $signedAt,
+          ]);
+      }
+
        return $id;
    }
 
@@ -298,6 +428,7 @@ class Maintenance extends CommonDBTM
                 `items_id` int unsigned NOT NULL DEFAULT 0,
                 `users_id_tech` int unsigned NOT NULL DEFAULT 0,
                 `comment` text,
+                `document_id` int unsigned NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -306,6 +437,12 @@ class Maintenance extends CommonDBTM
                 KEY `is_recursive` (`is_recursive`),
                 KEY `users_id_tech` (`users_id_tech`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+      } else if (!$DB->fieldExists($table, 'document_id')) {
+          // Montee de version : ajoute la reference au PDF genere a la
+          // creation (cf. createWithChecklist()), toujours produit desormais
+          // meme quand aucune signature n'est activee pour l'entite.
+          $migration->addField($table, 'document_id', 'integer', ['value' => 0, 'after' => 'comment']);
+          $migration->migrationOneTable($table);
       }
 
        $valuesTable = 'glpi_plugin_remise_maintenancechecklistvalues';

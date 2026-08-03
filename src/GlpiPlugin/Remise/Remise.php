@@ -300,7 +300,7 @@ class Remise extends CommonDBTM
            // trace de ces informations jusqu'ici etait a l'interieur du PDF signe
            // lui-meme (cf. handover.html.twig) — rien ne les affichait cote GLPI,
            // alors que glpi_plugin_remise_signatures les enregistre a chaque
-           // signature (Signature::recordProof(), appele par markSigned()).
+           // signature (Signature::recordProofForRemise(), appele par markSigned()).
            'signature_proof' => (!$this->isNewID($ID) && (int) $this->fields['status'] === self::STATUS_SIGNED)
                ? Signature::getForRemise((int) $ID)
                : null,
@@ -970,9 +970,11 @@ class Remise extends CommonDBTM
     /**
      * Marque (glpi_manufacturers) : champ manufacturers_id commun a tous les
      * actifs standards (Computer, Monitor, Peripheral, Phone) et aux actifs
-     * personnalises qui l'activent.
+     * personnalises qui l'activent. Public : reutilise telle quelle par
+     * Maintenance::getTargetItem(), meme logique de resolution quel que soit
+     * le type de fiche parente.
      */
-   private static function resolveManufacturerName(CommonDBTM $item): string {
+   public static function resolveManufacturerName(CommonDBTM $item): string {
        $manufacturers_id = (int) ($item->fields['manufacturers_id'] ?? 0);
       if ($manufacturers_id <= 0) {
           return '';
@@ -984,8 +986,9 @@ class Remise extends CommonDBTM
      * Modele : contrairement a la marque, la table/FK varie selon le type
      * (computermodels_id, monitormodels_id...) — CommonDBTM::getModelClass()
      * resout cette convention generiquement pour n'importe quel itemtype.
+     * Public : reutilise telle quelle par Maintenance::getTargetItem().
      */
-   private static function resolveModelName(CommonDBTM $item): string {
+   public static function resolveModelName(CommonDBTM $item): string {
        $modelClass = $item->getModelClass();
       if ($modelClass === null) {
           return '';
@@ -1246,7 +1249,7 @@ class Remise extends CommonDBTM
        // avec le suffixe "[non signée]" du PDF non signe (deja fixe en dur).
        $document = $this->attachDocument($signedPdfPath, $this->getDocumentTitle() . ' [signée]');
 
-       Signature::recordProof($this, $proof);
+       Signature::recordProofForRemise($this, $proof);
 
        $this->update([
            'id'                 => $this->getID(),

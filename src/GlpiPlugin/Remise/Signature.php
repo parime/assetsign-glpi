@@ -7,34 +7,61 @@ use Migration;
 
 /**
  * Preuve de signature, independante du prestataire utilise.
- * Une ligne par remise signee : horodatage, empreinte du PDF final, metadonnees
- * de preuve fournies par le prestataire (certificat, journal de consultation...).
+ * Une ligne par signature (Remise OU Maintenance) : horodatage, empreinte du
+ * PDF final, metadonnees de preuve fournies par le prestataire (certificat,
+ * journal de consultation...).
+ *
+ * Rattachee a EXACTEMENT UNE fiche parente parmi deux possibles (colonnes
+ * `plugin_remise_remises_id`/`plugin_remise_maintenances_id`, toutes deux
+ * nullables), meme convention que DamageMarker (cf. sa docblock de classe) :
+ * - Remise : beneficiaire, via le flux jeton + page de signature publique
+ *   (front/sign.php), preuve enregistree par markSigned().
+ * - Maintenance : technicien deja authentifie, signature directement sur le
+ *   formulaire de creation (pas de jeton, pas d'email), preuve enregistree
+ *   par Maintenance::createWithChecklist() quand la signature est activee
+ *   pour l'entite (Config::enable_maintenance_signature).
  */
 class Signature extends CommonDBTM
 {
    public static $rightname = Profile::RIGHT_REMISE;
 
-   public static function recordProof(Remise $remise, array $proof): int {
+   public static function recordProofForRemise(Remise $remise, array $proof): int {
+       return self::insertProof(['plugin_remise_remises_id' => $remise->getID()], $proof);
+   }
+
+   public static function recordProofForMaintenance(Maintenance $maintenance, array $proof): int {
+       return self::insertProof(['plugin_remise_maintenances_id' => $maintenance->getID()], $proof);
+   }
+
+   private static function insertProof(array $parentColumn, array $proof): int {
        global $DB;
 
-       return $DB->insert(self::getTable(), [
-           'plugin_remise_remises_id' => $remise->getID(),
-           'signer_name'              => $proof['signer_name'] ?? null,
-           'signer_email'             => $proof['signer_email'] ?? null,
-           'ip_address'               => $proof['ip_address'] ?? null,
-           'user_agent'               => $proof['user_agent'] ?? null,
-           'document_hash'            => $proof['document_hash'] ?? null,
-           'signed_at'                => $proof['signed_at'] ?? date('Y-m-d H:i:s'),
-           'date_creation'            => date('Y-m-d H:i:s'),
+       return $DB->insert(self::getTable(), $parentColumn + [
+           'signer_name'   => $proof['signer_name'] ?? null,
+           'signer_email'  => $proof['signer_email'] ?? null,
+           'ip_address'    => $proof['ip_address'] ?? null,
+           'user_agent'    => $proof['user_agent'] ?? null,
+           'document_hash' => $proof['document_hash'] ?? null,
+           'signed_at'     => $proof['signed_at'] ?? date('Y-m-d H:i:s'),
+           'date_creation' => date('Y-m-d H:i:s'),
        ]) ? $DB->insertId() : 0;
    }
 
     /** Preuve de signature la plus recente pour une remise, ou null si non signee. */
    public static function getForRemise(int $remises_id): ?array {
+       return self::getMostRecent(['plugin_remise_remises_id' => $remises_id]);
+   }
+
+    /** Preuve de signature la plus recente pour une fiche de maintenance, ou null si non signee. */
+   public static function getForMaintenance(int $maintenances_id): ?array {
+       return self::getMostRecent(['plugin_remise_maintenances_id' => $maintenances_id]);
+   }
+
+   private static function getMostRecent(array $criteria): ?array {
        global $DB;
        $rows = iterator_to_array($DB->request([
            'FROM'  => self::getTable(),
-           'WHERE' => ['plugin_remise_remises_id' => $remises_id],
+           'WHERE' => $criteria,
            'ORDER' => 'date_creation DESC',
            'LIMIT' => 1,
        ]));
@@ -47,9 +74,14 @@ class Signature extends CommonDBTM
 
       if (!$DB->tableExists($table)) {
           $migration->displayMessage('Création de la table ' . $table);
+          // plugin_remise_remises_id NULLABLE des la creation (pas seulement
+          // sur les installations mises a jour ci-dessous) : une ligne peut
+          // desormais appartenir a une Maintenance a la place, cf. commentaire
+          // de classe. Meme schema, que l'installation soit neuve ou mise a jour.
           $DB->doQuery("CREATE TABLE `$table` (
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
-                `plugin_remise_remises_id` int unsigned NOT NULL,
+                `plugin_remise_remises_id` int unsigned DEFAULT NULL,
+                `plugin_remise_maintenances_id` int unsigned DEFAULT NULL,
                 `signer_name` varchar(255) DEFAULT NULL,
                 `signer_email` varchar(255) DEFAULT NULL,
                 `ip_address` varchar(46) DEFAULT NULL,
@@ -59,7 +91,9 @@ class Signature extends CommonDBTM
                 `date_creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`),
                 KEY `plugin_remise_remises_id` (`plugin_remise_remises_id`),
-                CONSTRAINT `fk_signature_remise` FOREIGN KEY (`plugin_remise_remises_id`) REFERENCES `glpi_plugin_remise_remises` (`id`) ON DELETE CASCADE
+                KEY `plugin_remise_maintenances_id` (`plugin_remise_maintenances_id`),
+                CONSTRAINT `fk_signature_remise` FOREIGN KEY (`plugin_remise_remises_id`) REFERENCES `glpi_plugin_remise_remises` (`id`) ON DELETE CASCADE,
+                CONSTRAINT `fk_signature_maintenance` FOREIGN KEY (`plugin_remise_maintenances_id`) REFERENCES `glpi_plugin_remise_maintenances` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
       } else {
           // Audit code mort : 'provider'/'provider_reference'/'proof_data'
@@ -72,6 +106,22 @@ class Signature extends CommonDBTM
             if ($DB->fieldExists($table, $obsoleteField)) {
                $migration->dropField($table, $obsoleteField);
             }
+         }
+
+          // Installation existante (mise a jour depuis une version qui ne
+          // connaissait que les preuves de Remise) : meme demarche que
+          // DamageMarker::install() (assouplir la contrainte NOT NULL
+          // d'origine, puis ajouter la nouvelle colonne + sa cle etrangere),
+          // en SQL brut execute IMMEDIATEMENT (pas via Migration::addField(),
+          // qui met la modification en FILE D'ATTENTE jusqu'a la toute fin de
+          // l'installation, cf. le commentaire equivalent dans DamageMarker::
+          // install() pour le piege deja rencontre).
+         if (!$DB->fieldExists($table, 'plugin_remise_maintenances_id')) {
+             $migration->displayMessage("Mise à jour de $table pour les preuves de signature de Maintenance");
+             $DB->doQuery("ALTER TABLE `$table` MODIFY `plugin_remise_remises_id` int unsigned DEFAULT NULL");
+             $DB->doQuery("ALTER TABLE `$table` ADD COLUMN `plugin_remise_maintenances_id` int unsigned DEFAULT NULL AFTER `plugin_remise_remises_id`");
+             $DB->doQuery("ALTER TABLE `$table` ADD KEY `plugin_remise_maintenances_id` (`plugin_remise_maintenances_id`)");
+             $DB->doQuery("ALTER TABLE `$table` ADD CONSTRAINT `fk_signature_maintenance` FOREIGN KEY (`plugin_remise_maintenances_id`) REFERENCES `glpi_plugin_remise_maintenances` (`id`) ON DELETE CASCADE");
          }
       }
    }
