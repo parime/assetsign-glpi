@@ -456,6 +456,59 @@ class RemiseTest extends RemiseTestCase
         $remise->cancelRequest();
     }
 
+    public function testGetTabNameForItemCountsByUsersIdOnUserItemtype(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Tab User Count');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Tab User Count');
+        $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SIGNED, 2);
+
+        $user = new \User();
+        $user->getFromDB(2);
+
+        $remise = new Remise();
+        $tabName = $remise->getTabNameForItem($user);
+
+        $this->assertStringContainsString('Remises', $tabName);
+    }
+
+    public function testShowForUserFiltersByUsersIdAndShowsMaterialAndDownloadLink(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit ShowForUser');
+        // Pas createBareRemise() ici : elle fixe items_id a 1 en dur (sans
+        // rapport avec le materiel reellement teste), alors que ce test
+        // verifie precisement la resolution du libelle du BON materiel.
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC ShowForUser');
+        $remise = new Remise();
+        $remiseId = (int) $remise->add([
+            'entities_id'        => $entityId,
+            'itemtype'           => 'Computer',
+            'items_id'           => $computer->getID(),
+            'users_id'           => 2,
+            'type'               => Remise::TYPE_HANDOVER,
+            'status'             => Remise::STATUS_SIGNED,
+            'document_id_signed' => 999,
+        ]);
+        $this->assertGreaterThan(0, $remiseId);
+
+        // Une remise pour un AUTRE utilisateur ne doit jamais apparaitre ici.
+        $otherComputer = $this->createTestComputer($entityId, 'PHPUnit PC ShowForUser Other');
+        (new Remise())->add([
+            'entities_id' => $entityId,
+            'itemtype'    => 'Computer',
+            'items_id'    => $otherComputer->getID(),
+            'users_id'    => 3,
+            'type'        => Remise::TYPE_HANDOVER,
+            'status'      => Remise::STATUS_SIGNED,
+        ]);
+
+        ob_start();
+        Remise::showForUser(2);
+        $html = ob_get_clean();
+
+        $this->assertStringContainsString('PHPUnit PC ShowForUser', $html, "Le materiel concerne doit etre affiche par son nom sur l'onglet Remises d'un utilisateur.");
+        $this->assertStringContainsString('docid=999', $html, 'Le lien de telechargement du PDF signe doit pointer vers le bon document.');
+    }
+
     /** Derniere remise (par id) pour ce materiel, ou null. $excludeId ignore un id precis (ex: l'ancienne remise annulee). */
     private function findRemiseFor(\Computer $computer, ?int $excludeId = null): ?array
     {
