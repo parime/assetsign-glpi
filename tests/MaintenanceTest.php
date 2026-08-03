@@ -176,6 +176,15 @@ class MaintenanceTest extends RemiseTestCase
         // simule ici la connexion du compte 'glpi' (id=2) comme technicien.
         $_SESSION['glpiID'] = 2;
 
+        // Le compte 'glpi' n'a pas forcement d'e-mail configure (glpi_useremails)
+        // selon l'environnement (absent sur une installation CI fraiche) : on en
+        // enregistre un explicitement pour que le test ne depende pas de l'etat
+        // pre-existant de la base.
+        $userEmail = new \UserEmail();
+        if (!$userEmail->getFromDBByCrit(['users_id' => 2])) {
+            $userEmail->add(['users_id' => 2, 'email' => 'phpunit-technician@example.com', 'is_default' => 1]);
+        }
+
         $id = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '');
         $maintenance = new Maintenance();
         $maintenance->getFromDB($id);
