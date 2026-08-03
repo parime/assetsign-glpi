@@ -89,3 +89,15 @@
     gap: 8px;
     margin-top: 4px;
 }
+
+/* Signature du technicien (fiche de maintenance) — meme apparence que
+   #signature-pad sur la page publique de signature (cf. sign_page.html.twig),
+   qui a son propre CSS inline et ne partage pas ce fichier. */
+.remise-signature-pad {
+    border: 1px dashed #999;
+    border-radius: 6px;
+    width: 100%;
+    height: 180px;
+    touch-action: none;
+    background: #fff;
+}

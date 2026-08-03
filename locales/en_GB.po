@@ -544,8 +544,35 @@ msgstr "Cross-cutting settings, applicable to all signed form types."
 msgid "Voir les fiches de maintenance"
 msgstr "View maintenance forms"
 
-msgid "La fiche de maintenance est un sous-système séparé (pas de signature, pas de bénéficiaire) : rien à activer ici, l'accès se gère par le droit dédié (Administration > Profils)."
-msgstr "The maintenance form is a separate subsystem (no signature, no beneficiary): nothing to enable here, access is managed through its dedicated right (Administration > Profiles)."
+msgid "La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l'option ci-dessous est activée. L'accès se gère par le droit dédié (Administration > Profils)."
+msgstr "The maintenance form is a subsystem separate from signed forms (no beneficiary, no token, no e-mail): it always generates a PDF (same layout as handover/donation/sale forms, with the logo), and can additionally have the technician sign directly on the creation form if the option below is enabled. Access is managed through its dedicated right (Administration > Profiles)."
+
+msgid "Faire signer le technicien sur la fiche de maintenance"
+msgstr "Have the technician sign the maintenance form"
+
+msgid "Si activé, un pavé de signature (identique à celui d'une vente) apparaît sur le formulaire de création : la fiche ne peut pas être créée sans signature. Le technicien est déjà connecté, aucun e-mail ni page séparée n'est utilisé."
+msgstr "If enabled, a signature pad (identical to a sale's) appears on the creation form: the form cannot be created without a signature. The technician is already logged in, no e-mail or separate page is used."
+
+msgid "Fiche PDF"
+msgstr "PDF record"
+
+msgid "Merci de signer avant de créer la fiche."
+msgstr "Please sign before creating the form."
+
+msgid "PDF"
+msgstr "PDF"
+
+msgid "Signature du technicien"
+msgstr "Technician signature"
+
+msgid "Signez ci-dessous avant de créer la fiche."
+msgstr "Sign below before creating the form."
+
+msgid "Télécharger"
+msgstr "Download"
+
+msgid "Télécharger en PDF"
+msgstr "Download as PDF"
 
 msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d'onglet, avant même d'enregistrer."
 msgstr "Example with fictional data, same Twig templates as the real PDF. The preview updates automatically as soon as you change a setting or switch tabs, even before saving."

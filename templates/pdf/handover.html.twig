@@ -4,32 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>{{ document_title }}</title>
-<style>
-    body { font-family: 'DejaVu Sans', sans-serif; font-size: 11px; color: #1c2b3a; }
-    h1 { font-size: 18px; margin-bottom: 2px; }
-    h2 { font-size: 13px; margin-top: 18px; margin-bottom: 6px; border-bottom: 1px solid #ccc; padding-bottom: 2px; }
-    .meta { color: #555; margin-bottom: 14px; }
-    table.info-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
-    table.info-table th { text-align: left; width: 35%; padding: 3px 6px; background: #f2f2f2; font-weight: normal; color: #555; }
-    table.info-table td { padding: 3px 6px; }
-    ul.accessories { margin: 4px 0; padding-left: 18px; }
-    .legal-text { font-size: 9.5px; color: #333; line-height: 1.4; text-align: justify; }
-    .signature-zone { margin-top: 24px; border-top: 1px solid #ccc; padding-top: 10px; }
-    .signature-img { max-width: 220px; max-height: 90px; border-bottom: 1px solid #999; }
-    .proof { font-size: 8px; color: #888; margin-top: 6px; }
-    .footer { position: fixed; bottom: -20px; left: 0; right: 0; font-size: 8px; color: #999; text-align: center; }
-    .header-logo { text-align: right; margin-bottom: 4px; }
-    .header-logo img { max-height: 60px; max-width: 220px; }
-    .damage-pdf-views { margin-top: 6px; font-size: 0; }
-    .damage-pdf-col { display: inline-block; vertical-align: top; width: 31%; margin: 0 3.5% 10px 0; page-break-inside: avoid; font-size: 11px; }
-    .damage-pdf-col:last-child { margin-right: 0; }
-    .damage-pdf-view { position: relative; height: 0; overflow: hidden; }
-    .damage-pdf-img { position: absolute; top: 0; left: 0; width: 100%; display: block; }
-    .damage-pdf-marker { position: absolute; width: 9px; height: 9px; margin-left: -5px; margin-top: -5px; border-radius: 50%; background: rgba(240, 180, 20, 0.9); border: 1px solid #fff; }
-    .damage-pdf-marker-major { background: rgba(210, 40, 40, 0.9); }
-    .damage-pdf-label { font-size: 9px; color: #555; text-align: center; margin: 4px 0 2px; }
-    .damage-pdf-desc { font-size: 8.5px; color: #333; margin: 0; padding-left: 14px; }
-</style>
+{% include '@remise/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
 
@@ -75,31 +50,7 @@
 </table>
 {% endif %}
 
-{% if damage_views|length %}
-<h2>État des lieux visuel</h2>
-<div class="damage-pdf-views">
-{% for view in damage_views %}
-<div class="damage-pdf-col">
-    <div class="damage-pdf-view" style="padding-bottom: {{ view.aspect_ratio_percent }}%;">
-        <img src="{{ view.image_data_uri }}" class="damage-pdf-img">
-        {% for marker in view.markers %}
-        <div class="damage-pdf-marker{{ marker.severity == 1 ? ' damage-pdf-marker-major' : '' }}"
-             style="left: {{ marker.x_percent }}%; top: {{ marker.y_percent }}%;"></div>
-        {% endfor %}
-    </div>
-    <p class="damage-pdf-label">{{ view.label }}</p>
-    {% set described = view.markers|filter(m => m.description) %}
-    {% if described|length %}
-    <ul class="damage-pdf-desc">
-        {% for marker in described %}
-        <li>{{ marker.description }}{% if marker.severity == 1 %} — majeure{% endif %}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-</div>
-{% endfor %}
-</div>
-{% endif %}
+{% include '@remise/pdf/_damage_views.html.twig' %}
 
 {% if include_content %}
 <h2>Conditions générales</h2>

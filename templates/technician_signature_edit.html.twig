@@ -1,0 +1,26 @@
+{# Signature du technicien, mode CREATION (fiche de maintenance pas encore
+   enregistree) : capturee purement cote client (canvas + signature_pad.js),
+   serialisee dans #technician_signature_input et soumise d'un bloc avec le
+   reste du formulaire - jamais d'appel AJAX ici, jamais de jeton ni d'e-mail
+   (le technicien est deja authentifie sur CETTE requete), contrairement au
+   flux beneficiaire (remise_form.html.twig -> front/sign.php). Affiche
+   uniquement quand Config::enable_maintenance_signature est active pour
+   l'entite (defaut desactive). #}
+{% if signature_required %}
+  <div class="mb-3">
+    <label class="form-label">{{ __('Signature du technicien', 'remise') }}</label>
+    <p class="text-muted small">{{ __('Signez ci-dessous avant de créer la fiche.', 'remise') }}</p>
+    <canvas id="technician-signature-pad" class="remise-signature-pad"></canvas>
+    <div class="mt-2">
+      <button type="button" id="btn-clear-technician-signature" class="btn btn-sm btn-secondary">{{ __('Effacer', 'remise') }}</button>
+    </div>
+    <input type="hidden" name="technician_signature" id="technician_signature_input" value="">
+    <script>
+      window.REMISE_SIGNATURE_I18N = {
+        required: {{ __('Merci de signer avant de créer la fiche.', 'remise')|json_encode|raw }}
+      };
+    </script>
+    <script src="{{ config('root_doc') }}/plugins/remise/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+    <script src="{{ config('root_doc') }}/plugins/remise/js/sign/signature-pad-local.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+  </div>
+{% endif %}

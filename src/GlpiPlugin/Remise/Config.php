@@ -35,6 +35,7 @@ class Config extends CommonDBTM
         'enable_don'                          => 0,
         'enable_vente'                        => 0,
         'enable_damage_annotation'            => 0,
+        'enable_maintenance_signature'        => 0,
         'sign_on_assignment'                  => 1,
         'sign_on_reassignment'                => 1,
         'sign_on_return'                      => 0,
@@ -341,6 +342,7 @@ class Config extends CommonDBTM
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
            'enable_damage_annotation' => (int) ($input['enable_damage_annotation'] ?? 0),
+           'enable_maintenance_signature' => (int) ($input['enable_maintenance_signature'] ?? 0),
            'sign_on_assignment'   => (int) ($input['sign_on_assignment'] ?? 0),
            'sign_on_reassignment' => (int) ($input['sign_on_reassignment'] ?? 0),
            'sign_on_return'       => (int) ($input['sign_on_return'] ?? 0),
@@ -419,6 +421,7 @@ class Config extends CommonDBTM
                 `enable_don` tinyint NOT NULL DEFAULT 0,
                 `enable_vente` tinyint NOT NULL DEFAULT 0,
                 `enable_damage_annotation` tinyint NOT NULL DEFAULT 0,
+                `enable_maintenance_signature` tinyint NOT NULL DEFAULT 0,
                 `sign_on_assignment` tinyint NOT NULL DEFAULT 1,
                 `sign_on_reassignment` tinyint NOT NULL DEFAULT 1,
                 `sign_on_return` tinyint NOT NULL DEFAULT 0,
@@ -446,6 +449,7 @@ class Config extends CommonDBTM
               'enable_don'         => self::DEFAULTS['enable_don'],
               'enable_vente'       => self::DEFAULTS['enable_vente'],
               'enable_damage_annotation' => self::DEFAULTS['enable_damage_annotation'],
+              'enable_maintenance_signature' => self::DEFAULTS['enable_maintenance_signature'],
               'sign_on_assignment' => 1,
               'sign_on_reassignment' => 1,
               'managed_itemtypes'  => self::DEFAULTS['managed_itemtypes'],
@@ -493,6 +497,10 @@ class Config extends CommonDBTM
          }
          if (!$DB->fieldExists($table, 'enable_damage_annotation')) {
              $migration->addField($table, 'enable_damage_annotation', 'bool', ['value' => 0, 'after' => 'enable_vente']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_maintenance_signature')) {
+             $migration->addField($table, 'enable_maintenance_signature', 'bool', ['value' => 0, 'after' => 'enable_damage_annotation']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'donation_states')) {
