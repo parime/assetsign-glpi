@@ -1,0 +1,44 @@
+name: Auto-tag de version
+
+# Tague automatiquement `vX.Y.Z` a chaque fusion sur main si
+# PLUGIN_REMISE_VERSION (setup.php) a change et que ce tag n'existe pas
+# encore. Sans ce workflow, publier une release necessitait de se souvenir de
+# pousser le tag a la main apres coup (ecart deja constate : main etait passe
+# de 1.13.3 a 1.13.6 en code sans qu'aucune de ces versions ne soit jamais
+# publiee). Le tag pousse ici declenche ensuite release.yml (qui ecoute
+# `push: tags: v*.*.*`) - separation volontaire : ce fichier ne fait QUE
+# decider s'il faut tague, toute la validation (build, install reelle sur
+# GLPI, publication) reste dans release.yml.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupère le code du plugin
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
+
+      - name: Tague si PLUGIN_REMISE_VERSION est une nouvelle version
+        # git ls-remote (pas `git tag -l` local) : le checkout par defaut est
+        # peu profond et ne recupere aucun tag, une verification locale
+        # laisserait toujours passer et re-tenterait de pousser un tag deja
+        # publie (echec, mais bruyant a chaque push sur main).
+        run: |
+          VERSION="$(grep -oP "define\('PLUGIN_REMISE_VERSION', '\K[^']+" setup.php)"
+          TAG="v${VERSION}"
+
+          if git ls-remote --tags origin "refs/tags/$TAG" | grep -q "refs/tags/$TAG$"; then
+            echo "Le tag $TAG existe deja, rien a publier."
+            exit 0
+          fi
+
+          echo "Nouvelle version detectee : $TAG"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG"
+          git push origin "$TAG"
