@@ -38,6 +38,8 @@ class Config extends CommonDBTM
         'enable_maintenance_signature'        => 0,
         'show_qr_code'                        => 0,
         'currency_symbol'                     => '€',
+        'preview_watermark_text'              => 'APERÇU',
+        'preview_watermark_opacity'           => 25,
         'sign_on_assignment'                  => 1,
         'sign_on_reassignment'                => 1,
         'sign_on_return'                      => 0,
@@ -131,6 +133,8 @@ class Config extends CommonDBTM
            'vente_states'    => $config->getVenteStates(),
            'logo_document'   => $logoDocument,
            'logo_is_forced'  => $logoIsForced,
+           'installed_version'     => PLUGIN_REMISE_VERSION,
+           'latest_github_version' => self::getLatestGithubVersion(),
        ]);
    }
 
@@ -199,8 +203,7 @@ class Config extends CommonDBTM
      * le bouton), independamment du moteur de notifications GLPI (qui exige
      * une vraie remise pour resoudre ses tags ##remise.xxx##) : verifie
      * seulement que le serveur SMTP configure dans GLPI accepte l'envoi, avec
-     * l'expediteur (sender_name/sender_email) de CETTE entite. Inspire d'une
-     * fonctionnalite equivalente du plugin concurrent "responsivas".
+     * l'expediteur (sender_name/sender_email) de CETTE entite.
      * @return string Message d'erreur si l'envoi echoue, chaine vide si ok.
      */
    public static function sendTestEmail(int $entities_id): string {
@@ -232,6 +235,47 @@ class Config extends CommonDBTM
       }
 
        return '';
+   }
+
+    /**
+     * Derniere version publiee sur GitHub (release la plus recente, hors
+     * pre-release), pour affichage a cote de la version installee en
+     * configuration — permet de detecter immediatement qu'un environnement
+     * tourne sur une version anterieure a celle publiee, sans avoir a
+     * comparer des fichiers un par un (piege deja rencontre, cf.
+     * TROUBLESHOOTING.md : deux environnements affichant le meme numero mais
+     * des commits en realite differents). Mise en cache 24h (meme duree et
+     * meme mecanisme que RSSFeed::getRSSFeed() du cœur GLPI, `$GLPI_CACHE`) :
+     * l'API GitHub non authentifiee est limitee a 60 requetes/heure par IP,
+     * largement insuffisant si appelee a chaque affichage de la page.
+     * Toolbox::getURLContent() (pas un appel HTTP direct) : reutilise la
+     * gestion de proxy/timeout/erreurs deja etablie par le cœur GLPI pour ce
+     * type d'appel (meme fonction que Toolbox::checkNewVersionAvailable(),
+     * qui fait exactement ceci pour GLPI lui-meme).
+     * @return string|null Numero de version (sans le "v" du tag), ou null si
+     *         l'appel a echoue (pas de connexion, API GitHub indisponible...).
+     */
+   public static function getLatestGithubVersion(): ?string {
+       global $GLPI_CACHE;
+
+       $cacheKey = 'plugin_remise_latest_github_version';
+       $cached = $GLPI_CACHE->get($cacheKey);
+      if ($cached !== null) {
+          return $cached === '' ? null : $cached;
+      }
+
+       $error = '';
+       $json = \Toolbox::getURLContent('https://api.github.com/repos/parime/remise-glpi/releases/latest', $error);
+       $version = null;
+      if (!empty($json)) {
+          $data = json_decode($json, true);
+         if (is_array($data) && !empty($data['tag_name']) && is_string($data['tag_name'])) {
+             $version = ltrim($data['tag_name'], 'v');
+         }
+      }
+
+       $GLPI_CACHE->set($cacheKey, $version ?? '', DAY_TIMESTAMP);
+       return $version;
    }
 
    public static function getItemtypeLabels(): array {
@@ -425,6 +469,8 @@ class Config extends CommonDBTM
            'enable_maintenance_signature' => (int) ($input['enable_maintenance_signature'] ?? 0),
            'show_qr_code'         => (int) ($input['show_qr_code'] ?? 0),
            'currency_symbol'      => trim($input['currency_symbol'] ?? '') ?: '€',
+           'preview_watermark_text'    => trim($input['preview_watermark_text'] ?? '') ?: 'APERÇU',
+           'preview_watermark_opacity' => max(5, min(100, (int) ($input['preview_watermark_opacity'] ?? 25))),
            'sign_on_assignment'   => (int) ($input['sign_on_assignment'] ?? 0),
            'sign_on_reassignment' => (int) ($input['sign_on_reassignment'] ?? 0),
            'sign_on_return'       => (int) ($input['sign_on_return'] ?? 0),
@@ -506,6 +552,8 @@ class Config extends CommonDBTM
                 `enable_maintenance_signature` tinyint NOT NULL DEFAULT 0,
                 `show_qr_code` tinyint NOT NULL DEFAULT 0,
                 `currency_symbol` varchar(255) NOT NULL DEFAULT '€',
+                `preview_watermark_text` varchar(255) NOT NULL DEFAULT 'APERÇU',
+                `preview_watermark_opacity` int unsigned NOT NULL DEFAULT 25,
                 `sign_on_assignment` tinyint NOT NULL DEFAULT 1,
                 `sign_on_reassignment` tinyint NOT NULL DEFAULT 1,
                 `sign_on_return` tinyint NOT NULL DEFAULT 0,
@@ -536,6 +584,8 @@ class Config extends CommonDBTM
               'enable_maintenance_signature' => self::DEFAULTS['enable_maintenance_signature'],
               'show_qr_code'       => self::DEFAULTS['show_qr_code'],
               'currency_symbol'    => self::DEFAULTS['currency_symbol'],
+              'preview_watermark_text'    => self::DEFAULTS['preview_watermark_text'],
+              'preview_watermark_opacity' => self::DEFAULTS['preview_watermark_opacity'],
               'sign_on_assignment' => 1,
               'sign_on_reassignment' => 1,
               'managed_itemtypes'  => self::DEFAULTS['managed_itemtypes'],
@@ -597,6 +647,11 @@ class Config extends CommonDBTM
          if (!$DB->fieldExists($table, 'show_qr_code')) {
              $migration->addField($table, 'show_qr_code', 'bool', ['value' => 0, 'after' => 'enable_maintenance_signature']);
              $migration->addField($table, 'currency_symbol', 'string', ['value' => '€', 'after' => 'show_qr_code']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'preview_watermark_text')) {
+             $migration->addField($table, 'preview_watermark_text', 'string', ['value' => 'APERÇU', 'after' => 'currency_symbol']);
+             $migration->addField($table, 'preview_watermark_opacity', 'integer', ['value' => 25, 'after' => 'preview_watermark_text']);
              $migration->migrationOneTable($table);
          }
           // Audit code mort : jamais branchee (aucun formulaire ne la soumet,

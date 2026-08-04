@@ -28,6 +28,22 @@
 
         {# ---------------------------------------------------------------- Général #}
         <div class="tab-pane fade show active" id="tab-general" role="tabpanel">
+          <div class="card card-sm mb-3">
+            <div class="card-body d-flex align-items-center gap-3">
+              <i class="ti ti-brand-github fs-1 text-muted"></i>
+              <div>
+                <div class="fw-bold">{{ __('Version du plugin', 'remise') }}</div>
+                <div class="text-muted small">
+                  {{ __('Version installée', 'remise') }}
+                  <span class="badge bg-blue-lt">v{{ installed_version }}</span>
+                  {% if latest_github_version %}
+                    {{ __('Dernière version sur GitHub', 'remise') }}
+                    <span class="badge {{ latest_github_version != installed_version ? 'bg-orange-lt' : 'bg-green-lt' }}">v{{ latest_github_version }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="mb-3">
             <label class="form-label">{{ __('Nom de l\'expéditeur', 'remise') }}</label>
             <input type="text" name="sender_name" class="form-control" value="{{ config.sender_name|default('') }}">
@@ -207,7 +223,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Symbole de devise', 'remise') }}</label>
+            <label class="form-label">{{ __('Symbole monétaire', 'remise') }}</label>
             <input type="text" name="currency_symbol" class="form-control" style="width: 80px;" maxlength="8" value="{{ config.currency_symbol|default('€') }}">
             <div class="form-text">{{ __('Affiché après le prix sur la fiche PDF (ex: €, $, CHF).', 'remise') }}</div>
           </div>
@@ -245,6 +261,17 @@
             <label class="form-check-label" for="show_qr_code">{{ __('Afficher un QR code sur les fiches PDF', 'remise') }}</label>
             <div class="form-text">{{ __('Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel.', 'remise') }}</div>
           </div>
+          <div class="row">
+            <div class="col-auto mb-3">
+              <label class="form-label">{{ __('Texte du filigrane sur l\'aperçu', 'remise') }}</label>
+              <input type="text" name="preview_watermark_text" class="form-control" maxlength="32" value="{{ config.preview_watermark_text|default('APERÇU') }}">
+            </div>
+            <div class="col-auto mb-3">
+              <label class="form-label">{{ __('Opacité du filigrane (%)', 'remise') }}</label>
+              <input type="number" name="preview_watermark_opacity" min="5" max="100" class="form-control" style="width: 100px;" value="{{ config.preview_watermark_opacity|default(25) }}">
+            </div>
+          </div>
+          <div class="form-text mb-3">{{ __('Affiché uniquement sur l\'aperçu en direct (jamais sur le vrai PDF), pour éviter toute confusion entre les deux.', 'remise') }}</div>
         </div>
 
         {# ---------------------------------------------------------------- Maintenance #}
