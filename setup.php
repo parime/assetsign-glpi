@@ -54,7 +54,7 @@ function plugin_init_remise(): void {
     $purgeHooks = array_fill_keys($manageableItemtypes, 'plugin_remise_item_pre_purge');
     $PLUGIN_HOOKS[Hooks::PRE_ITEM_PURGE]['remise'] = $purgeHooks;
 
-    $PLUGIN_HOOKS['use_massive_action']['remise'] = true;
+    $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['remise'] = true;
 
     // --- Accès direct à la configuration depuis Configuration > Plugins --------------
     // Rend le nom du plugin cliquable dans la liste des plugins (comme les plugins
@@ -151,7 +151,7 @@ function plugin_init_remise(): void {
     ];
 
     if (Plugin::isPluginActive('remise')) {
-        $PLUGIN_HOOKS['add_css']['remise'] = ['css/remise.css'];
+        $PLUGIN_HOOKS[Hooks::ADD_CSS]['remise'] = ['css/remise.css'];
     }
 }
 

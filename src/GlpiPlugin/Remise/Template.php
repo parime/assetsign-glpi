@@ -90,7 +90,11 @@ class Template extends CommonDBTM
            'csrf_token'      => \Session::getNewCSRFToken(),
            // Jeton DEDIE a l'apercu en direct, independant de celui du
            // formulaire lui-meme — cf. commentaire de Config::showConfigForm().
-           'preview_csrf_token' => \Session::getNewCSRFToken(),
+           // `true` (standalone) est OBLIGATOIRE ici : sans lui,
+           // getNewCSRFToken() renvoie le meme jeton que l'appel precedent
+           // (variable globale $CURRENTCSRFTOKEN du coeur GLPI), pas un jeton
+           // independant.
+           'preview_csrf_token' => \Session::getNewCSRFToken(true),
            'default_content' => $defaultContent,
            'preview_html'    => $previewHtml,
        ]);
