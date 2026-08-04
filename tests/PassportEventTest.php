@@ -25,22 +25,6 @@ class PassportEventTest extends RemiseTestCase
         ]));
     }
 
-    /**
-     * Utilisateur de test avec prenom/nom garantis (contrairement au compte
-     * 'glpi' du jeu de test, dont le prenom/nom ne sont pas forcement remplis
-     * sur une instance fraichement installee — constate en CI, absent en local
-     * sur une instance deja manipulee manuellement).
-     */
-    private function createTestUser(string $firstname, string $realname): int
-    {
-        $user = new \User();
-        return (int) $user->add([
-            'name'      => strtolower($firstname) . '.' . strtolower($realname) . '.' . random_int(100000, 999999),
-            'firstname' => $firstname,
-            'realname'  => $realname,
-        ]);
-    }
-
     public function testHandleItemAssignmentRecordsAttributionEvent(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Passport Attribution');
