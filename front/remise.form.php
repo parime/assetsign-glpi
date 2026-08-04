@@ -15,7 +15,13 @@ if (isset($_POST['create_manual'])) {
            (int) ($_POST['users_id'] ?? 0),
            [
                'price'             => $_POST['price'] ?? 0,
-               'sale_date'         => $_POST['sale_date'] ?? date('Y-m-d'),
+               // '?:' et non '??' : le champ <input type="date"> est bien present
+               // dans $_POST meme laisse vide (chaine vide, pas absent) - '??' ne
+               // se declenche que sur null/absent, jamais sur une chaine vide,
+               // laissant alors passer 'sale_date' => '' jusqu'a l'INSERT SQL
+               // (colonne DATE, rejetee par MySQL en mode strict : "Incorrect
+               // date value: ''") - bug reel signale par l'utilisateur.
+               'sale_date'         => $_POST['sale_date'] ?: date('Y-m-d'),
                'beneficiary_type'  => (int) ($_POST['beneficiary_type'] ?? 0),
                'external_name'     => (string) ($_POST['external_name'] ?? ''),
                'external_contact'  => (string) ($_POST['external_contact'] ?? ''),
@@ -81,7 +87,9 @@ if (isset($_POST['update_observations'])) {
 
 if (isset($_POST['update_vente_details'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
-    $remise->updateVenteDetails((float) ($_POST['price'] ?? 0), (string) ($_POST['sale_date'] ?? date('Y-m-d')));
+    // '?:' et non '??' : meme raison que create_manual ci-dessus.
+    $saleDate = (string) ($_POST['sale_date'] ?: date('Y-m-d'));
+    $remise->updateVenteDetails((float) ($_POST['price'] ?? 0), $saleDate);
     Html::back();
 }
 
