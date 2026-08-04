@@ -323,6 +323,10 @@
 </script>
 <script>
   window.REMISE_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
+  // Jeton DEDIE au canal d'apercu en direct, jamais partage avec celui du
+  // formulaire (champ _glpi_csrf_token, reserve au vrai bouton Enregistrer) —
+  // cf. commentaire de Config::showConfigForm().
+  window.REMISE_PREVIEW_CSRF_TOKEN = {{ preview_csrf_token|json_encode|raw }};
 </script>
 <script src="{{ config('root_doc') }}/plugins/remise/js/sign/csrf-queue.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
 <script src="{{ config('root_doc') }}/plugins/remise/js/sign/live-preview.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>

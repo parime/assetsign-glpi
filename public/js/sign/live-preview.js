@@ -10,15 +10,22 @@
  * est surveille dans son ensemble (tous ses champs sont renvoyes tels quels a
  * front/preview.php, qui n'utilise que ceux qu'il connait).
  *
- * window.remiseQueuedFetch (cf. csrf-queue.js, charge juste avant ce script) :
- * indispensable ici, pas juste une precaution — deux frappes rapprochees
- * declenchent chacune un debounce puis un fetch ; sans serialisation, le
- * second peut lire le jeton CSRF AVANT que le premier ne l'ait fait tourner
- * (rotation via l'en-tete X-Remise-Csrf-Token ci-dessous), et se fait rejeter
- * en 403 par Session::checkCSRF() — la reponse d'erreur (page HTML complete)
- * atterrit alors telle quelle dans l'iframe d'apercu. remiseQueuedFetch()
- * serialise les appels et ne construit le corps de la requete (donc ne lit le
- * jeton) qu'au moment reel de l'envoi, jamais au moment du debounce.
+ * Jeton CSRF : ce canal utilise SON PROPRE jeton (window.REMISE_PREVIEW_CSRF_TOKEN,
+ * injecte par la page, cf. Config::showConfigForm()/Template::showForm()),
+ * jamais celui du champ _glpi_csrf_token du formulaire lui-meme. Une premiere
+ * version se contentait de serialiser les appels d'apercu ENTRE EUX
+ * (window.remiseQueuedFetch, cf. csrf-queue.js) tout en continuant a lire/
+ * ecrire le meme champ que le vrai bouton Enregistrer — insuffisant : la
+ * vraie soumission du formulaire est une navigation de page classique,
+ * entierement hors de ce JS et de sa file d'attente, donc jamais serialisee
+ * avec elle. Un appel d'apercu en vol au moment ou l'utilisateur clique
+ * Enregistrer pouvait donc toujours consommer le jeton juste avant, faisant
+ * echouer la vraie sauvegarde en "Accès refusé" (bug reel constate meme
+ * apres ce premier correctif, cf. TROUBLESHOOTING.md). Un jeton totalement
+ * independant, jamais lu ni ecrit dans le DOM du formulaire, elimine cette
+ * course a la racine — remiseQueuedFetch() reste utilisee pour serialiser
+ * les appels d'apercu entre eux (utile independamment de cette course-la),
+ * mais seulement le corps de la requete change, jamais le champ du formulaire.
  */
 (function () {
     'use strict';
@@ -31,6 +38,12 @@
         if (!frame) {
             return;
         }
+
+        // Jeton propre a CE formulaire d'apercu, jamais lu ni ecrit dans le
+        // champ _glpi_csrf_token du formulaire (cf. commentaire d'en-tete) :
+        // une variable JS locale, pas le DOM, pour que le vrai bouton
+        // Enregistrer ne soit jamais affecte par la rotation de ce jeton.
+        var previewToken = window.REMISE_PREVIEW_CSRF_TOKEN || '';
 
         var timer = null;
 
@@ -45,8 +58,8 @@
             // buildOptions n'est appelee par remiseQueuedFetch qu'au moment reel
             // de l'envoi (apres que tout appel precedent en file ait fini de
             // faire tourner le jeton) : construire le FormData ICI, pas avant
-            // l'appel a remiseQueuedFetch, est ce qui garantit que le champ
-            // cache _glpi_csrf_token est lu a jour plutot qu'au moment du debounce.
+            // l'appel a remiseQueuedFetch, est ce qui garantit que previewToken
+            // est lu a jour plutot qu'au moment du debounce.
             function buildOptions() {
                 var data = new FormData(form);
                 // Ne jamais renvoyer un fichier (ex: logo) a chaque frappe : preview.php
@@ -55,6 +68,10 @@
                 form.querySelectorAll('input[type="file"]').forEach(function (fileInput) {
                     data.delete(fileInput.name);
                 });
+                // Remplace le jeton du formulaire (destine au vrai Enregistrer) par
+                // le jeton dedie a l'apercu, quoi que FormData ait recopie depuis
+                // le DOM du champ _glpi_csrf_token.
+                data.set('_glpi_csrf_token', previewToken);
                 return {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -67,12 +84,11 @@
                     // Le jeton CSRF de ce POST est a usage unique (deja consomme par le
                     // pare-feu GLPI) : sans le remplacer ici par celui renvoye en
                     // en-tete, le PROCHAIN appel serait rejete (403) des la frappe suivante.
+                    // Mis a jour uniquement dans cette variable locale — jamais dans le
+                    // DOM du formulaire (cf. commentaire d'en-tete).
                     var freshToken = res.headers.get('X-Remise-Csrf-Token');
                     if (freshToken) {
-                        var tokenInput = form.querySelector('[name="_glpi_csrf_token"]');
-                        if (tokenInput) {
-                            tokenInput.value = freshToken;
-                        }
+                        previewToken = freshToken;
                     }
                     return res.text();
                 })
