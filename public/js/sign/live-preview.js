@@ -94,6 +94,18 @@
                 })
                 .then(function (html) {
                     frame.srcdoc = html;
+                    // Point d'extension optionnel : certains contenus affiches dans
+                    // l'apercu ne viennent pas du serveur et seraient donc perdus a
+                    // chaque rafraichissement (ex: logo pas encore envoye, choisi
+                    // localement via FileReader - cf. config_form.html.twig). Si la
+                    // page en definit un, il est rappele une fois le nouveau contenu
+                    // charge, pour le reappliquer par-dessus.
+                    if (window.REMISE_ON_PREVIEW_REFRESH) {
+                        frame.addEventListener('load', function onLoad() {
+                            frame.removeEventListener('load', onLoad);
+                            window.REMISE_ON_PREVIEW_REFRESH();
+                        });
+                    }
                 })
                 .catch(function () {
                     // Erreur reseau ponctuelle : l'apercu garde simplement son
