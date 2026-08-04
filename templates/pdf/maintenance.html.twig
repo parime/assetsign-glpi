@@ -8,8 +8,11 @@
 </head>
 <body>
 
-{% if logo_data_uri %}
-<div class="header-logo"><img src="{{ logo_data_uri }}" alt=""></div>
+{% if logo_data_uri or company_name %}
+<div class="header-logo">
+  {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="">{% endif %}
+  {% if company_name %}<div class="company-name">{{ company_name }}</div>{% endif %}
+</div>
 {% endif %}
 
 <h1>Fiche de maintenance</h1>

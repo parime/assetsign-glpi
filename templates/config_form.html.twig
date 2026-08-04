@@ -1,3 +1,4 @@
+{% import 'components/form/fields_macros.html.twig' as fields %}
 <div class="row flex-nowrap align-items-start" style="gap: 1rem;">
 <div class="col" style="min-width: 320px;">
 <div class="card">
@@ -9,6 +10,22 @@
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="entities_id" value="{{ entity_id }}">
     </form>
+    {# Une forme cachee par type, portant les champs non visibles (jeton CSRF,
+       id, type, entite, is_default/is_active) : les champs visibles de
+       l'editeur de gabarit integre (macro template_editor plus bas) y sont
+       rattaches via l'attribut HTML5 form="...", jamais imbriques dans le
+       formulaire principal ci-dessous — meme motif que remise-test-email-form
+       (un <form> ne peut pas en contenir un autre en HTML valide). #}
+    {% for type, template in templates %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/template.form.php" id="remise-template-form-{{ type }}" style="display:none;">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ template.fields.id|default(0) }}">
+        <input type="hidden" name="type" value="{{ type }}">
+        <input type="hidden" name="entities_id" value="{{ template.fields.entities_id|default(entity_id) }}">
+        <input type="hidden" name="is_default" value="1">
+        <input type="hidden" name="is_active" value="1">
+      </form>
+    {% endfor %}
     <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/config.php" enctype="multipart/form-data" id="remise-config-form" data-remise-preview-frame="remise-preview-frame">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="entities_id" value="{{ entity_id }}">
@@ -94,6 +111,12 @@
           </div>
 
           <div class="mb-3">
+            <label class="form-label">{{ __('Nom de l\'entreprise', 'remise') }}</label>
+            <input type="text" name="company_name" class="form-control" value="{{ config.company_name|default('') }}">
+            <div class="form-text">{{ __('Optionnel : affiché à côté du logo sur les fiches PDF, en complément (pas en remplacement) du logo.', 'remise') }}</div>
+          </div>
+
+          <div class="mb-3">
             <label class="form-label">{{ __('Lien vers la charte informatique complète', 'remise') }}</label>
             <input type="url" name="charter_url" class="form-control" placeholder="https://intranet.exemple.fr/charte-informatique.pdf" value="{{ config.charter_url|default('') }}">
             <div class="form-text">{{ __('Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types.', 'remise') }}</div>
@@ -132,6 +155,13 @@
             <label class="form-check-label" for="signature_required">{{ __('Signature obligatoire', 'remise') }}</label>
           </div>
 
+          <div class="mb-3 form-check">
+            <input type="hidden" name="protect_pdf" value="0">
+            <input type="checkbox" name="protect_pdf" value="1" class="form-check-input" id="protect_pdf" {{ config.protect_pdf|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="protect_pdf">{{ __('Protéger le PDF (restreindre la copie et l\'édition)', 'remise') }}</label>
+            <div class="form-text">{{ __('Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur qui respecte cette restriction — n\'affecte jamais la possibilité de le consulter ou de l\'imprimer.', 'remise') }}</div>
+          </div>
+
           <hr>
           <h4>{{ __('Types de matériel gérés par le plugin', 'remise') }}</h4>
           <p class="text-muted">{{ __('Décochez un type pour que le plugin n\'agisse jamais dessus, quelle que soit l\'affectation ou l\'État.', 'remise') }}</p>
@@ -145,7 +175,7 @@
 
         {# ---------------------------------------------------------------- Remise #}
         <div class="tab-pane fade" id="tab-handover" role="tabpanel">
-          {{ _self.template_link(0) }}
+          {{ _self.template_editor(0, templates[0], entity_id) }}
           <h4>{{ __('Déclenchement par affectation d\'utilisateur', 'remise') }}</h4>
           <p class="text-muted">{{ __('Basé sur le champ "Utilisateur" du matériel — fonctionne dans la plupart des GLPI.', 'remise') }}</p>
           <div class="mb-3 form-check">
@@ -173,7 +203,7 @@
 
         {# ---------------------------------------------------------------- Restitution #}
         <div class="tab-pane fade" id="tab-return" role="tabpanel">
-          {{ _self.template_link(1) }}
+          {{ _self.template_editor(1, templates[1], entity_id) }}
           <div class="mb-3 form-check">
             <input type="hidden" name="sign_on_return" value="0">
             <input type="checkbox" name="sign_on_return" value="1" class="form-check-input" id="sign_on_return" {{ config.sign_on_return|default(0) ? 'checked' : '' }}>
@@ -193,7 +223,7 @@
 
         {# ---------------------------------------------------------------- Don #}
         <div class="tab-pane fade" id="tab-don" role="tabpanel">
-          {{ _self.template_link(3) }}
+          {{ _self.template_editor(3, templates[3], entity_id) }}
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_don" value="0">
             <input type="checkbox" name="enable_don" value="1" class="form-check-input" id="enable_don" {{ config.enable_don|default(0) ? 'checked' : '' }}>
@@ -214,7 +244,7 @@
 
         {# ---------------------------------------------------------------- Vente #}
         <div class="tab-pane fade" id="tab-vente" role="tabpanel">
-          {{ _self.template_link(4) }}
+          {{ _self.template_editor(4, templates[4], entity_id) }}
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_vente" value="0">
             <input type="checkbox" name="enable_vente" value="1" class="form-check-input" id="enable_vente" {{ config.enable_vente|default(0) ? 'checked' : '' }}>
@@ -306,10 +336,53 @@
 </div>
 </div>
 
-{% macro template_link(type) %}
-  <div class="mb-3 d-flex gap-2">
-    <a href="{{ config('root_doc') }}/plugins/remise/front/template.php?criteria[0][link]=AND&criteria[0][field]=2&criteria[0][searchtype]=equals&criteria[0][value]={{ type }}" class="btn btn-outline-secondary btn-sm">{{ __('Gérer les gabarits de ce type', 'remise') }}</a>
-    <a href="{{ config('root_doc') }}/plugins/remise/front/template.form.php?id=0&type={{ type }}" class="btn btn-outline-secondary btn-sm">{{ __('+ Nouveau gabarit', 'remise') }}</a>
+{# Edition directe du gabarit par defaut de ce type, dans l'onglet lui-meme —
+   remplace l'ancien simple lien de renvoi vers front/template.form.php (cf.
+   ROADMAP.md, "Rapprocher la gestion des gabarits de l'experience du
+   plugin"). Chaque champ est rattache via l'attribut HTML5 form="..." a la
+   forme cachee "remise-template-form-{type}" declaree plus haut (jamais de
+   <form> imbrique dans le formulaire principal, invalide en HTML) : la
+   sauvegarde reste entierement geree par Template::showForm()/CommonDBTM,
+   ce bloc ne fait que rapatrier l'affichage. #}
+{% macro template_editor(type, template, entity_id) %}
+  {% set form_id = 'remise-template-form-' ~ type %}
+  <div class="card card-sm mb-3">
+    <div class="card-body">
+      {% if template.fields.entities_id is defined and template.fields.entities_id != entity_id %}
+        <div class="alert alert-info py-2 px-3 mb-3">
+          {{ __('Ce gabarit est hérité d\'une entité parente : l\'enregistrer ici le modifie pour toutes les entités qui en héritent, pas seulement celle-ci.', 'remise') }}
+        </div>
+      {% endif %}
+
+      <div class="mb-3">
+        <label class="form-label">{{ __('Nom du gabarit', 'remise') }}</label>
+        <input type="text" name="name" form="{{ form_id }}" class="form-control" value="{{ template.fields.name|default('') }}" required>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="hidden" name="include_content" form="{{ form_id }}" value="0">
+        <input type="checkbox" name="include_content" form="{{ form_id }}" value="1" class="form-check-input" id="include_content_{{ type }}" {{ template.fields.include_content|default(1) ? 'checked' : '' }}>
+        <label class="form-check-label" for="include_content_{{ type }}">{{ __('Inclure les conditions générales dans le PDF', 'remise') }}</label>
+      </div>
+      <div class="mb-3">
+        {{ fields.textareaField('content', template.fields.content|default(''), __('Conditions générales (contrat)', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 6, 'additional_attributes': {'form': form_id}}) }}
+        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'remise') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="hidden" name="include_charter" form="{{ form_id }}" value="0">
+        <input type="checkbox" name="include_charter" form="{{ form_id }}" value="1" class="form-check-input" id="include_charter_{{ type }}" {{ template.fields.include_charter|default(1) ? 'checked' : '' }}>
+        <label class="form-check-label" for="include_charter_{{ type }}">{{ __('Inclure la charte informatique dans le PDF', 'remise') }}</label>
+      </div>
+      <div class="mb-3">
+        {{ fields.textareaField('charter_content', template.fields.charter_content|default(''), __('Charte informatique', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 6, 'additional_attributes': {'form': form_id}}) }}
+      </div>
+
+      <div class="d-flex gap-2 align-items-center">
+        <button type="submit" form="{{ form_id }}" name="{{ template.fields.id|default(0) ? 'update' : 'add' }}" class="btn btn-primary btn-sm">{{ __('Enregistrer le gabarit', 'remise') }}</button>
+        <a href="{{ config('root_doc') }}/plugins/remise/front/template.php?criteria[0][link]=AND&criteria[0][field]=2&criteria[0][searchtype]=equals&criteria[0][value]={{ type }}" class="btn btn-outline-secondary btn-sm">{{ __('Gérer tous les gabarits de ce type', 'remise') }}</a>
+      </div>
+    </div>
   </div>
 {% endmacro %}
 
@@ -323,20 +396,26 @@
     if (!frame.contentDocument) {
       return;
     }
-    var img = frame.contentDocument.querySelector('.header-logo img');
+    // .header-logo peut deja exister sans <img> (nom d'entreprise seul, sans
+    // logo, cf. handover.html.twig/maintenance.html.twig) : ne jamais
+    // supprimer tout le wrapper ni supposer que l'img existe deja, sous peine
+    // de perdre le nom d'entreprise ou de planter sur un img.src null.
     var wrapper = frame.contentDocument.querySelector('.header-logo');
+    var img = wrapper ? wrapper.querySelector('img') : null;
     if (dataUrl) {
       if (!wrapper) {
         wrapper = frame.contentDocument.createElement('div');
         wrapper.className = 'header-logo';
-        img = frame.contentDocument.createElement('img');
-        img.alt = '';
-        wrapper.appendChild(img);
         frame.contentDocument.body.insertBefore(wrapper, frame.contentDocument.body.firstChild);
       }
+      if (!img) {
+        img = frame.contentDocument.createElement('img');
+        img.alt = '';
+        wrapper.insertBefore(img, wrapper.firstChild);
+      }
       img.src = dataUrl;
-    } else if (wrapper) {
-      wrapper.remove();
+    } else if (img) {
+      img.remove();
     }
   }
 

@@ -17,8 +17,11 @@
 <div style="position:fixed;top:45%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:64px;font-weight:bold;color:rgba(200,30,30,{{ (watermark_opacity|default(25)) / 100 }});pointer-events:none;z-index:9999;white-space:nowrap;">{{ watermark_text }}</div>
 {% endif %}
 
-{% if logo_data_uri %}
-<div class="header-logo"><img src="{{ logo_data_uri }}" alt=""></div>
+{% if logo_data_uri or company_name %}
+<div class="header-logo">
+  {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="">{% endif %}
+  {% if company_name %}<div class="company-name">{{ company_name }}</div>{% endif %}
+</div>
 {% endif %}
 
 <h1>{{ page_title }}</h1>

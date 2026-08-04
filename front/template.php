@@ -1,10 +1,11 @@
 <?php
 
+use GlpiPlugin\Remise\Remise;
 use GlpiPlugin\Remise\Template;
 
 Session::checkRight(Template::$rightname, READ);
 
-Html::header(Template::getTypeName(2), $_SERVER['PHP_SELF'], 'admin', Template::class);
+Html::header(Template::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Remise::class, Template::class);
 
 // Search::show() seul ne genere aucun lien de creation (cf. TROUBLESHOOTING.md,
 // meme piege que sur les autres intitules de ce plugin).

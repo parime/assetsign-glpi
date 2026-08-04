@@ -17,6 +17,14 @@ class Accessory extends CommonDropdown
        return _n('Accessoire de remise', 'Accessoires de remise', $nb, 'remise');
    }
 
+    /**
+     * Rattache au fil d'Ariane de Remise (menu 'tools') — meme raison que
+     * Template::getSectorizedDetails().
+     */
+   public static function getSectorizedDetails(): array {
+       return ['tools', Remise::class, self::class];
+   }
+
    public static function install(Migration $migration): void {
        global $DB;
        $table = self::getTable();

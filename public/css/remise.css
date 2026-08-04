@@ -67,6 +67,14 @@
     background: rgba(210, 40, 40, 0.9);
 }
 
+/* Affiche optimistement (avant confirmation serveur, cf. damage-annotation.js) :
+   opacite reduite + pas de curseur "grab", tant que la regeneration du PDF
+   non signe (declenchee par l'ajout) n'a pas confirme le repere. */
+.damage-marker-pending {
+    opacity: 0.55;
+    cursor: default;
+}
+
 .damage-marker-panel {
     margin-top: 6px;
     padding: 8px;

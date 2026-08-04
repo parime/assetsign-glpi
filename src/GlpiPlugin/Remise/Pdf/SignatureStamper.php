@@ -2,6 +2,8 @@
 
 namespace GlpiPlugin\Remise\Pdf;
 
+use GlpiPlugin\Remise\Config;
+
 /**
  * Produit le PDF final signe : plutot que de superposer une image sur un PDF
  * deja fige (calque via FPDI, sensible au positionnement en points/pixels),
@@ -25,7 +27,8 @@ final class SignatureStamper
            'signed_at'       => $signedAt,
        ]);
 
-       $binary = $this->builder->renderPdf($html);
+       $protect = (bool) Config::getForEntity((int) $remise->fields['entities_id'])->fields['protect_pdf'];
+       $binary = $this->builder->renderPdf($html, $protect);
        $hash = hash('sha256', $binary);
 
        $path = GLPI_TMP_DIR . '/' . uniqid('remise_signed_', true) . '.pdf';
