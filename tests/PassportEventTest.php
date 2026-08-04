@@ -25,21 +25,38 @@ class PassportEventTest extends RemiseTestCase
         ]));
     }
 
+    /**
+     * Utilisateur de test avec prenom/nom garantis (contrairement au compte
+     * 'glpi' du jeu de test, dont le prenom/nom ne sont pas forcement remplis
+     * sur une instance fraichement installee — constate en CI, absent en local
+     * sur une instance deja manipulee manuellement).
+     */
+    private function createTestUser(string $firstname, string $realname): int
+    {
+        $user = new \User();
+        return (int) $user->add([
+            'name'      => strtolower($firstname) . '.' . strtolower($realname) . '.' . random_int(100000, 999999),
+            'firstname' => $firstname,
+            'realname'  => $realname,
+        ]);
+    }
+
     public function testHandleItemAssignmentRecordsAttributionEvent(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Passport Attribution');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Attribution');
+        $userId = $this->createTestUser('Jean', 'Dupont');
 
         $computer->oldvalues = ['users_id' => 0];
-        $computer->fields['users_id'] = 2;
+        $computer->fields['users_id'] = $userId;
         Remise::handleItemAssignment($computer);
 
         $events = $this->eventsFor('Computer', $computer->getID());
         $this->assertCount(1, $events);
         $event = reset($events);
         $this->assertSame(PassportEvent::TYPE_ATTRIBUTION, (int) $event['event_type']);
-        $this->assertSame(2, (int) $event['users_id']);
-        $this->assertNotSame('', $event['snapshot_name']);
+        $this->assertSame($userId, (int) $event['users_id']);
+        $this->assertSame('Jean Dupont', $event['snapshot_name']);
         $this->assertSame(Remise::class, $event['source_itemtype']);
     }
 
@@ -82,27 +99,29 @@ class PassportEventTest extends RemiseTestCase
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Passport Lives');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Lives');
+        $firstUserId = $this->createTestUser('Jean', 'Dupont');
+        $secondUserId = $this->createTestUser('Marie', 'Martin');
 
         $computer->oldvalues = ['users_id' => 0];
-        $computer->fields['users_id'] = 2;
+        $computer->fields['users_id'] = $firstUserId;
         Remise::handleItemAssignment($computer);
 
         // Reaffectation au MEME utilisateur : ne doit pas ouvrir une nouvelle vie.
         $computer->getFromDB($computer->getID());
-        $computer->oldvalues = ['users_id' => 2];
-        $computer->fields['users_id'] = 2;
+        $computer->oldvalues = ['users_id' => $firstUserId];
+        $computer->fields['users_id'] = $firstUserId;
         Remise::handleItemAssignment($computer);
 
         $computer->getFromDB($computer->getID());
-        $computer->oldvalues = ['users_id' => 2];
-        $computer->fields['users_id'] = 4;
+        $computer->oldvalues = ['users_id' => $firstUserId];
+        $computer->fields['users_id'] = $secondUserId;
         Remise::handleItemAssignment($computer);
 
         $lives = PassportEvent::getLivesForItem('Computer', $computer->getID());
-        $this->assertCount(2, $lives, '2 beneficiaires distincts (2 puis 4) doivent produire 2 vies, pas 3.');
-        $this->assertSame(2, $lives[0]['users_id']);
+        $this->assertCount(2, $lives, '2 beneficiaires distincts doivent produire 2 vies, pas 3.');
+        $this->assertSame($firstUserId, $lives[0]['users_id']);
         $this->assertNotNull($lives[0]['end'], 'La premiere vie doit avoir ete cloturee par le debut de la seconde.');
-        $this->assertSame(4, $lives[1]['users_id']);
+        $this->assertSame($secondUserId, $lives[1]['users_id']);
         $this->assertNull($lives[1]['end'], 'La vie en cours ne doit pas avoir de date de fin.');
     }
 
@@ -112,9 +131,10 @@ class PassportEventTest extends RemiseTestCase
 
         $entityId = $this->createTestEntity(0, 'PHPUnit Passport Anonymize');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Anonymize');
+        $userId = $this->createTestUser('Jean', 'Dupont');
 
         $computer->oldvalues = ['users_id' => 0];
-        $computer->fields['users_id'] = 2;
+        $computer->fields['users_id'] = $userId;
         Remise::handleItemAssignment($computer);
 
         $events = $this->eventsFor('Computer', $computer->getID());
@@ -130,7 +150,7 @@ class PassportEventTest extends RemiseTestCase
         $this->assertSame('', $event->fields['snapshot_name']);
         $this->assertSame('', $event->fields['snapshot_email']);
         $this->assertSame(1, (int) $event->fields['is_anonymized']);
-        $this->assertSame(2, (int) $event->fields['users_id'], 'users_id ne doit jamais etre efface par l\'anonymisation.');
+        $this->assertSame($userId, (int) $event->fields['users_id'], 'users_id ne doit jamais etre efface par l\'anonymisation.');
     }
 
     public function testAnonymizeOldSnapshotsSkipsWhenRetentionDisabled(): void
@@ -140,9 +160,10 @@ class PassportEventTest extends RemiseTestCase
         $entityId = $this->createTestEntity(0, 'PHPUnit Passport Anonymize Disabled');
         Config::upsertForEntity($entityId, ['passport_retention_years' => 0]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Anonymize Disabled');
+        $userId = $this->createTestUser('Jean', 'Dupont');
 
         $computer->oldvalues = ['users_id' => 0];
-        $computer->fields['users_id'] = 2;
+        $computer->fields['users_id'] = $userId;
         Remise::handleItemAssignment($computer);
 
         $events = $this->eventsFor('Computer', $computer->getID());
