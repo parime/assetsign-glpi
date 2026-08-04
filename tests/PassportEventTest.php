@@ -1,0 +1,158 @@
+<?php
+
+namespace GlpiPlugin\Remise\Tests;
+
+use GlpiPlugin\Remise\Config;
+use GlpiPlugin\Remise\Maintenance;
+use GlpiPlugin\Remise\PassportEvent;
+use GlpiPlugin\Remise\Remise;
+
+/**
+ * Couvre le socle du Passeport materiel (cf. ROADMAP.md, "Vision produit a long terme") :
+ * enregistrement d'evenements depuis Remise/Maintenance (jamais duplique, jamais reecrit
+ * apres coup), regroupement en "vies", et anonymisation du snapshot beneficiaire au-dela du
+ * delai configure.
+ */
+class PassportEventTest extends RemiseTestCase
+{
+    private function eventsFor(string $itemtype, int $items_id): array
+    {
+        global $DB;
+        return iterator_to_array($DB->request([
+            'FROM'  => PassportEvent::getTable(),
+            'WHERE' => ['itemtype' => $itemtype, 'items_id' => $items_id],
+            'ORDER' => 'date ASC',
+        ]));
+    }
+
+    public function testHandleItemAssignmentRecordsAttributionEvent(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Passport Attribution');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Attribution');
+
+        $computer->oldvalues = ['users_id' => 0];
+        $computer->fields['users_id'] = 2;
+        Remise::handleItemAssignment($computer);
+
+        $events = $this->eventsFor('Computer', $computer->getID());
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertSame(PassportEvent::TYPE_ATTRIBUTION, (int) $event['event_type']);
+        $this->assertSame(2, (int) $event['users_id']);
+        $this->assertNotSame('', $event['snapshot_name']);
+        $this->assertSame(Remise::class, $event['source_itemtype']);
+    }
+
+    public function testCreateManualDonRecordsDonEventWithExternalSnapshot(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Passport Don');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Don');
+
+        Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 0, [
+            'beneficiary_type' => Remise::BENEFICIARY_EXTERNAL,
+            'external_name'    => 'Association Externe',
+            'external_contact' => 'contact@externe.example',
+        ]);
+
+        $events = $this->eventsFor('Computer', $computer->getID());
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertSame(PassportEvent::TYPE_DON, (int) $event['event_type']);
+        $this->assertSame(1, (int) $event['snapshot_is_external']);
+        $this->assertSame('Association Externe', $event['snapshot_name']);
+        $this->assertSame(0, (int) $event['users_id']);
+    }
+
+    public function testCreateWithChecklistRecordsMaintenanceEventWithoutSnapshot(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Passport Maintenance');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Maintenance');
+
+        Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], 'Contrôle PHPUnit');
+
+        $events = $this->eventsFor('Computer', $computer->getID());
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertSame(PassportEvent::TYPE_MAINTENANCE, (int) $event['event_type']);
+        $this->assertSame('', $event['snapshot_name']);
+        $this->assertSame(Maintenance::class, $event['source_itemtype']);
+    }
+
+    public function testGetLivesForItemGroupsConsecutiveAttributionsBySameUser(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Passport Lives');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Lives');
+
+        $computer->oldvalues = ['users_id' => 0];
+        $computer->fields['users_id'] = 2;
+        Remise::handleItemAssignment($computer);
+
+        // Reaffectation au MEME utilisateur : ne doit pas ouvrir une nouvelle vie.
+        $computer->getFromDB($computer->getID());
+        $computer->oldvalues = ['users_id' => 2];
+        $computer->fields['users_id'] = 2;
+        Remise::handleItemAssignment($computer);
+
+        $computer->getFromDB($computer->getID());
+        $computer->oldvalues = ['users_id' => 2];
+        $computer->fields['users_id'] = 4;
+        Remise::handleItemAssignment($computer);
+
+        $lives = PassportEvent::getLivesForItem('Computer', $computer->getID());
+        $this->assertCount(2, $lives, '2 beneficiaires distincts (2 puis 4) doivent produire 2 vies, pas 3.');
+        $this->assertSame(2, $lives[0]['users_id']);
+        $this->assertNotNull($lives[0]['end'], 'La premiere vie doit avoir ete cloturee par le debut de la seconde.');
+        $this->assertSame(4, $lives[1]['users_id']);
+        $this->assertNull($lives[1]['end'], 'La vie en cours ne doit pas avoir de date de fin.');
+    }
+
+    public function testAnonymizeOldSnapshotsClearsNameAndEmailButKeepsUsersId(): void
+    {
+        global $DB;
+
+        $entityId = $this->createTestEntity(0, 'PHPUnit Passport Anonymize');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Anonymize');
+
+        $computer->oldvalues = ['users_id' => 0];
+        $computer->fields['users_id'] = 2;
+        Remise::handleItemAssignment($computer);
+
+        $events = $this->eventsFor('Computer', $computer->getID());
+        $eventId = (int) reset($events)['id'];
+
+        // Recule la date de l'evenement au-dela du delai par defaut (3 ans).
+        $DB->update(PassportEvent::getTable(), ['date' => date('Y-m-d H:i:s', strtotime('-4 years'))], ['id' => $eventId]);
+
+        PassportEvent::anonymizeOldSnapshots();
+
+        $event = new PassportEvent();
+        $event->getFromDB($eventId);
+        $this->assertSame('', $event->fields['snapshot_name']);
+        $this->assertSame('', $event->fields['snapshot_email']);
+        $this->assertSame(1, (int) $event->fields['is_anonymized']);
+        $this->assertSame(2, (int) $event->fields['users_id'], 'users_id ne doit jamais etre efface par l\'anonymisation.');
+    }
+
+    public function testAnonymizeOldSnapshotsSkipsWhenRetentionDisabled(): void
+    {
+        global $DB;
+
+        $entityId = $this->createTestEntity(0, 'PHPUnit Passport Anonymize Disabled');
+        Config::upsertForEntity($entityId, ['passport_retention_years' => 0]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Anonymize Disabled');
+
+        $computer->oldvalues = ['users_id' => 0];
+        $computer->fields['users_id'] = 2;
+        Remise::handleItemAssignment($computer);
+
+        $events = $this->eventsFor('Computer', $computer->getID());
+        $eventId = (int) reset($events)['id'];
+        $DB->update(PassportEvent::getTable(), ['date' => date('Y-m-d H:i:s', strtotime('-20 years'))], ['id' => $eventId]);
+
+        PassportEvent::anonymizeOldSnapshots();
+
+        $event = new PassportEvent();
+        $event->getFromDB($eventId);
+        $this->assertNotSame('', $event->fields['snapshot_name'], 'Delai desactive (0) : ne doit jamais anonymiser.');
+    }
+}

@@ -39,6 +39,7 @@
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-vente" type="button" role="tab" data-remise-preview-type="4">{{ __('Vente', 'remise') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-remise-preview-type="0">{{ __('Compléments', 'remise') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-remise-preview-type="0">{{ __('Maintenance', 'remise') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-remise-preview-type="0">{{ __('Passeport matériel', 'remise') }}</button></li>
       </ul>
 
       <div class="tab-content">
@@ -315,6 +316,35 @@
           </div>
           <a href="{{ config('root_doc') }}/front/dropdown.php?itemtype=GlpiPlugin%5CRemise%5CMaintenanceChecklistItem" class="btn btn-outline-secondary">{{ __('Gérer les points de contrôle', 'remise') }}</a>
           <a href="{{ config('root_doc') }}/plugins/remise/front/maintenance.php" class="btn btn-outline-secondary">{{ __('Voir les fiches de maintenance', 'remise') }}</a>
+        </div>
+
+        {# ---------------------------------------------------------------- Passeport matériel #}
+        <div class="tab-pane fade" id="tab-passport" role="tabpanel">
+          <p class="text-muted">{{ __('Le Passeport matériel agrège en lecture seule les événements des onglets Remise/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel onglet du matériel concerné.', 'remise') }}</p>
+
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_passport" value="0">
+            <input type="checkbox" name="enable_passport" value="1" class="form-check-input" id="enable_passport" {{ config.enable_passport|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_passport">{{ __('Activer le Passeport matériel', 'remise') }}</label>
+            <div class="form-text">{{ __('Désactivé : l\'onglet disparaît et aucun nouvel événement n\'est enregistré. Les événements déjà enregistrés ne sont jamais supprimés — ils réapparaissent si vous réactivez.', 'remise') }}</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">{{ __('Anonymiser l\'identité des bénéficiaires après (années, 0 = jamais)', 'remise') }}</label>
+            <input type="number" name="passport_retention_years" class="form-control" style="width: 140px;" value="{{ config.passport_retention_years|default(3) }}" min="0">
+            <div class="form-text">{{ __('Passé ce délai, le nom et l\'e-mail du bénéficiaire sont retirés des événements du Passeport matériel (l\'événement et sa date restent visibles). N\'affecte jamais les fiches de remise/restitution elles-mêmes.', 'remise') }}</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">{{ __('Types d\'événement affichés dans la frise', 'remise') }}</label>
+            <div class="form-text mb-2">{{ __('Décocher un type ne supprime rien : il n\'est plus qu\'affiché dans la frise, tant qu\'il reste décoché.', 'remise') }}</div>
+            {% for value, label in passport_type_labels %}
+              <div class="form-check">
+                <input type="checkbox" name="passport_visible_types[]" value="{{ value }}" class="form-check-input" id="passport_type_{{ value }}" {{ value in passport_visible_types ? 'checked' : '' }}>
+                <label class="form-check-label" for="passport_type_{{ value }}">{{ label }}</label>
+              </div>
+            {% endfor %}
+          </div>
         </div>
 
       </div>
