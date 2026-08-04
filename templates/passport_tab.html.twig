@@ -1,0 +1,55 @@
+<div class="passport-summary mb-4">
+  <h4>{{ __('Vies du matériel', 'remise') }} <span class="badge bg-blue-lt">{{ lives|length }}</span></h4>
+  {% if lives|length %}
+    <ul class="passport-lives-list">
+      {% for life in lives %}
+        <li>
+          <strong>{{ life.name }}</strong>
+          {% if life.is_external %}<span class="badge bg-secondary-lt ms-1">{{ __('externe', 'remise') }}</span>{% endif %}
+          <span class="text-muted small ms-2">
+            {{ life.start|formatted_date }} → {{ life.end ? life.end|formatted_date : __('aujourd\'hui', 'remise') }}
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-muted">{{ __('Aucune attribution enregistrée pour le moment.', 'remise') }}</p>
+  {% endif %}
+</div>
+
+<h4>{{ __('Historique', 'remise') }}</h4>
+{% if events|length %}
+  <div class="passport-timeline">
+    {% for event in events %}
+      <div class="passport-timeline-item">
+        <div class="passport-timeline-marker">
+          {% if loop.first %}
+            <span class="passport-timeline-dot"></span>
+          {% else %}
+            <i class="ti ti-circle-check passport-timeline-check"></i>
+          {% endif %}
+        </div>
+        <div class="passport-timeline-body">
+          <div class="passport-timeline-date text-muted small">{{ event.date|relative_datetime }}</div>
+          <div class="passport-timeline-content">
+            <strong>{{ event.type_label }}</strong>
+            {% if event.snapshot_name %}
+              — {{ event.snapshot_name }}
+              {% if event.snapshot_is_external %}<span class="badge bg-secondary-lt">{{ __('externe', 'remise') }}</span>{% endif %}
+            {% elseif event.is_anonymized %}
+              — <span class="text-muted">{{ __('bénéficiaire anonymisé', 'remise') }}</span>
+            {% endif %}
+            {% if event.comment %}
+              <div class="text-muted small">{{ event.comment }}</div>
+            {% endif %}
+            {% if event.source_url %}
+              <div><a href="{{ event.source_url }}">{{ __('Voir la fiche', 'remise') }}</a></div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">{{ __('Aucun événement enregistré pour le moment.', 'remise') }}</p>
+{% endif %}

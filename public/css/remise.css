@@ -120,3 +120,66 @@
 #remise-config-form button[name="update"] {
     margin-bottom: 60px;
 }
+
+/* Onglet Passeport materiel — frise verticale reprenant le langage visuel du
+   panneau "Dates"/historique natif d'un ticket GLPI (ligne verticale, cercle
+   avec coche pour un evenement passe, point plein pour le plus recent),
+   demande explicite de l'utilisateur plutot qu'un style "Notion/Linear"
+   generique. */
+.passport-lives-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.passport-lives-list li {
+    padding: 4px 0;
+}
+
+.passport-timeline {
+    position: relative;
+    padding-left: 8px;
+}
+
+.passport-timeline-item {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    padding-bottom: 20px;
+}
+
+.passport-timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 20px;
+    bottom: 0;
+    width: 1px;
+    background: #d6dbe1;
+}
+
+.passport-timeline-marker {
+    flex: 0 0 20px;
+    display: flex;
+    justify-content: center;
+    padding-top: 1px;
+}
+
+.passport-timeline-check {
+    color: #6b7a86;
+    font-size: 1.1rem;
+}
+
+.passport-timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #0d6efd;
+    display: inline-block;
+    margin-top: 2px;
+}
+
+.passport-timeline-date {
+    white-space: nowrap;
+    margin-bottom: 2px;
+}

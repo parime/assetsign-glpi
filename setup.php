@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_REMISE_VERSION', '1.13.6');
+define('PLUGIN_REMISE_VERSION', '1.14.0');
 define('PLUGIN_REMISE_MIN_GLPI', '11.0.0');
 define('PLUGIN_REMISE_MAX_GLPI', '11.9.99');
 define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
@@ -109,6 +109,13 @@ function plugin_init_remise(): void {
     // materiels geres, comme Remise, pour rester decouvrable depuis la fiche
     // du materiel en plus de son propre menu (ci-dessous).
     Plugin::registerClass(\GlpiPlugin\Remise\Maintenance::class, [
+        'addtabon' => $manageableItemtypes,
+    ]);
+    // Passeport materiel : agrege Remise + Maintenance en lecture seule (cf.
+    // PassportEvent::recordForRemise()/recordForMaintenance()), son propre
+    // onglet sur les memes materiels geres — jamais sur 'User', le passeport
+    // suit le materiel, pas la personne.
+    Plugin::registerClass(\GlpiPlugin\Remise\PassportEvent::class, [
         'addtabon' => $manageableItemtypes,
     ]);
 
