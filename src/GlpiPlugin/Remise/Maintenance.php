@@ -38,6 +38,39 @@ class Maintenance extends CommonDBTM
        return 'ti ti-tool';
    }
 
+    /**
+     * Enregistre sous le secteur 'tools' (Outils), pas 'admin' — meme raison
+     * que Remise::getSectorizedDetails().
+     */
+   public static function getSectorizedDetails(): array {
+       return ['tools', self::class];
+   }
+
+    /**
+     * Etend le menu par defaut avec une entree pour MaintenanceChecklistItem —
+     * meme raison que Remise::getMenuContent() pour Template/Accessory.
+     */
+   public static function getMenuContent(): array {
+       $menu = parent::getMenuContent();
+      if (!$menu) {
+          return $menu;
+      }
+
+      if (MaintenanceChecklistItem::canView()) {
+          $menu['options'][MaintenanceChecklistItem::class] = [
+              'title' => MaintenanceChecklistItem::getTypeName(Session::getPluralNumber()),
+              'page'  => MaintenanceChecklistItem::getSearchURL(false),
+              'icon'  => MaintenanceChecklistItem::getIcon(),
+              'links' => [
+                  'search' => MaintenanceChecklistItem::getSearchURL(false),
+                  'add'    => MaintenanceChecklistItem::getFormURL(false),
+              ],
+          ];
+      }
+
+       return $menu;
+   }
+
     // rawSearchOptions() (pas getSearchOptions(), `final` dans CommonDBTM) :
     // meme correctif que Remise::rawSearchOptions(), meme cause, meme
     // symptome (liste "Fiches de maintenance" sans colonnes ni en-tetes).

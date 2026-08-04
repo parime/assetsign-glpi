@@ -110,6 +110,58 @@ class Remise extends CommonDBTM
    }
 
     /**
+     * Enregistre sous le secteur 'tools' (Outils), pas 'admin' (cf.
+     * Hooks::MENU_TOADD dans setup.php) : sans cette declaration, tout code
+     * coeur GLPI qui construit le fil d'Ariane via getHeaderParameters()
+     * (cf. CommonGLPI::getHeaderParameters(), appelee par
+     * Glpi\Controller\GenericListController pour les listes d'intitules)
+     * chercherait Remise dans le secteur 'admin', ou elle n'existe pas.
+     */
+   public static function getSectorizedDetails(): array {
+       return ['tools', self::class];
+   }
+
+    /**
+     * Etend le menu par defaut (recherche/ajout de Remise) avec des entrees
+     * pour Template et Accessory : sans "options", le fil d'Ariane de ces
+     * deux intitules (aujourd'hui geres via Configuration > Intitulés) ne
+     * peut jamais afficher de segment "Gabarits de remise"/"Accessoires de
+     * remise" — cf. templates/layout/parts/breadcrumbs.html.twig du coeur,
+     * qui lit exactement menu[sector]['content'][item]['options'][option].
+     */
+   public static function getMenuContent(): array {
+       $menu = parent::getMenuContent();
+      if (!$menu) {
+          return $menu;
+      }
+
+      if (Template::canView()) {
+          $menu['options'][Template::class] = [
+              'title' => Template::getTypeName(Session::getPluralNumber()),
+              'page'  => Template::getSearchURL(false),
+              'icon'  => Template::getIcon(),
+              'links' => [
+                  'search' => Template::getSearchURL(false),
+                  'add'    => Template::getFormURL(false),
+              ],
+          ];
+      }
+      if (Accessory::canView()) {
+          $menu['options'][Accessory::class] = [
+              'title' => Accessory::getTypeName(Session::getPluralNumber()),
+              'page'  => Accessory::getSearchURL(false),
+              'icon'  => Accessory::getIcon(),
+              'links' => [
+                  'search' => Accessory::getSearchURL(false),
+                  'add'    => Accessory::getFormURL(false),
+              ],
+          ];
+      }
+
+       return $menu;
+   }
+
+    /**
      * Nommee rawSearchOptions() (pas getSearchOptions(), qui n'existe pas dans
      * l'API de recherche de GLPI 11) : CommonDBTM::searchOptions() — la
      * methode reellement appelee par Search::getOptions() — est declaree

@@ -1,10 +1,11 @@
 <?php
 
+use GlpiPlugin\Remise\Maintenance;
 use GlpiPlugin\Remise\MaintenanceChecklistItem;
 
 Session::checkRight(MaintenanceChecklistItem::$rightname, READ);
 
-Html::header(MaintenanceChecklistItem::getTypeName(2), $_SERVER['PHP_SELF'], 'admin', MaintenanceChecklistItem::class);
+Html::header(MaintenanceChecklistItem::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Maintenance::class, MaintenanceChecklistItem::class);
 
 // Search::show() seul ne genere aucun lien de creation (cf. TROUBLESHOOTING.md,
 // meme piege que sur les autres intitules de ce plugin).

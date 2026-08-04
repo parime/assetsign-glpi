@@ -31,7 +31,7 @@ foreach (['include_content', 'include_charter', 'enable_observations', 'enable_d
        $overrides[$boolField] = $_POST[$boolField] === '1';
    }
 }
-foreach (['content', 'charter_content', 'charter_url', 'currency_symbol', 'preview_watermark_text', 'preview_watermark_opacity'] as $textField) {
+foreach (['content', 'charter_content', 'charter_url', 'company_name', 'currency_symbol', 'preview_watermark_text', 'preview_watermark_opacity'] as $textField) {
    if (isset($_POST[$textField])) {
        $overrides[$textField] = (string) $_POST[$textField];
    }

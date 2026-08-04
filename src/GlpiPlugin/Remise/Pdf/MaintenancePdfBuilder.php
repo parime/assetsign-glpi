@@ -36,7 +36,8 @@ final class MaintenancePdfBuilder
      */
    public function build(Maintenance $maintenance, ?string $signatureImage = null, ?string $signedAt = null): array {
        $html = $this->renderHtml($maintenance, $signatureImage, $signedAt);
-       $binary = $this->renderPdf($html);
+       $protect = (bool) Config::getForEntity((int) $maintenance->fields['entities_id'])->fields['protect_pdf'];
+       $binary = $this->renderPdf($html, $protect);
        $hash = $signatureImage !== null ? hash('sha256', $binary) : null;
 
        return [
@@ -65,6 +66,7 @@ final class MaintenancePdfBuilder
            'signature_image'     => $signatureImage,
            'signed_at'           => $signedAt,
            'logo_data_uri'       => $this->getLogoDataUri((int) $maintenance->fields['entities_id']),
+           'company_name'        => $config->fields['company_name'] ?: null,
            'qr_data_uri'         => $qrDataUri,
            'document_title'      => $maintenance->getDocumentTitle(),
        ]);

@@ -1,6 +1,7 @@
 <?php
 
 use GlpiPlugin\Remise\Config;
+use GlpiPlugin\Remise\Remise;
 
 Session::checkRight(Config::$rightname, READ);
 
@@ -48,7 +49,7 @@ if (isset($_POST['send_test_email'])) {
 // affiche/edite la configuration de l'entite active de la session.
 $entities_id = (int) ($_GET['entities_id'] ?? Session::getActiveEntity());
 
-Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'admin', Config::class);
+Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'tools', Remise::class);
 
 Config::showConfigForm($entities_id);
 
