@@ -78,10 +78,13 @@
 
         <div class="col-auto">
           {% for value, label in manual_types %}
-            <button type="submit" class="btn btn-secondary remise-manual-type-btn" data-type="{{ value }}">
+            <button type="button" class="btn btn-secondary remise-manual-type-btn" data-type="{{ value }}">
               {{ __('Créer une fiche de %s', 'remise')|format(label|lower) }}
             </button>
           {% endfor %}
+          <button type="submit" class="btn btn-primary remise-manual-submit-btn" style="display: none;">
+            {{ __('Valider', 'remise') }}
+          </button>
         </div>
       </form>
       <script>
@@ -92,19 +95,29 @@
           var internalFields = form.querySelectorAll('.remise-manual-internal-field');
           var externalFields = form.querySelectorAll('.remise-manual-external-field');
           var beneficiaryRadios = form.querySelectorAll('input[name="beneficiary_type"]');
+          var typeButtons = form.querySelectorAll('.remise-manual-type-btn');
+          var submitBtn = form.querySelector('.remise-manual-submit-btn');
 
           function toggleVenteFields() {
             var isVente = typeInput.value === '{{ type_vente }}';
             venteFields.forEach(function (el) { el.style.display = isVente ? '' : 'none'; });
           }
 
-          // Chaque bouton "Créer une fiche de X" fixe le type AVANT la soumission
-          // (au lieu d'un menu déroulant séparé) : un bouton par type disponible
-          // est plus explicite qu'un menu générique + un unique bouton "Créer".
-          form.querySelectorAll('.remise-manual-type-btn').forEach(function (btn) {
+          // Chaque bouton "Créer une fiche de X" fixe le type et révèle les
+          // champs à compléter (prix, date, bénéficiaire externe...), SANS
+          // soumettre le formulaire : type="button", pas "submit". Avant ce
+          // correctif, le bouton était lui-même de type submit, ce qui créait
+          // la fiche dès le premier clic, avant même que ces champs ne soient
+          // visibles à l'écran - bug réel signalé par l'utilisateur (fiche de
+          // vente enregistrée avec un prix à 0 et la date du jour, sans qu'il
+          // ait pu saisir quoi que ce soit). Un unique bouton "Valider",
+          // révélé seulement après le choix d'un type, soumet réellement.
+          typeButtons.forEach(function (btn) {
             btn.addEventListener('click', function () {
               typeInput.value = btn.dataset.type;
+              typeButtons.forEach(function (b) { b.classList.toggle('active', b === btn); });
               toggleVenteFields();
+              submitBtn.style.display = '';
             });
           });
 
