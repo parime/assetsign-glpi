@@ -88,6 +88,9 @@ class Template extends CommonDBTM
            'item'            => $this,
            'types'           => Remise::getTypes(),
            'csrf_token'      => \Session::getNewCSRFToken(),
+           // Jeton DEDIE a l'apercu en direct, independant de celui du
+           // formulaire lui-meme — cf. commentaire de Config::showConfigForm().
+           'preview_csrf_token' => \Session::getNewCSRFToken(),
            'default_content' => $defaultContent,
            'preview_html'    => $previewHtml,
        ]);

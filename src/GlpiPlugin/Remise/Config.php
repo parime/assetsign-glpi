@@ -89,6 +89,19 @@ class Config extends CommonDBTM
            'config'          => $config->fields,
            'entity_id'       => $entities_id,
            'csrf_token'      => \Session::getNewCSRFToken(),
+           // Jeton CSRF DEDIE au canal d'apercu en direct (live-preview.js),
+           // totalement independant de celui du formulaire lui-meme
+           // (ci-dessus, lu par le vrai bouton Enregistrer). Les deux sont a
+           // usage unique : les faire cohabiter dans le MEME champ DOM fait
+           // echouer l'un des deux en "Accès refusé" des qu'un appel
+           // d'apercu en vol (case cochee, logo choisi...) consomme le jeton
+           // juste avant que l'utilisateur ne clique Enregistrer — bug reel
+           // persistant (constate encore apres une premiere tentative de
+           // correctif qui se contentait de serialiser les appels d'apercu
+           // ENTRE EUX sans les decoupler du vrai formulaire, cf.
+           // TROUBLESHOOTING.md). Un jeton separe, jamais lu ni ecrit dans le
+           // DOM du formulaire, elimine la course a la racine.
+           'preview_csrf_token' => \Session::getNewCSRFToken(),
            'preview_html'    => $previewHtml,
            // Seul "canvas" est reellement implemente (cf. Provider\ProviderFactory) : Yousign et
            // DocuSeal ont ete retires du choix pour ne pas laisser un admin selectionner un
