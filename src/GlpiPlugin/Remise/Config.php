@@ -163,7 +163,20 @@ class Config extends CommonDBTM
       }
 
        $tmpName = uniqid('remise_logo_', true) . '.' . $extension;
-      if (!move_uploaded_file($file['tmp_name'], GLPI_TMP_DIR . '/' . $tmpName)) {
+       // copy() (pas move_uploaded_file()) : GLPI 11 reconstruit en interne un
+       // objet Symfony Request depuis $_FILES a certains points de la requete
+       // (Session::isCron(), appele entre autres par Session::addMessageAfterRedirect()
+       // plus loin dans Document::add()) — cette reconstruction tardive tente de
+       // revalider le fichier a son chemin ORIGINAL ($file['tmp_name']). Le
+       // deplacer avec move_uploaded_file() le fait disparaitre de ce chemin
+       // avant cette revalidation, provoquant une exception fatale non rattrapee
+       // ("The file ... does not exist") — bug reel signale par l'utilisateur
+       // (page d'erreur generique sans trace, 500 a l'enregistrement du logo).
+       // copy() laisse le fichier original en place (purge normalement par PHP
+       // en fin de requete) : is_uploaded_file() a deja valide juste au-dessus
+       // qu'il s'agit bien d'un upload legitime, copy() ne recree donc pas le
+       // risque que cette verification existe pour ecarter.
+      if (!copy($file['tmp_name'], GLPI_TMP_DIR . '/' . $tmpName)) {
           \Session::addMessageAfterRedirect(__('Échec de l\'envoi du logo.', 'remise'), false, ERROR);
           return 0;
       }
