@@ -1,6 +1,6 @@
 <root>
    <name>Remise &amp; Signature</name>
-   <key>remise</key>
+   <key>remise_signature</key>
    <state>beta</state> <!-- stable | unstable | beta | alpha -->
    <logo>https://raw.githubusercontent.com/parime/remise-glpi/main/logo-40.png</logo>
    <description>
