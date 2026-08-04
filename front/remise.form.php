@@ -1,6 +1,9 @@
 <?php
 
+use GlpiPlugin\Remise\Api\RemiseFormController;
 use GlpiPlugin\Remise\Remise;
+
+$controller = new RemiseFormController();
 
 // Creation manuelle (Don, Vente...) : n'a pas encore d'id de remise existante,
 // doit donc etre traitee AVANT la recherche par id ci-dessous (qui echouerait
@@ -8,26 +11,7 @@ use GlpiPlugin\Remise\Remise;
 if (isset($_POST['create_manual'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
    try {
-       Remise::createManual(
-           (string) ($_POST['itemtype'] ?? ''),
-           (int) ($_POST['items_id'] ?? 0),
-           (int) ($_POST['type'] ?? -1),
-           (int) ($_POST['users_id'] ?? 0),
-           [
-               'price'             => $_POST['price'] ?? 0,
-               // '?:' et non '??' : le champ <input type="date"> est bien present
-               // dans $_POST meme laisse vide (chaine vide, pas absent) - '??' ne
-               // se declenche que sur null/absent, jamais sur une chaine vide,
-               // laissant alors passer 'sale_date' => '' jusqu'a l'INSERT SQL
-               // (colonne DATE, rejetee par MySQL en mode strict : "Incorrect
-               // date value: ''") - bug reel signale par l'utilisateur.
-               'sale_date'         => $_POST['sale_date'] ?: date('Y-m-d'),
-               'beneficiary_type'  => (int) ($_POST['beneficiary_type'] ?? 0),
-               'external_name'     => (string) ($_POST['external_name'] ?? ''),
-               'external_contact'  => (string) ($_POST['external_contact'] ?? ''),
-           ]
-       );
-       Session::addMessageAfterRedirect(__('Fiche créée.', 'remise'));
+       Session::addMessageAfterRedirect($controller->createManual($_POST));
    } catch (\Throwable $e) {
        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
    }
@@ -44,8 +28,7 @@ if (!$remise->getFromDB($id) || !$remise->can($id, READ)) {
 if (isset($_POST['relance'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
    try {
-       $remise->sendReminderNow();
-       Session::addMessageAfterRedirect('Relance envoyée.');
+       Session::addMessageAfterRedirect($controller->sendReminder($remise));
    } catch (\Throwable $e) {
        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
    }
@@ -55,8 +38,7 @@ if (isset($_POST['relance'])) {
 if (isset($_POST['cancel_request'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
    try {
-       $remise->cancelRequest();
-       Session::addMessageAfterRedirect(__('Demande annulée.', 'remise'));
+       Session::addMessageAfterRedirect($controller->cancelRequest($remise));
    } catch (\Throwable $e) {
        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
    }
@@ -65,37 +47,31 @@ if (isset($_POST['cancel_request'])) {
 
 if (isset($_POST['add_accessory'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
-    $remise->addAccessory(
-        (int) ($_POST['plugin_remise_accessories_id'] ?? 0),
-        (int) ($_POST['quantity'] ?? 1),
-        (string) ($_POST['comment'] ?? '')
-    );
+    $controller->addAccessory($remise, $_POST);
     Html::back();
 }
 
 if (isset($_POST['remove_accessory'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
-    $remise->removeAccessory((int) ($_POST['plugin_remise_accessories_id'] ?? 0));
+    $controller->removeAccessory($remise, $_POST);
     Html::back();
 }
 
 if (isset($_POST['update_observations'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
-    $remise->updateObservations((string) ($_POST['observations'] ?? ''));
+    $controller->updateObservations($remise, $_POST);
     Html::back();
 }
 
 if (isset($_POST['update_vente_details'])) {
     Session::checkRight(Remise::$rightname, UPDATE);
-    // '?:' et non '??' : meme raison que create_manual ci-dessus.
-    $saleDate = (string) ($_POST['sale_date'] ?: date('Y-m-d'));
-    $remise->updateVenteDetails((float) ($_POST['price'] ?? 0), $saleDate);
+    $controller->updateVenteDetails($remise, $_POST);
     Html::back();
 }
 
 Session::checkRight(Remise::$rightname, READ);
 
-Html::header(Remise::getTypeName(1), $_SERVER['PHP_SELF'], 'admin', Remise::class);
+Html::header(Remise::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Remise::class);
 
 $remise->showForm($id);
 

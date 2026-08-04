@@ -1,10 +1,11 @@
 <?php
 
 use GlpiPlugin\Remise\Accessory;
+use GlpiPlugin\Remise\Remise;
 
 Session::checkRight(Accessory::$rightname, READ);
 
-Html::header(Accessory::getTypeName(2), $_SERVER['PHP_SELF'], 'admin', Accessory::class);
+Html::header(Accessory::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Remise::class, Accessory::class);
 
 // Search::show() seul ne genere aucun lien de creation (cf. TROUBLESHOOTING.md,
 // meme piege que sur les autres intitules de ce plugin).

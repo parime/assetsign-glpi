@@ -1,6 +1,7 @@
 <?php
 
 use GlpiPlugin\Remise\Accessory;
+use GlpiPlugin\Remise\Remise;
 
 $item = new Accessory();
 
@@ -18,7 +19,7 @@ if (isset($_POST['add'])) {
     Html::redirect(Accessory::getSearchURL());
 } else {
     Session::checkRight(Accessory::$rightname, READ);
-    Html::header(Accessory::getTypeName(1), $_SERVER['PHP_SELF'], 'admin', Accessory::class);
+    Html::header(Accessory::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Remise::class, Accessory::class);
     $id = (int) ($_GET['id'] ?? 0);
    if ($id > 0) {
        $item->getFromDB($id);

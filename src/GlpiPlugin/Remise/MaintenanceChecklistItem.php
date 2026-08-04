@@ -25,6 +25,16 @@ class MaintenanceChecklistItem extends CommonDropdown
        return _n('Point de contrôle de maintenance', 'Points de contrôle de maintenance', $nb, 'remise');
    }
 
+    /**
+     * Rattache au fil d'Ariane de Maintenance (menu 'tools'), pas au secteur
+     * generique 'config' des intitules — meme raison que
+     * Template::getSectorizedDetails(), mais sous Maintenance plutot que
+     * Remise (les points de controle sont specifiques a la maintenance).
+     */
+   public static function getSectorizedDetails(): array {
+       return ['tools', Maintenance::class, self::class];
+   }
+
     /** @return array<int, string> Libelles des types de saisie disponibles, par constante TYPE_*. */
    public static function getInputTypeLabels(): array {
        return [

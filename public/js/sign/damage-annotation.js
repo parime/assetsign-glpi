@@ -130,6 +130,14 @@
 
         marker.addEventListener('mousedown', function (evt) {
             evt.stopPropagation();
+            // Repere pas encore confirme par le serveur (cf. affichage optimiste
+            // dans le handler 'click' du conteneur) : son dataset.id ('pending')
+            // ne correspond a aucune ligne reelle, le glisser/cliquer ici
+            // echouerait cote serveur. Ignore silencieusement plutot que
+            // d'envoyer une requete vouee a l'echec.
+            if (marker.dataset.id === 'pending') {
+                return;
+            }
             dragging = true;
             moved = false;
             // Position de depart, pour pouvoir remettre le repere a sa place
@@ -263,13 +271,28 @@
                 return; // clic sur un marqueur existant, deja gere par wireMarker/mouseup
             }
             var pos = percentFromEvent(container, evt.clientX, evt.clientY);
+            // Affichage optimiste : le repere apparait immediatement au point
+            // clique, sans attendre la reponse serveur — celle-ci regenere le
+            // PDF non signe en entier (cf. Remise::refreshDamageAnnotationPdf()),
+            // ce qui peut prendre plusieurs secondes et donnait l'impression
+            // d'un clic sans effet, voire d'un repere qui "rate" sa position si
+            // l'utilisateur cliquait ailleurs avant que la reponse n'arrive.
+            // dataset.id vaut 'pending' jusqu'a confirmation ; wireMarker()
+            // ignore toute interaction sur un repere encore a cet etat.
+            var marker = createMarkerElement(container, 'pending', pos.x, pos.y, '', 0);
+            marker.classList.add('damage-marker-pending');
             post('add', { remises_id: remisesId, view_index: viewIndex, x: pos.x, y: pos.y, description: '', severity: 0 }, { container: container })
                 .then(function (data) {
                     if (data.success) {
-                        createMarkerElement(container, data.id, pos.x, pos.y, '', 0);
+                        marker.dataset.id = data.id;
+                        marker.classList.remove('damage-marker-pending');
+                    } else {
+                        marker.remove();
                     }
                 })
-                .catch(function () {});
+                .catch(function () {
+                    marker.remove();
+                });
         });
     });
 })();
