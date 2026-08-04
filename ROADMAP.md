@@ -87,6 +87,22 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | Kits/accessoires avec contrôle automatique au retour | Détecter un accessoire manquant à la restitution | Réduction de perte de matériel | Moyenne (nouvelle notion de kit, au-delà des accessoires actuels) | Checklists (V1) | Basse |
 | Dashboard RSE, app mobile technicien, signatures multiples | Extensions déjà identifiées comme envisageables | — | Haute (chacune un chantier à part) | Variable selon la fonctionnalité | Basse |
 
+### Extension proposée : Passeport utilisateur (vue symétrique)
+
+Idée soumise par l'utilisateur (2026-08-04) : le même principe que le Passeport matériel, mais pivoté côté personne — répondre à « quel matériel cette personne a-t-elle reçu, rendu, acheté... et à quelle date ? », de sa création de compte à sa désactivation/suppression. Réutilise directement le socle déjà livré (`glpi_plugin_remise_events`, qui porte déjà `users_id` sur chaque ligne) — pas de nouvelle table d'événements nécessaire, seulement une nouvelle vue :
+
+- **Nouvel onglet sur `User`** : même frise chronologique que le Passeport matériel (même style visuel, pas un second langage graphique à maintenir), mais filtrée par `users_id` au lieu de `itemtype`/`items_id`.
+- **Bornes de compte** : création et désactivation/suppression du compte encadrent la frise (lues directement sur `glpi_users` — `date_creation`, `is_deleted`/`is_active` — jamais dupliquées dans `glpi_plugin_remise_events`, même logique que la fiche d'identité du Passeport matériel qui lit `Infocom` sans le recopier).
+- **Affichage minimal par ligne : nom du matériel + numéro de série**, avec repli explicite si l'un des deux manque (jamais de ligne vide ou silencieusement fausse) — ce sont des champs déjà natifs sur Computer/Monitor/etc., aucune nouvelle saisie requise.
+- **Rétro-remplissage à double source** : contrairement au Passeport matériel (une seule source possible, l'historique du matériel), reconstruire la frise d'un utilisateur déjà présent avant l'installation du plugin peut s'appuyer soit sur l'historique de son propre compte, soit sur l'historique de chaque matériel qu'il a eu (`glpi_logs` dans les deux cas) — cumule donc le même risque de faisabilité que le rétro-remplissage matériel déjà noté dans le tableau V1 ci-dessus, à valider une seule fois pour les deux plutôt que deux analyses séparées.
+
+| Fonctionnalité | Objectif métier | Valeur utilisateur | Difficulté | Dépendances | Priorité |
+|---|---|---|---|---|---|
+| Onglet "Passeport" sur l'utilisateur (frise filtrée par `users_id`, réutilise `glpi_plugin_remise_events`) | Répondre à "quel matériel cette personne a-t-elle eu, depuis quand ?" | Vue symétrique côté RH/IT, sans recouper le matériel un par un manuellement | Faible/Moyenne (nouvel onglet sur `User`, requête déjà possible sur la table existante) | Passeport matériel (MVP, livré) | Moyenne |
+| Bornes de compte (création, désactivation/suppression) affichées dans la frise | Une frise qui commence et finit avec la présence réelle de la personne dans la société | Réponse complète au cycle de vie demandé, pas seulement aux mouvements de matériel | Faible (lecture de `glpi_users`, aucune nouvelle table) | Onglet Passeport utilisateur | Moyenne |
+| Affichage nom + n° série avec repli explicite si l'un des deux manque | Jamais de ligne illisible ou vide dans la frise | Fiabilité perçue de l'outil | Faible | Onglet Passeport utilisateur | Moyenne |
+| Rétro-remplissage à double source (historique du compte ET historique de chaque matériel, `glpi_logs`) | Frise non vide pour les utilisateurs déjà présents avant l'installation du plugin | Adoption immédiate, comme pour le matériel | Haute — même risque de faisabilité que le rétro-remplissage matériel (à valider une seule fois pour les deux) | Rétro-remplissage matériel (idée déjà notée, non engagée) | Basse (à valider avant de s'engager) |
+
 ### Risques techniques à trancher pendant la phase d'analyse
 
 - **Volume de la table d'événements** : un historique immuable ne cesse de grossir ; prévoir l'indexation (au minimum `itemtype`+`items_id`+`date`) dès le MVP plutôt qu'en réaction à un ralentissement constaté.
