@@ -164,9 +164,14 @@ class PassportEvent extends CommonDBTM
 
        self::backfillFromLogs($item->getType(), $item->getID());
 
-       $visibleTypes = Config::getForEntity((int) $item->fields['entities_id'])->getPassportVisibleTypes();
+       $config = Config::getForEntity((int) $item->fields['entities_id']);
+       $visibleTypes = $config->getPassportVisibleTypes();
 
-       $rows = iterator_to_array($DB->request([
+       // $visibleTypes vide (administrateur ayant decoche tous les types dans
+       // Configuration > Passeport materiel) : IN() vide fait echouer la requete
+       // cote coeur GLPI ("Empty IN are not allowed") - un tableau vide de
+       // resultats est le comportement attendu ici, pas une erreur fatale.
+       $rows = $visibleTypes === [] ? [] : iterator_to_array($DB->request([
            'FROM'  => self::getTable(),
            'WHERE' => ['itemtype' => $item->getType(), 'items_id' => $item->getID(), 'event_type' => $visibleTypes],
            'ORDER' => 'date ASC',
@@ -183,14 +188,95 @@ class PassportEvent extends CommonDBTM
       }
        unset($row);
 
+       // getLivesForItem() sur les evenements REELS uniquement : les pseudo-evenements
+       // Infocom ci-dessous n'ont pas de event_type/users_id, jamais mélangés à la
+       // logique des "vies" - purement un ajout d'affichage sur la frise.
+       $lives = self::getLivesForItem($item->getType(), (int) $item->getID(), $rows);
+
+       $timelineRows = array_values($rows);
+      if ($config->fields['show_infocom_dates']) {
+          $timelineRows = array_merge($timelineRows, self::getInfocomPseudoEvents($item, $config));
+          usort($timelineRows, static fn (array $a, array $b): int => strcmp($a['date'], $b['date']));
+      }
+
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/passport_tab.html.twig', [
-           'events'        => array_reverse($rows), // le plus recent en premier dans la frise
-           'lives'         => self::getLivesForItem($item->getType(), (int) $item->getID(), $rows),
+           'events'        => array_reverse($timelineRows), // le plus recent en premier dans la frise
+           'lives'         => $lives,
            'itemtype'      => $item->getType(),
            'items_id'      => $item->getID(),
            'can_backfill'  => \Session::haveRight(self::$rightname, UPDATE),
            'csrf_token'    => \Session::getNewCSRFToken(),
        ]);
+   }
+
+    /**
+     * Dates Infocom du materiel (achat, commande, livraison, mise en service,
+     * garantie, reforme), fusionnees dans la frise du Passeport materiel SANS
+     * jamais etre copiees dans glpi_plugin_remise_events - repond a "que
+     * s'est-il passe avant meme la premiere attribution ?" (cf. ROADMAP.md).
+     * Pseudo-evenements au meme format que les lignes reelles (`type_label`,
+     * `date`, `source_url` toujours null - aucune fiche a afficher), pour que
+     * passport_tab.html.twig les affiche sans aucune logique conditionnelle
+     * supplementaire. `event_type` volontairement absent (jamais un entier,
+     * meme pas -1) : getLivesForItem() ne doit jamais pouvoir les confondre
+     * avec un evenement reel, meme par erreur de comparaison de type.
+     * @return list<array{type_label: string, date: string, source_url: null, snapshot_name: string, is_anonymized: int, comment: string}>
+     */
+   private static function getInfocomPseudoEvents(CommonDBTM $item, Config $config): array {
+      if (!\Infocom::canApplyOn($item->getType())) {
+          return []; // Itemtype absent de $CFG_GLPI['infocom_types'] (reglage coeur GLPI) : Infocom n'existe meme pas pour ce type de materiel.
+      }
+       $infocom = new \Infocom();
+      if (!$infocom->getFromDBforDevice($item->getType(), $item->getID())) {
+          return [];
+      }
+
+       $dateFields = [
+           'order_date'    => __('Commande', 'remise'),
+           'delivery_date' => __('Livraison', 'remise'),
+           'buy_date'      => __('Achat', 'remise'),
+           'use_date'      => __('Mise en service', 'remise'),
+           'warranty_date' => __('Début de garantie', 'remise'),
+           'decommission_date' => __('Réforme', 'remise'),
+       ];
+
+       $events = [];
+       foreach ($dateFields as $field => $label) {
+          $date = $infocom->fields[$field] ?? null;
+          if (empty($date)) {
+             continue;
+          }
+          $events[] = [
+              'type_label'    => $label,
+              'date'          => substr((string) $date, 0, 10) . ' 00:00:00', // colonne DATE (pas DATETIME) : heure neutre pour trier/afficher comme les evenements reels.
+              'source_url'    => null,
+              'snapshot_name' => '',
+              'is_anonymized' => 0,
+              'comment'       => $field === 'buy_date' && (float) $infocom->fields['value'] > 0
+                  // Meme formatage que templates/pdf/handover.html.twig (number_format
+                  // Twig) : 2 decimales, virgule, espace des milliers, symbole configurable.
+                  ? sprintf(
+                      __('Prix d\'achat : %s %s', 'remise'),
+                      number_format((float) $infocom->fields['value'], 2, ',', ' '),
+                      $config->fields['currency_symbol'] ?: '€'
+                  )
+                  : '',
+          ];
+       }
+
+       $warrantyMonths = (int) ($infocom->fields['warranty_duration'] ?? 0);
+       if (!empty($infocom->fields['warranty_date']) && $warrantyMonths > 0) {
+          $events[] = [
+              'type_label'    => __('Fin de garantie', 'remise'),
+              'date'          => date('Y-m-d', strtotime($infocom->fields['warranty_date'] . " +{$warrantyMonths} months")) . ' 00:00:00',
+              'source_url'    => null,
+              'snapshot_name' => '',
+              'is_anonymized' => 0,
+              'comment'       => '',
+          ];
+       }
+
+       return $events;
    }
 
     /**
