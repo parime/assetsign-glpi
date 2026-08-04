@@ -5,16 +5,23 @@ name: Auto-tag de version
 # encore. Sans ce workflow, publier une release necessitait de se souvenir de
 # pousser le tag a la main apres coup (ecart deja constate : main etait passe
 # de 1.13.3 a 1.13.6 en code sans qu'aucune de ces versions ne soit jamais
-# publiee). Le tag pousse ici declenche ensuite release.yml (qui ecoute
-# `push: tags: v*.*.*`) - separation volontaire : ce fichier ne fait QUE
-# decider s'il faut tague, toute la validation (build, install reelle sur
-# GLPI, publication) reste dans release.yml.
+# publiee). Separation volontaire : ce fichier ne fait QUE decider s'il faut
+# tague, toute la validation (build, install reelle sur GLPI, publication)
+# reste dans release.yml.
+#
+# Le tag est pousse puis release.yml est explicitement declenche via
+# workflow_dispatch (pas seulement via son trigger `push: tags`) : un push de
+# tag effectue avec le GITHUB_TOKEN (comme ici) ne declenche PAS les autres
+# workflows par defaut (protection anti-boucle de GitHub Actions) - constate
+# en pratique lors du premier tag automatique (v1.14.0, jamais publie tant
+# que ce declenchement explicite n'a pas ete ajoute).
 on:
   push:
     branches: [main]
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   tag:
@@ -42,3 +49,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag "$TAG"
           git push origin "$TAG"
+          gh workflow run release.yml --ref "$TAG"
+        env:
+          GH_TOKEN: ${{ github.token }}
