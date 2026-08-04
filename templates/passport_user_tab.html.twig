@@ -1,8 +1,7 @@
 {% if can_backfill %}
   <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/passport_backfill.php" class="mb-2">
     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
-    <input type="hidden" name="itemtype" value="{{ itemtype }}">
-    <input type="hidden" name="items_id" value="{{ items_id }}">
+    <input type="hidden" name="users_id" value="{{ users_id }}">
     <button type="submit" class="btn btn-sm btn-outline-secondary">
       <i class="ti ti-history"></i> {{ __('Forcer la recherche dans l\'historique', 'remise') }}
     </button>
@@ -10,22 +9,18 @@
 {% endif %}
 
 <div class="passport-summary mb-4">
-  <h4>{{ __('Vies du matériel', 'remise') }} <span class="badge bg-blue-lt">{{ lives|length }}</span></h4>
-  {% if lives|length %}
-    <ul class="passport-lives-list">
-      {% for life in lives %}
-        <li>
-          <strong>{{ life.name }}</strong>
-          {% if life.is_external %}<span class="badge bg-secondary-lt ms-1">{{ __('externe', 'remise') }}</span>{% endif %}
-          <span class="text-muted small ms-2">
-            {{ life.start|formatted_date }} → {{ life.end ? life.end|formatted_date : __('aujourd\'hui', 'remise') }}
-          </span>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p class="text-muted">{{ __('Aucune attribution enregistrée pour le moment.', 'remise') }}</p>
-  {% endif %}
+  <h4>{{ __('Compte', 'remise') }}</h4>
+  <p class="text-muted">
+    {{ __('Entrée', 'remise') }} :
+    {{ account.start ? account.start|formatted_date : __('inconnue', 'remise') }}
+    →
+    {% if account.end %}
+      {{ account.is_deleted ? __('compte supprimé le', 'remise') : __('compte désactivé le', 'remise') }}
+      {{ account.end|formatted_date }}
+    {% else %}
+      {{ __('compte actif', 'remise') }}
+    {% endif %}
+  </p>
 </div>
 
 <h4>{{ __('Historique', 'remise') }}</h4>
@@ -44,14 +39,14 @@
           <div class="passport-timeline-date text-muted small">{{ event.date|relative_datetime }}</div>
           <div class="passport-timeline-content">
             <strong>{{ event.type_label }}</strong>
-            {% if event.snapshot_name %}
-              — {{ event.snapshot_name }}
-              {% if event.snapshot_is_external %}<span class="badge bg-secondary-lt">{{ __('externe', 'remise') }}</span>{% endif %}
-            {% elseif event.is_anonymized %}
-              — <span class="text-muted">{{ __('bénéficiaire anonymisé', 'remise') }}</span>
+            —
+            {% if event.device_name %}
+              {{ event.device_name }}
+            {% else %}
+              <span class="text-muted">{{ __('matériel supprimé', 'remise') }}</span>
             {% endif %}
-            {% if event.comment %}
-              <div class="text-muted small">{{ event.comment }}</div>
+            {% if event.device_serial %}
+              <span class="text-muted small">(S/N {{ event.device_serial }})</span>
             {% endif %}
             {% if event.source_url %}
               <div><a href="{{ event.source_url }}">{{ __('Voir la fiche', 'remise') }}</a></div>
