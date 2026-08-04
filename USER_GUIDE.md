@@ -70,11 +70,17 @@ Un second onglet dédié, indépendant des remises signées (pas de bénéficiai
 
 Un troisième onglet, en lecture seule, qui répond à « qui a utilisé ce matériel depuis son achat ? » : une frise chronologique agrégeant automatiquement les remises, restitutions, dons, ventes et fiches de maintenance de ce matériel (rien à ressaisir, ces événements viennent des onglets ci-dessus), avec un compteur de « vies » (nombre de bénéficiaires successifs et leurs périodes). Chaque événement conserve le nom du bénéficiaire au moment où il a eu lieu, même si le compte GLPI correspondant est supprimé plus tard — ce nom peut être anonymisé après un délai configurable (Configuration > Remise & signature > Passeport matériel), la date et le type d'événement restant alors seuls visibles. La fonctionnalité elle-même peut être désactivée par entité, et les types d'événement affichés dans la frise sont filtrables, depuis ce même onglet de configuration.
 
+Pour du matériel déjà présent avant l'installation de cette fonctionnalité, la frise ne reste pas vide : à la première consultation, le plugin retrouve automatiquement dans l'historique natif de GLPI (les mêmes changements d'Utilisateur/d'État déjà utilisés pour déclencher les remises automatiques) tout ce qui s'est passé auparavant. Un bouton **« Forcer la recherche dans l'historique »** permet de relancer cette recherche à tout moment (par exemple après avoir modifié les États déclencheurs), sans jamais créer de doublon.
+
 ### L'onglet « Remises » sur la fiche d'un utilisateur
 
 Le même onglet Remises existe aussi côté utilisateur (fiche d'un compte GLPI, Administration > Utilisateurs) — filtré cette fois par bénéficiaire plutôt que par matériel, avec une colonne supplémentaire indiquant à quel matériel chaque ligne correspond (une même personne ayant pu recevoir plusieurs matériels différents dans le temps) : pratique pour retrouver d'un coup d'œil tout ce qu'une personne a reçu, télécharger directement chaque PDF, sans avoir à connaître à l'avance sur quel matériel chercher. Un raccourci **"Assigner un matériel à cet utilisateur"** permet en plus d'affecter directement un matériel depuis cet écran (choix du type puis du matériel) — l'affectation déclenche automatiquement la création d'une remise, exactement comme changer le champ "Utilisateur" depuis la fiche du matériel :
 
 ![Onglet Remises sur la fiche d'un utilisateur](docs/screenshots/onglet-utilisateur-remise.png)
+
+### L'onglet « Passeport utilisateur » sur la fiche d'un utilisateur
+
+Vue symétrique du Passeport matériel : une frise chronologique de tout ce qu'une personne a reçu, rendu, donné ou acheté, de son entrée dans l'entreprise à sa désactivation/suppression. Chaque ligne indique le nom et le numéro de série du matériel concerné (repli explicite si l'un des deux manque, par exemple un matériel supprimé depuis) et renvoie vers la fiche d'origine. Comme pour le Passeport matériel, l'historique antérieur à l'installation de cette fonctionnalité est retrouvé automatiquement (même bouton « Forcer la recherche dans l'historique » disponible ici, sur l'ensemble du matériel déjà eu par cette personne).
 
 ## Fonctionnalités
 

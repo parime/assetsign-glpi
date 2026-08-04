@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_REMISE_VERSION', '1.14.0');
+define('PLUGIN_REMISE_VERSION', '1.15.0');
 define('PLUGIN_REMISE_MIN_GLPI', '11.0.0');
 define('PLUGIN_REMISE_MAX_GLPI', '11.9.99');
 define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
@@ -111,12 +111,14 @@ function plugin_init_remise(): void {
     Plugin::registerClass(\GlpiPlugin\Remise\Maintenance::class, [
         'addtabon' => $manageableItemtypes,
     ]);
-    // Passeport materiel : agrege Remise + Maintenance en lecture seule (cf.
-    // PassportEvent::recordForRemise()/recordForMaintenance()), son propre
-    // onglet sur les memes materiels geres — jamais sur 'User', le passeport
-    // suit le materiel, pas la personne.
+    // Passeport materiel/utilisateur : agrege Remise + Maintenance en lecture
+    // seule (cf. PassportEvent::recordForRemise()/recordForMaintenance()),
+    // avec deux onglets distincts sur les memes points d'accroche que Remise
+    // ci-dessus — sur le materiel (getTabNameForItem()/showForItem(), filtre
+    // par itemtype/items_id) ET sur 'User' (showForUser(), filtre par
+    // users_id, vue symetrique cote beneficiaire).
     Plugin::registerClass(\GlpiPlugin\Remise\PassportEvent::class, [
-        'addtabon' => $manageableItemtypes,
+        'addtabon' => array_merge($manageableItemtypes, ['User']),
     ]);
 
     // --- Notifications ------------------------------------------------------------

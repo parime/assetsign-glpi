@@ -124,6 +124,10 @@ class PassportEvent extends CommonDBTM
       if (!($item instanceof CommonDBTM) || !self::isEnabledForItem($item)) {
           return '';
       }
+      if ($item->getType() === 'User') {
+          $count = countElementsInTable(self::getTable(), ['users_id' => $item->getID()]);
+          return self::createTabEntry(__('Passeport utilisateur', 'remise'), $count);
+      }
        $count = countElementsInTable(self::getTable(), ['itemtype' => $item->getType(), 'items_id' => $item->getID()]);
        return self::createTabEntry(__('Passeport matériel', 'remise'), $count);
    }
@@ -132,13 +136,24 @@ class PassportEvent extends CommonDBTM
       if (!($item instanceof CommonDBTM) || !self::isEnabledForItem($item)) {
           return false;
       }
-       self::showForItem($item);
+      if ($item->getType() === 'User') {
+          self::showForUser($item);
+      } else {
+          self::showForItem($item);
+      }
        return true;
    }
 
-    /** Onglet disponible pour ce type d'item ET la fonctionnalite activee pour son entite. */
+    /**
+     * Onglet disponible pour ce type d'item (materiel gere, OU 'User' pour la
+     * vue symetrique cote beneficiaire) ET la fonctionnalite activee pour son
+     * entite. Pour 'User', `entities_id` designe l'entite par defaut du
+     * compte (colonne native `glpi_users.entities_id`) : simplification
+     * assumee pour le MVP, un utilisateur pouvant en pratique relever de
+     * plusieurs entites via ses profils.
+     */
    private static function isEnabledForItem(CommonDBTM $item): bool {
-      if (!in_array($item->getType(), Config::getAllManageableItemtypes(), true)) {
+      if ($item->getType() !== 'User' && !in_array($item->getType(), Config::getAllManageableItemtypes(), true)) {
           return false;
       }
        return (bool) Config::getForEntity((int) ($item->fields['entities_id'] ?? 0))->fields['enable_passport'];
@@ -146,6 +161,8 @@ class PassportEvent extends CommonDBTM
 
    public static function showForItem(CommonDBTM $item): void {
        global $DB, $CFG_GLPI;
+
+       self::backfillFromLogs($item->getType(), $item->getID());
 
        $visibleTypes = Config::getForEntity((int) $item->fields['entities_id'])->getPassportVisibleTypes();
 
@@ -167,10 +184,270 @@ class PassportEvent extends CommonDBTM
        unset($row);
 
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/passport_tab.html.twig', [
-           'events'   => array_reverse($rows), // le plus recent en premier dans la frise
-           'lives'    => self::getLivesForItem($item->getType(), (int) $item->getID(), $rows),
-           'itemtype' => $item->getType(),
+           'events'        => array_reverse($rows), // le plus recent en premier dans la frise
+           'lives'         => self::getLivesForItem($item->getType(), (int) $item->getID(), $rows),
+           'itemtype'      => $item->getType(),
+           'items_id'      => $item->getID(),
+           'can_backfill'  => \Session::haveRight(self::$rightname, UPDATE),
+           'csrf_token'    => \Session::getNewCSRFToken(),
        ]);
+   }
+
+    /**
+     * Onglet "Passeport utilisateur" cote beneficiaire (fiche Administration >
+     * Utilisateurs) : agrege les memes evenements que showForItem(), mais
+     * filtres par users_id (le beneficiaire) plutot que par itemtype/items_id —
+     * une meme personne ayant pu recevoir/rendre/acheter plusieurs materiels
+     * differents dans le temps. Les evenements de maintenance n'ont jamais de
+     * users_id renseigne (pas de notion de beneficiaire), ils sont donc deja
+     * naturellement absents de cette frise, sans filtre explicite necessaire.
+     */
+   public static function showForUser(CommonDBTM $item): void {
+       global $DB, $CFG_GLPI;
+
+       self::backfillUserHistoryFromLogs($item->getID());
+
+       $rows = iterator_to_array($DB->request([
+           'FROM'  => self::getTable(),
+           'WHERE' => ['users_id' => $item->getID()],
+           'ORDER' => 'date ASC',
+       ]));
+
+       $typeLabels = self::getTypeLabels();
+      foreach ($rows as &$row) {
+          $row['type_label'] = $typeLabels[(int) $row['event_type']] ?? '';
+          $row['source_url'] = match ($row['source_itemtype'] ?? null) {
+              Remise::class      => $CFG_GLPI['root_doc'] . '/plugins/remise/front/remise.form.php?id=' . $row['source_items_id'],
+              Maintenance::class => $CFG_GLPI['root_doc'] . '/plugins/remise/front/maintenance.form.php?id=' . $row['source_items_id'],
+              default            => null,
+          };
+          [$row['device_name'], $row['device_serial']] = self::resolveDeviceDisplay($row['itemtype'], (int) $row['items_id']);
+      }
+       unset($row);
+
+       \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/passport_user_tab.html.twig', [
+           'events'       => array_reverse($rows), // le plus recent en premier dans la frise
+           'account'      => self::getAccountBounds($item),
+           'users_id'     => $item->getID(),
+           'can_backfill' => \Session::haveRight(self::$rightname, UPDATE),
+           'csrf_token'   => \Session::getNewCSRFToken(),
+       ]);
+   }
+
+    /**
+     * Nom + numero de serie d'un materiel arbitraire, pour la frise du
+     * Passeport utilisateur. Un materiel peut avoir ete purge depuis, et
+     * certains itemtypes n'ont pas de champ serie : les deux se traitent
+     * independamment (chaine vide plutot qu'une valeur inventee), c'est au
+     * gabarit d'afficher un repli explicite pour chacun separement.
+     * @return array{0: string, 1: string} Nom, numero de serie.
+     */
+   private static function resolveDeviceDisplay(string $itemtype, int $items_id): array {
+      if (!is_subclass_of($itemtype, CommonDBTM::class)) {
+          return ['', ''];
+      }
+       $device = new $itemtype();
+      if (!$device->getFromDB($items_id)) {
+          return ['', ''];
+      }
+       return [(string) ($device->fields['name'] ?? ''), (string) ($device->fields['serial'] ?? '')];
+   }
+
+    /**
+     * Bornes de la frise du Passeport utilisateur, lues directement sur le
+     * compte (jamais dupliquees dans glpi_plugin_remise_events, meme principe
+     * que la lecture d'Infocom pour le Passeport materiel) : `begin_date` si
+     * renseignee (date d'entree explicite, cf. Administration > Utilisateurs),
+     * sinon `date_creation` (toujours disponible). Fin de frise UNIQUEMENT si
+     * le compte est reellement desactive/supprime (jamais pour un compte actif
+     * — la frise reste "en cours", meme principe que getLivesForItem() cote
+     * materiel) : `end_date` si renseignee, sinon `date_mod` en repli — le
+     * coeur GLPI ne conserve aucune date de desactivation explicite, ce repli
+     * reste donc approximatif par construction.
+     * @return array{start: ?string, end: ?string, is_deleted: bool}
+     */
+   public static function getAccountBounds(CommonDBTM $user): array {
+       $isInactive = !$user->fields['is_active'] || $user->fields['is_deleted'];
+
+       return [
+           'start'      => $user->fields['begin_date'] ?: $user->fields['date_creation'],
+           'end'        => $isInactive ? ($user->fields['end_date'] ?: $user->fields['date_mod']) : null,
+           'is_deleted' => (bool) $user->fields['is_deleted'],
+       ];
+   }
+
+    /**
+     * Retro-remplit les evenements manquants d'un materiel a partir de l'historique
+     * natif GLPI (`glpi_logs`), pour tout ce qui a eu lieu AVANT l'installation de
+     * cette fonctionnalite. Rejoue exactement la meme logique que le declenchement
+     * en direct (`Remise::handleUserBasedTrigger()`/`handleStateBasedTrigger()`),
+     * sur les memes reglages d'Etats declencheurs (`Config::getHandoverStates()`
+     * et consorts) — un seul endroit a regler, coherent avec ce qui declenche deja
+     * les remises automatiques (cf. ROADMAP.md, choix explicite de l'utilisateur).
+     * Idempotent par evenement candidat (jamais par simple compteur global) : peut
+     * etre rappele sans risque, y compris via `$force` (bouton "Forcer la
+     * recherche"), sans jamais dupliquer un evenement deja present.
+     * @return int Nombre d'evenements effectivement ajoutes.
+     */
+   public static function backfillFromLogs(string $itemtype, int $items_id, bool $force = false): int {
+      if (!$force && countElementsInTable(self::getTable(), ['itemtype' => $itemtype, 'items_id' => $items_id]) > 0) {
+          return 0;
+      }
+      if (!is_subclass_of($itemtype, CommonDBTM::class)) {
+          return 0;
+      }
+       $item = new $itemtype();
+      if (!$item->getFromDB($items_id)) {
+          return 0;
+      }
+       $entitiesId = (int) ($item->fields['entities_id'] ?? 0);
+       $config = Config::getForEntity($entitiesId);
+
+       $count = 0;
+      foreach (self::deriveHistoricalEventsFromLogs($itemtype, $items_id, $config) as $candidate) {
+          $exists = countElementsInTable(self::getTable(), [
+              'itemtype'   => $itemtype,
+              'items_id'   => $items_id,
+              'event_type' => $candidate['event_type'],
+              'users_id'   => $candidate['users_id'],
+              'date'       => $candidate['date'],
+          ]) > 0;
+         if ($exists) {
+             continue;
+         }
+
+          $snapshot = self::resolveUserSnapshot($candidate['users_id']);
+          (new self())->add([
+              'itemtype'             => $itemtype,
+              'items_id'             => $items_id,
+              'entities_id'          => $entitiesId,
+              'event_type'           => $candidate['event_type'],
+              'date'                 => $candidate['date'],
+              'users_id'             => $candidate['users_id'],
+              'snapshot_name'        => $snapshot['name'],
+              'snapshot_email'       => $snapshot['email'],
+              'snapshot_entity_name' => \Dropdown::getDropdownName('glpi_entities', $entitiesId),
+              'comment'              => __('Reconstitué automatiquement depuis l\'historique GLPI.', 'remise'),
+          ]);
+          $count++;
+      }
+
+       return $count;
+   }
+
+    /**
+     * Rejoue chronologiquement les changements de `users_id`/`states_id` de
+     * `glpi_logs` (id_search_option 70 et 31, stables dans le coeur GLPI pour
+     * tous les itemtypes geres) pour en deduire les evenements qu'aurait
+     * produits Remise::handleItemAssignment() s'il avait existe a l'epoque.
+     * Regroupes par `date_mod` : une meme sauvegarde peut modifier les deux
+     * champs a la fois, avec le meme timestamp sur les deux lignes de log qui
+     * en resultent — le declenchement par affectation reste alors prioritaire
+     * sur celui par Etat pour ce meme groupe, exactement comme en direct.
+     * @return list<array{event_type: int, users_id: int, date: string}>
+     */
+   private static function deriveHistoricalEventsFromLogs(string $itemtype, int $items_id, Config $config): array {
+       global $DB;
+
+       $logs = iterator_to_array($DB->request([
+           'FROM'  => 'glpi_logs',
+           'WHERE' => ['itemtype' => $itemtype, 'items_id' => $items_id, 'id_search_option' => [31, 70]],
+           'ORDER' => 'date_mod ASC, id ASC',
+       ]));
+
+       $groups = [];
+      foreach ($logs as $log) {
+          $groups[$log['date_mod']][(int) $log['id_search_option']] = $log;
+      }
+
+       $events = [];
+       $currentUser = 0; // Reconstitue au fil de l'eau, necessaire au declenchement par Etat.
+
+      foreach ($groups as $date => $fieldsChanged) {
+          $userLog = $fieldsChanged[70] ?? null;
+         if ($userLog !== null) {
+             $oldUser = (int) $userLog['old_id'];
+             $newUser = (int) $userLog['new_id'];
+
+            if ($oldUser === 0 && $newUser !== 0 && $config->fields['sign_on_assignment']) {
+                $events[] = ['event_type' => self::TYPE_ATTRIBUTION, 'users_id' => $newUser, 'date' => $date];
+            } else if ($oldUser !== 0 && $newUser === 0 && $config->fields['sign_on_return']) {
+                $events[] = ['event_type' => self::TYPE_RETURN, 'users_id' => $oldUser, 'date' => $date];
+            } else if ($oldUser !== 0 && $newUser !== 0 && $config->fields['sign_on_reassignment']) {
+                $events[] = ['event_type' => self::TYPE_ATTRIBUTION, 'users_id' => $newUser, 'date' => $date];
+            }
+
+             $currentUser = $newUser;
+             continue; // Priorite affectation : l'Etat n'est jamais evalue pour ce meme groupe.
+         }
+
+          $stateLog = $fieldsChanged[31] ?? null;
+         if ($stateLog === null || $currentUser === 0) {
+             continue; // Pas de detenteur connu a cette date : rien a rattacher, meme regle qu'en direct.
+         }
+
+          $newState = (int) $stateLog['new_id'];
+         if (in_array($newState, $config->getHandoverStates(), true)) {
+             $events[] = ['event_type' => self::TYPE_ATTRIBUTION, 'users_id' => $currentUser, 'date' => $date];
+         } else if (in_array($newState, $config->getReturnStates(), true)) {
+             $events[] = ['event_type' => self::TYPE_RETURN, 'users_id' => $currentUser, 'date' => $date];
+         } else if (in_array($newState, $config->getDonationStates(), true)) {
+             $events[] = ['event_type' => self::TYPE_DON, 'users_id' => $currentUser, 'date' => $date];
+         } else if (in_array($newState, $config->getVenteStates(), true)) {
+             $events[] = ['event_type' => self::TYPE_VENTE, 'users_id' => $currentUser, 'date' => $date];
+         }
+      }
+
+       return $events;
+   }
+
+    /**
+     * Retro-remplit TOUS les materiels qu'un utilisateur a pu avoir avant
+     * l'installation de cette fonctionnalite : `glpi_logs` est indexe par
+     * materiel, jamais par utilisateur — il faut donc d'abord retrouver quels
+     * materiels le concernent (comme ancien OU nouveau detenteur) avant de
+     * rejouer leur historique un par un via backfillFromLogs().
+     * @return int Nombre d'evenements effectivement ajoutes, tous materiels confondus.
+     */
+   public static function backfillUserHistoryFromLogs(int $users_id, bool $force = false): int {
+       global $DB;
+
+      if (!$force && countElementsInTable(self::getTable(), ['users_id' => $users_id]) > 0) {
+          return 0;
+      }
+
+       $itemPairs = iterator_to_array($DB->request([
+           'SELECT'   => ['itemtype', 'items_id'],
+           'DISTINCT' => true,
+           'FROM'     => 'glpi_logs',
+           'WHERE'    => [
+               'id_search_option' => 70,
+               'itemtype'         => Config::getAllManageableItemtypes(),
+               'OR'               => ['old_id' => $users_id, 'new_id' => $users_id],
+           ],
+       ]));
+
+       $count = 0;
+      foreach ($itemPairs as $pair) {
+          $count += self::backfillFromLogs((string) $pair['itemtype'], (int) $pair['items_id'], true);
+      }
+
+       return $count;
+   }
+
+    /** @return array{name: string, email: string} Identite ACTUELLE du beneficiaire (glpi_logs ne conserve aucun snapshot historique du nom/e-mail). */
+   private static function resolveUserSnapshot(int $users_id): array {
+      if ($users_id <= 0) {
+          return ['name' => '', 'email' => ''];
+      }
+       $user = new \User();
+      if (!$user->getFromDB($users_id)) {
+          return ['name' => '', 'email' => ''];
+      }
+       return [
+           'name'  => trim(($user->fields['firstname'] ?? '') . ' ' . ($user->fields['realname'] ?? '')),
+           'email' => \UserEmail::getDefaultForUser($users_id) ?: '',
+       ];
    }
 
     /**
