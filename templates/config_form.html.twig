@@ -309,6 +309,30 @@
     });
   }
 
+  // live-preview.js remplace ENTIEREMENT frame.srcdoc a chaque apercu en
+  // direct (case cochee, changement d'onglet...) — un logo pas encore
+  // envoye au serveur (choisi via #remise-logo-file, jamais transmis a
+  // front/preview.php, cf. son propre commentaire) disparaissait alors du
+  // rendu a chaque rafraichissement suivant, quelques centaines de ms apres
+  // l'avoir choisi : bug reel signale par l'utilisateur ("le logo fini par
+  // disparaitre"). Reappliquee ici a chaque fin de rafraichissement
+  // (callback expose par live-preview.js), tant qu'un fichier est toujours
+  // selectionne et que "Retirer le logo actuel" n'est pas coche.
+  window.REMISE_ON_PREVIEW_REFRESH = function () {
+    if (removeCheckbox && removeCheckbox.checked) {
+      return;
+    }
+    var file = fileInput && fileInput.files && fileInput.files[0];
+    if (!file) {
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      setPreviewLogo(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
   // Chaque onglet de type (Remise/Restitution/Don/Vente) a son propre apercu :
   // au changement d'onglet, met a jour le champ "type" cache et redeclenche un
   // apercu (memes evenements 'change' que live-preview.js ecoute deja).
