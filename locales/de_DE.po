@@ -797,8 +797,26 @@ msgstr "QR-Code auf den PDF-Blättern anzeigen"
 msgid "Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel."
 msgstr "Der QR-Code verweist auf das entsprechende Blatt in GLPI — praktisch, um es bei einer physischen Gerätekontrolle wiederzufinden."
 
-msgid "Symbole de devise"
+msgid "Symbole monétaire"
 msgstr "Währungssymbol"
 
 msgid "Affiché après le prix sur la fiche PDF (ex: €, $, CHF)."
 msgstr "Wird nach dem Preis auf dem PDF-Blatt angezeigt (z. B. €, $, CHF)."
+
+msgid "Version du plugin"
+msgstr "Plugin-Version"
+
+msgid "Version installée"
+msgstr "Installierte Version"
+
+msgid "Dernière version sur GitHub"
+msgstr "Neueste Version auf GitHub"
+
+msgid "Texte du filigrane sur l'aperçu"
+msgstr "Wasserzeichentext in der Vorschau"
+
+msgid "Opacité du filigrane (%)"
+msgstr "Deckkraft des Wasserzeichens (%)"
+
+msgid "Affiché uniquement sur l'aperçu en direct (jamais sur le vrai PDF), pour éviter toute confusion entre les deux."
+msgstr "Wird nur in der Live-Vorschau angezeigt (nie im tatsächlichen PDF), um jede Verwechslung zwischen beiden zu vermeiden."

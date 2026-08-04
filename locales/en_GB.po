@@ -791,8 +791,26 @@ msgstr "Show a QR code on PDF sheets"
 msgid "Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel."
 msgstr "The QR code links back to the corresponding record in GLPI — handy for finding it during a physical asset check."
 
-msgid "Symbole de devise"
+msgid "Symbole monétaire"
 msgstr "Currency symbol"
 
 msgid "Affiché après le prix sur la fiche PDF (ex: €, $, CHF)."
 msgstr "Shown after the price on the PDF sheet (e.g. €, $, CHF)."
+
+msgid "Version du plugin"
+msgstr "Plugin version"
+
+msgid "Version installée"
+msgstr "Installed version"
+
+msgid "Dernière version sur GitHub"
+msgstr "Latest version on GitHub"
+
+msgid "Texte du filigrane sur l'aperçu"
+msgstr "Preview watermark text"
+
+msgid "Opacité du filigrane (%)"
+msgstr "Watermark opacity (%)"
+
+msgid "Affiché uniquement sur l'aperçu en direct (jamais sur le vrai PDF), pour éviter toute confusion entre les deux."
+msgstr "Shown only on the live preview (never on the actual PDF), to avoid any confusion between the two."

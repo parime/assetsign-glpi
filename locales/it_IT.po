@@ -797,8 +797,26 @@ msgstr "Mostra un codice QR sulle schede PDF"
 msgid "Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel."
 msgstr "Il codice QR rimanda alla scheda corrispondente in GLPI — comodo per ritrovarla durante un controllo fisico del dispositivo."
 
-msgid "Symbole de devise"
+msgid "Symbole monétaire"
 msgstr "Simbolo di valuta"
 
 msgid "Affiché après le prix sur la fiche PDF (ex: €, $, CHF)."
 msgstr "Mostrato dopo il prezzo sulla scheda PDF (es: €, $, CHF)."
+
+msgid "Version du plugin"
+msgstr "Versione del plugin"
+
+msgid "Version installée"
+msgstr "Versione installata"
+
+msgid "Dernière version sur GitHub"
+msgstr "Ultima versione su GitHub"
+
+msgid "Texte du filigrane sur l'aperçu"
+msgstr "Testo della filigrana nell'anteprima"
+
+msgid "Opacité du filigrane (%)"
+msgstr "Opacità della filigrana (%)"
+
+msgid "Affiché uniquement sur l'aperçu en direct (jamais sur le vrai PDF), pour éviter toute confusion entre les deux."
+msgstr "Mostrato solo nell'anteprima in tempo reale (mai nel PDF reale), per evitare qualsiasi confusione tra i due."
