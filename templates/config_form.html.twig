@@ -345,6 +345,13 @@
               </div>
             {% endfor %}
           </div>
+
+          <div class="mb-3 form-check">
+            <input type="hidden" name="show_infocom_dates" value="0">
+            <input type="checkbox" name="show_infocom_dates" value="1" class="form-check-input" id="show_infocom_dates" {{ config.show_infocom_dates|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="show_infocom_dates">{{ __('Afficher les dates Infocom dans la frise', 'remise') }}</label>
+            <div class="form-text">{{ __('Achat, commande, livraison, mise en service, garantie, réforme : lues directement depuis l\'onglet Infocom du matériel, jamais copiées ni modifiables depuis ici.', 'remise') }}</div>
+          </div>
         </div>
 
       </div>
