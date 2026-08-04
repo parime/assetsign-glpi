@@ -101,3 +101,14 @@
     touch-action: none;
     background: #fff;
 }
+
+/* Marge de securite sous le bouton Enregistrer de la page de configuration
+   (onglets Général/Remise dont le contenu est long) : la barre de debug GLPI
+   (position: fixed, toujours au-dessus, non affectee par le defilement)
+   masquait entierement le bouton sur les onglets les plus hauts, sans aucun
+   moyen de la contourner en defilant plus bas - constate en conditions
+   reelles (mode debug active). Onglets plus courts (Restitution...) n'etaient
+   pas concernes, la hauteur totale de page y laissant deja assez de marge. */
+#remise-config-form button[name="update"] {
+    margin-bottom: 60px;
+}

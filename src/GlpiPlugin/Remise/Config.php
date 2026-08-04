@@ -101,7 +101,19 @@ class Config extends CommonDBTM
            // ENTRE EUX sans les decoupler du vrai formulaire, cf.
            // TROUBLESHOOTING.md). Un jeton separe, jamais lu ni ecrit dans le
            // DOM du formulaire, elimine la course a la racine.
-           'preview_csrf_token' => \Session::getNewCSRFToken(),
+           //
+           // IMPORTANT : Session::getNewCSRFToken() SANS argument reutilise en
+           // realite le meme jeton deja genere dans la requete en cours
+           // (variable globale $CURRENTCSRFTOKEN, cf. src/Session.php du
+           // coeur GLPI) — un premier appel a getNewCSRFToken() (ci-dessus,
+           // pour csrf_token) l'initialise, et un second appel SANS le
+           // parametre $standalone=true renvoie EXACTEMENT LE MEME jeton, pas
+           // un jeton independant. Le premier essai de decouplage ci-dessus
+           // etait donc inoperant en pratique (les deux jetons etaient
+           // silencieusement identiques) — bug confirme encore present par
+           // l'utilisateur apres ce premier essai. `true` genere un jeton
+           // reellement standalone (non partage avec $CURRENTCSRFTOKEN).
+           'preview_csrf_token' => \Session::getNewCSRFToken(true),
            'preview_html'    => $previewHtml,
            // Seul "canvas" est reellement implemente (cf. Provider\ProviderFactory) : Yousign et
            // DocuSeal ont ete retires du choix pour ne pas laisser un admin selectionner un
