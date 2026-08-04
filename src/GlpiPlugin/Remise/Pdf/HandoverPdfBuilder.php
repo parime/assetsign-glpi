@@ -134,6 +134,12 @@ final class HandoverPdfBuilder
        $currencySymbol = array_key_exists('currency_symbol', $overrides)
            ? ((string) $overrides['currency_symbol'] ?: '€')
            : ($config->fields['currency_symbol'] ?: '€');
+       $watermarkText = array_key_exists('preview_watermark_text', $overrides)
+           ? ((string) $overrides['preview_watermark_text'] ?: 'APERÇU')
+           : ($config->fields['preview_watermark_text'] ?: 'APERÇU');
+       $watermarkOpacity = max(5, min(100, (int) (array_key_exists('preview_watermark_opacity', $overrides)
+           ? $overrides['preview_watermark_opacity']
+           : $config->fields['preview_watermark_opacity'])));
 
        // Donnees fictives (cf. commentaire de methode) : le nom d'entite est,
        // lui, reel (utile pour verifier que {entite} se resout correctement
@@ -170,6 +176,12 @@ final class HandoverPdfBuilder
            'qr_data_uri'         => $qrEnabled
                ? $this->getQrCodeDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/remise/front/remise.form.php?id=0')
                : null,
+           // Uniquement dans renderPreview(), JAMAIS dans renderHtml() (vrai PDF) :
+           // c'est ce qui garantit qu'un vrai document genere ne peut pas se
+           // retrouver filigrane par erreur — cf. handover.html.twig, qui
+           // conditionne l'affichage a la simple presence de cette variable.
+           'watermark_text'      => $watermarkText,
+           'watermark_opacity'   => $watermarkOpacity,
        ]);
    }
 

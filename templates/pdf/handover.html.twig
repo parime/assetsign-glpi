@@ -8,6 +8,15 @@
 </head>
 <body>
 
+{% if watermark_text is defined and watermark_text %}
+{# Uniquement rendu par renderPreview() (jamais renderHtml(), cf. HandoverPdfBuilder) :
+   ce gabarit est partage entre l'apercu en direct (rendu par le NAVIGATEUR dans
+   une iframe, via front/preview.php - support CSS complet) et le vrai PDF (rendu
+   par Dompdf) - ce bloc n'est donc jamais soumis a Dompdf, qui n'a pas a supporter
+   position:fixed/transform ici. #}
+<div style="position:fixed;top:45%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:64px;font-weight:bold;color:rgba(200,30,30,{{ (watermark_opacity|default(25)) / 100 }});pointer-events:none;z-index:9999;white-space:nowrap;">{{ watermark_text }}</div>
+{% endif %}
+
 {% if logo_data_uri %}
 <div class="header-logo"><img src="{{ logo_data_uri }}" alt=""></div>
 {% endif %}
