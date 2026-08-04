@@ -138,6 +138,22 @@ abstract class RemiseTestCase extends TestCase
         return $id;
     }
 
+    /**
+     * Utilisateur de test avec prenom/nom garantis (contrairement au compte
+     * 'glpi' du jeu de test, dont le prenom/nom ne sont pas forcement remplis
+     * sur une instance fraichement installee — constate en CI, absent en local
+     * sur une instance deja manipulee manuellement).
+     */
+    protected function createTestUser(string $firstname, string $realname, array $extra = []): int
+    {
+        $user = new \User();
+        return (int) $user->add(array_merge([
+            'name'      => strtolower($firstname) . '.' . strtolower($realname) . '.' . random_int(100000, 999999),
+            'firstname' => $firstname,
+            'realname'  => $realname,
+        ], $extra));
+    }
+
     /** Cree un Computer minimal (nom + entite), pour les tests de declenchement. */
     protected function createTestComputer(int $entitiesId, string $name): \Computer
     {
