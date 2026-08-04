@@ -2,6 +2,13 @@
 <div class="col" style="min-width: 320px;">
 <div class="card">
   <div class="card-body">
+    {# Formulaire independant du principal (jamais imbrique) : seuls le jeton
+       CSRF et l'entite lui sont necessaires, cf. bouton "Envoyer un e-mail de
+       test" plus bas (associe via l'attribut HTML5 form="remise-test-email-form"). #}
+    <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/config.php" id="remise-test-email-form" style="display:none;">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="entities_id" value="{{ entity_id }}">
+    </form>
     <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/config.php" enctype="multipart/form-data" id="remise-config-form" data-remise-preview-frame="remise-preview-frame">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="entities_id" value="{{ entity_id }}">
@@ -28,6 +35,17 @@
           <div class="mb-3">
             <label class="form-label">{{ __('E-mail de l\'expéditeur', 'remise') }}</label>
             <input type="email" name="sender_email" class="form-control" value="{{ config.sender_email|default('') }}">
+          </div>
+
+          <div class="mb-3">
+            {# Bouton associe au formulaire independant "remise-test-email-form"
+               (attribut HTML5 form="...", pas d'imbrication de <form>) : action
+               separee de "update", envoyee a l'adresse du compte GLPI courant
+               plutot qu'a un vrai beneficiaire, pour verifier isolement que le
+               serveur SMTP configure dans GLPI accepte l'envoi avec l'expediteur
+               ci-dessus, sans attendre une vraie remise. #}
+            <button type="submit" form="remise-test-email-form" name="send_test_email" class="btn btn-outline-secondary btn-sm">{{ __('Envoyer un e-mail de test', 'remise') }}</button>
+            <div class="form-text">{{ __('Envoie un e-mail à votre propre adresse GLPI, pour vérifier que l\'envoi fonctionne.', 'remise') }}</div>
           </div>
 
           <div class="mb-3">
@@ -188,6 +206,12 @@
             <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l\'onglet Remise de chaque matériel géré par le plugin.', 'remise') }}</div>
           </div>
 
+          <div class="mb-3">
+            <label class="form-label">{{ __('Symbole de devise', 'remise') }}</label>
+            <input type="text" name="currency_symbol" class="form-control" style="width: 80px;" maxlength="8" value="{{ config.currency_symbol|default('€') }}">
+            <div class="form-text">{{ __('Affiché après le prix sur la fiche PDF (ex: €, $, CHF).', 'remise') }}</div>
+          </div>
+
           {% if all_states|length %}
             <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'remise') }}</h4>
             <p class="text-muted small">{{ __('Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée.', 'remise') }}</p>
@@ -214,6 +238,12 @@
             <input type="checkbox" name="enable_damage_annotation" value="1" class="form-check-input" id="enable_damage_annotation" {{ config.enable_damage_annotation|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_damage_annotation">{{ __('État des lieux visuel (annotation de dommages)', 'remise') }}</label>
             <div class="form-text">{{ __('Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance.', 'remise') }}</div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="show_qr_code" value="0">
+            <input type="checkbox" name="show_qr_code" value="1" class="form-check-input" id="show_qr_code" {{ config.show_qr_code|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="show_qr_code">{{ __('Afficher un QR code sur les fiches PDF', 'remise') }}</label>
+            <div class="form-text">{{ __('Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel.', 'remise') }}</div>
           </div>
         </div>
 

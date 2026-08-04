@@ -89,7 +89,7 @@ Le même onglet Remises existe aussi côté utilisateur (fiche d'un compte GLPI,
 - Lien vers la charte informatique complète configurable par entité (utile si plusieurs sociétés/sites hébergent leur charte à des endroits différents), en plus d'un texte de charte propre à chaque gabarit.
 - Fonctionne avec les **actifs personnalisés** créés dans GLPI (Configuration > Actifs personnalisés), en plus des types standards (ordinateurs, écrans, périphériques, téléphones) — aucune modification du plugin nécessaire.
 - Configuration indépendante par entité, avec héritage automatique (une entité sans réglage propre hérite de celui de son entité parente la plus proche).
-- Interface disponible en français et en anglais (détectée automatiquement selon la langue du compte GLPI du destinataire pour les e-mails).
+- Interface disponible en français, anglais, espagnol, allemand et italien (détectée automatiquement selon la langue du compte GLPI du destinataire pour les e-mails).
 - Tableau de bord GLPI natif : voir la section [Tableau de bord](#tableau-de-bord) ci-dessous.
 - Menu dédié **Administration > Remise & signature > Gestion des fiches** : vue transverse de toutes les remises/restitutions (tous matériels et bénéficiaires confondus), avec téléchargement direct du PDF (non signé et signé) et annulation d'une ou plusieurs demandes en attente (individuellement ou en action groupée).
 - Conditions générales et charte informatique activables **indépendamment** sur chaque gabarit (deux cases à cocher) : un gabarit peut par exemple n'afficher que la charte, ou aucune des deux sections, sans avoir à vider le texte.

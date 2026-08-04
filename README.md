@@ -56,4 +56,4 @@ Toutes les autres captures d'écran (paramétrage, tableau de bord, listes, ongl
 
 ## Licence
 
-GPL-2.0-or-later, conformément aux conventions des plugins GLPI.
+[GPL-3.0-only](LICENSE), conformément aux conventions des plugins GLPI.

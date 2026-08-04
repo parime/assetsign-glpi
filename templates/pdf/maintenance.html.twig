@@ -70,6 +70,10 @@
 </div>
 {% endif %}
 
+{% if qr_data_uri %}
+<div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
+{% endif %}
+
 <div class="footer">Fiche de maintenance #{{ maintenance.id }} — Document généré par GLPI (plugin remise)</div>
 
 </body>

@@ -4,795 +4,801 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en_GB\n"
+"Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "Aucune remise enregistrée pour ce matériel."
-msgstr "No handover recorded for this asset."
+msgstr "Ninguna entrega registrada para este equipo."
 
 msgid "Statut"
-msgstr "Status"
+msgstr "Estado"
 
 msgid "Créée le"
-msgstr "Created on"
+msgstr "Creada el"
 
 msgid "Signée le"
-msgstr "Signed on"
+msgstr "Firmada el"
 
 msgid "Voir"
-msgstr "View"
+msgstr "Ver"
 
 msgid "Général"
 msgstr "General"
 
 msgid "Nom de l'expéditeur"
-msgstr "Sender name"
+msgstr "Nombre del remitente"
 
 msgid "E-mail de l'expéditeur"
-msgstr "Sender email"
+msgstr "Correo del remitente"
 
 msgid "Fournisseur de signature"
-msgstr "Signature provider"
+msgstr "Proveedor de firma"
 
 msgid "Délais de relance (jours, séparés par des virgules — ex: 3,7,7)"
-msgstr "Reminder delays (days, comma-separated — e.g. 3,7,7)"
+msgstr "Plazos de recordatorio (días, separados por comas — ej: 3,7,7)"
 
 msgid "Nombre maximum de relances (0 = illimité)"
-msgstr "Maximum number of reminders (0 = unlimited)"
+msgstr "Número máximo de recordatorios (0 = ilimitado)"
 
 msgid "Durée de validité du lien de signature (jours)"
-msgstr "Signature link validity period (days)"
+msgstr "Duración de validez del enlace de firma (días)"
 
 msgid "Signature obligatoire"
-msgstr "Signature required"
+msgstr "Firma obligatoria"
 
 msgid "Types de matériel gérés par le plugin"
-msgstr "Asset types managed by the plugin"
+msgstr "Tipos de equipo gestionados por el plugin"
 
 msgid "Décochez un type pour que le plugin n'agisse jamais dessus, quelle que soit l'affectation ou l'État."
-msgstr "Uncheck a type so the plugin never acts on it, regardless of assignment or State changes."
+msgstr "Desmarque un tipo para que el plugin nunca actúe sobre él, sea cual sea la asignación o el Estado."
 
 msgid "Déclenchement par affectation d'utilisateur"
-msgstr "Triggered by user assignment"
+msgstr "Activación por asignación de usuario"
 
 msgid "Basé sur le champ \"Utilisateur\" du matériel — fonctionne dans la plupart des GLPI."
-msgstr "Based on the asset's \"User\" field — works in most GLPI setups."
+msgstr "Basado en el campo \"Usuario\" del equipo — funciona en la mayoría de los GLPI."
 
 msgid "Signature à la première affectation"
-msgstr "Signature on first assignment"
+msgstr "Firma en la primera asignación"
 
 msgid "Signature à chaque changement d'utilisateur"
-msgstr "Signature on every user change"
+msgstr "Firma en cada cambio de usuario"
 
 msgid "Signature lors de la restitution (désaffectation)"
-msgstr "Signature on return (unassignment)"
+msgstr "Firma al restituir (desasignación)"
 
 msgid "Déclenchement par État du matériel (optionnel)"
-msgstr "Triggered by asset State (optional)"
+msgstr "Activación por Estado del equipo (opcional)"
+
 msgid "Enregistrer"
-msgstr "Save"
+msgstr "Guardar"
 
 msgid "Matériel"
-msgstr "Asset"
+msgstr "Equipo"
 
 msgid "Bénéficiaire"
-msgstr "Beneficiary"
+msgstr "Beneficiario"
 
 msgid "Envoyé le"
-msgstr "Sent on"
+msgstr "Enviada el"
 
 msgid "Consulté le"
-msgstr "Viewed on"
+msgstr "Consultada el"
 
 msgid "Signé le"
-msgstr "Signed on"
+msgstr "Firmado el"
 
 msgid "Nombre de relances"
-msgstr "Number of reminders"
+msgstr "Número de recordatorios"
 
 msgid "Relancer maintenant"
-msgstr "Send reminder now"
+msgstr "Enviar recordatorio ahora"
 
 msgid "Nom du gabarit"
-msgstr "Template name"
+msgstr "Nombre de la plantilla"
 
 msgid "Type de remise concerné"
-msgstr "Handover type"
+msgstr "Tipo de entrega correspondiente"
 
 msgid "Conditions générales (contrat)"
-msgstr "General terms (contract)"
+msgstr "Condiciones generales (contrato)"
 
 msgid "Charte informatique"
-msgstr "IT charter"
+msgstr "Normativa informática"
 
 msgid "Gabarit par défaut pour ce type"
-msgstr "Default template for this type"
+msgstr "Plantilla predeterminada para este tipo"
 
 msgid "Actif"
-msgstr "Active"
+msgstr "Activo"
 
 msgid "Supprimer ce gabarit ?"
-msgstr "Delete this template?"
+msgstr "¿Eliminar esta plantilla?"
 
 msgid "Supprimer"
-msgstr "Delete"
+msgstr "Eliminar"
 
 msgid "Créer"
-msgstr "Create"
+msgstr "Crear"
 
 msgid "Signature de remise de matériel"
-msgstr "Equipment handover signature"
+msgstr "Firma de entrega de equipo"
 
 msgid "Signature de restitution de matériel"
-msgstr "Equipment return signature"
+msgstr "Firma de restitución de equipo"
 
 msgid "Impossible d'afficher ce document"
-msgstr "Unable to display this document"
+msgstr "No se puede mostrar este documento"
 
 msgid "J'ai lu et j'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus."
-msgstr "I have read and accept the general terms and the IT charter presented in the document above."
+msgstr "He leído y acepto las condiciones generales y la normativa informática presentadas en el documento anterior."
 
 msgid "Signez ci-dessous à la souris, au doigt ou au stylet :"
-msgstr "Sign below using your mouse, finger or stylus:"
+msgstr "Firme a continuación con el ratón, el dedo o el lápiz óptico:"
 
 msgid "Effacer"
-msgstr "Clear"
+msgstr "Borrar"
 
 msgid "Valider ma signature"
-msgstr "Confirm my signature"
+msgstr "Confirmar mi firma"
 
 msgid "Ce lien est valable jusqu'au"
-msgstr "This link is valid until"
+msgstr "Este enlace es válido hasta el"
 
 msgid "et deviendra invalide dès la signature."
-msgstr "and will become invalid once signed."
+msgstr "y quedará invalidado en cuanto se firme."
 
 msgid "Impossible de charger le document"
-msgstr "Unable to load the document"
+msgstr "No se ha podido cargar el documento"
 
 msgid "Envoi en cours…"
-msgstr "Sending…"
+msgstr "Enviando…"
 
 msgid "Erreur"
 msgstr "Error"
 
 msgid "Merci, votre signature a bien été enregistrée."
-msgstr "Thank you, your signature has been recorded."
+msgstr "Gracias, su firma se ha registrado correctamente."
 
 msgid "Erreur réseau, merci de réessayer."
-msgstr "Network error, please try again."
+msgstr "Error de red, inténtelo de nuevo."
 
 msgid "Remise & signature"
-msgstr "Handover & signature"
+msgstr "Entrega y firma"
 
 msgid "Remises en attente de signature"
-msgstr "Handovers pending signature"
+msgstr "Entregas pendientes de firma"
 
 msgid "Remises signées"
-msgstr "Signed handovers"
+msgstr "Entregas firmadas"
 
 msgid "Remises expirées"
-msgstr "Expired handovers"
+msgstr "Entregas caducadas"
 
 msgid "Configuration enregistrée."
-msgstr "Configuration saved."
+msgstr "Configuración guardada."
 
 msgid "Purge les jetons de signature expirés ou invalides"
-msgstr "Purges expired or invalid signature tokens"
+msgstr "Purga los tokens de firma caducados o no válidos"
 
 msgid "Type de remise"
-msgstr "Handover type"
+msgstr "Tipo de entrega"
 
 msgid "Par défaut"
-msgstr "Default"
+msgstr "Predeterminado"
 
 msgid "Type de matériel"
-msgstr "Asset type"
+msgstr "Tipo de equipo"
 
 msgid "Date d'envoi"
-msgstr "Sent date"
+msgstr "Fecha de envío"
 
 msgid "Date de signature"
-msgstr "Signature date"
+msgstr "Fecha de firma"
 
 msgid "Remises"
-msgstr "Handovers"
+msgstr "Entregas"
 
 msgid "Brouillon"
-msgstr "Draft"
+msgstr "Borrador"
 
 msgid "En attente"
-msgstr "Pending"
+msgstr "Pendiente"
 
 msgid "Envoyé"
-msgstr "Sent"
+msgstr "Enviado"
 
 msgid "Consulté"
-msgstr "Viewed"
+msgstr "Consultado"
 
 msgid "Signé"
-msgstr "Signed"
+msgstr "Firmado"
 
 msgid "Expiré"
-msgstr "Expired"
+msgstr "Caducado"
 
 msgid "Annulé"
-msgstr "Cancelled"
+msgstr "Cancelado"
 
 msgid "Restitution"
-msgstr "Return"
+msgstr "Restitución"
+
 msgid "Envoie les relances de signature dues"
-msgstr "Sends due signature reminders"
+msgstr "Envía los recordatorios de firma pendientes"
 
 msgid "Marque comme expirées les remises hors délai"
-msgstr "Marks handovers past their deadline as expired"
+msgstr "Marca como caducadas las entregas fuera de plazo"
 
 msgid "Nouvelle remise de matériel"
-msgstr "New equipment handover"
+msgstr "Nueva entrega de equipo"
 
 msgid "Relance de signature"
-msgstr "Signature reminder"
+msgstr "Recordatorio de firma"
 
 msgid "Document signé"
-msgstr "Document signed"
+msgstr "Documento firmado"
 
 msgid "Document expiré"
-msgstr "Document expired"
+msgstr "Documento caducado"
 
 msgid "Technicien"
-msgstr "Technician"
+msgstr "Técnico"
 
 msgid "Événement"
-msgstr "Event"
+msgstr "Evento"
 
 msgid "Identifiant"
-msgstr "ID"
+msgstr "Identificador"
 
 msgid "Lien de signature"
-msgstr "Signature link"
+msgstr "Enlace de firma"
 
 msgid "Date limite de signature"
-msgstr "Signature deadline"
+msgstr "Fecha límite de firma"
 
 msgid "Configuration remise & signature"
-msgstr "Handover & signature configuration"
+msgstr "Configuración de entrega y firma"
 
 msgid "Signature intégrée (canvas)"
-msgstr "Built-in signature (canvas)"
+msgstr "Firma integrada (lienzo)"
 
 msgid "Aucune verification de configuration bloquante."
-msgstr "No blocking configuration check."
+msgstr "Ninguna verificación de configuración bloqueante."
 
 msgid "Logo à afficher sur les fiches PDF"
-msgstr "Logo to display on PDF forms"
+msgstr "Logotipo a mostrar en las fichas PDF"
 
 msgid "Retirer le logo actuel"
-msgstr "Remove current logo"
+msgstr "Quitar el logotipo actual"
 
 msgid "Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo actuel."
-msgstr "PNG, JPG, GIF or WEBP image. Choose a file to replace the current logo."
+msgstr "Imagen PNG, JPG, GIF o WEBP. Elija un archivo para reemplazar el logotipo actual."
 
 msgid "Échec de l'envoi du logo."
-msgstr "Failed to upload the logo."
+msgstr "Error al enviar el logotipo."
 
 msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
-msgstr "The logo must be an image (PNG, JPG, GIF or WEBP)."
+msgstr "El logotipo debe ser una imagen (PNG, JPG, GIF o WEBP)."
 
 msgid "Lien vers la charte informatique complète"
-msgstr "Link to the full IT charter"
+msgstr "Enlace a la normativa informática completa"
+
 msgid "Aperçu de la fiche générée"
-msgstr "Preview of the generated form"
+msgstr "Vista previa de la ficha generada"
+
 msgid "Utilisez le bouton \"lien\" de la barre d'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici."
-msgstr "Use the \"link\" toolbar button to point to an existing document (e.g. the full IT charter), rather than retyping everything here."
+msgstr "Use el botón \"enlace\" de la barra de herramientas para remitir a un documento existente (ej: la normativa informática completa), en lugar de volver a escribirlo todo aquí."
 
 msgid "Accessoires remis"
-msgstr "Accessories handed over"
+msgstr "Accesorios entregados"
 
 msgid "Accessoire"
-msgstr "Accessory"
+msgstr "Accesorio"
 
 msgid "Quantité"
-msgstr "Quantity"
+msgstr "Cantidad"
 
 msgid "Commentaire"
-msgstr "Comment"
+msgstr "Comentario"
 
 msgid "Retirer"
-msgstr "Remove"
+msgstr "Quitar"
 
 msgid "Aucun accessoire remis pour le moment."
-msgstr "No accessory handed over yet."
+msgstr "Ningún accesorio entregado por el momento."
 
 msgid "Ajouter un accessoire"
-msgstr "Add an accessory"
+msgstr "Añadir un accesorio"
 
 msgid "Ajouter"
-msgstr "Add"
+msgstr "Añadir"
 
 msgid "Le logo affiché ci-dessous est actuellement imposé par une entité parente (voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition est retirée."
-msgstr "The logo shown below is currently enforced by a parent entity (see below). A logo uploaded here will only be used once that enforcement is removed."
+msgstr "El logotipo mostrado abajo está actualmente impuesto por una entidad superior (ver más abajo). Un logotipo enviado aquí solo se usará si se retira dicha imposición."
 
 msgid "Imposer ce logo à toutes les entités enfants (et leurs propres sous-entités)"
-msgstr "Enforce this logo on all child entities (and their own sub-entities)"
+msgstr "Imponer este logotipo a todas las entidades hijas (y sus propias subentidades)"
 
 msgid "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo."
-msgstr "Useful if several entities must display the same logo: this entity then enforces its own on its entire descendance, even if a child entity has already uploaded its own logo."
+msgstr "Útil si varias entidades deben mostrar el mismo logotipo: esta entidad impone entonces el suyo a toda su descendencia, incluso si una entidad hija ya ha enviado su propio logotipo."
 
 msgid "Preuve de signature"
-msgstr "Signature proof"
+msgstr "Prueba de firma"
 
 msgid "Signataire"
-msgstr "Signer"
+msgstr "Firmante"
 
 msgid "Adresse IP"
-msgstr "IP address"
+msgstr "Dirección IP"
 
 msgid "Navigateur / appareil"
-msgstr "Browser / device"
+msgstr "Navegador / dispositivo"
 
 msgid "Empreinte du document (SHA-256)"
-msgstr "Document fingerprint (SHA-256)"
+msgstr "Huella del documento (SHA-256)"
 
 msgid "Horodatage"
-msgstr "Timestamp"
+msgstr "Marca de tiempo"
 
 msgid "Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n'a pas été modifié depuis (l'empreinte ci-dessus doit correspondre à celle du fichier)."
-msgstr "This information is recorded at the moment of signature and, in case of a dispute, allows verifying that the signed PDF has not been altered since (the fingerprint above must match the file's)."
+msgstr "Esta información se registra en el momento de la firma y permite, en caso de litigio, comprobar que el PDF firmado no se ha modificado desde entonces (la huella anterior debe coincidir con la del archivo)."
 
 msgid "Alerter le technicien avant expiration (jours avant, 0 = désactivé)"
-msgstr "Warn the technician before expiration (days before, 0 = disabled)"
+msgstr "Avisar al técnico antes de la caducidad (días antes, 0 = desactivado)"
 
 msgid "Le technicien à l'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop tard."
-msgstr "The technician who triggered the handover receives an email when this many days remain before the link expires, so they can reach out to the beneficiary another way (call, in person) before it's too late."
+msgstr "El técnico que originó la entrega recibe un correo cuando quedan estos días antes de que caduque el enlace, para poder contactar de otra forma con el beneficiario (llamada, visita presencial) antes de que sea demasiado tarde."
 
 msgid "Document sur le point d'expirer"
-msgstr "Document about to expire"
+msgstr "Documento a punto de caducar"
 
 msgid "Envoyer une relance de signature aux remises sélectionnées ?"
-msgstr "Send a signature reminder to the selected handovers?"
+msgstr "¿Enviar un recordatorio de firma a las entregas seleccionadas?"
 
 msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
-msgstr "Pre-filled starting text, as an example: edit or clear it freely."
+msgstr "Texto inicial precargado a modo de ejemplo: modifíquelo o bórrelo libremente."
 
 msgid "Remise"
 msgid_plural "Remises"
-msgstr[0] "Handover"
-msgstr[1] "Handovers"
+msgstr[0] "Entrega"
+msgstr[1] "Entregas"
 
 msgid "Accessoire de remise"
 msgid_plural "Accessoires de remise"
-msgstr[0] "Handover accessory"
-msgstr[1] "Handover accessories"
+msgstr[0] "Accesorio de entrega"
+msgstr[1] "Accesorios de entrega"
 
 msgid "Gabarit de remise"
 msgid_plural "Gabarits de remise"
-msgstr[0] "Handover template"
-msgstr[1] "Handover templates"
+msgstr[0] "Plantilla de entrega"
+msgstr[1] "Plantillas de entrega"
 
 msgid "Champ « Observations » libre sur chaque fiche"
-msgstr "Free-text \"Observations\" field on each form"
+msgstr "Campo «Observaciones» libre en cada ficha"
 
 msgid "Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n'est pas encore signée."
-msgstr "If enabled, a free-text field becomes available on each handover form (e.g. observed condition of the equipment) and appears on the PDF as long as the form is not yet signed."
+msgstr "Si está activado, un campo de texto libre está disponible en cada ficha de entrega (ej: estado observado del equipo) y aparece en el PDF mientras la ficha no esté aún firmada."
 
 msgid "Inclure les conditions générales dans le PDF"
-msgstr "Include the general terms in the PDF"
+msgstr "Incluir las condiciones generales en el PDF"
 
 msgid "Inclure la charte informatique dans le PDF"
-msgstr "Include the IT charter in the PDF"
+msgstr "Incluir la normativa informática en el PDF"
 
 msgid "Décochez pour ne jamais afficher cette section, y compris le lien vers la charte complète configuré au niveau de l'entité."
-msgstr "Uncheck to never display this section, including the link to the full charter configured at entity level."
+msgstr "Desmarque para no mostrar nunca esta sección, incluido el enlace a la normativa completa configurado a nivel de entidad."
 
 msgid "Observations"
-msgstr "Observations"
+msgstr "Observaciones"
 
 msgid "Annuler cette demande de signature ?"
-msgstr "Cancel this signature request?"
+msgstr "¿Cancelar esta solicitud de firma?"
 
 msgid "Annuler la demande"
-msgstr "Cancel the request"
+msgstr "Cancelar la solicitud"
 
 msgid "Annuler les demandes de signature sélectionnées ? Le lien envoyé au bénéficiaire deviendra invalide."
-msgstr "Cancel the selected signature requests? The link sent to the beneficiary will become invalid."
+msgstr "¿Cancelar las solicitudes de firma seleccionadas? El enlace enviado al beneficiario dejará de ser válido."
 
 msgid "Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà annulée)."
-msgstr "This request can no longer be cancelled (already signed, expired, or already cancelled)."
+msgstr "Esta solicitud ya no puede cancelarse (ya firmada, caducada o ya cancelada)."
 
 msgid "Annulée automatiquement (matériel réaffecté avant signature)"
-msgstr "Automatically cancelled (equipment reassigned before signature)"
+msgstr "Cancelada automáticamente (equipo reasignado antes de la firma)"
 
 msgid "PDF non signé"
-msgstr "Unsigned PDF"
+msgstr "PDF sin firmar"
 
 msgid "PDF signé"
-msgstr "Signed PDF"
+msgstr "PDF firmado"
 
 msgid "Télécharger (signé)"
-msgstr "Download (signed)"
+msgstr "Descargar (firmado)"
 
 msgid "Télécharger (non signé)"
-msgstr "Download (unsigned)"
+msgstr "Descargar (sin firmar)"
 
 msgid "Demande annulée."
-msgstr "Request cancelled."
+msgstr "Solicitud cancelada."
 
 msgid "Retour à l'accueil GLPI"
-msgstr "Back to GLPI home"
+msgstr "Volver al inicio de GLPI"
 
 msgid "Exemple : petite rayure sur le capot, sans gravité."
-msgstr "Example: minor scratch on the lid, not serious."
+msgstr "Ejemplo: pequeño rasguño en la carcasa, sin gravedad."
 
 msgid "Don"
-msgstr "Donation"
+msgstr "Donación"
 
 msgid "Destinataire"
-msgstr "Recipient"
+msgstr "Destinatario"
 
 msgid "Créer la fiche"
-msgstr "Create the form"
+msgstr "Crear la ficha"
 
 msgid "Fiche créée."
-msgstr "Form created."
+msgstr "Ficha creada."
 
 msgid "Autoriser la création de fiches de don de matériel"
-msgstr "Allow creating equipment donation forms"
+msgstr "Permitir la creación de fichas de donación de equipo"
 
 msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Remise de chaque matériel géré par le plugin."
-msgstr "Adds a \"Create donation form\" button on the Handover tab of each asset managed by the plugin."
+msgstr "Añade un botón «Crear una ficha de donación» en la pestaña Entrega de cada equipo gestionado por el plugin."
 
 msgid "Vente"
-msgstr "Sale"
+msgstr "Venta"
 
 msgid "Prix"
-msgstr "Price"
+msgstr "Precio"
 
 msgid "Date de vente"
-msgstr "Sale date"
+msgstr "Fecha de venta"
 
 msgid "Autoriser la création de fiches de vente de matériel"
-msgstr "Allow creating equipment sale forms"
+msgstr "Permitir la creación de fichas de venta de equipo"
 
 msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Remise de chaque matériel géré par le plugin."
-msgstr "Adds a \"Create sale form\" button (with price and date) on the Handover tab of each asset managed by the plugin."
+msgstr "Añade un botón «Crear una ficha de venta» (con precio y fecha) en la pestaña Entrega de cada equipo gestionado por el plugin."
 
 msgid "État des lieux visuel"
-msgstr "Visual damage report"
+msgstr "Estado del equipo visual"
 
 msgid "État des lieux visuel (annotation de dommages)"
-msgstr "Visual damage report (damage annotation)"
+msgstr "Estado del equipo visual (anotación de daños)"
 
 msgid "Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance."
-msgstr "Lets you mark damage on 3 generic views (back, front, bottom): reported on the PDF for signed forms, and shown directly on the record for maintenance forms."
+msgstr "Permite señalar daños en 3 vistas genéricas (trasera, delantera, inferior): se reflejan en el PDF para las fichas firmadas, y se muestran directamente en la ficha para las fichas de mantenimiento."
 
 msgid "Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner."
-msgstr "Click a view to drop a damage marker; click an existing marker to describe or delete it, drag it to reposition."
+msgstr "Haga clic en una vista para colocar una marca de daño; haga clic en una marca existente para describirla o eliminarla, arrástrela para reposicionarla."
 
 msgid "Description"
-msgstr "Description"
+msgstr "Descripción"
 
 msgid "Gravité"
-msgstr "Severity"
+msgstr "Gravedad"
 
 msgid "Mineure"
-msgstr "Minor"
+msgstr "Leve"
 
 msgid "Majeure"
-msgstr "Major"
+msgstr "Grave"
 
 msgid "Cette fiche ne peut plus être modifiée."
-msgstr "This form can no longer be modified."
+msgstr "Esta ficha ya no puede modificarse."
+
 msgid "Dessous"
-msgstr "Bottom"
+msgstr "Parte inferior"
+
 msgid "Fiche de maintenance"
 msgid_plural "Fiches de maintenance"
-msgstr[0] "Maintenance form"
-msgstr[1] "Maintenance forms"
+msgstr[0] "Ficha de mantenimiento"
+msgstr[1] "Fichas de mantenimiento"
 
 msgid "Point de contrôle de maintenance"
 msgid_plural "Points de contrôle de maintenance"
-msgstr[0] "Maintenance checklist item"
-msgstr[1] "Maintenance checklist items"
+msgstr[0] "Punto de control de mantenimiento"
+msgstr[1] "Puntos de control de mantenimiento"
 
 msgid "Maintenance"
-msgstr "Maintenance"
+msgstr "Mantenimiento"
 
 msgid "Aucune fiche de maintenance enregistrée pour ce matériel."
-msgstr "No maintenance form recorded for this asset."
+msgstr "Ninguna ficha de mantenimiento registrada para este equipo."
 
 msgid "Nouvelle fiche de maintenance"
-msgstr "New maintenance form"
+msgstr "Nueva ficha de mantenimiento"
 
 msgid "Aucun point de contrôle configuré (Configuration > Intitulés > Points de contrôle de maintenance)."
-msgstr "No checklist item configured (Setup > Dropdowns > Maintenance checklist items)."
+msgstr "Ningún punto de control configurado (Configuración > Listas desplegables > Puntos de control de mantenimiento)."
 
 msgid "Points de contrôle validés"
-msgstr "Checked items"
+msgstr "Puntos de control validados"
 
 msgid "Aucun point de contrôle validé."
-msgstr "No item checked."
+msgstr "Ningún punto de control validado."
 
 msgid "Fiche de maintenance créée."
-msgstr "Maintenance form created."
+msgstr "Ficha de mantenimiento creada."
+
 msgid "Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée."
-msgstr "The price and date are not known automatically: to be filled in afterwards on the created form."
+msgstr "El precio y la fecha no se conocen automáticamente: complételos después en la ficha creada."
 
 msgid "Détails de la vente"
-msgstr "Sale details"
+msgstr "Detalles de la venta"
 
 msgid "Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF ne mentionne pas encore la vente tant que ce prix n'est pas saisi."
-msgstr "No price entered yet (form created automatically): the PDF does not mention the sale until this price is entered."
+msgstr "Ningún precio indicado por el momento (ficha creada automáticamente): el PDF no menciona aún la venta mientras no se introduzca este precio."
 
 msgid "+ Nouveau gabarit"
-msgstr "+ New template"
+msgstr "+ Nueva plantilla"
 
 msgid "Compléments"
-msgstr "Extras"
+msgstr "Complementos"
 
 msgid "Gérer les gabarits de ce type"
-msgstr "Manage templates for this type"
+msgstr "Gestionar las plantillas de este tipo"
 
 msgid "Gérer les points de contrôle"
-msgstr "Manage checklist items"
+msgstr "Gestionar los puntos de control"
 
 msgid "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types."
-msgstr "Optional: URL to an existing document or page (intranet, PDF already online...). If set, a clickable link appears on the PDF, in addition to the charter text set in the template — shared by all types."
+msgstr "Opcional: URL a un documento o página existente (intranet, PDF ya publicado...). Si se indica, aparece un enlace en la ficha PDF, además del texto de la normativa definido en la plantilla — común a todos los tipos."
 
 msgid "Réglages transverses, applicables à tous les types de fiche signée."
-msgstr "Cross-cutting settings, applicable to all signed form types."
+msgstr "Ajustes transversales, aplicables a todos los tipos de ficha firmada."
 
 msgid "Voir les fiches de maintenance"
-msgstr "View maintenance forms"
+msgstr "Ver las fichas de mantenimiento"
 
 msgid "La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l'option ci-dessous est activée. L'accès se gère par le droit dédié (Administration > Profils)."
-msgstr "The maintenance form is a subsystem separate from signed forms (no beneficiary, no token, no e-mail): it always generates a PDF (same layout as handover/donation/sale forms, with the logo), and can additionally have the technician sign directly on the creation form if the option below is enabled. Access is managed through its dedicated right (Administration > Profiles)."
+msgstr "La ficha de mantenimiento es un subsistema separado del de las fichas firmadas (sin beneficiario, sin token, sin correo): siempre genera un PDF (mismo diseño que las fichas de entrega/donación/venta, con el logotipo), y además puede hacer firmar al técnico directamente en el formulario de creación si la opción de abajo está activada. El acceso se gestiona mediante el permiso dedicado (Administración > Perfiles)."
 
 msgid "Faire signer le technicien sur la fiche de maintenance"
-msgstr "Have the technician sign the maintenance form"
+msgstr "Hacer firmar al técnico en la ficha de mantenimiento"
 
 msgid "Si activé, un pavé de signature (identique à celui d'une vente) apparaît sur le formulaire de création : la fiche ne peut pas être créée sans signature. Le technicien est déjà connecté, aucun e-mail ni page séparée n'est utilisé."
-msgstr "If enabled, a signature pad (identical to a sale's) appears on the creation form: the form cannot be created without a signature. The technician is already logged in, no e-mail or separate page is used."
+msgstr "Si está activado, aparece un panel de firma (idéntico al de una venta) en el formulario de creación: la ficha no puede crearse sin firma. El técnico ya ha iniciado sesión, no se usa ningún correo ni página separada."
 
 msgid "Fiche PDF"
-msgstr "PDF record"
+msgstr "Ficha PDF"
 
 msgid "Merci de signer avant de créer la fiche."
-msgstr "Please sign before creating the form."
+msgstr "Firme antes de crear la ficha."
 
 msgid "PDF"
 msgstr "PDF"
 
 msgid "Signature du technicien"
-msgstr "Technician signature"
+msgstr "Firma del técnico"
 
 msgid "Signez ci-dessous avant de créer la fiche."
-msgstr "Sign below before creating the form."
+msgstr "Firme a continuación antes de crear la ficha."
 
 msgid "Télécharger"
-msgstr "Download"
+msgstr "Descargar"
 
 msgid "Télécharger en PDF"
-msgstr "Download as PDF"
+msgstr "Descargar en PDF"
 
 msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d'onglet, avant même d'enregistrer."
-msgstr "Example with fictional data, same Twig templates as the real PDF. The preview updates automatically as soon as you change a setting or switch tabs, even before saving."
+msgstr "Ejemplo con datos ficticios, mismas plantillas Twig que el PDF real. La vista previa se actualiza automáticamente en cuanto modifica un ajuste o cambia de pestaña, incluso antes de guardar."
 
 msgid "Exemple avec des données fictives. L'aperçu se met à jour automatiquement dès que vous modifiez le texte ou une case à cocher, avant même d'enregistrer."
-msgstr "Example with fictional data. The preview updates automatically as soon as you change the text or a checkbox, even before saving."
-
+msgstr "Ejemplo con datos ficticios. La vista previa se actualiza automáticamente en cuanto modifica el texto o una casilla, incluso antes de guardar."
 
 msgid "Choisissez d'abord un type de matériel ci-dessus."
-msgstr "First choose an asset type above."
+msgstr "Elija primero un tipo de equipo arriba."
 
 msgid "Exemple : touche cassée."
-msgstr "Example: broken key."
+msgstr "Ejemplo: tecla rota."
 
 msgid "Exemple : pied manquant."
-msgstr "Example: missing foot."
+msgstr "Ejemplo: falta una pata."
 
 msgid "Remarque"
-msgstr "Note"
+msgstr "Observación"
 
 msgid "Une précision à ajouter avant de signer (optionnel)."
-msgstr "Anything to add before signing (optional)."
+msgstr "Una aclaración que añadir antes de firmar (opcional)."
 
 msgid "Remarque enregistrée."
-msgstr "Note saved."
+msgstr "Observación guardada."
 
 msgid "Remarque du bénéficiaire"
-msgstr "Beneficiary's note"
+msgstr "Observación del beneficiario"
 
 msgid "Type de saisie"
-msgstr "Input type"
+msgstr "Tipo de campo"
 
 msgid "Case à cocher"
-msgstr "Checkbox"
+msgstr "Casilla de verificación"
 
 msgid "Texte libre"
-msgstr "Free text"
+msgstr "Texto libre"
 
 msgid "Menu déroulant"
-msgstr "Dropdown menu"
+msgstr "Lista desplegable"
 
 msgid "Options du menu déroulant (une par ligne)"
-msgstr "Dropdown menu options (one per line)"
+msgstr "Opciones de la lista desplegable (una por línea)"
 
 msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
-msgstr "Only used if the input type is \"Dropdown menu\"."
+msgstr "Usado únicamente si el tipo de campo es \"Lista desplegable\"."
 
 msgid "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue."
-msgstr "This asset has no user assigned: this status change therefore cannot generate a handover or return sheet. Assign a user on the asset's record if a signature is expected."
+msgstr "Este equipo no tiene usuario asignado: este cambio de Estado no puede, por tanto, generar una ficha de entrega o de restitución. Asigne un usuario en la ficha del equipo si se espera una firma."
 
 msgid "Échecs de création (30 derniers jours)"
-msgstr "Creation failures (last 30 days)"
+msgstr "Fallos de creación (últimos 30 días)"
 
 msgid "Accessoires de remise"
-msgstr "Handover accessories"
+msgstr "Accesorios de entrega"
 
 msgid "Alerte le technicien des remises sur le point d'expirer"
-msgstr "Warns the technician about handovers about to expire"
+msgstr "Avisa al técnico de las entregas a punto de caducar"
 
 msgid "Bénéficiaire externe"
-msgstr "External beneficiary"
+msgstr "Beneficiario externo"
 
 msgid "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche de %s depuis l'onglet \"Remises\" ci-dessous (bénéficiaire interne ou externe)."
-msgstr "This asset has no user assigned: manually create a %s record from the \"Handovers\" tab below (internal or external beneficiary)."
+msgstr "Este equipo no tiene usuario asignado: cree manualmente una ficha de %s desde la pestaña \"Entregas\" de abajo (beneficiario interno o externo)."
 
 msgid "Contact (facultatif)"
-msgstr "Contact (optional)"
+msgstr "Contacto (opcional)"
 
 msgid "Créer une fiche de %s"
-msgstr "Create a %s record"
+msgstr "Crear una ficha de %s"
 
 msgid "Date"
-msgstr "Date"
+msgstr "Fecha"
 
 msgid "E-mail ou téléphone"
-msgstr "Email or phone number"
+msgstr "Correo o teléfono"
 
 msgid "Ex. Association Locale, Jean Dupont..."
-msgstr "E.g. Local Association, John Smith..."
+msgstr "Ej. Asociación Local, Juan Pérez..."
 
 msgid "Externe"
-msgstr "External"
+msgstr "Externo"
 
 msgid "Fiches de maintenance"
-msgstr "Maintenance records"
+msgstr "Fichas de mantenimiento"
 
 msgid "Gabarits de remise"
-msgstr "Handover templates"
+msgstr "Plantillas de entrega"
 
 msgid "Interne (compte GLPI)"
-msgstr "Internal (GLPI account)"
+msgstr "Interno (cuenta GLPI)"
 
 msgid "Nom du bénéficiaire externe"
-msgstr "External beneficiary name"
+msgstr "Nombre del beneficiario externo"
 
 msgid "Points de contrôle de maintenance"
-msgstr "Maintenance checklist items"
+msgstr "Puntos de control de mantenimiento"
 
 msgid "Remis (bénéficiaire externe, sans signature)"
-msgstr "Handed over (external beneficiary, no signature)"
+msgstr "Entregado (beneficiario externo, sin firma)"
 
 msgid "Tous les GLPI n'utilisent pas les mêmes États : choisissez parmi VOS États existants (Configuration > Listes déroulantes > États)."
-msgstr "Not every GLPI instance uses the same Statuses: choose among YOUR existing Statuses (Setup > Dropdowns > Statuses)."
+msgstr "No todos los GLPI usan los mismos Estados: elija entre SUS Estados existentes (Configuración > Listas desplegables > Estados)."
 
 msgid "Vue arrière"
-msgstr "Rear view"
+msgstr "Vista trasera"
 
 msgid "Vue de face"
-msgstr "Front view"
+msgstr "Vista frontal"
 
 msgid "don"
-msgstr "donation"
+msgstr "donación"
 
 msgid "vente"
-msgstr "sale"
+msgstr "venta"
 
 msgid "Ce document a déjà été traité."
-msgstr "This document has already been processed."
+msgstr "Este documento ya ha sido procesado."
 
 msgid "Ce document ne correspond pas à votre compte utilisateur."
-msgstr "This document does not match your user account."
+msgstr "Este documento no corresponde a su cuenta de usuario."
 
 msgid "Ce lien de signature a expiré."
-msgstr "This signature link has expired."
+msgstr "Este enlace de firma ha caducado."
 
 msgid "Ce lien de signature n'est plus valide."
-msgstr "This signature link is no longer valid."
+msgstr "Este enlace de firma ya no es válido."
 
 msgid "Ce type de fiche ne peut pas être créé manuellement."
-msgstr "This record type cannot be created manually."
+msgstr "Este tipo de ficha no puede crearse manualmente."
 
 msgid "Cette remise ne peut plus être relancée (déjà signée ou expirée)."
-msgstr "This handover can no longer be reminded (already signed or expired)."
+msgstr "A esta entrega ya no se le puede enviar un recordatorio (ya firmada o caducada)."
 
 msgid "Format de signature invalide."
-msgstr "Invalid signature format."
+msgstr "Formato de firma no válido."
 
 msgid "Le bénéficiaire (utilisateur GLPI) est obligatoire."
-msgstr "The beneficiary (GLPI user) is required."
+msgstr "El beneficiario (usuario GLPI) es obligatorio."
 
 msgid "Le nom du bénéficiaire externe est obligatoire."
-msgstr "The external beneficiary name is required."
+msgstr "El nombre del beneficiario externo es obligatorio."
 
 msgid "Lien de signature inconnu."
-msgstr "Unknown signature link."
+msgstr "Enlace de firma desconocido."
 
 msgid "Matériel introuvable."
-msgstr "Asset not found."
+msgstr "Equipo no encontrado."
 
 msgid "Remise introuvable."
-msgstr "Handover not found."
+msgstr "Entrega no encontrada."
 
 msgid "Signature illisible."
-msgstr "Unreadable signature."
+msgstr "Firma ilegible."
 
 msgid "Signature manquante."
-msgstr "Missing signature."
+msgstr "Falta la firma."
 
 msgid "Signature trop petite, merci de recommencer."
-msgstr "Signature too small, please try again."
+msgstr "Firma demasiado pequeña, inténtelo de nuevo."
 
 msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
-msgstr "Empty or barely-drawn signature, please sign again."
+msgstr "Firma vacía o insuficientemente trazada, vuelva a firmar."
 
 msgid "Trop de tentatives, lien désactivé par sécurité."
-msgstr "Too many attempts, link disabled for security."
+msgstr "Demasiados intentos, enlace desactivado por seguridad."
 
 msgid "Type de matériel invalide : %s"
-msgstr "Invalid asset type: %s"
+msgstr "Tipo de equipo no válido: %s"
 
 msgid "Vous devez être connecté pour accéder à ce document."
-msgstr "You must be logged in to access this document."
+msgstr "Debe iniciar sesión para acceder a este documento."
 
 msgid "Échec de la création de la fiche."
-msgstr "Failed to create the record."
+msgstr "Error al crear la ficha."
 
 msgid "Variables disponibles, remplacées automatiquement sur le PDF :"
-msgstr "Available placeholders, replaced automatically on the PDF:"
+msgstr "Variables disponibles, sustituidas automáticamente en el PDF:"
 
 msgid "Assigner un matériel à cet utilisateur"
-msgstr "Assign an asset to this user"
+msgstr "Asignar un equipo a este usuario"
 
 msgid "L'affectation déclenche automatiquement la création d'une remise, comme depuis la fiche du matériel."
-msgstr "Assigning it automatically creates a handover, just like from the asset's own page."
+msgstr "La asignación desencadena automáticamente la creación de una entrega, igual que desde la ficha del equipo."
 
 msgid "Assigner"
-msgstr "Assign"
+msgstr "Asignar"
 
 msgid "Matériel assigné."
-msgstr "Asset assigned."
+msgstr "Equipo asignado."
 
 msgid "Envoyer un e-mail de test"
-msgstr "Send a test email"
+msgstr "Enviar un correo de prueba"
 
 msgid "Envoie un e-mail à votre propre adresse GLPI, pour vérifier que l'envoi fonctionne."
-msgstr "Sends an email to your own GLPI address, to verify that sending works."
+msgstr "Envía un correo a su propia dirección GLPI, para comprobar que el envío funciona."
 
 msgid "E-mail de test envoyé."
-msgstr "Test email sent."
+msgstr "Correo de prueba enviado."
 
 msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
-msgstr "Your GLPI account has no registered email address."
+msgstr "Su cuenta GLPI no tiene una dirección de correo registrada."
 
 msgid "Le serveur de messagerie a refusé l'envoi."
-msgstr "The mail server refused the send."
+msgstr "El servidor de correo ha rechazado el envío."
 
 msgid "E-mail de test — Remise & signature"
-msgstr "Test email — Handover & signature"
+msgstr "Correo de prueba — Entrega y firma"
 
 msgid "Cet e-mail confirme que la configuration d'envoi du plugin Remise & signature fonctionne."
-msgstr "This email confirms that the Handover & signature plugin's sending configuration works."
+msgstr "Este correo confirma que la configuración de envío del plugin Entrega y firma funciona."
 
 msgid "Afficher un QR code sur les fiches PDF"
-msgstr "Show a QR code on PDF sheets"
+msgstr "Mostrar un código QR en las fichas PDF"
 
 msgid "Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel."
-msgstr "The QR code links back to the corresponding record in GLPI — handy for finding it during a physical asset check."
+msgstr "El código QR remite a la ficha correspondiente en GLPI — práctico para localizarla durante un control físico del equipo."
 
 msgid "Symbole de devise"
-msgstr "Currency symbol"
+msgstr "Símbolo de moneda"
 
 msgid "Affiché après le prix sur la fiche PDF (ex: €, $, CHF)."
-msgstr "Shown after the price on the PDF sheet (e.g. €, $, CHF)."
+msgstr "Se muestra después del precio en la ficha PDF (ej: €, $, CHF)."
