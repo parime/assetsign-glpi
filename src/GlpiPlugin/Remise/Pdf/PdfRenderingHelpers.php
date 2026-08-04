@@ -18,7 +18,15 @@ use GlpiPlugin\Remise\DamageMarker;
  */
 trait PdfRenderingHelpers
 {
-   public function renderPdf(string $html): string {
+    /**
+     * @param bool $protect Si vrai, chiffre le PDF pour en restreindre la copie
+     *        et l'edition (cf. Config::protect_pdf) — sans mot de passe
+     *        utilisateur (le document reste consultable/imprimable par
+     *        n'importe qui), seul un mot de passe proprietaire jetable est
+     *        pose pour faire respecter les permissions par les lecteurs PDF
+     *        qui les honorent.
+     */
+   public function renderPdf(string $html, bool $protect = false): string {
        $options = new Options();
        $options->set('isRemoteEnabled', false);
        $options->set('defaultFont', 'DejaVu Sans');
@@ -28,6 +36,22 @@ trait PdfRenderingHelpers
        $dompdf->loadHtml($html, 'UTF-8');
        $dompdf->setPaper('A4', 'portrait');
        $dompdf->render();
+
+      if ($protect) {
+          $canvas = $dompdf->getCanvas();
+         // Uniquement disponible avec le moteur CPDF (celui reellement utilise
+         // ici, aucune extension pdflib n'etant chargee) : verifie plutot que
+         // suppose, pour ne jamais faire echouer la generation du PDF sur un
+         // environnement ou Dompdf choisirait un autre moteur de rendu.
+         if ($canvas instanceof \Dompdf\Adapter\CPDF) {
+             $canvas->get_cpdf()->setEncryption('', bin2hex(random_bytes(16)), [
+                 'print'  => true,
+                 'copy'   => false,
+                 'modify' => false,
+                 'add'    => false,
+             ]);
+         }
+      }
 
        return $dompdf->output();
    }

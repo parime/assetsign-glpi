@@ -22,7 +22,8 @@ final class HandoverPdfBuilder
 
    public function build(Remise $remise): Document {
        $html = $this->renderHtml($remise);
-       $binary = $this->renderPdf($html);
+       $protect = (bool) Config::getForEntity((int) $remise->fields['entities_id'])->fields['protect_pdf'];
+       $binary = $this->renderPdf($html, $protect);
 
        return $this->storeAsDocument($remise, $binary, 'fiche-remise-' . $remise->getID() . '.pdf');
    }
@@ -81,6 +82,7 @@ final class HandoverPdfBuilder
            'material_heading'    => $headings['material_heading'],
            'document_title'      => $remise->getDocumentTitle(),
            'logo_data_uri'       => $this->getLogoDataUri((int) $remise->fields['entities_id']),
+           'company_name'        => $config->fields['company_name'] ?: null,
            'qr_data_uri'         => (bool) $config->fields['show_qr_code']
                ? $this->getQrCodeDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/remise/front/remise.form.php?id=' . $remise->getID())
                : null,
@@ -122,6 +124,9 @@ final class HandoverPdfBuilder
        $charterUrl = array_key_exists('charter_url', $overrides)
            ? (trim((string) $overrides['charter_url']) ?: null)
            : ($config->fields['charter_url'] ?: null);
+       $companyName = array_key_exists('company_name', $overrides)
+           ? (trim((string) $overrides['company_name']) ?: null)
+           : ($config->fields['company_name'] ?: null);
        $observationsEnabled = array_key_exists('enable_observations', $overrides)
            ? (bool) $overrides['enable_observations']
            : (bool) $config->fields['enable_observations'];
@@ -172,6 +177,7 @@ final class HandoverPdfBuilder
            'material_heading'    => $headings['material_heading'],
            'document_title'      => 'Aperçu',
            'logo_data_uri'       => $this->getLogoDataUri($entities_id),
+           'company_name'        => $companyName,
            'currency_symbol'     => $currencySymbol,
            'qr_data_uri'         => $qrEnabled
                ? $this->getQrCodeDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/remise/front/remise.form.php?id=0')

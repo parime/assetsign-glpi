@@ -14,7 +14,7 @@ Session::checkRight(Remise::$rightname, READ);
 // lise quoi que ce soit.
 unset($_GET['as_map'], $_POST['as_map'], $_REQUEST['as_map']);
 
-Html::header(Remise::getTypeName(2), $_SERVER['PHP_SELF'], 'admin', Remise::class);
+Html::header(Remise::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Remise::class);
 
 Search::show(Remise::class);
 

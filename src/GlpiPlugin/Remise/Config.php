@@ -23,6 +23,8 @@ class Config extends CommonDBTM
         'sender_email'                        => '',
         'logo_documents_id'                   => 0,
         'logo_force_children'                 => 0,
+        'company_name'                        => '',
+        'protect_pdf'                         => 0,
         'charter_url'                         => '',
         'default_provider'                    => 'canvas',
         'provider_config'                     => '',
@@ -135,6 +137,18 @@ class Config extends CommonDBTM
            'logo_is_forced'  => $logoIsForced,
            'installed_version'     => PLUGIN_REMISE_VERSION,
            'latest_github_version' => self::getLatestGithubVersion(),
+           // Gabarit par defaut de chaque type, edite directement dans l'onglet
+           // correspondant plutot que sur l'ecran separe front/template.form.php
+           // (cf. ROADMAP.md, "Rapprocher la gestion des gabarits de
+           // l'experience du plugin") — la sauvegarde elle-meme reste
+           // entierement geree par Template::showForm()/CommonDBTM, ce bloc ne
+           // fait que rapatrier l'affichage.
+           'templates' => [
+               Remise::TYPE_HANDOVER => Template::getDefaultFor(Remise::TYPE_HANDOVER, $entities_id),
+               Remise::TYPE_RETURN   => Template::getDefaultFor(Remise::TYPE_RETURN, $entities_id),
+               Remise::TYPE_DON      => Template::getDefaultFor(Remise::TYPE_DON, $entities_id),
+               Remise::TYPE_VENTE    => Template::getDefaultFor(Remise::TYPE_VENTE, $entities_id),
+           ],
        ]);
    }
 
@@ -461,6 +475,8 @@ class Config extends CommonDBTM
            'max_reminders'        => (int) ($input['max_reminders'] ?? 0),
            'link_validity_days'   => (int) ($input['link_validity_days'] ?? 30),
            'expiry_warning_days'  => (int) ($input['expiry_warning_days'] ?? 3),
+           'company_name'         => trim($input['company_name'] ?? ''),
+           'protect_pdf'          => (int) ($input['protect_pdf'] ?? 0),
            'signature_required'   => (int) ($input['signature_required'] ?? 0),
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
@@ -537,6 +553,8 @@ class Config extends CommonDBTM
                 `sender_email` varchar(255) DEFAULT NULL,
                 `logo_documents_id` int unsigned NOT NULL DEFAULT 0,
                 `logo_force_children` tinyint NOT NULL DEFAULT 0,
+                `company_name` varchar(255) NOT NULL DEFAULT '',
+                `protect_pdf` tinyint NOT NULL DEFAULT 0,
                 `charter_url` varchar(255) DEFAULT NULL,
                 `default_provider` varchar(32) NOT NULL DEFAULT 'canvas',
                 `provider_config` text,
@@ -652,6 +670,11 @@ class Config extends CommonDBTM
          if (!$DB->fieldExists($table, 'preview_watermark_text')) {
              $migration->addField($table, 'preview_watermark_text', 'string', ['value' => 'APERÇU', 'after' => 'currency_symbol']);
              $migration->addField($table, 'preview_watermark_opacity', 'integer', ['value' => 25, 'after' => 'preview_watermark_text']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'company_name')) {
+             $migration->addField($table, 'company_name', 'string', ['value' => '', 'after' => 'logo_force_children']);
+             $migration->addField($table, 'protect_pdf', 'bool', ['value' => 0, 'after' => 'company_name']);
              $migration->migrationOneTable($table);
          }
           // Audit code mort : jamais branchee (aucun formulaire ne la soumet,

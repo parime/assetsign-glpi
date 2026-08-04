@@ -32,6 +32,15 @@ class Template extends CommonDBTM
        return _n('Gabarit de remise', 'Gabarits de remise', $nb, 'remise');
    }
 
+    /**
+     * Rattache au fil d'Ariane de Remise (menu 'tools'), pas au secteur
+     * generique 'config' des intitules — cf. Remise::getSectorizedDetails()/
+     * getMenuContent() et le commentaire equivalent dans ROADMAP.md.
+     */
+   public static function getSectorizedDetails(): array {
+       return ['tools', Remise::class, self::class];
+   }
+
     // rawSearchOptions() (pas getSearchOptions(), `final` dans CommonDBTM) :
     // meme correctif que Remise::rawSearchOptions(), meme cause, meme
     // symptome (liste "Gabarits de remise" sans colonnes ni en-tetes).
