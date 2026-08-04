@@ -166,6 +166,37 @@ trait PdfRenderingHelpers
        return ((int) $size[1] / (int) $size[0]) * 100;
    }
 
+    /**
+     * QR code renvoyant vers l'URL donnee (fiche remise/maintenance dans
+     * GLPI), encode en data URI PNG — meme raison que le logo/les vues
+     * d'etat des lieux (Dompdf tourne avec isRemoteEnabled=false, un data URI
+     * evite tout fetch reseau). Genere via BaconQrCode\Renderer\GDLibRenderer
+     * (rendu GD, pas SVG : plus fiable avec Dompdf) et BaconQrCode\Writer,
+     * fournis par le CŒUR GLPI lui-meme (deja utilises pour les QR codes de
+     * double authentification, cf. vendor/bacon/bacon-qr-code) — volontairement
+     * PAS ajoute au composer.json du plugin : cette dependance est deja
+     * chargee par l'autoloader de GLPI a l'execution d'un plugin, l'ajouter en
+     * double romprait juste la consistance des versions. class_exists() +
+     * try/catch : si une future version de GLPI retire ou renomme cette
+     * bibliotheque interne, le PDF continue de se generer sans QR plutot que
+     * de planter entierement.
+     */
+   private function getQrCodeDataUri(string $url): ?string {
+      if (!class_exists(\BaconQrCode\Renderer\GDLibRenderer::class)) {
+          return null;
+      }
+
+      try {
+          $renderer = new \BaconQrCode\Renderer\GDLibRenderer(160, 4, 'png');
+          $writer = new \BaconQrCode\Writer($renderer);
+          $png = $writer->writeString($url);
+      } catch (\Throwable) {
+          return null;
+      }
+
+       return 'data:image/png;base64,' . base64_encode($png);
+   }
+
    private function getDamageViewDataUri(string $filename): ?string {
       if ($filename === '') {
           return null;

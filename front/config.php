@@ -31,6 +31,18 @@ if (isset($_POST['update'])) {
     Html::back();
 }
 
+if (isset($_POST['send_test_email'])) {
+    Session::checkRight(Config::$rightname, UPDATE);
+    $entities_id = (int) ($_POST['entities_id'] ?? 0);
+    $error = Config::sendTestEmail($entities_id);
+   if ($error === '') {
+       Session::addMessageAfterRedirect(__('E-mail de test envoyé.', 'remise'));
+   } else {
+       Session::addMessageAfterRedirect($error, false, ERROR);
+   }
+    Html::back();
+}
+
 // Page autonome accessible depuis le menu d'administration du plugin (en plus
 // de l'onglet "Remise & signature" sur la fiche d'une entite) : par defaut,
 // affiche/edite la configuration de l'entite active de la session.

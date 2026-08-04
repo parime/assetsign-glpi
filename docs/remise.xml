@@ -23,7 +23,7 @@ This plugin automates it entirely from GLPI, the tool your technicians already u
 
 The same mechanism also works when equipment is **returned** (unassigned). Two more workflows are available for a **donation** or a **sale** of equipment. A separate **maintenance checklist** sub-system lets technicians record maintenance visits with a configurable checklist and photo evidence.
 
-Other notable features: per-entity configuration (including logo inheritance across child entities), visual damage annotation on photos (before/after/underside), automatic reminder/expiration crons, a dashboard with widgets, and full bilingual (French/English) e-mail notifications.
+Other notable features: per-entity configuration (including logo inheritance across child entities), visual damage annotation on photos (before/after/underside), automatic reminder/expiration crons, a dashboard with widgets, an optional QR code on PDF sheets, a configurable currency symbol, and a full UI plus e-mail notifications in 5 languages (French, English, Spanish, German, Italian).
 
 **Security**: the signature page is never reachable via a plain anonymous link — a GLPI login is required, and the link only works for the actual recipient of the document.
          </en>
@@ -41,7 +41,7 @@ Ce plugin l'automatise entièrement à partir de GLPI, l'outil que vos technicie
 
 Le même mécanisme fonctionne aussi pour une **restitution** (désaffectation), un **don** ou une **vente** de matériel. Un sous-système séparé de **fiches de maintenance** permet aux techniciens de consigner une visite de maintenance avec une liste de points de contrôle configurable et des photos.
 
-Autres fonctionnalités : configuration par entité (avec héritage du logo entre entités enfants), état des lieux visuel avec repères de dommage sur photo (avant/arrière/dessous), relances et expiration automatiques par tâches planifiées, tableau de bord avec widgets, notifications e-mail bilingues (français/anglais).
+Autres fonctionnalités : configuration par entité (avec héritage du logo entre entités enfants), état des lieux visuel avec repères de dommage sur photo (avant/arrière/dessous), relances et expiration automatiques par tâches planifiées, tableau de bord avec widgets, QR code optionnel sur les fiches PDF, devise configurable, interface et notifications e-mail en 5 langues (français, anglais, espagnol, allemand, italien).
 
 **Sécurité** : la page de signature n'est jamais accessible par un simple lien anonyme — il faut être connecté à GLPI, et le lien ne fonctionne que pour le bénéficiaire réel du document.
          </fr_FR>
@@ -65,8 +65,11 @@ Autres fonctionnalités : configuration par entité (avec héritage du logo entr
    <langs>
       <lang>fr_FR</lang>
       <lang>en_GB</lang>
+      <lang>es_ES</lang>
+      <lang>de_DE</lang>
+      <lang>it_IT</lang>
    </langs>
-   <license>GPL v2+</license>
+   <license>GPL v3</license>
    <tags>
       <en>
          <tag>signature</tag>

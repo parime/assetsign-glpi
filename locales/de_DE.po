@@ -1,0 +1,804 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: remise\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Aucune remise enregistrée pour ce matériel."
+msgstr "Keine Übergabe für dieses Gerät erfasst."
+
+msgid "Statut"
+msgstr "Status"
+
+msgid "Créée le"
+msgstr "Erstellt am"
+
+msgid "Signée le"
+msgstr "Unterschrieben am"
+
+msgid "Voir"
+msgstr "Ansehen"
+
+msgid "Général"
+msgstr "Allgemein"
+
+msgid "Nom de l'expéditeur"
+msgstr "Name des Absenders"
+
+msgid "E-mail de l'expéditeur"
+msgstr "E-Mail des Absenders"
+
+msgid "Fournisseur de signature"
+msgstr "Signaturanbieter"
+
+msgid "Délais de relance (jours, séparés par des virgules — ex: 3,7,7)"
+msgstr "Erinnerungsfristen (Tage, durch Kommas getrennt — z. B.: 3,7,7)"
+
+msgid "Nombre maximum de relances (0 = illimité)"
+msgstr "Maximale Anzahl an Erinnerungen (0 = unbegrenzt)"
+
+msgid "Durée de validité du lien de signature (jours)"
+msgstr "Gültigkeitsdauer des Signaturlinks (Tage)"
+
+msgid "Signature obligatoire"
+msgstr "Unterschrift erforderlich"
+
+msgid "Types de matériel gérés par le plugin"
+msgstr "Vom Plugin verwaltete Gerätetypen"
+
+msgid "Décochez un type pour que le plugin n'agisse jamais dessus, quelle que soit l'affectation ou l'État."
+msgstr "Deaktivieren Sie einen Typ, damit das Plugin unabhängig von Zuweisung oder Status niemals darauf reagiert."
+
+msgid "Déclenchement par affectation d'utilisateur"
+msgstr "Auslösung durch Benutzerzuweisung"
+
+msgid "Basé sur le champ \"Utilisateur\" du matériel — fonctionne dans la plupart des GLPI."
+msgstr "Basierend auf dem Feld \"Benutzer\" des Geräts — funktioniert in den meisten GLPI-Installationen."
+
+msgid "Signature à la première affectation"
+msgstr "Unterschrift bei der ersten Zuweisung"
+
+msgid "Signature à chaque changement d'utilisateur"
+msgstr "Unterschrift bei jedem Benutzerwechsel"
+
+msgid "Signature lors de la restitution (désaffectation)"
+msgstr "Unterschrift bei Rückgabe (Zuweisungsaufhebung)"
+
+msgid "Déclenchement par État du matériel (optionnel)"
+msgstr "Auslösung durch Gerätestatus (optional)"
+
+msgid "Enregistrer"
+msgstr "Speichern"
+
+msgid "Matériel"
+msgstr "Gerät"
+
+msgid "Bénéficiaire"
+msgstr "Empfänger"
+
+msgid "Envoyé le"
+msgstr "Gesendet am"
+
+msgid "Consulté le"
+msgstr "Angesehen am"
+
+msgid "Signé le"
+msgstr "Unterschrieben am"
+
+msgid "Nombre de relances"
+msgstr "Anzahl der Erinnerungen"
+
+msgid "Relancer maintenant"
+msgstr "Jetzt erinnern"
+
+msgid "Nom du gabarit"
+msgstr "Name der Vorlage"
+
+msgid "Type de remise concerné"
+msgstr "Betroffener Übergabetyp"
+
+msgid "Conditions générales (contrat)"
+msgstr "Allgemeine Geschäftsbedingungen (Vertrag)"
+
+msgid "Charte informatique"
+msgstr "IT-Nutzungsrichtlinie"
+
+msgid "Gabarit par défaut pour ce type"
+msgstr "Standardvorlage für diesen Typ"
+
+msgid "Actif"
+msgstr "Aktiv"
+
+msgid "Supprimer ce gabarit ?"
+msgstr "Diese Vorlage löschen?"
+
+msgid "Supprimer"
+msgstr "Löschen"
+
+msgid "Créer"
+msgstr "Erstellen"
+
+msgid "Signature de remise de matériel"
+msgstr "Unterschrift der Geräteübergabe"
+
+msgid "Signature de restitution de matériel"
+msgstr "Unterschrift der Gerätrückgabe"
+
+msgid "Impossible d'afficher ce document"
+msgstr "Dieses Dokument kann nicht angezeigt werden"
+
+msgid "J'ai lu et j'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus."
+msgstr "Ich habe die im obigen Dokument dargestellten allgemeinen Geschäftsbedingungen und die IT-Nutzungsrichtlinie gelesen und akzeptiere sie."
+
+msgid "Signez ci-dessous à la souris, au doigt ou au stylet :"
+msgstr "Unterschreiben Sie unten mit der Maus, dem Finger oder einem Stift:"
+
+msgid "Effacer"
+msgstr "Löschen"
+
+msgid "Valider ma signature"
+msgstr "Unterschrift bestätigen"
+
+msgid "Ce lien est valable jusqu'au"
+msgstr "Dieser Link ist gültig bis"
+
+msgid "et deviendra invalide dès la signature."
+msgstr "und wird nach der Unterschrift ungültig."
+
+msgid "Impossible de charger le document"
+msgstr "Dokument konnte nicht geladen werden"
+
+msgid "Envoi en cours…"
+msgstr "Wird gesendet…"
+
+msgid "Erreur"
+msgstr "Fehler"
+
+msgid "Merci, votre signature a bien été enregistrée."
+msgstr "Vielen Dank, Ihre Unterschrift wurde erfolgreich gespeichert."
+
+msgid "Erreur réseau, merci de réessayer."
+msgstr "Netzwerkfehler, bitte versuchen Sie es erneut."
+
+msgid "Remise & signature"
+msgstr "Übergabe & Unterschrift"
+
+msgid "Remises en attente de signature"
+msgstr "Übergaben, die auf Unterschrift warten"
+
+msgid "Remises signées"
+msgstr "Unterschriebene Übergaben"
+
+msgid "Remises expirées"
+msgstr "Abgelaufene Übergaben"
+
+msgid "Configuration enregistrée."
+msgstr "Konfiguration gespeichert."
+
+msgid "Purge les jetons de signature expirés ou invalides"
+msgstr "Löscht abgelaufene oder ungültige Signatur-Tokens"
+
+msgid "Type de remise"
+msgstr "Übergabetyp"
+
+msgid "Par défaut"
+msgstr "Standard"
+
+msgid "Type de matériel"
+msgstr "Gerätetyp"
+
+msgid "Date d'envoi"
+msgstr "Sendedatum"
+
+msgid "Date de signature"
+msgstr "Unterschriftsdatum"
+
+msgid "Remises"
+msgstr "Übergaben"
+
+msgid "Brouillon"
+msgstr "Entwurf"
+
+msgid "En attente"
+msgstr "Ausstehend"
+
+msgid "Envoyé"
+msgstr "Gesendet"
+
+msgid "Consulté"
+msgstr "Angesehen"
+
+msgid "Signé"
+msgstr "Unterschrieben"
+
+msgid "Expiré"
+msgstr "Abgelaufen"
+
+msgid "Annulé"
+msgstr "Storniert"
+
+msgid "Restitution"
+msgstr "Rückgabe"
+
+msgid "Envoie les relances de signature dues"
+msgstr "Sendet fällige Unterschrifts-Erinnerungen"
+
+msgid "Marque comme expirées les remises hors délai"
+msgstr "Markiert Übergaben nach Fristablauf als abgelaufen"
+
+msgid "Nouvelle remise de matériel"
+msgstr "Neue Geräteübergabe"
+
+msgid "Relance de signature"
+msgstr "Unterschrifts-Erinnerung"
+
+msgid "Document signé"
+msgstr "Unterschriebenes Dokument"
+
+msgid "Document expiré"
+msgstr "Abgelaufenes Dokument"
+
+msgid "Technicien"
+msgstr "Techniker"
+
+msgid "Événement"
+msgstr "Ereignis"
+
+msgid "Identifiant"
+msgstr "Kennung"
+
+msgid "Lien de signature"
+msgstr "Signaturlink"
+
+msgid "Date limite de signature"
+msgstr "Unterschriftsfrist"
+
+msgid "Configuration remise & signature"
+msgstr "Konfiguration Übergabe & Unterschrift"
+
+msgid "Signature intégrée (canvas)"
+msgstr "Integrierte Unterschrift (Canvas)"
+
+msgid "Aucune verification de configuration bloquante."
+msgstr "Keine blockierende Konfigurationsprüfung."
+
+msgid "Logo à afficher sur les fiches PDF"
+msgstr "Logo für die PDF-Blätter"
+
+msgid "Retirer le logo actuel"
+msgstr "Aktuelles Logo entfernen"
+
+msgid "Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo actuel."
+msgstr "PNG-, JPG-, GIF- oder WEBP-Bild. Wählen Sie eine Datei, um das aktuelle Logo zu ersetzen."
+
+msgid "Échec de l'envoi du logo."
+msgstr "Hochladen des Logos fehlgeschlagen."
+
+msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
+msgstr "Das Logo muss ein Bild sein (PNG, JPG, GIF oder WEBP)."
+
+msgid "Lien vers la charte informatique complète"
+msgstr "Link zur vollständigen IT-Nutzungsrichtlinie"
+
+msgid "Aperçu de la fiche générée"
+msgstr "Vorschau des erzeugten Blatts"
+
+msgid "Utilisez le bouton \"lien\" de la barre d'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici."
+msgstr "Verwenden Sie die Schaltfläche \"Link\" in der Werkzeugleiste, um auf ein bestehendes Dokument zu verweisen (z. B. die vollständige IT-Nutzungsrichtlinie), statt alles hier neu einzugeben."
+
+msgid "Accessoires remis"
+msgstr "Übergebenes Zubehör"
+
+msgid "Accessoire"
+msgstr "Zubehör"
+
+msgid "Quantité"
+msgstr "Menge"
+
+msgid "Commentaire"
+msgstr "Kommentar"
+
+msgid "Retirer"
+msgstr "Entfernen"
+
+msgid "Aucun accessoire remis pour le moment."
+msgstr "Bisher kein Zubehör übergeben."
+
+msgid "Ajouter un accessoire"
+msgstr "Zubehör hinzufügen"
+
+msgid "Ajouter"
+msgstr "Hinzufügen"
+
+msgid "Le logo affiché ci-dessous est actuellement imposé par une entité parente (voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition est retirée."
+msgstr "Das unten angezeigte Logo wird derzeit von einer übergeordneten Entität vorgegeben (siehe unten). Ein hier hochgeladenes Logo wird erst verwendet, wenn diese Vorgabe entfernt wird."
+
+msgid "Imposer ce logo à toutes les entités enfants (et leurs propres sous-entités)"
+msgstr "Dieses Logo allen untergeordneten Entitäten (und deren eigenen Unterentitäten) vorschreiben"
+
+msgid "Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo."
+msgstr "Nützlich, wenn mehrere Entitäten dasselbe Logo anzeigen sollen: Diese Entität gibt ihr Logo dann an ihre gesamte Nachkommenschaft vor, selbst wenn eine untergeordnete Entität bereits ein eigenes Logo hochgeladen hat."
+
+msgid "Preuve de signature"
+msgstr "Unterschriftsnachweis"
+
+msgid "Signataire"
+msgstr "Unterzeichner"
+
+msgid "Adresse IP"
+msgstr "IP-Adresse"
+
+msgid "Navigateur / appareil"
+msgstr "Browser / Gerät"
+
+msgid "Empreinte du document (SHA-256)"
+msgstr "Dokumentprüfsumme (SHA-256)"
+
+msgid "Horodatage"
+msgstr "Zeitstempel"
+
+msgid "Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n'a pas été modifié depuis (l'empreinte ci-dessus doit correspondre à celle du fichier)."
+msgstr "Diese Angaben werden zum Zeitpunkt der Unterschrift gespeichert und ermöglichen es im Streitfall zu prüfen, dass das unterschriebene PDF seither nicht verändert wurde (die obige Prüfsumme muss mit der der Datei übereinstimmen)."
+
+msgid "Alerter le technicien avant expiration (jours avant, 0 = désactivé)"
+msgstr "Techniker vor Ablauf benachrichtigen (Tage vorher, 0 = deaktiviert)"
+
+msgid "Le technicien à l'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop tard."
+msgstr "Der Techniker, der die Übergabe veranlasst hat, erhält eine E-Mail, wenn noch diese Anzahl an Tagen bis zum Ablauf des Links verbleibt, damit er den Empfänger rechtzeitig auf anderem Weg (Anruf, persönlicher Besuch) erinnern kann."
+
+msgid "Document sur le point d'expirer"
+msgstr "Dokument läuft bald ab"
+
+msgid "Envoyer une relance de signature aux remises sélectionnées ?"
+msgstr "Unterschrifts-Erinnerung an die ausgewählten Übergaben senden?"
+
+msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
+msgstr "Vorausgefüllter Beispieltext: ändern oder löschen Sie ihn nach Belieben."
+
+msgid "Remise"
+msgid_plural "Remises"
+msgstr[0] "Übergabe"
+msgstr[1] "Übergaben"
+
+msgid "Accessoire de remise"
+msgid_plural "Accessoires de remise"
+msgstr[0] "Übergabezubehör"
+msgstr[1] "Übergabezubehörteile"
+
+msgid "Gabarit de remise"
+msgid_plural "Gabarits de remise"
+msgstr[0] "Übergabevorlage"
+msgstr[1] "Übergabevorlagen"
+
+msgid "Champ « Observations » libre sur chaque fiche"
+msgstr "Freies Feld «Bemerkungen» auf jedem Blatt"
+
+msgid "Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n'est pas encore signée."
+msgstr "Wenn aktiviert, ist auf jedem Übergabeblatt ein freies Textfeld verfügbar (z. B. festgestellter Gerätezustand), das im PDF erscheint, solange das Blatt noch nicht unterschrieben ist."
+
+msgid "Inclure les conditions générales dans le PDF"
+msgstr "Allgemeine Geschäftsbedingungen ins PDF aufnehmen"
+
+msgid "Inclure la charte informatique dans le PDF"
+msgstr "IT-Nutzungsrichtlinie ins PDF aufnehmen"
+
+msgid "Décochez pour ne jamais afficher cette section, y compris le lien vers la charte complète configuré au niveau de l'entité."
+msgstr "Deaktivieren, um diesen Abschnitt nie anzuzeigen, einschließlich des auf Entitätsebene konfigurierten Links zur vollständigen Richtlinie."
+
+msgid "Observations"
+msgstr "Bemerkungen"
+
+msgid "Annuler cette demande de signature ?"
+msgstr "Diese Unterschriftsanfrage stornieren?"
+
+msgid "Annuler la demande"
+msgstr "Anfrage stornieren"
+
+msgid "Annuler les demandes de signature sélectionnées ? Le lien envoyé au bénéficiaire deviendra invalide."
+msgstr "Ausgewählte Unterschriftsanfragen stornieren? Der an den Empfänger gesendete Link wird ungültig."
+
+msgid "Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà annulée)."
+msgstr "Diese Anfrage kann nicht mehr storniert werden (bereits unterschrieben, abgelaufen oder bereits storniert)."
+
+msgid "Annulée automatiquement (matériel réaffecté avant signature)"
+msgstr "Automatisch storniert (Gerät vor der Unterschrift neu zugewiesen)"
+
+msgid "PDF non signé"
+msgstr "Unterschriebenes PDF nicht vorhanden"
+
+msgid "PDF signé"
+msgstr "Unterschriebenes PDF"
+
+msgid "Télécharger (signé)"
+msgstr "Herunterladen (unterschrieben)"
+
+msgid "Télécharger (non signé)"
+msgstr "Herunterladen (nicht unterschrieben)"
+
+msgid "Demande annulée."
+msgstr "Anfrage storniert."
+
+msgid "Retour à l'accueil GLPI"
+msgstr "Zurück zur GLPI-Startseite"
+
+msgid "Exemple : petite rayure sur le capot, sans gravité."
+msgstr "Beispiel: kleiner Kratzer auf dem Gehäuse, ohne Bedeutung."
+
+msgid "Don"
+msgstr "Spende"
+
+msgid "Destinataire"
+msgstr "Empfänger"
+
+msgid "Créer la fiche"
+msgstr "Blatt erstellen"
+
+msgid "Fiche créée."
+msgstr "Blatt erstellt."
+
+msgid "Autoriser la création de fiches de don de matériel"
+msgstr "Erstellung von Geräte-Spendenblättern zulassen"
+
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Remise de chaque matériel géré par le plugin."
+msgstr "Fügt eine Schaltfläche «Spendenblatt erstellen» im Reiter Übergabe jedes vom Plugin verwalteten Geräts hinzu."
+
+msgid "Vente"
+msgstr "Verkauf"
+
+msgid "Prix"
+msgstr "Preis"
+
+msgid "Date de vente"
+msgstr "Verkaufsdatum"
+
+msgid "Autoriser la création de fiches de vente de matériel"
+msgstr "Erstellung von Geräte-Verkaufsblättern zulassen"
+
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Remise de chaque matériel géré par le plugin."
+msgstr "Fügt eine Schaltfläche «Verkaufsblatt erstellen» (mit Preis und Datum) im Reiter Übergabe jedes vom Plugin verwalteten Geräts hinzu."
+
+msgid "État des lieux visuel"
+msgstr "Visueller Zustandsbericht"
+
+msgid "État des lieux visuel (annotation de dommages)"
+msgstr "Visueller Zustandsbericht (Schadensmarkierung)"
+
+msgid "Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance."
+msgstr "Ermöglicht das Markieren von Schäden auf 3 allgemeinen Ansichten (Rückseite, Vorderseite, Unterseite): im PDF vermerkt bei unterschriebenen Blättern, direkt auf dem Blatt angezeigt bei Wartungsblättern."
+
+msgid "Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner."
+msgstr "Klicken Sie auf eine Ansicht, um eine Schadensmarkierung zu setzen; klicken Sie auf eine bestehende Markierung, um sie zu beschreiben oder zu löschen, ziehen Sie sie, um sie zu verschieben."
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "Gravité"
+msgstr "Schweregrad"
+
+msgid "Mineure"
+msgstr "Gering"
+
+msgid "Majeure"
+msgstr "Schwerwiegend"
+
+msgid "Cette fiche ne peut plus être modifiée."
+msgstr "Dieses Blatt kann nicht mehr geändert werden."
+
+msgid "Dessous"
+msgstr "Unterseite"
+
+msgid "Fiche de maintenance"
+msgid_plural "Fiches de maintenance"
+msgstr[0] "Wartungsblatt"
+msgstr[1] "Wartungsblätter"
+
+msgid "Point de contrôle de maintenance"
+msgid_plural "Points de contrôle de maintenance"
+msgstr[0] "Wartungsprüfpunkt"
+msgstr[1] "Wartungsprüfpunkte"
+
+msgid "Maintenance"
+msgstr "Wartung"
+
+msgid "Aucune fiche de maintenance enregistrée pour ce matériel."
+msgstr "Kein Wartungsblatt für dieses Gerät erfasst."
+
+msgid "Nouvelle fiche de maintenance"
+msgstr "Neues Wartungsblatt"
+
+msgid "Aucun point de contrôle configuré (Configuration > Intitulés > Points de contrôle de maintenance)."
+msgstr "Kein Prüfpunkt konfiguriert (Konfiguration > Listen > Wartungsprüfpunkte)."
+
+msgid "Points de contrôle validés"
+msgstr "Bestätigte Prüfpunkte"
+
+msgid "Aucun point de contrôle validé."
+msgstr "Kein Prüfpunkt bestätigt."
+
+msgid "Fiche de maintenance créée."
+msgstr "Wartungsblatt erstellt."
+
+msgid "Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée."
+msgstr "Preis und Datum sind nicht automatisch bekannt: bitte anschließend im erstellten Blatt ergänzen."
+
+msgid "Détails de la vente"
+msgstr "Verkaufsdetails"
+
+msgid "Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF ne mentionne pas encore la vente tant que ce prix n'est pas saisi."
+msgstr "Bisher kein Preis angegeben (automatisch erstelltes Blatt): Das PDF erwähnt den Verkauf erst, wenn dieser Preis eingetragen wurde."
+
+msgid "+ Nouveau gabarit"
+msgstr "+ Neue Vorlage"
+
+msgid "Compléments"
+msgstr "Ergänzungen"
+
+msgid "Gérer les gabarits de ce type"
+msgstr "Vorlagen dieses Typs verwalten"
+
+msgid "Gérer les points de contrôle"
+msgstr "Prüfpunkte verwalten"
+
+msgid "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types."
+msgstr "Optional: URL zu einem bestehenden Dokument oder einer Seite (Intranet, bereits online verfügbares PDF...). Falls angegeben, erscheint auf dem PDF-Blatt zusätzlich zum in der Vorlage definierten Richtlinientext ein anklickbarer Link — gemeinsam für alle Typen."
+
+msgid "Réglages transverses, applicables à tous les types de fiche signée."
+msgstr "Übergreifende Einstellungen, gültig für alle Arten von unterschriebenen Blättern."
+
+msgid "Voir les fiches de maintenance"
+msgstr "Wartungsblätter ansehen"
+
+msgid "La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l'option ci-dessous est activée. L'accès se gère par le droit dédié (Administration > Profils)."
+msgstr "Das Wartungsblatt ist ein eigenständiges Teilsystem, getrennt von den unterschriebenen Blättern (kein Empfänger, kein Token, keine E-Mail): Es erzeugt stets ein PDF (gleiches Layout wie Übergabe-/Spenden-/Verkaufsblätter, mit Logo) und kann zusätzlich den Techniker direkt im Erstellungsformular unterschreiben lassen, wenn die unten stehende Option aktiviert ist. Der Zugriff wird über das entsprechende Recht gesteuert (Verwaltung > Profile)."
+
+msgid "Faire signer le technicien sur la fiche de maintenance"
+msgstr "Techniker auf dem Wartungsblatt unterschreiben lassen"
+
+msgid "Si activé, un pavé de signature (identique à celui d'une vente) apparaît sur le formulaire de création : la fiche ne peut pas être créée sans signature. Le technicien est déjà connecté, aucun e-mail ni page séparée n'est utilisé."
+msgstr "Wenn aktiviert, erscheint im Erstellungsformular ein Unterschriftenfeld (wie bei einem Verkauf): Das Blatt kann nicht ohne Unterschrift erstellt werden. Der Techniker ist bereits angemeldet, es wird weder eine E-Mail noch eine separate Seite verwendet."
+
+msgid "Fiche PDF"
+msgstr "PDF-Blatt"
+
+msgid "Merci de signer avant de créer la fiche."
+msgstr "Bitte unterschreiben Sie, bevor Sie das Blatt erstellen."
+
+msgid "PDF"
+msgstr "PDF"
+
+msgid "Signature du technicien"
+msgstr "Unterschrift des Technikers"
+
+msgid "Signez ci-dessous avant de créer la fiche."
+msgstr "Unterschreiben Sie unten, bevor Sie das Blatt erstellen."
+
+msgid "Télécharger"
+msgstr "Herunterladen"
+
+msgid "Télécharger en PDF"
+msgstr "Als PDF herunterladen"
+
+msgid "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d'onglet, avant même d'enregistrer."
+msgstr "Beispiel mit fiktiven Daten, gleiche Twig-Vorlagen wie das echte PDF. Die Vorschau aktualisiert sich automatisch, sobald Sie eine Einstellung ändern oder den Reiter wechseln, noch bevor Sie speichern."
+
+msgid "Exemple avec des données fictives. L'aperçu se met à jour automatiquement dès que vous modifiez le texte ou une case à cocher, avant même d'enregistrer."
+msgstr "Beispiel mit fiktiven Daten. Die Vorschau aktualisiert sich automatisch, sobald Sie den Text oder ein Kontrollkästchen ändern, noch bevor Sie speichern."
+
+msgid "Choisissez d'abord un type de matériel ci-dessus."
+msgstr "Wählen Sie zunächst oben einen Gerätetyp aus."
+
+msgid "Exemple : touche cassée."
+msgstr "Beispiel: kaputte Taste."
+
+msgid "Exemple : pied manquant."
+msgstr "Beispiel: fehlender Fuß."
+
+msgid "Remarque"
+msgstr "Anmerkung"
+
+msgid "Une précision à ajouter avant de signer (optionnel)."
+msgstr "Ein Hinweis, den Sie vor der Unterschrift hinzufügen können (optional)."
+
+msgid "Remarque enregistrée."
+msgstr "Anmerkung gespeichert."
+
+msgid "Remarque du bénéficiaire"
+msgstr "Anmerkung des Empfängers"
+
+msgid "Type de saisie"
+msgstr "Feldtyp"
+
+msgid "Case à cocher"
+msgstr "Kontrollkästchen"
+
+msgid "Texte libre"
+msgstr "Freitext"
+
+msgid "Menu déroulant"
+msgstr "Dropdown-Menü"
+
+msgid "Options du menu déroulant (une par ligne)"
+msgstr "Optionen des Dropdown-Menüs (eine pro Zeile)"
+
+msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
+msgstr "Wird nur verwendet, wenn der Feldtyp \"Dropdown-Menü\" ist."
+
+msgid "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue."
+msgstr "Diesem Gerät ist kein Benutzer zugewiesen: Diese Statusänderung kann daher kein Übergabe- oder Rückgabeblatt erzeugen. Weisen Sie dem Gerät einen Benutzer zu, wenn eine Unterschrift erwartet wird."
+
+msgid "Échecs de création (30 derniers jours)"
+msgstr "Fehlgeschlagene Erstellungen (letzte 30 Tage)"
+
+msgid "Accessoires de remise"
+msgstr "Übergabezubehör"
+
+msgid "Alerte le technicien des remises sur le point d'expirer"
+msgstr "Benachrichtigt den Techniker bei bald ablaufenden Übergaben"
+
+msgid "Bénéficiaire externe"
+msgstr "Externer Empfänger"
+
+msgid "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche de %s depuis l'onglet \"Remises\" ci-dessous (bénéficiaire interne ou externe)."
+msgstr "Diesem Gerät ist kein Benutzer zugewiesen: Erstellen Sie manuell ein %s-Blatt über den unten stehenden Reiter \"Übergaben\" (interner oder externer Empfänger)."
+
+msgid "Contact (facultatif)"
+msgstr "Kontakt (optional)"
+
+msgid "Créer une fiche de %s"
+msgstr "%s-Blatt erstellen"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "E-mail ou téléphone"
+msgstr "E-Mail oder Telefon"
+
+msgid "Ex. Association Locale, Jean Dupont..."
+msgstr "Z. B. Örtlicher Verein, Max Mustermann..."
+
+msgid "Externe"
+msgstr "Extern"
+
+msgid "Fiches de maintenance"
+msgstr "Wartungsblätter"
+
+msgid "Gabarits de remise"
+msgstr "Übergabevorlagen"
+
+msgid "Interne (compte GLPI)"
+msgstr "Intern (GLPI-Konto)"
+
+msgid "Nom du bénéficiaire externe"
+msgstr "Name des externen Empfängers"
+
+msgid "Points de contrôle de maintenance"
+msgstr "Wartungsprüfpunkte"
+
+msgid "Remis (bénéficiaire externe, sans signature)"
+msgstr "Übergeben (externer Empfänger, ohne Unterschrift)"
+
+msgid "Tous les GLPI n'utilisent pas les mêmes États : choisissez parmi VOS États existants (Configuration > Listes déroulantes > États)."
+msgstr "Nicht jede GLPI-Installation verwendet dieselben Status: Wählen Sie aus IHREN vorhandenen Status (Konfiguration > Dropdown-Listen > Status)."
+
+msgid "Vue arrière"
+msgstr "Rückansicht"
+
+msgid "Vue de face"
+msgstr "Vorderansicht"
+
+msgid "don"
+msgstr "Spende"
+
+msgid "vente"
+msgstr "Verkauf"
+
+msgid "Ce document a déjà été traité."
+msgstr "Dieses Dokument wurde bereits bearbeitet."
+
+msgid "Ce document ne correspond pas à votre compte utilisateur."
+msgstr "Dieses Dokument entspricht nicht Ihrem Benutzerkonto."
+
+msgid "Ce lien de signature a expiré."
+msgstr "Dieser Signaturlink ist abgelaufen."
+
+msgid "Ce lien de signature n'est plus valide."
+msgstr "Dieser Signaturlink ist nicht mehr gültig."
+
+msgid "Ce type de fiche ne peut pas être créé manuellement."
+msgstr "Dieser Blatttyp kann nicht manuell erstellt werden."
+
+msgid "Cette remise ne peut plus être relancée (déjà signée ou expirée)."
+msgstr "Für diese Übergabe kann keine Erinnerung mehr gesendet werden (bereits unterschrieben oder abgelaufen)."
+
+msgid "Format de signature invalide."
+msgstr "Ungültiges Signaturformat."
+
+msgid "Le bénéficiaire (utilisateur GLPI) est obligatoire."
+msgstr "Der Empfänger (GLPI-Benutzer) ist erforderlich."
+
+msgid "Le nom du bénéficiaire externe est obligatoire."
+msgstr "Der Name des externen Empfängers ist erforderlich."
+
+msgid "Lien de signature inconnu."
+msgstr "Unbekannter Signaturlink."
+
+msgid "Matériel introuvable."
+msgstr "Gerät nicht gefunden."
+
+msgid "Remise introuvable."
+msgstr "Übergabe nicht gefunden."
+
+msgid "Signature illisible."
+msgstr "Unterschrift nicht lesbar."
+
+msgid "Signature manquante."
+msgstr "Unterschrift fehlt."
+
+msgid "Signature trop petite, merci de recommencer."
+msgstr "Unterschrift zu klein, bitte versuchen Sie es erneut."
+
+msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
+msgstr "Unterschrift leer oder zu wenig gezeichnet, bitte erneut unterschreiben."
+
+msgid "Trop de tentatives, lien désactivé par sécurité."
+msgstr "Zu viele Versuche, Link aus Sicherheitsgründen deaktiviert."
+
+msgid "Type de matériel invalide : %s"
+msgstr "Ungültiger Gerätetyp: %s"
+
+msgid "Vous devez être connecté pour accéder à ce document."
+msgstr "Sie müssen angemeldet sein, um auf dieses Dokument zuzugreifen."
+
+msgid "Échec de la création de la fiche."
+msgstr "Erstellung des Blatts fehlgeschlagen."
+
+msgid "Variables disponibles, remplacées automatiquement sur le PDF :"
+msgstr "Verfügbare Variablen, die automatisch im PDF ersetzt werden:"
+
+msgid "Assigner un matériel à cet utilisateur"
+msgstr "Diesem Benutzer ein Gerät zuweisen"
+
+msgid "L'affectation déclenche automatiquement la création d'une remise, comme depuis la fiche du matériel."
+msgstr "Die Zuweisung löst automatisch die Erstellung einer Übergabe aus, genau wie über das Geräteblatt."
+
+msgid "Assigner"
+msgstr "Zuweisen"
+
+msgid "Matériel assigné."
+msgstr "Gerät zugewiesen."
+
+msgid "Envoyer un e-mail de test"
+msgstr "Test-E-Mail senden"
+
+msgid "Envoie un e-mail à votre propre adresse GLPI, pour vérifier que l'envoi fonctionne."
+msgstr "Sendet eine E-Mail an Ihre eigene GLPI-Adresse, um zu prüfen, ob der Versand funktioniert."
+
+msgid "E-mail de test envoyé."
+msgstr "Test-E-Mail gesendet."
+
+msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
+msgstr "Für Ihr GLPI-Konto ist keine E-Mail-Adresse hinterlegt."
+
+msgid "Le serveur de messagerie a refusé l'envoi."
+msgstr "Der Mailserver hat den Versand abgelehnt."
+
+msgid "E-mail de test — Remise & signature"
+msgstr "Test-E-Mail — Übergabe & Unterschrift"
+
+msgid "Cet e-mail confirme que la configuration d'envoi du plugin Remise & signature fonctionne."
+msgstr "Diese E-Mail bestätigt, dass die Versandkonfiguration des Plugins Übergabe & Unterschrift funktioniert."
+
+msgid "Afficher un QR code sur les fiches PDF"
+msgstr "QR-Code auf den PDF-Blättern anzeigen"
+
+msgid "Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel."
+msgstr "Der QR-Code verweist auf das entsprechende Blatt in GLPI — praktisch, um es bei einer physischen Gerätekontrolle wiederzufinden."
+
+msgid "Symbole de devise"
+msgstr "Währungssymbol"
+
+msgid "Affiché après le prix sur la fiche PDF (ex: €, $, CHF)."
+msgstr "Wird nach dem Preis auf dem PDF-Blatt angezeigt (z. B. €, $, CHF)."
