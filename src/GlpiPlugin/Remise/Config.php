@@ -28,6 +28,7 @@ class Config extends CommonDBTM
         'enable_passport'                     => 1,
         'passport_retention_years'            => 3,
         'passport_visible_types'              => '[0,1,2,3,4]',
+        'show_infocom_dates'                  => 1,
         'charter_url'                         => '',
         'default_provider'                    => 'canvas',
         'provider_config'                     => '',
@@ -485,6 +486,7 @@ class Config extends CommonDBTM
            'enable_passport'      => (int) ($input['enable_passport'] ?? 0),
            'passport_retention_years' => (int) ($input['passport_retention_years'] ?? 3),
            'passport_visible_types'   => json_encode(array_map('intval', $input['passport_visible_types'] ?? [])),
+           'show_infocom_dates'   => (int) ($input['show_infocom_dates'] ?? 0),
            'signature_required'   => (int) ($input['signature_required'] ?? 0),
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
@@ -572,6 +574,7 @@ class Config extends CommonDBTM
                 `enable_passport` tinyint NOT NULL DEFAULT 1,
                 `passport_retention_years` int unsigned NOT NULL DEFAULT 3,
                 `passport_visible_types` text,
+                `show_infocom_dates` tinyint NOT NULL DEFAULT 1,
                 `charter_url` varchar(255) DEFAULT NULL,
                 `default_provider` varchar(32) NOT NULL DEFAULT 'canvas',
                 `provider_config` text,
@@ -701,6 +704,10 @@ class Config extends CommonDBTM
          if (!$DB->fieldExists($table, 'enable_passport')) {
              $migration->addField($table, 'enable_passport', 'bool', ['value' => 1, 'after' => 'protect_pdf']);
              $migration->addField($table, 'passport_visible_types', 'text', ['after' => 'passport_retention_years']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'show_infocom_dates')) {
+             $migration->addField($table, 'show_infocom_dates', 'bool', ['value' => 1, 'after' => 'passport_visible_types']);
              $migration->migrationOneTable($table);
          }
           // Audit code mort : jamais branchee (aucun formulaire ne la soumet,
