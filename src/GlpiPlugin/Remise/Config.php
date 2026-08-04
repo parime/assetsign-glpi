@@ -25,6 +25,9 @@ class Config extends CommonDBTM
         'logo_force_children'                 => 0,
         'company_name'                        => '',
         'protect_pdf'                         => 0,
+        'enable_passport'                     => 1,
+        'passport_retention_years'            => 3,
+        'passport_visible_types'              => '[0,1,2,3,4]',
         'charter_url'                         => '',
         'default_provider'                    => 'canvas',
         'provider_config'                     => '',
@@ -149,6 +152,8 @@ class Config extends CommonDBTM
                Remise::TYPE_DON      => Template::getDefaultFor(Remise::TYPE_DON, $entities_id),
                Remise::TYPE_VENTE    => Template::getDefaultFor(Remise::TYPE_VENTE, $entities_id),
            ],
+           'passport_type_labels'   => PassportEvent::getTypeLabels(),
+           'passport_visible_types' => $config->getPassportVisibleTypes(),
        ]);
    }
 
@@ -477,6 +482,9 @@ class Config extends CommonDBTM
            'expiry_warning_days'  => (int) ($input['expiry_warning_days'] ?? 3),
            'company_name'         => trim($input['company_name'] ?? ''),
            'protect_pdf'          => (int) ($input['protect_pdf'] ?? 0),
+           'enable_passport'      => (int) ($input['enable_passport'] ?? 0),
+           'passport_retention_years' => (int) ($input['passport_retention_years'] ?? 3),
+           'passport_visible_types'   => json_encode(array_map('intval', $input['passport_visible_types'] ?? [])),
            'signature_required'   => (int) ($input['signature_required'] ?? 0),
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
@@ -539,6 +547,12 @@ class Config extends CommonDBTM
        return is_array($decoded) ? array_map('intval', $decoded) : [];
    }
 
+    /** Types d'evenement (PassportEvent::TYPE_*) a afficher dans la frise du Passeport materiel. */
+   public function getPassportVisibleTypes(): array {
+       $decoded = json_decode($this->fields['passport_visible_types'] ?? '', true);
+       return is_array($decoded) ? array_map('intval', $decoded) : [0, 1, 2, 3, 4];
+   }
+
    public static function install(Migration $migration): void {
        global $DB;
        $table = self::getTable();
@@ -555,6 +569,9 @@ class Config extends CommonDBTM
                 `logo_force_children` tinyint NOT NULL DEFAULT 0,
                 `company_name` varchar(255) NOT NULL DEFAULT '',
                 `protect_pdf` tinyint NOT NULL DEFAULT 0,
+                `enable_passport` tinyint NOT NULL DEFAULT 1,
+                `passport_retention_years` int unsigned NOT NULL DEFAULT 3,
+                `passport_visible_types` text,
                 `charter_url` varchar(255) DEFAULT NULL,
                 `default_provider` varchar(32) NOT NULL DEFAULT 'canvas',
                 `provider_config` text,
@@ -675,6 +692,15 @@ class Config extends CommonDBTM
          if (!$DB->fieldExists($table, 'company_name')) {
              $migration->addField($table, 'company_name', 'string', ['value' => '', 'after' => 'logo_force_children']);
              $migration->addField($table, 'protect_pdf', 'bool', ['value' => 0, 'after' => 'company_name']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'passport_retention_years')) {
+             $migration->addField($table, 'passport_retention_years', 'integer', ['value' => 3, 'after' => 'protect_pdf']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_passport')) {
+             $migration->addField($table, 'enable_passport', 'bool', ['value' => 1, 'after' => 'protect_pdf']);
+             $migration->addField($table, 'passport_visible_types', 'text', ['after' => 'passport_retention_years']);
              $migration->migrationOneTable($table);
          }
           // Audit code mort : jamais branchee (aucun formulaire ne la soumet,

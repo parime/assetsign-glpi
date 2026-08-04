@@ -444,6 +444,8 @@ class Maintenance extends CommonDBTM
           ]);
       }
 
+       PassportEvent::recordForMaintenance($maintenance);
+
        return $id;
    }
 

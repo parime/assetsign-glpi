@@ -18,6 +18,7 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
 - **Nom de l'entreprise** (texte affiché à côté du logo sur les PDF) et **protection PDF** (chiffrement contre copie/édition, impression toujours autorisée) — idées identifiées après une revue comparative de plugins concurrents.
 - **Affichage optimiste des repères d'état des lieux visuel** (apparaissent immédiatement au clic, sans attendre la régénération du PDF côté serveur) — cf. point ci-dessus sur la lenteur restante.
 - Passe UX/UI exploratoire de la page de configuration : pas d'incohérence trouvée au-delà de ce qui précède.
+- **Passeport matériel — MVP livré** (voir section dédiée ci-dessous pour le détail architectural) : table `glpi_plugin_remise_events`, classe `PassportEvent` (attribution/restitution/don/vente/maintenance), nouvel onglet sur le matériel avec frise chronologique (style natif GLPI : ligne verticale, coche/point plein) et compteur de "vies", anonymisation RGPD du snapshot bénéficiaire configurable (`Config::passport_retention_years`, `CronTask` quotidien), activable/désactivable (`Config::enable_passport`) et filtrable par type d'événement affiché, le tout dans son propre onglet "Passeport matériel" de la page de configuration.
 
 ## Vision produit à long terme : Passeport numérique du cycle de vie matériel
 
@@ -48,13 +49,14 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 
 ### Roadmap par version
 
-**MVP — le socle, en lecture simple**
+**MVP — le socle, en lecture simple — ✅ Livré le 2026-08-04**
 | Fonctionnalité | Objectif métier | Valeur utilisateur | Difficulté | Dépendances | Priorité |
 |---|---|---|---|---|---|
 | Timeline d'événements (table + écriture depuis les points d'entrée existants : remise, retour, maintenance, don, vente) | Ne plus perdre l'historique métier une fois une fiche traitée | Base de toute réponse à "qui a utilisé ce PC ?" | Moyenne (nouvelle table + hooks sur les workflows existants) | Aucune | Critique |
 | Snapshot utilisateur à chaque attribution | Historique lisible même si l'utilisateur GLPI disparaît | Fiabilité de l'audit dans le temps | Faible | Timeline d'événements | Critique |
 | Onglet "Passeport matériel" (liste chronologique brute, pas encore graphique) | Un seul endroit pour consulter la vie du matériel | Réponse directe au besoin exprimé ("qui a utilisé ce PC depuis son achat ?") | Faible/Moyenne (nouvel onglet `getTabNameForItem`/`displayTabContentForItem`, pattern déjà connu du plugin) | Timeline d'événements | Critique |
 | Compteur de "vies" + détail par utilisateur avec dates | Vue rapide du nombre de mains par lesquelles est passé un matériel | Lecture immédiate, sans dérouler toute la timeline | Faible (agrégation du snapshot) | Snapshot utilisateur | Haute |
+| *(ajouté pendant le MVP, hors périmètre initial)* Activation/désactivation par entité + filtres d'affichage par type d'événement | Ne pas imposer la fonctionnalité, laisser choisir ce qui apparaît dans la frise | Contrôle admin sans devoir toucher au code | Faible (booléens/JSON sur `Config`, même convention que le reste du plugin) | Timeline d'événements | Haute |
 
 **V1 — rendre le passeport lisible et actionnable**
 | Fonctionnalité | Objectif métier | Valeur utilisateur | Difficulté | Dépendances | Priorité |
@@ -63,6 +65,9 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | Fiche d'identité augmentée (carte de synthèse : modèle, fabricant, n° série, achat, garantie, statut, utilisateur/entité actuels) | Vue d'ensemble immédiate sans naviguer la timeline | Gain de temps pour un contrôle rapide | Faible (déjà en grande partie dans GLPI, agrégation) | Aucune nouvelle donnée | Haute |
 | Checklists de contrôle qualité configurables, réutilisables (sortie de stock, remise, retour, vente, don) | Standardiser les contrôles avant chaque mouvement | Traçabilité qualité, moins d'oublis | Moyenne (généralise l'existant sur les fiches de maintenance) | Timeline d'événements (pour rattacher le résultat) | Moyenne |
 | Mouvements structurés (départ/destination/documents/signature) | Modéliser un mouvement comme plus qu'une ligne de remise | Cohérence de la couche socle | Moyenne | Timeline d'événements | Moyenne |
+| Dates Infocom fusionnées dans la frise (achat, commande, livraison, mise en service, garantie début/fin, réforme, prix) | Répondre à "que s'est-il passé avant même la première attribution ?" | Frise complète depuis l'entrée dans le parc, pas seulement depuis la première remise | Moyenne (lecture de `Infocom` au moment de l'affichage, jamais copiée dans `glpi_plugin_remise_events` — respecte le principe "ne pas dupliquer l'inventaire GLPI") | Timeline d'événements (MVP) | Moyenne |
+| Tickets liés au matériel affichés dans la frise | Vue unique incidents + cycle de vie, pas deux historiques séparés à croiser mentalement | Contexte complet pour un technicien qui consulte le passeport | Moyenne/Haute (nouvelle source d'événements en LECTURE seule sur `Ticket`, jamais stockée — à la différence de Remise/Maintenance qui, elles, écrivent dans `glpi_plugin_remise_events`) | Timeline d'événements (MVP) | Moyenne |
+| Rétro-remplissage de l'historique pour le matériel déjà existant avant l'installation du plugin, à partir de `glpi_logs` (historique natif GLPI) | Un passeport qui ne commence pas "vide" pour tout le parc déjà en place | Adoption immédiate, sans attendre que l'historique se reconstitue au fil du temps | Haute — nécessite d'abord de vérifier la fiabilité/le format exact de `glpi_logs` pour les changements de `users_id`/`states_id` sur les anciennes lignes (pas garanti exploitable selon l'ancienneté et la config de journalisation) | Timeline d'événements (MVP) | Basse (à valider avant de s'engager) |
 
 **V2 — indicateurs et aide à la décision**
 | Fonctionnalité | Objectif métier | Valeur utilisateur | Difficulté | Dépendances | Priorité |
@@ -81,6 +86,22 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | QR code sur le matériel (scan → état/historique/actions) | Accès terrain rapide sans chercher le matériel dans GLPI | Gain de temps technicien | Moyenne | Onglet Passeport matériel (MVP) | Basse |
 | Kits/accessoires avec contrôle automatique au retour | Détecter un accessoire manquant à la restitution | Réduction de perte de matériel | Moyenne (nouvelle notion de kit, au-delà des accessoires actuels) | Checklists (V1) | Basse |
 | Dashboard RSE, app mobile technicien, signatures multiples | Extensions déjà identifiées comme envisageables | — | Haute (chacune un chantier à part) | Variable selon la fonctionnalité | Basse |
+
+### Extension proposée : Passeport utilisateur (vue symétrique)
+
+Idée soumise par l'utilisateur (2026-08-04) : le même principe que le Passeport matériel, mais pivoté côté personne — répondre à « quel matériel cette personne a-t-elle reçu, rendu, acheté... et à quelle date ? », de sa création de compte à sa désactivation/suppression. Réutilise directement le socle déjà livré (`glpi_plugin_remise_events`, qui porte déjà `users_id` sur chaque ligne) — pas de nouvelle table d'événements nécessaire, seulement une nouvelle vue :
+
+- **Nouvel onglet sur `User`** : même frise chronologique que le Passeport matériel (même style visuel, pas un second langage graphique à maintenir), mais filtrée par `users_id` au lieu de `itemtype`/`items_id`.
+- **Bornes de compte** : création et désactivation/suppression du compte encadrent la frise (lues directement sur `glpi_users` — `date_creation`, `is_deleted`/`is_active` — jamais dupliquées dans `glpi_plugin_remise_events`, même logique que la fiche d'identité du Passeport matériel qui lit `Infocom` sans le recopier).
+- **Affichage minimal par ligne : nom du matériel + numéro de série**, avec repli explicite si l'un des deux manque (jamais de ligne vide ou silencieusement fausse) — ce sont des champs déjà natifs sur Computer/Monitor/etc., aucune nouvelle saisie requise.
+- **Rétro-remplissage à double source** : contrairement au Passeport matériel (une seule source possible, l'historique du matériel), reconstruire la frise d'un utilisateur déjà présent avant l'installation du plugin peut s'appuyer soit sur l'historique de son propre compte, soit sur l'historique de chaque matériel qu'il a eu (`glpi_logs` dans les deux cas) — cumule donc le même risque de faisabilité que le rétro-remplissage matériel déjà noté dans le tableau V1 ci-dessus, à valider une seule fois pour les deux plutôt que deux analyses séparées.
+
+| Fonctionnalité | Objectif métier | Valeur utilisateur | Difficulté | Dépendances | Priorité |
+|---|---|---|---|---|---|
+| Onglet "Passeport" sur l'utilisateur (frise filtrée par `users_id`, réutilise `glpi_plugin_remise_events`) | Répondre à "quel matériel cette personne a-t-elle eu, depuis quand ?" | Vue symétrique côté RH/IT, sans recouper le matériel un par un manuellement | Faible/Moyenne (nouvel onglet sur `User`, requête déjà possible sur la table existante) | Passeport matériel (MVP, livré) | Moyenne |
+| Bornes de compte (création, désactivation/suppression) affichées dans la frise | Une frise qui commence et finit avec la présence réelle de la personne dans la société | Réponse complète au cycle de vie demandé, pas seulement aux mouvements de matériel | Faible (lecture de `glpi_users`, aucune nouvelle table) | Onglet Passeport utilisateur | Moyenne |
+| Affichage nom + n° série avec repli explicite si l'un des deux manque | Jamais de ligne illisible ou vide dans la frise | Fiabilité perçue de l'outil | Faible | Onglet Passeport utilisateur | Moyenne |
+| Rétro-remplissage à double source (historique du compte ET historique de chaque matériel, `glpi_logs`) | Frise non vide pour les utilisateurs déjà présents avant l'installation du plugin | Adoption immédiate, comme pour le matériel | Haute — même risque de faisabilité que le rétro-remplissage matériel (à valider une seule fois pour les deux) | Rétro-remplissage matériel (idée déjà notée, non engagée) | Basse (à valider avant de s'engager) |
 
 ### Risques techniques à trancher pendant la phase d'analyse
 
