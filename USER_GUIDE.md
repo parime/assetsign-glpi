@@ -66,6 +66,10 @@ Un second onglet dédié, indépendant des remises signées (pas de bénéficiai
 
 ![Onglet Maintenance d'un ordinateur avec le formulaire de checklist](docs/screenshots/onglet-ordinateur-maintenance.png)
 
+### L'onglet « Passeport matériel » sur la fiche d'un matériel
+
+Un troisième onglet, en lecture seule, qui répond à « qui a utilisé ce matériel depuis son achat ? » : une frise chronologique agrégeant automatiquement les remises, restitutions, dons, ventes et fiches de maintenance de ce matériel (rien à ressaisir, ces événements viennent des onglets ci-dessus), avec un compteur de « vies » (nombre de bénéficiaires successifs et leurs périodes). Chaque événement conserve le nom du bénéficiaire au moment où il a eu lieu, même si le compte GLPI correspondant est supprimé plus tard — ce nom peut être anonymisé après un délai configurable (Configuration > Remise & signature > Passeport matériel), la date et le type d'événement restant alors seuls visibles. La fonctionnalité elle-même peut être désactivée par entité, et les types d'événement affichés dans la frise sont filtrables, depuis ce même onglet de configuration.
+
 ### L'onglet « Remises » sur la fiche d'un utilisateur
 
 Le même onglet Remises existe aussi côté utilisateur (fiche d'un compte GLPI, Administration > Utilisateurs) — filtré cette fois par bénéficiaire plutôt que par matériel, avec une colonne supplémentaire indiquant à quel matériel chaque ligne correspond (une même personne ayant pu recevoir plusieurs matériels différents dans le temps) : pratique pour retrouver d'un coup d'œil tout ce qu'une personne a reçu, télécharger directement chaque PDF, sans avoir à connaître à l'avance sur quel matériel chercher. Un raccourci **"Assigner un matériel à cet utilisateur"** permet en plus d'affecter directement un matériel depuis cet écran (choix du type puis du matériel) — l'affectation déclenche automatiquement la création d'une remise, exactement comme changer le champ "Utilisateur" depuis la fiche du matériel :

@@ -1021,6 +1021,13 @@ class Remise extends CommonDBTM
    public function launchWorkflow(?Config $config = null): void {
        $config ??= Config::getForEntity((int) $this->fields['entities_id']);
 
+       // Point de passage commun a toutes les voies de creation (automatique par
+       // affectation/Etat, manuelle Don/Vente) : seul endroit ou enregistrer
+       // l'evenement du Passeport materiel sans dupliquer cet appel dans chacune
+       // de ces voies. Volontairement AVANT la construction du PDF : un echec de
+       // rendu PDF ne doit pas empecher l'evenement d'exister.
+       PassportEvent::recordForRemise($this);
+
        $builder = new Pdf\HandoverPdfBuilder();
        $document = $builder->build($this);
 

@@ -111,6 +111,13 @@ function plugin_init_remise(): void {
     Plugin::registerClass(\GlpiPlugin\Remise\Maintenance::class, [
         'addtabon' => $manageableItemtypes,
     ]);
+    // Passeport materiel : agrege Remise + Maintenance en lecture seule (cf.
+    // PassportEvent::recordForRemise()/recordForMaintenance()), son propre
+    // onglet sur les memes materiels geres — jamais sur 'User', le passeport
+    // suit le materiel, pas la personne.
+    Plugin::registerClass(\GlpiPlugin\Remise\PassportEvent::class, [
+        'addtabon' => $manageableItemtypes,
+    ]);
 
     // --- Notifications ------------------------------------------------------------
     // Rien a enregistrer explicitement : pour un itemtype namespace (GlpiPlugin\Remise\Remise),

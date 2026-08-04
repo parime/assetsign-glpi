@@ -15,6 +15,7 @@ use GlpiPlugin\Remise\Dashboard\CardProvider;
 use GlpiPlugin\Remise\Maintenance;
 use GlpiPlugin\Remise\MaintenanceChecklistItem;
 use GlpiPlugin\Remise\NotificationTargetRemise;
+use GlpiPlugin\Remise\PassportEvent;
 use GlpiPlugin\Remise\Profile;
 use GlpiPlugin\Remise\Reminder;
 use GlpiPlugin\Remise\Remise;
@@ -160,6 +161,7 @@ function plugin_remise_install(): bool {
     // plugin_remise_maintenances_id absente sans qu'aucune erreur ne
     // remonte jusqu'a l'ecran d'installation).
     DamageMarker::install($migration);
+    PassportEvent::install($migration);
     Token::install($migration);
     Signature::install($migration);
     Reminder::install($migration);
@@ -205,6 +207,15 @@ function plugin_remise_install(): bool {
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
+    CronTask::register(
+        PassportEvent::class,
+        'passportAnonymize',
+        DAY_TIMESTAMP,
+        [
+            'comment' => 'Anonymise l\'identite des beneficiaires dans le Passeport materiel au-dela du delai configure (Config::passport_retention_years)',
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
 
     // Vide le cache des gabarits Twig compiles (files/_cache/.../templates/) a
     // chaque installation/mise a jour du plugin : sans ca, un fichier .twig
@@ -223,6 +234,7 @@ function plugin_remise_uninstall(): bool {
     $migration = new Migration(str_replace('.', '', PLUGIN_REMISE_VERSION));
 
    foreach ([
+        'glpi_plugin_remise_events',
         'glpi_plugin_remise_reminders',
         'glpi_plugin_remise_signatures',
         'glpi_plugin_remise_tokens',
