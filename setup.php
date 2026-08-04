@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_REMISE_VERSION', '1.13.4');
+define('PLUGIN_REMISE_VERSION', '1.13.5');
 define('PLUGIN_REMISE_MIN_GLPI', '11.0.0');
 define('PLUGIN_REMISE_MAX_GLPI', '11.9.99');
 define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
@@ -160,7 +160,7 @@ function plugin_version_remise(): array {
         'name'           => 'Remise & Signature',
         'version'        => PLUGIN_REMISE_VERSION,
         'author'         => 'Vincent Guillotte',
-        'license'        => 'GPLv2+',
+        'license'        => 'GPLv3',
         'homepage'       => 'https://github.com/parime/remise-glpi',
         'requirements'   => [
             'glpi' => [

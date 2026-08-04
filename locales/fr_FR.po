@@ -763,3 +763,36 @@ msgstr "Assigner"
 
 msgid "Matériel assigné."
 msgstr "Matériel assigné."
+
+msgid "Envoyer un e-mail de test"
+msgstr "Envoyer un e-mail de test"
+
+msgid "Envoie un e-mail à votre propre adresse GLPI, pour vérifier que l'envoi fonctionne."
+msgstr "Envoie un e-mail à votre propre adresse GLPI, pour vérifier que l'envoi fonctionne."
+
+msgid "E-mail de test envoyé."
+msgstr "E-mail de test envoyé."
+
+msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
+msgstr "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
+
+msgid "Le serveur de messagerie a refusé l'envoi."
+msgstr "Le serveur de messagerie a refusé l'envoi."
+
+msgid "E-mail de test — Remise & signature"
+msgstr "E-mail de test — Remise & signature"
+
+msgid "Cet e-mail confirme que la configuration d'envoi du plugin Remise & signature fonctionne."
+msgstr "Cet e-mail confirme que la configuration d'envoi du plugin Remise & signature fonctionne."
+
+msgid "Afficher un QR code sur les fiches PDF"
+msgstr "Afficher un QR code sur les fiches PDF"
+
+msgid "Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel."
+msgstr "Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel."
+
+msgid "Symbole de devise"
+msgstr "Symbole de devise"
+
+msgid "Affiché après le prix sur la fiche PDF (ex: €, $, CHF)."
+msgstr "Affiché après le prix sur la fiche PDF (ex: €, $, CHF)."

@@ -36,6 +36,8 @@ class Config extends CommonDBTM
         'enable_vente'                        => 0,
         'enable_damage_annotation'            => 0,
         'enable_maintenance_signature'        => 0,
+        'show_qr_code'                        => 0,
+        'currency_symbol'                     => '€',
         'sign_on_assignment'                  => 1,
         'sign_on_reassignment'                => 1,
         'sign_on_return'                      => 0,
@@ -190,6 +192,46 @@ class Config extends CommonDBTM
        ]);
 
        return $documents_id ?: 0;
+   }
+
+    /**
+     * Envoie un e-mail de test a l'utilisateur courant (celui qui clique sur
+     * le bouton), independamment du moteur de notifications GLPI (qui exige
+     * une vraie remise pour resoudre ses tags ##remise.xxx##) : verifie
+     * seulement que le serveur SMTP configure dans GLPI accepte l'envoi, avec
+     * l'expediteur (sender_name/sender_email) de CETTE entite. Inspire d'une
+     * fonctionnalite equivalente du plugin concurrent "responsivas".
+     * @return string Message d'erreur si l'envoi echoue, chaine vide si ok.
+     */
+   public static function sendTestEmail(int $entities_id): string {
+       $userId = \Session::getLoginUserID();
+       $email = \UserEmail::getDefaultForUser((int) $userId);
+      if (!$email) {
+          return __('Votre compte GLPI n\'a pas d\'adresse e-mail enregistrée.', 'remise');
+      }
+
+       $config = self::getForEntity($entities_id);
+       $senderName = trim($config->fields['sender_name'] ?? '') ?: 'GLPI';
+       $senderEmail = trim($config->fields['sender_email'] ?? '');
+
+      try {
+          $mailer = new \GLPIMailer();
+          $mail = $mailer->getEmail();
+         if ($senderEmail !== '') {
+             $mail->from(new \Symfony\Component\Mime\Address($senderEmail, $senderName));
+         }
+          $mail->to($email);
+          $mail->subject(__('E-mail de test — Remise & signature', 'remise'));
+          $mail->html('<p>' . __('Cet e-mail confirme que la configuration d\'envoi du plugin Remise & signature fonctionne.', 'remise') . '</p>');
+
+         if (!$mailer->send()) {
+             return __('Le serveur de messagerie a refusé l\'envoi.', 'remise');
+         }
+      } catch (\Throwable $e) {
+          return $e->getMessage();
+      }
+
+       return '';
    }
 
    public static function getItemtypeLabels(): array {
@@ -381,6 +423,8 @@ class Config extends CommonDBTM
            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
            'enable_damage_annotation' => (int) ($input['enable_damage_annotation'] ?? 0),
            'enable_maintenance_signature' => (int) ($input['enable_maintenance_signature'] ?? 0),
+           'show_qr_code'         => (int) ($input['show_qr_code'] ?? 0),
+           'currency_symbol'      => trim($input['currency_symbol'] ?? '') ?: '€',
            'sign_on_assignment'   => (int) ($input['sign_on_assignment'] ?? 0),
            'sign_on_reassignment' => (int) ($input['sign_on_reassignment'] ?? 0),
            'sign_on_return'       => (int) ($input['sign_on_return'] ?? 0),
@@ -460,6 +504,8 @@ class Config extends CommonDBTM
                 `enable_vente` tinyint NOT NULL DEFAULT 0,
                 `enable_damage_annotation` tinyint NOT NULL DEFAULT 0,
                 `enable_maintenance_signature` tinyint NOT NULL DEFAULT 0,
+                `show_qr_code` tinyint NOT NULL DEFAULT 0,
+                `currency_symbol` varchar(255) NOT NULL DEFAULT '€',
                 `sign_on_assignment` tinyint NOT NULL DEFAULT 1,
                 `sign_on_reassignment` tinyint NOT NULL DEFAULT 1,
                 `sign_on_return` tinyint NOT NULL DEFAULT 0,
@@ -488,6 +534,8 @@ class Config extends CommonDBTM
               'enable_vente'       => self::DEFAULTS['enable_vente'],
               'enable_damage_annotation' => self::DEFAULTS['enable_damage_annotation'],
               'enable_maintenance_signature' => self::DEFAULTS['enable_maintenance_signature'],
+              'show_qr_code'       => self::DEFAULTS['show_qr_code'],
+              'currency_symbol'    => self::DEFAULTS['currency_symbol'],
               'sign_on_assignment' => 1,
               'sign_on_reassignment' => 1,
               'managed_itemtypes'  => self::DEFAULTS['managed_itemtypes'],
@@ -544,6 +592,11 @@ class Config extends CommonDBTM
          if (!$DB->fieldExists($table, 'donation_states')) {
              $migration->addField($table, 'donation_states', 'text', ['after' => 'return_states']);
              $migration->addField($table, 'vente_states', 'text', ['after' => 'donation_states']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'show_qr_code')) {
+             $migration->addField($table, 'show_qr_code', 'bool', ['value' => 0, 'after' => 'enable_maintenance_signature']);
+             $migration->addField($table, 'currency_symbol', 'string', ['value' => '€', 'after' => 'show_qr_code']);
              $migration->migrationOneTable($table);
          }
           // Audit code mort : jamais branchee (aucun formulaire ne la soumet,

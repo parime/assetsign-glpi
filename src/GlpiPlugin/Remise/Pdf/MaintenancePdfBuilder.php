@@ -47,6 +47,9 @@ final class MaintenancePdfBuilder
 
    public function renderHtml(Maintenance $maintenance, ?string $signatureImage = null, ?string $signedAt = null): string {
        $config = Config::getForEntity((int) $maintenance->fields['entities_id']);
+       $qrDataUri = (bool) $config->fields['show_qr_code']
+           ? $this->getQrCodeDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/remise/front/maintenance.form.php?id=' . $maintenance->getID())
+           : null;
 
        return TemplateRenderer::getInstance()->render('@remise/pdf/maintenance.html.twig', [
            'maintenance'         => $maintenance->fields,
@@ -62,6 +65,7 @@ final class MaintenancePdfBuilder
            'signature_image'     => $signatureImage,
            'signed_at'           => $signedAt,
            'logo_data_uri'       => $this->getLogoDataUri((int) $maintenance->fields['entities_id']),
+           'qr_data_uri'         => $qrDataUri,
            'document_title'      => $maintenance->getDocumentTitle(),
        ]);
    }

@@ -26,12 +26,12 @@ $entities_id = (int) ($_POST['entities_id'] ?? 0);
 $type = (int) ($_POST['type'] ?? Remise::TYPE_HANDOVER);
 
 $overrides = [];
-foreach (['include_content', 'include_charter', 'enable_observations', 'enable_damage_annotation'] as $boolField) {
+foreach (['include_content', 'include_charter', 'enable_observations', 'enable_damage_annotation', 'show_qr_code'] as $boolField) {
    if (isset($_POST[$boolField])) {
        $overrides[$boolField] = $_POST[$boolField] === '1';
    }
 }
-foreach (['content', 'charter_content', 'charter_url'] as $textField) {
+foreach (['content', 'charter_content', 'charter_url', 'currency_symbol'] as $textField) {
    if (isset($_POST[$textField])) {
        $overrides[$textField] = (string) $_POST[$textField];
    }

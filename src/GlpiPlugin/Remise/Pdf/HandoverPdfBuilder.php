@@ -73,6 +73,7 @@ final class HandoverPdfBuilder
            'beneficiary_comment' => $remise->fields['beneficiary_comment'] ?? '',
            'vente_price'         => $venteDetails?->fields['price'] ?? null,
            'vente_sale_date'     => $venteDetails?->fields['sale_date'] ?? null,
+           'currency_symbol'     => $config->fields['currency_symbol'] ?: '€',
            'damage_views'        => (bool) $config->fields['enable_damage_annotation']
                ? $this->getDamageViewsForPdf(DamageMarker::getForRemise($remise->getID()))
                : [],
@@ -80,6 +81,9 @@ final class HandoverPdfBuilder
            'material_heading'    => $headings['material_heading'],
            'document_title'      => $remise->getDocumentTitle(),
            'logo_data_uri'       => $this->getLogoDataUri((int) $remise->fields['entities_id']),
+           'qr_data_uri'         => (bool) $config->fields['show_qr_code']
+               ? $this->getQrCodeDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/remise/front/remise.form.php?id=' . $remise->getID())
+               : null,
        ], $extra));
    }
 
@@ -124,6 +128,12 @@ final class HandoverPdfBuilder
        $damageEnabled = array_key_exists('enable_damage_annotation', $overrides)
            ? (bool) $overrides['enable_damage_annotation']
            : (bool) $config->fields['enable_damage_annotation'];
+       $qrEnabled = array_key_exists('show_qr_code', $overrides)
+           ? (bool) $overrides['show_qr_code']
+           : (bool) $config->fields['show_qr_code'];
+       $currencySymbol = array_key_exists('currency_symbol', $overrides)
+           ? ((string) $overrides['currency_symbol'] ?: '€')
+           : ($config->fields['currency_symbol'] ?: '€');
 
        // Donnees fictives (cf. commentaire de methode) : le nom d'entite est,
        // lui, reel (utile pour verifier que {entite} se resout correctement
@@ -156,6 +166,10 @@ final class HandoverPdfBuilder
            'material_heading'    => $headings['material_heading'],
            'document_title'      => 'Aperçu',
            'logo_data_uri'       => $this->getLogoDataUri($entities_id),
+           'currency_symbol'     => $currencySymbol,
+           'qr_data_uri'         => $qrEnabled
+               ? $this->getQrCodeDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/remise/front/remise.form.php?id=0')
+               : null,
        ]);
    }
 

@@ -45,7 +45,7 @@
 {% if vente_price is not null %}
 <h2>Détails de la vente</h2>
 <table class="info-table">
-    <tr><th>Prix</th><td>{{ vente_price|number_format(2, ',', ' ') }} €</td></tr>
+    <tr><th>Prix</th><td>{{ vente_price|number_format(2, ',', ' ') }} {{ currency_symbol|default('€') }}</td></tr>
     <tr><th>Date de vente</th><td>{{ vente_sale_date|default('-') }}</td></tr>
 </table>
 {% endif %}
@@ -104,6 +104,10 @@
         <p>Signature de l'utilisateur : ______________________________</p>
     {% endif %}
 </div>
+
+{% if qr_data_uri %}
+<div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
+{% endif %}
 
 <div class="footer">Remise #{{ remise.id }} — Document généré par GLPI (plugin remise)</div>
 

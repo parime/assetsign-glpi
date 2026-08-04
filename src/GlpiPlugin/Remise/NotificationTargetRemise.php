@@ -169,18 +169,23 @@ class NotificationTargetRemise extends NotificationTarget
    }
 
     /**
+     * Langues traduites (interface plugin ET notifications), en plus de la
+     * traduction universelle 'fr_FR' toujours semee sous 'language' => ''
+     * (cf. NotificationTemplate::getByLanguage() : `WHERE language IN
+     * ($language, '') ORDER BY language DESC LIMIT 1`). Sans une ligne dediee
+     * pour chacune, un destinataire dont le compte GLPI est dans une de ces
+     * langues recevrait quand meme l'e-mail en francais — contrairement a
+     * l'interface web du plugin (deja traduite via locales/<lang>.po).
+     */
+   private const NOTIFICATION_LANGUAGES = ['en_GB', 'es_ES', 'de_DE', 'it_IT'];
+
+    /**
      * Seme les 5 notifications par defaut a l'installation (editables ensuite
      * dans Configuration > Notifications comme n'importe quelle notification
      * native GLPI). Idempotent : ne recree rien si deja present.
      *
-     * Chaque gabarit recoit DEUX traductions : 'fr_FR' evidemment mais aussi
-     * une ligne 'language' => '' (universelle, GLPI l'utilise pour tout
-     * destinataire dont la langue de compte n'a pas de traduction dediee,
-     * cf. NotificationTemplate::getByLanguage() : `WHERE language IN
-     * ($language, '') ORDER BY language DESC LIMIT 1`) ET une ligne 'en_GB'.
-     * Sans cette deuxieme ligne, un destinataire dont le compte GLPI est en
-     * anglais recevrait quand meme l'e-mail en francais — contrairement a
-     * l'interface web du plugin (deja traduite via locales/en_GB.po).
+     * Chaque gabarit recoit une traduction 'fr_FR' (ligne 'language' => '',
+     * universelle) PLUS une ligne par langue de self::NOTIFICATION_LANGUAGES.
      */
    public static function install(): void {
        // Une seule notification par evenement, valable pour tous les types de
@@ -194,10 +199,12 @@ class NotificationTargetRemise extends NotificationTarget
           $alreadyInstalled = $existing->getFromDBByCrit(['itemtype' => Remise::class, 'event' => $event]);
 
          if ($alreadyInstalled) {
-            // Montee de version : ajoute uniquement la traduction en_GB manquante
-            // sur une installation existante (semee avant l'ajout du support
-            // multilingue), sans toucher au reste ni recreer quoi que ce soit.
-            self::addMissingTranslation(self::getTemplateIdForEvent($event), 'en_GB', $def['en_GB']);
+            // Montee de version : ajoute uniquement les traductions manquantes
+            // sur une installation existante (semee avant l'ajout de chaque
+            // langue), sans toucher au reste ni recreer quoi que ce soit.
+            foreach (self::NOTIFICATION_LANGUAGES as $language) {
+                self::addMissingTranslation(self::getTemplateIdForEvent($event), $language, $def[$language]);
+            }
 
             if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
                 self::migrateTechnicianTarget((int) $existing->getID());
@@ -219,13 +226,15 @@ class NotificationTargetRemise extends NotificationTarget
               'content_text'             => strip_tags(str_replace('</p>', "\n", $def['fr_FR']['html'])),
           ]);
 
-          (new NotificationTemplateTranslation())->add([
-              'notificationtemplates_id' => $templates_id,
-              'language'                 => 'en_GB',
-              'subject'                  => $def['en_GB']['subject'],
-              'content_html'             => $def['en_GB']['html'],
-              'content_text'             => strip_tags(str_replace('</p>', "\n", $def['en_GB']['html'])),
-          ]);
+         foreach (self::NOTIFICATION_LANGUAGES as $language) {
+             (new NotificationTemplateTranslation())->add([
+                 'notificationtemplates_id' => $templates_id,
+                 'language'                 => $language,
+                 'subject'                  => $def[$language]['subject'],
+                 'content_html'             => $def[$language]['html'],
+                 'content_text'             => strip_tags(str_replace('</p>', "\n", $def[$language]['html'])),
+             ]);
+         }
 
           $notification = new Notification();
           $notifications_id = $notification->add([

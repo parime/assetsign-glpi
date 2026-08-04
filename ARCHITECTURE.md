@@ -30,7 +30,7 @@ remise/
 │   ├── js/sign/              # signature_pad.js, PDF.js, sign.js, damage-annotation.js, csrf-queue.js
 │   ├── css/                  # feuille de style des pages d'administration du plugin
 │   └── images/damage-views/  # 3 vraies vues de référence pour l'état des lieux visuel (JPG)
-├── locales/                 # traductions (fr_FR, en_GB)
+├── locales/                 # traductions (fr_FR, en_GB, es_ES, de_DE, it_IT)
 └── tests/                   # suite PHPUnit (voir "Tests automatisés" plus bas)
 ```
 
