@@ -359,6 +359,36 @@
             <label class="form-check-label" for="show_linked_tickets">{{ __('Afficher les tickets liés dans la frise', 'remise') }}</label>
             <div class="form-text">{{ __('Lecture seule : chaque technicien ne voit que les tickets auxquels il a réellement accès, exactement comme sur l\'onglet Tickets du matériel.', 'remise') }}</div>
           </div>
+
+          <hr>
+
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_health_score" value="0">
+            <input type="checkbox" name="enable_health_score" value="1" class="form-check-input" id="enable_health_score" {{ config.enable_health_score|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_health_score">{{ __('Afficher un score de santé (0-100)', 'remise') }}</label>
+            <div class="form-text">
+              {{ __('Calculé à partir de 4 facteurs : âge, incidents (tickets liés), état physique (marqueurs de dégât) et mouvements (changements de détenteur). Chaque poids ci-dessous compte proportionnellement au total (inutile de faire une somme exacte de 100) : un facteur à 0 est simplement ignoré.', 'remise') }}
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3" style="max-width: 500px;">
+            <div class="col-6">
+              <label class="form-label">{{ __('Poids : Âge', 'remise') }}</label>
+              <input type="number" name="health_weight_age" class="form-control" min="0" value="{{ config.health_weight_age|default(30) }}">
+            </div>
+            <div class="col-6">
+              <label class="form-label">{{ __('Poids : Incidents', 'remise') }}</label>
+              <input type="number" name="health_weight_incidents" class="form-control" min="0" value="{{ config.health_weight_incidents|default(30) }}">
+            </div>
+            <div class="col-6">
+              <label class="form-label">{{ __('Poids : État physique', 'remise') }}</label>
+              <input type="number" name="health_weight_damage" class="form-control" min="0" value="{{ config.health_weight_damage|default(25) }}">
+            </div>
+            <div class="col-6">
+              <label class="form-label">{{ __('Poids : Mouvements', 'remise') }}</label>
+              <input type="number" name="health_weight_movements" class="form-control" min="0" value="{{ config.health_weight_movements|default(15) }}">
+            </div>
+          </div>
         </div>
 
       </div>

@@ -16,13 +16,24 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_REMISE_VERSION', '1.19.0');
+define('PLUGIN_REMISE_VERSION', '1.20.0');
 define('PLUGIN_REMISE_MIN_GLPI', '11.0.0');
 define('PLUGIN_REMISE_MAX_GLPI', '11.9.99');
 define('PLUGIN_REMISE_MIN_PHP', '8.3.0');
 
 // Types d'actifs geres par defaut (surchargeable via la configuration)
 const PLUGIN_REMISE_DEFAULT_ITEMTYPES = ['Computer', 'Monitor', 'Peripheral', 'Phone'];
+
+// Seuils "degradation complete" (100%) du score de sante (cf. ROADMAP.md,
+// PassportEvent::getHealthScore()) - fixes pour l'instant, seul le POIDS de
+// chaque facteur est ajustable par l'administrateur (Configuration >
+// Passeport materiel). Valeurs de depart raisonnables, documentees et
+// modifiables par une future PR si l'usage reel montre qu'elles sont trop
+// larges/etroites - pas une science exacte, cf. sources en fin de ROADMAP.md.
+const PLUGIN_REMISE_HEALTH_AGE_FULL_DEGRADATION_DAYS = 1826; // 5 ans
+const PLUGIN_REMISE_HEALTH_INCIDENTS_FULL_DEGRADATION_COUNT = 5; // 5 tickets lies
+const PLUGIN_REMISE_HEALTH_DAMAGE_FULL_DEGRADATION_POINTS = 6; // 6 points (1=mineur, 2=majeur)
+const PLUGIN_REMISE_HEALTH_MOVEMENTS_FULL_DEGRADATION_COUNT = 5; // 5 "vies" (changements de detenteur)
 
 function plugin_init_remise(): void {
     global $PLUGIN_HOOKS;
