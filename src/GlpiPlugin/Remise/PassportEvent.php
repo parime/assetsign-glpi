@@ -202,11 +202,59 @@ class PassportEvent extends CommonDBTM
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/passport_tab.html.twig', [
            'events'        => array_reverse($timelineRows), // le plus recent en premier dans la frise
            'lives'         => $lives,
+           'identity'      => self::getIdentityCard($item),
            'itemtype'      => $item->getType(),
            'items_id'      => $item->getID(),
            'can_backfill'  => \Session::haveRight(self::$rightname, UPDATE),
            'csrf_token'    => \Session::getNewCSRFToken(),
        ]);
+   }
+
+    /**
+     * Fiche d'identite : vue d'ensemble immediate du materiel sans avoir a
+     * derouler toute la frise (cf. ROADMAP.md, tableau V1) — pure agregation
+     * de donnees deja natives GLPI (modele, fabricant, n° serie, Etat,
+     * utilisateur/entite ACTUELS), aucune nouvelle donnee ni table. Achat et
+     * fin de garantie reutilises depuis Infocom (meme lecture que
+     * getInfocomPseudoEvents(), sans dependre de Config::show_infocom_dates -
+     * la fiche d'identite reste utile meme si la frise Infocom est
+     * desactivee). Champ de modele et classe deduits par convention GLPI
+     * (`<itemtype minuscule>models_id`, ex: `computermodels_id` sur
+     * `glpi_computers` - PAS un generique `models_id` ; `<Itemtype>Model`,
+     * ex: ComputerModel) - absents pour certains types personnalises, geres
+     * en repli (chaine vide, jamais une erreur).
+     * @return array{name: string, serial: string, model: string, manufacturer: string, state: string, user: string, entity: string, buy_date: ?string, warranty_end: ?string}
+     */
+   private static function getIdentityCard(CommonDBTM $item): array {
+       $modelClass = $item->getType() . 'Model';
+       $modelField = strtolower($item->getType()) . 'models_id';
+       $modelName = '';
+      if (!empty($item->fields[$modelField]) && is_subclass_of($modelClass, CommonDBTM::class)) {
+          $modelName = \Dropdown::getDropdownName($modelClass::getTable(), (int) $item->fields[$modelField]);
+      }
+
+       $buyDate = null;
+       $warrantyEnd = null;
+       $infocom = new \Infocom();
+      if (\Infocom::canApplyOn($item->getType()) && $infocom->getFromDBforDevice($item->getType(), $item->getID())) {
+          $buyDate = $infocom->fields['buy_date'] ?: null;
+          $warrantyMonths = (int) ($infocom->fields['warranty_duration'] ?? 0);
+         if (!empty($infocom->fields['warranty_date']) && $warrantyMonths > 0) {
+             $warrantyEnd = date('Y-m-d', strtotime($infocom->fields['warranty_date'] . " +{$warrantyMonths} months"));
+         }
+      }
+
+       return [
+           'name'         => (string) ($item->fields['name'] ?? ''),
+           'serial'       => (string) ($item->fields['serial'] ?? ''),
+           'model'        => $modelName,
+           'manufacturer' => empty($item->fields['manufacturers_id']) ? '' : \Dropdown::getDropdownName('glpi_manufacturers', (int) $item->fields['manufacturers_id']),
+           'state'        => empty($item->fields['states_id']) ? '' : \Dropdown::getDropdownName('glpi_states', (int) $item->fields['states_id']),
+           'user'         => empty($item->fields['users_id']) ? '' : \User::getFriendlyNameById((int) $item->fields['users_id']),
+           'entity'       => \Dropdown::getDropdownName('glpi_entities', (int) ($item->fields['entities_id'] ?? 0)),
+           'buy_date'     => $buyDate,
+           'warranty_end' => $warrantyEnd,
+       ];
    }
 
     /**
