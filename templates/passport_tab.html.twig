@@ -1,3 +1,27 @@
+<div class="passport-identity-card mb-4">
+  <div class="row g-2">
+    {% if identity.model or identity.manufacturer %}
+      <div class="col-auto"><strong>{{ __('Modèle', 'remise') }} :</strong> {{ identity.manufacturer }}{{ identity.manufacturer and identity.model ? ' — ' : '' }}{{ identity.model }}</div>
+    {% endif %}
+    {% if identity.serial %}
+      <div class="col-auto"><strong>{{ __('N° série', 'remise') }} :</strong> {{ identity.serial }}</div>
+    {% endif %}
+    {% if identity.state %}
+      <div class="col-auto"><strong>{{ __('État', 'remise') }} :</strong> {{ identity.state }}</div>
+    {% endif %}
+    {% if identity.user %}
+      <div class="col-auto"><strong>{{ __('Utilisateur actuel', 'remise') }} :</strong> {{ identity.user }}</div>
+    {% endif %}
+    <div class="col-auto"><strong>{{ __('Entité', 'remise') }} :</strong> {{ identity.entity }}</div>
+    {% if identity.buy_date %}
+      <div class="col-auto"><strong>{{ __('Achat', 'remise') }} :</strong> {{ identity.buy_date|formatted_date }}</div>
+    {% endif %}
+    {% if identity.warranty_end %}
+      <div class="col-auto"><strong>{{ __('Fin de garantie', 'remise') }} :</strong> {{ identity.warranty_end|formatted_date }}</div>
+    {% endif %}
+  </div>
+</div>
+
 {% if can_backfill %}
   <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/passport_backfill.php" class="mb-2">
     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
