@@ -30,6 +30,11 @@ class Config extends CommonDBTM
         'passport_visible_types'              => '[0,1,2,3,4]',
         'show_infocom_dates'                  => 1,
         'show_linked_tickets'                 => 1,
+        'enable_health_score'                 => 1,
+        'health_weight_age'                   => 30,
+        'health_weight_incidents'              => 30,
+        'health_weight_damage'                => 25,
+        'health_weight_movements'             => 15,
         'charter_url'                         => '',
         'default_provider'                    => 'canvas',
         'provider_config'                     => '',
@@ -489,6 +494,11 @@ class Config extends CommonDBTM
            'passport_visible_types'   => json_encode(array_map('intval', $input['passport_visible_types'] ?? [])),
            'show_infocom_dates'   => (int) ($input['show_infocom_dates'] ?? 0),
            'show_linked_tickets'  => (int) ($input['show_linked_tickets'] ?? 0),
+           'enable_health_score'    => (int) ($input['enable_health_score'] ?? 0),
+           'health_weight_age'       => max(0, (int) ($input['health_weight_age'] ?? 30)),
+           'health_weight_incidents' => max(0, (int) ($input['health_weight_incidents'] ?? 30)),
+           'health_weight_damage'    => max(0, (int) ($input['health_weight_damage'] ?? 25)),
+           'health_weight_movements' => max(0, (int) ($input['health_weight_movements'] ?? 15)),
            'signature_required'   => (int) ($input['signature_required'] ?? 0),
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
@@ -578,6 +588,11 @@ class Config extends CommonDBTM
                 `passport_visible_types` text,
                 `show_infocom_dates` tinyint NOT NULL DEFAULT 1,
                 `show_linked_tickets` tinyint NOT NULL DEFAULT 1,
+                `enable_health_score` tinyint NOT NULL DEFAULT 1,
+                `health_weight_age` int unsigned NOT NULL DEFAULT 30,
+                `health_weight_incidents` int unsigned NOT NULL DEFAULT 30,
+                `health_weight_damage` int unsigned NOT NULL DEFAULT 25,
+                `health_weight_movements` int unsigned NOT NULL DEFAULT 15,
                 `charter_url` varchar(255) DEFAULT NULL,
                 `default_provider` varchar(32) NOT NULL DEFAULT 'canvas',
                 `provider_config` text,
@@ -715,6 +730,14 @@ class Config extends CommonDBTM
          }
          if (!$DB->fieldExists($table, 'show_linked_tickets')) {
              $migration->addField($table, 'show_linked_tickets', 'bool', ['value' => 1, 'after' => 'show_infocom_dates']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_health_score')) {
+             $migration->addField($table, 'enable_health_score', 'bool', ['value' => 1, 'after' => 'show_linked_tickets']);
+             $migration->addField($table, 'health_weight_age', 'integer', ['value' => 30, 'after' => 'enable_health_score']);
+             $migration->addField($table, 'health_weight_incidents', 'integer', ['value' => 30, 'after' => 'health_weight_age']);
+             $migration->addField($table, 'health_weight_damage', 'integer', ['value' => 25, 'after' => 'health_weight_incidents']);
+             $migration->addField($table, 'health_weight_movements', 'integer', ['value' => 15, 'after' => 'health_weight_damage']);
              $migration->migrationOneTable($table);
          }
           // Audit code mort : jamais branchee (aucun formulaire ne la soumet,
