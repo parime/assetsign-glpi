@@ -207,7 +207,7 @@ class PassportEvent extends CommonDBTM
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/passport_tab.html.twig', [
            'events'        => array_reverse($timelineRows), // le plus recent en premier dans la frise
            'lives'         => $lives,
-           'identity'      => self::getIdentityCard($item),
+           'identity'      => self::getIdentityCard($item, $lives),
            'itemtype'      => $item->getType(),
            'items_id'      => $item->getID(),
            'can_backfill'  => \Session::haveRight(self::$rightname, UPDATE),
@@ -227,10 +227,16 @@ class PassportEvent extends CommonDBTM
      * (`<itemtype minuscule>models_id`, ex: `computermodels_id` sur
      * `glpi_computers` - PAS un generique `models_id` ; `<Itemtype>Model`,
      * ex: ComputerModel) - absents pour certains types personnalises, geres
-     * en repli (chaine vide, jamais une erreur).
-     * @return array{name: string, serial: string, model: string, manufacturer: string, state: string, user: string, entity: string, buy_date: ?string, warranty_end: ?string}
+     * en repli (chaine vide, jamais une erreur). Indicateurs temporels (cf.
+     * ROADMAP.md, V2) calcules ici aussi : age physique (depuis l'achat
+     * Infocom si connu, sinon depuis l'entree dans GLPI - jamais une valeur
+     * inventee, le libelle precise toujours la source reelle), temps
+     * reellement utilise (somme des "vies" deja calculees par
+     * getLivesForItem(), jamais une deuxieme requete), temps en stock (le
+     * reste : age moins temps utilise, jamais negatif).
+     * @return array{name: string, serial: string, model: string, manufacturer: string, state: string, user: string, entity: string, buy_date: ?string, warranty_end: ?string, age: ?string, used_duration: ?string, used_percent: ?int, stock_duration: ?string}
      */
-   private static function getIdentityCard(CommonDBTM $item): array {
+   private static function getIdentityCard(CommonDBTM $item, array $lives): array {
        $modelClass = $item->getType() . 'Model';
        $modelField = strtolower($item->getType()) . 'models_id';
        $modelName = '';
@@ -249,16 +255,43 @@ class PassportEvent extends CommonDBTM
          }
       }
 
+       $ageStart = $buyDate ?: ($item->fields['date_creation'] ?? null);
+       $ageSourceLabel = $buyDate ? __('depuis l\'achat', 'remise') : __('depuis l\'entrée dans GLPI', 'remise');
+
+       $age = null;
+       $usedDuration = null;
+       $usedPercent = null;
+       $stockDuration = null;
+      if (!empty($ageStart)) {
+          $ageDays = max(0, (int) floor((time() - strtotime($ageStart)) / DAY_TIMESTAMP));
+          $age = sprintf('%s (%s)', self::formatDurationYearsMonths($ageDays), $ageSourceLabel);
+
+           $usedDays = array_sum(array_column($lives, 'duration_days'));
+         if ($usedDays > 0) {
+             $usedDuration = self::formatDurationYearsMonths($usedDays);
+             $usedPercent = $ageDays > 0 ? (int) round(min(100, $usedDays / $ageDays * 100)) : null;
+         }
+
+           $stockDays = max(0, $ageDays - $usedDays);
+         if ($stockDays > 0) {
+             $stockDuration = self::formatDurationYearsMonths($stockDays);
+         }
+      }
+
        return [
-           'name'         => (string) ($item->fields['name'] ?? ''),
-           'serial'       => (string) ($item->fields['serial'] ?? ''),
-           'model'        => $modelName,
-           'manufacturer' => empty($item->fields['manufacturers_id']) ? '' : \Dropdown::getDropdownName('glpi_manufacturers', (int) $item->fields['manufacturers_id']),
-           'state'        => empty($item->fields['states_id']) ? '' : \Dropdown::getDropdownName('glpi_states', (int) $item->fields['states_id']),
-           'user'         => empty($item->fields['users_id']) ? '' : \User::getFriendlyNameById((int) $item->fields['users_id']),
-           'entity'       => \Dropdown::getDropdownName('glpi_entities', (int) ($item->fields['entities_id'] ?? 0)),
-           'buy_date'     => $buyDate,
-           'warranty_end' => $warrantyEnd,
+           'name'           => (string) ($item->fields['name'] ?? ''),
+           'serial'         => (string) ($item->fields['serial'] ?? ''),
+           'model'          => $modelName,
+           'manufacturer'   => empty($item->fields['manufacturers_id']) ? '' : \Dropdown::getDropdownName('glpi_manufacturers', (int) $item->fields['manufacturers_id']),
+           'state'          => empty($item->fields['states_id']) ? '' : \Dropdown::getDropdownName('glpi_states', (int) $item->fields['states_id']),
+           'user'           => empty($item->fields['users_id']) ? '' : \User::getFriendlyNameById((int) $item->fields['users_id']),
+           'entity'         => \Dropdown::getDropdownName('glpi_entities', (int) ($item->fields['entities_id'] ?? 0)),
+           'buy_date'       => $buyDate,
+           'warranty_end'   => $warrantyEnd,
+           'age'            => $age,
+           'used_duration'  => $usedDuration,
+           'used_percent'   => $usedPercent,
+           'stock_duration' => $stockDuration,
        ];
    }
 
@@ -679,7 +712,44 @@ class PassportEvent extends CommonDBTM
           ];
       }
 
+       // Duree lisible par vie (cf. ROADMAP.md, V2 "Indicateurs temporels") : une
+       // vie encore en cours (`end` null) est comptee jusqu'a maintenant, jamais
+       // figee a sa date de debut.
+      foreach ($lives as &$life) {
+          $endTimestamp = $life['end'] !== null ? strtotime($life['end']) : time();
+          $durationDays = max(0, (int) floor(($endTimestamp - strtotime($life['start'])) / DAY_TIMESTAMP));
+          $life['duration_days'] = $durationDays;
+          $life['duration'] = self::formatDurationYearsMonths($durationDays);
+      }
+       unset($life);
+
        return $lives;
+   }
+
+    /**
+     * Convertit un nombre de jours en duree lisible ("2 ans 3 mois", "5 mois",
+     * "12 jours") - Html::timestampToString() du coeur GLPI existe deja mais
+     * formate en jours/heures/minutes/secondes, illisible pour l'age d'un
+     * materiel (ex: "823 jours 4 heures 12 minutes" plutot que "2 ans 3 mois").
+     */
+   private static function formatDurationYearsMonths(int $days): string {
+      if ($days < 30) {
+          return sprintf(_n('%d jour', '%d jours', $days, 'remise'), $days);
+      }
+
+       $months = (int) round($days / 30.44);
+      if ($months < 12) {
+          return sprintf(_n('%d mois', '%d mois', $months, 'remise'), $months);
+      }
+
+       $years = intdiv($months, 12);
+       $remainingMonths = $months % 12;
+       $yearsLabel = sprintf(_n('%d an', '%d ans', $years, 'remise'), $years);
+      if ($remainingMonths === 0) {
+          return $yearsLabel;
+      }
+
+       return $yearsLabel . ' ' . sprintf(_n('%d mois', '%d mois', $remainingMonths, 'remise'), $remainingMonths);
    }
 
     /**
