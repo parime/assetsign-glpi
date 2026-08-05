@@ -72,4 +72,42 @@ class ConfigTest extends RemiseTestCase
         $config = Config::getForEntity($siteId);
         $this->assertSame('Config du site lui-meme', $config->fields['sender_name']);
     }
+    public function testHealthScoreThresholdsAndColorsArePersisted(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Health Appearance');
+        Config::upsertForEntity($entityId, [
+            'health_score_good_threshold' => 65,
+            // Une valeur superieure au seuil Bon est corrigee pour garder
+            // une echelle lisible et sans zone impossible.
+            'health_score_warning_threshold' => 80,
+            'health_score_good_color' => '#0055aa',
+            'health_score_warning_color' => '#cc7700',
+            'health_score_critical_color' => '#772244',
+        ]);
+
+        $config = Config::getForEntity($entityId);
+        $this->assertSame(65, (int) $config->fields['health_score_good_threshold']);
+        $this->assertSame(65, (int) $config->fields['health_score_warning_threshold']);
+        $this->assertSame('#0055aa', $config->fields['health_score_good_color']);
+        $this->assertSame('#cc7700', $config->fields['health_score_warning_color']);
+        $this->assertSame('#772244', $config->fields['health_score_critical_color']);
+    }
+
+    public function testHealthScoreColorFollowsConfiguredThresholds(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Health Colors');
+        Config::upsertForEntity($entityId, [
+            'health_score_good_threshold' => 75,
+            'health_score_warning_threshold' => 45,
+            'health_score_good_color' => '#1155cc',
+            'health_score_warning_color' => '#dd8800',
+            'health_score_critical_color' => '#aa1133',
+        ]);
+
+        $config = Config::getForEntity($entityId);
+        $this->assertSame('#1155cc', $config->getHealthScoreColor(75));
+        $this->assertSame('#dd8800', $config->getHealthScoreColor(74));
+        $this->assertSame('#dd8800', $config->getHealthScoreColor(45));
+        $this->assertSame('#aa1133', $config->getHealthScoreColor(44));
+    }
 }

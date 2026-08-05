@@ -35,6 +35,11 @@ class Config extends CommonDBTM
         'health_weight_incidents'              => 30,
         'health_weight_damage'                => 25,
         'health_weight_movements'             => 15,
+        'health_score_good_threshold'         => 70,
+        'health_score_warning_threshold'      => 40,
+        'health_score_good_color'             => '#2fb344',
+        'health_score_warning_color'          => '#f76707',
+        'health_score_critical_color'         => '#d63939',
         'charter_url'                         => '',
         'default_provider'                    => 'canvas',
         'provider_config'                     => '',
@@ -499,6 +504,11 @@ class Config extends CommonDBTM
            'health_weight_incidents' => max(0, (int) ($input['health_weight_incidents'] ?? 30)),
            'health_weight_damage'    => max(0, (int) ($input['health_weight_damage'] ?? 25)),
            'health_weight_movements' => max(0, (int) ($input['health_weight_movements'] ?? 15)),
+           'health_score_good_threshold' => max(0, min(100, (int) ($input['health_score_good_threshold'] ?? 70))),
+           'health_score_warning_threshold' => max(0, min(100, (int) ($input['health_score_warning_threshold'] ?? 40))),
+           'health_score_good_color' => self::sanitizeHealthColor($input['health_score_good_color'] ?? self::DEFAULTS['health_score_good_color']),
+           'health_score_warning_color' => self::sanitizeHealthColor($input['health_score_warning_color'] ?? self::DEFAULTS['health_score_warning_color']),
+           'health_score_critical_color' => self::sanitizeHealthColor($input['health_score_critical_color'] ?? self::DEFAULTS['health_score_critical_color']),
            'signature_required'   => (int) ($input['signature_required'] ?? 0),
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
@@ -518,6 +528,8 @@ class Config extends CommonDBTM
            'donation_states'      => json_encode(array_map('intval', $input['donation_states'] ?? [])),
            'vente_states'         => json_encode(array_map('intval', $input['vente_states'] ?? [])),
        ];
+
+       $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
 
        $config = new self();
        if ($config->getFromDBByCrit(['entities_id' => $entities_id])) {
@@ -567,6 +579,25 @@ class Config extends CommonDBTM
        return is_array($decoded) ? array_map('intval', $decoded) : [0, 1, 2, 3, 4];
    }
 
+   /** Couleur effective d'un score de santé, selon les seuils de l'entité. */
+   public function getHealthScoreColor(int $score): string {
+       $goodThreshold = max(0, min(100, (int) ($this->fields['health_score_good_threshold'] ?? self::DEFAULTS['health_score_good_threshold'])));
+       $warningThreshold = max(0, min($goodThreshold, (int) ($this->fields['health_score_warning_threshold'] ?? self::DEFAULTS['health_score_warning_threshold'])));
+       if ($score >= $goodThreshold) {
+           return self::sanitizeHealthColor($this->fields['health_score_good_color'] ?? self::DEFAULTS['health_score_good_color']);
+       }
+       if ($score >= $warningThreshold) {
+           return self::sanitizeHealthColor($this->fields['health_score_warning_color'] ?? self::DEFAULTS['health_score_warning_color']);
+       }
+       return self::sanitizeHealthColor($this->fields['health_score_critical_color'] ?? self::DEFAULTS['health_score_critical_color']);
+   }
+
+   /** Accepte uniquement une couleur CSS hexadécimale, jamais du CSS libre. */
+   private static function sanitizeHealthColor(mixed $color): string {
+       $color = trim((string) $color);
+       return preg_match('/^#[0-9a-fA-F]{6}$/', $color) ? strtolower($color) : self::DEFAULTS['health_score_good_color'];
+   }
+
    public static function install(Migration $migration): void {
        global $DB;
        $table = self::getTable();
@@ -593,6 +624,11 @@ class Config extends CommonDBTM
                 `health_weight_incidents` int unsigned NOT NULL DEFAULT 30,
                 `health_weight_damage` int unsigned NOT NULL DEFAULT 25,
                 `health_weight_movements` int unsigned NOT NULL DEFAULT 15,
+                `health_score_good_threshold` int unsigned NOT NULL DEFAULT 70,
+                `health_score_warning_threshold` int unsigned NOT NULL DEFAULT 40,
+                `health_score_good_color` varchar(7) NOT NULL DEFAULT '#2fb344',
+                `health_score_warning_color` varchar(7) NOT NULL DEFAULT '#f76707',
+                `health_score_critical_color` varchar(7) NOT NULL DEFAULT '#d63939',
                 `charter_url` varchar(255) DEFAULT NULL,
                 `default_provider` varchar(32) NOT NULL DEFAULT 'canvas',
                 `provider_config` text,
@@ -738,6 +774,14 @@ class Config extends CommonDBTM
              $migration->addField($table, 'health_weight_incidents', 'integer', ['value' => 30, 'after' => 'health_weight_age']);
              $migration->addField($table, 'health_weight_damage', 'integer', ['value' => 25, 'after' => 'health_weight_incidents']);
              $migration->addField($table, 'health_weight_movements', 'integer', ['value' => 15, 'after' => 'health_weight_damage']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'health_score_good_threshold')) {
+             $migration->addField($table, 'health_score_good_threshold', 'integer', ['value' => 70, 'after' => 'health_weight_movements']);
+             $migration->addField($table, 'health_score_warning_threshold', 'integer', ['value' => 40, 'after' => 'health_score_good_threshold']);
+             $migration->addField($table, 'health_score_good_color', 'string', ['value' => '#2fb344', 'after' => 'health_score_warning_threshold']);
+             $migration->addField($table, 'health_score_warning_color', 'string', ['value' => '#f76707', 'after' => 'health_score_good_color']);
+             $migration->addField($table, 'health_score_critical_color', 'string', ['value' => '#d63939', 'after' => 'health_score_warning_color']);
              $migration->migrationOneTable($table);
          }
           // Audit code mort : jamais branchee (aucun formulaire ne la soumet,
