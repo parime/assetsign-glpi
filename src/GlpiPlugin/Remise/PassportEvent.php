@@ -196,6 +196,11 @@ class PassportEvent extends CommonDBTM
        $timelineRows = array_values($rows);
       if ($config->fields['show_infocom_dates']) {
           $timelineRows = array_merge($timelineRows, self::getInfocomPseudoEvents($item, $config));
+      }
+      if ($config->fields['show_linked_tickets']) {
+          $timelineRows = array_merge($timelineRows, self::getLinkedTicketPseudoEvents($item));
+      }
+      if ($config->fields['show_infocom_dates'] || $config->fields['show_linked_tickets']) {
           usort($timelineRows, static fn (array $a, array $b): int => strcmp($a['date'], $b['date']));
       }
 
@@ -323,6 +328,54 @@ class PassportEvent extends CommonDBTM
               'comment'       => '',
           ];
        }
+
+       return $events;
+   }
+
+    /**
+     * Tickets lies au materiel, fusionnes dans la frise EN LECTURE SEULE
+     * (cf. ROADMAP.md, tableau V1) : contrairement a Remise/Maintenance, qui
+     * ecrivent dans glpi_plugin_remise_events, un Ticket n'est JAMAIS copie
+     * ni stocke ici - juste lu a l'affichage, comme les dates Infocom.
+     * Respecte les droits reels du lecteur courant sur chaque ticket
+     * (`Ticket::can(..., READ)`, jamais un simple droit generique) : deux
+     * personnes consultant le meme Passeport materiel peuvent donc voir un
+     * nombre de tickets different, exactement comme si elles consultaient
+     * directement l'onglet Ticket du materiel.
+     * @return list<array{type_label: string, date: string, source_url: string, snapshot_name: string, is_anonymized: int, comment: string}>
+     */
+   private static function getLinkedTicketPseudoEvents(CommonDBTM $item): array {
+       global $DB;
+
+      if (!\Session::haveRight('ticket', READ)) {
+          return [];
+      }
+
+       $rows = iterator_to_array($DB->request([
+           'SELECT'     => ['glpi_tickets.id', 'glpi_tickets.name', 'glpi_tickets.date', 'glpi_tickets.status'],
+           'FROM'       => 'glpi_items_tickets',
+           'INNER JOIN' => [
+               'glpi_tickets' => ['FKEY' => ['glpi_items_tickets' => 'tickets_id', 'glpi_tickets' => 'id']],
+           ],
+           'WHERE'      => ['glpi_items_tickets.itemtype' => $item->getType(), 'glpi_items_tickets.items_id' => $item->getID()],
+       ]));
+
+       $statusLabels = \Ticket::getAllStatusArray();
+       $events = [];
+      foreach ($rows as $row) {
+          $ticket = new \Ticket();
+         if (!$ticket->getFromDB((int) $row['id']) || !$ticket->can((int) $row['id'], READ)) {
+             continue; // Droit reel sur CE ticket precis, jamais suppose depuis le droit generique verifie plus haut.
+         }
+          $events[] = [
+              'type_label'    => __('Ticket', 'remise'),
+              'date'          => (string) $row['date'],
+              'source_url'    => $ticket->getLinkURL(),
+              'snapshot_name' => (string) $row['name'],
+              'is_anonymized' => 0,
+              'comment'       => $statusLabels[(int) $row['status']] ?? '',
+          ];
+      }
 
        return $events;
    }
