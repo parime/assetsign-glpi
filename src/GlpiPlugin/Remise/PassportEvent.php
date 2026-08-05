@@ -204,11 +204,16 @@ class PassportEvent extends CommonDBTM
           usort($timelineRows, static fn (array $a, array $b): int => strcmp($a['date'], $b['date']));
       }
 
+       $health = $config->fields['enable_health_score'] ? self::getHealthScore($item, $config, $lives) : null;
+       if ($health !== null) {
+           $health['color'] = $config->getHealthScoreColor($health['score']);
+       }
+
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@remise/passport_tab.html.twig', [
            'events'        => array_reverse($timelineRows), // le plus recent en premier dans la frise
            'lives'         => $lives,
            'identity'      => self::getIdentityCard($item, $lives),
-           'health'        => $config->fields['enable_health_score'] ? self::getHealthScore($item, $config, $lives) : null,
+           'health'        => $health,
            'itemtype'      => $item->getType(),
            'items_id'      => $item->getID(),
            'can_backfill'  => \Session::haveRight(self::$rightname, UPDATE),
