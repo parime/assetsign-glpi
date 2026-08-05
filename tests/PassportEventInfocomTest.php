@@ -66,13 +66,16 @@ class PassportEventInfocomTest extends RemiseTestCase
         $entityId = $this->createTestEntity(0, 'PHPUnit Infocom Disabled');
         Config::upsertForEntity($entityId, ['enable_passport' => 1, 'show_infocom_dates' => 0, 'passport_visible_types' => [0,1,2,3,4]]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Infocom Disabled');
-        $this->insertInfocom('Computer', $computer->getID(), ['buy_date' => '2019-06-01']);
+        // order_date (Commande) plutot que buy_date (Achat) : ce dernier apparait
+        // aussi dans la fiche d'identite, independamment de show_infocom_dates -
+        // ce test verifie uniquement la frise, pas la fiche d'identite.
+        $this->insertInfocom('Computer', $computer->getID(), ['order_date' => '2019-06-01']);
 
         ob_start();
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Achat', 'remise'), $html);
+        $this->assertStringNotContainsString(__('Commande', 'remise'), $html);
     }
 
     public function testInfocomPseudoEventsDoNotAffectLivesCount(): void
