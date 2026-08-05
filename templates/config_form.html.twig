@@ -40,6 +40,7 @@
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-remise-preview-type="0">{{ __('Compléments', 'remise') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-remise-preview-type="0">{{ __('Maintenance', 'remise') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-remise-preview-type="0">{{ __('Passeport matériel', 'remise') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-remise-preview-type="0">{{ __('Score de santé', 'remise') }}</button></li>
       </ul>
 
       <div class="tab-content">
@@ -318,6 +319,30 @@
           <a href="{{ config('root_doc') }}/plugins/remise/front/maintenance.php" class="btn btn-outline-secondary">{{ __('Voir les fiches de maintenance', 'remise') }}</a>
         </div>
 
+        {# ---------------------------------------------------------------- Score de santé #}
+        <div class="tab-pane fade" id="tab-health" role="tabpanel">
+          <p class="text-muted">{{ __('Le score de santé synthétise l’âge, les incidents, l’état physique et les mouvements du matériel. Les réglages sont propres à l’entité sélectionnée.', 'remise') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_health_score" value="0">
+            <input type="checkbox" name="enable_health_score" value="1" class="form-check-input" id="enable_health_score" {{ config.enable_health_score|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_health_score">{{ __('Afficher un score de santé (0-100)', 'remise') }}</label>
+          </div>
+          <h4>{{ __('Calcul du score', 'remise') }}</h4>
+          <div class="form-text mb-2">{{ __('Les poids sont relatifs : ils n’ont pas à totaliser 100. Un facteur à 0 est ignoré.', 'remise') }}</div>
+          <div class="row g-2 mb-4" style="max-width: 500px;">
+            <div class="col-6"><label class="form-label">{{ __('Poids : Âge', 'remise') }}</label><input type="number" name="health_weight_age" class="form-control" min="0" value="{{ config.health_weight_age|default(30) }}"></div>
+            <div class="col-6"><label class="form-label">{{ __('Poids : Incidents', 'remise') }}</label><input type="number" name="health_weight_incidents" class="form-control" min="0" value="{{ config.health_weight_incidents|default(30) }}"></div>
+            <div class="col-6"><label class="form-label">{{ __('Poids : État physique', 'remise') }}</label><input type="number" name="health_weight_damage" class="form-control" min="0" value="{{ config.health_weight_damage|default(25) }}"></div>
+            <div class="col-6"><label class="form-label">{{ __('Poids : Mouvements', 'remise') }}</label><input type="number" name="health_weight_movements" class="form-control" min="0" value="{{ config.health_weight_movements|default(15) }}"></div>
+          </div>
+          <h4>{{ __('Couleurs et seuils', 'remise') }}</h4>
+          <p class="text-muted">{{ __('Le score utilise la couleur « Bon » à partir de son seuil, « Vigilance » entre les deux seuils et « Critique » en dessous. Les seuils sont inclusifs.', 'remise') }}</p>
+          <div class="row g-3" style="max-width: 720px;">
+            <div class="col-md-4"><label class="form-label">{{ __('Bon', 'remise') }}</label><div class="input-group"><input type="color" name="health_score_good_color" class="form-control form-control-color" value="{{ config.health_score_good_color|default('#2fb344') }}"><input type="number" name="health_score_good_threshold" class="form-control" min="0" max="100" value="{{ config.health_score_good_threshold|default(70) }}"><span class="input-group-text">%</span></div></div>
+            <div class="col-md-4"><label class="form-label">{{ __('Vigilance', 'remise') }}</label><div class="input-group"><input type="color" name="health_score_warning_color" class="form-control form-control-color" value="{{ config.health_score_warning_color|default('#f76707') }}"><input type="number" name="health_score_warning_threshold" class="form-control" min="0" max="100" value="{{ config.health_score_warning_threshold|default(40) }}"><span class="input-group-text">%</span></div></div>
+            <div class="col-md-4"><label class="form-label">{{ __('Critique', 'remise') }}</label><input type="color" name="health_score_critical_color" class="form-control form-control-color" value="{{ config.health_score_critical_color|default('#d63939') }}"><div class="form-text">{{ __('En dessous du seuil Vigilance.', 'remise') }}</div></div>
+          </div>
+        </div>
         {# ---------------------------------------------------------------- Passeport matériel #}
         <div class="tab-pane fade" id="tab-passport" role="tabpanel">
           <p class="text-muted">{{ __('Le Passeport matériel agrège en lecture seule les événements des onglets Remise/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel onglet du matériel concerné.', 'remise') }}</p>
@@ -360,35 +385,6 @@
             <div class="form-text">{{ __('Lecture seule : chaque technicien ne voit que les tickets auxquels il a réellement accès, exactement comme sur l\'onglet Tickets du matériel.', 'remise') }}</div>
           </div>
 
-          <hr>
-
-          <div class="mb-3 form-check">
-            <input type="hidden" name="enable_health_score" value="0">
-            <input type="checkbox" name="enable_health_score" value="1" class="form-check-input" id="enable_health_score" {{ config.enable_health_score|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="enable_health_score">{{ __('Afficher un score de santé (0-100)', 'remise') }}</label>
-            <div class="form-text">
-              {{ __('Calculé à partir de 4 facteurs : âge, incidents (tickets liés), état physique (marqueurs de dégât) et mouvements (changements de détenteur). Chaque poids ci-dessous compte proportionnellement au total (inutile de faire une somme exacte de 100) : un facteur à 0 est simplement ignoré.', 'remise') }}
-            </div>
-          </div>
-
-          <div class="row g-2 mb-3" style="max-width: 500px;">
-            <div class="col-6">
-              <label class="form-label">{{ __('Poids : Âge', 'remise') }}</label>
-              <input type="number" name="health_weight_age" class="form-control" min="0" value="{{ config.health_weight_age|default(30) }}">
-            </div>
-            <div class="col-6">
-              <label class="form-label">{{ __('Poids : Incidents', 'remise') }}</label>
-              <input type="number" name="health_weight_incidents" class="form-control" min="0" value="{{ config.health_weight_incidents|default(30) }}">
-            </div>
-            <div class="col-6">
-              <label class="form-label">{{ __('Poids : État physique', 'remise') }}</label>
-              <input type="number" name="health_weight_damage" class="form-control" min="0" value="{{ config.health_weight_damage|default(25) }}">
-            </div>
-            <div class="col-6">
-              <label class="form-label">{{ __('Poids : Mouvements', 'remise') }}</label>
-              <input type="number" name="health_weight_movements" class="form-control" min="0" value="{{ config.health_weight_movements|default(15) }}">
-            </div>
-          </div>
         </div>
 
       </div>
