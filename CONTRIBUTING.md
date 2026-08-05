@@ -52,3 +52,14 @@ Ne passez pas par une issue publique — voir [SECURITY.md](SECURITY.md) pour la
 
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** — structure du code, sous-systèmes, sécurité du dépôt, suite de tests.
 - **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** — pièges déjà rencontrés et décisions non évidentes ; à consulter avant de modifier un mécanisme qui semble étrange au premier regard, la raison y est probablement déjà documentée.
+
+## Références officielles GLPI (base de tout développement sur ce plugin)
+
+Ce plugin suit les conventions officielles de développement de plugins GLPI 11 — utile à connaître (ou à faire lire à un assistant IA qui reprend ce dépôt) avant de modifier `setup.php`/`hook.php` ou la structure du code :
+
+- **[Tutoriel officiel de création de plugin](https://glpi-developer-documentation.readthedocs.io/en/master/plugins/tutorial.html)** — documentation développeur GLPI, explique `plugin_init_<key>()`, les hooks, l'autoloading PSR-4 natif.
+- **[Documentation plugins GLPI, page "Create a new plugin"](https://glpi-plugins.readthedocs.io/fr/latest/empty/index.html#create-a-new-plugin)** — conventions de structure côté écosystème `pluginsGLPI` (marketplace).
+- **[pluginsGLPI/empty](https://github.com/pluginsGLPI/empty)** — squelette officiel minimal, référence pour `setup.php`/`hook.php`/`plugin.xml`.
+- **[pluginsGLPI/example](https://github.com/pluginsGLPI/example)** — squelette officiel plus complet, référence pour la structure `src/` (flat, autoloader natif GLPI plutôt qu'un `autoload.psr-4` Composer explicite — ce plugin dévie volontairement de cette convention avec `src/GlpiPlugin/Remise/`, cf. TROUBLESHOOTING.md/ARCHITECTURE.md pour la justification).
+
+**Point critique déjà vérifié en conditions réelles** (cf. `git log` sur `docs/remise.xml`) : la clé `<key>` du fichier de soumission marketplace **doit être identique** à la clé technique réelle du plugin (`remise`, celle utilisée par `plugin_init_remise()` et le nom du dossier d'installation) — `Plugin::load()` dans le cœur GLPI l'utilise littéralement comme nom de répertoire ET comme suffixe de fonction d'initialisation. Une valeur différente ferait échouer silencieusement toute installation via le Marketplace GLPI.

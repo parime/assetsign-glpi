@@ -508,6 +508,17 @@ class Remise extends CommonDBTM
           $manualTypes[self::TYPE_VENTE] = Workflow\WorkflowTypeRegistry::get(self::TYPE_VENTE)->getLabel();
       }
 
+       // Pre-selection du type (Don/Vente) et ouverture immediate du formulaire,
+       // quand on arrive ici via le lien "creez maintenant la fiche" propose par
+       // handleStateBasedTrigger() (cf. remise_prefill_type dans ce lien, et le
+       // script de remise_tab.html.twig qui declenche le clic correspondant) —
+       // jamais fait confiance aveuglement a une valeur venue de l'URL : doit
+       // correspondre a un type reellement propose ci-dessus.
+       $prefillType = isset($_GET['remise_prefill_type']) ? (int) $_GET['remise_prefill_type'] : null;
+      if ($prefillType !== null && !array_key_exists($prefillType, $manualTypes)) {
+          $prefillType = null;
+      }
+
        $twig = \Glpi\Application\View\TemplateRenderer::getInstance();
        $twig->display('@remise/remise_tab.html.twig', [
            'item'          => $item,
@@ -518,6 +529,7 @@ class Remise extends CommonDBTM
            'can_create_manual' => $manualTypes !== [] && Session::haveRight(self::$rightname, UPDATE),
            'show_item_column' => false,
            'csrf_token'    => \Session::getNewCSRFToken(),
+           'prefill_type'  => $prefillType,
        ]);
    }
 
@@ -754,15 +766,39 @@ class Remise extends CommonDBTM
        // l'utilisateur GLPI courant : sans lui, il ne peut rien creer tout seul.
        // Plutot que d'ignorer silencieusement ce changement d'Etat comme avant
        // (le technicien n'avait alors aucun moyen de savoir qu'une fiche etait
-       // attendue), un message oriente vers la creation manuelle — seul canal
-       // qui sait gerer un beneficiaire externe ou un choix explicite d'utilisateur.
+       // attendue), le message pointe directement vers le formulaire de creation
+       // manuelle — seul canal qui sait gerer un beneficiaire externe ou un choix
+       // explicite d'utilisateur. Impossible de rediriger reellement (Html::redirect())
+       // depuis ce hook : il s'execute EN PLEIN MILIEU de la sauvegarde native de
+       // l'item (CommonDBTM::update() -> Plugin::doHook()), avant que le controleur
+       // GLPI (front/computer.form.php...) n'ait fini son propre travail post-
+       // sauvegarde (autres hooks, historique, notifications, redirection finale) —
+       // interrompre cette chaine ici casserait des choses hors du controle du
+       // plugin. Le lien utilise le parametre standard `forcetab` du coeur GLPI
+       // pour ouvrir directement l'onglet Remises au clic, plus `tab_params`
+       // (autre parametre standard du coeur, cf. CommonGLPI::showTabsContent()/
+       // displayFullPageForItem() — meme convention que Reservation.php pour
+       // preremplir un champ via un lien direct) pour transmettre
+       // remise_prefill_type jusqu'a l'appel ajax qui charge reellement le
+       // contenu de l'onglet (ajax/common.tabs.php, requete SEPAREE de la page
+       // initiale : un simple `?remise_prefill_type=X` sur CE lien ne
+       // survivrait pas au chargement asynchrone de l'onglet, verifie en
+       // conditions reelles, cf. TROUBLESHOOTING.md). Lu par showForItem()
+       // pour pre-selectionner le bon type et reveler tout de suite les champs
+       // a completer (cf. remise_tab.html.twig) plutot que de laisser le
+       // technicien chercher l'onglet puis le bouton lui-meme.
       if ($currentUser === 0
            && (in_array($newState, $config->getDonationStates(), true) || in_array($newState, $config->getVenteStates(), true))
        ) {
           $isDon = in_array($newState, $config->getDonationStates(), true);
+          $targetType = $isDon ? self::TYPE_DON : self::TYPE_VENTE;
+           $link = $item::getFormURLWithID($item->getID())
+               . '&forcetab=' . urlencode(self::class . '$1')
+               . '&tab_params[remise_prefill_type]=' . $targetType;
           \Session::addMessageAfterRedirect(
               sprintf(
-                  __('Ce matériel n\'a pas d\'utilisateur assigné : créez manuellement une fiche de %s depuis l\'onglet "Remises" ci-dessous (bénéficiaire interne ou externe).', 'remise'),
+                  __('Ce matériel n\'a pas d\'utilisateur assigné : <a href="%s">créez maintenant la fiche de %s</a> (bénéficiaire interne ou externe).', 'remise'),
+                  htmlspecialchars($link, ENT_QUOTES),
                   $isDon ? __('don', 'remise') : __('vente', 'remise')
               ),
               false,
@@ -881,6 +917,9 @@ class Remise extends CommonDBTM
      *                      (facultatif, email ou telephone en texte libre) —
      *                      un don/une vente peut concerner quelqu'un hors de
      *                      l'entreprise, sans compte GLPI.
+     *
+     * Effet de bord : met aussi a jour l'Etat du materiel lui-meme si l'entite
+     * a configure un Etat declencheur pour ce type (cf. syncItemStateAfterManualCreation()).
      * @throws \InvalidArgumentException si $itemtype n'est pas un itemtype GLPI valide,
      *                                    ou si le beneficiaire (interne ou externe) est manquant
      * @throws \RuntimeException si le materiel est introuvable ou la creation echoue
@@ -954,7 +993,60 @@ class Remise extends CommonDBTM
 
        $remise->launchWorkflow($config);
 
+       self::syncItemStateAfterManualCreation($item, $type, $config);
+
        return $remise;
+   }
+
+    /**
+     * Sens "creation manuelle -> Etat du materiel" de la coherence bidirectionnelle
+     * (cf. ROADMAP.md) : sans ca, l'inventaire GLPI pouvait afficher une autre
+     * realite que la fiche qu'on vient de creer ("toujours en service" cote
+     * materiel, "vendu" cote Remise). Met a jour states_id directement en SQL
+     * (meme motif que cancelPendingRemisesFor()) plutot que via $item->update() :
+     * un update() classique redeclencherait le hook item_update ->
+     * handleItemAssignment() -> handleStateBasedTrigger() pour CE MEME
+     * changement d'Etat, qui recreerait une deuxieme fiche (si un utilisateur
+     * est assigne) ou reafficherait le message "creez maintenant" qu'on vient
+     * justement de traiter (si aucun ne l'est) — cf. TROUBLESHOOTING.md.
+     */
+   private static function syncItemStateAfterManualCreation(CommonDBTM $item, int $type, Config $config): void {
+       global $DB;
+
+      if (!array_key_exists('states_id', $item->fields)) {
+          return; // Itemtype sans notion d'Etat GLPI (ne devrait pas arriver pour les types geres, defensif).
+      }
+
+       $targetStates = $type === self::TYPE_DON ? $config->getDonationStates() : $config->getVenteStates();
+      if ($targetStates === []) {
+          return; // Aucun Etat declencheur configure pour ce type : rien a synchroniser.
+      }
+
+       // Plusieurs Etats peuvent etre configures comme declencheurs pour la meme
+       // entite (ex: "Donné" et "Recyclé" tous deux declencheurs de Don) : le
+       // premier de la liste sert de cible canonique, par convention documentee
+       // (meme ordre que celui choisi par l'administrateur dans le reglage) —
+       // aucun moyen de deviner lequel des plusieurs Etats correspond a CETTE
+       // fiche precise.
+       $targetState = $targetStates[0];
+       $currentState = (int) $item->fields['states_id'];
+      if ($currentState === $targetState) {
+          return;
+      }
+
+       $DB->update($item::getTable(), ['states_id' => $targetState], ['id' => $item->getID()]);
+       $item->fields['states_id'] = $targetState;
+
+       \Log::history(
+           $item->getID(),
+           $item::class,
+           ['0', '', sprintf(
+               __('État mis à jour automatiquement (%s) suite à la création d\'une fiche par le plugin Remise & signature.', 'remise'),
+               \Dropdown::getDropdownName('glpi_states', $targetState)
+           )],
+           0,
+           \Log::HISTORY_LOG_SIMPLE_MESSAGE
+       );
    }
 
     /**

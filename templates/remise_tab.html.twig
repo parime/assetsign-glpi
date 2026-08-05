@@ -132,6 +132,17 @@
 
           toggleVenteFields();
           toggleBeneficiaryFields();
+
+          {% if prefill_type is not null %}
+            // Arrivee via le lien "creez maintenant la fiche" (cf.
+            // Remise::handleStateBasedTrigger()) : simule le clic sur le bon
+            // bouton de type plutot que de laisser le technicien le rechercher.
+            var prefillBtn = form.querySelector('.remise-manual-type-btn[data-type="{{ prefill_type }}"]');
+            if (prefillBtn) {
+              prefillBtn.click();
+              form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          {% endif %}
         })();
       </script>
     {% endif %}
