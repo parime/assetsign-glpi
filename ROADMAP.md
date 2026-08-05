@@ -2,6 +2,17 @@
 
 Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. Pour ce qui manque déjà aujourd'hui de façon plus factuelle, voir [USER_GUIDE.md](USER_GUIDE.md#ce-qui-nest-pas-encore-implémenté).
 
+## Reprise de session (2026-08-05) — à lire avant de continuer
+
+Session interrompue par l'utilisateur (fin de journée). État exact pour reprendre sans perte sur un autre poste :
+
+- **Fait, fusionné, publié** : Indicateurs temporels (v1.19.0) et Score de santé (v1.20.0 — vérifier que la PR est bien fusionnée et le tag `v1.20.0` publié en arrivant, la fusion `--admin` a été lancée juste avant la coupure).
+- **Demandé par l'utilisateur, PAS encore fait** :
+  1. **Captures d'écran** des nouveautés récentes (fiche d'identité, indicateurs temporels, score de santé, réglages de poids) à ajouter dans `docs/screenshots/` et référencer dans `USER_GUIDE.md`, comme les captures déjà existantes (`docs/screenshots/onglet-ordinateur-maintenance.png` etc.). Aucun outil de screenshot dédié dans cet environnement — solution retenue : lancer un conteneur `mcr.microsoft.com/playwright` via Docker directement (déjà utilisé plus tôt dans cette session pour des tests, cf. historique), avec un petit script Node/Playwright qui se connecte à `http://localhost:8090`, navigue vers la page cible et capture l'écran sur un volume partagé.
+  2. **Recherche RSE / empreinte carbone** (V3 de la roadmap, "Passeport environnemental") : l'utilisateur a demandé d'explorer ce qui est faisable, si le temps le permet. Non commencée.
+- **Non-bug identifié et documenté** (cf. TROUBLESHOOTING.md) : un matériel passé à l'État "Vendu" sans détenteur GLPI connu au moment du changement n'apparaît pas dans la frise, ni en direct ni via le rétro-remplissage — comportement volontaire (nécessite un bénéficiaire explicite via la création manuelle). Piste d'amélioration non implémentée : un pseudo-événement neutre "Sortie de parc sans bénéficiaire" pourrait signaler le changement d'État sans prétendre connaître le bénéficiaire.
+- **Autorisations en cours pour cette session** (à reconfirmer avec l'utilisateur si une nouvelle session ne les a pas héritées) : fusion des PR avec `gh pr merge --admin` sans attendre de revue manuelle ; travail en autonomie sur les indicateurs V2 sans validation intermédiaire systématique.
+
 ## Envisagé
 
 - **Fournisseur de signature externe** pour un niveau de signature électronique renforcé (eIDAS "avancée"/"qualifiée"), en plus de la signature à l'écran actuelle (niveau "simple"). Le point d'extension existe déjà dans le code (`Provider\SignatureProviderInterface`) — seul `CanvasProvider` (signature à l'écran) est implémenté à ce jour ; brancher un prestataire externe n'exigerait pas de revoir l'architecture existante. Explicitement écarté du cycle précédent (voir "Réalisé récemment").
@@ -25,6 +36,17 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
 - **Fiche d'identité augmentée — livrée** : carte de synthèse en tête de l'onglet Passeport matériel (modèle, fabricant, n° série, État, utilisateur/entité actuels, achat, fin de garantie) — pure agrégation de données déjà natives GLPI, aucune nouvelle table, aucun champ obligatoire (chaque information affichée uniquement si renseignée). Toujours visible même si `Config::show_infocom_dates` est désactivé (utile indépendamment de la frise Infocom).
 - **Tickets liés au matériel fusionnés dans la frise — livré** : lecture seule, jamais copiés/stockés dans `glpi_plugin_remise_events` (contrairement à Remise/Maintenance) — chaque ticket filtré par les droits RÉELS du lecteur courant (`Ticket::can(..., READ)`, jamais un simple droit générique), donc potentiellement différent d'une personne à l'autre consultant le même passeport, exactement comme l'onglet Tickets natif du matériel. Activable/désactivable par entité (`Config::show_linked_tickets`).
 - **Indicateurs temporels — livrés (première brique du V2)** : âge physique (depuis l'achat Infocom si connu, sinon depuis l'entrée dans GLPI — le libellé précise toujours la source réelle), temps réellement utilisé (somme des "vies" déjà calculées, en pourcentage de l'âge), temps en stock (le reste), durée lisible affichée directement sur chaque "vie" ("X ans Y mois"). Aucune nouvelle table, calculé à l'affichage à partir de données déjà agrégées (`getLivesForItem()`), jamais une valeur inventée quand aucune date n'est disponible.
+- **Score de santé matériel — livré (deuxième brique du V2)** : score 0-100 (100 = état idéal), formule standard du secteur ITAM `100 - Σ(poids × dégradation)` (méthodologie confirmée par une recherche web, cf. sources en fin de section ci-dessous). Quatre facteurs retenus sur les six suggérés à l'origine — **contrôles (checklists) et batterie volontairement omis**, aucune donnée fiable disponible dans ce plugin/GLPI pour les alimenter (décision explicite de l'utilisateur) :
+  - **Âge** : dégradation linéaire jusqu'à 5 ans (seuil fixe `PLUGIN_REMISE_HEALTH_AGE_FULL_DEGRADATION_DAYS`).
+  - **Incidents** : nombre brut de tickets liés au matériel (tous statuts, jamais filtré par droit — un simple compteur agrégé dans un score n'expose aucun contenu de ticket, contrairement à l'affichage des tickets eux-mêmes dans la frise).
+  - **État physique** : marqueurs de dégât de l'état des lieux visuel déjà existant (`glpi_plugin_remise_damagemarkers`), un mineur = 1 point, un majeur = 2 points.
+  - **Mouvements** : nombre de "vies" (changements de détenteur) — une rotation fréquente use davantage un matériel qu'une affectation stable.
+  - **Poids réglables par l'administrateur** (`Config::health_weight_age`/`health_weight_incidents`/`health_weight_damage`/`health_weight_movements`, Configuration > Passeport matériel) — décision explicite de l'utilisateur (pas une formule figée). Poids **relatifs** : comptent proportionnellement au total des poids actifs, pas besoin de sommer exactement à 100 ; un poids à 0 désactive simplement ce facteur. Valeurs de départ : Âge 30, Incidents 30, État physique 25, Mouvements 15 — raisonnables mais pas une science exacte, à ajuster selon l'usage réel.
+  - Activable/désactivable dans son ensemble (`Config::enable_health_score`) ; aucun score affiché si tous les poids sont à 0.
+  - **Sources consultées** : la formule "100 moins la somme des dégradations pondérées et normalisées" est la méthodologie standard retrouvée dans plusieurs sources ITAM (voir liens ci-dessous) — confirme que l'approche retenue ici (facteurs → dégradation 0-100 normalisée → pondération → score inversé) suit une pratique établie, pas une invention ad hoc.
+    - [About Asset Health (IFS Cloud docs)](https://docs.ifs.com/ifsclouddocs/25r1/EquipmentAdministration/AboutAssetHealth.htm)
+    - [What Is Asset Health in IT Asset Management? (AssetLoom)](https://medium.com/@assetloom/what-is-asset-health-in-it-asset-management-1659eb9939b2)
+    - [Asset Record Health (eTelligent Solutions)](https://www.etelligentsolutions.com/esi/mie/help/html/asset_record_health.htm)
 
 ## Vision produit à long terme : Passeport numérique du cycle de vie matériel
 
@@ -78,7 +100,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 **V2 — indicateurs et aide à la décision**
 | Fonctionnalité | Objectif métier | Valeur utilisateur | Difficulté | Dépendances | Priorité |
 |---|---|---|---|---|---|
-| Score de santé matériel (pondération ajustable : âge, incidents, contrôles, état physique, batterie, mouvements) | Prioriser quel matériel surveiller/remplacer | Décision plus rapide qu'un examen manuel | Moyenne/Haute (moteur de scoring + UI de pondération) | Timeline d'événements, checklists (V1) | Haute |
+| ~~Score de santé matériel~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Indicateurs temporels~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle) | Estimation simple, pas un module comptable complet | Aide à trancher réemploi vs sortie | Faible/Moyenne | Fiche d'identité (V1) | Moyenne |
 | Fin de vie structurée (vente : prix/acheteur/documents ; don : organisme/justificatif ; destruction : prestataire/certificat) | Tracer proprement la sortie définitive | Conformité, preuve en cas de contrôle | Faible (déjà partiellement présent via Remise::TYPE_VENTE/TYPE_DON) | Timeline d'événements | Moyenne |

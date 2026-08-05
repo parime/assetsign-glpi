@@ -31,6 +31,20 @@
   </div>
 </div>
 
+{% if health %}
+  <div class="mb-4">
+    <strong>{{ __('Score de santé', 'remise') }} :</strong>
+    <span class="badge {{ health.score >= 70 ? 'bg-green' : (health.score >= 40 ? 'bg-orange' : 'bg-red') }}">{{ health.score }}/100</span>
+    <ul class="passport-health-breakdown text-muted small mb-0 mt-1">
+      {% for factor in health.breakdown %}
+        {% if factor.weight > 0 %}
+          <li>{{ factor.label }} : {{ factor.degradation }}% {{ __('de dégradation', 'remise') }} ({{ __('poids', 'remise') }} {{ factor.weight }})</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
 {% if can_backfill %}
   <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/passport_backfill.php" class="mb-2">
     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">

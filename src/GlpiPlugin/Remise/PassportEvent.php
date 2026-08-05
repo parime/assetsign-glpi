@@ -208,6 +208,7 @@ class PassportEvent extends CommonDBTM
            'events'        => array_reverse($timelineRows), // le plus recent en premier dans la frise
            'lives'         => $lives,
            'identity'      => self::getIdentityCard($item, $lives),
+           'health'        => $config->fields['enable_health_score'] ? self::getHealthScore($item, $config, $lives) : null,
            'itemtype'      => $item->getType(),
            'items_id'      => $item->getID(),
            'can_backfill'  => \Session::haveRight(self::$rightname, UPDATE),
@@ -293,6 +294,103 @@ class PassportEvent extends CommonDBTM
            'used_percent'   => $usedPercent,
            'stock_duration' => $stockDuration,
        ];
+   }
+
+    /**
+     * Score de sante (0-100, 100 = etat ideal), premiere brique du moteur
+     * d'indicateurs V2 (cf. ROADMAP.md — methodologie et sources documentees
+     * dans ROADMAP.md, section dediee). Formule standard du secteur ITAM :
+     * `100 - Σ(poids_i × degradation_i)`, chaque degradation_i normalisee sur
+     * 0-100 puis ponderee par un poids RELATIF (pas force a sommer a 100 :
+     * chaque poids compte proportionnellement au total des poids actifs,
+     * plus simple a regler pour un administrateur qu'un partage exact de
+     * 100%). Quatre facteurs retenus, sur les six suggeres a l'origine par la
+     * roadmap - "controles" (checklists) et "batterie" volontairement omis,
+     * aucune donnee fiable disponible dans ce plugin/GLPI pour les alimenter :
+     * - Age : degradation lineaire jusqu'a 5 ans (seuil fixe, pas encore
+     *   ajustable - seul le POIDS du facteur l'est pour l'instant).
+     * - Incidents : nombre BRUT de tickets lies (tous statuts confondus,
+     *   jamais filtre par droit ici - un simple compteur agrege dans un
+     *   score n'expose aucun contenu de ticket, contrairement a
+     *   getLinkedTicketPseudoEvents() qui, elle, doit rester filtree).
+     * - Etat physique : marqueurs de degat de l'etat des lieux visuel
+     *   (glpi_plugin_remise_damagemarkers), un mineur = 1 point, un majeur =
+     *   2 points.
+     * - Mouvements : nombre de "vies" (changements de detenteur) - une
+     *   rotation frequente use davantage un materiel qu'une affectation stable.
+     * @return array{score: int, breakdown: array<string, array{label: string, degradation: int, weight: int}>}|null null si aucun poids actif (tous a 0) ou aucun facteur calculable.
+     */
+   private static function getHealthScore(CommonDBTM $item, Config $config, array $lives): ?array {
+       global $DB;
+
+       $weights = [
+           'age'        => max(0, (int) $config->fields['health_weight_age']),
+           'incidents'  => max(0, (int) $config->fields['health_weight_incidents']),
+           'damage'     => max(0, (int) $config->fields['health_weight_damage']),
+           'movements'  => max(0, (int) $config->fields['health_weight_movements']),
+       ];
+       $totalWeight = array_sum($weights);
+       if ($totalWeight <= 0) {
+          return null; // Administrateur ayant mis tous les poids a 0 : le score n'a plus de sens.
+       }
+
+       $degradations = [];
+
+       // Age : degradation lineaire jusqu'a 5 ans (constante PLUGIN_REMISE_HEALTH_AGE_FULL_DEGRADATION_DAYS).
+       $ageStart = null;
+       $infocom = new \Infocom();
+       if (\Infocom::canApplyOn($item->getType()) && $infocom->getFromDBforDevice($item->getType(), $item->getID()) && !empty($infocom->fields['buy_date'])) {
+          $ageStart = $infocom->fields['buy_date'];
+       } else if (!empty($item->fields['date_creation'])) {
+          $ageStart = $item->fields['date_creation'];
+       }
+       if ($ageStart !== null) {
+          $ageDays = max(0, (int) floor((time() - strtotime($ageStart)) / DAY_TIMESTAMP));
+          $degradations['age'] = ['label' => __('Âge', 'remise'), 'degradation' => min(100, (int) round($ageDays / PLUGIN_REMISE_HEALTH_AGE_FULL_DEGRADATION_DAYS * 100))];
+       }
+
+       // Incidents : compteur brut (tous statuts), volontairement PAS filtre par
+       // droit (cf. docblock) - jamais de contenu de ticket expose ici.
+       $ticketCount = (int) $DB->request([
+           'COUNT'  => 'c',
+           'FROM'   => 'glpi_items_tickets',
+           'WHERE'  => ['itemtype' => $item->getType(), 'items_id' => $item->getID()],
+       ])->current()['c'];
+       $degradations['incidents'] = ['label' => __('Incidents', 'remise'), 'degradation' => min(100, (int) round($ticketCount / PLUGIN_REMISE_HEALTH_INCIDENTS_FULL_DEGRADATION_COUNT * 100))];
+
+       // Etat physique : marqueurs de degat, relies a l'item via Remise OU Maintenance.
+       $damagePoints = (int) $DB->request([
+           'SELECT'     => [new \QueryExpression('COALESCE(SUM(`severity` + 1), 0) AS points')],
+           'FROM'       => 'glpi_plugin_remise_damagemarkers',
+           'LEFT JOIN'  => [
+               'glpi_plugin_remise_remises'      => ['FKEY' => ['glpi_plugin_remise_damagemarkers' => 'plugin_remise_remises_id', 'glpi_plugin_remise_remises' => 'id']],
+               'glpi_plugin_remise_maintenances'  => ['FKEY' => ['glpi_plugin_remise_damagemarkers' => 'plugin_remise_maintenances_id', 'glpi_plugin_remise_maintenances' => 'id']],
+           ],
+           'WHERE'      => [
+               'OR' => [
+                   ['glpi_plugin_remise_remises.itemtype' => $item->getType(), 'glpi_plugin_remise_remises.items_id' => $item->getID()],
+                   ['glpi_plugin_remise_maintenances.itemtype' => $item->getType(), 'glpi_plugin_remise_maintenances.items_id' => $item->getID()],
+               ],
+           ],
+       ])->current()['points'];
+       $degradations['damage'] = ['label' => __('État physique', 'remise'), 'degradation' => min(100, (int) round($damagePoints / PLUGIN_REMISE_HEALTH_DAMAGE_FULL_DEGRADATION_POINTS * 100))];
+
+       // Mouvements : nombre de "vies" deja calculees, aucune requete supplementaire.
+       $movementCount = count($lives);
+       $degradations['movements'] = ['label' => __('Mouvements', 'remise'), 'degradation' => min(100, (int) round($movementCount / PLUGIN_REMISE_HEALTH_MOVEMENTS_FULL_DEGRADATION_COUNT * 100))];
+
+       $weightedDegradation = 0.0;
+       $breakdown = [];
+      foreach ($degradations as $key => $data) {
+          $breakdown[$key] = ['label' => $data['label'], 'degradation' => $data['degradation'], 'weight' => $weights[$key]];
+         if ($weights[$key] > 0) {
+             $weightedDegradation += $data['degradation'] * ($weights[$key] / $totalWeight);
+         }
+      }
+
+       $score = max(0, min(100, (int) round(100 - $weightedDegradation)));
+
+       return ['score' => $score, 'breakdown' => $breakdown];
    }
 
     /**
