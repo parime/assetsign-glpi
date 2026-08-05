@@ -106,6 +106,61 @@ class RemiseTest extends RemiseTestCase
         $this->assertSame('2026-01-15', $details->fields['sale_date']);
     }
 
+    /**
+     * Coherence bidirectionnelle Etat <-> Don/Vente, sens "creation manuelle ->
+     * Etat du materiel" (cf. ROADMAP.md et Remise::syncItemStateAfterManualCreation()) :
+     * sans ca, l'inventaire GLPI pouvait afficher une autre realite que la
+     * fiche qu'on vient de creer.
+     */
+    public function testCreateManualSyncsItemStateToConfiguredDonationState(): void
+    {
+        global $DB;
+
+        $entityId = $this->createTestEntity(0, 'PHPUnit CreateManual State Sync');
+        $donationStateId = $this->createTestState('PHPUnit Etat Donne Sync');
+        Config::upsertForEntity($entityId, ['donation_states' => [$donationStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Sync Don');
+        $this->assertNotSame($donationStateId, (int) $computer->fields['states_id']);
+
+        Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+
+        $computer->getFromDB($computer->getID());
+        $this->assertSame(
+            $donationStateId,
+            (int) $computer->fields['states_id'],
+            "Creer manuellement une fiche de don doit mettre a jour l'Etat du materiel vers l'Etat declencheur configure."
+        );
+
+        // Garde-fou contre une regression du type "l'update de l'Etat redeclenche
+        // le hook item_update -> handleStateBasedTrigger() -> createRemise() une
+        // deuxieme fois pour ce meme materiel" (cf. commentaire de
+        // syncItemStateAfterManualCreation() : mise a jour en SQL direct plutot
+        // que via $item->update() pour eviter exactement ca).
+        $count = countElementsInTable(Remise::getTable(), ['itemtype' => 'Computer', 'items_id' => $computer->getID()]);
+        $this->assertSame(1, $count, 'Une seule fiche doit exister : la synchronisation de l\'Etat ne doit jamais en recreer une seconde.');
+    }
+
+    public function testCreateManualDoesNotTouchStateWhenNoneConfigured(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit CreateManual State NoConfig');
+        // Explicite plutot que de compter sur l'absence de config propre a
+        // l'entite (qui heriterait sinon du reglage racine — non garanti vide
+        // sur une instance deja configuree manuellement, cf. TROUBLESHOOTING.md).
+        Config::upsertForEntity($entityId, ['donation_states' => []]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State NoConfig');
+        $originalState = (int) $computer->fields['states_id'];
+
+        Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
+
+        $computer->getFromDB($computer->getID());
+        $this->assertSame(
+            $originalState,
+            (int) $computer->fields['states_id'],
+            "Sans Etat declencheur configure pour ce type, l'Etat du materiel ne doit pas etre modifie."
+        );
+    }
+
     public function testIsStillEditableReflectsStatus(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit IsStillEditable');
@@ -273,6 +328,19 @@ class RemiseTest extends RemiseTestCase
             __('don', 'remise'),
             $messages,
             "Un message INFO doit inviter a creer la fiche de don manuellement (cf. TROUBLESHOOTING.md)."
+        );
+        // Coherence bidirectionnelle Etat <-> Don/Vente (cf. ROADMAP.md) : le
+        // message doit pointer DIRECTEMENT vers le formulaire de creation
+        // (forcetab, convention standard GLPI pour deep-linker un onglet), avec
+        // le bon type pre-rempli (remise_prefill_type), plutot que de se
+        // contenter d'un texte informatif que le technicien doit interpreter
+        // lui-meme (cf. Remise::syncItemStateAfterManualCreation() pour le sens
+        // inverse, teste dans RemiseCreateManualSyncsStateTest ci-dessous).
+        $this->assertStringContainsString('forcetab=', $messages, 'Le lien doit deep-linker directement sur l\'onglet Remises.');
+        $this->assertStringContainsString(
+            'tab_params[remise_prefill_type]=' . Remise::TYPE_DON,
+            $messages,
+            'Le lien doit transmettre le type Don via tab_params (seul mecanisme du coeur GLPI qui survit au chargement ajax de l\'onglet, cf. showForItem()/remise_tab.html.twig).'
         );
     }
 
