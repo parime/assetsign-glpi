@@ -19,6 +19,15 @@
     {% if identity.warranty_end %}
       <div class="col-auto"><strong>{{ __('Fin de garantie', 'remise') }} :</strong> {{ identity.warranty_end|formatted_date }}</div>
     {% endif %}
+    {% if identity.age %}
+      <div class="col-auto"><strong>{{ __('Âge', 'remise') }} :</strong> {{ identity.age }}</div>
+    {% endif %}
+    {% if identity.used_duration %}
+      <div class="col-auto"><strong>{{ __('Temps utilisé', 'remise') }} :</strong> {{ identity.used_duration }}{{ identity.used_percent is not null ? ' (' ~ identity.used_percent ~ '%)' : '' }}</div>
+    {% endif %}
+    {% if identity.stock_duration %}
+      <div class="col-auto"><strong>{{ __('Temps en stock', 'remise') }} :</strong> {{ identity.stock_duration }}</div>
+    {% endif %}
   </div>
 </div>
 
@@ -43,6 +52,7 @@
           {% if life.is_external %}<span class="badge bg-secondary-lt ms-1">{{ __('externe', 'remise') }}</span>{% endif %}
           <span class="text-muted small ms-2">
             {{ life.start|formatted_date }} → {{ life.end ? life.end|formatted_date : __('aujourd\'hui', 'remise') }}
+            ({{ life.duration }})
           </span>
         </li>
       {% endfor %}
