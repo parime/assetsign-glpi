@@ -6,6 +6,9 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "security"
     commit-message:
       prefix: "composer"
     # 7 jours avant de proposer une version tout juste publiée (cf. Semgrep
@@ -19,6 +22,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "ci"
+      - "dependencies"
     commit-message:
       prefix: "ci"
     cooldown:
@@ -35,6 +42,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
     commit-message:
       prefix: "js-vendor"
     cooldown:
