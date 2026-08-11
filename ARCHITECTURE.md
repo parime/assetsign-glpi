@@ -65,7 +65,9 @@ Le dépôt GitHub (public) a les protections suivantes activées :
 
 ## Tests automatisés
 
-**Intégration continue (`.github/workflows/ci.yml`)** : à chaque push et pull request, une action GitHub relance automatiquement Trivy, Semgrep, l'audit npm, la validation composer, le lint PHP, PHPStan, phpcs, l'audit composer, puis la suite PHPUnit ci-dessous, dans un environnement jetable (conteneurs `glpi/glpi:11.0.8` + `mariadb:11`, reconstruit à chaque exécution) — reproduit fidèlement l'environnement de test utilisé manuellement en développement.
+**Intégration continue (`.github/workflows/ci.yml`)** : à chaque push et pull request, une action GitHub relance automatiquement Trivy, Semgrep, l'audit npm, la validation composer, le lint PHP, PHPStan, phpcs, l'audit composer, puis la suite PHPUnit ci-dessous, dans un environnement jetable (conteneurs `glpi/glpi:11.0.8` + `mariadb:11`, reconstruit à chaque exécution) — reproduit fidèlement l'environnement de test utilisé manuellement en développement. Tourne aussi chaque nuit (`schedule: cron`) même sans nouveau push — détecte une régression qui n'apparaîtrait qu'avec le temps (nouvelle image `glpi/glpi`, avisory de sécurité publié après coup) — et annule automatiquement les exécutions en cours de la même branche/PR dès qu'un nouveau push arrive (`concurrency`), pour ne pas empiler des runs Docker/GLPI concurrents.
+
+**Validation des fichiers de configuration** (job `validation` dans `.github/workflows/ci.yml`) : vérifie que tous les fichiers JSON, YAML et XML du dépôt (`composer.json`, `.github/workflows/*.yml`, `docs/remise.xml`...) sont bien formés — indépendant du reste de la CI, ne nécessite ni PHP ni Docker/GLPI.
 
 Le socle PHPUnit (`phpunit.xml`, `tests/bootstrap.php`) démarre un vrai noyau GLPI (`Glpi\Kernel\Kernel`) — GLPI 11 n'a plus de bootstrap léger, `inc/includes.php` ne fait plus que des vérifications de rétrocompatibilité. C'est le même mécanisme que `bin/console`, ça donne accès à une vraie connexion DB, à l'autoload des classes GLPI/plugin et aux `PLUGIN_HOOKS`, sans dépendre d'une requête HTTP.
 

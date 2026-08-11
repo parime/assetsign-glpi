@@ -1,0 +1,13 @@
+extends: default
+
+rules:
+  # Les workflows GitHub Actions depassent regulierement 80 caracteres (blocs
+  # run:, references uses: avec SHA pinnee...) - la limite par defaut ne
+  # convient pas a ce type de fichier.
+  line-length: disable
+  # `---` en debut de document n'est pas la convention GitHub Actions.
+  document-start: disable
+  # `on:` (la cle de declenchement GitHub Actions) est un mot-cle YAML 1.1
+  # valide ("truthy") par construction - pas une erreur a signaler.
+  truthy:
+    check-keys: false

@@ -10,7 +10,22 @@ on:
   push:
     branches: [main, dev]
   pull_request:
+  # Detecte une regression qui n'apparaitrait qu'avec le temps (nouvelle
+  # version de l'image glpi/glpi, avisory de securite publie apres coup sur
+  # une dependance deja mergee...) sans attendre un prochain push - ecart
+  # constate face a la CI du plugin jumeau glpi-vulnerability-manager qui a
+  # deja ce filet de securite.
+  schedule:
+    - cron: '17 3 * * *'
   workflow_dispatch:
+
+# Annule les executions en cours de la meme branche/PR des qu'un nouveau push
+# arrive : sans ca, plusieurs push rapproches (ex: corrections successives
+# sur une PR) empilent des runs Docker/GLPI concurrents qui consomment des
+# minutes CI pour un resultat qui sera de toute facon remplace.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   GLPI_IMAGE: glpi/glpi:11.0.8
@@ -240,3 +255,37 @@ jobs:
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
         continue-on-error: true
+
+  validation:
+    # Verifie que les fichiers de configuration du depot sont bien formes,
+    # independamment de tout Docker/GLPI - ecart constate face a la CI du
+    # plugin jumeau Configuration-glpi-auto, qui a ce filet alors qu'ici un
+    # JSON/YAML/XML mal forme (composer.json, docs/remise.xml...) n'etait
+    # detecte qu'au moment ou l'outil qui le consomme echouait dessus
+    # (composer, phpunit...), pas explicitement ni au meme endroit a chaque
+    # fois.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupère le code du plugin
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
+
+      - name: Valide les fichiers JSON
+        run: |
+          find . -type f -name "*.json" -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./.git/*" \
+            | xargs -I {} sh -c 'echo "Validation de {}" && jq empty {} || exit 1'
+
+      - name: Installe yamllint
+        run: pip install --quiet yamllint
+
+      - name: Valide les fichiers YAML
+        run: |
+          find . -type f \( -name "*.yml" -o -name "*.yaml" \) -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./.git/*" \
+            | xargs -I {} sh -c 'echo "Validation de {}" && yamllint -c .yamllint.yml {} || exit 1'
+
+      - name: Installe xmllint
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends libxml2-utils
+
+      - name: Valide les fichiers XML
+        run: |
+          find . -type f -name "*.xml*" -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./.git/*" \
+            | xargs -I {} sh -c 'echo "Validation de {}" && xmllint --noout {} || exit 1'

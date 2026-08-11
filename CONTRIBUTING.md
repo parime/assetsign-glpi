@@ -42,7 +42,7 @@ Une fois `main` à jour avec les changements voulus :
    ```
 3. `.github/workflows/release.yml` se déclenche automatiquement : il vérifie que le tag correspond bien à `PLUGIN_REMISE_VERSION` (échoue sinon), construit l'archive de distribution, l'installe réellement sur une instance GLPI fraîche pour valider sa structure, puis publie la GitHub Release avec l'archive en pièce jointe et un changelog généré à partir des Pull Requests fusionnées depuis le tag précédent.
 
-Rien d'autre à faire à la main — pas de changelog à rédiger, pas d'archive à construire soi-même.
+Pas d'archive à construire soi-même. Pensez en revanche à ajouter une entrée dans [CHANGELOG.md](CHANGELOG.md) (format [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)) pour toute version publiée — complémentaire du changelog auto-généré par GitHub (qui liste les PR fusionnées, mais pas toujours le *pourquoi* d'un correctif ou d'une régression rencontrée).
 
 ## Signaler une vulnérabilité
 
