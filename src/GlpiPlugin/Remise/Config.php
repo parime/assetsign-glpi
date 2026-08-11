@@ -583,12 +583,12 @@ class Config extends CommonDBTM
    public function getHealthScoreColor(int $score): string {
        $goodThreshold = max(0, min(100, (int) ($this->fields['health_score_good_threshold'] ?? self::DEFAULTS['health_score_good_threshold'])));
        $warningThreshold = max(0, min($goodThreshold, (int) ($this->fields['health_score_warning_threshold'] ?? self::DEFAULTS['health_score_warning_threshold'])));
-       if ($score >= $goodThreshold) {
+      if ($score >= $goodThreshold) {
            return self::sanitizeHealthColor($this->fields['health_score_good_color'] ?? self::DEFAULTS['health_score_good_color']);
-       }
-       if ($score >= $warningThreshold) {
+      }
+      if ($score >= $warningThreshold) {
            return self::sanitizeHealthColor($this->fields['health_score_warning_color'] ?? self::DEFAULTS['health_score_warning_color']);
-       }
+      }
        return self::sanitizeHealthColor($this->fields['health_score_critical_color'] ?? self::DEFAULTS['health_score_critical_color']);
    }
 
