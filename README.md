@@ -53,6 +53,7 @@ Toutes les autres captures d'écran (paramétrage, tableau de bord, listes, ongl
 | **[CONTRIBUTING.md](CONTRIBUTING.md)** | Workflow de contribution, vérifications avant de pousser, comment publier une release. |
 | **[ROADMAP.md](ROADMAP.md)** | Ce qui est envisagé, pas encore engagé sur une date précise. |
 | **[SECURITY.md](SECURITY.md)** | Comment signaler une vulnérabilité. |
+| **[CHANGELOG.md](CHANGELOG.md)** | Historique des versions publiées. |
 
 ## Licence
 
