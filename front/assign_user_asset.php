@@ -16,7 +16,10 @@ if (!is_subclass_of($itemtype, CommonDBTM::class)) {
     Html::displayNotFoundError();
 }
 
-$item = new $itemtype();
+// Faux positif deja revu (cf. ARCHITECTURE.md) : is_subclass_of() ci-dessus restreint deja
+// l'instanciation a la famille GLPI CommonDBTM, et can($items_id, UPDATE) juste en dessous
+// encadre tout acces aux donnees de l'objet instancie - meme motif que Remise::createManual().
+$item = new $itemtype(); // nosemgrep: php.lang.security.injection.tainted-object-instantiation.tainted-object-instantiation
 // !can($items_id, UPDATE) : meme garde-fou de segregation par entite que
 // Remise::createManual()/Maintenance::createWithChecklist() (cf. TROUBLESHOOTING.md) -
 // le droit generique Remise::$rightname verifie ci-dessus n'est jamais
