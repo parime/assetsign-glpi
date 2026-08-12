@@ -10,4 +10,12 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <source>
+        <!-- front/ exclu : controleurs HTTP exerces manuellement (session/requete reelle),
+             pas par la suite PHPUnit (boot direct du noyau, cf. tests/bootstrap.php) - les
+             inclure ferait remonter un 0% de couverture trompeur, pas un manque de tests. -->
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
 </phpunit>

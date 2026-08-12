@@ -43,12 +43,23 @@ jobs:
         # donnees pour la partie dependances), mais volontairement conserve -
         # deux verifications valent mieux qu'aucune en cas de defaillance ou
         # de decalage de l'une des deux. Tourne directement sur le checkout,
-        # avant meme Docker : aucun besoin de GLPI pour ce scan. Binaire
-        # officiel recupere via son script d'installation HTTPS (meme logique
-        # que composer.phar plus bas : pas de dependance a une action tierce
-        # non verifiee).
+        # avant meme Docker : aucun besoin de GLPI pour ce scan.
+        #
+        # Binaire officiel telecharge directement (pas de `curl | sh`, corrige
+        # le 2026-08-12 suite au signalement Semgrep gha-curl-pipe-shell : un
+        # `# nosemgrep` sur la ligne concernee ne s'est pas revele fiable a
+        # l'interieur d'un bloc `run: |` multi-lignes en pratique, corriger la
+        # cause reelle plutot que de s'acharner sur la suppression) : la
+        # version taguee est verifiee contre le fichier de checksums SHA256
+        # officiellement publie par le projet avant toute extraction/execution,
+        # exactement ce que Semgrep recommande dans son propre message.
         run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+          VERSION="$(curl -sfL https://api.github.com/repos/aquasecurity/trivy/releases/latest | grep -m1 '"tag_name"' | sed -E 's/.*"v([^"]+)".*/\1/')"
+          curl -sfLO "https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz"
+          curl -sfLO "https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_checksums.txt"
+          sha256sum --ignore-missing -c "trivy_${VERSION}_checksums.txt"
+          tar xzf "trivy_${VERSION}_Linux-64bit.tar.gz" trivy
+          install -m 0755 trivy /usr/local/bin/trivy
           trivy fs --scanners vuln,secret,misconfig --exit-code 1 .
 
       - name: Audit de sécurité des bibliothèques JS vendorisées
@@ -230,8 +241,23 @@ jobs:
           docker exec glpi php bin/console plugin:install remise --force --no-interaction
           docker exec glpi php bin/console plugin:activate remise --no-interaction
 
-      - name: Lance PHPUnit
-        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/remise && vendor/bin/phpunit"
+      - name: Installe pcov (couverture de code)
+        # pcov (pas Xdebug) : ni l'un ni l'autre n'est present dans l'image
+        # glpi/glpi (production, pas de driver de couverture par defaut), mais
+        # pcov compile en quelques secondes via pecl (chaine de compilation
+        # deja presente dans l'image - gcc/make/phpize) contre plusieurs
+        # minutes pour Xdebug, pour le meme resultat ici (juste mesurer la
+        # couverture, pas de debogage pas-a-pas). Root necessaire : www-data
+        # ne peut pas ecrire dans /usr/local/lib/php/extensions.
+        run: docker exec -u root glpi sh -c "pecl install pcov"
+
+      - name: Lance PHPUnit (avec couverture)
+        # --coverage-text uniquement (pas d'upload Codecov) : aucun compte
+        # Codecov lie a ce depot, un artefact de couverture sans tableau de
+        # bord pour l'exploiter n'apporterait rien - le resume texte dans les
+        # logs de la CI suffit a repondre a la question "quelle proportion du
+        # code est testee ?" sans dependance externe.
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/remise && php -d extension=pcov.so vendor/bin/phpunit --coverage-text"
 
       - name: Logs GLPI (en cas d'échec)
         if: failure()
@@ -245,6 +271,15 @@ jobs:
     # redondants. Job séparé (pas une étape du job "test") : ne nécessite ni
     # PHP ni Docker/GLPI, s'exécute directement sur le checkout, indépendamment
     # du reste de la CI.
+    #
+    # Pas de `continue-on-error` (retire le 2026-08-12) : ce job fait partie
+    # des status checks requis sur `main` depuis la meme date - le laisser
+    # tolerant a l'echec aurait rendu cette exigence purement cosmetique (le
+    # job "reussirait" meme si semgrep trouvait une vraie faille). Contrepartie
+    # assumee : un `docker pull semgrep/semgrep` qui echoue (indisponibilite/
+    # rate-limit Docker Hub, deja observe une fois, jamais reproduit depuis)
+    # bloquera aussi la PR - a relancer manuellement le cas echeant, plutot
+    # que de rendre le check muet sur les vraies failles pour eviter ce cas rare.
     runs-on: ubuntu-latest
     container:
       image: semgrep/semgrep
@@ -254,7 +289,6 @@ jobs:
       - run: semgrep ci --config auto
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-        continue-on-error: true
 
   validation:
     # Verifie que les fichiers de configuration du depot sont bien formes,

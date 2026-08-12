@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.23.0] - 2026-08-12
+
+### Fixed
+
+- CI : le job `semgrep` tolérait silencieusement tout échec (`continue-on-error: true`), alors
+  qu'il fait partie des status checks requis sur `main` depuis la veille (v1.22.0) — dans les
+  faits, ce statut "requis" ne bloquait rien de réel. Retiré, et les deux findings jusque-là
+  masqués par cette tolérance corrigés pour de vrai : le script d'installation Trivy (`curl | sh`)
+  remplacé par un téléchargement direct du binaire + vérification de checksum SHA256 officiel ; un
+  faux positif d'instanciation dynamique dans `front/assign_user_asset.php` (même garde-fou déjà
+  utilisé ailleurs dans le code) supprimé explicitement via un commentaire `// nosemgrep: ...`
+  justifié, plutôt que masqué globalement.
+
+### Added
+
+- CI : couverture de code réelle sur la suite PHPUnit (`pcov`, résumé affiché dans les logs de la
+  CI via `--coverage-text` — pas d'upload externe, aucun compte Codecov lié à ce dépôt). Nécessite
+  `<source><include>` dans `phpunit.xml` (absent jusqu'ici, sans quoi PHPUnit échoue avec
+  `failOnWarning="true"` plutôt que de simplement ignorer la couverture).
+
+Suite du rapprochement CI/CD avec le plugin jumeau Configuration-glpi-auto (v1.22.0) — corrige
+cette fois deux angles morts découverts en creusant plus loin : un check "requis" qui ne l'était
+pas vraiment, et une couverture de tests jamais mesurée. Aucun changement de comportement du
+plugin lui-même. Un test end-to-end du flux de signature (Playwright) a été évalué mais reporté :
+le flux réel (authentification du bénéficiaire spécifique + jeton + rotation CSRF, cf.
+`front/sign.php`) est plus complexe qu'un test de fumée ne peut couvrir correctement sans plus de
+temps dédié.
+
 ## [1.22.0] - 2026-08-12
 
 ### Added
@@ -31,5 +59,6 @@ Alignement de la CI/CD sur les pratiques déjà en place sur le plugin jumeau
 [Configuration-glpi-auto](https://github.com/parime/Configuration-glpi-auto). Aucun changement de
 comportement du plugin lui-même.
 
-[Unreleased]: https://github.com/parime/remise-glpi/compare/v1.22.0...HEAD
+[Unreleased]: https://github.com/parime/remise-glpi/compare/v1.23.0...HEAD
+[1.23.0]: https://github.com/parime/remise-glpi/releases/tag/v1.23.0
 [1.22.0]: https://github.com/parime/remise-glpi/releases/tag/v1.22.0
