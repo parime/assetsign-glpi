@@ -132,7 +132,7 @@ class Assetsign extends CommonDBTM
    public static function getMenuContent(): array {
        $menu = parent::getMenuContent();
       if (!$menu) {
-          return $menu;
+          return [];
       }
 
       if (Template::canView()) {

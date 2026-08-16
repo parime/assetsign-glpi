@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-08-16
+
+### Fixed
+
+- **Bug bloquant pour tout utilisateur sans droit `plugin_assetsign_assetsign`/`plugin_assetsign_maintenance`** :
+  `Assetsign::getMenuContent()` et `Maintenance::getMenuContent()` déclarent un type de retour `: array`
+  mais renvoyaient tel quel le résultat de `parent::getMenuContent()`, qui peut légitimement valoir
+  `false` (aucun menu à afficher pour cet utilisateur). Conséquence : `TypeError` non rattrapée dès le
+  rendu du menu (`Html::generateMenuSession()`), qui plantait **toute page GLPI** pour n'importe quel
+  compte sans ces droits — y compris juste après la connexion. Corrigé en retournant `[]` au lieu de
+  `$menu` dans ce cas (équivalent falsy côté appelant, mais conforme au type déclaré).
+  - Découvert lors d'un test de bout en bout avec un compte non-admin (profil « normal ») dans le
+    cadre de la vérification exhaustive post-renommage `assetsign` — non couvert par la suite
+    PHPUnit existante (exécutée jusque-là uniquement avec un compte Super-Admin) ni par le premier
+    cycle Playwright de la v2.0.0.
+  - Suite complète re-vérifiée après correctif : 170 tests / 378 assertions vertes, aucune régression.
+
 ## [2.0.0] - 2026-08-16
 
 ### Changed
