@@ -3,7 +3,7 @@
         'name' => 'parime/assetsign-glpi',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '8bedaa5283a2b79a55934860bc06871084aabbd2',
+        'reference' => '18cd0eb85bcf45fbb67468399362542b7d6201f7',
         'type' => 'glpi-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -49,7 +49,7 @@
         'parime/assetsign-glpi' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '8bedaa5283a2b79a55934860bc06871084aabbd2',
+            'reference' => '18cd0eb85bcf45fbb67468399362542b7d6201f7',
             'type' => 'glpi-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
