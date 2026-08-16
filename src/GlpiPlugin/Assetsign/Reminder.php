@@ -1,0 +1,54 @@
+<?php
+
+namespace GlpiPlugin\Assetsign;
+
+use CommonDBTM;
+use Migration;
+
+/**
+ * Journal des relances envoyees pour une remise : une ligne par relance,
+ * uniquement pour en compter le nombre (affiche sur sa fiche, cf.
+ * assetsign_form.html.twig) — le compteur faisant foi pour la logique metier
+ * (limite max_reminders) est Assetsign.reminder_count, pas ce journal.
+ */
+class Reminder extends CommonDBTM
+{
+   public static $rightname = Profile::RIGHT_ASSETSIGN;
+
+   public static function log(Assetsign $assetsign): void {
+       global $DB;
+       $DB->insert(self::getTable(), [
+           'plugin_assetsign_assetsigns_id' => $assetsign->getID(),
+       ]);
+   }
+
+   public static function countForAssetsign(int $assetsigns_id): int {
+       return countElementsInTable(self::getTable(), ['plugin_assetsign_assetsigns_id' => $assetsigns_id]);
+   }
+
+   public static function install(Migration $migration): void {
+       global $DB;
+       $table = self::getTable();
+
+      if (!$DB->tableExists($table)) {
+          $migration->displayMessage('Création de la table ' . $table);
+          $DB->doQuery("CREATE TABLE `$table` (
+                `id` int unsigned NOT NULL AUTO_INCREMENT,
+                `plugin_assetsign_assetsigns_id` int unsigned NOT NULL,
+                PRIMARY KEY (`id`),
+                KEY `plugin_assetsign_assetsigns_id` (`plugin_assetsign_assetsigns_id`),
+                CONSTRAINT `fk_reminder_assetsign` FOREIGN KEY (`plugin_assetsign_assetsigns_id`) REFERENCES `glpi_plugin_assetsign_assetsigns` (`id`) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+      } else {
+          // Audit code mort : 'reminder_number'/'date_sent'/'channel' n'etaient
+          // jamais relus (countForAssetsign() ne fait qu'un COUNT(*)) — 'channel'
+          // valait d'ailleurs toujours 'email', log() n'etant jamais appele
+          // avec un 3e argument.
+         foreach (['reminder_number', 'date_sent', 'channel'] as $obsoleteField) {
+            if ($DB->fieldExists($table, $obsoleteField)) {
+               $migration->dropField($table, $obsoleteField);
+            }
+         }
+      }
+   }
+}

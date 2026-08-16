@@ -1,15 +1,15 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
+use GlpiPlugin\Assetsign\Config;
 
 /**
  * Verifie l'heritage de configuration par entite : une entite sans config
  * propre doit heriter de son ancetre le PLUS PROCHE qui en a une (pas
  * directement de la racine), cf. INSTALLATION.md, section "3. Configurer".
  */
-class ConfigTest extends RemiseTestCase
+class ConfigTest extends AssetsignTestCase
 {
     /**
      * Garde-fou structurel : User ne doit JAMAIS figurer parmi les types geres
@@ -20,7 +20,7 @@ class ConfigTest extends RemiseTestCase
      * mecanisme de detection d'affectation (handleUserBasedTrigger()) et
      * generarait une fiche de remise/restitution parasite. Le nom affiche
      * ailleurs (fiche admin, notifications futures) reste a jour via un
-     * appel direct a User::getFromDB() dans Remise::getBeneficiary() - aucun
+     * appel direct a User::getFromDB() dans Assetsign::getBeneficiary() - aucun
      * declenchement necessaire pour ca.
      */
     public function testUserIsNeverAManagedItemtype(): void

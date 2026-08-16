@@ -1,5 +1,5 @@
 {
-    "name": "parime/remise-glpi",
+    "name": "parime/assetsign-glpi",
     "description": "Gestion des remises de materiel avec signature electronique et tracabilite pour GLPI",
     "type": "glpi-plugin",
     "license": "GPL-3.0-only",
@@ -19,12 +19,12 @@
     },
     "autoload": {
         "psr-4": {
-            "GlpiPlugin\\Remise\\": "src/GlpiPlugin/Remise/"
+            "GlpiPlugin\\Assetsign\\": "src/GlpiPlugin/Assetsign/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "GlpiPlugin\\Remise\\Tests\\": "tests/"
+            "GlpiPlugin\\Assetsign\\Tests\\": "tests/"
         }
     },
     "config": {

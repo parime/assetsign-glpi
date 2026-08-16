@@ -1,21 +1,21 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Api\SignController;
-use GlpiPlugin\Remise\Remise;
-use GlpiPlugin\Remise\Token;
+use GlpiPlugin\Assetsign\Api\SignController;
+use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\Token;
 use RuntimeException;
 
 /**
  * Couvre le controle d'identite de la page de signature
  * (assertCurrentUserIsBeneficiary(), appelee par show()/submit() via
- * loadAuthorizedRemise()) : c'est ce qui empeche un utilisateur authentifie
+ * loadAuthorizedAssetsign()) : c'est ce qui empeche un utilisateur authentifie
  * mais non concerne de consulter ou signer le document d'un autre — jamais
  * teste automatiquement jusqu'ici. Session::getLoginUserID() lit simplement
  * $_SESSION['glpiID'] (cf. src/Session.php du coeur), simulable directement.
  */
-class SignControllerTest extends RemiseTestCase
+class SignControllerTest extends AssetsignTestCase
 {
     private $originalGlpiId;
 
@@ -35,58 +35,58 @@ class SignControllerTest extends RemiseTestCase
         parent::tearDown();
     }
 
-    public function testLoadAuthorizedRemiseThrowsWhenNoUserLoggedIn(): void
+    public function testLoadAuthorizedAssetsignThrowsWhenNoUserLoggedIn(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Sign NoSession');
-        $remise = $this->createBareRemise($entityId, usersId: 2);
-        $raw = Token::createForRemise($remise, 30);
+        $assetsign = $this->createBareAssetsign($entityId, usersId: 2);
+        $raw = Token::createForAssetsign($assetsign, 30);
 
         unset($_SESSION['glpiID']);
 
         $this->expectException(RuntimeException::class);
-        (new SignController())->loadAuthorizedRemise($raw);
+        (new SignController())->loadAuthorizedAssetsign($raw);
     }
 
-    public function testLoadAuthorizedRemiseThrowsForWrongUser(): void
+    public function testLoadAuthorizedAssetsignThrowsForWrongUser(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Sign WrongUser');
-        $remise = $this->createBareRemise($entityId, usersId: 2);
-        $raw = Token::createForRemise($remise, 30);
+        $assetsign = $this->createBareAssetsign($entityId, usersId: 2);
+        $raw = Token::createForAssetsign($assetsign, 30);
 
         // Un autre utilisateur, bien authentifie, mais qui n'est pas le
         // beneficiaire de CETTE remise (ex: le lien a fuite par e-mail).
         $_SESSION['glpiID'] = 4;
 
         $this->expectException(RuntimeException::class);
-        (new SignController())->loadAuthorizedRemise($raw);
+        (new SignController())->loadAuthorizedAssetsign($raw);
     }
 
-    public function testLoadAuthorizedRemiseSucceedsForRealBeneficiary(): void
+    public function testLoadAuthorizedAssetsignSucceedsForRealBeneficiary(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Sign RightUser');
-        $remise = $this->createBareRemise($entityId, usersId: 2);
-        $raw = Token::createForRemise($remise, 30);
+        $assetsign = $this->createBareAssetsign($entityId, usersId: 2);
+        $raw = Token::createForAssetsign($assetsign, 30);
 
         $_SESSION['glpiID'] = 2;
 
-        $loaded = (new SignController())->loadAuthorizedRemise($raw);
+        $loaded = (new SignController())->loadAuthorizedAssetsign($raw);
 
-        $this->assertSame($remise->getID(), $loaded->getID());
+        $this->assertSame($assetsign->getID(), $loaded->getID());
     }
 
-    public function testLoadAuthorizedRemiseThrowsForInvalidToken(): void
+    public function testLoadAuthorizedAssetsignThrowsForInvalidToken(): void
     {
         $_SESSION['glpiID'] = 2;
 
         $this->expectException(RuntimeException::class);
-        (new SignController())->loadAuthorizedRemise('jeton-invalide');
+        (new SignController())->loadAuthorizedAssetsign('jeton-invalide');
     }
 
-    public function testShowMarksRemiseViewedOnFirstAccess(): void
+    public function testShowMarksAssetsignViewedOnFirstAccess(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Sign Show');
-        $remise = $this->createBareRemise($entityId, usersId: 2, status: Remise::STATUS_SENT);
-        $raw = Token::createForRemise($remise, 30);
+        $assetsign = $this->createBareAssetsign($entityId, usersId: 2, status: Assetsign::STATUS_SENT);
+        $raw = Token::createForAssetsign($assetsign, 30);
 
         $_SESSION['glpiID'] = 2;
 
@@ -94,8 +94,8 @@ class SignControllerTest extends RemiseTestCase
 
         // markViewed() met a jour le meme objet en memoire : l'objet retourne
         // par show() reflete deja le nouveau statut, pas celui d'avant l'appel.
-        $this->assertSame(Remise::STATUS_VIEWED, (int) $data['remise']->fields['status']);
-        $remise->getFromDB($remise->getID());
-        $this->assertSame(Remise::STATUS_VIEWED, (int) $remise->fields['status'], "L'acces reel a la fiche doit bien avoir bascule le statut a VIEWED en base.");
+        $this->assertSame(Assetsign::STATUS_VIEWED, (int) $data['assetsign']->fields['status']);
+        $assetsign->getFromDB($assetsign->getID());
+        $this->assertSame(Assetsign::STATUS_VIEWED, (int) $assetsign->fields['status'], "L'acces reel a la fiche doit bien avoir bascule le statut a VIEWED en base.");
     }
 }

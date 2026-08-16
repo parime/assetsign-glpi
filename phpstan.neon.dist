@@ -19,6 +19,6 @@ parameters:
             # type a l'execution.
             message: '#Call to an undefined method (CommonGLPI|CommonDBTM)::(getID|sendReminderNow|cancelRequest)\(\)#'
             paths:
-                - src/GlpiPlugin/Remise/Remise.php
-                - src/GlpiPlugin/Remise/Config.php
-                - src/GlpiPlugin/Remise/Maintenance.php
+                - src/GlpiPlugin/Assetsign/Assetsign.php
+                - src/GlpiPlugin/Assetsign/Config.php
+                - src/GlpiPlugin/Assetsign/Maintenance.php

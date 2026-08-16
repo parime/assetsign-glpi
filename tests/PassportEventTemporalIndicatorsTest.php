@@ -1,10 +1,10 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\PassportEvent;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\PassportEvent;
+use GlpiPlugin\Assetsign\Assetsign;
 
 /**
  * Couvre les indicateurs temporels (age, temps utilise, temps en stock, duree
@@ -12,7 +12,7 @@ use GlpiPlugin\Remise\Remise;
  * l'affichage a partir de donnees deja existantes (Infocom, timeline
  * d'evenements) : aucune nouvelle table, jamais de valeur inventee.
  */
-class PassportEventTemporalIndicatorsTest extends RemiseTestCase
+class PassportEventTemporalIndicatorsTest extends AssetsignTestCase
 {
     private function insertInfocom(string $itemtype, int $items_id, array $fields): void
     {
@@ -36,7 +36,7 @@ class PassportEventTemporalIndicatorsTest extends RemiseTestCase
 
         // htmlspecialchars() : Twig echappe l'apostrophe en &#039; a l'affichage,
         // la chaine __() brute (avec apostrophe litterale) ne matcherait jamais.
-        $this->assertStringContainsString(htmlspecialchars(__('depuis l\'achat', 'remise'), ENT_QUOTES), $html);
+        $this->assertStringContainsString(htmlspecialchars(__('depuis l\'achat', 'assetsign'), ENT_QUOTES), $html);
         $this->assertStringContainsString('1 an', $html);
     }
 
@@ -51,7 +51,7 @@ class PassportEventTemporalIndicatorsTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(htmlspecialchars(__('depuis l\'entrée dans GLPI', 'remise'), ENT_QUOTES), $html);
+        $this->assertStringContainsString(htmlspecialchars(__('depuis l\'entrée dans GLPI', 'assetsign'), ENT_QUOTES), $html);
     }
 
     public function testUsedAndStockDurationsAreComputedFromLives(): void
@@ -66,7 +66,7 @@ class PassportEventTemporalIndicatorsTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         // Recule la date de l'attribution : une vie commencee "aujourd'hui" dure 0
         // jour, ce qui masquerait volontairement "Temps utilise" (cf. getIdentityCard()).
@@ -78,8 +78,8 @@ class PassportEventTemporalIndicatorsTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Temps utilisé', 'remise'), $html);
-        $this->assertStringContainsString(__('Temps en stock', 'remise'), $html);
+        $this->assertStringContainsString(__('Temps utilisé', 'assetsign'), $html);
+        $this->assertStringContainsString(__('Temps en stock', 'assetsign'), $html);
         $this->assertNoStrayNumericTextNode($html, 'Les indicateurs temporels doivent se rendre sans fuite Twig.');
     }
 
@@ -99,7 +99,7 @@ class PassportEventTemporalIndicatorsTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Âge', 'remise') . ' :', $html);
+        $this->assertStringNotContainsString(__('Âge', 'assetsign') . ' :', $html);
         $this->assertNoStrayNumericTextNode($html, 'Sans aucune source de date, la frise ne doit jamais planter.');
     }
 
@@ -112,7 +112,7 @@ class PassportEventTemporalIndicatorsTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         $lives = PassportEvent::getLivesForItem('Computer', $computer->getID());
         $this->assertCount(1, $lives);

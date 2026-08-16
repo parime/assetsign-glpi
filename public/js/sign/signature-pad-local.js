@@ -39,7 +39,7 @@
         form.addEventListener('submit', function (evt) {
             if (signaturePad.isEmpty()) {
                 evt.preventDefault();
-                window.alert((window.REMISE_SIGNATURE_I18N && window.REMISE_SIGNATURE_I18N.required) || 'Merci de signer avant de créer la fiche.');
+                window.alert((window.ASSETSIGN_SIGNATURE_I18N && window.ASSETSIGN_SIGNATURE_I18N.required) || 'Merci de signer avant de créer la fiche.');
                 return;
             }
             hiddenInput.value = signaturePad.toDataURL('image/png');

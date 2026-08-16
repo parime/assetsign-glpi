@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>{{ document_title }}</title>
-{% include '@remise/pdf/_pdf_style.html.twig' %}
+{% include '@assetsign/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
 
@@ -25,7 +25,7 @@
 {% endif %}
 
 <h1>{{ page_title }}</h1>
-<p class="meta">Établie le {{ remise.date_creation|date('d/m/Y') }} — Référence remise n°{{ remise.id }}</p>
+<p class="meta">Établie le {{ assetsign.date_creation|date('d/m/Y') }} — Référence assetsign n°{{ assetsign.id }}</p>
 
 <h2>Bénéficiaire{% if beneficiary_is_external %} (externe, sans compte GLPI){% endif %}</h2>
 <table class="info-table">
@@ -62,7 +62,7 @@
 </table>
 {% endif %}
 
-{% include '@remise/pdf/_damage_views.html.twig' %}
+{% include '@assetsign/pdf/_damage_views.html.twig' %}
 
 {% if include_content %}
 <h2>Conditions générales</h2>
@@ -121,7 +121,7 @@
 <div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
 {% endif %}
 
-<div class="footer">Remise #{{ remise.id }} — Document généré par GLPI (plugin remise)</div>
+<div class="footer">Assetsign #{{ assetsign.id }} — Document généré par GLPI (plugin assetsign)</div>
 
 </body>
 </html>

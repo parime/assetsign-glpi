@@ -1,0 +1,114 @@
+<root>
+   <name>AssetSign</name>
+   <key>assetsign</key>
+   <state>beta</state> <!-- stable | unstable | beta | alpha -->
+   <logo>https://raw.githubusercontent.com/parime/assetsign-glpi/main/logo-40.png</logo>
+   <description>
+      <short>
+         <en>Automates handover/return/donation/sale sheets with electronic signature when equipment is assigned, returned, donated or sold in GLPI — plus maintenance checklists and visual damage annotation.</en>
+         <fr>Automatise les fiches de remise/restitution/don/vente avec signature électronique lors de l'affectation, de la restitution, du don ou de la vente d'un matériel dans GLPI — plus fiches de maintenance et état des lieux visuel.</fr>
+      </short>
+      <long>
+         <en>
+When equipment (computer, monitor, phone...) is handed over to someone, a written trace is often needed: that the recipient acknowledges receiving it, in a given condition, on a given date, and accepts the terms of use (IT charter, terms and conditions...). In practice this step is often skipped, done on paper, or handled by hand in a spreadsheet.
+
+This plugin automates it entirely from GLPI, the tool your technicians already use to manage assets:
+
+1. A technician assigns equipment to a user in GLPI (as usual).
+2. The plugin detects it automatically and generates a **handover sheet PDF** (equipment, recipient, accessories, terms and conditions, IT charter).
+3. The recipient gets an **e-mail** with a link to the document.
+4. They log in to GLPI with their own account, **review the PDF and sign on screen** (mouse, finger or stylus).
+5. The **signed PDF** is automatically archived — on the equipment record *and* on the user's record.
+6. If the recipient doesn't sign, the plugin **sends automatic reminders**, then marks the document as expired after a configurable delay.
+
+The same mechanism also works when equipment is **returned** (unassigned). Two more workflows are available for a **donation** or a **sale** of equipment. A separate **maintenance checklist** sub-system lets technicians record maintenance visits with a configurable checklist and photo evidence.
+
+Other notable features: per-entity configuration (including logo inheritance across child entities), visual damage annotation on photos (before/after/underside), automatic reminder/expiration crons, a dashboard with widgets, an optional QR code on PDF sheets, a configurable currency symbol, and a full UI plus e-mail notifications in 5 languages (French, English, Spanish, German, Italian).
+
+**Security**: the signature page is never reachable via a plain anonymous link — a GLPI login is required, and the link only works for the actual recipient of the document.
+         </en>
+         <fr>
+Quand un ordinateur, un écran, un téléphone ou tout autre matériel est remis à quelqu'un dans l'entreprise, il faut souvent une trace écrite : que le bénéficiaire reconnaît avoir reçu tel matériel, dans tel état, à telle date, et qu'il accepte les conditions d'usage (charte informatique, conditions générales...). En pratique, cette étape est souvent oubliée, faite sur papier et jamais archivée, ou gérée à la main dans un tableur.
+
+Ce plugin l'automatise entièrement à partir de GLPI, l'outil que vos techniciens utilisent déjà pour gérer le parc :
+
+1. Un technicien affecte un matériel à un utilisateur dans GLPI (comme il le fait déjà normalement).
+2. Le plugin le détecte automatiquement et génère une **fiche de remise en PDF** (matériel, bénéficiaire, accessoires, conditions générales, charte informatique).
+3. Le bénéficiaire reçoit un **e-mail** avec un lien vers cette fiche.
+4. Il se connecte à GLPI avec son propre compte, **consulte le PDF et signe à l'écran** (souris, doigt ou stylet).
+5. Le **PDF signé** est automatiquement archivé — sur la fiche du matériel *et* sur la fiche de l'utilisateur.
+6. Si le bénéficiaire ne signe pas, le plugin **relance automatiquement** puis marque le document comme expiré au bout d'un délai configurable.
+
+Le même mécanisme fonctionne aussi pour une **restitution** (désaffectation), un **don** ou une **vente** de matériel. Un sous-système séparé de **fiches de maintenance** permet aux techniciens de consigner une visite de maintenance avec une liste de points de contrôle configurable et des photos.
+
+Autres fonctionnalités : configuration par entité (avec héritage du logo entre entités enfants), état des lieux visuel avec repères de dommage sur photo (avant/arrière/dessous), relances et expiration automatiques par tâches planifiées, tableau de bord avec widgets, QR code optionnel sur les fiches PDF, devise configurable, interface et notifications e-mail en 5 langues (français, anglais, espagnol, allemand, italien).
+
+**Sécurité** : la page de signature n'est jamais accessible par un simple lien anonyme — il faut être connecté à GLPI, et le lien ne fonctionne que pour le bénéficiaire réel du document.
+         </fr>
+      </long>
+   </description>
+   <homepage>https://github.com/parime/assetsign-glpi</homepage>
+   <download>https://github.com/parime/assetsign-glpi/releases</download>
+   <issues>https://github.com/parime/assetsign-glpi/issues</issues>
+   <readme>https://github.com/parime/assetsign-glpi/blob/main/README.md</readme>
+   <changelog>https://github.com/parime/assetsign-glpi/releases</changelog>
+   <authors>
+      <author>Vincent GUILLOTTE</author>
+   </authors>
+   <versions>
+      <version>
+         <num>2.0.0</num>
+         <compatibility>~11.0</compatibility>
+         <download_url>https://github.com/parime/assetsign-glpi/releases/download/v2.0.0/assetsign-glpi-2.0.0.zip</download_url>
+      </version>
+      <version>
+         <num>1.23.0</num>
+         <compatibility>~11.0</compatibility>
+         <download_url>https://github.com/parime/assetsign-glpi/releases/download/v1.23.0/remise-glpi-1.23.0.zip</download_url>
+      </version>
+      <version>
+         <num>1.13.3</num>
+         <compatibility>~11.0</compatibility>
+         <download_url>https://github.com/parime/assetsign-glpi/releases/download/v1.13.3/remise-glpi-1.13.3.zip</download_url>
+      </version>
+   </versions>
+   <langs>
+      <lang>fr_FR</lang>
+      <lang>en_GB</lang>
+      <lang>es_ES</lang>
+      <lang>de_DE</lang>
+      <lang>it_IT</lang>
+   </langs>
+   <license>GPL v3</license>
+   <tags>
+      <en>
+         <tag>signature</tag>
+         <tag>electronic signature</tag>
+         <tag>handover</tag>
+         <tag>asset management</tag>
+         <tag>donation</tag>
+         <tag>sale</tag>
+         <tag>maintenance</tag>
+         <tag>PDF</tag>
+      </en>
+      <fr>
+         <tag>signature</tag>
+         <tag>signature électronique</tag>
+         <tag>remise de matériel</tag>
+         <tag>gestion de parc</tag>
+         <tag>don</tag>
+         <tag>vente</tag>
+         <tag>maintenance</tag>
+         <tag>PDF</tag>
+      </fr>
+   </tags>
+   <screenshots>
+      <screenshot>https://raw.githubusercontent.com/parime/assetsign-glpi/main/docs/screenshots/assetsign-fiche.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/parime/assetsign-glpi/main/docs/screenshots/sign-page.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/parime/assetsign-glpi/main/docs/screenshots/pdf-genere.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/parime/assetsign-glpi/main/docs/screenshots/config.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/parime/assetsign-glpi/main/docs/screenshots/liste-assetsigns.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/parime/assetsign-glpi/main/docs/screenshots/maintenance.png</screenshot>
+      <screenshot>https://raw.githubusercontent.com/parime/assetsign-glpi/main/docs/screenshots/onglet-utilisateur-assetsign.png</screenshot>
+   </screenshots>
+</root>

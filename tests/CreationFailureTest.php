@@ -1,29 +1,29 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\CreationFailure;
-use GlpiPlugin\Remise\Dashboard\CardProvider;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\CreationFailure;
+use GlpiPlugin\Assetsign\Dashboard\CardProvider;
+use GlpiPlugin\Assetsign\Assetsign;
 
 /**
  * Couvre CreationFailure et la carte de tableau de bord associee
  * (CardProvider::failures()) : rendre visible un echec de creation
- * automatique (createRemise()/launchWorkflow()) jusqu'ici isole en silence
- * par design (cf. TROUBLESHOOTING.md, plugin_remise_item_assignment()) pour
+ * automatique (createAssetsign()/launchWorkflow()) jusqu'ici isole en silence
+ * par design (cf. TROUBLESHOOTING.md, plugin_assetsign_item_assignment()) pour
  * ne jamais faire planter la sauvegarde du materiel, mais du coup invisible
- * sans consulter files/_log/remise.log a la main - demande explicite apres
+ * sans consulter files/_log/assetsign.log a la main - demande explicite apres
  * une question sur l'absence d'alerte en cas de changement d'Etat sans
  * utilisateur assigne.
  */
-class CreationFailureTest extends RemiseTestCase
+class CreationFailureTest extends AssetsignTestCase
 {
     public function testRecordInsertsRetrievableRow(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit CreationFailure Record');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC CreationFailure');
 
-        CreationFailure::record('Computer', $computer->getID(), $entityId, Remise::TYPE_HANDOVER, 'Raison de test PHPUnit.');
+        CreationFailure::record('Computer', $computer->getID(), $entityId, Assetsign::TYPE_HANDOVER, 'Raison de test PHPUnit.');
 
         global $DB;
         $rows = iterator_to_array($DB->request([
@@ -34,14 +34,14 @@ class CreationFailureTest extends RemiseTestCase
 
         $this->assertNotFalse($row, 'La ligne doit avoir ete inseree.');
         $this->assertSame($entityId, (int) $row['entities_id']);
-        $this->assertSame(Remise::TYPE_HANDOVER, (int) $row['remise_type']);
+        $this->assertSame(Assetsign::TYPE_HANDOVER, (int) $row['assetsign_type']);
         $this->assertSame('Raison de test PHPUnit.', $row['reason']);
     }
 
-    public function testRecordAcceptsNullRemiseTypeForGenericHookFailures(): void
+    public function testRecordAcceptsNullAssetsignTypeForGenericHookFailures(): void
     {
-        // Cas du catch generique de plugin_remise_item_assignment() (hook.php) :
-        // le type Remise attendu n'est pas forcement connu a ce niveau.
+        // Cas du catch generique de plugin_assetsign_item_assignment() (hook.php) :
+        // le type Assetsign attendu n'est pas forcement connu a ce niveau.
         $entityId = $this->createTestEntity(0, 'PHPUnit CreationFailure NullType');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC CreationFailure NullType');
 
@@ -54,7 +54,7 @@ class CreationFailureTest extends RemiseTestCase
         ]));
         $row = reset($rows);
 
-        $this->assertNull($row['remise_type']);
+        $this->assertNull($row['assetsign_type']);
     }
 
     public function testDashboardCardCountsOnlyRecentFailuresInActiveEntity(): void
@@ -66,21 +66,21 @@ class CreationFailureTest extends RemiseTestCase
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC CreationFailure Card');
 
         // Meme entite, dans la fenetre recente (RECENT_WINDOW_DAYS) : doit compter.
-        CreationFailure::record('Computer', $computer->getID(), $entityId, Remise::TYPE_HANDOVER, 'Recent, bonne entite.');
+        CreationFailure::record('Computer', $computer->getID(), $entityId, Assetsign::TYPE_HANDOVER, 'Recent, bonne entite.');
 
         // Meme entite, mais TROP ANCIEN (hors fenetre) : ne doit PAS compter.
         $DB->insert(CreationFailure::getTable(), [
             'entities_id'   => $entityId,
             'itemtype'      => 'Computer',
             'items_id'      => $computer->getID(),
-            'remise_type'   => Remise::TYPE_HANDOVER,
+            'assetsign_type'   => Assetsign::TYPE_HANDOVER,
             'reason'        => 'Trop ancien.',
             'date_creation' => date('Y-m-d H:i:s', strtotime('-' . (CreationFailure::RECENT_WINDOW_DAYS + 5) . ' days')),
         ]);
 
         // Entite DIFFERENTE, recent : ne doit pas compter dans le total restreint
         // a l'entite active choisie ci-dessous.
-        CreationFailure::record('Computer', 99999, $otherEntityId, Remise::TYPE_HANDOVER, 'Bonne fenetre, mauvaise entite.');
+        CreationFailure::record('Computer', 99999, $otherEntityId, Assetsign::TYPE_HANDOVER, 'Bonne fenetre, mauvaise entite.');
 
         // getEntitiesRestrictCriteria() lit $_SESSION['glpiactiveentities'] (repli
         // sur l'entite 0 si absent, cf. verification manuelle avant d'ecrire ce

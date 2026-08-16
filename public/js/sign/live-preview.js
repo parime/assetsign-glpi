@@ -6,15 +6,15 @@
  * l'iframe par le HTML retourne — rendu strictement identique au vrai PDF
  * (meme gabarit Twig cote serveur), avant meme d'avoir cliqué sur Enregistrer.
  *
- * Convention : un formulaire avec [data-remise-preview-frame="<id de l'iframe>"]
+ * Convention : un formulaire avec [data-assetsign-preview-frame="<id de l'iframe>"]
  * est surveille dans son ensemble (tous ses champs sont renvoyes tels quels a
  * front/preview.php, qui n'utilise que ceux qu'il connait).
  *
- * Jeton CSRF : ce canal utilise SON PROPRE jeton (window.REMISE_PREVIEW_CSRF_TOKEN,
+ * Jeton CSRF : ce canal utilise SON PROPRE jeton (window.ASSETSIGN_PREVIEW_CSRF_TOKEN,
  * injecte par la page, cf. Config::showConfigForm()/Template::showForm()),
  * jamais celui du champ _glpi_csrf_token du formulaire lui-meme. Une premiere
  * version se contentait de serialiser les appels d'apercu ENTRE EUX
- * (window.remiseQueuedFetch, cf. csrf-queue.js) tout en continuant a lire/
+ * (window.assetsignQueuedFetch, cf. csrf-queue.js) tout en continuant a lire/
  * ecrire le meme champ que le vrai bouton Enregistrer — insuffisant : la
  * vraie soumission du formulaire est une navigation de page classique,
  * entierement hors de ce JS et de sa file d'attente, donc jamais serialisee
@@ -23,7 +23,7 @@
  * echouer la vraie sauvegarde en "Accès refusé" (bug reel constate meme
  * apres ce premier correctif, cf. TROUBLESHOOTING.md). Un jeton totalement
  * independant, jamais lu ni ecrit dans le DOM du formulaire, elimine cette
- * course a la racine — remiseQueuedFetch() reste utilisee pour serialiser
+ * course a la racine — assetsignQueuedFetch() reste utilisee pour serialiser
  * les appels d'apercu entre eux (utile independamment de cette course-la),
  * mais seulement le corps de la requete change, jamais le champ du formulaire.
  */
@@ -31,10 +31,10 @@
     'use strict';
 
     var DEBOUNCE_MS = 400;
-    var endpoint = (window.REMISE_ROOT_DOC || '') + '/plugins/remise/front/preview.php';
+    var endpoint = (window.ASSETSIGN_ROOT_DOC || '') + '/plugins/assetsign/front/preview.php';
 
-    document.querySelectorAll('[data-remise-preview-frame]').forEach(function (form) {
-        var frame = document.getElementById(form.dataset.remisePreviewFrame);
+    document.querySelectorAll('[data-assetsign-preview-frame]').forEach(function (form) {
+        var frame = document.getElementById(form.dataset.assetsignPreviewFrame);
         if (!frame) {
             return;
         }
@@ -43,7 +43,7 @@
         // champ _glpi_csrf_token du formulaire (cf. commentaire d'en-tete) :
         // une variable JS locale, pas le DOM, pour que le vrai bouton
         // Enregistrer ne soit jamais affecte par la rotation de ce jeton.
-        var previewToken = window.REMISE_PREVIEW_CSRF_TOKEN || '';
+        var previewToken = window.ASSETSIGN_PREVIEW_CSRF_TOKEN || '';
 
         var timer = null;
 
@@ -55,10 +55,10 @@
                 window.tinymce.triggerSave();
             }
 
-            // buildOptions n'est appelee par remiseQueuedFetch qu'au moment reel
+            // buildOptions n'est appelee par assetsignQueuedFetch qu'au moment reel
             // de l'envoi (apres que tout appel precedent en file ait fini de
             // faire tourner le jeton) : construire le FormData ICI, pas avant
-            // l'appel a remiseQueuedFetch, est ce qui garantit que previewToken
+            // l'appel a assetsignQueuedFetch, est ce qui garantit que previewToken
             // est lu a jour plutot qu'au moment du debounce.
             function buildOptions() {
                 var data = new FormData(form);
@@ -79,14 +79,14 @@
                 };
             }
 
-            window.remiseQueuedFetch(endpoint, buildOptions)
+            window.assetsignQueuedFetch(endpoint, buildOptions)
                 .then(function (res) {
                     // Le jeton CSRF de ce POST est a usage unique (deja consomme par le
                     // pare-feu GLPI) : sans le remplacer ici par celui renvoye en
                     // en-tete, le PROCHAIN appel serait rejete (403) des la frappe suivante.
                     // Mis a jour uniquement dans cette variable locale — jamais dans le
                     // DOM du formulaire (cf. commentaire d'en-tete).
-                    var freshToken = res.headers.get('X-Remise-Csrf-Token');
+                    var freshToken = res.headers.get('X-Assetsign-Csrf-Token');
                     if (freshToken) {
                         previewToken = freshToken;
                     }
@@ -100,10 +100,10 @@
                     // localement via FileReader - cf. config_form.html.twig). Si la
                     // page en definit un, il est rappele une fois le nouveau contenu
                     // charge, pour le reappliquer par-dessus.
-                    if (window.REMISE_ON_PREVIEW_REFRESH) {
+                    if (window.ASSETSIGN_ON_PREVIEW_REFRESH) {
                         frame.addEventListener('load', function onLoad() {
                             frame.removeEventListener('load', onLoad);
-                            window.REMISE_ON_PREVIEW_REFRESH();
+                            window.ASSETSIGN_ON_PREVIEW_REFRESH();
                         });
                     }
                 })

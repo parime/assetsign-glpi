@@ -1,7 +1,7 @@
 name: Auto-tag de version
 
 # Tague automatiquement `vX.Y.Z` a chaque fusion sur main si
-# PLUGIN_REMISE_VERSION (setup.php) a change et que ce tag n'existe pas
+# PLUGIN_ASSETSIGN_VERSION (setup.php) a change et que ce tag n'existe pas
 # encore. Sans ce workflow, publier une release necessitait de se souvenir de
 # pousser le tag a la main apres coup (ecart deja constate : main etait passe
 # de 1.13.3 a 1.13.6 en code sans qu'aucune de ces versions ne soit jamais
@@ -30,13 +30,13 @@ jobs:
       - name: Récupère le code du plugin
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
 
-      - name: Tague si PLUGIN_REMISE_VERSION est une nouvelle version
+      - name: Tague si PLUGIN_ASSETSIGN_VERSION est une nouvelle version
         # git ls-remote (pas `git tag -l` local) : le checkout par defaut est
         # peu profond et ne recupere aucun tag, une verification locale
         # laisserait toujours passer et re-tenterait de pousser un tag deja
         # publie (echec, mais bruyant a chaque push sur main).
         run: |
-          VERSION="$(grep -oP "define\('PLUGIN_REMISE_VERSION', '\K[^']+" setup.php)"
+          VERSION="$(grep -oP "define\('PLUGIN_ASSETSIGN_VERSION', '\K[^']+" setup.php)"
           TAG="v${VERSION}"
 
           if git ls-remote --tags origin "refs/tags/$TAG" | grep -q "refs/tags/$TAG$"; then

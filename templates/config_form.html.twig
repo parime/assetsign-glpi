@@ -5,8 +5,8 @@
   <div class="card-body">
     {# Formulaire independant du principal (jamais imbrique) : seuls le jeton
        CSRF et l'entite lui sont necessaires, cf. bouton "Envoyer un e-mail de
-       test" plus bas (associe via l'attribut HTML5 form="remise-test-email-form"). #}
-    <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/config.php" id="remise-test-email-form" style="display:none;">
+       test" plus bas (associe via l'attribut HTML5 form="assetsign-test-email-form"). #}
+    <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/config.php" id="assetsign-test-email-form" style="display:none;">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="entities_id" value="{{ entity_id }}">
     </form>
@@ -14,10 +14,10 @@
        id, type, entite, is_default/is_active) : les champs visibles de
        l'editeur de gabarit integre (macro template_editor plus bas) y sont
        rattaches via l'attribut HTML5 form="...", jamais imbriques dans le
-       formulaire principal ci-dessous — meme motif que remise-test-email-form
+       formulaire principal ci-dessous — meme motif que assetsign-test-email-form
        (un <form> ne peut pas en contenir un autre en HTML valide). #}
     {% for type, template in templates %}
-      <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/template.form.php" id="remise-template-form-{{ type }}" style="display:none;">
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/template.form.php" id="assetsign-template-form-{{ type }}" style="display:none;">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ template.fields.id|default(0) }}">
         <input type="hidden" name="type" value="{{ type }}">
@@ -26,21 +26,21 @@
         <input type="hidden" name="is_active" value="1">
       </form>
     {% endfor %}
-    <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/config.php" enctype="multipart/form-data" id="remise-config-form" data-remise-preview-frame="remise-preview-frame">
+    <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/config.php" enctype="multipart/form-data" id="assetsign-config-form" data-assetsign-preview-frame="assetsign-preview-frame">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="entities_id" value="{{ entity_id }}">
-      <input type="hidden" name="type" id="remise-preview-type" value="0">
+      <input type="hidden" name="type" id="assetsign-preview-type" value="0">
 
       <ul class="nav nav-tabs mb-3" role="tablist">
-        <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-general" type="button" role="tab" data-remise-preview-type="0">{{ __('Général', 'remise') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-handover" type="button" role="tab" data-remise-preview-type="0">{{ __('Remise', 'remise') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-return" type="button" role="tab" data-remise-preview-type="1">{{ __('Restitution', 'remise') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-don" type="button" role="tab" data-remise-preview-type="3">{{ __('Don', 'remise') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-vente" type="button" role="tab" data-remise-preview-type="4">{{ __('Vente', 'remise') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-remise-preview-type="0">{{ __('Compléments', 'remise') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-remise-preview-type="0">{{ __('Maintenance', 'remise') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-remise-preview-type="0">{{ __('Passeport matériel', 'remise') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-remise-preview-type="0">{{ __('Score de santé', 'remise') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-general" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Général', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-handover" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Assetsign', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-return" type="button" role="tab" data-assetsign-preview-type="1">{{ __('Restitution', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-don" type="button" role="tab" data-assetsign-preview-type="3">{{ __('Don', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-vente" type="button" role="tab" data-assetsign-preview-type="4">{{ __('Vente', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Compléments', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Maintenance', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport matériel', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Score de santé', 'assetsign') }}</button></li>
       </ul>
 
       <div class="tab-content">
@@ -51,12 +51,12 @@
             <div class="card-body d-flex align-items-center gap-3">
               <i class="ti ti-brand-github fs-1 text-muted"></i>
               <div>
-                <div class="fw-bold">{{ __('Version du plugin', 'remise') }}</div>
+                <div class="fw-bold">{{ __('Version du plugin', 'assetsign') }}</div>
                 <div class="text-muted small">
-                  {{ __('Version installée', 'remise') }}
+                  {{ __('Version installée', 'assetsign') }}
                   <span class="badge bg-blue-lt">v{{ installed_version }}</span>
                   {% if latest_github_version %}
-                    {{ __('Dernière version sur GitHub', 'remise') }}
+                    {{ __('Dernière version sur GitHub', 'assetsign') }}
                     <span class="badge {{ latest_github_version != installed_version ? 'bg-orange-lt' : 'bg-green-lt' }}">v{{ latest_github_version }}</span>
                   {% endif %}
                 </div>
@@ -64,30 +64,30 @@
             </div>
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Nom de l\'expéditeur', 'remise') }}</label>
+            <label class="form-label">{{ __('Nom de l\'expéditeur', 'assetsign') }}</label>
             <input type="text" name="sender_name" class="form-control" value="{{ config.sender_name|default('') }}">
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('E-mail de l\'expéditeur', 'remise') }}</label>
+            <label class="form-label">{{ __('E-mail de l\'expéditeur', 'assetsign') }}</label>
             <input type="email" name="sender_email" class="form-control" value="{{ config.sender_email|default('') }}">
           </div>
 
           <div class="mb-3">
-            {# Bouton associe au formulaire independant "remise-test-email-form"
+            {# Bouton associe au formulaire independant "assetsign-test-email-form"
                (attribut HTML5 form="...", pas d'imbrication de <form>) : action
                separee de "update", envoyee a l'adresse du compte GLPI courant
                plutot qu'a un vrai beneficiaire, pour verifier isolement que le
                serveur SMTP configure dans GLPI accepte l'envoi avec l'expediteur
-               ci-dessus, sans attendre une vraie remise. #}
-            <button type="submit" form="remise-test-email-form" name="send_test_email" class="btn btn-outline-secondary btn-sm">{{ __('Envoyer un e-mail de test', 'remise') }}</button>
-            <div class="form-text">{{ __('Envoie un e-mail à votre propre adresse GLPI, pour vérifier que l\'envoi fonctionne.', 'remise') }}</div>
+               ci-dessus, sans attendre une vraie assetsign. #}
+            <button type="submit" form="assetsign-test-email-form" name="send_test_email" class="btn btn-outline-secondary btn-sm">{{ __('Envoyer un e-mail de test', 'assetsign') }}</button>
+            <div class="form-text">{{ __('Envoie un e-mail à votre propre adresse GLPI, pour vérifier que l\'envoi fonctionne.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Logo à afficher sur les fiches PDF', 'remise') }}</label>
+            <label class="form-label">{{ __('Logo à afficher sur les fiches PDF', 'assetsign') }}</label>
             {% if logo_is_forced %}
               <div class="alert alert-info py-2 px-3 mb-2">
-                {{ __('Le logo affiché ci-dessous est actuellement imposé par une entité parente (voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition est retirée.', 'remise') }}
+                {{ __('Le logo affiché ci-dessous est actuellement imposé par une entité parente (voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition est retirée.', 'assetsign') }}
               </div>
             {% endif %}
             {% if logo_document %}
@@ -96,36 +96,36 @@
                 {% if not logo_is_forced %}
                   <div class="form-check">
                     <input type="checkbox" name="remove_logo" value="1" class="form-check-input" id="remove_logo">
-                    <label class="form-check-label" for="remove_logo">{{ __('Retirer le logo actuel', 'remise') }}</label>
+                    <label class="form-check-label" for="remove_logo">{{ __('Retirer le logo actuel', 'assetsign') }}</label>
                   </div>
                 {% endif %}
               </div>
             {% endif %}
-            <input type="file" name="logo_file" id="remise-logo-file" class="form-control" accept="image/png,image/jpeg,image/gif,image/webp">
-            <div class="form-text">{{ __('Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo actuel.', 'remise') }}</div>
+            <input type="file" name="logo_file" id="assetsign-logo-file" class="form-control" accept="image/png,image/jpeg,image/gif,image/webp">
+            <div class="form-text">{{ __('Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo actuel.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3 form-check">
             <input type="hidden" name="logo_force_children" value="0">
             <input type="checkbox" name="logo_force_children" value="1" class="form-check-input" id="logo_force_children" {{ config.logo_force_children|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="logo_force_children">{{ __('Imposer ce logo à toutes les entités enfants (et leurs propres sous-entités)', 'remise') }}</label>
-            <div class="form-text">{{ __('Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo.', 'remise') }}</div>
+            <label class="form-check-label" for="logo_force_children">{{ __('Imposer ce logo à toutes les entités enfants (et leurs propres sous-entités)', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Utile si plusieurs entités doivent afficher le même logo : cette entité impose alors le sien à toute sa descendance, même si une entité enfant a déjà envoyé son propre logo.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Nom de l\'entreprise', 'remise') }}</label>
+            <label class="form-label">{{ __('Nom de l\'entreprise', 'assetsign') }}</label>
             <input type="text" name="company_name" class="form-control" value="{{ config.company_name|default('') }}">
-            <div class="form-text">{{ __('Optionnel : affiché à côté du logo sur les fiches PDF, en complément (pas en remplacement) du logo.', 'remise') }}</div>
+            <div class="form-text">{{ __('Optionnel : affiché à côté du logo sur les fiches PDF, en complément (pas en remplacement) du logo.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Lien vers la charte informatique complète', 'remise') }}</label>
+            <label class="form-label">{{ __('Lien vers la charte informatique complète', 'assetsign') }}</label>
             <input type="url" name="charter_url" class="form-control" placeholder="https://intranet.exemple.fr/charte-informatique.pdf" value="{{ config.charter_url|default('') }}">
-            <div class="form-text">{{ __('Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types.', 'remise') }}</div>
+            <div class="form-text">{{ __('Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Fournisseur de signature', 'remise') }}</label>
+            <label class="form-label">{{ __('Fournisseur de signature', 'assetsign') }}</label>
             <select name="default_provider" class="form-select">
               {% for key, label in providers %}
                 <option value="{{ key }}" {{ config.default_provider|default('canvas') == key ? 'selected' : '' }}>{{ label }}</option>
@@ -134,39 +134,39 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Délais de relance (jours, séparés par des virgules — ex: 3,7,7)', 'remise') }}</label>
+            <label class="form-label">{{ __('Délais de relance (jours, séparés par des virgules — ex: 3,7,7)', 'assetsign') }}</label>
             <input type="text" name="reminder_delays" class="form-control" value="{{ config.reminder_delays|default('3,7,7') }}">
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Nombre maximum de relances (0 = illimité)', 'remise') }}</label>
+            <label class="form-label">{{ __('Nombre maximum de relances (0 = illimité)', 'assetsign') }}</label>
             <input type="number" name="max_reminders" class="form-control" value="{{ config.max_reminders|default(0) }}" min="0">
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Durée de validité du lien de signature (jours)', 'remise') }}</label>
+            <label class="form-label">{{ __('Durée de validité du lien de signature (jours)', 'assetsign') }}</label>
             <input type="number" name="link_validity_days" class="form-control" value="{{ config.link_validity_days|default(30) }}" min="1">
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Alerter le technicien avant expiration (jours avant, 0 = désactivé)', 'remise') }}</label>
+            <label class="form-label">{{ __('Alerter le technicien avant expiration (jours avant, 0 = désactivé)', 'assetsign') }}</label>
             <input type="number" name="expiry_warning_days" class="form-control" value="{{ config.expiry_warning_days|default(3) }}" min="0">
-            <div class="form-text">{{ __('Le technicien à l\'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l\'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu\'il ne soit trop tard.', 'remise') }}</div>
+            <div class="form-text">{{ __('Le technicien à l\'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l\'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu\'il ne soit trop tard.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3 form-check">
             <input type="hidden" name="signature_required" value="0">
             <input type="checkbox" name="signature_required" value="1" class="form-check-input" id="signature_required" {{ config.signature_required|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="signature_required">{{ __('Signature obligatoire', 'remise') }}</label>
+            <label class="form-check-label" for="signature_required">{{ __('Signature obligatoire', 'assetsign') }}</label>
           </div>
 
           <div class="mb-3 form-check">
             <input type="hidden" name="protect_pdf" value="0">
             <input type="checkbox" name="protect_pdf" value="1" class="form-check-input" id="protect_pdf" {{ config.protect_pdf|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="protect_pdf">{{ __('Protéger le PDF (restreindre la copie et l\'édition)', 'remise') }}</label>
-            <div class="form-text">{{ __('Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur qui respecte cette restriction — n\'affecte jamais la possibilité de le consulter ou de l\'imprimer.', 'remise') }}</div>
+            <label class="form-check-label" for="protect_pdf">{{ __('Protéger le PDF (restreindre la copie et l\'édition)', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur qui respecte cette restriction — n\'affecte jamais la possibilité de le consulter ou de l\'imprimer.', 'assetsign') }}</div>
           </div>
 
           <hr>
-          <h4>{{ __('Types de matériel gérés par le plugin', 'remise') }}</h4>
-          <p class="text-muted">{{ __('Décochez un type pour que le plugin n\'agisse jamais dessus, quelle que soit l\'affectation ou l\'État.', 'remise') }}</p>
+          <h4>{{ __('Types de matériel gérés par le plugin', 'assetsign') }}</h4>
+          <p class="text-muted">{{ __('Décochez un type pour que le plugin n\'agisse jamais dessus, quelle que soit l\'affectation ou l\'État.', 'assetsign') }}</p>
           {% for itemtype, label in itemtype_labels %}
             <div class="mb-2 form-check">
               <input type="checkbox" name="manage_{{ itemtype }}" value="1" class="form-check-input" id="manage_{{ itemtype }}" {{ itemtype in managed ? 'checked' : '' }}>
@@ -175,25 +175,25 @@
           {% endfor %}
         </div>
 
-        {# ---------------------------------------------------------------- Remise #}
+        {# ---------------------------------------------------------------- Assetsign #}
         <div class="tab-pane fade" id="tab-handover" role="tabpanel">
           {{ _self.template_editor(0, templates[0], entity_id) }}
-          <h4>{{ __('Déclenchement par affectation d\'utilisateur', 'remise') }}</h4>
-          <p class="text-muted">{{ __('Basé sur le champ "Utilisateur" du matériel — fonctionne dans la plupart des GLPI.', 'remise') }}</p>
+          <h4>{{ __('Déclenchement par affectation d\'utilisateur', 'assetsign') }}</h4>
+          <p class="text-muted">{{ __('Basé sur le champ "Utilisateur" du matériel — fonctionne dans la plupart des GLPI.', 'assetsign') }}</p>
           <div class="mb-3 form-check">
             <input type="hidden" name="sign_on_assignment" value="0">
             <input type="checkbox" name="sign_on_assignment" value="1" class="form-check-input" id="sign_on_assignment" {{ config.sign_on_assignment|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="sign_on_assignment">{{ __('Signature à la première affectation', 'remise') }}</label>
+            <label class="form-check-label" for="sign_on_assignment">{{ __('Signature à la première affectation', 'assetsign') }}</label>
           </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="sign_on_reassignment" value="0">
             <input type="checkbox" name="sign_on_reassignment" value="1" class="form-check-input" id="sign_on_reassignment" {{ config.sign_on_reassignment|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="sign_on_reassignment">{{ __('Signature à chaque changement d\'utilisateur', 'remise') }}</label>
+            <label class="form-check-label" for="sign_on_reassignment">{{ __('Signature à chaque changement d\'utilisateur', 'assetsign') }}</label>
           </div>
 
           {% if all_states|length %}
-            <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'remise') }}</h4>
-            <p class="text-muted">{{ __('Tous les GLPI n\'utilisent pas les mêmes États : choisissez parmi VOS États existants (Configuration > Listes déroulantes > États).', 'remise') }}</p>
+            <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'assetsign') }}</h4>
+            <p class="text-muted">{{ __('Tous les GLPI n\'utilisent pas les mêmes États : choisissez parmi VOS États existants (Configuration > Listes déroulantes > États).', 'assetsign') }}</p>
             {% for id, name in all_states %}
               <div class="form-check">
                 <input type="checkbox" name="handover_states[]" value="{{ id }}" class="form-check-input" id="handover_state_{{ id }}" {{ id in handover_states ? 'checked' : '' }}>
@@ -209,11 +209,11 @@
           <div class="mb-3 form-check">
             <input type="hidden" name="sign_on_return" value="0">
             <input type="checkbox" name="sign_on_return" value="1" class="form-check-input" id="sign_on_return" {{ config.sign_on_return|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="sign_on_return">{{ __('Signature lors de la restitution (désaffectation)', 'remise') }}</label>
+            <label class="form-check-label" for="sign_on_return">{{ __('Signature lors de la restitution (désaffectation)', 'assetsign') }}</label>
           </div>
 
           {% if all_states|length %}
-            <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'remise') }}</h4>
+            <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'assetsign') }}</h4>
             {% for id, name in all_states %}
               <div class="form-check">
                 <input type="checkbox" name="return_states[]" value="{{ id }}" class="form-check-input" id="return_state_{{ id }}" {{ id in return_states ? 'checked' : '' }}>
@@ -229,12 +229,12 @@
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_don" value="0">
             <input type="checkbox" name="enable_don" value="1" class="form-check-input" id="enable_don" {{ config.enable_don|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="enable_don">{{ __('Autoriser la création de fiches de don de matériel', 'remise') }}</label>
-            <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de don » sur l\'onglet Remise de chaque matériel géré par le plugin.', 'remise') }}</div>
+            <label class="form-check-label" for="enable_don">{{ __('Autoriser la création de fiches de don de matériel', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de don » sur l\'onglet Assetsign de chaque matériel géré par le plugin.', 'assetsign') }}</div>
           </div>
 
           {% if all_states|length %}
-            <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'remise') }}</h4>
+            <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'assetsign') }}</h4>
             {% for id, name in all_states %}
               <div class="form-check">
                 <input type="checkbox" name="donation_states[]" value="{{ id }}" class="form-check-input" id="donation_state_{{ id }}" {{ id in donation_states ? 'checked' : '' }}>
@@ -250,19 +250,19 @@
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_vente" value="0">
             <input type="checkbox" name="enable_vente" value="1" class="form-check-input" id="enable_vente" {{ config.enable_vente|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="enable_vente">{{ __('Autoriser la création de fiches de vente de matériel', 'remise') }}</label>
-            <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l\'onglet Remise de chaque matériel géré par le plugin.', 'remise') }}</div>
+            <label class="form-check-label" for="enable_vente">{{ __('Autoriser la création de fiches de vente de matériel', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l\'onglet Assetsign de chaque matériel géré par le plugin.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Symbole monétaire', 'remise') }}</label>
+            <label class="form-label">{{ __('Symbole monétaire', 'assetsign') }}</label>
             <input type="text" name="currency_symbol" class="form-control" style="width: 80px;" maxlength="8" value="{{ config.currency_symbol|default('€') }}">
-            <div class="form-text">{{ __('Affiché après le prix sur la fiche PDF (ex: €, $, CHF).', 'remise') }}</div>
+            <div class="form-text">{{ __('Affiché après le prix sur la fiche PDF (ex: €, $, CHF).', 'assetsign') }}</div>
           </div>
 
           {% if all_states|length %}
-            <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'remise') }}</h4>
-            <p class="text-muted small">{{ __('Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée.', 'remise') }}</p>
+            <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'assetsign') }}</h4>
+            <p class="text-muted small">{{ __('Le prix et la date ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée.', 'assetsign') }}</p>
             {% for id, name in all_states %}
               <div class="form-check">
                 <input type="checkbox" name="vente_states[]" value="{{ id }}" class="form-check-input" id="vente_state_{{ id }}" {{ id in vente_states ? 'checked' : '' }}>
@@ -274,95 +274,95 @@
 
         {# ---------------------------------------------------------------- Compléments #}
         <div class="tab-pane fade" id="tab-complements" role="tabpanel">
-          <p class="text-muted">{{ __('Réglages transverses, applicables à tous les types de fiche signée.', 'remise') }}</p>
+          <p class="text-muted">{{ __('Réglages transverses, applicables à tous les types de fiche signée.', 'assetsign') }}</p>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_observations" value="0">
             <input type="checkbox" name="enable_observations" value="1" class="form-check-input" id="enable_observations" {{ config.enable_observations|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="enable_observations">{{ __('Champ « Observations » libre sur chaque fiche', 'remise') }}</label>
-            <div class="form-text">{{ __('Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n\'est pas encore signée.', 'remise') }}</div>
+            <label class="form-check-label" for="enable_observations">{{ __('Champ « Observations » libre sur chaque fiche', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n\'est pas encore signée.', 'assetsign') }}</div>
           </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_damage_annotation" value="0">
             <input type="checkbox" name="enable_damage_annotation" value="1" class="form-check-input" id="enable_damage_annotation" {{ config.enable_damage_annotation|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="enable_damage_annotation">{{ __('État des lieux visuel (annotation de dommages)', 'remise') }}</label>
-            <div class="form-text">{{ __('Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance.', 'remise') }}</div>
+            <label class="form-check-label" for="enable_damage_annotation">{{ __('État des lieux visuel (annotation de dommages)', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance.', 'assetsign') }}</div>
           </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="show_qr_code" value="0">
             <input type="checkbox" name="show_qr_code" value="1" class="form-check-input" id="show_qr_code" {{ config.show_qr_code|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="show_qr_code">{{ __('Afficher un QR code sur les fiches PDF', 'remise') }}</label>
-            <div class="form-text">{{ __('Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel.', 'remise') }}</div>
+            <label class="form-check-label" for="show_qr_code">{{ __('Afficher un QR code sur les fiches PDF', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel.', 'assetsign') }}</div>
           </div>
           <div class="row">
             <div class="col-auto mb-3">
-              <label class="form-label">{{ __('Texte du filigrane sur l\'aperçu', 'remise') }}</label>
+              <label class="form-label">{{ __('Texte du filigrane sur l\'aperçu', 'assetsign') }}</label>
               <input type="text" name="preview_watermark_text" class="form-control" maxlength="32" value="{{ config.preview_watermark_text|default('APERÇU') }}">
             </div>
             <div class="col-auto mb-3">
-              <label class="form-label">{{ __('Opacité du filigrane (%)', 'remise') }}</label>
+              <label class="form-label">{{ __('Opacité du filigrane (%)', 'assetsign') }}</label>
               <input type="number" name="preview_watermark_opacity" min="5" max="100" class="form-control" style="width: 100px;" value="{{ config.preview_watermark_opacity|default(25) }}">
             </div>
           </div>
-          <div class="form-text mb-3">{{ __('Affiché uniquement sur l\'aperçu en direct (jamais sur le vrai PDF), pour éviter toute confusion entre les deux.', 'remise') }}</div>
+          <div class="form-text mb-3">{{ __('Affiché uniquement sur l\'aperçu en direct (jamais sur le vrai PDF), pour éviter toute confusion entre les deux.', 'assetsign') }}</div>
         </div>
 
         {# ---------------------------------------------------------------- Maintenance #}
         <div class="tab-pane fade" id="tab-maintenance" role="tabpanel">
-          <p class="text-muted">{{ __('La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d\'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l\'option ci-dessous est activée. L\'accès se gère par le droit dédié (Administration > Profils).', 'remise') }}</p>
+          <p class="text-muted">{{ __('La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d\'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l\'option ci-dessous est activée. L\'accès se gère par le droit dédié (Administration > Profils).', 'assetsign') }}</p>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_maintenance_signature" value="0">
             <input type="checkbox" name="enable_maintenance_signature" value="1" class="form-check-input" id="enable_maintenance_signature" {{ config.enable_maintenance_signature|default(0) ? 'checked' : '' }}>
-            <label class="form-check-label" for="enable_maintenance_signature">{{ __('Faire signer le technicien sur la fiche de maintenance', 'remise') }}</label>
-            <div class="form-text">{{ __('Si activé, un pavé de signature (identique à celui d\'une vente) apparaît sur le formulaire de création : la fiche ne peut pas être créée sans signature. Le technicien est déjà connecté, aucun e-mail ni page séparée n\'est utilisé.', 'remise') }}</div>
+            <label class="form-check-label" for="enable_maintenance_signature">{{ __('Faire signer le technicien sur la fiche de maintenance', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Si activé, un pavé de signature (identique à celui d\'une vente) apparaît sur le formulaire de création : la fiche ne peut pas être créée sans signature. Le technicien est déjà connecté, aucun e-mail ni page séparée n\'est utilisé.', 'assetsign') }}</div>
           </div>
-          <a href="{{ config('root_doc') }}/front/dropdown.php?itemtype=GlpiPlugin%5CRemise%5CMaintenanceChecklistItem" class="btn btn-outline-secondary">{{ __('Gérer les points de contrôle', 'remise') }}</a>
-          <a href="{{ config('root_doc') }}/plugins/remise/front/maintenance.php" class="btn btn-outline-secondary">{{ __('Voir les fiches de maintenance', 'remise') }}</a>
+          <a href="{{ config('root_doc') }}/front/dropdown.php?itemtype=GlpiPlugin%5CAssetsign%5CMaintenanceChecklistItem" class="btn btn-outline-secondary">{{ __('Gérer les points de contrôle', 'assetsign') }}</a>
+          <a href="{{ config('root_doc') }}/plugins/assetsign/front/maintenance.php" class="btn btn-outline-secondary">{{ __('Voir les fiches de maintenance', 'assetsign') }}</a>
         </div>
 
         {# ---------------------------------------------------------------- Score de santé #}
         <div class="tab-pane fade" id="tab-health" role="tabpanel">
-          <p class="text-muted">{{ __('Le score de santé synthétise l’âge, les incidents, l’état physique et les mouvements du matériel. Les réglages sont propres à l’entité sélectionnée.', 'remise') }}</p>
+          <p class="text-muted">{{ __('Le score de santé synthétise l’âge, les incidents, l’état physique et les mouvements du matériel. Les réglages sont propres à l’entité sélectionnée.', 'assetsign') }}</p>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_health_score" value="0">
             <input type="checkbox" name="enable_health_score" value="1" class="form-check-input" id="enable_health_score" {{ config.enable_health_score|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="enable_health_score">{{ __('Afficher un score de santé (0-100)', 'remise') }}</label>
+            <label class="form-check-label" for="enable_health_score">{{ __('Afficher un score de santé (0-100)', 'assetsign') }}</label>
           </div>
-          <h4>{{ __('Calcul du score', 'remise') }}</h4>
-          <div class="form-text mb-2">{{ __('Les poids sont relatifs : ils n’ont pas à totaliser 100. Un facteur à 0 est ignoré.', 'remise') }}</div>
+          <h4>{{ __('Calcul du score', 'assetsign') }}</h4>
+          <div class="form-text mb-2">{{ __('Les poids sont relatifs : ils n’ont pas à totaliser 100. Un facteur à 0 est ignoré.', 'assetsign') }}</div>
           <div class="row g-2 mb-4" style="max-width: 500px;">
-            <div class="col-6"><label class="form-label">{{ __('Poids : Âge', 'remise') }}</label><input type="number" name="health_weight_age" class="form-control" min="0" value="{{ config.health_weight_age|default(30) }}"></div>
-            <div class="col-6"><label class="form-label">{{ __('Poids : Incidents', 'remise') }}</label><input type="number" name="health_weight_incidents" class="form-control" min="0" value="{{ config.health_weight_incidents|default(30) }}"></div>
-            <div class="col-6"><label class="form-label">{{ __('Poids : État physique', 'remise') }}</label><input type="number" name="health_weight_damage" class="form-control" min="0" value="{{ config.health_weight_damage|default(25) }}"></div>
-            <div class="col-6"><label class="form-label">{{ __('Poids : Mouvements', 'remise') }}</label><input type="number" name="health_weight_movements" class="form-control" min="0" value="{{ config.health_weight_movements|default(15) }}"></div>
+            <div class="col-6"><label class="form-label">{{ __('Poids : Âge', 'assetsign') }}</label><input type="number" name="health_weight_age" class="form-control" min="0" value="{{ config.health_weight_age|default(30) }}"></div>
+            <div class="col-6"><label class="form-label">{{ __('Poids : Incidents', 'assetsign') }}</label><input type="number" name="health_weight_incidents" class="form-control" min="0" value="{{ config.health_weight_incidents|default(30) }}"></div>
+            <div class="col-6"><label class="form-label">{{ __('Poids : État physique', 'assetsign') }}</label><input type="number" name="health_weight_damage" class="form-control" min="0" value="{{ config.health_weight_damage|default(25) }}"></div>
+            <div class="col-6"><label class="form-label">{{ __('Poids : Mouvements', 'assetsign') }}</label><input type="number" name="health_weight_movements" class="form-control" min="0" value="{{ config.health_weight_movements|default(15) }}"></div>
           </div>
-          <h4>{{ __('Couleurs et seuils', 'remise') }}</h4>
-          <p class="text-muted">{{ __('Le score utilise la couleur « Bon » à partir de son seuil, « Vigilance » entre les deux seuils et « Critique » en dessous. Les seuils sont inclusifs.', 'remise') }}</p>
+          <h4>{{ __('Couleurs et seuils', 'assetsign') }}</h4>
+          <p class="text-muted">{{ __('Le score utilise la couleur « Bon » à partir de son seuil, « Vigilance » entre les deux seuils et « Critique » en dessous. Les seuils sont inclusifs.', 'assetsign') }}</p>
           <div class="row g-3" style="max-width: 720px;">
-            <div class="col-md-4"><label class="form-label">{{ __('Bon', 'remise') }}</label><div class="input-group"><input type="color" name="health_score_good_color" class="form-control form-control-color" value="{{ config.health_score_good_color|default('#2fb344') }}"><input type="number" name="health_score_good_threshold" class="form-control" min="0" max="100" value="{{ config.health_score_good_threshold|default(70) }}"><span class="input-group-text">%</span></div></div>
-            <div class="col-md-4"><label class="form-label">{{ __('Vigilance', 'remise') }}</label><div class="input-group"><input type="color" name="health_score_warning_color" class="form-control form-control-color" value="{{ config.health_score_warning_color|default('#f76707') }}"><input type="number" name="health_score_warning_threshold" class="form-control" min="0" max="100" value="{{ config.health_score_warning_threshold|default(40) }}"><span class="input-group-text">%</span></div></div>
-            <div class="col-md-4"><label class="form-label">{{ __('Critique', 'remise') }}</label><input type="color" name="health_score_critical_color" class="form-control form-control-color" value="{{ config.health_score_critical_color|default('#d63939') }}"><div class="form-text">{{ __('En dessous du seuil Vigilance.', 'remise') }}</div></div>
+            <div class="col-md-4"><label class="form-label">{{ __('Bon', 'assetsign') }}</label><div class="input-group"><input type="color" name="health_score_good_color" class="form-control form-control-color" value="{{ config.health_score_good_color|default('#2fb344') }}"><input type="number" name="health_score_good_threshold" class="form-control" min="0" max="100" value="{{ config.health_score_good_threshold|default(70) }}"><span class="input-group-text">%</span></div></div>
+            <div class="col-md-4"><label class="form-label">{{ __('Vigilance', 'assetsign') }}</label><div class="input-group"><input type="color" name="health_score_warning_color" class="form-control form-control-color" value="{{ config.health_score_warning_color|default('#f76707') }}"><input type="number" name="health_score_warning_threshold" class="form-control" min="0" max="100" value="{{ config.health_score_warning_threshold|default(40) }}"><span class="input-group-text">%</span></div></div>
+            <div class="col-md-4"><label class="form-label">{{ __('Critique', 'assetsign') }}</label><input type="color" name="health_score_critical_color" class="form-control form-control-color" value="{{ config.health_score_critical_color|default('#d63939') }}"><div class="form-text">{{ __('En dessous du seuil Vigilance.', 'assetsign') }}</div></div>
           </div>
         </div>
         {# ---------------------------------------------------------------- Passeport matériel #}
         <div class="tab-pane fade" id="tab-passport" role="tabpanel">
-          <p class="text-muted">{{ __('Le Passeport matériel agrège en lecture seule les événements des onglets Remise/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel onglet du matériel concerné.', 'remise') }}</p>
+          <p class="text-muted">{{ __('Le Passeport matériel agrège en lecture seule les événements des onglets Assetsign/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel onglet du matériel concerné.', 'assetsign') }}</p>
 
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_passport" value="0">
             <input type="checkbox" name="enable_passport" value="1" class="form-check-input" id="enable_passport" {{ config.enable_passport|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="enable_passport">{{ __('Activer le Passeport matériel', 'remise') }}</label>
-            <div class="form-text">{{ __('Désactivé : l\'onglet disparaît et aucun nouvel événement n\'est enregistré. Les événements déjà enregistrés ne sont jamais supprimés — ils réapparaissent si vous réactivez.', 'remise') }}</div>
+            <label class="form-check-label" for="enable_passport">{{ __('Activer le Passeport matériel', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Désactivé : l\'onglet disparaît et aucun nouvel événement n\'est enregistré. Les événements déjà enregistrés ne sont jamais supprimés — ils réapparaissent si vous réactivez.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Anonymiser l\'identité des bénéficiaires après (années, 0 = jamais)', 'remise') }}</label>
+            <label class="form-label">{{ __('Anonymiser l\'identité des bénéficiaires après (années, 0 = jamais)', 'assetsign') }}</label>
             <input type="number" name="passport_retention_years" class="form-control" style="width: 140px;" value="{{ config.passport_retention_years|default(3) }}" min="0">
-            <div class="form-text">{{ __('Passé ce délai, le nom et l\'e-mail du bénéficiaire sont retirés des événements du Passeport matériel (l\'événement et sa date restent visibles). N\'affecte jamais les fiches de remise/restitution elles-mêmes.', 'remise') }}</div>
+            <div class="form-text">{{ __('Passé ce délai, le nom et l\'e-mail du bénéficiaire sont retirés des événements du Passeport matériel (l\'événement et sa date restent visibles). N\'affecte jamais les fiches de remise/restitution elles-mêmes.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Types d\'événement affichés dans la frise', 'remise') }}</label>
-            <div class="form-text mb-2">{{ __('Décocher un type ne supprime rien : il n\'est plus qu\'affiché dans la frise, tant qu\'il reste décoché.', 'remise') }}</div>
+            <label class="form-label">{{ __('Types d\'événement affichés dans la frise', 'assetsign') }}</label>
+            <div class="form-text mb-2">{{ __('Décocher un type ne supprime rien : il n\'est plus qu\'affiché dans la frise, tant qu\'il reste décoché.', 'assetsign') }}</div>
             {% for value, label in passport_type_labels %}
               <div class="form-check">
                 <input type="checkbox" name="passport_visible_types[]" value="{{ value }}" class="form-check-input" id="passport_type_{{ value }}" {{ value in passport_visible_types ? 'checked' : '' }}>
@@ -374,22 +374,22 @@
           <div class="mb-3 form-check">
             <input type="hidden" name="show_infocom_dates" value="0">
             <input type="checkbox" name="show_infocom_dates" value="1" class="form-check-input" id="show_infocom_dates" {{ config.show_infocom_dates|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="show_infocom_dates">{{ __('Afficher les dates Infocom dans la frise', 'remise') }}</label>
-            <div class="form-text">{{ __('Achat, commande, livraison, mise en service, garantie, réforme : lues directement depuis l\'onglet Infocom du matériel, jamais copiées ni modifiables depuis ici.', 'remise') }}</div>
+            <label class="form-check-label" for="show_infocom_dates">{{ __('Afficher les dates Infocom dans la frise', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Achat, commande, livraison, mise en service, garantie, réforme : lues directement depuis l\'onglet Infocom du matériel, jamais copiées ni modifiables depuis ici.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3 form-check">
             <input type="hidden" name="show_linked_tickets" value="0">
             <input type="checkbox" name="show_linked_tickets" value="1" class="form-check-input" id="show_linked_tickets" {{ config.show_linked_tickets|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="show_linked_tickets">{{ __('Afficher les tickets liés dans la frise', 'remise') }}</label>
-            <div class="form-text">{{ __('Lecture seule : chaque technicien ne voit que les tickets auxquels il a réellement accès, exactement comme sur l\'onglet Tickets du matériel.', 'remise') }}</div>
+            <label class="form-check-label" for="show_linked_tickets">{{ __('Afficher les tickets liés dans la frise', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Lecture seule : chaque technicien ne voit que les tickets auxquels il a réellement accès, exactement comme sur l\'onglet Tickets du matériel.', 'assetsign') }}</div>
           </div>
 
         </div>
 
       </div>
 
-      <button type="submit" name="update" class="btn btn-primary mt-3">{{ __('Enregistrer', 'remise') }}</button>
+      <button type="submit" name="update" class="btn btn-primary mt-3">{{ __('Enregistrer', 'assetsign') }}</button>
     </form>
   </div>
 </div>
@@ -397,10 +397,10 @@
 
 <div class="col" style="max-width: 420px; position: sticky; top: 1rem;">
   <div class="card">
-    <div class="card-header">{{ __('Aperçu de la fiche générée', 'remise') }}</div>
+    <div class="card-header">{{ __('Aperçu de la fiche générée', 'assetsign') }}</div>
     <div class="card-body p-2">
-      <p class="text-muted small px-1">{{ __('Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L\'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d\'onglet, avant même d\'enregistrer.', 'remise') }}</p>
-      <iframe id="remise-preview-frame" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
+      <p class="text-muted small px-1">{{ __('Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L\'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d\'onglet, avant même d\'enregistrer.', 'assetsign') }}</p>
+      <iframe id="assetsign-preview-frame" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
     </div>
   </div>
 </div>
@@ -410,47 +410,47 @@
    remplace l'ancien simple lien de renvoi vers front/template.form.php (cf.
    ROADMAP.md, "Rapprocher la gestion des gabarits de l'experience du
    plugin"). Chaque champ est rattache via l'attribut HTML5 form="..." a la
-   forme cachee "remise-template-form-{type}" declaree plus haut (jamais de
+   forme cachee "assetsign-template-form-{type}" declaree plus haut (jamais de
    <form> imbrique dans le formulaire principal, invalide en HTML) : la
    sauvegarde reste entierement geree par Template::showForm()/CommonDBTM,
    ce bloc ne fait que rapatrier l'affichage. #}
 {% macro template_editor(type, template, entity_id) %}
-  {% set form_id = 'remise-template-form-' ~ type %}
+  {% set form_id = 'assetsign-template-form-' ~ type %}
   <div class="card card-sm mb-3">
     <div class="card-body">
       {% if template.fields.entities_id is defined and template.fields.entities_id != entity_id %}
         <div class="alert alert-info py-2 px-3 mb-3">
-          {{ __('Ce gabarit est hérité d\'une entité parente : l\'enregistrer ici le modifie pour toutes les entités qui en héritent, pas seulement celle-ci.', 'remise') }}
+          {{ __('Ce gabarit est hérité d\'une entité parente : l\'enregistrer ici le modifie pour toutes les entités qui en héritent, pas seulement celle-ci.', 'assetsign') }}
         </div>
       {% endif %}
 
       <div class="mb-3">
-        <label class="form-label">{{ __('Nom du gabarit', 'remise') }}</label>
+        <label class="form-label">{{ __('Nom du gabarit', 'assetsign') }}</label>
         <input type="text" name="name" form="{{ form_id }}" class="form-control" value="{{ template.fields.name|default('') }}" required>
       </div>
 
       <div class="mb-3 form-check">
         <input type="hidden" name="include_content" form="{{ form_id }}" value="0">
         <input type="checkbox" name="include_content" form="{{ form_id }}" value="1" class="form-check-input" id="include_content_{{ type }}" {{ template.fields.include_content|default(1) ? 'checked' : '' }}>
-        <label class="form-check-label" for="include_content_{{ type }}">{{ __('Inclure les conditions générales dans le PDF', 'remise') }}</label>
+        <label class="form-check-label" for="include_content_{{ type }}">{{ __('Inclure les conditions générales dans le PDF', 'assetsign') }}</label>
       </div>
       <div class="mb-3">
-        {{ fields.textareaField('content', template.fields.content|default(''), __('Conditions générales (contrat)', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 6, 'additional_attributes': {'form': form_id}}) }}
-        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'remise') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
+        {{ fields.textareaField('content', template.fields.content|default(''), __('Conditions générales (contrat)', 'assetsign'), {'enable_richtext': true, 'enable_images': false, 'rows': 6, 'additional_attributes': {'form': form_id}}) }}
+        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
       </div>
 
       <div class="mb-3 form-check">
         <input type="hidden" name="include_charter" form="{{ form_id }}" value="0">
         <input type="checkbox" name="include_charter" form="{{ form_id }}" value="1" class="form-check-input" id="include_charter_{{ type }}" {{ template.fields.include_charter|default(1) ? 'checked' : '' }}>
-        <label class="form-check-label" for="include_charter_{{ type }}">{{ __('Inclure la charte informatique dans le PDF', 'remise') }}</label>
+        <label class="form-check-label" for="include_charter_{{ type }}">{{ __('Inclure la charte informatique dans le PDF', 'assetsign') }}</label>
       </div>
       <div class="mb-3">
-        {{ fields.textareaField('charter_content', template.fields.charter_content|default(''), __('Charte informatique', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 6, 'additional_attributes': {'form': form_id}}) }}
+        {{ fields.textareaField('charter_content', template.fields.charter_content|default(''), __('Charte informatique', 'assetsign'), {'enable_richtext': true, 'enable_images': false, 'rows': 6, 'additional_attributes': {'form': form_id}}) }}
       </div>
 
       <div class="d-flex gap-2 align-items-center">
-        <button type="submit" form="{{ form_id }}" name="{{ template.fields.id|default(0) ? 'update' : 'add' }}" class="btn btn-primary btn-sm">{{ __('Enregistrer le gabarit', 'remise') }}</button>
-        <a href="{{ config('root_doc') }}/plugins/remise/front/template.php?criteria[0][link]=AND&criteria[0][field]=2&criteria[0][searchtype]=equals&criteria[0][value]={{ type }}" class="btn btn-outline-secondary btn-sm">{{ __('Gérer tous les gabarits de ce type', 'remise') }}</a>
+        <button type="submit" form="{{ form_id }}" name="{{ template.fields.id|default(0) ? 'update' : 'add' }}" class="btn btn-primary btn-sm">{{ __('Enregistrer le gabarit', 'assetsign') }}</button>
+        <a href="{{ config('root_doc') }}/plugins/assetsign/front/template.php?criteria[0][link]=AND&criteria[0][field]=2&criteria[0][searchtype]=equals&criteria[0][value]={{ type }}" class="btn btn-outline-secondary btn-sm">{{ __('Gérer tous les gabarits de ce type', 'assetsign') }}</a>
       </div>
     </div>
   </div>
@@ -458,9 +458,9 @@
 
 <script>
 (function () {
-  var fileInput = document.getElementById('remise-logo-file');
+  var fileInput = document.getElementById('assetsign-logo-file');
   var removeCheckbox = document.getElementById('remove_logo');
-  var frame = document.getElementById('remise-preview-frame');
+  var frame = document.getElementById('assetsign-preview-frame');
 
   function setPreviewLogo(dataUrl) {
     if (!frame.contentDocument) {
@@ -517,14 +517,14 @@
 
   // live-preview.js remplace ENTIEREMENT frame.srcdoc a chaque apercu en
   // direct (case cochee, changement d'onglet...) — un logo pas encore
-  // envoye au serveur (choisi via #remise-logo-file, jamais transmis a
+  // envoye au serveur (choisi via #assetsign-logo-file, jamais transmis a
   // front/preview.php, cf. son propre commentaire) disparaissait alors du
   // rendu a chaque rafraichissement suivant, quelques centaines de ms apres
   // l'avoir choisi : bug reel signale par l'utilisateur ("le logo fini par
   // disparaitre"). Reappliquee ici a chaque fin de rafraichissement
   // (callback expose par live-preview.js), tant qu'un fichier est toujours
   // selectionne et que "Retirer le logo actuel" n'est pas coche.
-  window.REMISE_ON_PREVIEW_REFRESH = function () {
+  window.ASSETSIGN_ON_PREVIEW_REFRESH = function () {
     if (removeCheckbox && removeCheckbox.checked) {
       return;
     }
@@ -539,24 +539,24 @@
     reader.readAsDataURL(file);
   };
 
-  // Chaque onglet de type (Remise/Restitution/Don/Vente) a son propre apercu :
+  // Chaque onglet de type (Assetsign/Restitution/Don/Vente) a son propre apercu :
   // au changement d'onglet, met a jour le champ "type" cache et redeclenche un
   // apercu (memes evenements 'change' que live-preview.js ecoute deja).
-  var typeInput = document.getElementById('remise-preview-type');
+  var typeInput = document.getElementById('assetsign-preview-type');
   document.querySelectorAll('[data-bs-toggle="tab"]').forEach(function (tabButton) {
     tabButton.addEventListener('shown.bs.tab', function () {
-      typeInput.value = tabButton.dataset.remisePreviewType;
+      typeInput.value = tabButton.dataset.assetsignPreviewType;
       typeInput.dispatchEvent(new Event('change', { bubbles: true }));
     });
   });
 })();
 </script>
 <script>
-  window.REMISE_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
+  window.ASSETSIGN_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
   // Jeton DEDIE au canal d'apercu en direct, jamais partage avec celui du
   // formulaire (champ _glpi_csrf_token, reserve au vrai bouton Enregistrer) —
   // cf. commentaire de Config::showConfigForm().
-  window.REMISE_PREVIEW_CSRF_TOKEN = {{ preview_csrf_token|json_encode|raw }};
+  window.ASSETSIGN_PREVIEW_CSRF_TOKEN = {{ preview_csrf_token|json_encode|raw }};
 </script>
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/csrf-queue.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/live-preview.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+<script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/csrf-queue.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+<script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/live-preview.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>

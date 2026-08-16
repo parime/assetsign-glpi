@@ -1,7 +1,7 @@
 <?php
 
-use GlpiPlugin\Remise\Api\PassportBackfillController;
-use GlpiPlugin\Remise\PassportEvent;
+use GlpiPlugin\Assetsign\Api\PassportBackfillController;
+use GlpiPlugin\Assetsign\PassportEvent;
 
 Session::checkRight(PassportEvent::$rightname, UPDATE);
 

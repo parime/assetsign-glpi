@@ -1,0 +1,239 @@
+<div class="card">
+  <div class="card-body">
+    <h2>{{ _n('Assetsign', 'Assetsigns', 1, 'assetsign') }} #{{ item.fields.id }} — {{ types[item.fields.type] }}</h2>
+
+    <table class="table table-striped">
+      <tr>
+        <th>{{ __('Statut', 'assetsign') }}</th>
+        <td>{{ statuses[item.fields.status] }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Matériel', 'assetsign') }}</th>
+        <td>{{ item.fields.itemtype }} — {{ target_item.name|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Bénéficiaire', 'assetsign') }}</th>
+        <td>
+          {{ (beneficiary.firstname|default('') ~ ' ' ~ beneficiary.realname|default(''))|trim }}
+          ({{ beneficiary.email|default('') }})
+          {% if item.fields.beneficiary_type == 1 %}
+            <span class="badge bg-secondary">{{ __('Externe', 'assetsign') }}</span>
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>{{ __('Envoyé le', 'assetsign') }}</th>
+        <td>{{ item.fields.date_sent|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Consulté le', 'assetsign') }}</th>
+        <td>{{ item.fields.date_viewed|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Signé le', 'assetsign') }}</th>
+        <td>{{ item.fields.date_signed|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Nombre de relances', 'assetsign') }}</th>
+        <td>{{ reminders }}</td>
+      </tr>
+      {% if item.fields.document_id_unsigned or item.fields.document_id_signed %}
+      <tr>
+        <th>{{ __('PDF', 'assetsign') }}</th>
+        <td>
+          {% if item.fields.document_id_signed %}
+            <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_signed }}" target="_blank">{{ __('Télécharger (signé)', 'assetsign') }}</a>
+          {% endif %}
+          {% if item.fields.document_id_unsigned %}
+            {% if item.fields.document_id_signed %} — {% endif %}
+            <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_unsigned }}" target="_blank">{{ __('Télécharger (non signé)', 'assetsign') }}</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endif %}
+    </table>
+
+    <div class="d-flex gap-2">
+      {% if can_remind %}
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <button type="submit" name="relance" class="btn btn-primary">{{ __('Relancer maintenant', 'assetsign') }}</button>
+        </form>
+      {% endif %}
+      {% if can_edit_accessories %}
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <button type="submit" name="cancel_request" class="btn btn-outline-danger" onclick="return confirm('{{ __('Annuler cette demande de signature ?', 'assetsign')|e('js') }}');">{{ __('Annuler la demande', 'assetsign') }}</button>
+        </form>
+      {% endif %}
+    </div>
+
+    {% if signature_proof %}
+      <h3 class="mt-4">{{ __('Preuve de signature', 'assetsign') }}</h3>
+      <table class="table table-striped">
+        <tr>
+          <th>{{ __('Signataire', 'assetsign') }}</th>
+          <td>{{ signature_proof.signer_name|default('') }} ({{ signature_proof.signer_email|default('') }})</td>
+        </tr>
+        <tr>
+          <th>{{ __('Adresse IP', 'assetsign') }}</th>
+          <td>{{ signature_proof.ip_address|default('') }}</td>
+        </tr>
+        <tr>
+          <th>{{ __('Navigateur / appareil', 'assetsign') }}</th>
+          <td>{{ signature_proof.user_agent|default('') }}</td>
+        </tr>
+        <tr>
+          <th>{{ __('Empreinte du document (SHA-256)', 'assetsign') }}</th>
+          <td><code>{{ signature_proof.document_hash|default('') }}</code></td>
+        </tr>
+        <tr>
+          <th>{{ __('Horodatage', 'assetsign') }}</th>
+          <td>{{ signature_proof.signed_at|default('') }}</td>
+        </tr>
+      </table>
+      <p class="text-muted small">{{ __('Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n\'a pas été modifié depuis (l\'empreinte ci-dessus doit correspondre à celle du fichier).', 'assetsign') }}</p>
+    {% endif %}
+
+    {% if item.fields.type == type_vente %}
+      <h3 class="mt-4">{{ __('Détails de la vente', 'assetsign') }}</h3>
+      {% if vente_details is null %}
+        <p class="text-muted small">{{ __('Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF ne mentionne pas encore la vente tant que ce prix n\'est pas saisi.', 'assetsign') }}</p>
+      {% endif %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Prix', 'assetsign') }}</label>
+          <input type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;" value="{{ vente_details.fields.price|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
+        </div>
+        <div class="col-auto">
+          <label class="form-label">{{ __('Date de vente', 'assetsign') }}</label>
+          <input type="date" name="sale_date" class="form-control" value="{{ vente_details.fields.sale_date|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
+        </div>
+        {% if can_edit_vente_details %}
+          <div class="col-auto">
+            <button type="submit" name="update_vente_details" class="btn btn-secondary btn-sm">{{ __('Enregistrer', 'assetsign') }}</button>
+          </div>
+        {% endif %}
+      </form>
+    {% endif %}
+
+    {% if observations_enabled %}
+      <h3 class="mt-4">{{ __('Observations', 'assetsign') }}</h3>
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="mb-2">
+          <textarea name="observations" class="form-control" rows="3" {{ can_edit_accessories ? '' : 'readonly' }}>{{ item.fields.observations|default('') }}</textarea>
+        </div>
+        {% if can_edit_accessories %}
+          <button type="submit" name="update_observations" class="btn btn-secondary btn-sm">{{ __('Enregistrer', 'assetsign') }}</button>
+        {% endif %}
+      </form>
+    {% endif %}
+
+    {% if item.fields.beneficiary_comment is defined and item.fields.beneficiary_comment %}
+      <h3 class="mt-4">{{ __('Remarque du bénéficiaire', 'assetsign') }}</h3>
+      <p class="text-muted" style="white-space: pre-line;">{{ item.fields.beneficiary_comment }}</p>
+    {% endif %}
+
+    {% if damage_annotation_enabled %}
+      <h3 class="mt-4">{{ __('État des lieux visuel', 'assetsign') }}</h3>
+      <p class="text-muted small">{{ __('Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner.', 'assetsign') }}</p>
+      <div class="damage-view-grid">
+        {% for index, label in damage_views %}
+          <div>
+            <div class="damage-view" data-assetsign-id="{{ item.fields.id }}" data-view-index="{{ index }}" data-editable="{{ can_edit_damage_markers ? '1' : '0' }}">
+              <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/assetsign/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
+              {% for marker in damage_markers_by_view[index]|default([]) %}
+                <div class="damage-marker{{ marker.severity == 1 ? ' damage-marker-major' : '' }}"
+                     data-id="{{ marker.id }}"
+                     style="left: {{ marker.x_percent }}%; top: {{ marker.y_percent }}%;"
+                     title="{{ marker.description|default('') }}"></div>
+              {% endfor %}
+            </div>
+            <div class="damage-view-label">{{ label }}</div>
+          </div>
+        {% endfor %}
+      </div>
+      {% if can_edit_damage_markers %}
+        <script>
+          window.ASSETSIGN_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
+          window.ASSETSIGN_DAMAGE_CSRF = {{ csrf_token|json_encode|raw }};
+          window.ASSETSIGN_DAMAGE_I18N = {
+            description: {{ __('Description', 'assetsign')|json_encode|raw }},
+            severity: {{ __('Gravité', 'assetsign')|json_encode|raw }},
+            minor: {{ __('Mineure', 'assetsign')|json_encode|raw }},
+            major: {{ __('Majeure', 'assetsign')|json_encode|raw }},
+            save: {{ __('Enregistrer', 'assetsign')|json_encode|raw }},
+            deleteLabel: {{ __('Supprimer', 'assetsign')|json_encode|raw }},
+            errorPrefix: {{ __('Erreur', 'assetsign')|json_encode|raw }},
+            networkError: {{ __('Erreur réseau, merci de réessayer.', 'assetsign')|json_encode|raw }}
+          };
+        </script>
+        <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/csrf-queue.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+        <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/damage-annotation.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+      {% endif %}
+    {% endif %}
+
+    <h3 class="mt-4">{{ __('Accessoires remis', 'assetsign') }}</h3>
+    {% if accessories|length %}
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>{{ __('Accessoire', 'assetsign') }}</th>
+            <th>{{ __('Quantité', 'assetsign') }}</th>
+            <th>{{ __('Commentaire', 'assetsign') }}</th>
+            {% if can_edit_accessories %}<th></th>{% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in accessories %}
+            <tr>
+              <td>{{ a.name }}</td>
+              <td>{{ a.quantity }}</td>
+              <td>{{ a.comment|default('') }}</td>
+              {% if can_edit_accessories %}
+                <td>
+                  <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">
+                    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="id" value="{{ item.fields.id }}">
+                    <input type="hidden" name="plugin_assetsign_accessories_id" value="{{ a.accessories_id }}">
+                    <button type="submit" name="remove_accessory" class="btn btn-sm btn-outline-danger">{{ __('Retirer', 'assetsign') }}</button>
+                  </form>
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-muted">{{ __('Aucun accessoire remis pour le moment.', 'assetsign') }}</p>
+    {% endif %}
+
+    {% if can_edit_accessories %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Ajouter un accessoire', 'assetsign') }}</label>
+          {% do call('GlpiPlugin\\Assetsign\\Accessory::dropdown', [{'name': 'plugin_assetsign_accessories_id'}]) %}
+        </div>
+        <div class="col-auto">
+          <label class="form-label">{{ __('Quantité', 'assetsign') }}</label>
+          <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 90px;">
+        </div>
+        <div class="col-auto">
+          <label class="form-label">{{ __('Commentaire', 'assetsign') }}</label>
+          <input type="text" name="comment" class="form-control">
+        </div>
+        <div class="col-auto">
+          <button type="submit" name="add_accessory" class="btn btn-secondary">{{ __('Ajouter', 'assetsign') }}</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>

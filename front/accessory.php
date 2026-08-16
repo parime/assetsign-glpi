@@ -1,11 +1,11 @@
 <?php
 
-use GlpiPlugin\Remise\Accessory;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\Accessory;
+use GlpiPlugin\Assetsign\Assetsign;
 
 Session::checkRight(Accessory::$rightname, READ);
 
-Html::header(Accessory::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Remise::class, Accessory::class);
+Html::header(Accessory::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Assetsign::class, Accessory::class);
 
 // Search::show() seul ne genere aucun lien de creation (cf. TROUBLESHOOTING.md,
 // meme piege que sur les autres intitules de ce plugin).

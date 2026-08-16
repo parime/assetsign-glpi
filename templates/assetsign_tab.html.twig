@@ -1,0 +1,171 @@
+<div class="card">
+  <div class="card-body">
+    {% if assetsigns|length == 0 %}
+      <p>{{ __('Aucune remise enregistrée pour ce matériel.', 'assetsign') }}</p>
+    {% else %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            {% if show_item_column %}<th>{{ __('Matériel', 'assetsign') }}</th>{% endif %}
+            <th>{{ __('Statut', 'assetsign') }}</th>
+            <th>{{ __('Créée le', 'assetsign') }}</th>
+            <th>{{ __('Signée le', 'assetsign') }}</th>
+            <th></th>
+            <th>{{ __('PDF', 'assetsign') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in assetsigns %}
+          <tr>
+            {% if show_item_column %}<td>{{ r.item_display|default('') }}</td>{% endif %}
+            <td>{{ statuses[r.status] }}</td>
+            <td>{{ r.date_creation }}</td>
+            <td>{{ r.date_signed|default('-') }}</td>
+            <td><a href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ r.id }}">{{ __('Voir', 'assetsign') }}</a></td>
+            <td>
+              {% if r.document_id_signed %}
+                <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ r.document_id_signed }}" target="_blank">{{ __('Télécharger (signé)', 'assetsign') }}</a>
+              {% elseif r.document_id_unsigned %}
+                <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ r.document_id_unsigned }}" target="_blank">{{ __('Télécharger (non signé)', 'assetsign') }}</a>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+
+    {% if can_create_manual %}
+      <hr>
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end" id="assetsign-manual-form">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="itemtype" value="{{ item.getType() }}">
+        <input type="hidden" name="items_id" value="{{ item.getID() }}">
+        <input type="hidden" name="create_manual" value="1">
+        <input type="hidden" name="type" id="assetsign-manual-type" value="{{ manual_types|keys|first }}">
+
+        <div class="col-12">
+          <label class="form-label">{{ __('Bénéficiaire', 'assetsign') }}</label>
+          <div class="btn-group" role="group">
+            <input type="radio" class="btn-check" name="beneficiary_type" id="assetsign-beneficiary-internal" value="0" checked autocomplete="off">
+            <label class="btn btn-outline-secondary" for="assetsign-beneficiary-internal">{{ __('Interne (compte GLPI)', 'assetsign') }}</label>
+            <input type="radio" class="btn-check" name="beneficiary_type" id="assetsign-beneficiary-external" value="1" autocomplete="off">
+            <label class="btn btn-outline-secondary" for="assetsign-beneficiary-external">{{ __('Externe', 'assetsign') }}</label>
+          </div>
+        </div>
+
+        <div class="col-auto assetsign-manual-internal-field">
+          <label class="form-label">{{ __('Destinataire', 'assetsign') }}</label>
+          {% do call('User::dropdown', [{'name': 'users_id'}]) %}
+        </div>
+        <div class="col-auto assetsign-manual-external-field" style="display: none;">
+          <label class="form-label">{{ __('Nom du bénéficiaire externe', 'assetsign') }}</label>
+          <input type="text" name="external_name" class="form-control" placeholder="{{ __('Ex. Association Locale, Jean Dupont...', 'assetsign') }}">
+        </div>
+        <div class="col-auto assetsign-manual-external-field" style="display: none;">
+          <label class="form-label">{{ __('Contact (facultatif)', 'assetsign') }}</label>
+          <input type="text" name="external_contact" class="form-control" placeholder="{{ __('E-mail ou téléphone', 'assetsign') }}">
+        </div>
+
+        <div class="col-auto assetsign-manual-vente-field" style="display: none;">
+          <label class="form-label">{{ __('Prix', 'assetsign') }}</label>
+          <input type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;">
+        </div>
+        <div class="col-auto assetsign-manual-vente-field" style="display: none;">
+          <label class="form-label">{{ __('Date de vente', 'assetsign') }}</label>
+          <input type="date" name="sale_date" class="form-control">
+        </div>
+
+        <div class="col-auto">
+          {% for value, label in manual_types %}
+            <button type="button" class="btn btn-secondary assetsign-manual-type-btn" data-type="{{ value }}">
+              {{ __('Créer une fiche de %s', 'assetsign')|format(label|lower) }}
+            </button>
+          {% endfor %}
+          <button type="submit" class="btn btn-primary assetsign-manual-submit-btn" style="display: none;">
+            {{ __('Valider', 'assetsign') }}
+          </button>
+        </div>
+      </form>
+      <script>
+        (function () {
+          var form = document.getElementById('assetsign-manual-form');
+          var typeInput = document.getElementById('assetsign-manual-type');
+          var venteFields = form.querySelectorAll('.assetsign-manual-vente-field');
+          var internalFields = form.querySelectorAll('.assetsign-manual-internal-field');
+          var externalFields = form.querySelectorAll('.assetsign-manual-external-field');
+          var beneficiaryRadios = form.querySelectorAll('input[name="beneficiary_type"]');
+          var typeButtons = form.querySelectorAll('.assetsign-manual-type-btn');
+          var submitBtn = form.querySelector('.assetsign-manual-submit-btn');
+
+          function toggleVenteFields() {
+            var isVente = typeInput.value === '{{ type_vente }}';
+            venteFields.forEach(function (el) { el.style.display = isVente ? '' : 'none'; });
+          }
+
+          // Chaque bouton "Créer une fiche de X" fixe le type et révèle les
+          // champs à compléter (prix, date, bénéficiaire externe...), SANS
+          // soumettre le formulaire : type="button", pas "submit". Avant ce
+          // correctif, le bouton était lui-même de type submit, ce qui créait
+          // la fiche dès le premier clic, avant même que ces champs ne soient
+          // visibles à l'écran - bug réel signalé par l'utilisateur (fiche de
+          // vente enregistrée avec un prix à 0 et la date du jour, sans qu'il
+          // ait pu saisir quoi que ce soit). Un unique bouton "Valider",
+          // révélé seulement après le choix d'un type, soumet réellement.
+          typeButtons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              typeInput.value = btn.dataset.type;
+              typeButtons.forEach(function (b) { b.classList.toggle('active', b === btn); });
+              toggleVenteFields();
+              submitBtn.style.display = '';
+            });
+          });
+
+          function toggleBeneficiaryFields() {
+            var isExternal = form.querySelector('input[name="beneficiary_type"]:checked').value === '1';
+            internalFields.forEach(function (el) { el.style.display = isExternal ? 'none' : ''; });
+            externalFields.forEach(function (el) { el.style.display = isExternal ? '' : 'none'; });
+          }
+          beneficiaryRadios.forEach(function (radio) {
+            radio.addEventListener('change', toggleBeneficiaryFields);
+          });
+
+          toggleVenteFields();
+          toggleBeneficiaryFields();
+
+          {% if prefill_type is not null %}
+            // Arrivee via le lien "creez maintenant la fiche" (cf.
+            // Assetsign::handleStateBasedTrigger()) : simule le clic sur le bon
+            // bouton de type plutot que de laisser le technicien le rechercher.
+            var prefillBtn = form.querySelector('.assetsign-manual-type-btn[data-type="{{ prefill_type }}"]');
+            if (prefillBtn) {
+              prefillBtn.click();
+              form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          {% endif %}
+        })();
+      </script>
+    {% endif %}
+
+    {% if can_assign_asset %}
+      <hr>
+      <h3>{{ __('Assigner un matériel à cet utilisateur', 'assetsign') }}</h3>
+      <p class="text-muted small">{{ __('L\'affectation déclenche automatiquement la création d\'une remise, comme depuis la fiche du matériel.', 'assetsign') }}</p>
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assign_user_asset.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="users_id" value="{{ target_user_id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Type de matériel', 'assetsign') }}</label>
+          {{ itemtype_dropdown_html|raw }}
+        </div>
+        <div class="col-auto">
+          <label class="form-label">{{ __('Matériel', 'assetsign') }}</label><br>
+          {{ item_dropdown_html|raw }}
+        </div>
+        <div class="col-auto">
+          <button type="submit" name="assign" class="btn btn-secondary">{{ __('Assigner', 'assetsign') }}</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>

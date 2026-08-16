@@ -1,6 +1,6 @@
 <?php
 
-use GlpiPlugin\Remise\Maintenance;
+use GlpiPlugin\Assetsign\Maintenance;
 
 Session::checkRight(Maintenance::$rightname, READ);
 

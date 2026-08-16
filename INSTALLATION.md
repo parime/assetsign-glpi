@@ -19,49 +19,49 @@ Trois façons de faire, au choix :
 **a) `git clone`** (pratique pour ensuite `git pull` lors des mises à jour) :
 ```bash
 cd /chemin/vers/glpi/plugins
-git clone https://github.com/parime/remise-glpi.git remise
+git clone https://github.com/parime/assetsign-glpi.git assetsign
 ```
 
-**b) Archive de release** — téléchargez `remise-glpi-X.Y.Z.zip` depuis la [page des releases](https://github.com/parime/remise-glpi/releases) et extrayez-la dans `plugins/` :
+**b) Archive de release** — téléchargez `assetsign-glpi-X.Y.Z.zip` depuis la [page des releases](https://github.com/parime/assetsign-glpi/releases) et extrayez-la dans `plugins/` :
 ```bash
 cd /chemin/vers/glpi/plugins
-unzip remise-glpi-X.Y.Z.zip
+unzip assetsign-glpi-X.Y.Z.zip
 ```
-L'archive contient déjà un dossier `remise/` à la racine — pas d'étape supplémentaire de renommage.
+L'archive contient déjà un dossier `assetsign/` à la racine — pas d'étape supplémentaire de renommage.
 
 **c) Sans `git` ni `unzip` disponibles sur le serveur** (ex: conteneur minimal) — récupère l'archive de la branche `main` via `curl` et l'extension PHP `ZipArchive` (quasi toujours présente, GLPI lui-même en dépend) :
 ```bash
 cd /chemin/vers/glpi/plugins
-curl -L -o remise.zip https://github.com/parime/remise-glpi/archive/refs/heads/main.zip
-php -r '$z = new ZipArchive; $z->open("remise.zip"); $z->extractTo("."); $z->close();'
-mv remise-glpi-main remise
-rm remise.zip
+curl -L -o assetsign.zip https://github.com/parime/assetsign-glpi/archive/refs/heads/main.zip
+php -r '$z = new ZipArchive; $z->open("assetsign.zip"); $z->extractTo("."); $z->close();'
+mv assetsign-glpi-main assetsign
+rm assetsign.zip
 ```
-Contrairement à l'archive de release (b), celle-ci contient un dossier `remise-glpi-main/` à renommer — c'est l'archive brute générée par GitHub pour la branche, pas une release construite par ce dépôt. Elle exclut malgré tout les fichiers de développement/CI (`tests/`, `.github/`...) grâce au même mécanisme `.gitattributes` que les releases.
+Contrairement à l'archive de release (b), celle-ci contient un dossier `assetsign-glpi-main/` à renommer — c'est l'archive brute générée par GitHub pour la branche, pas une release construite par ce dépôt. Elle exclut malgré tout les fichiers de développement/CI (`tests/`, `.github/`...) grâce au même mécanisme `.gitattributes` que les releases.
 
-Important, dans les trois cas : le dossier doit impérativement s'appeler **`remise`** — GLPI déduit la clé du plugin (`plugin_version_remise()`, etc.) du nom du dossier dans `plugins/`.
+Important, dans les trois cas : le dossier doit impérativement s'appeler **`assetsign`** — GLPI déduit la clé du plugin (`plugin_version_assetsign()`, etc.) du nom du dossier dans `plugins/`.
 
 ### 2. Installer et activer dans GLPI
 
-Depuis l'interface (**Configuration > Plugins**) : trouvez « Remise & signature », cliquez **Installer** puis **Activer**.
+Depuis l'interface (**Configuration > Plugins**) : trouvez « Assetsign & signature », cliquez **Installer** puis **Activer**.
 
 Ou en ligne de commande :
 ```bash
-php bin/console plugin:install remise
-php bin/console plugin:activate remise
+php bin/console plugin:install assetsign
+php bin/console plugin:activate assetsign
 ```
 
 ### 3. Configurer
 
-Un menu **Administration > Remise & signature** apparaît (Remises, Gabarits de remise, Configuration).
+Un menu **Administration > Assetsign & signature** apparaît (Assetsigns, Gabarits de remise, Configuration).
 
 Le formulaire de configuration est organisé en onglets (un par type de fiche, plus un onglet Général et un onglet Compléments), chacun avec un aperçu du PDF qui se met à jour automatiquement dès qu'un réglage change, avant même d'enregistrer :
 
 ![Page de configuration avec onglets et aperçu en direct](docs/screenshots/config.png)
 
 **La configuration est indépendante par entité, avec héritage automatique.** Deux façons d'y accéder, qui affichent le même formulaire :
-- la page **Administration > Remise & signature > Configuration**, qui édite l'entité actuellement active dans le sélecteur en haut de l'écran ;
-- l'onglet **« Remise & signature »** directement sur la fiche d'une entité (Configuration > Entités > *nom de l'entité*), pour éditer précisément la configuration de cette entité-là.
+- la page **Administration > Assetsign & signature > Configuration**, qui édite l'entité actuellement active dans le sélecteur en haut de l'écran ;
+- l'onglet **« Assetsign & signature »** directement sur la fiche d'une entité (Configuration > Entités > *nom de l'entité*), pour éditer précisément la configuration de cette entité-là.
 
 Une entité qui n'a jamais été configurée hérite automatiquement des réglages de son entité parente la plus proche qui en a une (pas forcément la racine — une organisation à plusieurs niveaux peut configurer une entité intermédiaire et voir ses entités enfants en hériter). Une entité peut aussi n'écraser qu'une partie des réglages (par exemple juste son adresse d'expédition) tout en restant sur le même logo que le reste du groupe — voir la case **« Imposer ce logo à toutes les entités enfants »**, qui permet justement à une entité parente de forcer un réglage précis sur toute sa descendance même quand celle-ci a sa propre configuration.
 
@@ -72,14 +72,14 @@ Depuis ce formulaire, réglez notamment :
 - **les déclencheurs par affectation** (première affectation, réaffectation, restitution) — basés sur le champ "Utilisateur" du matériel, ce qui convient à la plupart des GLPI. Un transfert direct entre deux personnes est traité comme une remise normale au nouveau détenteur.
 - **les déclencheurs par État** (optionnel) — si votre organisation pilote plutôt le cycle de vie du matériel via son État (ex. "En prêt" / "Disponible") que via l'affectation directe, choisissez ici, parmi vos propres États existants, ceux qui doivent déclencher une remise, une restitution, un don ou une vente.
 
-Si les deux mécanismes sont configurés et se déclenchent en même temps, une seule remise est créée — le déclenchement par affectation est prioritaire.
+Si les deux mécanismes sont configurés et se déclenchent en même temps, une seule assetsign est créée — le déclenchement par affectation est prioritaire.
 
 Vérifiez aussi que les notifications GLPI sont actives (**Configuration > Notifications**, mode "Email"), et que le serveur SMTP est configuré.
 
 ## Vérifier que ça fonctionne
 
 1. Affectez un ordinateur à un utilisateur ayant **un compte GLPI actif et une adresse e-mail valide**.
-2. Une entrée apparaît dans **Remise & signature > Remises** avec le statut « Envoyé ».
+2. Une entrée apparaît dans **Assetsign & signature > Assetsigns** avec le statut « Envoyé ».
 3. L'utilisateur reçoit un e-mail avec un lien vers la page de signature.
 4. S'il n'est pas déjà connecté, GLPI le redirige vers la page de connexion, puis le ramène sur le lien d'origine une fois authentifié.
 5. Il consulte le PDF, signe à l'écran, valide.
@@ -91,20 +91,20 @@ Une modification du code (nouvelle fonctionnalité, correctif) ne se signale jam
 
 1. Sur le serveur GLPI, récupérez le nouveau code par la même méthode qu'à l'installation (voir [Installation](#installation) ci-dessus) :
    - `git pull` si vous avez cloné le dépôt ;
-   - ou re-téléchargez l'archive ZIP en remplaçant le dossier `remise/` par son contenu ;
+   - ou re-téléchargez l'archive ZIP en remplaçant le dossier `assetsign/` par son contenu ;
    - ou, sans `git` disponible, re-jouez la méthode `curl` + `ZipArchive` (méthode c) en écrasant l'ancien dossier :
      ```bash
      cd /chemin/vers/glpi/plugins
-     rm -rf remise
-     curl -L -o remise.zip https://github.com/parime/remise-glpi/archive/refs/heads/main.zip
-     php -r '$z = new ZipArchive; $z->open("remise.zip"); $z->extractTo(".");  $z->close();'
-     mv remise-glpi-main remise
-     rm remise.zip
+     rm -rf assetsign
+     curl -L -o assetsign.zip https://github.com/parime/assetsign-glpi/archive/refs/heads/main.zip
+     php -r '$z = new ZipArchive; $z->open("assetsign.zip"); $z->extractTo(".");  $z->close();'
+     mv assetsign-glpi-main assetsign
+     rm assetsign.zip
      ```
-     `rm -rf remise` avant de ré-extraire (plutôt que d'extraire par-dessus) : une simple extraction par-dessus ne supprime jamais un fichier qu'une version plus récente aurait retiré, ne laissant que des fichiers orphelins inoffensifs mais jamais un dossier réellement à jour.
-2. Lancez `sh update.sh` (depuis `plugins/remise/`) : ce script regroupe les trois étapes qu'il est facile d'oublier ou de faire dans le mauvais ordre — migration de la base (`plugin:install --force`, sans risque si déjà à jour), réactivation, et vidage du cache GLPI (`cache:clear`).
+     `rm -rf assetsign` avant de ré-extraire (plutôt que d'extraire par-dessus) : une simple extraction par-dessus ne supprime jamais un fichier qu'une version plus récente aurait retiré, ne laissant que des fichiers orphelins inoffensifs mais jamais un dossier réellement à jour.
+2. Lancez `sh update.sh` (depuis `plugins/assetsign/`) : ce script regroupe les trois étapes qu'il est facile d'oublier ou de faire dans le mauvais ordre — migration de la base (`plugin:install --force`, sans risque si déjà à jour), réactivation, et vidage du cache GLPI (`cache:clear`).
 
 Le détail de ce que fait `update.sh`, et pourquoi chaque étape est nécessaire :
-- **Migration de la base** (`php bin/console plugin:install remise --force`) : nécessaire si le changement ajoute une table ou un champ. GLPI ne le fait jamais tout seul après un simple remplacement de fichiers, même si le numéro de version dans `setup.php` (`PLUGIN_REMISE_VERSION`) a été incrémenté (il l'est systématiquement à chaque changement de structure) — sans cette étape, GLPI affiche bien le plugin comme "à mettre à jour" sur **Configuration > Plugins**, mais les nouvelles tables/colonnes n'existent pas tant que le bouton (ou cette commande) n'a pas été actionné.
+- **Migration de la base** (`php bin/console plugin:install assetsign --force`) : nécessaire si le changement ajoute une table ou un champ. GLPI ne le fait jamais tout seul après un simple remplacement de fichiers, même si le numéro de version dans `setup.php` (`PLUGIN_ASSETSIGN_VERSION`) a été incrémenté (il l'est systématiquement à chaque changement de structure) — sans cette étape, GLPI affiche bien le plugin comme "à mettre à jour" sur **Configuration > Plugins**, mais les nouvelles tables/colonnes n'existent pas tant que le bouton (ou cette commande) n'a pas été actionné.
 - **Vidage du cache** (`php bin/console cache:clear`) : indispensable dès qu'un fichier `.twig` a changé (gabarit de PDF, de page de configuration, d'e-mail...). En environnement de production réel (pas un `git clone` sur poste de dev), GLPI désactive volontairement l'auto-rechargement de Twig (`Glpi\Application\Environment::shouldExpectResourcesToChange()` renvoie `false`) : sans ce vidage, l'ancienne version compilée du gabarit continue d'être servie indéfiniment, **sans aucune erreur ni avertissement** — le nouveau fichier est bien sur le disque, mais jamais rendu. Piège rencontré en conditions réelles (constaté après une mise à jour où la page de configuration affichait encore l'ancien texte d'aperçu, sans aucun onglet, malgré un `git pull` réussi et le bon numéro de version sur disque) et documenté dans [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 - **OPcache**, si activé sur le serveur (fréquent en production, indépendant du cache GLPI ci-dessus) : `update.sh` tente désormais de le vider automatiquement lui-même (3 essais avec courte pause) en appelant `front/opcache_reset.php` juste après la réactivation du plugin — ce endpoint s'exécute dans le pool web (Apache/PHP-FPM), où OPcache est une mémoire réellement partagée entre tous les workers, contrairement au processus CLI de `update.sh` lui-même. Si cet appel échoue (serveur web injoignable en `localhost`, `curl`/`wget` absents...), `update.sh` l'indique clairement et affiche alors le rappel habituel : un redémarrage manuel de PHP-FPM/Apache peut rester nécessaire pour que le nouveau **code PHP** soit réellement rechargé (droits root généralement requis, `update.sh` ne peut pas le faire lui-même dans ce cas).

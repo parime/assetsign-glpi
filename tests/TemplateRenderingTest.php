@@ -1,9 +1,9 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
 use Glpi\Application\View\TemplateRenderer;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\Assetsign;
 
 /**
  * Rendu reel des gabarits Twig d'administration : jusqu'ici, aucune suite
@@ -15,7 +15,7 @@ use GlpiPlugin\Remise\Remise;
  * affichee comme un nombre parasite juste apres le menu deroulant. Corrige en
  * {% do call(...) %} (execute l'appel sans imprimer son retour).
  *
- * Le garde-fou utilise (assertNoStrayNumericTextNode(), sur RemiseTestCase,
+ * Le garde-fou utilise (assertNoStrayNumericTextNode(), sur AssetsignTestCase,
  * partage avec OtherTemplateRenderingTest) ne se contente pas de verifier
  * l'absence du nombre observe a l'epoque (different a chaque appel, cf.
  * field_id aleatoire) : il recherche la FORME du defaut (un entier de 5
@@ -23,19 +23,19 @@ use GlpiPlugin\Remise\Remise;
  * pour rester valable si un futur {{ call(...) }} mal utilise reapparait
  * ailleurs dans ces gabarits.
  */
-class TemplateRenderingTest extends RemiseTestCase
+class TemplateRenderingTest extends AssetsignTestCase
 {
-    public function testRemiseTabTemplateDoesNotLeakDropdownFieldId(): void
+    public function testAssetsignTabTemplateDoesNotLeakDropdownFieldId(): void
     {
-        $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering RemiseTab');
+        $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering AssetsignTab');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC TemplateRendering');
 
-        $html = TemplateRenderer::getInstance()->render('@remise/remise_tab.html.twig', [
+        $html = TemplateRenderer::getInstance()->render('@assetsign/assetsign_tab.html.twig', [
             'item'               => $computer,
-            'remises'            => [],
-            'statuses'           => Remise::getStatuses(),
-            'manual_types'       => [Remise::TYPE_DON => 'Don', Remise::TYPE_VENTE => 'Vente'],
-            'type_vente'         => Remise::TYPE_VENTE,
+            'assetsigns'            => [],
+            'statuses'           => Assetsign::getStatuses(),
+            'manual_types'       => [Assetsign::TYPE_DON => 'Don', Assetsign::TYPE_VENTE => 'Vente'],
+            'type_vente'         => Assetsign::TYPE_VENTE,
             // Force le rendu du formulaire de creation manuelle (bloc contenant
             // {% do call('User::dropdown', ...) %}), quel que soit le droit
             // reel de la session de test.
@@ -47,26 +47,26 @@ class TemplateRenderingTest extends RemiseTestCase
         // quelle que soit la langue de l'environnement d'execution (echec reel
         // constate en CI, qui rend en anglais - "Destinataire" n'y apparait pas).
         $this->assertStringContainsString('name="users_id"', $html, 'Le formulaire de creation manuelle doit etre rendu pour que ce test ait un sens.');
-        $this->assertNoStrayNumericTextNode($html, 'remise_tab.html.twig (menu Destinataire)');
+        $this->assertNoStrayNumericTextNode($html, 'assetsign_tab.html.twig (menu Destinataire)');
     }
 
-    public function testRemiseFormTemplateDoesNotLeakAccessoryDropdownFieldId(): void
+    public function testAssetsignFormTemplateDoesNotLeakAccessoryDropdownFieldId(): void
     {
-        $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering RemiseForm');
-        $remise = $this->createBareRemise($entityId, Remise::TYPE_DON, Remise::STATUS_SENT);
+        $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering AssetsignForm');
+        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_DON, Assetsign::STATUS_SENT);
 
-        $html = TemplateRenderer::getInstance()->render('@remise/remise_form.html.twig', [
-            'item'                      => $remise,
+        $html = TemplateRenderer::getInstance()->render('@assetsign/assetsign_form.html.twig', [
+            'item'                      => $assetsign,
             'params'                    => [],
-            'statuses'                  => Remise::getStatuses(),
-            'types'                     => Remise::getTypes(),
+            'statuses'                  => Assetsign::getStatuses(),
+            'types'                     => Assetsign::getTypes(),
             'beneficiary'               => [],
             'target_item'               => [],
             'reminders'                 => 0,
             'can_remind'                => false,
             'accessories'               => [],
             // Force le rendu du formulaire d'ajout d'accessoire (bloc contenant
-            // {% do call('GlpiPlugin\Remise\Accessory::dropdown', ...) %}).
+            // {% do call('GlpiPlugin\Assetsign\Accessory::dropdown', ...) %}).
             'can_edit_accessories'      => true,
             'observations_enabled'      => false,
             'damage_annotation_enabled' => false,
@@ -74,16 +74,16 @@ class TemplateRenderingTest extends RemiseTestCase
             'damage_images'             => [],
             'damage_markers_by_view'    => [],
             'can_edit_damage_markers'   => false,
-            'type_vente'                => Remise::TYPE_VENTE,
+            'type_vente'                => Assetsign::TYPE_VENTE,
             'vente_details'             => null,
             'can_edit_vente_details'    => false,
             'signature_proof'           => null,
             'csrf_token'                => 'phpunit-test-token',
         ]);
 
-        // name="plugin_remise_accessories_id" (pas un libelle traduit) : meme
+        // name="plugin_assetsign_accessories_id" (pas un libelle traduit) : meme
         // raison que ci-dessus (independance a la langue de l'environnement).
-        $this->assertStringContainsString('name="plugin_remise_accessories_id"', $html, 'Le formulaire d\'ajout d\'accessoire doit etre rendu pour que ce test ait un sens.');
-        $this->assertNoStrayNumericTextNode($html, 'remise_form.html.twig (menu Ajouter un accessoire)');
+        $this->assertStringContainsString('name="plugin_assetsign_accessories_id"', $html, 'Le formulaire d\'ajout d\'accessoire doit etre rendu pour que ce test ait un sens.');
+        $this->assertNoStrayNumericTextNode($html, 'assetsign_form.html.twig (menu Ajouter un accessoire)');
     }
 }

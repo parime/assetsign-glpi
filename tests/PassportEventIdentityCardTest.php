@@ -1,16 +1,16 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\PassportEvent;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\PassportEvent;
 
 /**
  * Couvre la fiche d'identite en tete du Passeport materiel (cf. ROADMAP.md,
  * tableau V1) : pure agregation de donnees deja natives GLPI, aucune
  * nouvelle table, aucune valeur inventee quand une information manque.
  */
-class PassportEventIdentityCardTest extends RemiseTestCase
+class PassportEventIdentityCardTest extends AssetsignTestCase
 {
     private function createTestComputerModel(string $name): int
     {

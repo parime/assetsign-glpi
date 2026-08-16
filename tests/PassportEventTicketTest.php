@@ -1,17 +1,17 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\PassportEvent;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\PassportEvent;
 
 /**
  * Couvre la fusion des tickets lies au materiel dans la frise du Passeport
  * materiel (cf. ROADMAP.md, tableau V1) : lecture seule, jamais stockee dans
- * glpi_plugin_remise_events, et toujours filtree par les droits REELS du
+ * glpi_plugin_assetsign_events, et toujours filtree par les droits REELS du
  * lecteur courant sur chaque ticket (jamais un simple droit generique).
  */
-class PassportEventTicketTest extends RemiseTestCase
+class PassportEventTicketTest extends AssetsignTestCase
 {
     private function createTestTicket(int $entitiesId, string $name, string $date, int $status = 1): int
     {
@@ -53,7 +53,7 @@ class PassportEventTicketTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Ticket', 'remise'), $html);
+        $this->assertStringContainsString(__('Ticket', 'assetsign'), $html);
         $this->assertStringContainsString('PHPUnit Ecran casse', $html);
         $this->assertStringContainsString('id=' . $ticketId, $html);
         $this->assertNoStrayNumericTextNode($html, 'La frise avec ticket lié doit se rendre sans fuite Twig.');

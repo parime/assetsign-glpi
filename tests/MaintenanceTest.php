@@ -1,11 +1,11 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\Maintenance;
-use GlpiPlugin\Remise\MaintenanceChecklistItem;
-use GlpiPlugin\Remise\Signature;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\Maintenance;
+use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
+use GlpiPlugin\Assetsign\Signature;
 use RuntimeException;
 
 /**
@@ -15,7 +15,7 @@ use RuntimeException;
  * generation systematique du PDF et la signature optionnelle du technicien
  * (Config::enable_maintenance_signature).
  */
-class MaintenanceTest extends RemiseTestCase
+class MaintenanceTest extends AssetsignTestCase
 {
     public function testGetActiveChecklistItemsReturnsTypeAndOptions(): void
     {
@@ -216,7 +216,7 @@ class MaintenanceTest extends RemiseTestCase
         ]);
     }
 
-    /** Meme generateur que SignatureImageValidatorTest (canevas GD isole, cette classe etend RemiseTestCase et ne peut pas en heriter directement). */
+    /** Meme generateur que SignatureImageValidatorTest (canevas GD isole, cette classe etend AssetsignTestCase et ne peut pas en heriter directement). */
     private static function signatureStrokeDataUri(int $width = 300, int $height = 100): string
     {
         $image = imagecreatetruecolor($width, $height);

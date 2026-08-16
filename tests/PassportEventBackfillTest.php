@@ -1,19 +1,19 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\PassportEvent;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\PassportEvent;
 
 /**
  * Couvre le retro-remplissage depuis glpi_logs (cf. ROADMAP.md, "Passeport
  * materiel" / "Passeport utilisateur") : rejoue la meme logique que
- * Remise::handleUserBasedTrigger()/handleStateBasedTrigger() sur des lignes
+ * Assetsign::handleUserBasedTrigger()/handleStateBasedTrigger() sur des lignes
  * de glpi_logs inserees directement, plutot que sur de vrais changements
  * d'oldvalues (glpi_logs est ecrit par le coeur GLPI lui-meme lors d'un vrai
  * update(), hors de portee raisonnable d'un test unitaire isole).
  */
-class PassportEventBackfillTest extends RemiseTestCase
+class PassportEventBackfillTest extends AssetsignTestCase
 {
     private function insertLog(string $itemtype, int $items_id, int $idSearchOption, int $oldId, int $newId, string $date): void
     {

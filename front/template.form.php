@@ -1,7 +1,7 @@
 <?php
 
-use GlpiPlugin\Remise\Remise;
-use GlpiPlugin\Remise\Template;
+use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\Template;
 
 $item = new Template();
 
@@ -19,7 +19,7 @@ if (isset($_POST['add'])) {
     Html::redirect(Template::getSearchURL());
 } else {
     Session::checkRight(Template::$rightname, READ);
-    Html::header(Template::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Remise::class, Template::class);
+    Html::header(Template::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Assetsign::class, Template::class);
     $id = (int) ($_GET['id'] ?? 0);
    if ($id > 0) {
        $item->getFromDB($id);

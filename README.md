@@ -1,6 +1,6 @@
-# Plugin GLPI `remise` — Remise de matériel & signature électronique
+# AssetSign — Remise, restitution, don et vente de matériel avec signature électronique
 
-<p align="center"><img src="docs/banner.png" alt="Remise de matériel — Signature, suivi, traçabilité" width="180"></p>
+<p align="center"><img src="docs/banner.png" alt="AssetSign — Signature, suivi, traçabilité" width="180"></p>
 
 <p align="center"><strong>La preuve écrite de chaque remise de matériel, sans papier, sans tableur, sans y penser.</strong></p>
 
@@ -46,7 +46,7 @@ Le même mécanisme fonctionne aussi en sens inverse : quand un matériel est **
 
 **La fiche d'une remise, côté technicien** — statut, observations, état des lieux visuel avec repères de dommage, accessoires remis :
 
-![Fiche de remise avec état des lieux visuel et accessoires](docs/screenshots/remise-fiche.png)
+![Fiche de remise avec état des lieux visuel et accessoires](docs/screenshots/assetsign-fiche.png)
 
 **La page de signature, côté bénéficiaire** — consultation du PDF, état des lieux visuel, remarque libre, signature à l'écran :
 

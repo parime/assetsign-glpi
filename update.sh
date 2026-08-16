@@ -1,5 +1,5 @@
 #!/bin/sh
-# A lancer depuis ce dossier (plugins/remise/) apres chaque "git pull"/mise a jour
+# A lancer depuis ce dossier (plugins/assetsign/) apres chaque "git pull"/mise a jour
 # du code : regroupe les 3 etapes decrites dans le README (section "Mettre a
 # jour le plugin") qu'il est facile d'oublier ou de faire dans le mauvais ordre :
 # migration de la base, puis vidage du cache Twig/traductions de GLPI.
@@ -9,8 +9,8 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 GLPI_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$GLPI_ROOT"
-php bin/console plugin:install remise --force
-php bin/console plugin:activate remise
+php bin/console plugin:install assetsign --force
+php bin/console plugin:activate assetsign
 php bin/console cache:clear
 
 # Vide aussi l'OPcache du VRAI process web (Apache/PHP-FPM), pas seulement le
@@ -27,7 +27,7 @@ php bin/console cache:clear
 # echoue (topologie reseau inhabituelle), le rappel ci-dessous reste le filet
 # de securite.
 OPCACHE_RESET_OK=0
-OPCACHE_RESET_URL="http://localhost/plugins/remise/front/opcache_reset.php"
+OPCACHE_RESET_URL="http://localhost/plugins/assetsign/front/opcache_reset.php"
 # 3 tentatives, avec une courte pause : juste apres cache:clear ci-dessus
 # (qui vide aussi le cache de routage Symfony, cf. CacheManager::
 # resetAllCaches()), constate en conditions reelles un court delai ou GLPI
@@ -48,7 +48,7 @@ elif command -v wget >/dev/null 2>&1; then
 fi
 
 echo ""
-echo "Mise a jour du plugin remise terminee."
+echo "Mise a jour du plugin assetsign terminee."
 if [ "$OPCACHE_RESET_OK" = "1" ]; then
     echo "OPcache PHP vide automatiquement (si actif sur ce serveur) : aucun redemarrage necessaire."
 else

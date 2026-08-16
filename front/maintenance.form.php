@@ -1,14 +1,14 @@
 <?php
 
-use GlpiPlugin\Remise\Api\MaintenanceFormController;
-use GlpiPlugin\Remise\Maintenance;
+use GlpiPlugin\Assetsign\Api\MaintenanceFormController;
+use GlpiPlugin\Assetsign\Maintenance;
 
 if (isset($_POST['create'])) {
     Session::checkRight(Maintenance::$rightname, CREATE);
 
    try {
        (new MaintenanceFormController())->createWithChecklist($_POST);
-       Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'remise'));
+       Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'assetsign'));
    } catch (\InvalidArgumentException $e) {
        Html::displayNotFoundError();
    } catch (\Throwable $e) {

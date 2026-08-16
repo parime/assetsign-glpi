@@ -1,8 +1,8 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Token;
+use GlpiPlugin\Assetsign\Token;
 use RuntimeException;
 
 /**
@@ -10,18 +10,18 @@ use RuntimeException;
  * l'acces a une signature, jamais teste automatiquement jusqu'ici (verifie
  * uniquement a la main via des scripts Docker).
  */
-class TokenTest extends RemiseTestCase
+class TokenTest extends AssetsignTestCase
 {
-    public function testCreateForRemiseReturnsAUsableRawToken(): void
+    public function testCreateForAssetsignReturnsAUsableRawToken(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Token Create');
-        $remise = $this->createBareRemise($entityId);
+        $assetsign = $this->createBareAssetsign($entityId);
 
-        $raw = Token::createForRemise($remise, 30);
+        $raw = Token::createForAssetsign($assetsign, 30);
 
         $this->assertNotEmpty($raw);
         $token = Token::validate($raw);
-        $this->assertSame($remise->getID(), (int) $token->fields['plugin_remise_remises_id']);
+        $this->assertSame($assetsign->getID(), (int) $token->fields['plugin_assetsign_assetsigns_id']);
     }
 
     public function testValidateRejectsUnknownToken(): void
@@ -35,12 +35,12 @@ class TokenTest extends RemiseTestCase
         global $DB;
 
         $entityId = $this->createTestEntity(0, 'PHPUnit Token Expired');
-        $remise = $this->createBareRemise($entityId);
-        $raw = Token::createForRemise($remise, 30);
+        $assetsign = $this->createBareAssetsign($entityId);
+        $raw = Token::createForAssetsign($assetsign, 30);
 
         // Force l'expiration dans le passe (contourne validityDays pour le test).
-        $DB->update('glpi_plugin_remise_tokens', ['date_expiration' => date('Y-m-d H:i:s', time() - 3600)], [
-            'plugin_remise_remises_id' => $remise->getID(),
+        $DB->update('glpi_plugin_assetsign_tokens', ['date_expiration' => date('Y-m-d H:i:s', time() - 3600)], [
+            'plugin_assetsign_assetsigns_id' => $assetsign->getID(),
         ]);
 
         $this->expectException(RuntimeException::class);
@@ -50,8 +50,8 @@ class TokenTest extends RemiseTestCase
     public function testValidateRejectsAlreadyUsedToken(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Token Used');
-        $remise = $this->createBareRemise($entityId);
-        $raw = Token::createForRemise($remise, 30);
+        $assetsign = $this->createBareAssetsign($entityId);
+        $raw = Token::createForAssetsign($assetsign, 30);
 
         $token = Token::validate($raw);
         $token->markUsed();
@@ -63,10 +63,10 @@ class TokenTest extends RemiseTestCase
     public function testRegenerateInvalidatesPreviousToken(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Token Regenerate');
-        $remise = $this->createBareRemise($entityId);
+        $assetsign = $this->createBareAssetsign($entityId);
 
-        $firstRaw = Token::createForRemise($remise, 30);
-        $secondRaw = Token::regenerateForRemise($remise, 30);
+        $firstRaw = Token::createForAssetsign($assetsign, 30);
+        $secondRaw = Token::regenerateForAssetsign($assetsign, 30);
 
         $this->assertNotSame($firstRaw, $secondRaw);
 
@@ -74,13 +74,13 @@ class TokenTest extends RemiseTestCase
         Token::validate($firstRaw);
     }
 
-    public function testInvalidateForRemiseInvalidatesAllTokens(): void
+    public function testInvalidateForAssetsignInvalidatesAllTokens(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Token Invalidate');
-        $remise = $this->createBareRemise($entityId);
-        $raw = Token::createForRemise($remise, 30);
+        $assetsign = $this->createBareAssetsign($entityId);
+        $raw = Token::createForAssetsign($assetsign, 30);
 
-        Token::invalidateForRemise($remise->getID());
+        Token::invalidateForAssetsign($assetsign->getID());
 
         $this->expectException(RuntimeException::class);
         Token::validate($raw);
@@ -89,8 +89,8 @@ class TokenTest extends RemiseTestCase
     public function testTokenIsDisabledAfterTooManyAttempts(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Token MaxAttempts');
-        $remise = $this->createBareRemise($entityId);
-        $raw = Token::createForRemise($remise, 30);
+        $assetsign = $this->createBareAssetsign($entityId);
+        $raw = Token::createForAssetsign($assetsign, 30);
 
         // MAX_ATTEMPTS vaut 20 (constante privee de Token) : 20 validations
         // reussissent, la 21e doit echouer et desactiver definitivement le jeton.
@@ -105,8 +105,8 @@ class TokenTest extends RemiseTestCase
             // __() avec la meme chaine source que Token::validate() plutot que le
             // texte francais en dur : ce test doit rester valable quelle que soit
             // la langue de l'environnement d'execution (meme piege que deja
-            // rencontre et corrige sur RemiseTest.php - cf. TROUBLESHOOTING.md).
-            $this->assertSame(__('Trop de tentatives, lien désactivé par sécurité.', 'remise'), $e->getMessage());
+            // rencontre et corrige sur AssetsignTest.php - cf. TROUBLESHOOTING.md).
+            $this->assertSame(__('Trop de tentatives, lien désactivé par sécurité.', 'assetsign'), $e->getMessage());
         }
 
         // Le jeton est desormais desactive : meme un appel "propre" (dans la
@@ -117,19 +117,19 @@ class TokenTest extends RemiseTestCase
             Token::validate($raw);
             $this->fail('Le jeton desactive ne doit plus jamais etre accepte.');
         } catch (RuntimeException $e) {
-            $this->assertSame(__('Ce lien de signature n\'est plus valide.', 'remise'), $e->getMessage());
+            $this->assertSame(__('Ce lien de signature n\'est plus valide.', 'assetsign'), $e->getMessage());
         }
     }
 
-    public function testGetExpiryForRemiseReturnsLatestValidTokenExpiry(): void
+    public function testGetExpiryForAssetsignReturnsLatestValidTokenExpiry(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Token Expiry');
-        $remise = $this->createBareRemise($entityId);
+        $assetsign = $this->createBareAssetsign($entityId);
 
-        $this->assertNull(Token::getExpiryForRemise($remise->getID()), 'Aucun jeton cree : aucune expiration a renvoyer.');
+        $this->assertNull(Token::getExpiryForAssetsign($assetsign->getID()), 'Aucun jeton cree : aucune expiration a renvoyer.');
 
-        Token::createForRemise($remise, 15);
-        $expiry = Token::getExpiryForRemise($remise->getID());
+        Token::createForAssetsign($assetsign, 15);
+        $expiry = Token::getExpiryForAssetsign($assetsign->getID());
 
         $this->assertNotNull($expiry);
         $expectedDay = date('Y-m-d', time() + 15 * DAY_TIMESTAMP);
