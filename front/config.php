@@ -1,7 +1,7 @@
 <?php
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\Config;
 
 Session::checkRight(Config::$rightname, READ);
 
@@ -28,7 +28,7 @@ if (isset($_POST['update'])) {
    }
 
     Config::upsertForEntity($entities_id, $input);
-    Session::addMessageAfterRedirect(__('Configuration enregistrée.', 'remise'));
+    Session::addMessageAfterRedirect(__('Configuration enregistrée.', 'assetsign'));
     Html::back();
 }
 
@@ -37,7 +37,7 @@ if (isset($_POST['send_test_email'])) {
     $entities_id = (int) ($_POST['entities_id'] ?? 0);
     $error = Config::sendTestEmail($entities_id);
    if ($error === '') {
-       Session::addMessageAfterRedirect(__('E-mail de test envoyé.', 'remise'));
+       Session::addMessageAfterRedirect(__('E-mail de test envoyé.', 'assetsign'));
    } else {
        Session::addMessageAfterRedirect($error, false, ERROR);
    }
@@ -45,11 +45,11 @@ if (isset($_POST['send_test_email'])) {
 }
 
 // Page autonome accessible depuis le menu d'administration du plugin (en plus
-// de l'onglet "Remise & signature" sur la fiche d'une entite) : par defaut,
+// de l'onglet "Assetsign & signature" sur la fiche d'une entite) : par defaut,
 // affiche/edite la configuration de l'entite active de la session.
 $entities_id = (int) ($_GET['entities_id'] ?? Session::getActiveEntity());
 
-Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'tools', Remise::class);
+Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'tools', Assetsign::class);
 
 Config::showConfigForm($entities_id);
 

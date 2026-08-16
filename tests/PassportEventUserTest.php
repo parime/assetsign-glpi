@@ -1,9 +1,9 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\PassportEvent;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\PassportEvent;
+use GlpiPlugin\Assetsign\Assetsign;
 
 /**
  * Couvre la vue symetrique "Passeport utilisateur" (cf. ROADMAP.md, "Extension
@@ -11,7 +11,7 @@ use GlpiPlugin\Remise\Remise;
  * nouvel evenement, uniquement une nouvelle lecture filtree par users_id), plus
  * les bornes de compte (creation/desactivation) lues directement sur User.
  */
-class PassportEventUserTest extends RemiseTestCase
+class PassportEventUserTest extends AssetsignTestCase
 {
     private function createTestComputerWithSerial(int $entitiesId, string $name, string $serial): \Computer
     {
@@ -35,7 +35,7 @@ class PassportEventUserTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         ob_start();
         PassportEvent::showForUser($user);
@@ -43,7 +43,7 @@ class PassportEventUserTest extends RemiseTestCase
 
         $this->assertStringContainsString('PHPUnit PC Passport User', $html);
         $this->assertStringContainsString('SN-12345', $html);
-        $this->assertStringContainsString(__('Attribution', 'remise'), $html);
+        $this->assertStringContainsString(__('Attribution', 'assetsign'), $html);
         $this->assertNoStrayNumericTextNode($html, 'Le Passeport utilisateur doit se rendre sans fuite Twig.');
     }
 
@@ -58,13 +58,13 @@ class PassportEventUserTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $otherUserId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         ob_start();
         PassportEvent::showForUser($user);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'remise'), $html);
+        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'assetsign'), $html);
     }
 
     public function testShowForUserFallsBackWhenDeviceIsPurged(): void
@@ -77,14 +77,14 @@ class PassportEventUserTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
         $computer->delete(['id' => $computer->getID()], true);
 
         ob_start();
         PassportEvent::showForUser($user);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('matériel supprimé', 'remise'), $html);
+        $this->assertStringContainsString(__('matériel supprimé', 'assetsign'), $html);
         $this->assertStringNotContainsString('SN-PURGED', $html);
     }
 

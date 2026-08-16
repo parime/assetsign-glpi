@@ -86,8 +86,8 @@ jobs:
 
       - name: Démarre MariaDB
         run: |
-          docker network create remise-ci
-          docker run -d --name mariadb --network remise-ci \
+          docker network create assetsign-ci
+          docker run -d --name mariadb --network assetsign-ci \
             -e MARIADB_ROOT_PASSWORD=glpi_password \
             -e MARIADB_DATABASE=glpidb \
             -e MARIADB_USER=glpi_user \
@@ -102,7 +102,7 @@ jobs:
 
       - name: Démarre GLPI (auto-installation via l'image officielle)
         run: |
-          docker run -d --name glpi --network remise-ci \
+          docker run -d --name glpi --network assetsign-ci \
             -e TIMEZONE=Europe/Paris \
             -e GLPI_DB_HOST=mariadb \
             -e GLPI_DB_PORT=3306 \
@@ -134,8 +134,8 @@ jobs:
 
       - name: Copie le plugin dans le conteneur GLPI
         run: |
-          docker exec glpi mkdir -p /var/www/glpi/plugins/remise
-          docker cp ./. glpi:/var/www/glpi/plugins/remise
+          docker exec glpi mkdir -p /var/www/glpi/plugins/assetsign
+          docker cp ./. glpi:/var/www/glpi/plugins/assetsign
           # Les fichiers copies appartiennent a root (l'utilisateur du
           # checkout), pas www-data (l'utilisateur sous lequel tourne PHP
           # dans ce conteneur, cf. les autres `docker exec` sans -u) : sans ce
@@ -143,12 +143,12 @@ jobs:
           # nouveaux dossiers dans vendor/ ("does not exist and could not be
           # created" alors meme que le dossier a bien les droits d'ecriture
           # pour son PROPRE proprietaire root, juste pas pour www-data).
-          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/remise
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/assetsign
 
       - name: Lint PHP
         run: |
           docker exec glpi sh -c '
-            cd /var/www/glpi/plugins/remise
+            cd /var/www/glpi/plugins/assetsign
             fail=0
             for f in $(find src front -name "*.php"); do
               php -l "$f" > /tmp/lintout 2>&1 || { cat /tmp/lintout; fail=1; }
@@ -175,7 +175,7 @@ jobs:
           '
           docker exec glpi sh -c '
             export COMPOSER_HOME=/tmp/composer-home
-            cd /var/www/glpi/plugins/remise
+            cd /var/www/glpi/plugins/assetsign
             php /tmp/composer.phar install --no-interaction --prefer-dist
           '
 
@@ -187,12 +187,12 @@ jobs:
         # faux positifs inevitables (methodes de hook GLPI type-hintees a la
         # classe parente CommonGLPI/CommonDBTM par obligation de signature)
         # sont documentes et ignores explicitement dans phpstan.neon.dist.
-        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/remise && vendor/bin/phpstan analyse --no-progress --memory-limit=512M"
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && vendor/bin/phpstan analyse --no-progress --memory-limit=512M"
 
       - name: Vérifie le standard de codage officiel GLPI
         # phpcs (pas phpcbf) : echoue la CI plutot que de corriger en silence,
         # jusqu'ici seulement lance manuellement en local (cf. TROUBLESHOOTING.md).
-        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/remise && vendor/bin/phpcs --standard=vendor/glpi-project/coding-standard/GlpiStandard/ruleset.xml src front hook.php setup.php"
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && vendor/bin/phpcs --standard=vendor/glpi-project/coding-standard/GlpiStandard/ruleset.xml src front hook.php setup.php"
 
       - name: Audit de sécurité des dépendances Composer
         # --no-dev : le vendor/ livre en production ne contient QUE les
@@ -202,7 +202,7 @@ jobs:
         # sur Packagist - sans lien avec la securite, mais suffisant pour
         # faire echouer la commande (verifie en local avant d'ecrire cette
         # etape). Jusqu'ici seulement lance manuellement (cf. TROUBLESHOOTING.md).
-        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/remise && export COMPOSER_HOME=/tmp/composer-home && php /tmp/composer.phar audit --no-dev"
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && export COMPOSER_HOME=/tmp/composer-home && php /tmp/composer.phar audit --no-dev"
 
       - name: Installe et active le plugin
         run: |
@@ -238,8 +238,8 @@ jobs:
             echo "::error::database:update a echoue apres 12 tentatives."
             exit 1
           fi
-          docker exec glpi php bin/console plugin:install remise --force --no-interaction
-          docker exec glpi php bin/console plugin:activate remise --no-interaction
+          docker exec glpi php bin/console plugin:install assetsign --force --no-interaction
+          docker exec glpi php bin/console plugin:activate assetsign --no-interaction
 
       - name: Installe pcov (couverture de code)
         # pcov (pas Xdebug) : ni l'un ni l'autre n'est present dans l'image
@@ -257,7 +257,7 @@ jobs:
         # bord pour l'exploiter n'apporterait rien - le resume texte dans les
         # logs de la CI suffit a repondre a la question "quelle proportion du
         # code est testee ?" sans dependance externe.
-        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/remise && php -d extension=pcov.so vendor/bin/phpunit --coverage-text"
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php -d extension=pcov.so vendor/bin/phpunit --coverage-text"
 
       - name: Logs GLPI (en cas d'échec)
         if: failure()
@@ -294,7 +294,7 @@ jobs:
     # Verifie que les fichiers de configuration du depot sont bien formes,
     # independamment de tout Docker/GLPI - ecart constate face a la CI du
     # plugin jumeau Configuration-glpi-auto, qui a ce filet alors qu'ici un
-    # JSON/YAML/XML mal forme (composer.json, docs/remise.xml...) n'etait
+    # JSON/YAML/XML mal forme (composer.json, docs/assetsign.xml...) n'etait
     # detecte qu'au moment ou l'outil qui le consomme echouait dessus
     # (composer, phpunit...), pas explicitement ni au meme endroit a chaque
     # fois.

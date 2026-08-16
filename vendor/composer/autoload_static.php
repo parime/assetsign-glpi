@@ -103,7 +103,7 @@ class ComposerStaticInit54e42b0d22e2c0d216ab6940530e2b67
         ),
         'G' =>
         array (
-            'GlpiPlugin\\Remise\\' => 18,
+            'GlpiPlugin\\Assetsign\\' => 21,
         ),
         'F' =>
         array (
@@ -128,9 +128,9 @@ class ComposerStaticInit54e42b0d22e2c0d216ab6940530e2b67
         array (
             0 => __DIR__ . '/..' . '/masterminds/html5/src',
         ),
-        'GlpiPlugin\\Remise\\' =>
+        'GlpiPlugin\\Assetsign\\' =>
         array (
-            0 => __DIR__ . '/../..' . '/src/GlpiPlugin/Remise',
+            0 => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign',
         ),
         'FontLib\\' =>
         array (
@@ -262,6 +262,46 @@ class ComposerStaticInit54e42b0d22e2c0d216ab6940530e2b67
         'FontLib\\WOFF\\File' => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib/WOFF/File.php',
         'FontLib\\WOFF\\Header' => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib/WOFF/Header.php',
         'FontLib\\WOFF\\TableDirectoryEntry' => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib/WOFF/TableDirectoryEntry.php',
+        'GlpiPlugin\\Assetsign\\Accessory' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Accessory.php',
+        'GlpiPlugin\\Assetsign\\Api\\AssetsignFormController' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php',
+        'GlpiPlugin\\Assetsign\\Api\\MaintenanceFormController' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Api/MaintenanceFormController.php',
+        'GlpiPlugin\\Assetsign\\Api\\PassportBackfillController' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php',
+        'GlpiPlugin\\Assetsign\\Api\\SignController' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Api/SignController.php',
+        'GlpiPlugin\\Assetsign\\Assetsign' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Assetsign.php',
+        'GlpiPlugin\\Assetsign\\AssetsignAccessory' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/AssetsignAccessory.php',
+        'GlpiPlugin\\Assetsign\\Config' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Config.php',
+        'GlpiPlugin\\Assetsign\\Console\\RunExpirationCommand' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Console/RunExpirationCommand.php',
+        'GlpiPlugin\\Assetsign\\Console\\RunRemindersCommand' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Console/RunRemindersCommand.php',
+        'GlpiPlugin\\Assetsign\\Console\\WarnExpiringCommand' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Console/WarnExpiringCommand.php',
+        'GlpiPlugin\\Assetsign\\CreationFailure' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/CreationFailure.php',
+        'GlpiPlugin\\Assetsign\\DamageMarker' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/DamageMarker.php',
+        'GlpiPlugin\\Assetsign\\Dashboard\\CardProvider' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php',
+        'GlpiPlugin\\Assetsign\\Maintenance' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Maintenance.php',
+        'GlpiPlugin\\Assetsign\\MaintenanceChecklistItem' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php',
+        'GlpiPlugin\\Assetsign\\NotificationTargetAssetsign' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php',
+        'GlpiPlugin\\Assetsign\\Notification\\DefaultNotificationContent' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Notification/DefaultNotificationContent.php',
+        'GlpiPlugin\\Assetsign\\PassportEvent' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/PassportEvent.php',
+        'GlpiPlugin\\Assetsign\\Pdf\\HandoverPdfBuilder' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Pdf/HandoverPdfBuilder.php',
+        'GlpiPlugin\\Assetsign\\Pdf\\MaintenancePdfBuilder' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Pdf/MaintenancePdfBuilder.php',
+        'GlpiPlugin\\Assetsign\\Pdf\\PdfRenderingHelpers' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Pdf/PdfRenderingHelpers.php',
+        'GlpiPlugin\\Assetsign\\Pdf\\SignatureImageValidator' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php',
+        'GlpiPlugin\\Assetsign\\Pdf\\SignatureStamper' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Pdf/SignatureStamper.php',
+        'GlpiPlugin\\Assetsign\\Profile' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Profile.php',
+        'GlpiPlugin\\Assetsign\\Provider\\AbstractProvider' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Provider/AbstractProvider.php',
+        'GlpiPlugin\\Assetsign\\Provider\\CanvasProvider' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Provider/CanvasProvider.php',
+        'GlpiPlugin\\Assetsign\\Provider\\ProviderFactory' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Provider/ProviderFactory.php',
+        'GlpiPlugin\\Assetsign\\Provider\\SignatureProviderInterface' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Provider/SignatureProviderInterface.php',
+        'GlpiPlugin\\Assetsign\\Reminder' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Reminder.php',
+        'GlpiPlugin\\Assetsign\\Signature' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Signature.php',
+        'GlpiPlugin\\Assetsign\\Template' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Template.php',
+        'GlpiPlugin\\Assetsign\\Token' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Token.php',
+        'GlpiPlugin\\Assetsign\\VenteDetails' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/VenteDetails.php',
+        'GlpiPlugin\\Assetsign\\Workflow\\DonType' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Workflow/DonType.php',
+        'GlpiPlugin\\Assetsign\\Workflow\\HandoverType' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Workflow/HandoverType.php',
+        'GlpiPlugin\\Assetsign\\Workflow\\ReturnType' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Workflow/ReturnType.php',
+        'GlpiPlugin\\Assetsign\\Workflow\\VenteType' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Workflow/VenteType.php',
+        'GlpiPlugin\\Assetsign\\Workflow\\WorkflowTypeInterface' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Workflow/WorkflowTypeInterface.php',
+        'GlpiPlugin\\Assetsign\\Workflow\\WorkflowTypeRegistry' => __DIR__ . '/../..' . '/src/GlpiPlugin/Assetsign/Workflow/WorkflowTypeRegistry.php',
         'Masterminds\\HTML5' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5.php',
         'Masterminds\\HTML5\\Elements' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Elements.php',
         'Masterminds\\HTML5\\Entities' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Entities.php',

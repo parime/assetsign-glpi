@@ -100,19 +100,19 @@
         var panel = document.createElement('div');
         panel.className = 'damage-marker-panel';
         panel.innerHTML =
-            '<label>' + (window.REMISE_DAMAGE_I18N.description || 'Description') + '</label>' +
+            '<label>' + (window.ASSETSIGN_DAMAGE_I18N.description || 'Description') + '</label>' +
             '<input type="text" class="form-control form-control-sm damage-marker-desc" value="' +
                 (marker.description || '').replace(/"/g, '&quot;') + '">' +
-            '<label>' + (window.REMISE_DAMAGE_I18N.severity || 'Gravité') + '</label>' +
+            '<label>' + (window.ASSETSIGN_DAMAGE_I18N.severity || 'Gravité') + '</label>' +
             '<select class="form-select form-select-sm damage-marker-severity">' +
                 '<option value="0"' + (marker.severity === 1 ? '' : ' selected') + '>' +
-                    (window.REMISE_DAMAGE_I18N.minor || 'Mineure') + '</option>' +
+                    (window.ASSETSIGN_DAMAGE_I18N.minor || 'Mineure') + '</option>' +
                 '<option value="1"' + (marker.severity === 1 ? ' selected' : '') + '>' +
-                    (window.REMISE_DAMAGE_I18N.major || 'Majeure') + '</option>' +
+                    (window.ASSETSIGN_DAMAGE_I18N.major || 'Majeure') + '</option>' +
             '</select>' +
             '<div class="damage-marker-panel-actions">' +
-                '<button type="button" class="btn btn-sm btn-secondary damage-marker-save">' + (window.REMISE_DAMAGE_I18N.save || 'Enregistrer') + '</button>' +
-                '<button type="button" class="btn btn-sm btn-outline-danger damage-marker-delete">' + (window.REMISE_DAMAGE_I18N.deleteLabel || 'Supprimer') + '</button>' +
+                '<button type="button" class="btn btn-sm btn-secondary damage-marker-save">' + (window.ASSETSIGN_DAMAGE_I18N.save || 'Enregistrer') + '</button>' +
+                '<button type="button" class="btn btn-sm btn-outline-danger damage-marker-delete">' + (window.ASSETSIGN_DAMAGE_I18N.deleteLabel || 'Supprimer') + '</button>' +
             '</div>';
 
         container.parentElement.appendChild(panel);

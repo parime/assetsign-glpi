@@ -1,32 +1,32 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\DamageMarker;
-use GlpiPlugin\Remise\Maintenance;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\DamageMarker;
+use GlpiPlugin\Assetsign\Maintenance;
+use GlpiPlugin\Assetsign\Assetsign;
 
 /**
  * Couvre les reperes d'etat des lieux visuel : CRUD direct (addMarker/
- * updateMarker/deleteMarker), le controle d'appartenance a la bonne remise
+ * updateMarker/deleteMarker), le controle d'appartenance a la bonne assetsign
  * (securite : un id devine ne doit pas permettre de toucher au repere d'une
- * AUTRE remise), le contrat POST partage par front/damagemarker.php et
+ * AUTRE assetsign), le contrat POST partage par front/damagemarker.php et
  * front/sign.php (handleMutationRequest()), et l'enregistrement en bloc des
  * marqueurs d'une fiche de maintenance (createMarkersForMaintenance() -
  * chemin distinct, jamais par AJAX, cf. Maintenance.php) en verifiant au
  * passage l'isolation entre les deux types de fiche parente.
  */
-class DamageMarkerTest extends RemiseTestCase
+class DamageMarkerTest extends AssetsignTestCase
 {
-    public function testAddMarkerThenGetForRemiseReturnsIt(): void
+    public function testAddMarkerThenGetForAssetsignReturnsIt(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Add');
-        $remise = $this->createBareRemise($entityId);
+        $assetsign = $this->createBareAssetsign($entityId);
 
-        $id = DamageMarker::addMarker($remise->getID(), 1, 42.5, 17.25, 'Rayure sur le capot', DamageMarker::SEVERITY_MAJOR);
+        $id = DamageMarker::addMarker($assetsign->getID(), 1, 42.5, 17.25, 'Rayure sur le capot', DamageMarker::SEVERITY_MAJOR);
 
         $this->assertGreaterThan(0, $id);
-        $markers = DamageMarker::getForRemise($remise->getID());
+        $markers = DamageMarker::getForAssetsign($assetsign->getID());
         $this->assertCount(1, $markers);
         $this->assertSame(1, (int) $markers[0]['view_index']);
         $this->assertSame('Rayure sur le capot', $markers[0]['description']);
@@ -36,10 +36,10 @@ class DamageMarkerTest extends RemiseTestCase
     public function testUpdateMarkerChangesPositionAndDescription(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Update');
-        $remise = $this->createBareRemise($entityId);
-        $id = DamageMarker::addMarker($remise->getID(), 0, 10.0, 10.0, 'Avant', DamageMarker::SEVERITY_MINOR);
+        $assetsign = $this->createBareAssetsign($entityId);
+        $id = DamageMarker::addMarker($assetsign->getID(), 0, 10.0, 10.0, 'Avant', DamageMarker::SEVERITY_MINOR);
 
-        $success = DamageMarker::updateMarker($id, $remise->getID(), [
+        $success = DamageMarker::updateMarker($id, $assetsign->getID(), [
             'x_percent'   => 55.0,
             'y_percent'   => 60.0,
             'description' => 'Apres deplacement',
@@ -47,52 +47,52 @@ class DamageMarkerTest extends RemiseTestCase
         ]);
 
         $this->assertTrue($success);
-        $markers = DamageMarker::getForRemise($remise->getID());
+        $markers = DamageMarker::getForAssetsign($assetsign->getID());
         $this->assertSame('55.00', $markers[0]['x_percent']);
         $this->assertSame('Apres deplacement', $markers[0]['description']);
         $this->assertSame(DamageMarker::SEVERITY_MAJOR, (int) $markers[0]['severity']);
     }
 
-    public function testUpdateMarkerRejectsMarkerBelongingToAnotherRemise(): void
+    public function testUpdateMarkerRejectsMarkerBelongingToAnotherAssetsign(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker CrossOwner');
-        $remiseA = $this->createBareRemise($entityId);
-        $remiseB = $this->createBareRemise($entityId);
-        $id = DamageMarker::addMarker($remiseA->getID(), 0, 10.0, 10.0, 'Appartient a A', DamageMarker::SEVERITY_MINOR);
+        $assetsignA = $this->createBareAssetsign($entityId);
+        $assetsignB = $this->createBareAssetsign($entityId);
+        $id = DamageMarker::addMarker($assetsignA->getID(), 0, 10.0, 10.0, 'Appartient a A', DamageMarker::SEVERITY_MINOR);
 
         // On tente de modifier ce repere en pretendant agir pour la remise B :
         // doit echouer, sans quoi un id devine permettrait de modifier le
         // repere d'une remise qu'on ne devrait pas pouvoir toucher.
-        $success = DamageMarker::updateMarker($id, $remiseB->getID(), ['description' => 'Detourne']);
+        $success = DamageMarker::updateMarker($id, $assetsignB->getID(), ['description' => 'Detourne']);
 
         $this->assertFalse($success);
-        $unchanged = DamageMarker::getForRemise($remiseA->getID());
+        $unchanged = DamageMarker::getForAssetsign($assetsignA->getID());
         $this->assertSame('Appartient a A', $unchanged[0]['description'], "Le repere de la remise A ne doit pas avoir ete modifie par un appel se reclamant de B.");
     }
 
-    public function testDeleteMarkerRejectsMarkerBelongingToAnotherRemise(): void
+    public function testDeleteMarkerRejectsMarkerBelongingToAnotherAssetsign(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker CrossDelete');
-        $remiseA = $this->createBareRemise($entityId);
-        $remiseB = $this->createBareRemise($entityId);
-        $id = DamageMarker::addMarker($remiseA->getID(), 0, 10.0, 10.0, 'A proteger', DamageMarker::SEVERITY_MINOR);
+        $assetsignA = $this->createBareAssetsign($entityId);
+        $assetsignB = $this->createBareAssetsign($entityId);
+        $id = DamageMarker::addMarker($assetsignA->getID(), 0, 10.0, 10.0, 'A proteger', DamageMarker::SEVERITY_MINOR);
 
-        $success = DamageMarker::deleteMarker($id, $remiseB->getID());
+        $success = DamageMarker::deleteMarker($id, $assetsignB->getID());
 
         $this->assertFalse($success);
-        $this->assertCount(1, DamageMarker::getForRemise($remiseA->getID()), 'Le repere de A doit toujours exister.');
+        $this->assertCount(1, DamageMarker::getForAssetsign($assetsignA->getID()), 'Le repere de A doit toujours exister.');
     }
 
-    public function testDeleteMarkerRemovesItForItsOwnRemise(): void
+    public function testDeleteMarkerRemovesItForItsOwnAssetsign(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Delete');
-        $remise = $this->createBareRemise($entityId);
-        $id = DamageMarker::addMarker($remise->getID(), 0, 10.0, 10.0, 'A supprimer', DamageMarker::SEVERITY_MINOR);
+        $assetsign = $this->createBareAssetsign($entityId);
+        $id = DamageMarker::addMarker($assetsign->getID(), 0, 10.0, 10.0, 'A supprimer', DamageMarker::SEVERITY_MINOR);
 
-        $success = DamageMarker::deleteMarker($id, $remise->getID());
+        $success = DamageMarker::deleteMarker($id, $assetsign->getID());
 
         $this->assertTrue($success);
-        $this->assertCount(0, DamageMarker::getForRemise($remise->getID()));
+        $this->assertCount(0, DamageMarker::getForAssetsign($assetsign->getID()));
     }
 
     public function testCanonicalViewLabelsAreFixedRegardlessOfLocale(): void
@@ -112,9 +112,9 @@ class DamageMarkerTest extends RemiseTestCase
     public function testHandleMutationRequestRejectsInvalidViewIndex(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker InvalidView');
-        $remise = $this->createBareRemise($entityId);
+        $assetsign = $this->createBareAssetsign($entityId);
 
-        $result = DamageMarker::handleMutationRequest($remise, [
+        $result = DamageMarker::handleMutationRequest($assetsign, [
             'add'         => '1',
             'view_index'  => DamageMarker::VIEW_COUNT, // hors bornes (0..VIEW_COUNT-1)
             'x'           => 10,
@@ -123,15 +123,15 @@ class DamageMarkerTest extends RemiseTestCase
         ]);
 
         $this->assertFalse($result['success']);
-        $this->assertCount(0, DamageMarker::getForRemise($remise->getID()));
+        $this->assertCount(0, DamageMarker::getForAssetsign($assetsign->getID()));
     }
 
     public function testHandleMutationRequestReturnsFailureForUnknownAction(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker UnknownAction');
-        $remise = $this->createBareRemise($entityId);
+        $assetsign = $this->createBareAssetsign($entityId);
 
-        $result = DamageMarker::handleMutationRequest($remise, []);
+        $result = DamageMarker::handleMutationRequest($assetsign, []);
 
         $this->assertFalse($result['success']);
         $this->assertArrayHasKey('error', $result);
@@ -145,10 +145,10 @@ class DamageMarkerTest extends RemiseTestCase
         // handleMutationRequest() declenche bien refreshDamageAnnotationPdf().
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Regenerate');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC DamageMarker');
-        $remise = Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 2);
-        $documentBefore = (int) $remise->fields['document_id_unsigned'];
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, 2);
+        $documentBefore = (int) $assetsign->fields['document_id_unsigned'];
 
-        $result = DamageMarker::handleMutationRequest($remise, [
+        $result = DamageMarker::handleMutationRequest($assetsign, [
             'add'         => '1',
             'view_index'  => 0,
             'x'           => 20,
@@ -158,8 +158,8 @@ class DamageMarkerTest extends RemiseTestCase
         ]);
 
         $this->assertTrue($result['success']);
-        $remise->getFromDB($remise->getID());
-        $documentAfter = (int) $remise->fields['document_id_unsigned'];
+        $assetsign->getFromDB($assetsign->getID());
+        $documentAfter = (int) $assetsign->fields['document_id_unsigned'];
 
         $this->assertGreaterThan(0, $documentAfter);
         $this->assertNotSame($documentBefore, $documentAfter, "Le PDF non signe doit avoir ete regenere (nouveau Document) apres l'ajout d'un repere.");
@@ -214,24 +214,24 @@ class DamageMarkerTest extends RemiseTestCase
         $this->assertSame(DamageMarker::SEVERITY_MINOR, (int) $markers[0]['severity'], 'Une gravite invalide doit se replier sur SEVERITY_MINOR.');
     }
 
-    public function testMaintenanceAndRemiseMarkersAreIsolatedFromEachOther(): void
+    public function testMaintenanceAndAssetsignMarkersAreIsolatedFromEachOther(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Isolation');
-        $remise = $this->createBareRemise($entityId);
+        $assetsign = $this->createBareAssetsign($entityId);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC DamageMarker Isolation');
         $maintenanceId = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [], '');
 
-        DamageMarker::addMarker($remise->getID(), 0, 10, 10, 'Marqueur remise', DamageMarker::SEVERITY_MINOR);
+        DamageMarker::addMarker($assetsign->getID(), 0, 10, 10, 'Marqueur assetsign', DamageMarker::SEVERITY_MINOR);
         DamageMarker::createMarkersForMaintenance($maintenanceId, [
             ['view_index' => 0, 'x' => 20, 'y' => 20, 'description' => 'Marqueur maintenance', 'severity' => 0],
         ]);
 
-        $remiseMarkers = DamageMarker::getForRemise($remise->getID());
+        $assetsignMarkers = DamageMarker::getForAssetsign($assetsign->getID());
         $maintenanceMarkers = DamageMarker::getForMaintenance($maintenanceId);
 
-        $this->assertCount(1, $remiseMarkers);
+        $this->assertCount(1, $assetsignMarkers);
         $this->assertCount(1, $maintenanceMarkers);
-        $this->assertSame('Marqueur remise', $remiseMarkers[0]['description']);
+        $this->assertSame('Marqueur assetsign', $assetsignMarkers[0]['description']);
         $this->assertSame('Marqueur maintenance', $maintenanceMarkers[0]['description']);
     }
 }

@@ -1,0 +1,185 @@
+/* Styles additionnels pour les pages d'administration du plugin assetsign.
+   La page publique de signature (front/sign.php) a son propre CSS inline
+   dans templates/sign_page.html.twig : elle ne partage pas le chrome GLPI. */
+
+.plugin-assetsign-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    padding: 2px 10px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+}
+
+/* Etat des lieux visuel (annotation de dommages) — cf. damage-annotation.js */
+.damage-view-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.damage-view {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+    cursor: crosshair;
+}
+
+.damage-view[data-editable="0"] {
+    cursor: default;
+}
+
+.damage-view-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none; /* les clics passent au conteneur .damage-view */
+}
+
+.damage-view-label {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 4px;
+    text-align: center;
+}
+
+.damage-marker {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    margin-left: -8px;
+    margin-top: -8px;
+    border-radius: 50%;
+    /* Mineure (par defaut) : jaune. Majeure : rouge, cf. .damage-marker-major
+       ci-dessous — deux couleurs distinctes plutot que deux nuances de rouge,
+       pour reperer la gravite d'un coup d'œil sans avoir a cliquer sur chaque
+       repere. */
+    background: rgba(240, 180, 20, 0.9);
+    border: 2px solid #fff;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    cursor: grab;
+}
+
+.damage-marker-major {
+    background: rgba(210, 40, 40, 0.9);
+}
+
+/* Affiche optimistement (avant confirmation serveur, cf. damage-annotation.js) :
+   opacite reduite + pas de curseur "grab", tant que la regeneration du PDF
+   non signe (declenchee par l'ajout) n'a pas confirme le repere. */
+.damage-marker-pending {
+    opacity: 0.55;
+    cursor: default;
+}
+
+.damage-marker-panel {
+    margin-top: 6px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.damage-marker-panel-error {
+    color: #b7472a;
+    font-size: 0.82rem;
+    margin: 2px 0 0;
+}
+
+.damage-marker-panel-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+/* Signature du technicien (fiche de maintenance) — meme apparence que
+   #signature-pad sur la page publique de signature (cf. sign_page.html.twig),
+   qui a son propre CSS inline et ne partage pas ce fichier. */
+.assetsign-signature-pad {
+    border: 1px dashed #999;
+    border-radius: 6px;
+    width: 100%;
+    height: 180px;
+    touch-action: none;
+    background: #fff;
+}
+
+/* Marge de securite sous le bouton Enregistrer de la page de configuration
+   (onglets Général/Assetsign dont le contenu est long) : la barre de debug GLPI
+   (position: fixed, toujours au-dessus, non affectee par le defilement)
+   masquait entierement le bouton sur les onglets les plus hauts, sans aucun
+   moyen de la contourner en defilant plus bas - constate en conditions
+   reelles (mode debug active). Onglets plus courts (Restitution...) n'etaient
+   pas concernes, la hauteur totale de page y laissant deja assez de marge. */
+#assetsign-config-form button[name="update"] {
+    margin-bottom: 60px;
+}
+
+/* Onglet Passeport materiel — frise verticale reprenant le langage visuel du
+   panneau "Dates"/historique natif d'un ticket GLPI (ligne verticale, cercle
+   avec coche pour un evenement passe, point plein pour le plus recent),
+   demande explicite de l'utilisateur plutot qu'un style "Notion/Linear"
+   generique. */
+.passport-lives-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.passport-lives-list li {
+    padding: 4px 0;
+}
+
+.passport-timeline {
+    position: relative;
+    padding-left: 8px;
+}
+
+.passport-timeline-item {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    padding-bottom: 20px;
+}
+
+.passport-timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 20px;
+    bottom: 0;
+    width: 1px;
+    background: #d6dbe1;
+}
+
+.passport-timeline-marker {
+    flex: 0 0 20px;
+    display: flex;
+    justify-content: center;
+    padding-top: 1px;
+}
+
+.passport-timeline-check {
+    color: #6b7a86;
+    font-size: 1.1rem;
+}
+
+.passport-timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #0d6efd;
+    display: inline-block;
+    margin-top: 2px;
+}
+
+.passport-timeline-date {
+    white-space: nowrap;
+    margin-bottom: 2px;
+}

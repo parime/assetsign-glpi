@@ -3,27 +3,27 @@
 /**
  * Fonctions procedurales appelees directement par le coeur de GLPI.
  * Volontairement minces : elles delegue immediatement aux classes namespacees
- * dans src/GlpiPlugin/Remise/ qui portent la vraie logique metier.
+ * dans src/GlpiPlugin/Assetsign/ qui portent la vraie logique metier.
  */
 
 use Glpi\Cache\CacheManager;
-use GlpiPlugin\Remise\Accessory;
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\CreationFailure;
-use GlpiPlugin\Remise\DamageMarker;
-use GlpiPlugin\Remise\Dashboard\CardProvider;
-use GlpiPlugin\Remise\Maintenance;
-use GlpiPlugin\Remise\MaintenanceChecklistItem;
-use GlpiPlugin\Remise\NotificationTargetRemise;
-use GlpiPlugin\Remise\PassportEvent;
-use GlpiPlugin\Remise\Profile;
-use GlpiPlugin\Remise\Reminder;
-use GlpiPlugin\Remise\Remise;
-use GlpiPlugin\Remise\RemiseAccessory;
-use GlpiPlugin\Remise\Signature;
-use GlpiPlugin\Remise\Template;
-use GlpiPlugin\Remise\Token;
-use GlpiPlugin\Remise\VenteDetails;
+use GlpiPlugin\Assetsign\Accessory;
+use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\AssetsignAccessory;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\CreationFailure;
+use GlpiPlugin\Assetsign\DamageMarker;
+use GlpiPlugin\Assetsign\Dashboard\CardProvider;
+use GlpiPlugin\Assetsign\Maintenance;
+use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
+use GlpiPlugin\Assetsign\NotificationTargetAssetsign;
+use GlpiPlugin\Assetsign\PassportEvent;
+use GlpiPlugin\Assetsign\Profile;
+use GlpiPlugin\Assetsign\Reminder;
+use GlpiPlugin\Assetsign\Signature;
+use GlpiPlugin\Assetsign\Template;
+use GlpiPlugin\Assetsign\Token;
+use GlpiPlugin\Assetsign\VenteDetails;
 
 // ----------------------------------------------------------------------------------
 // Callbacks de hooks (item_add / item_update / pre_item_purge)
@@ -38,14 +38,14 @@ use GlpiPlugin\Remise\VenteDetails;
  * reaffecte un simple ordinateur se prendrait une erreur 500 sur SA sauvegarde
  * a cause d'un probleme qui ne concerne que le plugin).
  */
-function plugin_remise_item_assignment(CommonDBTM $item): void {
+function plugin_assetsign_item_assignment(CommonDBTM $item): void {
    try {
-       Remise::handleItemAssignment($item);
+       Assetsign::handleItemAssignment($item);
    } catch (\Throwable $e) {
        \Toolbox::logInFile(
-           'remise',
+           'assetsign',
            sprintf(
-               "Echec du declenchement remise pour %s #%d : %s\n%s",
+               "Echec du declenchement assetsign pour %s #%d : %s\n%s",
                $item->getType(),
                $item->getID(),
                $e->getMessage(),
@@ -53,7 +53,7 @@ function plugin_remise_item_assignment(CommonDBTM $item): void {
            ),
            true
        );
-       // Type Remise attendu inconnu a ce niveau (l'exception peut venir de
+       // Type Assetsign attendu inconnu a ce niveau (l'exception peut venir de
        // n'importe quel point de handleItemAssignment()) : null, cf.
        // CreationFailure::record(). Le fichier de log ci-dessus reste la seule
        // source de la trace complete ; cette ligne ne sert qu'a rendre
@@ -68,14 +68,14 @@ function plugin_remise_item_assignment(CommonDBTM $item): void {
    }
 }
 
-function plugin_remise_item_pre_purge(CommonDBTM $item): void {
+function plugin_assetsign_item_pre_purge(CommonDBTM $item): void {
    try {
-       Remise::archiveForPurgedItem($item);
+       Assetsign::archiveForPurgedItem($item);
    } catch (\Throwable $e) {
        \Toolbox::logInFile(
-           'remise',
+           'assetsign',
            sprintf(
-               "Echec de l'archivage des remises pour %s #%d : %s\n%s",
+               "Echec de l'archivage des assetsigns pour %s #%d : %s\n%s",
                $item->getType(),
                $item->getID(),
                $e->getMessage(),
@@ -86,35 +86,35 @@ function plugin_remise_item_pre_purge(CommonDBTM $item): void {
    }
 }
 
-function plugin_remise_dashboard_cards(): array {
-    $group = __('Remise & signature', 'remise');
+function plugin_assetsign_dashboard_cards(): array {
+    $group = __('Assetsign & signature', 'assetsign');
 
     return [
-        'remise_pending' => [
+        'assetsign_pending' => [
             'widgettype' => ['bigNumber'],
             'group'      => $group,
-            'label'      => __('Remises en attente de signature', 'remise'),
+            'label'      => __('Assetsigns en attente de signature', 'assetsign'),
             'provider'   => CardProvider::class . '::pending',
             'filters'    => [],
         ],
-        'remise_signed' => [
+        'assetsign_signed' => [
             'widgettype' => ['bigNumber'],
             'group'      => $group,
-            'label'      => __('Remises signées', 'remise'),
+            'label'      => __('Assetsigns signées', 'assetsign'),
             'provider'   => CardProvider::class . '::signed',
             'filters'    => [],
         ],
-        'remise_expired' => [
+        'assetsign_expired' => [
             'widgettype' => ['bigNumber'],
             'group'      => $group,
-            'label'      => __('Remises expirées', 'remise'),
+            'label'      => __('Assetsigns expirées', 'assetsign'),
             'provider'   => CardProvider::class . '::expired',
             'filters'    => [],
         ],
-        'remise_creation_failures' => [
+        'assetsign_creation_failures' => [
             'widgettype' => ['bigNumber'],
             'group'      => $group,
-            'label'      => __('Échecs de création (30 derniers jours)', 'remise'),
+            'label'      => __('Échecs de création (30 derniers jours)', 'assetsign'),
             'provider'   => CardProvider::class . '::failures',
             'filters'    => [],
         ],
@@ -127,10 +127,10 @@ function plugin_remise_dashboard_cards(): array {
 
 /**
  * Appelee par Plugin::getDropdowns() (hook AUTO_GET_DROPDOWN) : ajoute Gabarits de
- * remise a la page Configuration > Intitulés plutot que dans le menu Administration,
+ * assetsign a la page Configuration > Intitulés plutot que dans le menu Administration,
  * comme n'importe quelle autre liste deroulante de GLPI.
  */
-function plugin_remise_getDropdown(): array {
+function plugin_assetsign_getDropdown(): array {
     return [
         Template::class                 => Template::getTypeName(2),
         Accessory::class                => Accessory::getTypeName(2),
@@ -142,23 +142,23 @@ function plugin_remise_getDropdown(): array {
 // Installation / desinstallation
 // ----------------------------------------------------------------------------------
 
-function plugin_remise_install(): bool {
-    $migration = new Migration(str_replace('.', '', PLUGIN_REMISE_VERSION));
+function plugin_assetsign_install(): bool {
+    $migration = new Migration(str_replace('.', '', PLUGIN_ASSETSIGN_VERSION));
 
     Config::install($migration);
     Template::install($migration);
     Accessory::install($migration);
     CreationFailure::install($migration);
-    Remise::install($migration);
-    RemiseAccessory::install($migration);
+    Assetsign::install($migration);
+    AssetsignAccessory::install($migration);
     VenteDetails::install($migration);
     MaintenanceChecklistItem::install($migration);
     Maintenance::install($migration);
     // Apres Maintenance : la contrainte de cle etrangere ajoutee par
-    // DamageMarker::install() vers glpi_plugin_remise_maintenances exige que
+    // DamageMarker::install() vers glpi_plugin_assetsign_maintenances exige que
     // cette table existe deja (piege reel rencontre en testant - l'ALTER
     // TABLE echouait silencieusement, laissant la colonne
-    // plugin_remise_maintenances_id absente sans qu'aucune erreur ne
+    // plugin_assetsign_maintenances_id absente sans qu'aucune erreur ne
     // remonte jusqu'a l'ecran d'installation).
     DamageMarker::install($migration);
     PassportEvent::install($migration);
@@ -169,11 +169,11 @@ function plugin_remise_install(): bool {
 
     $migration->executeMigration();
 
-    NotificationTargetRemise::install();
+    NotificationTargetAssetsign::install();
 
     CronTask::register(
-        Remise::class,
-        'remiseReminders',
+        Assetsign::class,
+        'assetsignReminders',
         HOUR_TIMESTAMP,
         [
             'comment' => 'Envoie les relances de signature dues (J+3, J+7, puis hebdomadaire)',
@@ -181,26 +181,26 @@ function plugin_remise_install(): bool {
         ]
     );
     CronTask::register(
-        Remise::class,
-        'remiseExpire',
+        Assetsign::class,
+        'assetsignExpire',
         DAY_TIMESTAMP,
         [
-            'comment' => 'Marque comme expirees les remises dont le delai de signature est depasse',
+            'comment' => 'Marque comme expirees les assetsigns dont le delai de signature est depasse',
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
     CronTask::register(
-        Remise::class,
-        'remiseExpiryWarning',
+        Assetsign::class,
+        'assetsignExpiryWarning',
         DAY_TIMESTAMP,
         [
-            'comment' => 'Alerte le technicien des remises sur le point d\'expirer (avant que ce soit trop tard pour agir)',
+            'comment' => 'Alerte le technicien des assetsigns sur le point d\'expirer (avant que ce soit trop tard pour agir)',
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
     CronTask::register(
         Token::class,
-        'remiseCleanupTokens',
+        'assetsignCleanupTokens',
         DAY_TIMESTAMP,
         [
             'comment' => 'Purge les tokens de signature invalides ou perimes depuis plus de ' . Token::CLEANUP_RETENTION_DAYS . ' jours',
@@ -230,34 +230,34 @@ function plugin_remise_install(): bool {
     return true;
 }
 
-function plugin_remise_uninstall(): bool {
-    $migration = new Migration(str_replace('.', '', PLUGIN_REMISE_VERSION));
+function plugin_assetsign_uninstall(): bool {
+    $migration = new Migration(str_replace('.', '', PLUGIN_ASSETSIGN_VERSION));
 
    foreach ([
-        'glpi_plugin_remise_events',
-        'glpi_plugin_remise_reminders',
-        'glpi_plugin_remise_signatures',
-        'glpi_plugin_remise_tokens',
-        'glpi_plugin_remise_remiseaccessories',
-        'glpi_plugin_remise_ventedetails',
-        'glpi_plugin_remise_damagemarkers',
-        'glpi_plugin_remise_remises',
-        'glpi_plugin_remise_maintenancechecklistvalues',
-        'glpi_plugin_remise_maintenances',
-        'glpi_plugin_remise_maintenancechecklistitems',
-        'glpi_plugin_remise_accessories',
-        'glpi_plugin_remise_templates',
-        'glpi_plugin_remise_configs',
-        'glpi_plugin_remise_creationfailures',
+        'glpi_plugin_assetsign_events',
+        'glpi_plugin_assetsign_reminders',
+        'glpi_plugin_assetsign_signatures',
+        'glpi_plugin_assetsign_tokens',
+        'glpi_plugin_assetsign_assetsignaccessories',
+        'glpi_plugin_assetsign_ventedetails',
+        'glpi_plugin_assetsign_damagemarkers',
+        'glpi_plugin_assetsign_assetsigns',
+        'glpi_plugin_assetsign_maintenancechecklistvalues',
+        'glpi_plugin_assetsign_maintenances',
+        'glpi_plugin_assetsign_maintenancechecklistitems',
+        'glpi_plugin_assetsign_accessories',
+        'glpi_plugin_assetsign_templates',
+        'glpi_plugin_assetsign_configs',
+        'glpi_plugin_assetsign_creationfailures',
     ] as $table) {
        $migration->dropTable($table);
    }
 
     Profile::uninstall();
-    NotificationTargetRemise::uninstall();
+    NotificationTargetAssetsign::uninstall();
 
     // Retire toutes les taches planifiees enregistrees par ce plugin
-    CronTask::Unregister('remise');
+    CronTask::Unregister('assetsign');
 
     return true;
 }

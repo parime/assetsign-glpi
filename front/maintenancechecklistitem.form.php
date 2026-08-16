@@ -1,7 +1,7 @@
 <?php
 
-use GlpiPlugin\Remise\Maintenance;
-use GlpiPlugin\Remise\MaintenanceChecklistItem;
+use GlpiPlugin\Assetsign\Maintenance;
+use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 
 $item = new MaintenanceChecklistItem();
 

@@ -6,7 +6,7 @@
          failOnWarning="true"
          failOnDeprecation="false">
     <testsuites>
-        <testsuite name="remise">
+        <testsuite name="assetsign">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

@@ -1,19 +1,19 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\Maintenance;
-use GlpiPlugin\Remise\PassportEvent;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\Maintenance;
+use GlpiPlugin\Assetsign\PassportEvent;
+use GlpiPlugin\Assetsign\Assetsign;
 
 /**
  * Couvre le socle du Passeport materiel (cf. ROADMAP.md, "Vision produit a long terme") :
- * enregistrement d'evenements depuis Remise/Maintenance (jamais duplique, jamais reecrit
+ * enregistrement d'evenements depuis Assetsign/Maintenance (jamais duplique, jamais reecrit
  * apres coup), regroupement en "vies", et anonymisation du snapshot beneficiaire au-dela du
  * delai configure.
  */
-class PassportEventTest extends RemiseTestCase
+class PassportEventTest extends AssetsignTestCase
 {
     private function eventsFor(string $itemtype, int $items_id): array
     {
@@ -33,7 +33,7 @@ class PassportEventTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         $events = $this->eventsFor('Computer', $computer->getID());
         $this->assertCount(1, $events);
@@ -41,7 +41,7 @@ class PassportEventTest extends RemiseTestCase
         $this->assertSame(PassportEvent::TYPE_ATTRIBUTION, (int) $event['event_type']);
         $this->assertSame($userId, (int) $event['users_id']);
         $this->assertSame('Jean Dupont', $event['snapshot_name']);
-        $this->assertSame(Remise::class, $event['source_itemtype']);
+        $this->assertSame(Assetsign::class, $event['source_itemtype']);
     }
 
     public function testCreateManualDonRecordsDonEventWithExternalSnapshot(): void
@@ -49,8 +49,8 @@ class PassportEventTest extends RemiseTestCase
         $entityId = $this->createTestEntity(0, 'PHPUnit Passport Don');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Don');
 
-        Remise::createManual('Computer', $computer->getID(), Remise::TYPE_DON, 0, [
-            'beneficiary_type' => Remise::BENEFICIARY_EXTERNAL,
+        Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, 0, [
+            'beneficiary_type' => Assetsign::BENEFICIARY_EXTERNAL,
             'external_name'    => 'Association Externe',
             'external_contact' => 'contact@externe.example',
         ]);
@@ -88,18 +88,18 @@ class PassportEventTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $firstUserId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         // Reaffectation au MEME utilisateur : ne doit pas ouvrir une nouvelle vie.
         $computer->getFromDB($computer->getID());
         $computer->oldvalues = ['users_id' => $firstUserId];
         $computer->fields['users_id'] = $firstUserId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         $computer->getFromDB($computer->getID());
         $computer->oldvalues = ['users_id' => $firstUserId];
         $computer->fields['users_id'] = $secondUserId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         $lives = PassportEvent::getLivesForItem('Computer', $computer->getID());
         $this->assertCount(2, $lives, '2 beneficiaires distincts doivent produire 2 vies, pas 3.');
@@ -119,7 +119,7 @@ class PassportEventTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         $events = $this->eventsFor('Computer', $computer->getID());
         $eventId = (int) reset($events)['id'];
@@ -148,7 +148,7 @@ class PassportEventTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         $events = $this->eventsFor('Computer', $computer->getID());
         $eventId = (int) reset($events)['id'];

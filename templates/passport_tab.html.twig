@@ -1,44 +1,44 @@
 <div class="passport-identity-card mb-4">
   <div class="row g-2">
     {% if identity.model or identity.manufacturer %}
-      <div class="col-auto"><strong>{{ __('Modèle', 'remise') }} :</strong> {{ identity.manufacturer }}{{ identity.manufacturer and identity.model ? ' — ' : '' }}{{ identity.model }}</div>
+      <div class="col-auto"><strong>{{ __('Modèle', 'assetsign') }} :</strong> {{ identity.manufacturer }}{{ identity.manufacturer and identity.model ? ' — ' : '' }}{{ identity.model }}</div>
     {% endif %}
     {% if identity.serial %}
-      <div class="col-auto"><strong>{{ __('N° série', 'remise') }} :</strong> {{ identity.serial }}</div>
+      <div class="col-auto"><strong>{{ __('N° série', 'assetsign') }} :</strong> {{ identity.serial }}</div>
     {% endif %}
     {% if identity.state %}
-      <div class="col-auto"><strong>{{ __('État', 'remise') }} :</strong> {{ identity.state }}</div>
+      <div class="col-auto"><strong>{{ __('État', 'assetsign') }} :</strong> {{ identity.state }}</div>
     {% endif %}
     {% if identity.user %}
-      <div class="col-auto"><strong>{{ __('Utilisateur actuel', 'remise') }} :</strong> {{ identity.user }}</div>
+      <div class="col-auto"><strong>{{ __('Utilisateur actuel', 'assetsign') }} :</strong> {{ identity.user }}</div>
     {% endif %}
-    <div class="col-auto"><strong>{{ __('Entité', 'remise') }} :</strong> {{ identity.entity }}</div>
+    <div class="col-auto"><strong>{{ __('Entité', 'assetsign') }} :</strong> {{ identity.entity }}</div>
     {% if identity.buy_date %}
-      <div class="col-auto"><strong>{{ __('Achat', 'remise') }} :</strong> {{ identity.buy_date|formatted_date }}</div>
+      <div class="col-auto"><strong>{{ __('Achat', 'assetsign') }} :</strong> {{ identity.buy_date|formatted_date }}</div>
     {% endif %}
     {% if identity.warranty_end %}
-      <div class="col-auto"><strong>{{ __('Fin de garantie', 'remise') }} :</strong> {{ identity.warranty_end|formatted_date }}</div>
+      <div class="col-auto"><strong>{{ __('Fin de garantie', 'assetsign') }} :</strong> {{ identity.warranty_end|formatted_date }}</div>
     {% endif %}
     {% if identity.age %}
-      <div class="col-auto"><strong>{{ __('Âge', 'remise') }} :</strong> {{ identity.age }}</div>
+      <div class="col-auto"><strong>{{ __('Âge', 'assetsign') }} :</strong> {{ identity.age }}</div>
     {% endif %}
     {% if identity.used_duration %}
-      <div class="col-auto"><strong>{{ __('Temps utilisé', 'remise') }} :</strong> {{ identity.used_duration }}{{ identity.used_percent is not null ? ' (' ~ identity.used_percent ~ '%)' : '' }}</div>
+      <div class="col-auto"><strong>{{ __('Temps utilisé', 'assetsign') }} :</strong> {{ identity.used_duration }}{{ identity.used_percent is not null ? ' (' ~ identity.used_percent ~ '%)' : '' }}</div>
     {% endif %}
     {% if identity.stock_duration %}
-      <div class="col-auto"><strong>{{ __('Temps en stock', 'remise') }} :</strong> {{ identity.stock_duration }}</div>
+      <div class="col-auto"><strong>{{ __('Temps en stock', 'assetsign') }} :</strong> {{ identity.stock_duration }}</div>
     {% endif %}
   </div>
 </div>
 
 {% if health %}
   <div class="mb-4">
-    <strong>{{ __('Score de santé', 'remise') }} :</strong>
+    <strong>{{ __('Score de santé', 'assetsign') }} :</strong>
     <span class="badge" style="background-color: {{ health.color }}; color: #fff;">{{ health.score }}/100</span>
     <ul class="passport-health-breakdown text-muted small mb-0 mt-1">
       {% for factor in health.breakdown %}
         {% if factor.weight > 0 %}
-          <li>{{ factor.label }} : {{ factor.degradation }}% {{ __('de dégradation', 'remise') }} ({{ __('poids', 'remise') }} {{ factor.weight }})</li>
+          <li>{{ factor.label }} : {{ factor.degradation }}% {{ __('de dégradation', 'assetsign') }} ({{ __('poids', 'assetsign') }} {{ factor.weight }})</li>
         {% endif %}
       {% endfor %}
     </ul>
@@ -46,37 +46,37 @@
 {% endif %}
 
 {% if can_backfill %}
-  <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/passport_backfill.php" class="mb-2">
+  <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/passport_backfill.php" class="mb-2">
     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
     <input type="hidden" name="itemtype" value="{{ itemtype }}">
     <input type="hidden" name="items_id" value="{{ items_id }}">
     <button type="submit" class="btn btn-sm btn-outline-secondary">
-      <i class="ti ti-history"></i> {{ __('Forcer la recherche dans l\'historique', 'remise') }}
+      <i class="ti ti-history"></i> {{ __('Forcer la recherche dans l\'historique', 'assetsign') }}
     </button>
   </form>
 {% endif %}
 
 <div class="passport-summary mb-4">
-  <h4>{{ __('Vies du matériel', 'remise') }} <span class="badge bg-blue-lt">{{ lives|length }}</span></h4>
+  <h4>{{ __('Vies du matériel', 'assetsign') }} <span class="badge bg-blue-lt">{{ lives|length }}</span></h4>
   {% if lives|length %}
     <ul class="passport-lives-list">
       {% for life in lives %}
         <li>
           <strong>{{ life.name }}</strong>
-          {% if life.is_external %}<span class="badge bg-secondary-lt ms-1">{{ __('externe', 'remise') }}</span>{% endif %}
+          {% if life.is_external %}<span class="badge bg-secondary-lt ms-1">{{ __('externe', 'assetsign') }}</span>{% endif %}
           <span class="text-muted small ms-2">
-            {{ life.start|formatted_date }} → {{ life.end ? life.end|formatted_date : __('aujourd\'hui', 'remise') }}
+            {{ life.start|formatted_date }} → {{ life.end ? life.end|formatted_date : __('aujourd\'hui', 'assetsign') }}
             ({{ life.duration }})
           </span>
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <p class="text-muted">{{ __('Aucune attribution enregistrée pour le moment.', 'remise') }}</p>
+    <p class="text-muted">{{ __('Aucune attribution enregistrée pour le moment.', 'assetsign') }}</p>
   {% endif %}
 </div>
 
-<h4>{{ __('Historique', 'remise') }}</h4>
+<h4>{{ __('Historique', 'assetsign') }}</h4>
 {% if events|length %}
   <div class="passport-timeline">
     {% for event in events %}
@@ -94,15 +94,15 @@
             <strong>{{ event.type_label }}</strong>
             {% if event.snapshot_name %}
               — {{ event.snapshot_name }}
-              {% if event.snapshot_is_external %}<span class="badge bg-secondary-lt">{{ __('externe', 'remise') }}</span>{% endif %}
+              {% if event.snapshot_is_external %}<span class="badge bg-secondary-lt">{{ __('externe', 'assetsign') }}</span>{% endif %}
             {% elseif event.is_anonymized %}
-              — <span class="text-muted">{{ __('bénéficiaire anonymisé', 'remise') }}</span>
+              — <span class="text-muted">{{ __('bénéficiaire anonymisé', 'assetsign') }}</span>
             {% endif %}
             {% if event.comment %}
               <div class="text-muted small">{{ event.comment }}</div>
             {% endif %}
             {% if event.source_url %}
-              <div><a href="{{ event.source_url }}">{{ __('Voir la fiche', 'remise') }}</a></div>
+              <div><a href="{{ event.source_url }}">{{ __('Voir la fiche', 'assetsign') }}</a></div>
             {% endif %}
           </div>
         </div>
@@ -110,5 +110,5 @@
     {% endfor %}
   </div>
 {% else %}
-  <p class="text-muted">{{ __('Aucun événement enregistré pour le moment.', 'remise') }}</p>
+  <p class="text-muted">{{ __('Aucun événement enregistré pour le moment.', 'assetsign') }}</p>
 {% endif %}

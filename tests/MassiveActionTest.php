@@ -1,9 +1,9 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Reminder;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\Reminder;
+use GlpiPlugin\Assetsign\Assetsign;
 use MassiveAction;
 
 /**
@@ -19,7 +19,7 @@ use MassiveAction;
  * HTTP (formulaire de selection, sous-formulaire de confirmation) hors de
  * portee d'un test unitaire.
  */
-class MassiveActionTest extends RemiseTestCase
+class MassiveActionTest extends AssetsignTestCase
 {
     private function runMassiveAction(string $action, array $ids): array
     {
@@ -29,9 +29,9 @@ class MassiveActionTest extends RemiseTestCase
         }
 
         $ma = new MassiveAction([
-            'items'       => [Remise::class => $items],
+            'items'       => [Assetsign::class => $items],
             'action'      => $action,
-            'processor'   => Remise::class,
+            'processor'   => Assetsign::class,
             'action_name' => $action,
         ], [], 'process');
 
@@ -41,28 +41,28 @@ class MassiveActionTest extends RemiseTestCase
     public function testSendReminderMarksOkAndIncrementsReminderCount(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit MassiveAction SendReminder');
-        $remise = $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
+        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_SENT);
 
-        $results = $this->runMassiveAction('send_reminder', [$remise->getID()]);
+        $results = $this->runMassiveAction('send_reminder', [$assetsign->getID()]);
 
         $this->assertSame(1, $results['ok']);
         $this->assertSame(0, $results['ko']);
         $this->assertSame(
             1,
-            Reminder::countForRemise($remise->getID()),
+            Reminder::countForAssetsign($assetsign->getID()),
             'sendReminderNow() doit avoir ete reellement execute, pas seulement marque OK.'
         );
     }
 
-    public function testSendReminderMarksKoForAlreadySignedRemiseWithoutBlockingOthers(): void
+    public function testSendReminderMarksKoForAlreadySignedAssetsignWithoutBlockingOthers(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit MassiveAction Mixed');
-        $pending = $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
-        $signed  = $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SIGNED);
+        $pending = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_SENT);
+        $signed  = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_SIGNED);
 
         // Meme selection melangeant une remise encore en attente et une deja
         // signee : la seconde doit echouer en KO (sendReminderNow() leve une
-        // RuntimeException, cf. Remise.php) SANS empecher la premiere de
+        // RuntimeException, cf. Assetsign.php) SANS empecher la premiere de
         // reussir malgre l'exception levee sur l'autre — c'est precisement le
         // comportement documente dans TROUBLESHOOTING.md.
         $results = $this->runMassiveAction('send_reminder', [$pending->getID(), $signed->getID()]);
@@ -71,24 +71,24 @@ class MassiveActionTest extends RemiseTestCase
         $this->assertSame(1, $results['ko'], 'La remise deja signee doit echouer en KO, pas planter tout le lot.');
     }
 
-    public function testCancelRequestMarksOkAndCancelsPendingRemise(): void
+    public function testCancelRequestMarksOkAndCancelsPendingAssetsign(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit MassiveAction CancelRequest');
-        $remise = $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
+        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_SENT);
 
-        $results = $this->runMassiveAction('cancel_request', [$remise->getID()]);
+        $results = $this->runMassiveAction('cancel_request', [$assetsign->getID()]);
 
         $this->assertSame(1, $results['ok']);
-        $remise->getFromDB($remise->getID());
-        $this->assertSame(Remise::STATUS_CANCELLED, (int) $remise->fields['status']);
+        $assetsign->getFromDB($assetsign->getID());
+        $this->assertSame(Assetsign::STATUS_CANCELLED, (int) $assetsign->fields['status']);
     }
 
-    public function testCancelRequestMarksKoForAlreadyCancelledRemise(): void
+    public function testCancelRequestMarksKoForAlreadyCancelledAssetsign(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit MassiveAction CancelRequest Ko');
-        $remise = $this->createBareRemise($entityId, Remise::TYPE_HANDOVER, Remise::STATUS_CANCELLED);
+        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_CANCELLED);
 
-        $results = $this->runMassiveAction('cancel_request', [$remise->getID()]);
+        $results = $this->runMassiveAction('cancel_request', [$assetsign->getID()]);
 
         $this->assertSame(0, $results['ok']);
         $this->assertSame(1, $results['ko']);
@@ -96,7 +96,7 @@ class MassiveActionTest extends RemiseTestCase
 
     /**
      * Faille reelle trouvee et corrigee en conditions reelles (cf.
-     * TROUBLESHOOTING.md), meme famille que celle de Remise::createManual() :
+     * TROUBLESHOOTING.md), meme famille que celle de Assetsign::createManual() :
      * le framework MassiveAction de GLPI ne filtre PAS lui-meme les ids
      * soumis par entite pour une action specifique de plugin - c'est a
      * processMassiveActionsForOneItemtype() de le faire. Simule ici une
@@ -104,7 +104,7 @@ class MassiveActionTest extends RemiseTestCase
      * $_SESSION['glpiactiveentities'] (insertion directe, sans passer par
      * createTestEntity() qui l'y enregistre automatiquement).
      */
-    public function testSendReminderAndCancelRequestRejectRemiseInEntityOutsideCurrentAccess(): void
+    public function testSendReminderAndCancelRequestRejectAssetsignInEntityOutsideCurrentAccess(): void
     {
         global $DB;
 
@@ -116,17 +116,17 @@ class MassiveActionTest extends RemiseTestCase
             'entities_id'  => 0,
             'level'        => 2,
         ]);
-        $remise = $this->createBareRemise($inaccessibleEntityId, Remise::TYPE_HANDOVER, Remise::STATUS_SENT);
+        $assetsign = $this->createBareAssetsign($inaccessibleEntityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_SENT);
 
-        $results = $this->runMassiveAction('send_reminder', [$remise->getID()]);
+        $results = $this->runMassiveAction('send_reminder', [$assetsign->getID()]);
         $this->assertSame(0, $results['ok']);
         $this->assertSame(1, $results['noright']);
-        $this->assertSame(0, Reminder::countForRemise($remise->getID()), "La relance n'aurait jamais du etre envoyee.");
+        $this->assertSame(0, Reminder::countForAssetsign($assetsign->getID()), "La relance n'aurait jamais du etre envoyee.");
 
-        $results = $this->runMassiveAction('cancel_request', [$remise->getID()]);
+        $results = $this->runMassiveAction('cancel_request', [$assetsign->getID()]);
         $this->assertSame(0, $results['ok']);
         $this->assertSame(1, $results['noright']);
-        $remise->getFromDB($remise->getID());
-        $this->assertSame(Remise::STATUS_SENT, (int) $remise->fields['status'], "La remise n'aurait jamais du etre annulee.");
+        $assetsign->getFromDB($assetsign->getID());
+        $this->assertSame(Assetsign::STATUS_SENT, (int) $assetsign->fields['status'], "La remise n'aurait jamais du etre annulee.");
     }
 }

@@ -31,17 +31,17 @@ jobs:
       - name: Récupère le code du plugin
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
 
-      - name: Vérifie que le tag correspond a PLUGIN_REMISE_VERSION
+      - name: Vérifie que le tag correspond a PLUGIN_ASSETSIGN_VERSION
         # Empeche une release qui ne correspondrait pas a la version reellement
         # ecrite dans le code (ex: tag pousse avant/apres avoir oublie de
         # mettre a jour setup.php) - ferait cohabiter une archive et un numero
         # de version incoherents.
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#v}"
-          CODE_VERSION="$(grep -oP "define\('PLUGIN_REMISE_VERSION', '\K[^']+" setup.php)"
+          CODE_VERSION="$(grep -oP "define\('PLUGIN_ASSETSIGN_VERSION', '\K[^']+" setup.php)"
           echo "Tag : $TAG_VERSION -- setup.php : $CODE_VERSION"
           if [ "$TAG_VERSION" != "$CODE_VERSION" ]; then
-            echo "::error::Le tag $GITHUB_REF_NAME ne correspond pas a PLUGIN_REMISE_VERSION ($CODE_VERSION) dans setup.php."
+            echo "::error::Le tag $GITHUB_REF_NAME ne correspond pas a PLUGIN_ASSETSIGN_VERSION ($CODE_VERSION) dans setup.php."
             exit 1
           fi
 
@@ -56,18 +56,18 @@ jobs:
         # partir du contenu commite au tag, exclut automatiquement ce qui est
         # marque `export-ignore` dans .gitattributes (tests/, .github/,
         # config CI/qualite...) - rien d'accidentel du repertoire de travail
-        # ne peut s'y retrouver. Prefixe `remise/` : l'archive s'extrait
+        # ne peut s'y retrouver. Prefixe `assetsign/` : l'archive s'extrait
         # directement sous `plugins/` sur une instance GLPI (structure exigee
         # par le coeur GLPI, cf. ARCHITECTURE.md).
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          echo "ARCHIVE_NAME=remise-glpi-${VERSION}.zip" >> "$GITHUB_ENV"
-          git archive --format=zip --prefix=remise/ -o "remise-glpi-${VERSION}.zip" "$GITHUB_REF_NAME"
+          echo "ARCHIVE_NAME=assetsign-glpi-${VERSION}.zip" >> "$GITHUB_ENV"
+          git archive --format=zip --prefix=assetsign/ -o "assetsign-glpi-${VERSION}.zip" "$GITHUB_REF_NAME"
 
       - name: Démarre MariaDB
         run: |
-          docker network create remise-ci
-          docker run -d --name mariadb --network remise-ci \
+          docker network create assetsign-ci
+          docker run -d --name mariadb --network assetsign-ci \
             -e MARIADB_ROOT_PASSWORD=glpi_password \
             -e MARIADB_DATABASE=glpidb \
             -e MARIADB_USER=glpi_user \
@@ -82,7 +82,7 @@ jobs:
 
       - name: Démarre GLPI (auto-installation via l'image officielle)
         run: |
-          docker run -d --name glpi --network remise-ci \
+          docker run -d --name glpi --network assetsign-ci \
             -e TIMEZONE=Europe/Paris \
             -e GLPI_DB_HOST=mariadb \
             -e GLPI_DB_PORT=3306 \
@@ -112,8 +112,8 @@ jobs:
         run: |
           mkdir -p /tmp/archive-extraite
           unzip -q "$ARCHIVE_NAME" -d /tmp/archive-extraite
-          docker cp /tmp/archive-extraite/remise glpi:/var/www/glpi/plugins/remise
-          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/remise
+          docker cp /tmp/archive-extraite/assetsign glpi:/var/www/glpi/plugins/assetsign
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/assetsign
 
           ready=0
           for i in $(seq 1 12); do
@@ -127,8 +127,8 @@ jobs:
             echo "::error::database:update a echoue apres 12 tentatives."
             exit 1
           fi
-          docker exec glpi php bin/console plugin:install remise --force --no-interaction
-          docker exec glpi php bin/console plugin:activate remise --no-interaction
+          docker exec glpi php bin/console plugin:install assetsign --force --no-interaction
+          docker exec glpi php bin/console plugin:activate assetsign --no-interaction
 
       - name: Logs GLPI (en cas d'échec)
         if: failure()

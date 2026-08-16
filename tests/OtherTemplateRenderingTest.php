@@ -1,15 +1,15 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\Maintenance;
-use GlpiPlugin\Remise\Remise;
-use GlpiPlugin\Remise\Template;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\Maintenance;
+use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\Template;
 use Session;
 
 /**
- * Complete TemplateRenderingTest (remise_tab/remise_form) : rendu reel des
+ * Complete TemplateRenderingTest (assetsign_tab/assetsign_form) : rendu reel des
  * AUTRES gabarits d'administration du plugin, capture via ob_start()/
  * ob_get_clean() autour de la vraie methode d'affichage (display() echo
  * directement, ces classes n'exposent pas de variante render()) — exercice le
@@ -17,12 +17,12 @@ use Session;
  * du contexte qui pourrait diverger silencieusement de la vraie methode.
  *
  * Meme garde-fou que TemplateRenderingTest (assertNoStrayNumericTextNode(),
- * factorisee sur RemiseTestCase) : aucun de ces gabarits n'utilise
+ * factorisee sur AssetsignTestCase) : aucun de ces gabarits n'utilise
  * {{ call(...) }} aujourd'hui (verifie par grep avant d'ecrire ce test), mais
  * si l'un d'eux en gagnait un plus tard sans passer par {% do call(...) %},
  * ce test l'attraperait sans modification.
  */
-class OtherTemplateRenderingTest extends RemiseTestCase
+class OtherTemplateRenderingTest extends AssetsignTestCase
 {
     /**
      * showForm() -> initForm() -> check() exige a la fois un droit

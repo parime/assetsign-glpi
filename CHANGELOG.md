@@ -9,6 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-08-16
+
+### Changed
+
+- **BREAKING** : renommage complet de la clé technique du plugin, `remise` → `assetsign`, pour une
+  diffusion à un public international ("remise" n'a aucun sens hors français, et peut même se
+  confondre avec "réduction"). Casse toute installation existante — aucune migration fournie
+  (décision explicite : aucune installation connue en dehors de l'instance de test de ce dépôt).
+  Réinstallation propre requise : désinstaller `remise`, installer `assetsign`.
+  - Namespace PHP `GlpiPlugin\Remise` → `GlpiPlugin\Assetsign`, classe cœur `Remise` →
+    `Assetsign`, et toutes les classes qui en dérivaient (`RemiseAccessory` →
+    `AssetsignAccessory`, `NotificationTargetRemise` → `NotificationTargetAssetsign`,
+    `RemiseFormController` → `AssetsignFormController`).
+  - 15 tables `glpi_plugin_remise_*` → `glpi_plugin_assetsign_*`.
+  - 4 droits de profil (`plugin_remise_*` → `plugin_assetsign_*`), tâches CronTask
+    (`remiseReminders`/`remiseExpire`/`remiseExpiryWarning`/`remiseCleanupTokens` →
+    équivalents `assetsign*`), commandes console (`plugins:remise:*` → `plugins:assetsign:*`).
+  - Manifeste marketplace `remise.xml` → `assetsign.xml`, dépôt GitHub et paquet Composer
+    `remise-glpi` → `assetsign-glpi`.
+  - Vocabulaire métier français (remise/restitution/don/vente comme types de fiche, distincts les
+    uns des autres) délibérément **non traduit** — seule la clé/marque du plugin change, pas les
+    mots français ordinaires qui décrivent chaque workflow.
+  - Vérifié en conditions réelles avant publication : installation et activation propres sur une
+    instance GLPI 11 fraîche (zéro erreur PHP), suite complète (170 tests, 378 assertions) verte,
+    cycle réel affectation → détection → génération PDF → onglets Assetsigns/Passeport matériel
+    confirmé de bout en bout via Playwright.
+
 ## [1.23.0] - 2026-08-12
 
 ### Fixed

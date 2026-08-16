@@ -1,17 +1,17 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\PassportEvent;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\PassportEvent;
+use GlpiPlugin\Assetsign\Assetsign;
 
 /**
  * Couvre la fusion des dates Infocom dans la frise du Passeport materiel (cf.
- * ROADMAP.md, tableau V1) : jamais copiees dans glpi_plugin_remise_events,
+ * ROADMAP.md, tableau V1) : jamais copiees dans glpi_plugin_assetsign_events,
  * simple ajout d'affichage calcule a chaque rendu de showForItem().
  */
-class PassportEventInfocomTest extends RemiseTestCase
+class PassportEventInfocomTest extends AssetsignTestCase
 {
     private function insertInfocom(string $itemtype, int $items_id, array $fields): void
     {
@@ -37,8 +37,8 @@ class PassportEventInfocomTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Achat', 'remise'), $html);
-        $this->assertStringContainsString(__('Mise en service', 'remise'), $html);
+        $this->assertStringContainsString(__('Achat', 'assetsign'), $html);
+        $this->assertStringContainsString(__('Mise en service', 'assetsign'), $html);
         $this->assertStringContainsString('999,90', $html);
         $this->assertNoStrayNumericTextNode($html, 'La frise avec dates Infocom doit se rendre sans fuite Twig.');
     }
@@ -57,8 +57,8 @@ class PassportEventInfocomTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Début de garantie', 'remise'), $html);
-        $this->assertStringContainsString(__('Fin de garantie', 'remise'), $html);
+        $this->assertStringContainsString(__('Début de garantie', 'assetsign'), $html);
+        $this->assertStringContainsString(__('Fin de garantie', 'assetsign'), $html);
     }
 
     public function testShowForItemHidesInfocomDatesWhenDisabled(): void
@@ -75,7 +75,7 @@ class PassportEventInfocomTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Commande', 'remise'), $html);
+        $this->assertStringNotContainsString(__('Commande', 'assetsign'), $html);
     }
 
     public function testInfocomPseudoEventsDoNotAffectLivesCount(): void
@@ -88,7 +88,7 @@ class PassportEventInfocomTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         ob_start();
         PassportEvent::showForItem($computer);
@@ -109,7 +109,7 @@ class PassportEventInfocomTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'remise'), $html);
+        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'assetsign'), $html);
         $this->assertNoStrayNumericTextNode($html, 'L\'absence totale d\'Infocom ne doit jamais faire planter la frise.');
     }
 
@@ -126,7 +126,7 @@ class PassportEventInfocomTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'remise'), $html);
+        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'assetsign'), $html);
     }
 
     public function testShowForItemHandlesPartialInfocomIndependently(): void
@@ -142,10 +142,10 @@ class PassportEventInfocomTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Réforme', 'remise'), $html);
-        $this->assertStringNotContainsString(__('Achat', 'remise'), $html);
-        $this->assertStringNotContainsString(__('Commande', 'remise'), $html);
-        $this->assertStringNotContainsString(__('Début de garantie', 'remise'), $html);
+        $this->assertStringContainsString(__('Réforme', 'assetsign'), $html);
+        $this->assertStringNotContainsString(__('Achat', 'assetsign'), $html);
+        $this->assertStringNotContainsString(__('Commande', 'assetsign'), $html);
+        $this->assertStringNotContainsString(__('Début de garantie', 'assetsign'), $html);
     }
 
     public function testShowForItemDoesNotCrashWhenNoEventTypeIsVisible(): void
@@ -160,13 +160,13 @@ class PassportEventInfocomTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         ob_start();
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'remise'), $html);
+        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'assetsign'), $html);
     }
 
     public function testShowForItemSkipsInfocomWhenItemtypeCannotApply(): void
@@ -193,6 +193,6 @@ class PassportEventInfocomTest extends RemiseTestCase
             $CFG_GLPI['infocom_types'] = $previousInfocomTypes;
         }
 
-        $this->assertStringNotContainsString(__('Achat', 'remise'), $html);
+        $this->assertStringNotContainsString(__('Achat', 'assetsign'), $html);
     }
 }

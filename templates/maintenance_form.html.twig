@@ -1,52 +1,52 @@
 <div class="card">
   <div class="card-body">
-    <h2>{{ _n('Fiche de maintenance', 'Fiches de maintenance', 1, 'remise') }} #{{ item.fields.id }}</h2>
+    <h2>{{ _n('Fiche de maintenance', 'Fiches de maintenance', 1, 'assetsign') }} #{{ item.fields.id }}</h2>
 
     <table class="table table-striped">
       <tr>
-        <th>{{ __('Matériel', 'remise') }}</th>
+        <th>{{ __('Matériel', 'assetsign') }}</th>
         <td>{{ item.fields.itemtype }} #{{ item.fields.items_id }}</td>
       </tr>
       <tr>
-        <th>{{ __('Date', 'remise') }}</th>
+        <th>{{ __('Date', 'assetsign') }}</th>
         <td>{{ item.fields.date_creation }}</td>
       </tr>
       {% if item.fields.document_id %}
       <tr>
-        <th>{{ __('Fiche PDF', 'remise') }}</th>
-        <td><a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id }}" target="_blank">{{ __('Télécharger en PDF', 'remise') }}</a></td>
+        <th>{{ __('Fiche PDF', 'assetsign') }}</th>
+        <td><a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id }}" target="_blank">{{ __('Télécharger en PDF', 'assetsign') }}</a></td>
       </tr>
       {% endif %}
     </table>
 
     {% if signature_proof %}
-      <h3 class="mt-4">{{ __('Preuve de signature', 'remise') }}</h3>
+      <h3 class="mt-4">{{ __('Preuve de signature', 'assetsign') }}</h3>
       <table class="table table-striped">
         <tr>
-          <th>{{ __('Signataire', 'remise') }}</th>
+          <th>{{ __('Signataire', 'assetsign') }}</th>
           <td>{{ signature_proof.signer_name|default('') }} ({{ signature_proof.signer_email|default('') }})</td>
         </tr>
         <tr>
-          <th>{{ __('Adresse IP', 'remise') }}</th>
+          <th>{{ __('Adresse IP', 'assetsign') }}</th>
           <td>{{ signature_proof.ip_address|default('') }}</td>
         </tr>
         <tr>
-          <th>{{ __('Navigateur / appareil', 'remise') }}</th>
+          <th>{{ __('Navigateur / appareil', 'assetsign') }}</th>
           <td>{{ signature_proof.user_agent|default('') }}</td>
         </tr>
         <tr>
-          <th>{{ __('Empreinte du document (SHA-256)', 'remise') }}</th>
+          <th>{{ __('Empreinte du document (SHA-256)', 'assetsign') }}</th>
           <td><code>{{ signature_proof.document_hash|default('') }}</code></td>
         </tr>
         <tr>
-          <th>{{ __('Horodatage', 'remise') }}</th>
+          <th>{{ __('Horodatage', 'assetsign') }}</th>
           <td>{{ signature_proof.signed_at|default('') }}</td>
         </tr>
       </table>
-      <p class="text-muted small">{{ __('Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF n\'a pas été modifié depuis (l\'empreinte ci-dessus doit correspondre à celle du fichier).', 'remise') }}</p>
+      <p class="text-muted small">{{ __('Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF n\'a pas été modifié depuis (l\'empreinte ci-dessus doit correspondre à celle du fichier).', 'assetsign') }}</p>
     {% endif %}
 
-    <h3 class="mt-4">{{ __('Points de contrôle validés', 'remise') }}</h3>
+    <h3 class="mt-4">{{ __('Points de contrôle validés', 'assetsign') }}</h3>
     {% if checklist_results|length %}
       <ul>
         {% for result in checklist_results %}
@@ -54,21 +54,21 @@
         {% endfor %}
       </ul>
     {% else %}
-      <p class="text-muted">{{ __('Aucun point de contrôle validé.', 'remise') }}</p>
+      <p class="text-muted">{{ __('Aucun point de contrôle validé.', 'assetsign') }}</p>
     {% endif %}
 
-    <h3 class="mt-4">{{ __('Commentaire', 'remise') }}</h3>
+    <h3 class="mt-4">{{ __('Commentaire', 'assetsign') }}</h3>
     <p style="white-space: pre-line;">{{ item.fields.comment|default('') }}</p>
 
     {% if damage_annotation_enabled %}
       {# Lecture seule uniquement : fiche immuable des sa creation (cf. Maintenance.php),
-         aucun JS d'edition charge ici contrairement a remise_form.html.twig. #}
-      <h3 class="mt-4">{{ __('État des lieux visuel', 'remise') }}</h3>
+         aucun JS d'edition charge ici contrairement a assetsign_form.html.twig. #}
+      <h3 class="mt-4">{{ __('État des lieux visuel', 'assetsign') }}</h3>
       <div class="damage-view-grid">
         {% for index, label in damage_views %}
           <div>
             <div class="damage-view" data-editable="0">
-              <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/remise/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
+              <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/assetsign/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
               {% for marker in damage_markers_by_view[index]|default([]) %}
                 <div class="damage-marker{{ marker.severity == 1 ? ' damage-marker-major' : '' }}"
                      style="left: {{ marker.x_percent }}%; top: {{ marker.y_percent }}%;"

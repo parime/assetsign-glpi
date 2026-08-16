@@ -11,15 +11,15 @@
  * GLPI/plugin et des PLUGIN_HOOKS, sans dependre d'un contexte HTTP.
  *
  * ATTENTION : ces tests doivent tourner contre une instance GLPI DEDIEE AUX
- * TESTS (jamais une instance de production), avec le plugin remise installe
+ * TESTS (jamais une instance de production), avec le plugin assetsign installe
  * et actif. La plupart des tests ecrivent en base — ils sont enveloppes dans
- * une transaction annulee en tearDown (cf. RemiseTestCase), mais ce n'est pas
+ * une transaction annulee en tearDown (cf. AssetsignTestCase), mais ce n'est pas
  * une garantie absolue (voir avertissement dans ARCHITECTURE.md, section Tests automatises).
  *
  * Variable d'environnement GLPI_ROOT_DIR : chemin absolu vers la racine GLPI
  * (le dossier contenant vendor/, src/, bin/console...). Par defaut, suppose
- * que ce plugin est installe dans <glpi>/plugins/remise/, donc trois niveaux
- * au-dessus de ce fichier (tests/ -> remise/ -> plugins/ -> <glpi>/).
+ * que ce plugin est installe dans <glpi>/plugins/assetsign/, donc trois niveaux
+ * au-dessus de ce fichier (tests/ -> assetsign/ -> plugins/ -> <glpi>/).
  */
 
 $glpiRoot = getenv('GLPI_ROOT_DIR') ?: dirname(__DIR__, 3);
@@ -45,11 +45,11 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
 $kernel = new \Glpi\Kernel\Kernel('production');
 $kernel->boot();
 
-if (!\Plugin::isPluginActive('remise')) {
+if (!\Plugin::isPluginActive('assetsign')) {
     fwrite(
         STDERR,
-        "Le plugin 'remise' n'est pas installe/actif sur cette instance GLPI de test.\n" .
-        "Installez-le et activez-le avant de lancer les tests (bin/console plugin:install remise ; plugin:activate remise).\n"
+        "Le plugin 'assetsign' n'est pas installe/actif sur cette instance GLPI de test.\n" .
+        "Installez-le et activez-le avant de lancer les tests (bin/console plugin:install assetsign ; plugin:activate assetsign).\n"
     );
     exit(1);
 }

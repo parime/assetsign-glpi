@@ -1,14 +1,14 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Pdf\SignatureImageValidator;
+use GlpiPlugin\Assetsign\Pdf\SignatureImageValidator;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * SignatureImageValidator est de la logique pure (manipulation GD), sans acces
- * base de donnees : ce test n'a pas besoin d'etendre RemiseTestCase.
+ * base de donnees : ce test n'a pas besoin d'etendre AssetsignTestCase.
  */
 class SignatureImageValidatorTest extends TestCase
 {

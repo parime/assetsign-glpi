@@ -1,10 +1,10 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\PassportEvent;
-use GlpiPlugin\Remise\Remise;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\PassportEvent;
+use GlpiPlugin\Assetsign\Assetsign;
 
 /**
  * Couvre le score de sante (0-100), deuxieme brique du V2 (cf. ROADMAP.md) :
@@ -13,7 +13,7 @@ use GlpiPlugin\Remise\Remise;
  * quatre facteurs (age, incidents, etat physique, mouvements) - "controles"
  * et "batterie" volontairement omis, aucune donnee fiable disponible.
  */
-class PassportEventHealthScoreTest extends RemiseTestCase
+class PassportEventHealthScoreTest extends AssetsignTestCase
 {
     private function insertInfocom(string $itemtype, int $items_id, array $fields): void
     {
@@ -24,11 +24,11 @@ class PassportEventHealthScoreTest extends RemiseTestCase
         ], $fields));
     }
 
-    private function insertDamageMarker(int $remisesId, int $severity): void
+    private function insertDamageMarker(int $assetsignsId, int $severity): void
     {
         global $DB;
-        $DB->insert('glpi_plugin_remise_damagemarkers', [
-            'plugin_remise_remises_id' => $remisesId,
+        $DB->insert('glpi_plugin_assetsign_damagemarkers', [
+            'plugin_assetsign_assetsigns_id' => $assetsignsId,
             'view_index'               => 0,
             'x_percent'                => 10.0,
             'y_percent'                => 10.0,
@@ -47,7 +47,7 @@ class PassportEventHealthScoreTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Score de santé', 'remise'), $html);
+        $this->assertStringContainsString(__('Score de santé', 'assetsign'), $html);
         $this->assertStringContainsString('100/100', $html);
         $this->assertNoStrayNumericTextNode($html, 'Le score de santé doit se rendre sans fuite Twig.');
     }
@@ -62,7 +62,7 @@ class PassportEventHealthScoreTest extends RemiseTestCase
 
         $computer->oldvalues = ['users_id' => 0];
         $computer->fields['users_id'] = $userId;
-        Remise::handleItemAssignment($computer);
+        Assetsign::handleItemAssignment($computer);
 
         ob_start();
         PassportEvent::showForItem($computer);
@@ -108,7 +108,7 @@ class PassportEventHealthScoreTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Score de santé', 'remise'), $html);
+        $this->assertStringNotContainsString(__('Score de santé', 'assetsign'), $html);
     }
 
     public function testAllWeightsAtZeroReturnsNoScore(): void
@@ -124,7 +124,7 @@ class PassportEventHealthScoreTest extends RemiseTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Score de santé', 'remise'), $html);
+        $this->assertStringNotContainsString(__('Score de santé', 'assetsign'), $html);
     }
 
     public function testDamageMarkersIncreaseDegradation(): void
@@ -135,10 +135,10 @@ class PassportEventHealthScoreTest extends RemiseTestCase
             'health_weight_age' => 0, 'health_weight_incidents' => 0, 'health_weight_damage' => 100, 'health_weight_movements' => 0,
         ]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Health Damage');
-        $remise = $this->createBareRemise($entityId);
+        $assetsign = $this->createBareAssetsign($entityId);
         global $DB;
-        $DB->update('glpi_plugin_remise_remises', ['itemtype' => 'Computer', 'items_id' => $computer->getID()], ['id' => $remise->getID()]);
-        $this->insertDamageMarker($remise->getID(), 1); // majeur = 2 points, sur un seuil de 6 -> 33% de degradation.
+        $DB->update('glpi_plugin_assetsign_assetsigns', ['itemtype' => 'Computer', 'items_id' => $computer->getID()], ['id' => $assetsign->getID()]);
+        $this->insertDamageMarker($assetsign->getID(), 1); // majeur = 2 points, sur un seuil de 6 -> 33% de degradation.
 
         ob_start();
         PassportEvent::showForItem($computer);

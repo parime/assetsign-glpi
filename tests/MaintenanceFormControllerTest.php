@@ -1,21 +1,21 @@
 <?php
 
-namespace GlpiPlugin\Remise\Tests;
+namespace GlpiPlugin\Assetsign\Tests;
 
-use GlpiPlugin\Remise\Api\MaintenanceFormController;
-use GlpiPlugin\Remise\Maintenance;
+use GlpiPlugin\Assetsign\Api\MaintenanceFormController;
+use GlpiPlugin\Assetsign\Maintenance;
 use InvalidArgumentException;
 
 /**
  * Couvre le dispatch de l'action "create" de front/maintenance.form.php
  * desormais extrait dans MaintenanceFormController — meme motivation que
- * RemiseFormControllerTest (cf. ROADMAP.md, point tests des front/*.php).
+ * AssetsignFormControllerTest (cf. ROADMAP.md, point tests des front/*.php).
  * Couvre en particulier la validation d'itemtype/de materiel cible, seule
  * vraie logique inline qui existait auparavant dans le front (le reste
  * delegue directement a Maintenance::createWithChecklist(), deja teste par
  * MaintenanceTest.php).
  */
-class MaintenanceFormControllerTest extends RemiseTestCase
+class MaintenanceFormControllerTest extends AssetsignTestCase
 {
     public function testCreateWithChecklistCreatesMaintenanceRecord(): void
     {
@@ -65,7 +65,7 @@ class MaintenanceFormControllerTest extends RemiseTestCase
             'level'        => 2,
         ]);
         // Jamais ajoutee a $_SESSION['glpiactiveentities'] : meme technique
-        // que RemiseTest::testCreateManualRejectsItemInEntityOutsideCurrentAccess(),
+        // que AssetsignTest::testCreateManualRejectsItemInEntityOutsideCurrentAccess(),
         // simule un utilisateur qui n'a pas acces a cette entite precise.
         $computer = $this->createTestComputer($inaccessibleEntityId, 'PHPUnit PC Maintenance Hors Portee');
 

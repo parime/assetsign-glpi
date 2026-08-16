@@ -1,9 +1,9 @@
 <?php
 
-use GlpiPlugin\Remise\Config;
-use GlpiPlugin\Remise\Pdf\HandoverPdfBuilder;
-use GlpiPlugin\Remise\Remise;
-use GlpiPlugin\Remise\Template;
+use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\Pdf\HandoverPdfBuilder;
+use GlpiPlugin\Assetsign\Template;
 
 // Utilise aussi bien depuis la page de configuration (droit Config) que depuis
 // la page de gabarit (droit Template) : l'un ou l'autre suffit, ce n'est que
@@ -20,10 +20,10 @@ header('Content-Type: text/html; charset=UTF-8');
 // conditions reelles en enchainant plusieurs appels avec le meme jeton. Le
 // nouveau jeton est renvoye en en-tete pour que le JS mette a jour son
 // formulaire avant le prochain envoi.
-header('X-Remise-Csrf-Token: ' . \Session::getNewCSRFToken());
+header('X-Assetsign-Csrf-Token: ' . \Session::getNewCSRFToken());
 
 $entities_id = (int) ($_POST['entities_id'] ?? 0);
-$type = (int) ($_POST['type'] ?? Remise::TYPE_HANDOVER);
+$type = (int) ($_POST['type'] ?? Assetsign::TYPE_HANDOVER);
 
 $overrides = [];
 foreach (['include_content', 'include_charter', 'enable_observations', 'enable_damage_annotation', 'show_qr_code'] as $boolField) {

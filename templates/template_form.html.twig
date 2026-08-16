@@ -3,18 +3,18 @@
 <div class="col" style="min-width: 320px;">
 <div class="card">
   <div class="card-body">
-    <form method="post" action="{{ config('root_doc') }}/plugins/remise/front/template.form.php" id="remise-template-form" data-remise-preview-frame="remise-template-preview-frame">
+    <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/template.form.php" id="assetsign-template-form" data-assetsign-preview-frame="assetsign-template-preview-frame">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="id" value="{{ item.fields.id|default(0) }}">
       <input type="hidden" name="entities_id" value="{{ item.fields.entities_id|default(0) }}">
 
       <div class="mb-3">
-        <label class="form-label">{{ __('Nom du gabarit', 'remise') }}</label>
+        <label class="form-label">{{ __('Nom du gabarit', 'assetsign') }}</label>
         <input type="text" name="name" class="form-control" value="{{ item.fields.name|default('') }}" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">{{ __('Type de remise concerné', 'remise') }}</label>
+        <label class="form-label">{{ __('Type de remise concerné', 'assetsign') }}</label>
         <select name="type" class="form-select">
           {% for value, label in types %}
             <option value="{{ value }}" {{ item.fields.type is defined and item.fields.type == value ? 'selected' : '' }}>{{ label }}</option>
@@ -25,46 +25,46 @@
       <div class="mb-3 form-check">
         <input type="hidden" name="include_content" value="0">
         <input type="checkbox" name="include_content" value="1" class="form-check-input" id="include_content" {{ item.fields.include_content|default(1) ? 'checked' : '' }}>
-        <label class="form-check-label" for="include_content">{{ __('Inclure les conditions générales dans le PDF', 'remise') }}</label>
+        <label class="form-check-label" for="include_content">{{ __('Inclure les conditions générales dans le PDF', 'assetsign') }}</label>
       </div>
       <div class="mb-3">
-        {{ fields.textareaField('content', item.fields.content|default(default_content.content), __('Conditions générales (contrat)', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
+        {{ fields.textareaField('content', item.fields.content|default(default_content.content), __('Conditions générales (contrat)', 'assetsign'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
         {% if not (item.fields.id is defined and item.fields.id) %}
-          <div class="form-text">{{ __('Texte de départ pré-rempli à titre d\'exemple : modifiez-le ou effacez-le librement.', 'remise') }}</div>
+          <div class="form-text">{{ __('Texte de départ pré-rempli à titre d\'exemple : modifiez-le ou effacez-le librement.', 'assetsign') }}</div>
         {% endif %}
-        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'remise') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
+        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
       </div>
 
       <div class="mb-3 form-check">
         <input type="hidden" name="include_charter" value="0">
         <input type="checkbox" name="include_charter" value="1" class="form-check-input" id="include_charter" {{ item.fields.include_charter|default(1) ? 'checked' : '' }}>
-        <label class="form-check-label" for="include_charter">{{ __('Inclure la charte informatique dans le PDF', 'remise') }}</label>
-        <div class="form-text">{{ __('Décochez pour ne jamais afficher cette section, y compris le lien vers la charte complète configuré au niveau de l\'entité.', 'remise') }}</div>
+        <label class="form-check-label" for="include_charter">{{ __('Inclure la charte informatique dans le PDF', 'assetsign') }}</label>
+        <div class="form-text">{{ __('Décochez pour ne jamais afficher cette section, y compris le lien vers la charte complète configuré au niveau de l\'entité.', 'assetsign') }}</div>
       </div>
       <div class="mb-3">
-        {{ fields.textareaField('charter_content', item.fields.charter_content|default(default_content.charter_content), __('Charte informatique', 'remise'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
-        <div class="form-text">{{ __('Utilisez le bouton "lien" de la barre d\'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici.', 'remise') }}</div>
-        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'remise') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
+        {{ fields.textareaField('charter_content', item.fields.charter_content|default(default_content.charter_content), __('Charte informatique', 'assetsign'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
+        <div class="form-text">{{ __('Utilisez le bouton "lien" de la barre d\'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici.', 'assetsign') }}</div>
+        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
       </div>
 
       <div class="mb-3 form-check">
         <input type="hidden" name="is_default" value="0">
         <input type="checkbox" name="is_default" value="1" class="form-check-input" id="is_default" {{ item.fields.is_default|default(0) ? 'checked' : '' }}>
-        <label class="form-check-label" for="is_default">{{ __('Gabarit par défaut pour ce type', 'remise') }}</label>
+        <label class="form-check-label" for="is_default">{{ __('Gabarit par défaut pour ce type', 'assetsign') }}</label>
       </div>
 
       <div class="mb-3 form-check">
         <input type="hidden" name="is_active" value="0">
         <input type="checkbox" name="is_active" value="1" class="form-check-input" id="is_active" {{ item.fields.is_active|default(1) ? 'checked' : '' }}>
-        <label class="form-check-label" for="is_active">{{ __('Actif', 'remise') }}</label>
+        <label class="form-check-label" for="is_active">{{ __('Actif', 'assetsign') }}</label>
       </div>
 
       <div class="d-flex gap-2">
         {% if item.fields.id is defined and item.fields.id %}
-          <button type="submit" name="update" class="btn btn-primary">{{ __('Enregistrer', 'remise') }}</button>
-          <button type="submit" name="purge" class="btn btn-outline-danger" onclick="return confirm('{{ __('Supprimer ce gabarit ?', 'remise')|e('js') }}');">{{ __('Supprimer', 'remise') }}</button>
+          <button type="submit" name="update" class="btn btn-primary">{{ __('Enregistrer', 'assetsign') }}</button>
+          <button type="submit" name="purge" class="btn btn-outline-danger" onclick="return confirm('{{ __('Supprimer ce gabarit ?', 'assetsign')|e('js') }}');">{{ __('Supprimer', 'assetsign') }}</button>
         {% else %}
-          <button type="submit" name="add" class="btn btn-primary">{{ __('Créer', 'remise') }}</button>
+          <button type="submit" name="add" class="btn btn-primary">{{ __('Créer', 'assetsign') }}</button>
         {% endif %}
       </div>
     </form>
@@ -74,21 +74,21 @@
 
 <div class="col" style="max-width: 420px; position: sticky; top: 1rem;">
   <div class="card">
-    <div class="card-header">{{ __('Aperçu de la fiche générée', 'remise') }}</div>
+    <div class="card-header">{{ __('Aperçu de la fiche générée', 'assetsign') }}</div>
     <div class="card-body p-2">
-      <p class="text-muted small px-1">{{ __('Exemple avec des données fictives. L\'aperçu se met à jour automatiquement dès que vous modifiez le texte ou une case à cocher, avant même d\'enregistrer.', 'remise') }}</p>
-      <iframe id="remise-template-preview-frame" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
+      <p class="text-muted small px-1">{{ __('Exemple avec des données fictives. L\'aperçu se met à jour automatiquement dès que vous modifiez le texte ou une case à cocher, avant même d\'enregistrer.', 'assetsign') }}</p>
+      <iframe id="assetsign-template-preview-frame" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
     </div>
   </div>
 </div>
 </div>
 
 <script>
-  window.REMISE_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
+  window.ASSETSIGN_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
   // Jeton DEDIE au canal d'apercu en direct, jamais partage avec celui du
   // formulaire (champ _glpi_csrf_token, reserve au vrai bouton Enregistrer) —
   // cf. commentaire de Config::showConfigForm().
-  window.REMISE_PREVIEW_CSRF_TOKEN = {{ preview_csrf_token|json_encode|raw }};
+  window.ASSETSIGN_PREVIEW_CSRF_TOKEN = {{ preview_csrf_token|json_encode|raw }};
 </script>
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/csrf-queue.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/live-preview.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+<script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/csrf-queue.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+<script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/live-preview.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>

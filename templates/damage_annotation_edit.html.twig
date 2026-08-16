@@ -2,17 +2,17 @@
    enregistree) : marqueurs deposes purement cote client
    (damage-annotation-local.js), serialises dans #damage_markers_input et
    soumis d'un bloc avec le reste du formulaire - jamais d'appel AJAX ici,
-   contrairement au formulaire d'une Remise deja existante
-   (cf. remise_form.html.twig / damage-annotation.js). #}
+   contrairement au formulaire d'une Assetsign deja existante
+   (cf. assetsign_form.html.twig / damage-annotation.js). #}
 {% if damage_annotation_enabled %}
   <div class="mb-3">
-    <label class="form-label">{{ __('État des lieux visuel', 'remise') }}</label>
-    <p class="text-muted small">{{ __('Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner.', 'remise') }}</p>
+    <label class="form-label">{{ __('État des lieux visuel', 'assetsign') }}</label>
+    <p class="text-muted small">{{ __('Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner.', 'assetsign') }}</p>
     <div class="damage-view-grid">
       {% for index, label in damage_views %}
         <div>
           <div class="damage-view" data-mode="local" data-view-index="{{ index }}" data-editable="1">
-            <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/remise/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
+            <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/assetsign/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
           </div>
           <div class="damage-view-label">{{ label }}</div>
         </div>
@@ -20,15 +20,15 @@
     </div>
     <input type="hidden" name="damage_markers" id="damage_markers_input" value="[]">
     <script>
-      window.REMISE_DAMAGE_I18N = {
-        description: {{ __('Description', 'remise')|json_encode|raw }},
-        severity: {{ __('Gravité', 'remise')|json_encode|raw }},
-        minor: {{ __('Mineure', 'remise')|json_encode|raw }},
-        major: {{ __('Majeure', 'remise')|json_encode|raw }},
-        save: {{ __('Enregistrer', 'remise')|json_encode|raw }},
-        deleteLabel: {{ __('Supprimer', 'remise')|json_encode|raw }}
+      window.ASSETSIGN_DAMAGE_I18N = {
+        description: {{ __('Description', 'assetsign')|json_encode|raw }},
+        severity: {{ __('Gravité', 'assetsign')|json_encode|raw }},
+        minor: {{ __('Mineure', 'assetsign')|json_encode|raw }},
+        major: {{ __('Majeure', 'assetsign')|json_encode|raw }},
+        save: {{ __('Enregistrer', 'assetsign')|json_encode|raw }},
+        deleteLabel: {{ __('Supprimer', 'assetsign')|json_encode|raw }}
       };
     </script>
-    <script src="{{ config('root_doc') }}/plugins/remise/js/sign/damage-annotation-local.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+    <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/damage-annotation-local.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
   </div>
 {% endif %}

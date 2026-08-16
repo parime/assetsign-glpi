@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>{{ document_title }}</title>
-{% include '@remise/pdf/_pdf_style.html.twig' %}
+{% include '@assetsign/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
 
@@ -56,7 +56,7 @@
 <p class="legal-text" style="white-space: pre-line;">{{ comment }}</p>
 {% endif %}
 
-{% include '@remise/pdf/_damage_views.html.twig' %}
+{% include '@assetsign/pdf/_damage_views.html.twig' %}
 
 {% if signature_required %}
 <div class="signature-zone">
@@ -77,7 +77,7 @@
 <div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
 {% endif %}
 
-<div class="footer">Fiche de maintenance #{{ maintenance.id }} — Document généré par GLPI (plugin remise)</div>
+<div class="footer">Fiche de maintenance #{{ maintenance.id }} — Document généré par GLPI (plugin assetsign)</div>
 
 </body>
 </html>

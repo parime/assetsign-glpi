@@ -20,13 +20,13 @@
     // en tete de fichier : un `import` statique n'accepte pas de chaine calculee, donc
     // pas de parametre `?v=` de cache-busting (meme piege deja documente et corrige
     // pour les balises <script> classiques) - le numero de version du plugin
-    // (window.REMISE_PLUGIN_VERSION, injecte par sign_page.html.twig) est ainsi
+    // (window.ASSETSIGN_PLUGIN_VERSION, injecte par sign_page.html.twig) est ainsi
     // repercute sur l'URL importee, exactement comme sur les balises <script>.
     var pdfjsLib = await import(
-        (window.REMISE_ROOT_DOC || '') + '/plugins/remise/js/sign/vendor/pdf.min.js?v=' + encodeURIComponent(window.REMISE_PLUGIN_VERSION || '')
+        (window.ASSETSIGN_ROOT_DOC || '') + '/plugins/assetsign/js/sign/vendor/pdf.min.js?v=' + encodeURIComponent(window.ASSETSIGN_PLUGIN_VERSION || '')
     );
 
-    // window.REMISE_ROOT_DOC (injecte par sign_page.html.twig via config('root_doc'))
+    // window.ASSETSIGN_ROOT_DOC (injecte par sign_page.html.twig via config('root_doc'))
     // tient compte d'une installation GLPI dans un sous-dossier (ex: /glpi) : un
     // chemin absolu code en dur depuis la racine du domaine echouerait silencieusement
     // dans ce cas, empechant tout le reste du script de s'executer (PDF.js et
@@ -44,7 +44,7 @@
     // Worker nous-memes avec `{ type: 'module' }` explicite, assigne via
     // `workerPort` plutot que `workerSrc` (API alternative documentee par PDF.js).
     var pdfWorker = new Worker(
-        (window.REMISE_ROOT_DOC || '') + '/plugins/remise/js/sign/vendor/pdf.worker.min.js?v=' + encodeURIComponent(window.REMISE_PLUGIN_VERSION || ''),
+        (window.ASSETSIGN_ROOT_DOC || '') + '/plugins/assetsign/js/sign/vendor/pdf.worker.min.js?v=' + encodeURIComponent(window.ASSETSIGN_PLUGIN_VERSION || ''),
         { type: 'module' }
     );
     pdfjsLib.GlobalWorkerOptions.workerPort = pdfWorker;
@@ -66,7 +66,7 @@
             renderPage(i);
         }
     }).catch(function (err) {
-        container.textContent = window.REMISE_I18N.loadError + ' (' + err.message + ').';
+        container.textContent = window.ASSETSIGN_I18N.loadError + ' (' + err.message + ').';
     });
 
     // --- Capture de signature (souris / tactile / stylet) ---------------------------
@@ -92,15 +92,15 @@
         updateSubmitState();
     });
 
-    // window.remiseQueuedFetch : defini par csrf-queue.js (charge avant ce
+    // window.assetsignQueuedFetch : defini par csrf-queue.js (charge avant ce
     // script, cf. sign_page.html.twig), partage avec damage-annotation.js et
     // le script inline de la Remarque.
     function post(action, extra) {
-        return window.remiseQueuedFetch(window.location.pathname, function () {
+        return window.assetsignQueuedFetch(window.location.pathname, function () {
             var body = new URLSearchParams(Object.assign({
-                t: window.REMISE_SIGN_TOKEN,
+                t: window.ASSETSIGN_SIGN_TOKEN,
                 action: action,
-                _glpi_csrf_token: window.REMISE_CSRF_TOKEN
+                _glpi_csrf_token: window.ASSETSIGN_CSRF_TOKEN
             }, extra || {}));
             return {
                 method: 'POST',
@@ -112,24 +112,24 @@
 
     btnSubmit.addEventListener('click', function () {
         btnSubmit.disabled = true;
-        statusMsg.textContent = window.REMISE_I18N.sending;
+        statusMsg.textContent = window.ASSETSIGN_I18N.sending;
 
         post('sign', { signature: signaturePad.toDataURL('image/png') }).then(function (data) {
             if (data.success) {
                 // Racine de GLPI (pas /front/central.php en dur, page par defaut de
                 // l'interface "centrale" mais pas forcement de CET utilisateur) :
                 // la racine redirige chacun vers sa vraie page d'accueil configuree.
-                var homeUrl = (window.REMISE_ROOT_DOC || '') + '/';
+                var homeUrl = (window.ASSETSIGN_ROOT_DOC || '') + '/';
                 var wrap = document.createElement('div');
                 wrap.className = 'wrap';
                 var card = document.createElement('div');
                 card.className = 'card';
                 var p1 = document.createElement('p');
-                p1.textContent = window.REMISE_I18N.signedOk;
+                p1.textContent = window.ASSETSIGN_I18N.signedOk;
                 var p2 = document.createElement('p');
                 var link = document.createElement('a');
                 link.href = homeUrl;
-                link.textContent = window.REMISE_I18N.backToHome;
+                link.textContent = window.ASSETSIGN_I18N.backToHome;
                 p2.appendChild(link);
                 card.appendChild(p1);
                 card.appendChild(p2);
@@ -137,11 +137,11 @@
                 document.body.textContent = '';
                 document.body.appendChild(wrap);
             } else {
-                statusMsg.textContent = window.REMISE_I18N.errorPrefix + ' : ' + data.error;
+                statusMsg.textContent = window.ASSETSIGN_I18N.errorPrefix + ' : ' + data.error;
                 btnSubmit.disabled = false;
             }
         }).catch(function () {
-            statusMsg.textContent = window.REMISE_I18N.networkError;
+            statusMsg.textContent = window.ASSETSIGN_I18N.networkError;
             btnSubmit.disabled = false;
         });
     });

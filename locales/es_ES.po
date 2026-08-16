@@ -1,13 +1,13 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: remise\n"
+"Project-Id-Version: assetsign\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "Aucune remise enregistrée pour ce matériel."
+msgid "Aucune assetsign enregistrée pour ce matériel."
 msgstr "Ninguna entrega registrada para este equipo."
 
 msgid "Statut"
@@ -97,7 +97,7 @@ msgstr "Enviar recordatorio ahora"
 msgid "Nom du gabarit"
 msgstr "Nombre de la plantilla"
 
-msgid "Type de remise concerné"
+msgid "Type de assetsign concerné"
 msgstr "Tipo de entrega correspondiente"
 
 msgid "Conditions générales (contrat)"
@@ -121,7 +121,7 @@ msgstr "Eliminar"
 msgid "Créer"
 msgstr "Crear"
 
-msgid "Signature de remise de matériel"
+msgid "Signature de assetsign de matériel"
 msgstr "Firma de entrega de equipo"
 
 msgid "Signature de restitution de matériel"
@@ -163,16 +163,16 @@ msgstr "Gracias, su firma se ha registrado correctamente."
 msgid "Erreur réseau, merci de réessayer."
 msgstr "Error de red, inténtelo de nuevo."
 
-msgid "Remise & signature"
+msgid "Assetsign & signature"
 msgstr "Entrega y firma"
 
-msgid "Remises en attente de signature"
+msgid "Assetsigns en attente de signature"
 msgstr "Entregas pendientes de firma"
 
-msgid "Remises signées"
+msgid "Assetsigns signées"
 msgstr "Entregas firmadas"
 
-msgid "Remises expirées"
+msgid "Assetsigns expirées"
 msgstr "Entregas caducadas"
 
 msgid "Configuration enregistrée."
@@ -181,7 +181,7 @@ msgstr "Configuración guardada."
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purga los tokens de firma caducados o no válidos"
 
-msgid "Type de remise"
+msgid "Type de assetsign"
 msgstr "Tipo de entrega"
 
 msgid "Par défaut"
@@ -196,7 +196,7 @@ msgstr "Fecha de envío"
 msgid "Date de signature"
 msgstr "Fecha de firma"
 
-msgid "Remises"
+msgid "Assetsigns"
 msgstr "Entregas"
 
 msgid "Brouillon"
@@ -226,10 +226,10 @@ msgstr "Restitución"
 msgid "Envoie les relances de signature dues"
 msgstr "Envía los recordatorios de firma pendientes"
 
-msgid "Marque comme expirées les remises hors délai"
+msgid "Marque comme expirées les assetsigns hors délai"
 msgstr "Marca como caducadas las entregas fuera de plazo"
 
-msgid "Nouvelle remise de matériel"
+msgid "Nouvelle assetsign de matériel"
 msgstr "Nueva entrega de equipo"
 
 msgid "Relance de signature"
@@ -256,7 +256,7 @@ msgstr "Enlace de firma"
 msgid "Date limite de signature"
 msgstr "Fecha límite de firma"
 
-msgid "Configuration remise & signature"
+msgid "Configuration assetsign & signature"
 msgstr "Configuración de entrega y firma"
 
 msgid "Signature intégrée (canvas)"
@@ -346,37 +346,37 @@ msgstr "Esta información se registra en el momento de la firma y permite, en ca
 msgid "Alerter le technicien avant expiration (jours avant, 0 = désactivé)"
 msgstr "Avisar al técnico antes de la caducidad (días antes, 0 = desactivado)"
 
-msgid "Le technicien à l'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop tard."
+msgid "Le technicien à l'origine de la assetsign reçoit un e-mail quand il reste ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop tard."
 msgstr "El técnico que originó la entrega recibe un correo cuando quedan estos días antes de que caduque el enlace, para poder contactar de otra forma con el beneficiario (llamada, visita presencial) antes de que sea demasiado tarde."
 
 msgid "Document sur le point d'expirer"
 msgstr "Documento a punto de caducar"
 
-msgid "Envoyer une relance de signature aux remises sélectionnées ?"
+msgid "Envoyer une relance de signature aux assetsigns sélectionnées ?"
 msgstr "¿Enviar un recordatorio de firma a las entregas seleccionadas?"
 
 msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
 msgstr "Texto inicial precargado a modo de ejemplo: modifíquelo o bórrelo libremente."
 
-msgid "Remise"
-msgid_plural "Remises"
+msgid "Assetsign"
+msgid_plural "Assetsigns"
 msgstr[0] "Entrega"
 msgstr[1] "Entregas"
 
-msgid "Accessoire de remise"
-msgid_plural "Accessoires de remise"
+msgid "Accessoire de assetsign"
+msgid_plural "Accessoires de assetsign"
 msgstr[0] "Accesorio de entrega"
 msgstr[1] "Accesorios de entrega"
 
-msgid "Gabarit de remise"
-msgid_plural "Gabarits de remise"
+msgid "Gabarit de assetsign"
+msgid_plural "Gabarits de assetsign"
 msgstr[0] "Plantilla de entrega"
 msgstr[1] "Plantillas de entrega"
 
 msgid "Champ « Observations » libre sur chaque fiche"
 msgstr "Campo «Observaciones» libre en cada ficha"
 
-msgid "Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n'est pas encore signée."
+msgid "Si activé, un champ de texte libre devient disponible sur chaque fiche de assetsign (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n'est pas encore signée."
 msgstr "Si está activado, un campo de texto libre está disponible en cada ficha de entrega (ej: estado observado del equipo) y aparece en el PDF mientras la ficha no esté aún firmada."
 
 msgid "Inclure les conditions générales dans le PDF"
@@ -442,7 +442,7 @@ msgstr "Ficha creada."
 msgid "Autoriser la création de fiches de don de matériel"
 msgstr "Permitir la creación de fichas de donación de equipo"
 
-msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Remise de chaque matériel géré par le plugin."
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Assetsign de chaque matériel géré par le plugin."
 msgstr "Añade un botón «Crear una ficha de donación» en la pestaña Entrega de cada equipo gestionado por el plugin."
 
 msgid "Vente"
@@ -457,7 +457,7 @@ msgstr "Fecha de venta"
 msgid "Autoriser la création de fiches de vente de matériel"
 msgstr "Permitir la creación de fichas de venta de equipo"
 
-msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Remise de chaque matériel géré par le plugin."
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Assetsign de chaque matériel géré par le plugin."
 msgstr "Añade un botón «Crear una ficha de venta» (con precio y fecha) en la pestaña Entrega de cada equipo gestionado por el plugin."
 
 msgid "État des lieux visuel"
@@ -551,7 +551,7 @@ msgstr "Ajustes transversales, aplicables a todos los tipos de ficha firmada."
 msgid "Voir les fiches de maintenance"
 msgstr "Ver las fichas de mantenimiento"
 
-msgid "La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l'option ci-dessous est activée. L'accès se gère par le droit dédié (Administration > Profils)."
+msgid "La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère toujours un PDF (même mise en page que les fiches assetsign/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l'option ci-dessous est activée. L'accès se gère par le droit dédié (Administration > Profils)."
 msgstr "La ficha de mantenimiento es un subsistema separado del de las fichas firmadas (sin beneficiario, sin token, sin correo): siempre genera un PDF (mismo diseño que las fichas de entrega/donación/venta, con el logotipo), y además puede hacer firmar al técnico directamente en el formulario de creación si la opción de abajo está activada. El acceso se gestiona mediante el permiso dedicado (Administración > Perfiles)."
 
 msgid "Faire signer le technicien sur la fiche de maintenance"
@@ -626,22 +626,22 @@ msgstr "Opciones de la lista desplegable (una por línea)"
 msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
 msgstr "Usado únicamente si el tipo de campo es \"Lista desplegable\"."
 
-msgid "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue."
+msgid "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc pas générer de fiche de assetsign ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue."
 msgstr "Este equipo no tiene usuario asignado: este cambio de Estado no puede, por tanto, generar una ficha de entrega o de restitución. Asigne un usuario en la ficha del equipo si se espera una firma."
 
 msgid "Échecs de création (30 derniers jours)"
 msgstr "Fallos de creación (últimos 30 días)"
 
-msgid "Accessoires de remise"
+msgid "Accessoires de assetsign"
 msgstr "Accesorios de entrega"
 
-msgid "Alerte le technicien des remises sur le point d'expirer"
+msgid "Alerte le technicien des assetsigns sur le point d'expirer"
 msgstr "Avisa al técnico de las entregas a punto de caducar"
 
 msgid "Bénéficiaire externe"
 msgstr "Beneficiario externo"
 
-msgid "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche de %s depuis l'onglet \"Remises\" ci-dessous (bénéficiaire interne ou externe)."
+msgid "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche de %s depuis l'onglet \"Assetsigns\" ci-dessous (bénéficiaire interne ou externe)."
 msgstr "Este equipo no tiene usuario asignado: cree manualmente una ficha de %s desde la pestaña \"Entregas\" de abajo (beneficiario interno o externo)."
 
 msgid "Contact (facultatif)"
@@ -665,7 +665,7 @@ msgstr "Externo"
 msgid "Fiches de maintenance"
 msgstr "Fichas de mantenimiento"
 
-msgid "Gabarits de remise"
+msgid "Gabarits de assetsign"
 msgstr "Plantillas de entrega"
 
 msgid "Interne (compte GLPI)"
@@ -710,7 +710,7 @@ msgstr "Este enlace de firma ya no es válido."
 msgid "Ce type de fiche ne peut pas être créé manuellement."
 msgstr "Este tipo de ficha no puede crearse manualmente."
 
-msgid "Cette remise ne peut plus être relancée (déjà signée ou expirée)."
+msgid "Cette assetsign ne peut plus être relancée (déjà signée ou expirée)."
 msgstr "A esta entrega ya no se le puede enviar un recordatorio (ya firmada o caducada)."
 
 msgid "Format de signature invalide."
@@ -728,7 +728,7 @@ msgstr "Enlace de firma desconocido."
 msgid "Matériel introuvable."
 msgstr "Equipo no encontrado."
 
-msgid "Remise introuvable."
+msgid "Assetsign introuvable."
 msgstr "Entrega no encontrada."
 
 msgid "Signature illisible."
@@ -761,7 +761,7 @@ msgstr "Variables disponibles, sustituidas automáticamente en el PDF:"
 msgid "Assigner un matériel à cet utilisateur"
 msgstr "Asignar un equipo a este usuario"
 
-msgid "L'affectation déclenche automatiquement la création d'une remise, comme depuis la fiche du matériel."
+msgid "L'affectation déclenche automatiquement la création d'une assetsign, comme depuis la fiche du matériel."
 msgstr "La asignación desencadena automáticamente la creación de una entrega, igual que desde la ficha del equipo."
 
 msgid "Assigner"
@@ -785,10 +785,10 @@ msgstr "Su cuenta GLPI no tiene una dirección de correo registrada."
 msgid "Le serveur de messagerie a refusé l'envoi."
 msgstr "El servidor de correo ha rechazado el envío."
 
-msgid "E-mail de test — Remise & signature"
+msgid "E-mail de test — Assetsign & signature"
 msgstr "Correo de prueba — Entrega y firma"
 
-msgid "Cet e-mail confirme que la configuration d'envoi du plugin Remise & signature fonctionne."
+msgid "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & signature fonctionne."
 msgstr "Este correo confirma que la configuración de envío del plugin Entrega y firma funciona."
 
 msgid "Afficher un QR code sur les fiches PDF"

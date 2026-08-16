@@ -1,13 +1,13 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: remise\n"
+"Project-Id-Version: assetsign\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "Aucune remise enregistrée pour ce matériel."
+msgid "Aucune assetsign enregistrée pour ce matériel."
 msgstr "No handover recorded for this asset."
 
 msgid "Statut"
@@ -96,7 +96,7 @@ msgstr "Send reminder now"
 msgid "Nom du gabarit"
 msgstr "Template name"
 
-msgid "Type de remise concerné"
+msgid "Type de assetsign concerné"
 msgstr "Handover type"
 
 msgid "Conditions générales (contrat)"
@@ -120,7 +120,7 @@ msgstr "Delete"
 msgid "Créer"
 msgstr "Create"
 
-msgid "Signature de remise de matériel"
+msgid "Signature de assetsign de matériel"
 msgstr "Equipment handover signature"
 
 msgid "Signature de restitution de matériel"
@@ -162,16 +162,16 @@ msgstr "Thank you, your signature has been recorded."
 msgid "Erreur réseau, merci de réessayer."
 msgstr "Network error, please try again."
 
-msgid "Remise & signature"
+msgid "Assetsign & signature"
 msgstr "Handover & signature"
 
-msgid "Remises en attente de signature"
+msgid "Assetsigns en attente de signature"
 msgstr "Handovers pending signature"
 
-msgid "Remises signées"
+msgid "Assetsigns signées"
 msgstr "Signed handovers"
 
-msgid "Remises expirées"
+msgid "Assetsigns expirées"
 msgstr "Expired handovers"
 
 msgid "Configuration enregistrée."
@@ -180,7 +180,7 @@ msgstr "Configuration saved."
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purges expired or invalid signature tokens"
 
-msgid "Type de remise"
+msgid "Type de assetsign"
 msgstr "Handover type"
 
 msgid "Par défaut"
@@ -195,7 +195,7 @@ msgstr "Sent date"
 msgid "Date de signature"
 msgstr "Signature date"
 
-msgid "Remises"
+msgid "Assetsigns"
 msgstr "Handovers"
 
 msgid "Brouillon"
@@ -224,10 +224,10 @@ msgstr "Return"
 msgid "Envoie les relances de signature dues"
 msgstr "Sends due signature reminders"
 
-msgid "Marque comme expirées les remises hors délai"
+msgid "Marque comme expirées les assetsigns hors délai"
 msgstr "Marks handovers past their deadline as expired"
 
-msgid "Nouvelle remise de matériel"
+msgid "Nouvelle assetsign de matériel"
 msgstr "New equipment handover"
 
 msgid "Relance de signature"
@@ -254,7 +254,7 @@ msgstr "Signature link"
 msgid "Date limite de signature"
 msgstr "Signature deadline"
 
-msgid "Configuration remise & signature"
+msgid "Configuration assetsign & signature"
 msgstr "Handover & signature configuration"
 
 msgid "Signature intégrée (canvas)"
@@ -342,37 +342,37 @@ msgstr "This information is recorded at the moment of signature and, in case of 
 msgid "Alerter le technicien avant expiration (jours avant, 0 = désactivé)"
 msgstr "Warn the technician before expiration (days before, 0 = disabled)"
 
-msgid "Le technicien à l'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop tard."
+msgid "Le technicien à l'origine de la assetsign reçoit un e-mail quand il reste ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop tard."
 msgstr "The technician who triggered the handover receives an email when this many days remain before the link expires, so they can reach out to the beneficiary another way (call, in person) before it's too late."
 
 msgid "Document sur le point d'expirer"
 msgstr "Document about to expire"
 
-msgid "Envoyer une relance de signature aux remises sélectionnées ?"
+msgid "Envoyer une relance de signature aux assetsigns sélectionnées ?"
 msgstr "Send a signature reminder to the selected handovers?"
 
 msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
 msgstr "Pre-filled starting text, as an example: edit or clear it freely."
 
-msgid "Remise"
-msgid_plural "Remises"
+msgid "Assetsign"
+msgid_plural "Assetsigns"
 msgstr[0] "Handover"
 msgstr[1] "Handovers"
 
-msgid "Accessoire de remise"
-msgid_plural "Accessoires de remise"
+msgid "Accessoire de assetsign"
+msgid_plural "Accessoires de assetsign"
 msgstr[0] "Handover accessory"
 msgstr[1] "Handover accessories"
 
-msgid "Gabarit de remise"
-msgid_plural "Gabarits de remise"
+msgid "Gabarit de assetsign"
+msgid_plural "Gabarits de assetsign"
 msgstr[0] "Handover template"
 msgstr[1] "Handover templates"
 
 msgid "Champ « Observations » libre sur chaque fiche"
 msgstr "Free-text \"Observations\" field on each form"
 
-msgid "Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n'est pas encore signée."
+msgid "Si activé, un champ de texte libre devient disponible sur chaque fiche de assetsign (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n'est pas encore signée."
 msgstr "If enabled, a free-text field becomes available on each handover form (e.g. observed condition of the equipment) and appears on the PDF as long as the form is not yet signed."
 
 msgid "Inclure les conditions générales dans le PDF"
@@ -438,7 +438,7 @@ msgstr "Form created."
 msgid "Autoriser la création de fiches de don de matériel"
 msgstr "Allow creating equipment donation forms"
 
-msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Remise de chaque matériel géré par le plugin."
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Assetsign de chaque matériel géré par le plugin."
 msgstr "Adds a \"Create donation form\" button on the Handover tab of each asset managed by the plugin."
 
 msgid "Vente"
@@ -453,7 +453,7 @@ msgstr "Sale date"
 msgid "Autoriser la création de fiches de vente de matériel"
 msgstr "Allow creating equipment sale forms"
 
-msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Remise de chaque matériel géré par le plugin."
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Assetsign de chaque matériel géré par le plugin."
 msgstr "Adds a \"Create sale form\" button (with price and date) on the Handover tab of each asset managed by the plugin."
 
 msgid "État des lieux visuel"
@@ -544,7 +544,7 @@ msgstr "Cross-cutting settings, applicable to all signed form types."
 msgid "Voir les fiches de maintenance"
 msgstr "View maintenance forms"
 
-msgid "La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l'option ci-dessous est activée. L'accès se gère par le droit dédié (Administration > Profils)."
+msgid "La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère toujours un PDF (même mise en page que les fiches assetsign/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l'option ci-dessous est activée. L'accès se gère par le droit dédié (Administration > Profils)."
 msgstr "The maintenance form is a subsystem separate from signed forms (no beneficiary, no token, no e-mail): it always generates a PDF (same layout as handover/donation/sale forms, with the logo), and can additionally have the technician sign directly on the creation form if the option below is enabled. Access is managed through its dedicated right (Administration > Profiles)."
 
 msgid "Faire signer le technicien sur la fiche de maintenance"
@@ -620,22 +620,22 @@ msgstr "Dropdown menu options (one per line)"
 msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
 msgstr "Only used if the input type is \"Dropdown menu\"."
 
-msgid "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue."
+msgid "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc pas générer de fiche de assetsign ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue."
 msgstr "This asset has no user assigned: this status change therefore cannot generate a handover or return sheet. Assign a user on the asset's record if a signature is expected."
 
 msgid "Échecs de création (30 derniers jours)"
 msgstr "Creation failures (last 30 days)"
 
-msgid "Accessoires de remise"
+msgid "Accessoires de assetsign"
 msgstr "Handover accessories"
 
-msgid "Alerte le technicien des remises sur le point d'expirer"
+msgid "Alerte le technicien des assetsigns sur le point d'expirer"
 msgstr "Warns the technician about handovers about to expire"
 
 msgid "Bénéficiaire externe"
 msgstr "External beneficiary"
 
-msgid "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche de %s depuis l'onglet \"Remises\" ci-dessous (bénéficiaire interne ou externe)."
+msgid "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche de %s depuis l'onglet \"Assetsigns\" ci-dessous (bénéficiaire interne ou externe)."
 msgstr "This asset has no user assigned: manually create a %s record from the \"Handovers\" tab below (internal or external beneficiary)."
 
 msgid "Contact (facultatif)"
@@ -659,7 +659,7 @@ msgstr "External"
 msgid "Fiches de maintenance"
 msgstr "Maintenance records"
 
-msgid "Gabarits de remise"
+msgid "Gabarits de assetsign"
 msgstr "Handover templates"
 
 msgid "Interne (compte GLPI)"
@@ -704,7 +704,7 @@ msgstr "This signature link is no longer valid."
 msgid "Ce type de fiche ne peut pas être créé manuellement."
 msgstr "This record type cannot be created manually."
 
-msgid "Cette remise ne peut plus être relancée (déjà signée ou expirée)."
+msgid "Cette assetsign ne peut plus être relancée (déjà signée ou expirée)."
 msgstr "This handover can no longer be reminded (already signed or expired)."
 
 msgid "Format de signature invalide."
@@ -722,7 +722,7 @@ msgstr "Unknown signature link."
 msgid "Matériel introuvable."
 msgstr "Asset not found."
 
-msgid "Remise introuvable."
+msgid "Assetsign introuvable."
 msgstr "Handover not found."
 
 msgid "Signature illisible."
@@ -755,7 +755,7 @@ msgstr "Available placeholders, replaced automatically on the PDF:"
 msgid "Assigner un matériel à cet utilisateur"
 msgstr "Assign an asset to this user"
 
-msgid "L'affectation déclenche automatiquement la création d'une remise, comme depuis la fiche du matériel."
+msgid "L'affectation déclenche automatiquement la création d'une assetsign, comme depuis la fiche du matériel."
 msgstr "Assigning it automatically creates a handover, just like from the asset's own page."
 
 msgid "Assigner"
@@ -779,10 +779,10 @@ msgstr "Your GLPI account has no registered email address."
 msgid "Le serveur de messagerie a refusé l'envoi."
 msgstr "The mail server refused the send."
 
-msgid "E-mail de test — Remise & signature"
+msgid "E-mail de test — Assetsign & signature"
 msgstr "Test email — Handover & signature"
 
-msgid "Cet e-mail confirme que la configuration d'envoi du plugin Remise & signature fonctionne."
+msgid "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & signature fonctionne."
 msgstr "This email confirms that the Handover & signature plugin's sending configuration works."
 
 msgid "Afficher un QR code sur les fiches PDF"

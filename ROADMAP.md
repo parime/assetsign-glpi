@@ -147,4 +147,4 @@ Initialement noté "Haute difficulté — à valider avant de s'engager" (risque
 
 ## Explicitement hors périmètre pour l'instant
 
-(aucun point pour l'instant — la publication sur le Marketplace officiel GLPI, jusqu'ici hors périmètre, est en cours via `docs/remise.xml`.)
+(aucun point pour l'instant — la publication sur le Marketplace officiel GLPI, jusqu'ici hors périmètre, est en cours via `assetsign.xml`.)

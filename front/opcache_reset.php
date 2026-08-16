@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Point d'entree interne, appele automatiquement par plugin_remise_install()
+ * Point d'entree interne, appele automatiquement par plugin_assetsign_install()
  * (hook.php) juste apres CacheManager::resetAllCaches() : ce dernier tourne
  * en CLI (bin/console), un SAPI/process distinct de celui qui sert les
  * vraies requetes web (Apache/PHP-FPM) — il ne peut donc PAS vider LEUR

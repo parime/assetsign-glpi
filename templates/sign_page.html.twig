@@ -27,26 +27,26 @@
   #status-msg{ margin-top:14px; font-size:.9rem; }
   .card h2{ font-size:1rem; margin:0 0 6px; }
   .card p.hint{ color:var(--ink-soft); font-size:.85rem; margin:0 0 12px; }
-  textarea.remise-comment{ width:100%; font:inherit; border:1px solid var(--line); border-radius:6px; padding:8px; resize:vertical; }
+  textarea.assetsign-comment{ width:100%; font:inherit; border:1px solid var(--line); border-radius:6px; padding:8px; resize:vertical; }
 </style>
-<link rel="stylesheet" href="{{ config('root_doc') }}/plugins/remise/css/remise.css?v={{ constant('PLUGIN_REMISE_VERSION') }}">
+<link rel="stylesheet" href="{{ config('root_doc') }}/plugins/assetsign/css/assetsign.css?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}">
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>{{ page_title|default(__('Signature de remise de matériel', 'remise')) }}</h1>
-    {% if not error %}<p>{{ __('Matériel', 'remise') }} : <strong>{{ item.name }}</strong> — {{ __('Bénéficiaire', 'remise') }} : <strong>{{ user.firstname }} {{ user.realname }}</strong></p>{% endif %}
+    <h1>{{ page_title|default(__('Signature de remise de matériel', 'assetsign')) }}</h1>
+    {% if not error %}<p>{{ __('Matériel', 'assetsign') }} : <strong>{{ item.name }}</strong> — {{ __('Bénéficiaire', 'assetsign') }} : <strong>{{ user.firstname }} {{ user.realname }}</strong></p>{% endif %}
   </header>
 
   {% if error %}
     <div class="card error">
-      <p>{{ __('Impossible d\'afficher ce document', 'remise') }} : {{ error }}</p>
+      <p>{{ __('Impossible d\'afficher ce document', 'assetsign') }} : {{ error }}</p>
       {# Racine de GLPI, pas /front/central.php en dur : ce dernier est la page
          par defaut de l'INTERFACE "centrale" (agents), pas forcement la vraie
          page d'accueil configuree pour cet utilisateur (self-service,
          tableau de bord personnalise...) — la racine se charge de rediriger
          chacun vers SA propre page d'accueil reelle. #}
-      <p><a href="{{ config('root_doc') }}/">{{ __('Retour à l\'accueil GLPI', 'remise') }}</a></p>
+      <p><a href="{{ config('root_doc') }}/">{{ __('Retour à l\'accueil GLPI', 'assetsign') }}</a></p>
     </div>
   {% else %}
     <div class="card">
@@ -55,13 +55,13 @@
 
     {% if damage_annotation_enabled %}
       <div class="card">
-        <h2>{{ __('État des lieux visuel', 'remise') }}</h2>
-        <p class="hint">{{ __('Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner.', 'remise') }}</p>
+        <h2>{{ __('État des lieux visuel', 'assetsign') }}</h2>
+        <p class="hint">{{ __('Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un repère existant pour le décrire ou le supprimer, glissez-le pour le repositionner.', 'assetsign') }}</p>
         <div class="damage-view-grid">
           {% for index, label in damage_views %}
             <div>
-              <div class="damage-view" data-remise-id="{{ remise.id }}" data-view-index="{{ index }}" data-editable="{{ can_edit_damage_markers ? '1' : '0' }}">
-                <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/remise/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
+              <div class="damage-view" data-assetsign-id="{{ assetsign.id }}" data-view-index="{{ index }}" data-editable="{{ can_edit_damage_markers ? '1' : '0' }}">
+                <img class="damage-view-img" src="{{ config('root_doc') }}/plugins/assetsign/images/damage-views/{{ damage_images[index] }}" alt="{{ label }}">
                 {% for marker in damage_markers_by_view[index]|default([]) %}
                   <div class="damage-marker{{ marker.severity == 1 ? ' damage-marker-major' : '' }}"
                        data-id="{{ marker.id }}"
@@ -77,12 +77,12 @@
     {% endif %}
 
     <div class="card">
-      <h2>{{ __('Remarque', 'remise') }}</h2>
-      <p class="hint">{{ __('Une précision à ajouter avant de signer (optionnel).', 'remise') }}</p>
-      <textarea id="beneficiary-comment" class="remise-comment" rows="3" {{ can_edit_comment ? '' : 'readonly' }}>{{ beneficiary_comment }}</textarea>
+      <h2>{{ __('Remarque', 'assetsign') }}</h2>
+      <p class="hint">{{ __('Une précision à ajouter avant de signer (optionnel).', 'assetsign') }}</p>
+      <textarea id="beneficiary-comment" class="assetsign-comment" rows="3" {{ can_edit_comment ? '' : 'readonly' }}>{{ beneficiary_comment }}</textarea>
       {% if can_edit_comment %}
         <div class="actions">
-          <button type="button" id="btn-save-comment">{{ __('Enregistrer', 'remise') }}</button>
+          <button type="button" id="btn-save-comment">{{ __('Enregistrer', 'assetsign') }}</button>
         </div>
         <p id="comment-status-msg" style="font-size:.85rem;color:var(--ink-soft);"></p>
       {% endif %}
@@ -91,60 +91,60 @@
     <div class="card sign-zone">
       <label class="consent">
         <input type="checkbox" id="consent-checkbox">
-        <span>{{ __('J\'ai lu et j\'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus.', 'remise') }}</span>
+        <span>{{ __('J\'ai lu et j\'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus.', 'assetsign') }}</span>
       </label>
 
-      <p style="margin-top:14px;">{{ __('Signez ci-dessous à la souris, au doigt ou au stylet :', 'remise') }}</p>
+      <p style="margin-top:14px;">{{ __('Signez ci-dessous à la souris, au doigt ou au stylet :', 'assetsign') }}</p>
       <canvas id="signature-pad"></canvas>
 
       <div class="actions">
-        <button type="button" id="btn-clear">{{ __('Effacer', 'remise') }}</button>
-        <button type="button" id="btn-submit" class="primary" disabled>{{ __('Valider ma signature', 'remise') }}</button>
+        <button type="button" id="btn-clear">{{ __('Effacer', 'assetsign') }}</button>
+        <button type="button" id="btn-submit" class="primary" disabled>{{ __('Valider ma signature', 'assetsign') }}</button>
       </div>
       <p id="status-msg"></p>
-      <p style="font-size:.78rem;color:var(--ink-soft);margin-top:10px;">{{ __('Ce lien est valable jusqu\'au', 'remise') }} {{ expiry|date('d/m/Y H:i') }} {{ __('et deviendra invalide dès la signature.', 'remise') }}</p>
+      <p style="font-size:.78rem;color:var(--ink-soft);margin-top:10px;">{{ __('Ce lien est valable jusqu\'au', 'assetsign') }} {{ expiry|date('d/m/Y H:i') }} {{ __('et deviendra invalide dès la signature.', 'assetsign') }}</p>
     </div>
   {% endif %}
 </div>
 
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+<script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
 <script>
-  window.REMISE_SIGN_TOKEN = {{ token|json_encode|raw }};
-  window.REMISE_CSRF_TOKEN = {{ csrf_token|default('')|json_encode|raw }};
-  window.REMISE_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
-  window.REMISE_PLUGIN_VERSION = {{ constant('PLUGIN_REMISE_VERSION')|json_encode|raw }};
-  window.REMISE_I18N = {
-    loadError: {{ __('Impossible de charger le document', 'remise')|json_encode|raw }},
-    sending: {{ __('Envoi en cours…', 'remise')|json_encode|raw }},
-    errorPrefix: {{ __('Erreur', 'remise')|json_encode|raw }},
-    signedOk: {{ __('Merci, votre signature a bien été enregistrée.', 'remise')|json_encode|raw }},
-    networkError: {{ __('Erreur réseau, merci de réessayer.', 'remise')|json_encode|raw }},
-    backToHome: {{ __('Retour à l\'accueil GLPI', 'remise')|json_encode|raw }}
+  window.ASSETSIGN_SIGN_TOKEN = {{ token|json_encode|raw }};
+  window.ASSETSIGN_CSRF_TOKEN = {{ csrf_token|default('')|json_encode|raw }};
+  window.ASSETSIGN_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
+  window.ASSETSIGN_PLUGIN_VERSION = {{ constant('PLUGIN_ASSETSIGN_VERSION')|json_encode|raw }};
+  window.ASSETSIGN_I18N = {
+    loadError: {{ __('Impossible de charger le document', 'assetsign')|json_encode|raw }},
+    sending: {{ __('Envoi en cours…', 'assetsign')|json_encode|raw }},
+    errorPrefix: {{ __('Erreur', 'assetsign')|json_encode|raw }},
+    signedOk: {{ __('Merci, votre signature a bien été enregistrée.', 'assetsign')|json_encode|raw }},
+    networkError: {{ __('Erreur réseau, merci de réessayer.', 'assetsign')|json_encode|raw }},
+    backToHome: {{ __('Retour à l\'accueil GLPI', 'assetsign')|json_encode|raw }}
   };
 </script>
-<script src="{{ config('root_doc') }}/plugins/remise/js/sign/csrf-queue.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
-<script type="module" src="{{ config('root_doc') }}/plugins/remise/js/sign/sign.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+<script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/csrf-queue.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+<script type="module" src="{{ config('root_doc') }}/plugins/assetsign/js/sign/sign.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
 
 {% if damage_annotation_enabled and can_edit_damage_markers %}
   <script>
     // Reperes d'etat des lieux, geres par le beneficiaire lui-meme depuis cette
     // page : meme script que la fiche admin (damage-annotation.js), mais pointe
     // vers front/sign.php (authentification par jeton, pas par droit GLPI).
-    window.REMISE_DAMAGE_CSRF = {{ csrf_token|default('')|json_encode|raw }};
-    window.REMISE_DAMAGE_ENDPOINT = {{ config('root_doc')|json_encode|raw }} + '/plugins/remise/front/sign.php';
-    window.REMISE_DAMAGE_EXTRA_PARAMS = { t: {{ token|json_encode|raw }} };
-    window.REMISE_DAMAGE_I18N = {
-      description: {{ __('Description', 'remise')|json_encode|raw }},
-      severity: {{ __('Gravité', 'remise')|json_encode|raw }},
-      minor: {{ __('Mineure', 'remise')|json_encode|raw }},
-      major: {{ __('Majeure', 'remise')|json_encode|raw }},
-      save: {{ __('Enregistrer', 'remise')|json_encode|raw }},
-      deleteLabel: {{ __('Supprimer', 'remise')|json_encode|raw }},
-      errorPrefix: {{ __('Erreur', 'remise')|json_encode|raw }},
-      networkError: {{ __('Erreur réseau, merci de réessayer.', 'remise')|json_encode|raw }}
+    window.ASSETSIGN_DAMAGE_CSRF = {{ csrf_token|default('')|json_encode|raw }};
+    window.ASSETSIGN_DAMAGE_ENDPOINT = {{ config('root_doc')|json_encode|raw }} + '/plugins/assetsign/front/sign.php';
+    window.ASSETSIGN_DAMAGE_EXTRA_PARAMS = { t: {{ token|json_encode|raw }} };
+    window.ASSETSIGN_DAMAGE_I18N = {
+      description: {{ __('Description', 'assetsign')|json_encode|raw }},
+      severity: {{ __('Gravité', 'assetsign')|json_encode|raw }},
+      minor: {{ __('Mineure', 'assetsign')|json_encode|raw }},
+      major: {{ __('Majeure', 'assetsign')|json_encode|raw }},
+      save: {{ __('Enregistrer', 'assetsign')|json_encode|raw }},
+      deleteLabel: {{ __('Supprimer', 'assetsign')|json_encode|raw }},
+      errorPrefix: {{ __('Erreur', 'assetsign')|json_encode|raw }},
+      networkError: {{ __('Erreur réseau, merci de réessayer.', 'assetsign')|json_encode|raw }}
     };
   </script>
-  <script src="{{ config('root_doc') }}/plugins/remise/js/sign/damage-annotation.js?v={{ constant('PLUGIN_REMISE_VERSION') }}"></script>
+  <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/damage-annotation.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
 {% endif %}
 
 {% if can_edit_comment %}
@@ -154,32 +154,32 @@
       var textarea = document.getElementById('beneficiary-comment');
       var status = document.getElementById('comment-status-msg');
 
-      // window.remiseQueuedFetch : defini par csrf-queue.js, charge
+      // window.assetsignQueuedFetch : defini par csrf-queue.js, charge
       // inconditionnellement plus haut sur cette page (avant sign.js) —
       // partage avec ce dernier et damage-annotation.js.
       btn.addEventListener('click', function () {
         btn.disabled = true;
-        window.remiseQueuedFetch(window.location.pathname, function () {
+        window.assetsignQueuedFetch(window.location.pathname, function () {
           return {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
-              t: window.REMISE_SIGN_TOKEN,
+              t: window.ASSETSIGN_SIGN_TOKEN,
               update_comment: '1',
               comment: textarea.value,
-              // window.REMISE_CSRF_TOKEN lu ICI (pas avant) : construit au
-              // moment reel de l'envoi, apres que remiseQueuedFetch ait
+              // window.ASSETSIGN_CSRF_TOKEN lu ICI (pas avant) : construit au
+              // moment reel de l'envoi, apres que assetsignQueuedFetch ait
               // attendu la fin de tout appel precedent encore en cours.
-              _glpi_csrf_token: window.REMISE_CSRF_TOKEN
+              _glpi_csrf_token: window.ASSETSIGN_CSRF_TOKEN
             }).toString()
           };
         }).then(function (res) { return res.json(); }).then(function (data) {
           status.textContent = data.success
-            ? {{ __('Remarque enregistrée.', 'remise')|json_encode|raw }}
-            : ({{ __('Erreur', 'remise')|json_encode|raw }} + ' : ' + data.error);
+            ? {{ __('Remarque enregistrée.', 'assetsign')|json_encode|raw }}
+            : ({{ __('Erreur', 'assetsign')|json_encode|raw }} + ' : ' + data.error);
           btn.disabled = false;
         }).catch(function () {
-          status.textContent = window.REMISE_I18N.networkError;
+          status.textContent = window.ASSETSIGN_I18N.networkError;
           btn.disabled = false;
         });
       });
