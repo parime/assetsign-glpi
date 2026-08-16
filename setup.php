@@ -179,7 +179,7 @@ function plugin_version_remise(): array {
     return [
         'name'           => 'Remise & Signature',
         'version'        => PLUGIN_REMISE_VERSION,
-        'author'         => 'Vincent Guillotte',
+        'author'         => 'Vincent GUILLOTTE',
         'license'        => 'GPLv3',
         'homepage'       => 'https://github.com/parime/remise-glpi',
         'requirements'   => [
