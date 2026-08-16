@@ -55,7 +55,7 @@ Ne passez pas par une issue publique — voir [SECURITY.md](SECURITY.md) pour la
 
 ## Références officielles GLPI (base de tout développement sur ce plugin)
 
-Ce plugin suit les conventions officielles de développement de plugins GLPI 11 — utile à connaître (ou à faire lire à un assistant IA qui reprend ce dépôt) avant de modifier `setup.php`/`hook.php` ou la structure du code :
+Ce plugin suit les conventions officielles de développement de plugins GLPI 11 — utile à connaître avant de modifier `setup.php`/`hook.php` ou la structure du code :
 
 - **[Tutoriel officiel de création de plugin](https://glpi-developer-documentation.readthedocs.io/en/master/plugins/tutorial.html)** — documentation développeur GLPI, explique `plugin_init_<key>()`, les hooks, l'autoloading PSR-4 natif.
 - **[Documentation plugins GLPI, page "Create a new plugin"](https://glpi-plugins.readthedocs.io/fr/latest/empty/index.html#create-a-new-plugin)** — conventions de structure côté écosystème `pluginsGLPI` (marketplace).
