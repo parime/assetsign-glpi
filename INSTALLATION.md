@@ -51,7 +51,13 @@ php bin/console plugin:install assetsign
 php bin/console plugin:activate assetsign
 ```
 
-### 3. Configurer
+### 3. Accorder les droits aux profils qui en ont besoin
+
+**Après une installation fraîche, seul le profil Super-Admin a accès au plugin.** Les profils **Admin** et **Technician** reçoivent automatiquement un droit d'usage courant (consulter/créer/modifier des remises et des fiches de maintenance, mais pas les supprimer ni toucher à la configuration) — c'est suffisant pour qu'un technicien puisse traiter les remises au quotidien sans intervention supplémentaire. Tout autre profil (Self-Service, Read-Only, Hotliner, Supervisor...) reste sans aucun droit tant que vous ne le lui accordez pas explicitement.
+
+Pour donner accès à un profil supplémentaire, ou pour ajuster ce qui est accordé par défaut à Admin/Technician : **Administration > Profils**, ouvrez le profil concerné, onglet **« Assetsign & signature »**, cochez les droits voulus (Assetsigns, Configuration, Gabarits, Maintenance) et enregistrez. Ce réglage est propre à chaque profil et n'est jamais réappliqué automatiquement par une future mise à jour du plugin — vos choix sont conservés.
+
+### 4. Configurer
 
 Un menu **Administration > Assetsign & signature** apparaît (Assetsigns, Gabarits de remise, Configuration).
 
