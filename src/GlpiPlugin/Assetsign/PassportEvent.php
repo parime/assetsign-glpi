@@ -90,7 +90,7 @@ class PassportEvent extends CommonDBTM
            'source_items_id'      => $assetsign->getID(),
            'date'                 => $assetsign->fields['date_creation'] ?: date('Y-m-d H:i:s'),
            'users_id'             => $isExternal ? 0 : (int) $assetsign->fields['users_id'],
-           'snapshot_name'        => trim(($beneficiary['firstname'] ?? '') . ' ' . ($beneficiary['realname'] ?? '')),
+           'snapshot_name'        => trim(\formatUserName(0, $beneficiary['name'] ?? '', $beneficiary['realname'] ?? '', $beneficiary['firstname'] ?? '')),
            'snapshot_email'       => (string) ($beneficiary['email'] ?? ''),
            'snapshot_is_external' => $isExternal ? 1 : 0,
            'snapshot_entity_name' => \Dropdown::getDropdownName('glpi_entities', $entitiesId),
@@ -768,7 +768,7 @@ class PassportEvent extends CommonDBTM
           return ['name' => '', 'email' => ''];
       }
        return [
-           'name'  => trim(($user->fields['firstname'] ?? '') . ' ' . ($user->fields['realname'] ?? '')),
+           'name'  => trim(\formatUserName(0, $user->fields['name'] ?? '', $user->fields['realname'] ?? '', $user->fields['firstname'] ?? '')),
            'email' => \UserEmail::getDefaultForUser($users_id) ?: '',
        ];
    }

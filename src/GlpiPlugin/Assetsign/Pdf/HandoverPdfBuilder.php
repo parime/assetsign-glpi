@@ -50,8 +50,8 @@ final class HandoverPdfBuilder
        $technician->getFromDB((int) $assetsign->fields['users_id_tech']);
 
        $placeholders = [
-           'beneficiaire' => trim(($user['firstname'] ?? '') . ' ' . ($user['realname'] ?? '')),
-           'technicien'   => trim(($technician->fields['firstname'] ?? '') . ' ' . ($technician->fields['realname'] ?? '')),
+           'beneficiaire' => trim(\formatUserName(0, $user['name'] ?? '', $user['realname'] ?? '', $user['firstname'] ?? '')),
+           'technicien'   => trim(\formatUserName(0, $technician->fields['name'] ?? '', $technician->fields['realname'] ?? '', $technician->fields['firstname'] ?? '')),
            'materiel'     => $item['name'] ?? '',
            'date'         => $assetsign->fields['date_creation'] ? date('d/m/Y', strtotime($assetsign->fields['date_creation'])) : date('d/m/Y'),
            'entite'       => \Dropdown::getDropdownName('glpi_entities', (int) $assetsign->fields['entities_id']),

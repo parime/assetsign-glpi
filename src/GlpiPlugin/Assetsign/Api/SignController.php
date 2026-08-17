@@ -93,7 +93,7 @@ final class SignController
        $user = $assetsign->getBeneficiary();
 
        $assetsign->markSigned($result['path'], [
-           'signer_name'   => trim(($user['firstname'] ?? '') . ' ' . ($user['realname'] ?? '')),
+           'signer_name'   => trim(\formatUserName(0, $user['name'] ?? '', $user['realname'] ?? '', $user['firstname'] ?? '')),
            'signer_email'  => $user['email'] ?? '',
            'ip_address'    => $meta['ip'] ?? '',
            'user_agent'    => $meta['user_agent'] ?? '',

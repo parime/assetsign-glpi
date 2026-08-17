@@ -17,6 +17,9 @@
 <div style="position:fixed;top:45%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:64px;font-weight:bold;color:rgba(200,30,30,{{ (watermark_opacity|default(25)) / 100 }});pointer-events:none;z-index:9999;white-space:nowrap;">{{ watermark_text }}</div>
 {% endif %}
 
+{% set beneficiary_name = (user.firstname ~ ' ' ~ user.realname)|trim %}
+{% if beneficiary_name is empty %}{% set beneficiary_name = user.name %}{% endif %}
+
 {% if logo_data_uri or company_name %}
 <div class="header-logo">
   {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="">{% endif %}
@@ -29,7 +32,7 @@
 
 <h2>Bénéficiaire{% if beneficiary_is_external %} (externe, sans compte GLPI){% endif %}</h2>
 <table class="info-table">
-    <tr><th>Nom</th><td>{{ (user.firstname ~ ' ' ~ user.realname)|trim }}</td></tr>
+    <tr><th>Nom</th><td>{{ beneficiary_name }}</td></tr>
     <tr><th>{{ beneficiary_is_external ? 'Contact' : 'E-mail' }}</th><td>{{ user.email }}</td></tr>
 </table>
 
@@ -103,7 +106,7 @@
         <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">
-            Signataire : {{ (user.firstname ~ ' ' ~ user.realname)|trim }} ({{ user.email }})
+            Signataire : {{ beneficiary_name }} ({{ user.email }})
         </p>
     {% elseif beneficiary_is_external %}
         {# Beneficiaire externe : aucune signature electronique possible (pas

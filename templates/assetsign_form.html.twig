@@ -14,7 +14,8 @@
       <tr>
         <th>{{ __('Bénéficiaire', 'assetsign') }}</th>
         <td>
-          {{ (beneficiary.firstname|default('') ~ ' ' ~ beneficiary.realname|default(''))|trim }}
+          {% set beneficiary_name = (beneficiary.firstname|default('') ~ ' ' ~ beneficiary.realname|default(''))|trim %}
+          {{ beneficiary_name is empty ? beneficiary.name|default('') : beneficiary_name }}
           ({{ beneficiary.email|default('') }})
           {% if item.fields.beneficiary_type == 1 %}
             <span class="badge bg-secondary">{{ __('Externe', 'assetsign') }}</span>
