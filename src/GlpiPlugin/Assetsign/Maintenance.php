@@ -435,7 +435,7 @@ class Maintenance extends CommonDBTM
       if ($signatureEnabled) {
           $tech = $maintenance->getTechnician();
           Signature::recordProofForMaintenance($maintenance, [
-              'signer_name'   => trim(($tech['firstname'] ?? '') . ' ' . ($tech['realname'] ?? '')),
+              'signer_name'   => trim(\formatUserName(0, $tech['name'] ?? '', $tech['realname'] ?? '', $tech['firstname'] ?? '')),
               'signer_email'  => $tech['email'] ?? '',
               'ip_address'    => $signatureMeta['ip'] ?? '',
               'user_agent'    => $signatureMeta['user_agent'] ?? '',

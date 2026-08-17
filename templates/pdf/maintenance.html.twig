@@ -8,6 +8,9 @@
 </head>
 <body>
 
+{% set technician_name = (technician.firstname ~ ' ' ~ technician.realname)|trim %}
+{% if technician_name is empty %}{% set technician_name = technician.name|default('-') %}{% endif %}
+
 {% if logo_data_uri or company_name %}
 <div class="header-logo">
   {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="">{% endif %}
@@ -20,7 +23,7 @@
 
 <h2>Technicien</h2>
 <table class="info-table">
-    <tr><th>Nom</th><td>{{ (technician.firstname ~ ' ' ~ technician.realname)|trim|default('-') }}</td></tr>
+    <tr><th>Nom</th><td>{{ technician_name }}</td></tr>
 </table>
 
 <h2>Matériel</h2>
@@ -64,7 +67,7 @@
         <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">
-            Signataire : {{ (technician.firstname ~ ' ' ~ technician.realname)|trim }}
+            Signataire : {{ technician_name }}
         </p>
     {% else %}
         <p>Fait le {{ _now }}</p>

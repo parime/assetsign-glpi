@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-08-17
+
+### Fixed
+
+- **Nom du bénéficiaire/technicien vide sur les fiches PDF (remise, maintenance) et la page de
+  signature** pour tout compte GLPI sans `firstname`/`realname` renseignés (cas des comptes de
+  démonstration `glpi`/`normal`/`tech`/`post-only`, et de tout compte réel créé sans remplir ces
+  champs optionnels) : 9 emplacements sur 12 utilisaient un simple
+  `trim(firstname . ' ' . realname)` sans repli sur le login, produisant une chaîne vide au lieu du
+  nom d'utilisateur. Corrigé en réutilisant partout `formatUserName()` (PHP) ou un repli explicite
+  sur `user.name` (Twig) — le motif déjà utilisé correctement ailleurs dans la base de code
+  (`Assetsign.php`, `Maintenance.php`, `NotificationTargetAssetsign.php`).
+  - Découvert et confirmé sur un vrai document signé lors de la vérification exhaustive du plugin
+    (fiche PDF affichait « Signataire : (normal@test.local) », nom manquant).
+  - Fichiers concernés : `HandoverPdfBuilder.php`, `SignController.php`, `Maintenance.php`,
+    `PassportEvent.php` (×2), `handover.html.twig`, `maintenance.html.twig`, `sign_page.html.twig`,
+    `assetsign_form.html.twig`.
+
 ## [2.0.1] - 2026-08-16
 
 ### Fixed

@@ -35,7 +35,11 @@
 <div class="wrap">
   <header>
     <h1>{{ page_title|default(__('Signature de remise de matériel', 'assetsign')) }}</h1>
-    {% if not error %}<p>{{ __('Matériel', 'assetsign') }} : <strong>{{ item.name }}</strong> — {{ __('Bénéficiaire', 'assetsign') }} : <strong>{{ user.firstname }} {{ user.realname }}</strong></p>{% endif %}
+    {% if not error %}
+    {% set beneficiary_name = (user.firstname ~ ' ' ~ user.realname)|trim %}
+    {% if beneficiary_name is empty %}{% set beneficiary_name = user.name %}{% endif %}
+    <p>{{ __('Matériel', 'assetsign') }} : <strong>{{ item.name }}</strong> — {{ __('Bénéficiaire', 'assetsign') }} : <strong>{{ beneficiary_name }}</strong></p>
+    {% endif %}
   </header>
 
   {% if error %}
