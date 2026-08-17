@@ -61,7 +61,11 @@ class PassportEventBackfillTest extends AssetsignTestCase
         $this->assertSame(PassportEvent::TYPE_ATTRIBUTION, (int) $event['event_type']);
         $this->assertSame($userId, (int) $event['users_id']);
         $this->assertSame('2020-01-10 09:00:00', $event['date']);
-        $this->assertSame('Jean Dupont', $event['snapshot_name']);
+        // formatUserName() suit le reglage GLPI names_format (par defaut
+        // User::REALNAME_BEFORE, cf. DbUtils::formatUserName()) : "Dupont Jean",
+        // pas la simple concatenation firstname+realname utilisee avant le
+        // correctif du nom beneficiaire/technicien vide (CHANGELOG v2.0.2).
+        $this->assertSame('Dupont Jean', $event['snapshot_name']);
     }
 
     public function testBackfillFromLogsReconstructsReturnFromUserLogWhenEnabled(): void
