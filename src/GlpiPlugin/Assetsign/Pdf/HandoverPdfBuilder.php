@@ -73,7 +73,9 @@ final class HandoverPdfBuilder
            'observations'        => $assetsign->fields['observations'] ?? '',
            'beneficiary_comment' => $assetsign->fields['beneficiary_comment'] ?? '',
            'vente_price'         => $venteDetails?->fields['price'] ?? null,
-           'vente_sale_date'     => $venteDetails?->fields['sale_date'] ?? null,
+           'vente_sale_date'     => $venteDetails?->fields['sale_date']
+               ? date('d/m/Y', strtotime($venteDetails->fields['sale_date']))
+               : null,
            'currency_symbol'     => $config->fields['currency_symbol'] ?: '€',
            'damage_views'        => (bool) $config->fields['enable_damage_annotation']
                ? $this->getDamageViewsForPdf(DamageMarker::getForAssetsign($assetsign->getID()))
@@ -171,7 +173,7 @@ final class HandoverPdfBuilder
            'enable_observations' => $observationsEnabled,
            'observations'        => $observationsEnabled ? __('Exemple : petite rayure sur le capot, sans gravité.', 'assetsign') : '',
            'vente_price'         => $type === Assetsign::TYPE_VENTE ? 199.00 : null,
-           'vente_sale_date'     => $type === Assetsign::TYPE_VENTE ? date('Y-m-d') : null,
+           'vente_sale_date'     => $type === Assetsign::TYPE_VENTE ? date('d/m/Y') : null,
            'damage_views'        => $damageEnabled ? $this->getSampleDamageViews() : [],
            'page_title'          => $headings['page_title'],
            'material_heading'    => $headings['material_heading'],

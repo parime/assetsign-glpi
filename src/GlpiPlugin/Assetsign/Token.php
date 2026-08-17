@@ -84,6 +84,16 @@ class Token extends CommonDBTM
       if (!$found) {
           throw new \RuntimeException(__('Lien de signature inconnu.', 'assetsign'));
       }
+      // Verifie AVANT le controle generique is_valid ci-dessous : markUsed()
+      // met is_valid a 0 ET date_used en meme temps (meme UPDATE), donc un
+      // jeton deja traite avec succes matchait jusqu'ici le controle
+      // generique en premier et affichait "n'est plus valide" — message
+      // alarmant a tort si le beneficiaire recharge la page de signature
+      // juste apres avoir signe (ou si sa connexion a coupe pendant que le
+      // traitement serveur se terminait quand meme en arriere-plan).
+      if (!empty($token->fields['date_used'])) {
+          throw new \RuntimeException(__('Ce document a déjà été traité.', 'assetsign'));
+      }
       if (!$token->fields['is_valid']) {
           throw new \RuntimeException(__('Ce lien de signature n\'est plus valide.', 'assetsign'));
       }
@@ -91,9 +101,6 @@ class Token extends CommonDBTM
       // raisonnement qu'a la creation du jeton, cf. createForAssetsign().
       if (strtotime($token->fields['date_expiration']) < strtotime(self::dbNow())) {
           throw new \RuntimeException(__('Ce lien de signature a expiré.', 'assetsign'));
-      }
-      if (!empty($token->fields['date_used'])) {
-          throw new \RuntimeException(__('Ce document a déjà été traité.', 'assetsign'));
       }
 
        $DB->update(self::getTable(), [

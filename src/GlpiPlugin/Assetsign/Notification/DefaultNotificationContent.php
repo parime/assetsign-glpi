@@ -2,6 +2,8 @@
 
 namespace GlpiPlugin\Assetsign\Notification;
 
+use GlpiPlugin\Assetsign\Config;
+
 /**
  * Contenu (sujet + corps HTML, dans les 5 langues supportees par l'interface
  * du plugin) seme a l'installation pour chaque evenement de notification —
@@ -33,7 +35,7 @@ final class DefaultNotificationContent
      * }
      */
    public static function forEvent(string $event): array {
-       return match ($event) {
+       $content = match ($event) {
            'new' => [
                'name'  => 'Assetsign : nouveau document à signer',
                'fr_FR' => [
@@ -201,5 +203,52 @@ final class DefaultNotificationContent
            ],
            default => throw new \RuntimeException("Plugin assetsign : évènement de notification inconnu ($event)."),
        };
+
+       // Habille chaque corps HTML d'un en-tete/pied de page sobres (bande de
+       // couleur, nom de l'entreprise si renseigne) plutot que le <p> brut
+       // sans mise en forme d'origine — un e-mail de signature electronique
+       // beneficie particulierement d'un rendu qui inspire confiance. Pas de
+       // logo (contrairement aux PDF, cf. PdfRenderingHelpers::getLogoDataUri()) :
+       // les images encodees en data URI sont frequemment bloquees/rognees par
+       // les clients de messagerie (Outlook, Gmail...), un risque qui ne
+       // s'applique pas a un PDF genere localement puis telecharge. Genere une
+       // seule fois a l'installation (comme le reste de ce fichier, cf.
+       // docblock de la classe) a partir du nom d'entreprise de l'entite
+       // racine — une organisation multi-entites avec un nom different par
+       // entite peut toujours personnaliser le contenu ensuite depuis
+       // Configuration > Notifications, comme n'importe quel gabarit natif.
+       $companyName = trim((string) (Config::getForEntity(0)->fields['company_name'] ?? ''));
+      foreach (['fr_FR', 'en_GB', 'es_ES', 'de_DE', 'it_IT'] as $lang) {
+          $content[$lang]['html'] = self::wrapBranded($content[$lang]['html'], $companyName);
+      }
+
+       return $content;
+   }
+
+    /**
+     * @see forEvent() pour le raisonnement (pas de logo, nom d'entreprise
+     * uniquement, applique une seule fois a l'installation).
+     */
+   private static function wrapBranded(string $bodyHtml, string $companyName): string {
+       $header = $companyName !== ''
+           ? '<div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#9fb3d1;font-family:Arial,sans-serif;">' . htmlspecialchars($companyName, ENT_QUOTES, 'UTF-8') . '</div>'
+           : '';
+
+       return '<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#eef1f6;padding:24px 0;">'
+           . '<tr><td align="center">'
+           . '<table width="560" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:10px;overflow:hidden;font-family:Arial,sans-serif;">'
+           . '<tr><td style="background:#1c2536;padding:18px 28px;border-top:4px solid #2a4b8d;">'
+           . $header
+           . '<div style="color:#ffffff;font-size:15px;font-weight:bold;margin-top:2px;">AssetSign</div>'
+           . '</td></tr>'
+           . '<tr><td style="padding:24px 28px;color:#1c2536;font-size:14px;line-height:1.6;">'
+           . $bodyHtml
+           . '</td></tr>'
+           . '<tr><td style="padding:12px 28px;background:#f5f6f9;border-top:1px solid #e5e8ee;">'
+           . '<span style="font-family:Arial,sans-serif;font-size:11px;color:#9aa2b1;">Généré automatiquement par GLPI (plugin assetsign)</span>'
+           . '</td></tr>'
+           . '</table>'
+           . '</td></tr>'
+           . '</table>';
    }
 }
