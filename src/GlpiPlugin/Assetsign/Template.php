@@ -29,7 +29,7 @@ class Template extends CommonDBTM
    }
 
    public static function getTypeName($nb = 0): string {
-       return _n('Gabarit de remise', 'Gabarits de remise', $nb, 'assetsign');
+       return _n('Gabarit d\'attribution', 'Gabarits d\'attribution', $nb, 'assetsign');
    }
 
     /**
@@ -48,7 +48,7 @@ class Template extends CommonDBTM
        return [
            ['id' => 'common', 'name' => self::getTypeName(1)],
            ['id' => 1, 'table' => self::getTable(), 'field' => 'name', 'name' => __('Nom'), 'datatype' => 'itemlink'],
-           ['id' => 2, 'table' => self::getTable(), 'field' => 'type', 'name' => __('Type de remise', 'assetsign'), 'datatype' => 'specific'],
+           ['id' => 2, 'table' => self::getTable(), 'field' => 'type', 'name' => __('Type d\'attribution', 'assetsign'), 'datatype' => 'specific'],
            ['id' => 3, 'table' => self::getTable(), 'field' => 'is_default', 'name' => __('Par défaut', 'assetsign'), 'datatype' => 'bool'],
            ['id' => 4, 'table' => self::getTable(), 'field' => 'is_active', 'name' => __('Actif'), 'datatype' => 'bool'],
        ];
@@ -158,7 +158,7 @@ class Template extends CommonDBTM
                 KEY `is_active` (`is_active`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 
-          self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_HANDOVER, 'Gabarit de remise par défaut');
+          self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_HANDOVER, 'Gabarit d\'attribution par défaut');
           self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_RETURN, 'Gabarit de restitution par défaut');
           self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_DON, 'Gabarit de don par défaut');
           self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_VENTE, 'Gabarit de vente par défaut');

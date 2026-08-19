@@ -39,7 +39,7 @@ msgstr ""
 msgid "Technicien"
 msgstr ""
 
-msgid "Nouvelle assetsign de matériel"
+msgid "Nouvelle attribution de matériel"
 msgstr ""
 
 msgid "Relance de signature"

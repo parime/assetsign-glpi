@@ -17,7 +17,7 @@ class RunExpirationCommand extends Command
 {
    protected function configure(): void {
        $this->setName('plugins:assetsign:run-expiration');
-       $this->setDescription('Marque comme expirées les remises hors délai (alternative au CronTask GLPI)');
+       $this->setDescription('Marque comme expirées les attributions hors délai (alternative au CronTask GLPI)');
    }
 
    protected function execute(InputInterface $input, OutputInterface $output): int {

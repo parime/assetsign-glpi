@@ -224,7 +224,7 @@ class Assetsign extends CommonDBTM
            'id'       => 6,
            'table'    => self::getTable(),
            'field'    => 'type',
-           'name'     => __('Type de remise', 'assetsign'),
+           'name'     => __('Type d\'attribution', 'assetsign'),
            'datatype' => 'specific',
            'searchtype' => 'equals',
        ];
@@ -829,7 +829,7 @@ class Assetsign extends CommonDBTM
           // sait fournir. Le seul geste utile ici est donc d'assigner (ou de
           // retirer) l'utilisateur sur la fiche du materiel lui-meme.
           \Session::addMessageAfterRedirect(
-              __('Ce matériel n\'a pas d\'utilisateur assigné : ce changement d\'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue.', 'assetsign'),
+              __('Ce matériel n\'a pas d\'utilisateur assigné : ce changement d\'État ne peut donc pas générer de fiche d\'attribution ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue.', 'assetsign'),
               false,
               INFO
           );
@@ -1601,8 +1601,8 @@ class Assetsign extends CommonDBTM
    public static function cronInfo(string $name): array {
        return match ($name) {
            'assetsignReminders'     => ['description' => __('Envoie les relances de signature dues', 'assetsign')],
-           'assetsignExpire'        => ['description' => __('Marque comme expirées les remises hors délai', 'assetsign')],
-           'assetsignExpiryWarning' => ['description' => __('Alerte le technicien des remises sur le point d\'expirer', 'assetsign')],
+           'assetsignExpire'        => ['description' => __('Marque comme expirées les attributions hors délai', 'assetsign')],
+           'assetsignExpiryWarning' => ['description' => __('Alerte le technicien des attributions sur le point d\'expirer', 'assetsign')],
            default               => [],
        };
    }
@@ -1616,7 +1616,7 @@ class Assetsign extends CommonDBTM
      */
    public function sendReminderNow(): void {
       if (!in_array((int) $this->fields['status'], self::STATUSES_AWAITING_SIGNATURE, true)) {
-          throw new \RuntimeException(__('Cette remise ne peut plus être relancée (déjà signée ou expirée).', 'assetsign'));
+          throw new \RuntimeException(__('Cette attribution ne peut plus être relancée (déjà signée ou expirée).', 'assetsign'));
       }
 
        $config = Config::getForEntity((int) $this->fields['entities_id']);

@@ -14,7 +14,7 @@ use Migration;
 class Accessory extends CommonDropdown
 {
    public static function getTypeName($nb = 0): string {
-       return _n('Accessoire de remise', 'Accessoires de remise', $nb, 'assetsign');
+       return _n('Accessoire d\'attribution', 'Accessoires d\'attribution', $nb, 'assetsign');
    }
 
     /**

@@ -149,7 +149,7 @@
           <div class="mb-3">
             <label class="form-label">{{ __('Alerter le technicien avant expiration (jours avant, 0 = désactivé)', 'assetsign') }}</label>
             <input type="number" name="expiry_warning_days" class="form-control" value="{{ config.expiry_warning_days|default(3) }}" min="0">
-            <div class="form-text">{{ __('Le technicien à l\'origine de la remise reçoit un e-mail quand il reste ce nombre de jours avant l\'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu\'il ne soit trop tard.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Le technicien à l\'origine de l\'attribution reçoit un e-mail quand il reste ce nombre de jours avant l\'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu\'il ne soit trop tard.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3 form-check">
@@ -297,7 +297,7 @@
             <input type="hidden" name="enable_observations" value="0">
             <input type="checkbox" name="enable_observations" value="1" class="form-check-input" id="enable_observations" {{ config.enable_observations|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_observations">{{ __('Champ « Observations » libre sur chaque fiche', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Si activé, un champ de texte libre devient disponible sur chaque fiche de remise (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n\'est pas encore signée.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Si activé, un champ de texte libre devient disponible sur chaque fiche d\'attribution (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n\'est pas encore signée.', 'assetsign') }}</div>
           </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_damage_annotation" value="0">
@@ -326,7 +326,7 @@
 
         {# ---------------------------------------------------------------- Maintenance #}
         <div class="tab-pane fade" id="tab-maintenance" role="tabpanel">
-          <p class="text-muted">{{ __('La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d\'e-mail) : elle génère toujours un PDF (même mise en page que les fiches remise/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l\'option ci-dessous est activée. L\'accès se gère par le droit dédié (Administration > Profils).', 'assetsign') }}</p>
+          <p class="text-muted">{{ __('La fiche de maintenance est un sous-système séparé de celui des fiches signées (pas de bénéficiaire, pas de jeton, pas d\'e-mail) : elle génère toujours un PDF (même mise en page que les fiches attribution/don/vente, avec le logo), et peut en plus faire signer le technicien directement sur le formulaire de création si l\'option ci-dessous est activée. L\'accès se gère par le droit dédié (Administration > Profils).', 'assetsign') }}</p>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_maintenance_signature" value="0">
             <input type="checkbox" name="enable_maintenance_signature" value="1" class="form-check-input" id="enable_maintenance_signature" {{ config.enable_maintenance_signature|default(0) ? 'checked' : '' }}>
@@ -375,7 +375,7 @@
           <div class="mb-3">
             <label class="form-label">{{ __('Anonymiser l\'identité des bénéficiaires après (années, 0 = jamais)', 'assetsign') }}</label>
             <input type="number" name="passport_retention_years" class="form-control" style="width: 140px;" value="{{ config.passport_retention_years|default(3) }}" min="0">
-            <div class="form-text">{{ __('Passé ce délai, le nom et l\'e-mail du bénéficiaire sont retirés des événements du Passeport matériel (l\'événement et sa date restent visibles). N\'affecte jamais les fiches de remise/restitution elles-mêmes.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Passé ce délai, le nom et l\'e-mail du bénéficiaire sont retirés des événements du Passeport matériel (l\'événement et sa date restent visibles). N\'affecte jamais les fiches d\'attribution/restitution elles-mêmes.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">

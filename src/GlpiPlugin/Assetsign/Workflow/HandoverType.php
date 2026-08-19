@@ -18,17 +18,17 @@ final class HandoverType implements WorkflowTypeInterface
    }
 
    public function getLabel(): string {
-       return __('Remise', 'assetsign');
+       return __('Attribution', 'assetsign');
    }
 
    public function getCanonicalLabel(): string {
-       return 'Remise';
+       return 'Attribution';
    }
 
    public function getPdfHeadings(): array {
        return [
-           'page_title'       => 'Fiche de remise de matériel',
-           'material_heading' => 'Matériel remis',
+           'page_title'       => 'Fiche d\'attribution de matériel',
+           'material_heading' => 'Matériel attribué',
        ];
    }
 

@@ -25,7 +25,7 @@ final class HandoverPdfBuilder
        $protect = (bool) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['protect_pdf'];
        $binary = $this->renderPdf($html, $protect);
 
-       return $this->storeAsDocument($assetsign, $binary, 'fiche-remise-' . $assetsign->getID() . '.pdf');
+       return $this->storeAsDocument($assetsign, $binary, 'fiche-attribution-' . $assetsign->getID() . '.pdf');
    }
 
     /**

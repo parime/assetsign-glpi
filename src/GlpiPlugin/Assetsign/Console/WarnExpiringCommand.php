@@ -17,7 +17,7 @@ class WarnExpiringCommand extends Command
 {
    protected function configure(): void {
        $this->setName('plugins:assetsign:warn-expiring');
-       $this->setDescription('Alerte le technicien des remises sur le point d\'expirer (alternative au CronTask GLPI)');
+       $this->setDescription('Alerte le technicien des attributions sur le point d\'expirer (alternative au CronTask GLPI)');
    }
 
    protected function execute(InputInterface $input, OutputInterface $output): int {

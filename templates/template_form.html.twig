@@ -14,7 +14,7 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">{{ __('Type de remise concerné', 'assetsign') }}</label>
+        <label class="form-label">{{ __('Type d\'attribution concerné', 'assetsign') }}</label>
         <select name="type" class="form-select">
           {% for value, label in types %}
             <option value="{{ value }}" {{ item.fields.type is defined and item.fields.type == value ? 'selected' : '' }}>{{ label }}</option>
