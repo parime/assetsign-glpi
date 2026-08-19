@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ page_title|default('Signature de remise de matériel') }}</title>
+<title>{{ page_title|default('Signature d\'attribution de matériel') }}</title>
 <style>
   :root{ --ink:#16232f; --ink-soft:#5a6b78; --accent:#0d7a6e; --line:#d6dbd4; --paper:#f5f7f5; }
   *{box-sizing:border-box;}
@@ -34,7 +34,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>{{ page_title|default(__('Signature de remise de matériel', 'assetsign')) }}</h1>
+    <h1>{{ page_title|default(__('Signature d\'attribution de matériel', 'assetsign')) }}</h1>
     {% if not error %}
     {% set beneficiary_name = (user.firstname ~ ' ' ~ user.realname)|trim %}
     {% if beneficiary_name is empty %}{% set beneficiary_name = user.name %}{% endif %}

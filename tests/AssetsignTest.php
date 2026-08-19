@@ -536,7 +536,7 @@ class AssetsignTest extends AssetsignTestCase
         // trouve une fois sur ce meme fichier, corrige ici pour de bon).
         $messages = implode(' ', $_SESSION['MESSAGE_AFTER_REDIRECT'][INFO] ?? []);
         $this->assertStringContainsString(
-            __('Ce matériel n\'a pas d\'utilisateur assigné : ce changement d\'État ne peut donc pas générer de fiche de remise ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue.', 'assetsign'),
+            __('Ce matériel n\'a pas d\'utilisateur assigné : ce changement d\'État ne peut donc pas générer de fiche d\'attribution ou de restitution. Assignez un utilisateur sur la fiche du matériel si une signature est attendue.', 'assetsign'),
             $messages,
             "Un message INFO doit orienter vers l'assignation d'un utilisateur (pas de creation manuelle possible pour ce type)."
         );

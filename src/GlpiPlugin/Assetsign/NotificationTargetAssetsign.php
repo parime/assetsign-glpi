@@ -47,7 +47,7 @@ class NotificationTargetAssetsign extends NotificationTarget
 
    public function getEvents(): array {
        return [
-           'new'           => __('Nouvelle remise de matériel', 'assetsign'),
+           'new'           => __('Nouvelle attribution de matériel', 'assetsign'),
            'reminder'      => __('Relance de signature', 'assetsign'),
            'signed'        => __('Document signé', 'assetsign'),
            'expired'       => __('Document expiré', 'assetsign'),
@@ -154,7 +154,7 @@ class NotificationTargetAssetsign extends NotificationTarget
        $tags = [
            'assetsign.action'    => __('Événement', 'assetsign'),
            'assetsign.id'        => __('Identifiant', 'assetsign'),
-           'assetsign.type'      => __('Type de remise', 'assetsign'),
+           'assetsign.type'      => __('Type d\'attribution', 'assetsign'),
            'assetsign.item.name' => __('Matériel', 'assetsign'),
            'assetsign.user.name' => __('Bénéficiaire', 'assetsign'),
            'assetsign.sign_url'  => __('Lien de signature', 'assetsign'),

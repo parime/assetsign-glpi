@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-body">
     {% if assetsigns|length == 0 %}
-      <p>{{ __('Aucune remise enregistrée pour ce matériel.', 'assetsign') }}</p>
+      <p>{{ __('Aucune attribution enregistrée pour ce matériel.', 'assetsign') }}</p>
     {% else %}
       <table class="table table-striped">
         <thead>
@@ -150,7 +150,7 @@
     {% if can_assign_asset %}
       <hr>
       <h3>{{ __('Assigner un matériel à cet utilisateur', 'assetsign') }}</h3>
-      <p class="text-muted small">{{ __('L\'affectation déclenche automatiquement la création d\'une remise, comme depuis la fiche du matériel.', 'assetsign') }}</p>
+      <p class="text-muted small">{{ __('L\'affectation déclenche automatiquement la création d\'une attribution, comme depuis la fiche du matériel.', 'assetsign') }}</p>
       <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assign_user_asset.php" class="row g-2 align-items-end">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="users_id" value="{{ target_user_id }}">

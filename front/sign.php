@@ -127,7 +127,7 @@ try {
         // laisser fuiter un texte fixe y aurait ete incoherent avec le reste.
         'page_title' => match ((int) $data['assetsign']->fields['type']) {
             Assetsign::TYPE_RETURN => __('Signature de restitution de matériel', 'assetsign'),
-            default              => __('Signature de remise de matériel', 'assetsign'),
+            default              => __('Signature d\'attribution de matériel', 'assetsign'),
         },
         // $CFG_GLPI['root_doc'] (pas un chemin fixe depuis la racine du domaine) :
         // une installation GLPI dans un sous-dossier (ex: /glpi) casserait sinon
