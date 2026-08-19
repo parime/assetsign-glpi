@@ -801,7 +801,7 @@ class AssetsignTest extends AssetsignTestCase
         Assetsign::showForUser(2);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString('PHPUnit PC ShowForUser', $html, "Le materiel concerne doit etre affiche par son nom sur l'onglet Assetsigns d'un utilisateur.");
+        $this->assertStringContainsString('PHPUnit PC ShowForUser', $html, "Le materiel concerne doit etre affiche par son nom sur l'onglet Attributions d'un utilisateur.");
         $this->assertStringContainsString('docid=999', $html, 'Le lien de telechargement du PDF signe doit pointer vers le bon document.');
     }
 

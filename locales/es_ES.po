@@ -166,14 +166,14 @@ msgstr "Error de red, inténtelo de nuevo."
 msgid "Assetsign & signature"
 msgstr "Entrega y firma"
 
-msgid "Assetsigns en attente de signature"
-msgstr "Entregas pendientes de firma"
+msgid "Attributions en attente de signature"
+msgstr "Atribuciones pendientes de firma"
 
-msgid "Assetsigns signées"
-msgstr "Entregas firmadas"
+msgid "Attributions signées"
+msgstr "Atribuciones firmadas"
 
-msgid "Assetsigns expirées"
-msgstr "Entregas caducadas"
+msgid "Attributions expirées"
+msgstr "Atribuciones caducadas"
 
 msgid "Configuration enregistrée."
 msgstr "Configuración guardada."
@@ -196,8 +196,8 @@ msgstr "Fecha de envío"
 msgid "Date de signature"
 msgstr "Fecha de firma"
 
-msgid "Assetsigns"
-msgstr "Entregas"
+msgid "Attributions"
+msgstr "Atribuciones"
 
 msgid "Brouillon"
 msgstr "Borrador"
@@ -352,16 +352,16 @@ msgstr "El técnico que originó la entrega recibe un correo cuando quedan estos
 msgid "Document sur le point d'expirer"
 msgstr "Documento a punto de caducar"
 
-msgid "Envoyer une relance de signature aux assetsigns sélectionnées ?"
-msgstr "¿Enviar un recordatorio de firma a las entregas seleccionadas?"
+msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
+msgstr "¿Enviar un recordatorio de firma a las atribuciones seleccionadas?"
 
 msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
 msgstr "Texto inicial precargado a modo de ejemplo: modifíquelo o bórrelo libremente."
 
-msgid "Assetsign"
-msgid_plural "Assetsigns"
-msgstr[0] "Entrega"
-msgstr[1] "Entregas"
+msgid "Attribution"
+msgid_plural "Attributions"
+msgstr[0] "Atribución"
+msgstr[1] "Atribuciones"
 
 msgid "Accessoire de assetsign"
 msgid_plural "Accessoires de assetsign"
@@ -442,8 +442,8 @@ msgstr "Ficha creada."
 msgid "Autoriser la création de fiches de don de matériel"
 msgstr "Permitir la creación de fichas de donación de equipo"
 
-msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Añade un botón «Crear una ficha de donación» en la pestaña Entrega de cada equipo gestionado por el plugin."
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Añade un botón «Crear una ficha de donación» en la pestaña Atribución de cada equipo gestionado por el plugin."
 
 msgid "Vente"
 msgstr "Venta"
@@ -457,8 +457,8 @@ msgstr "Fecha de venta"
 msgid "Autoriser la création de fiches de vente de matériel"
 msgstr "Permitir la creación de fichas de venta de equipo"
 
-msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Añade un botón «Crear una ficha de venta» (con precio y fecha) en la pestaña Entrega de cada equipo gestionado por el plugin."
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Añade un botón «Crear una ficha de venta» (con precio y fecha) en la pestaña Atribución de cada equipo gestionado por el plugin."
 
 msgid "État des lieux visuel"
 msgstr "Estado del equipo visual"
@@ -728,8 +728,8 @@ msgstr "Enlace de firma desconocido."
 msgid "Matériel introuvable."
 msgstr "Equipo no encontrado."
 
-msgid "Assetsign introuvable."
-msgstr "Entrega no encontrada."
+msgid "Attribution introuvable."
+msgstr "Atribución no encontrada."
 
 msgid "Signature illisible."
 msgstr "Firma ilegible."

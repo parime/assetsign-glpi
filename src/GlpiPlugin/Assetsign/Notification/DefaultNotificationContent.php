@@ -37,7 +37,7 @@ final class DefaultNotificationContent
    public static function forEvent(string $event): array {
        $content = match ($event) {
            'new' => [
-               'name'  => 'Assetsign : nouveau document à signer',
+               'name'  => 'Attribution : nouveau document à signer',
                'fr_FR' => [
                    'subject' => 'Un document de ##assetsign.type## vous attend pour signature',
                    'html'    => '<p>Bonjour ##assetsign.user.name##,</p>'
@@ -75,7 +75,7 @@ final class DefaultNotificationContent
                ],
            ],
            'reminder' => [
-               'name'  => 'Assetsign : relance de signature',
+               'name'  => 'Attribution : relance de signature',
                'fr_FR' => [
                    'subject' => 'Rappel : document de ##assetsign.type## en attente de signature',
                    'html'    => '<p>Bonjour ##assetsign.user.name##,</p>'
@@ -113,7 +113,7 @@ final class DefaultNotificationContent
                ],
            ],
            'signed' => [
-               'name'  => 'Assetsign : document signé',
+               'name'  => 'Attribution : document signé',
                'fr_FR' => [
                    'subject' => 'Document de ##assetsign.type## signé',
                    'html'    => '<p>Le document de ##assetsign.type## pour <strong>##assetsign.item.name##</strong> '
@@ -141,7 +141,7 @@ final class DefaultNotificationContent
                ],
            ],
            'expired' => [
-               'name'  => 'Assetsign : document expiré',
+               'name'  => 'Attribution : document expiré',
                'fr_FR' => [
                    'subject' => 'Document de ##assetsign.type## expiré sans signature',
                    'html'    => '<p>Le document de ##assetsign.type## pour <strong>##assetsign.item.name##</strong> '
@@ -169,7 +169,7 @@ final class DefaultNotificationContent
                ],
            ],
            'expiring_soon' => [
-               'name'  => 'Assetsign : document sur le point d\'expirer',
+               'name'  => 'Attribution : document sur le point d\'expirer',
                'fr_FR' => [
                    'subject' => 'Document de ##assetsign.type## bientôt expiré sans signature',
                    'html'    => '<p>Le document de ##assetsign.type## pour <strong>##assetsign.item.name##</strong> '

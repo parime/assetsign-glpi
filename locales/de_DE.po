@@ -166,14 +166,14 @@ msgstr "Netzwerkfehler, bitte versuchen Sie es erneut."
 msgid "Assetsign & signature"
 msgstr "Übergabe & Unterschrift"
 
-msgid "Assetsigns en attente de signature"
-msgstr "Übergaben, die auf Unterschrift warten"
+msgid "Attributions en attente de signature"
+msgstr "Zuweisungen, die auf Unterschrift warten"
 
-msgid "Assetsigns signées"
-msgstr "Unterschriebene Übergaben"
+msgid "Attributions signées"
+msgstr "Unterschriebene Zuweisungen"
 
-msgid "Assetsigns expirées"
-msgstr "Abgelaufene Übergaben"
+msgid "Attributions expirées"
+msgstr "Abgelaufene Zuweisungen"
 
 msgid "Configuration enregistrée."
 msgstr "Konfiguration gespeichert."
@@ -196,8 +196,8 @@ msgstr "Sendedatum"
 msgid "Date de signature"
 msgstr "Unterschriftsdatum"
 
-msgid "Assetsigns"
-msgstr "Übergaben"
+msgid "Attributions"
+msgstr "Zuweisungen"
 
 msgid "Brouillon"
 msgstr "Entwurf"
@@ -352,16 +352,16 @@ msgstr "Der Techniker, der die Übergabe veranlasst hat, erhält eine E-Mail, we
 msgid "Document sur le point d'expirer"
 msgstr "Dokument läuft bald ab"
 
-msgid "Envoyer une relance de signature aux assetsigns sélectionnées ?"
-msgstr "Unterschrifts-Erinnerung an die ausgewählten Übergaben senden?"
+msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
+msgstr "Unterschrifts-Erinnerung an die ausgewählten Zuweisungen senden?"
 
 msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
 msgstr "Vorausgefüllter Beispieltext: ändern oder löschen Sie ihn nach Belieben."
 
-msgid "Assetsign"
-msgid_plural "Assetsigns"
-msgstr[0] "Übergabe"
-msgstr[1] "Übergaben"
+msgid "Attribution"
+msgid_plural "Attributions"
+msgstr[0] "Zuweisung"
+msgstr[1] "Zuweisungen"
 
 msgid "Accessoire de assetsign"
 msgid_plural "Accessoires de assetsign"
@@ -442,8 +442,8 @@ msgstr "Blatt erstellt."
 msgid "Autoriser la création de fiches de don de matériel"
 msgstr "Erstellung von Geräte-Spendenblättern zulassen"
 
-msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Fügt eine Schaltfläche «Spendenblatt erstellen» im Reiter Übergabe jedes vom Plugin verwalteten Geräts hinzu."
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Fügt eine Schaltfläche «Spendenblatt erstellen» im Reiter Zuweisung jedes vom Plugin verwalteten Geräts hinzu."
 
 msgid "Vente"
 msgstr "Verkauf"
@@ -457,8 +457,8 @@ msgstr "Verkaufsdatum"
 msgid "Autoriser la création de fiches de vente de matériel"
 msgstr "Erstellung von Geräte-Verkaufsblättern zulassen"
 
-msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Fügt eine Schaltfläche «Verkaufsblatt erstellen» (mit Preis und Datum) im Reiter Übergabe jedes vom Plugin verwalteten Geräts hinzu."
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Fügt eine Schaltfläche «Verkaufsblatt erstellen» (mit Preis und Datum) im Reiter Zuweisung jedes vom Plugin verwalteten Geräts hinzu."
 
 msgid "État des lieux visuel"
 msgstr "Visueller Zustandsbericht"
@@ -728,8 +728,8 @@ msgstr "Unbekannter Signaturlink."
 msgid "Matériel introuvable."
 msgstr "Gerät nicht gefunden."
 
-msgid "Assetsign introuvable."
-msgstr "Übergabe nicht gefunden."
+msgid "Attribution introuvable."
+msgstr "Zuweisung nicht gefunden."
 
 msgid "Signature illisible."
 msgstr "Unterschrift nicht lesbar."

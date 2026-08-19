@@ -33,7 +33,7 @@
 
       <ul class="nav nav-tabs mb-3" role="tablist">
         <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-general" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Général', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-handover" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Assetsign', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-handover" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Attribution', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-return" type="button" role="tab" data-assetsign-preview-type="1">{{ __('Restitution', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-don" type="button" role="tab" data-assetsign-preview-type="3">{{ __('Don', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-vente" type="button" role="tab" data-assetsign-preview-type="4">{{ __('Vente', 'assetsign') }}</button></li>
@@ -231,7 +231,7 @@
             <input type="hidden" name="enable_don" value="0">
             <input type="checkbox" name="enable_don" value="1" class="form-check-input" id="enable_don" {{ config.enable_don|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_don">{{ __('Autoriser la création de fiches de don de matériel', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de don » sur l\'onglet Assetsign de chaque matériel géré par le plugin.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de don » sur l\'onglet Attribution de chaque matériel géré par le plugin.', 'assetsign') }}</div>
           </div>
 
           {% if all_states|length %}
@@ -252,7 +252,7 @@
             <input type="hidden" name="enable_vente" value="0">
             <input type="checkbox" name="enable_vente" value="1" class="form-check-input" id="enable_vente" {{ config.enable_vente|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_vente">{{ __('Autoriser la création de fiches de vente de matériel', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l\'onglet Assetsign de chaque matériel géré par le plugin.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l\'onglet Attribution de chaque matériel géré par le plugin.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
@@ -275,7 +275,7 @@
 
         {# ---------------------------------------------------------------- Réforme #}
         <div class="tab-pane fade" id="tab-reforme" role="tabpanel">
-          <p class="text-muted">{{ __('Aucune fiche Assetsign n\'est créée ici : ce réglage ne fait qu\'écrire automatiquement la date de réforme (champ natif GLPI « Réforme » de l\'onglet Infocom) quand le matériel passe dans l\'un des États ci-dessous, au lieu de la saisir à la main.', 'assetsign') }}</p>
+          <p class="text-muted">{{ __('Aucune fiche Attribution n\'est créée ici : ce réglage ne fait qu\'écrire automatiquement la date de réforme (champ natif GLPI « Réforme » de l\'onglet Infocom) quand le matériel passe dans l\'un des États ci-dessous, au lieu de la saisir à la main.', 'assetsign') }}</p>
           <p class="text-muted small">{{ __('Une date de réforme déjà renseignée (saisie manuelle ou déclenchement précédent) n\'est jamais écrasée.', 'assetsign') }}</p>
 
           {% if all_states|length %}
@@ -363,7 +363,7 @@
         </div>
         {# ---------------------------------------------------------------- Passeport matériel #}
         <div class="tab-pane fade" id="tab-passport" role="tabpanel">
-          <p class="text-muted">{{ __('Le Passeport matériel agrège en lecture seule les événements des onglets Assetsign/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel onglet du matériel concerné.', 'assetsign') }}</p>
+          <p class="text-muted">{{ __('Le Passeport matériel agrège en lecture seule les événements des onglets Attribution/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel onglet du matériel concerné.', 'assetsign') }}</p>
 
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_passport" value="0">

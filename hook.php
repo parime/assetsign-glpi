@@ -93,21 +93,21 @@ function plugin_assetsign_dashboard_cards(): array {
         'assetsign_pending' => [
             'widgettype' => ['bigNumber'],
             'group'      => $group,
-            'label'      => __('Assetsigns en attente de signature', 'assetsign'),
+            'label'      => __('Attributions en attente de signature', 'assetsign'),
             'provider'   => CardProvider::class . '::pending',
             'filters'    => [],
         ],
         'assetsign_signed' => [
             'widgettype' => ['bigNumber'],
             'group'      => $group,
-            'label'      => __('Assetsigns signées', 'assetsign'),
+            'label'      => __('Attributions signées', 'assetsign'),
             'provider'   => CardProvider::class . '::signed',
             'filters'    => [],
         ],
         'assetsign_expired' => [
             'widgettype' => ['bigNumber'],
             'group'      => $group,
-            'label'      => __('Assetsigns expirées', 'assetsign'),
+            'label'      => __('Attributions expirées', 'assetsign'),
             'provider'   => CardProvider::class . '::expired',
             'filters'    => [],
         ],
@@ -185,7 +185,7 @@ function plugin_assetsign_install(): bool {
         'assetsignExpire',
         DAY_TIMESTAMP,
         [
-            'comment' => 'Marque comme expirees les assetsigns dont le delai de signature est depasse',
+            'comment' => 'Marque comme expirees les attributions dont le delai de signature est depasse',
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
@@ -194,7 +194,7 @@ function plugin_assetsign_install(): bool {
         'assetsignExpiryWarning',
         DAY_TIMESTAMP,
         [
-            'comment' => 'Alerte le technicien des assetsigns sur le point d\'expirer (avant que ce soit trop tard pour agir)',
+            'comment' => 'Alerte le technicien des attributions sur le point d\'expirer (avant que ce soit trop tard pour agir)',
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
