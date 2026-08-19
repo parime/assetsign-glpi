@@ -257,7 +257,18 @@ jobs:
         # bord pour l'exploiter n'apporterait rien - le resume texte dans les
         # logs de la CI suffit a repondre a la question "quelle proportion du
         # code est testee ?" sans dependance externe.
-        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php -d extension=pcov.so vendor/bin/phpunit --coverage-text"
+        #
+        # memory_limit=512M (le defaut de l'image glpi/glpi est 128M) : la
+        # collecte de couverture pcov accumule en memoire les lignes executees
+        # de TOUTE la suite, un cout qui grandit avec le nombre de tests -
+        # panne reelle rencontree en CI (OutOfMemoryError dans
+        # Toolbox::getMime()/finfo, pendant la generation d'un PDF par un test
+        # preexistant sans lien avec la fonctionnalite du commit qui a
+        # declenche l'echec) alors que la meme suite, la meme commande,
+        # passait systematiquement en local (Docker) - 128M etait deja
+        # limite, cf. le meme constat sur phpstan (phpstan.neon.dist ne fixe
+        # pas non plus de memoire, --memory-limit=512M necessaire en local).
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php -d extension=pcov.so -d memory_limit=512M vendor/bin/phpunit --coverage-text"
 
       - name: Logs GLPI (en cas d'échec)
         if: failure()
