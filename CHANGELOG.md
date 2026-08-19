@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.2] - 2026-08-19
+
+### Changed
+
+- **Termine le nettoyage d'affichage « remise » → « Attribution »** amorcé par la v2.2.1 : cette dernière avait renommé le mot « Assetsign » en « Attribution », mais avait délibérément laissé de côté plusieurs chaînes utilisant encore le mot français « remise » pour ce même concept (dette d'une migration `remise` → `assetsign` incomplète depuis la v2.0.0), pour rester strictement dans le périmètre du mot « Assetsign » et ne pas risquer de collision avec le renommage de classe `Assetsign` → `Remise` en cours sur la branche `dev` (toujours non fusionné, toujours non impacté par ce correctif). « Attribution » étant désormais le mot établi pour ce concept côté utilisateur, ce correctif aligne les chaînes restantes sur la même convention. **Renommage d'affichage uniquement** — aucun identifiant de code touché (classes, namespace, méthodes, tables, clé de domaine gettext).
+  - Libellés de type (`Accessory::getTypeName()`, `Template::getTypeName()`, recherche « Type d'attribution » sur `Assetsign`/`Template`/`NotificationTargetAssetsign`), texte semé à l'installation d'un gabarit par défaut.
+  - Message d'erreur (matériel sans utilisateur assigné), description des 2 CronTask et des 2 commandes CLI équivalentes, message de relance impossible sur une fiche déjà signée/expirée.
+  - Nom de l'événement de notification « Nouvelle attribution de matériel » (Administration > Notifications) et libellé du tag `##assetsign.type##`.
+  - Libellé de type et en-têtes du PDF de la fiche d'Attribution (`Workflow\HandoverType`) — `getCanonicalLabel()` reste volontairement non traduit (utilisé comme nom de Document GLPI, indépendant de la langue de qui a déclenché l'action, cf. le commentaire de `Assetsign::getCanonicalTypeLabel()`), mais suit la même convention de mot.
+  - Titre de la page de signature, textes d'aide de la page de Configuration (x4 : durée de validité, champ Observations, fiche de maintenance, rétention Passeport matériel), message de création automatique sur la fiche utilisateur, message « aucune attribution » sur l'onglet matériel.
+  - `locales/*.po` (5 langues) + `assetsign.pot`, recompilés en `.mo` — plusieurs de ces chaînes n'avaient en réalité **jamais été traduites dans aucune langue** (msgid orphelins d'une étape de nommage encore plus ancienne, « assetsign » au lieu de « remise » ou « attribution » — dette antérieure à ce correctif, qui faisait retomber silencieusement l'affichage sur le texte français brut dans les 4 langues non françaises), corrigé au passage en réutilisant le mot « Attribution » déjà établi par langue (`Attribution`/`Attributions` en anglais et français, `Zuweisung`/`Zuweisungen` en allemand, `Atribución`/`Atribuciones` en espagnol, `Attribuzione`/`Attribuzioni` en italien). Une entrée orpheline déjà identifiée et volontairement laissée par la v2.2.1 (l'ancien message mentionnant l'onglet « Assetsigns ») n'a pas été retouchée — même raison, nettoyage séparé.
+  - **Vérifié en conditions réelles** sur l'environnement Docker de test (GLPI 11.0.8), en français et en anglais : les 10 onglets de la page Configuration (Général/Attribution/Restitution/Don/Vente/Réforme/Compléments/Maintenance/Passeport matériel/Score de santé), un cycle complet attribution → signature → restitution → signature en tant que Technicien (profil non admin), création et signature d'une fiche de don et d'une fiche de vente, changement d'État déclenchant la réforme (`Infocom::decommission_date`) toujours fonctionnel après ce correctif, frise du Passeport matériel et onglet Passeport utilisateur affichant les bons libellés pour les 5 événements. Aucune erreur PHP/SQL dans les journaux GLPI pendant toute la session. Suite PHPUnit (175 tests), phpcs et phpstan au vert.
+
 ## [2.2.1] - 2026-08-19
 
 ### Changed
