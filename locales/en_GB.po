@@ -165,14 +165,14 @@ msgstr "Network error, please try again."
 msgid "Assetsign & signature"
 msgstr "Handover & signature"
 
-msgid "Assetsigns en attente de signature"
-msgstr "Handovers pending signature"
+msgid "Attributions en attente de signature"
+msgstr "Attributions pending signature"
 
-msgid "Assetsigns signées"
-msgstr "Signed handovers"
+msgid "Attributions signées"
+msgstr "Signed attributions"
 
-msgid "Assetsigns expirées"
-msgstr "Expired handovers"
+msgid "Attributions expirées"
+msgstr "Expired attributions"
 
 msgid "Configuration enregistrée."
 msgstr "Configuration saved."
@@ -195,8 +195,8 @@ msgstr "Sent date"
 msgid "Date de signature"
 msgstr "Signature date"
 
-msgid "Assetsigns"
-msgstr "Handovers"
+msgid "Attributions"
+msgstr "Attributions"
 
 msgid "Brouillon"
 msgstr "Draft"
@@ -348,16 +348,16 @@ msgstr "The technician who triggered the handover receives an email when this ma
 msgid "Document sur le point d'expirer"
 msgstr "Document about to expire"
 
-msgid "Envoyer une relance de signature aux assetsigns sélectionnées ?"
-msgstr "Send a signature reminder to the selected handovers?"
+msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
+msgstr "Send a signature reminder to the selected attributions?"
 
 msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
 msgstr "Pre-filled starting text, as an example: edit or clear it freely."
 
-msgid "Assetsign"
-msgid_plural "Assetsigns"
-msgstr[0] "Handover"
-msgstr[1] "Handovers"
+msgid "Attribution"
+msgid_plural "Attributions"
+msgstr[0] "Attribution"
+msgstr[1] "Attributions"
 
 msgid "Accessoire de assetsign"
 msgid_plural "Accessoires de assetsign"
@@ -438,8 +438,8 @@ msgstr "Form created."
 msgid "Autoriser la création de fiches de don de matériel"
 msgstr "Allow creating equipment donation forms"
 
-msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Adds a \"Create donation form\" button on the Handover tab of each asset managed by the plugin."
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Adds a \"Create donation form\" button on the Attribution tab of each asset managed by the plugin."
 
 msgid "Vente"
 msgstr "Sale"
@@ -453,8 +453,8 @@ msgstr "Sale date"
 msgid "Autoriser la création de fiches de vente de matériel"
 msgstr "Allow creating equipment sale forms"
 
-msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Adds a \"Create sale form\" button (with price and date) on the Handover tab of each asset managed by the plugin."
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Adds a \"Create sale form\" button (with price and date) on the Attribution tab of each asset managed by the plugin."
 
 msgid "État des lieux visuel"
 msgstr "Visual damage report"
@@ -722,8 +722,8 @@ msgstr "Unknown signature link."
 msgid "Matériel introuvable."
 msgstr "Asset not found."
 
-msgid "Assetsign introuvable."
-msgstr "Handover not found."
+msgid "Attribution introuvable."
+msgstr "Attribution not found."
 
 msgid "Signature illisible."
 msgstr "Unreadable signature."

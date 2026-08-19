@@ -98,7 +98,7 @@ class Assetsign extends CommonDBTM
    private const STATUSES_STILL_EDITABLE = [self::STATUS_DRAFT, self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED];
 
    public static function getTypeName($nb = 0): string {
-       return _n('Assetsign', 'Assetsigns', $nb, 'assetsign');
+       return _n('Attribution', 'Attributions', $nb, 'assetsign');
    }
 
    public static function getIcon(): string {
@@ -392,7 +392,7 @@ class Assetsign extends CommonDBTM
    public static function showMassiveActionsSubForm(MassiveAction $ma) {
       switch ($ma->getAction()) {
          case 'send_reminder':
-            echo __('Envoyer une relance de signature aux assetsigns sélectionnées ?', 'assetsign');
+            echo __('Envoyer une relance de signature aux attributions sélectionnées ?', 'assetsign');
             echo '<br><br>' . \Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
               return true;
          case 'cancel_request':
@@ -462,7 +462,7 @@ class Assetsign extends CommonDBTM
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
       if ($item->getType() === 'User') {
           $count = countElementsInTable(self::getTable(), ['users_id' => $item->getID(), 'is_deleted' => 0]);
-          return self::createTabEntry(__('Assetsigns', 'assetsign'), $count);
+          return self::createTabEntry(__('Attributions', 'assetsign'), $count);
       }
       if (!in_array($item->getType(), Config::getAllManageableItemtypes(), true)) {
           return '';
@@ -471,7 +471,7 @@ class Assetsign extends CommonDBTM
            self::getTable(),
            ['itemtype' => $item->getType(), 'items_id' => $item->getID(), 'is_deleted' => 0]
        );
-       return self::createTabEntry(__('Assetsigns', 'assetsign'), $count);
+       return self::createTabEntry(__('Attributions', 'assetsign'), $count);
    }
 
    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool {

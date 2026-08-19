@@ -9,10 +9,10 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-msgid "Assetsign"
+msgid "Attribution"
 msgstr ""
 
-msgid "Assetsigns"
+msgid "Attributions"
 msgstr ""
 
 msgid "En attente"

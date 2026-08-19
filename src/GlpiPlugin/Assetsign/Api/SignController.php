@@ -34,7 +34,7 @@ final class SignController
 
        $assetsign = new Assetsign();
       if (!$assetsign->getFromDB((int) $token->fields['plugin_assetsign_assetsigns_id'])) {
-          throw new \RuntimeException(__('Assetsign introuvable.', 'assetsign'));
+          throw new \RuntimeException(__('Attribution introuvable.', 'assetsign'));
       }
 
        $this->assertCurrentUserIsBeneficiary($assetsign);
@@ -51,7 +51,7 @@ final class SignController
 
        $assetsign = new Assetsign();
       if (!$assetsign->getFromDB((int) $token->fields['plugin_assetsign_assetsigns_id'])) {
-          throw new \RuntimeException(__('Assetsign introuvable.', 'assetsign'));
+          throw new \RuntimeException(__('Attribution introuvable.', 'assetsign'));
       }
 
        $this->assertCurrentUserIsBeneficiary($assetsign);
@@ -77,7 +77,7 @@ final class SignController
 
        $assetsign = new Assetsign();
       if (!$assetsign->getFromDB((int) $token->fields['plugin_assetsign_assetsigns_id'])) {
-          throw new \RuntimeException(__('Assetsign introuvable.', 'assetsign'));
+          throw new \RuntimeException(__('Attribution introuvable.', 'assetsign'));
       }
 
        $this->assertCurrentUserIsBeneficiary($assetsign);

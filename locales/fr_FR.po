@@ -165,14 +165,14 @@ msgstr "Erreur réseau, merci de réessayer."
 msgid "Assetsign & signature"
 msgstr "Assetsign & signature"
 
-msgid "Assetsigns en attente de signature"
-msgstr "Assetsigns en attente de signature"
+msgid "Attributions en attente de signature"
+msgstr "Attributions en attente de signature"
 
-msgid "Assetsigns signées"
-msgstr "Assetsigns signées"
+msgid "Attributions signées"
+msgstr "Attributions signées"
 
-msgid "Assetsigns expirées"
-msgstr "Assetsigns expirées"
+msgid "Attributions expirées"
+msgstr "Attributions expirées"
 
 msgid "Configuration enregistrée."
 msgstr "Configuration enregistrée."
@@ -195,8 +195,8 @@ msgstr "Date d'envoi"
 msgid "Date de signature"
 msgstr "Date de signature"
 
-msgid "Assetsigns"
-msgstr "Assetsigns"
+msgid "Attributions"
+msgstr "Attributions"
 
 msgid "Brouillon"
 msgstr "Brouillon"
@@ -348,16 +348,16 @@ msgstr "Le technicien à l'origine de la assetsign reçoit un e-mail quand il re
 msgid "Document sur le point d'expirer"
 msgstr "Document sur le point d'expirer"
 
-msgid "Envoyer une relance de signature aux assetsigns sélectionnées ?"
-msgstr "Envoyer une relance de signature aux assetsigns sélectionnées ?"
+msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
+msgstr "Envoyer une relance de signature aux attributions sélectionnées ?"
 
 msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
 msgstr "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
 
-msgid "Assetsign"
-msgid_plural "Assetsigns"
-msgstr[0] "Assetsign"
-msgstr[1] "Assetsigns"
+msgid "Attribution"
+msgid_plural "Attributions"
+msgstr[0] "Attribution"
+msgstr[1] "Attributions"
 
 msgid "Accessoire de assetsign"
 msgid_plural "Accessoires de assetsign"
@@ -438,8 +438,8 @@ msgstr "Fiche créée."
 msgid "Autoriser la création de fiches de don de matériel"
 msgstr "Autoriser la création de fiches de don de matériel"
 
-msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Ajoute un bouton « Créer une fiche de don » sur l'onglet Assetsign de chaque matériel géré par le plugin."
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Ajoute un bouton « Créer une fiche de don » sur l'onglet Attribution de chaque matériel géré par le plugin."
 
 msgid "Vente"
 msgstr "Vente"
@@ -453,8 +453,8 @@ msgstr "Date de vente"
 msgid "Autoriser la création de fiches de vente de matériel"
 msgstr "Autoriser la création de fiches de vente de matériel"
 
-msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Assetsign de chaque matériel géré par le plugin."
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Attribution de chaque matériel géré par le plugin."
 
 msgid "État des lieux visuel"
 msgstr "État des lieux visuel"
@@ -722,8 +722,8 @@ msgstr "Lien de signature inconnu."
 msgid "Matériel introuvable."
 msgstr "Matériel introuvable."
 
-msgid "Assetsign introuvable."
-msgstr "Assetsign introuvable."
+msgid "Attribution introuvable."
+msgstr "Attribution introuvable."
 
 msgid "Signature illisible."
 msgstr "Signature illisible."

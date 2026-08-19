@@ -166,14 +166,14 @@ msgstr "Errore di rete, riprovare."
 msgid "Assetsign & signature"
 msgstr "Consegna e firma"
 
-msgid "Assetsigns en attente de signature"
-msgstr "Consegne in attesa di firma"
+msgid "Attributions en attente de signature"
+msgstr "Attribuzioni in attesa di firma"
 
-msgid "Assetsigns signées"
-msgstr "Consegne firmate"
+msgid "Attributions signées"
+msgstr "Attribuzioni firmate"
 
-msgid "Assetsigns expirées"
-msgstr "Consegne scadute"
+msgid "Attributions expirées"
+msgstr "Attribuzioni scadute"
 
 msgid "Configuration enregistrée."
 msgstr "Configurazione salvata."
@@ -196,8 +196,8 @@ msgstr "Data di invio"
 msgid "Date de signature"
 msgstr "Data di firma"
 
-msgid "Assetsigns"
-msgstr "Consegne"
+msgid "Attributions"
+msgstr "Attribuzioni"
 
 msgid "Brouillon"
 msgstr "Bozza"
@@ -352,16 +352,16 @@ msgstr "Il tecnico che ha originato la consegna riceve un'e-mail quando mancano 
 msgid "Document sur le point d'expirer"
 msgstr "Documento in procinto di scadere"
 
-msgid "Envoyer une relance de signature aux assetsigns sélectionnées ?"
-msgstr "Inviare un sollecito di firma alle consegne selezionate?"
+msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
+msgstr "Inviare un sollecito di firma alle attribuzioni selezionate?"
 
 msgid "Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le librement."
 msgstr "Testo iniziale precompilato a titolo di esempio: modificarlo o cancellarlo liberamente."
 
-msgid "Assetsign"
-msgid_plural "Assetsigns"
-msgstr[0] "Consegna"
-msgstr[1] "Consegne"
+msgid "Attribution"
+msgid_plural "Attributions"
+msgstr[0] "Attribuzione"
+msgstr[1] "Attribuzioni"
 
 msgid "Accessoire de assetsign"
 msgid_plural "Accessoires de assetsign"
@@ -442,8 +442,8 @@ msgstr "Scheda creata."
 msgid "Autoriser la création de fiches de don de matériel"
 msgstr "Consentire la creazione di schede di donazione di dispositivi"
 
-msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Aggiunge un pulsante «Crea una scheda di donazione» nella scheda Consegna di ogni dispositivo gestito dal plugin."
+msgid "Ajoute un bouton « Créer une fiche de don » sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Aggiunge un pulsante «Crea una scheda di donazione» nella scheda Attribuzione di ogni dispositivo gestito dal plugin."
 
 msgid "Vente"
 msgstr "Vendita"
@@ -457,8 +457,8 @@ msgstr "Data di vendita"
 msgid "Autoriser la création de fiches de vente de matériel"
 msgstr "Consentire la creazione di schede di vendita di dispositivi"
 
-msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Assetsign de chaque matériel géré par le plugin."
-msgstr "Aggiunge un pulsante «Crea una scheda di vendita» (con prezzo e data) nella scheda Consegna di ogni dispositivo gestito dal plugin."
+msgid "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr "Aggiunge un pulsante «Crea una scheda di vendita» (con prezzo e data) nella scheda Attribuzione di ogni dispositivo gestito dal plugin."
 
 msgid "État des lieux visuel"
 msgstr "Stato visivo del dispositivo"
@@ -728,8 +728,8 @@ msgstr "Link di firma sconosciuto."
 msgid "Matériel introuvable."
 msgstr "Dispositivo non trovato."
 
-msgid "Assetsign introuvable."
-msgstr "Consegna non trovata."
+msgid "Attribution introuvable."
+msgstr "Attribuzione non trovata."
 
 msgid "Signature illisible."
 msgstr "Firma illeggibile."
