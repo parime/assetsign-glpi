@@ -65,6 +65,7 @@ class Config extends CommonDBTM
         'return_states'                       => '[]',
         'donation_states'                     => '[]',
         'vente_states'                        => '[]',
+        'reforme_states'                      => '[]',
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -148,6 +149,7 @@ class Config extends CommonDBTM
            'return_states'   => $config->getReturnStates(),
            'donation_states' => $config->getDonationStates(),
            'vente_states'    => $config->getVenteStates(),
+           'reforme_states'  => $config->getReformeStates(),
            'logo_document'   => $logoDocument,
            'logo_is_forced'  => $logoIsForced,
            'installed_version'     => PLUGIN_ASSETSIGN_VERSION,
@@ -527,6 +529,7 @@ class Config extends CommonDBTM
            'return_states'        => json_encode(array_map('intval', $input['return_states'] ?? [])),
            'donation_states'      => json_encode(array_map('intval', $input['donation_states'] ?? [])),
            'vente_states'         => json_encode(array_map('intval', $input['vente_states'] ?? [])),
+           'reforme_states'       => json_encode(array_map('intval', $input['reforme_states'] ?? [])),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -570,6 +573,18 @@ class Config extends CommonDBTM
     /** États GLPI (glpi_states) qui, une fois atteints, déclenchent une vente. */
    public function getVenteStates(): array {
        $decoded = json_decode($this->fields['vente_states'] ?? '', true);
+       return is_array($decoded) ? array_map('intval', $decoded) : [];
+   }
+
+    /**
+     * États GLPI (glpi_states) qui, une fois atteints, marquent le matériel comme
+     * réformé : déclenche l'écriture automatique de `Infocom::decommission_date`
+     * (cf. Assetsign::handleStateBasedTrigger()), effet de bord pur sur un champ
+     * natif GLPI — n'a jamais créé de fiche Assetsign ni de nouveau type
+     * d'événement Passeport (cf. ROADMAP.md, issue #78).
+     */
+   public function getReformeStates(): array {
+       $decoded = json_decode($this->fields['reforme_states'] ?? '', true);
        return is_array($decoded) ? array_map('intval', $decoded) : [];
    }
 
@@ -654,6 +669,7 @@ class Config extends CommonDBTM
                 `return_states` text,
                 `donation_states` text,
                 `vente_states` text,
+                `reforme_states` text,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -685,6 +701,7 @@ class Config extends CommonDBTM
               'return_states'      => self::DEFAULTS['return_states'],
               'donation_states'    => self::DEFAULTS['donation_states'],
               'vente_states'       => self::DEFAULTS['vente_states'],
+              'reforme_states'     => self::DEFAULTS['reforme_states'],
               'date_creation'      => date('Y-m-d H:i:s'),
           ]);
       } else {
@@ -734,6 +751,13 @@ class Config extends CommonDBTM
          if (!$DB->fieldExists($table, 'donation_states')) {
              $migration->addField($table, 'donation_states', 'text', ['after' => 'return_states']);
              $migration->addField($table, 'vente_states', 'text', ['after' => 'donation_states']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'reforme_states')) {
+             // Date de réforme automatique sur changement d'État (cf. ROADMAP.md,
+             // issue #78) : nouveau groupe d'États configurable, même mécanisme que
+             // handover_states/return_states/donation_states/vente_states ci-dessus.
+             $migration->addField($table, 'reforme_states', 'text', ['after' => 'vente_states']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'show_qr_code')) {

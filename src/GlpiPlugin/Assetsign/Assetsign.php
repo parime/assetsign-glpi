@@ -756,6 +756,16 @@ class Assetsign extends CommonDBTM
           return;
       }
 
+       // Reforme (cf. ROADMAP.md, issue #78) : effet de bord PUR sur Infocom::decommission_date
+       // (champ natif GLPI), totalement independant du reste de cette methode -
+       // ne cree jamais de fiche Assetsign, ne "return" jamais ici, et n'empeche
+       // donc pas un meme changement d'Etat de declencher AUSSI un don/une vente
+       // si l'administrateur a configure le meme Etat pour les deux (cas legitime,
+       // ex: "Mis au rebut" a la fois vendeur de pieces detachees et reforme).
+      if (in_array($newState, $config->getReformeStates(), true)) {
+          self::writeDecommissionDateIfMissing($item);
+      }
+
        $currentUser = (int) ($item->fields['users_id'] ?? 0);
 
        // Don/Vente sans utilisateur assigne (materiel en stock, jamais affecte
@@ -853,6 +863,53 @@ class Assetsign extends CommonDBTM
       if (in_array($newState, $config->getVenteStates(), true)) {
           self::createAssetsign($item, self::TYPE_VENTE, $currentUser);
       }
+   }
+
+    /**
+     * Ecrit `Infocom::decommission_date` (champ natif GLPI, libelle francais
+     * "Reforme") a la date du jour, uniquement si elle est encore vide - une
+     * saisie manuelle anterieure (ou un declenchement precedent) n'est JAMAIS
+     * ecrasee (cf. ROADMAP.md, issue #78). Volontairement PAS un nouveau type
+     * Assetsign::TYPE_* ni un nouvel evenement Passeport : la frise du Passeport
+     * materiel lit deja ce champ (PassportEvent::getInfocomPseudoEvents(),
+     * libelle "Reforme"), cette methode ne fait que le preremplir - decision
+     * documentee dans le commentaire de l'utilisateur sur l'issue #78 (pas
+     * besoin de dupliquer une notion de "fiche" pour une simple date native).
+     * `Infocom::canApplyOn()` respecte le meme garde-fou que l'affichage
+     * existant : aucune ecriture pour un itemtype que l'administrateur a
+     * retire des types compatibles Infocom au niveau du coeur GLPI. Passe par
+     * add()/update() (pas de SQL direct) : Infocom est un itemtype DIFFERENT
+     * du materiel qui a declenche ce hook (Computer, Monitor...), aucun risque
+     * de re-declencher item_update -> handleStateBasedTrigger() sur CE MEME
+     * materiel (contrairement a syncItemStateAfterManualCreation(), qui ecrit
+     * sur le materiel lui-meme et doit donc court-circuiter ses propres hooks).
+     */
+   private static function writeDecommissionDateIfMissing(CommonDBTM $item): void {
+      if (!\Infocom::canApplyOn($item->getType())) {
+          return;
+      }
+
+       $infocom = new \Infocom();
+      if ($infocom->getFromDBforDevice($item->getType(), $item->getID())) {
+         if (!empty($infocom->fields['decommission_date'])) {
+             return; // Deja renseignee : jamais ecrasee.
+         }
+          $infocom->update([
+              'id'                 => $infocom->getID(),
+              'decommission_date'  => date('Y-m-d'),
+          ]);
+          return;
+      }
+
+       // Aucune ligne Infocom pour ce materiel (jamais consultee via l'onglet
+       // Infocom) : en cree une, plutot que de renoncer silencieusement a
+       // enregistrer la reforme.
+       $infocom->add([
+           'itemtype'           => $item->getType(),
+           'items_id'           => $item->getID(),
+           'entities_id'        => $item->fields['entities_id'] ?? 0,
+           'decommission_date'  => date('Y-m-d'),
+       ]);
    }
 
    public static function archiveForPurgedItem(CommonDBTM $item): void {

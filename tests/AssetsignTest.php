@@ -296,6 +296,166 @@ class AssetsignTest extends AssetsignTestCase
         $this->assertNull($this->findAssetsignFor($computer), "Un changement d'Etat non configure ne doit rien declencher.");
     }
 
+    /**
+     * Date de reforme automatique sur changement d'Etat (cf. ROADMAP.md, issue
+     * #78) : effet de bord pur sur Infocom::decommission_date (champ natif
+     * GLPI), aucune fiche Assetsign creee - contrairement aux 4 autres branches
+     * de handleStateBasedTrigger() ci-dessus.
+     */
+    public function testHandleStateBasedTriggerWritesDecommissionDateOnConfiguredReformeState(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit State Reforme');
+        $oldStateId = $this->createTestState('PHPUnit Etat Avant Reforme');
+        $reformeStateId = $this->createTestState('PHPUnit Etat Reforme');
+
+        Config::upsertForEntity($entityId, ['reforme_states' => [$reformeStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Reforme');
+        // Aucune ligne Infocom existante pour ce materiel (jamais consultee via
+        // l'onglet Infocom) : le mecanisme doit en creer une plutot que de
+        // renoncer silencieusement.
+        $computer->oldvalues = ['states_id' => $oldStateId];
+        $computer->fields['users_id'] = 0; // La reforme ne depend d'aucun beneficiaire.
+        $computer->fields['states_id'] = $reformeStateId;
+
+        Assetsign::handleItemAssignment($computer);
+
+        $infocom = new \Infocom();
+        $this->assertTrue($infocom->getFromDBforDevice('Computer', $computer->getID()), 'Une ligne Infocom doit avoir ete creee.');
+        $this->assertSame(date('Y-m-d'), substr((string) $infocom->fields['decommission_date'], 0, 10), 'La date de reforme doit etre celle du jour.');
+        $this->assertNull(
+            $this->findAssetsignFor($computer),
+            'Le declenchement par Etat de reforme ne doit JAMAIS creer de fiche Assetsign : effet de bord pur sur Infocom (cf. issue #78).'
+        );
+    }
+
+    /**
+     * Garde-fou explicite demande dans issue #78 : une date de reforme deja
+     * renseignee (saisie manuelle, ou declenchement automatique precedent)
+     * n'est jamais ecrasee.
+     */
+    public function testHandleStateBasedTriggerDoesNotOverwriteExistingDecommissionDate(): void
+    {
+        global $DB;
+
+        $entityId = $this->createTestEntity(0, 'PHPUnit State Reforme NoClobber');
+        $oldStateId = $this->createTestState('PHPUnit Etat Avant Reforme NoClobber');
+        $reformeStateId = $this->createTestState('PHPUnit Etat Reforme NoClobber');
+
+        Config::upsertForEntity($entityId, ['reforme_states' => [$reformeStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Reforme NoClobber');
+        // Date de reforme deja saisie manuellement par un administrateur, AVANT
+        // que le declenchement automatique n'ait jamais eu lieu.
+        $DB->insert('glpi_infocoms', [
+            'itemtype'          => 'Computer',
+            'items_id'          => $computer->getID(),
+            'decommission_date' => '2020-01-15',
+        ]);
+
+        $computer->oldvalues = ['states_id' => $oldStateId];
+        $computer->fields['users_id'] = 0;
+        $computer->fields['states_id'] = $reformeStateId;
+
+        Assetsign::handleItemAssignment($computer);
+
+        $infocom = new \Infocom();
+        $infocom->getFromDBforDevice('Computer', $computer->getID());
+        $this->assertSame(
+            '2020-01-15',
+            substr((string) $infocom->fields['decommission_date'], 0, 10),
+            'Une date de reforme deja renseignee ne doit jamais etre ecrasee par le declenchement automatique.'
+        );
+    }
+
+    public function testHandleStateBasedTriggerIgnoresReformeWhenUnconfigured(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit State Reforme Unconfigured');
+        $oldStateId = $this->createTestState('PHPUnit Etat Avant Reforme Unconfigured');
+        $otherStateId = $this->createTestState('PHPUnit Etat Sans Effet Reforme');
+
+        // reforme_states vide (par defaut) : aucune ecriture Infocom ne doit avoir lieu.
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Reforme Unconfigured');
+        $computer->oldvalues = ['states_id' => $oldStateId];
+        $computer->fields['users_id'] = 2;
+        $computer->fields['states_id'] = $otherStateId;
+
+        Assetsign::handleItemAssignment($computer);
+
+        $infocom = new \Infocom();
+        $this->assertFalse(
+            $infocom->getFromDBforDevice('Computer', $computer->getID()),
+            'Sans Etat de reforme configure, aucune ligne Infocom ne doit etre creee.'
+        );
+    }
+
+    /**
+     * Un meme Etat peut etre configure a la fois comme declencheur de Vente ET
+     * de Reforme (cas legitime, ex: materiel vendu pour pieces detachees tout
+     * en etant sorti d'inventaire) : les deux mecanismes sont independants,
+     * cf. commentaire de handleStateBasedTrigger().
+     */
+    public function testHandleStateBasedTriggerCombinesReformeWithAnotherTrigger(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit State Reforme Combined');
+        $oldStateId = $this->createTestState('PHPUnit Etat Avant Reforme Combined');
+        $sharedStateId = $this->createTestState('PHPUnit Etat Vente Et Reforme');
+
+        Config::upsertForEntity($entityId, ['vente_states' => [$sharedStateId], 'reforme_states' => [$sharedStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Reforme Combined');
+        $computer->oldvalues = ['states_id' => $oldStateId];
+        $computer->fields['users_id'] = 2;
+        $computer->fields['states_id'] = $sharedStateId;
+
+        Assetsign::handleItemAssignment($computer);
+
+        $created = $this->findAssetsignFor($computer);
+        $this->assertNotNull($created, 'La Vente doit toujours se declencher normalement.');
+        $this->assertSame(Assetsign::TYPE_VENTE, (int) $created['type']);
+
+        $infocom = new \Infocom();
+        $this->assertTrue(
+            $infocom->getFromDBforDevice('Computer', $computer->getID()),
+            "La reforme doit AUSSI avoir ete enregistree pour ce meme changement d'Etat."
+        );
+        $this->assertSame(date('Y-m-d'), substr((string) $infocom->fields['decommission_date'], 0, 10));
+    }
+
+    public function testHandleStateBasedTriggerSkipsReformeWhenItemtypeCannotApplyInfocom(): void
+    {
+        global $CFG_GLPI;
+
+        $entityId = $this->createTestEntity(0, 'PHPUnit State Reforme Not Applicable');
+        $oldStateId = $this->createTestState('PHPUnit Etat Avant Reforme NA');
+        $reformeStateId = $this->createTestState('PHPUnit Etat Reforme NA');
+
+        Config::upsertForEntity($entityId, ['reforme_states' => [$reformeStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Reforme NA');
+        $computer->oldvalues = ['states_id' => $oldStateId];
+        $computer->fields['users_id'] = 0;
+        $computer->fields['states_id'] = $reformeStateId;
+
+        // Simule un reglage coeur GLPI ou Computer a ete retire de la liste des
+        // itemtypes qui supportent l'Infocom (meme motif que
+        // PassportEventInfocomTest::testShowForItemSkipsInfocomWhenItemtypeCannotApply()).
+        $previousInfocomTypes = $CFG_GLPI['infocom_types'];
+        $CFG_GLPI['infocom_types'] = array_values(array_diff($CFG_GLPI['infocom_types'], ['Computer']));
+
+        try {
+            Assetsign::handleItemAssignment($computer);
+        } finally {
+            $CFG_GLPI['infocom_types'] = $previousInfocomTypes;
+        }
+
+        $infocom = new \Infocom();
+        $this->assertFalse(
+            $infocom->getFromDBforDevice('Computer', $computer->getID()),
+            "Infocom::canApplyOn() doit etre respecte : aucune ecriture pour un itemtype retire des types compatibles Infocom."
+        );
+    }
+
     public function testHandleStateBasedTriggerWarnsWhenDonationHasNoUser(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit State Donation NoUser');

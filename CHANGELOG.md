@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-08-19
+
+### Added
+
+- **Date de réforme automatique sur changement d'État** (cf. ROADMAP.md, issue #78) : nouveau groupe d'États configurable par entité (`Config::getReformeStates()`, onglet « Réforme » de la configuration), même mécanisme que les déclenchements Assetsign/Restitution/Don/Vente déjà existants. Quand le matériel passe dans l'un de ces États, le plugin écrit désormais automatiquement `Infocom::decommission_date` (champ natif GLPI, libellé « Réforme ») à la date du jour — la frise du Passeport matériel l'affichait déjà en lecture seule (`PassportEvent::getInfocomPseudoEvents()`), elle n'était simplement jamais renseignée sans saisie manuelle jusqu'ici. Effet de bord **pur** sur Infocom : aucune fiche Assetsign créée, aucun nouveau type d'événement Passeport (décision documentée dans le commentaire de l'utilisateur sur l'issue #78 — pas besoin de dupliquer une notion de « fiche » pour une simple date déjà native à GLPI). Une date de réforme déjà renseignée (saisie manuelle ou déclenchement précédent) n'est **jamais écrasée**. `Infocom::canApplyOn()` respecté (aucune écriture pour un itemtype retiré des types compatibles Infocom au niveau du cœur GLPI), Infocom créé s'il n'existait pas encore pour ce matériel. Un même État peut être configuré à la fois pour la réforme et un autre déclenchement (ex: Vente) : les deux mécanismes sont indépendants et se déclenchent tous les deux pour le même changement. Vérifié en conditions réelles sur l'environnement Docker de test : script contre le vrai noyau GLPI (vrai hook `item_update`, pas un appel direct à la logique de déclenchement) **et** flux HTTP complet (login réel, création d'un matériel et changement d'État via `front/computer.form.php` comme un vrai administrateur, confirmation en base et dans la frise du Passeport matériel via `ajax/common.tabs.php`) — les deux confirment l'écriture de la date du jour et la non-altération d'une date déjà saisie manuellement.
+
 ## [2.1.0] - 2026-08-17
 
 ### Added
