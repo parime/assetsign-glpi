@@ -12,6 +12,7 @@ Created by **Vincent GUILLOTTE**.
 
 - [What is this plugin?](#what-is-this-plugin)
 - [What sets it apart](#what-sets-it-apart)
+- [Installation](#installation)
 - [Screenshots](#screenshots)
 - [Documentation](#documentation)
 - [License](#license)
@@ -43,6 +44,32 @@ The same mechanism also works in reverse: when equipment is **returned** (unassi
 - **Beyond the handover**: equipment donation and sale (beneficiary internal or external to the company), maintenance/preparation sheets with a fully configurable checklist, visual condition report with damage markers clickable directly on an equipment diagram.
 - **Installs without breaking anything**: works immediately with your existing custom assets, respects native GLPI rights, no data duplicated beyond what the signature workflow genuinely requires.
 - **Interface in 5 languages** (French, English, Spanish, German, Italian), detected automatically from the recipient's account language.
+
+## Installation
+
+**Requirements**: GLPI 11.0.8+ (recommended — fixes several critical vulnerabilities in GLPI core itself), PHP 8.3+, MariaDB/MySQL, an SMTP server configured in GLPI. Composer is only needed to develop the plugin — **not to install it**: `vendor/` (Dompdf and its dependencies, ~14 MB, production only) is committed directly in this repository, a plain `git clone` or a release ZIP is enough on the target server.
+
+**1. Get the code** into GLPI's `plugins/` folder, named **`assetsign`** (GLPI derives the plugin key from that folder name):
+
+```bash
+cd /path/to/glpi/plugins
+git clone https://github.com/parime/assetsign-glpi.git assetsign
+```
+
+Or, without Git available: download `assetsign-glpi-X.Y.Z.zip` from the [releases](https://github.com/parime/assetsign-glpi/releases) and extract it into `plugins/` (it already contains an `assetsign/` folder — nothing to rename).
+
+**2. Install and activate**, either from the UI (**Configuration > Plugins**, "Assetsign & signature") or from the command line:
+
+```bash
+php bin/console plugin:install assetsign
+php bin/console plugin:activate assetsign
+```
+
+**3. Grant rights**: right after a fresh install, only Super-Admin has access. Admin and Technician automatically get everyday usage rights (enough to process handovers day-to-day). For any other profile, or to adjust what Admin/Technician get by default: **Administration > Profiles** > the profile > the **"Assetsign & signature"** tab.
+
+**4. Configure**: an **Administration > Assetsign & signature** menu appears, with one form tab per sheet type (live PDF preview) — shipping address, managed equipment types, triggers (by assignment or by Status). Configuration is independent per entity, with automatic inheritance.
+
+📖 Full detail (diagrams, screenshots, every setting, the `update.sh` update script, Twig/OPcache caching pitfalls) is in **[INSTALLATION.md](INSTALLATION.md)** (French).
 
 ## Screenshots
 
