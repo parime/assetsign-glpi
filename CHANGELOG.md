@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- README (FR/EN) : la section Installation (prérequis, récupération du code, installation/
+  activation, droits, configuration) est désormais reprise directement dans le README au lieu
+  d'être uniquement accessible via un lien vers [INSTALLATION.md](INSTALLATION.md), qui reste la
+  référence pour le détail complet (script de mise à jour, pièges de cache Twig/OPcache).
+
 ## [2.2.2] - 2026-08-19
 
 ### Changed
