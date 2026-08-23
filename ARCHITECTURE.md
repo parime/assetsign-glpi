@@ -21,6 +21,7 @@ assetsign/
 │   ├── Notification/        # contenu par défaut des e-mails (DefaultNotificationContent)
 │   ├── Pdf/                 # génération du PDF (Dompdf)
 │   ├── Provider/             # fournisseurs de signature (canvas natif, point d'extension)
+│   ├── Dashboard/CardProvider.php  # cartes "bigNumber" du tableau de bord GLPI natif (en attente/signées/expirées)
 │   ├── Maintenance.php, MaintenanceChecklistItem.php  # sous-système séparé (checklist interne, non signée)
 │   ├── VenteDetails.php, DamageMarker.php             # données spécifiques Vente / état des lieux visuel
 │   ├── PassportEvent.php                                # Passeport matériel : agrege Assetsign/Maintenance en lecture seule
