@@ -30,6 +30,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   activation, droits, configuration) est désormais reprise directement dans le README au lieu
   d'être uniquement accessible via un lien vers [INSTALLATION.md](INSTALLATION.md), qui reste la
   référence pour le détail complet (script de mise à jour, pièges de cache Twig/OPcache).
+- USER_GUIDE.md (FR/EN) : documente désormais la date de réforme automatique sur changement
+  d'État (v2.2.0), absente du guide alors que la fonctionnalité était déjà publiée.
+
+### Fixed
+
+- **Incohérence de terminologie EN/DE/ES sur « Réforme »** : les traductions de #91 utilisaient un
+  mot indépendant (« Disposal »/« Ausmusterung »/« Baja ») au lieu du libellé natif que GLPI
+  lui-même utilise pour ce même champ (`Infocom::decommission_date`, confirmé dans
+  `locales/en_GB.po`/`de_DE.po`/`es_ES.po` du cœur GLPI : « Decommission date » /
+  « Außerbetriebnahme » / « Desmantelamiento »). Corrigé pour aligner ce plugin sur le vocabulaire
+  déjà utilisé par l'onglet Finances/Infocom natif juste à côté — un utilisateur ne doit pas voir
+  deux mots différents pour le même champ. `it_IT` n'était pas concerné (traduction déjà alignée).
 
 ## [2.2.2] - 2026-08-19
 
