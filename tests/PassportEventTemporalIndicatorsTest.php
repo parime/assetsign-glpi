@@ -37,7 +37,11 @@ class PassportEventTemporalIndicatorsTest extends AssetsignTestCase
         // htmlspecialchars() : Twig echappe l'apostrophe en &#039; a l'affichage,
         // la chaine __() brute (avec apostrophe litterale) ne matcherait jamais.
         $this->assertStringContainsString(htmlspecialchars(__('depuis l\'achat', 'assetsign'), ENT_QUOTES), $html);
-        $this->assertStringContainsString('1 an', $html);
+        // Passe par _n() plutot qu'un "1 an" code en dur : depend de la langue de la
+        // session de test (regression reelle trouvee le 2026-08-23 - "1 an" ne
+        // matchait plus une fois locales/en_GB.po effectivement traduit, la chaine
+        // francaise ne remontant plus par repli sur traduction manquante).
+        $this->assertStringContainsString(sprintf(_n('%d an', '%d ans', 1, 'assetsign'), 1), $html);
     }
 
     public function testAgeFallsBackToDateCreationWithoutInfocom(): void
