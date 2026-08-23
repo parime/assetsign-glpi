@@ -165,6 +165,16 @@ jobs:
         # d'installation de composer.phar lui-meme (pas seulement pour
         # `composer install` ensuite) : sans ca, ce script tente d'ecrire dans
         # le HOME par defaut de www-data, non inscriptible dans ce conteneur.
+        #
+        # COMPOSER_AUTH (github-oauth) ajoute le 2026-08-23 apres deux echecs
+        # consecutifs de cette etape en HTTP 504 sur plusieurs paquets a la
+        # fois (api.github.com/.../zipball/...) : composer telechargeait sans
+        # authentification, donc soumis a la limite de taux GitHub la plus
+        # basse (60 req/h) - le jeton du workflow (github.token, fourni
+        # automatiquement, aucun secret a configurer) releve cette limite a
+        # 5000 req/h et passe par un chemin plus fiable.
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           docker exec glpi sh -c '
             export COMPOSER_HOME=/tmp/composer-home
@@ -173,7 +183,7 @@ jobs:
             php -r "copy(\"https://getcomposer.org/installer\", \"composer-setup.php\");"
             php composer-setup.php --install-dir=/tmp --filename=composer.phar
           '
-          docker exec glpi sh -c '
+          docker exec -e COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GH_TOKEN\"}}" glpi sh -c '
             export COMPOSER_HOME=/tmp/composer-home
             cd /var/www/glpi/plugins/assetsign
             php /tmp/composer.phar install --no-interaction --prefer-dist
@@ -334,3 +344,58 @@ jobs:
         run: |
           find . -type f -name "*.xml*" -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./.git/*" \
             | xargs -I {} sh -c 'echo "Validation de {}" && xmllint --noout {} || exit 1'
+
+  locales:
+    # #91 : detecte une chaine __()/_n() ajoutee au code sans etre propagee a
+    # locales/*.po - exactement la derive qui a laisse ~77 chaines (passeport
+    # materiel, score de sante, don/vente...) sans traduction pendant
+    # plusieurs sprints avant d'etre remarquee. Independant de Docker/GLPI,
+    # comme "validation"/"semgrep" ci-dessus : regenere le .pot a partir du
+    # code actuel (vendor/bin/extract-locales, meme outil qu'un contributeur
+    # humain utiliserait a la main, pas une regex maison) et echoue si une
+    # chaine qu'il trouve n'a pas de traduction dans une des 5 langues.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupère le code du plugin
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
+
+      - name: Installe composer
+        run: |
+          php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+          php composer-setup.php --install-dir=/tmp --filename=composer.phar
+
+      - name: Installe les dépendances (dont l'outil d'extraction glpi-project/tools)
+        # github.token (fourni automatiquement, aucun secret a configurer) evite
+        # de retomber sur la limite de taux GitHub non authentifiee (60 req/h) -
+        # meme raisonnement que le job "test" ci-dessus, apres deux echecs HTTP
+        # 504 constates en pratique sur cette meme etape.
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
+        run: php /tmp/composer.phar install --no-interaction --prefer-dist
+
+      - name: Installe gettext
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends gettext
+
+      - name: Régénère le .pot à partir du code actuel
+        run: |
+          vendor/bin/extract-locales
+          # La derniere etape de extract-locales regenere en_GB.po depuis
+          # zero via msginit (le msgid francais recopie comme msgstr, ecrasant
+          # les vraies traductions anglaises) - annule ca pour verifier
+          # en_GB.po de la meme facon que les 4 autres langues : fusionne
+          # contre le .pot frais, pas regenere a l'aveugle.
+          git checkout -- locales/en_GB.po
+
+      - name: Vérifie que chaque langue traduit chaque chaîne extraite
+        run: |
+          status=0
+          for lang in fr_FR en_GB de_DE es_ES it_IT; do
+            msgmerge --no-fuzzy-matching --quiet -o /tmp/merged_${lang}.po locales/${lang}.po locales/assetsign.pot
+            missing=$(msgattrib --untranslated /tmp/merged_${lang}.po | grep -c '^msgid "[^"]' || true)
+            if [ "$missing" -gt 0 ]; then
+              echo "::error::${lang}.po est incomplet : ${missing} chaîne(s) du code sans traduction"
+              msgattrib --untranslated /tmp/merged_${lang}.po | grep '^msgid "[^"]'
+              status=1
+            fi
+          done
+          exit $status

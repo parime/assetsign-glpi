@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Traductions complétées dans les 5 langues** (#91) : régénéré `locales/assetsign.pot` via
+  l'outil d'extraction officiel (`vendor/bin/extract-locales`, nouvelle dépendance dev
+  `glpi-project/tools`, absente jusqu'ici) plutôt qu'une comparaison manuelle à la regex, ce qui a
+  révélé 77 chaînes ajoutées au fil des dernières fonctionnalités (passeport matériel, score de
+  santé, réforme automatique, gabarits...) jamais traduites en anglais/allemand/espagnol/italien.
+  Traduites dans les 4 langues, `fr_FR.po` complété (langue source, chaîne identique). 8 chaînes
+  devenues obsolètes par des renommages antérieurs (ex. « remise » → « Attribution », #89/#90)
+  marquées comme telles (`#~`), pas supprimées.
+- **Vérification CI de complétude des traductions** (#91, suggestion explicite de l'issue) :
+  nouveau job "locales" qui régénère le `.pot` à chaque run et échoue si une chaîne du code n'a pas
+  de traduction dans une des 5 langues, pour éviter que ce manque se reproduise à chaque nouvelle
+  fonctionnalité.
+
 ### Changed
 
 - README (FR/EN) : la section Installation (prérequis, récupération du code, installation/

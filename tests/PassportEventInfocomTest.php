@@ -95,7 +95,16 @@ class PassportEventInfocomTest extends AssetsignTestCase
         $html = ob_get_clean();
 
         // 1 seule "vie" attendue (1 seule vraie attribution) malgre 2 dates Infocom en plus dans la frise.
-        $this->assertMatchesRegularExpression('/Vies du matériel.*badge[^>]*>\s*1\s*</s', $html);
+        // __() plutot que "Vies du materiel" code en dur : depend de la langue de la
+        // session de test (regression reelle trouvee le 2026-08-23 - le libelle
+        // francais ne remontait par repli que tant que locales/en_GB.po n'avait pas
+        // de vraie traduction pour cette chaine). htmlspecialchars() : Twig echappe
+        // l'apostrophe en &#039; a l'affichage (meme piege deja documente dans
+        // PassportEventTemporalIndicatorsTest), la chaine __() brute ne matcherait
+        // jamais - premiere version de ce correctif l'avait rate, cassant le test
+        // une deuxieme fois sur la meme PR.
+        $label = preg_quote(htmlspecialchars(__('Vies du matériel', 'assetsign'), ENT_QUOTES), '/');
+        $this->assertMatchesRegularExpression('/' . $label . '.*badge[^>]*>\s*1\s*</s', $html);
     }
 
     public function testShowForItemHandlesMissingInfocomGracefully(): void
