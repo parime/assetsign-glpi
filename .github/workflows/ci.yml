@@ -165,6 +165,16 @@ jobs:
         # d'installation de composer.phar lui-meme (pas seulement pour
         # `composer install` ensuite) : sans ca, ce script tente d'ecrire dans
         # le HOME par defaut de www-data, non inscriptible dans ce conteneur.
+        #
+        # COMPOSER_AUTH (github-oauth) ajoute le 2026-08-23 apres deux echecs
+        # consecutifs de cette etape en HTTP 504 sur plusieurs paquets a la
+        # fois (api.github.com/.../zipball/...) : composer telechargeait sans
+        # authentification, donc soumis a la limite de taux GitHub la plus
+        # basse (60 req/h) - le jeton du workflow (github.token, fourni
+        # automatiquement, aucun secret a configurer) releve cette limite a
+        # 5000 req/h et passe par un chemin plus fiable.
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           docker exec glpi sh -c '
             export COMPOSER_HOME=/tmp/composer-home
@@ -173,7 +183,7 @@ jobs:
             php -r "copy(\"https://getcomposer.org/installer\", \"composer-setup.php\");"
             php composer-setup.php --install-dir=/tmp --filename=composer.phar
           '
-          docker exec glpi sh -c '
+          docker exec -e COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GH_TOKEN\"}}" glpi sh -c '
             export COMPOSER_HOME=/tmp/composer-home
             cd /var/www/glpi/plugins/assetsign
             php /tmp/composer.phar install --no-interaction --prefer-dist
@@ -355,6 +365,12 @@ jobs:
           php composer-setup.php --install-dir=/tmp --filename=composer.phar
 
       - name: Installe les dépendances (dont l'outil d'extraction glpi-project/tools)
+        # github.token (fourni automatiquement, aucun secret a configurer) evite
+        # de retomber sur la limite de taux GitHub non authentifiee (60 req/h) -
+        # meme raisonnement que le job "test" ci-dessus, apres deux echecs HTTP
+        # 504 constates en pratique sur cette meme etape.
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
         run: php /tmp/composer.phar install --no-interaction --prefer-dist
 
       - name: Installe gettext
