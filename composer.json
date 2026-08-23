@@ -14,8 +14,9 @@
     },
     "require-dev": {
         "glpi-project/coding-standard": "^0.9.0",
-        "phpunit/phpunit": "^11.0",
-        "phpstan/phpstan": "^2.0"
+        "glpi-project/tools": "^0.8",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^11.0"
     },
     "autoload": {
         "psr-4": {
