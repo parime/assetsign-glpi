@@ -40,8 +40,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   lui-même utilise pour ce même champ (`Infocom::decommission_date`, confirmé dans
   `locales/en_GB.po`/`de_DE.po`/`es_ES.po` du cœur GLPI : « Decommission date » /
   « Außerbetriebnahme » / « Desmantelamiento »). Corrigé pour aligner ce plugin sur le vocabulaire
-  déjà utilisé par l'onglet Finances/Infocom natif juste à côté — un utilisateur ne doit pas voir
+  déjà utilisé par l'onglet Finances/Infocom natif juste à côté, un utilisateur ne doit pas voir
   deux mots différents pour le même champ. `it_IT` n'était pas concerné (traduction déjà alignée).
+
+- **Cartes de tableau de bord (`Hooks::DASHBOARD_CARDS`) disparaissant silencieusement en présence
+  d'un autre plugin actif hookant le même point d'extension** (confirmé en conditions réelles avec
+  `glpi-vulnerability-manager` sur une instance partagée : ses cartes étaient absentes du sélecteur
+  « Ajouter une carte » à cause de ce bug côté `assetsign`) : `plugin_assetsign_dashboard_cards()`
+  déclarait une signature sans paramètre et retournait uniquement ses propres cartes, alors que
+  `Plugin::doHookFunction()` enchaîne tous les callbacks enregistrés via le même accumulateur
+  (`$ret = call_user_func($function, $ret)` pour chacun, sans jamais faire de `array_merge()`
+  lui-même) : un callback qui ignore cet accumulateur écrase donc systématiquement la contribution
+  de tout plugin déjà passé dans la chaîne. Corrigé en acceptant `?array $cards = null` (nullable :
+  GLPI appelle le tout premier callback de la chaîne avec un `null` explicite, pas un tableau vide)
+  et en fusionnant dessus, même correctif que celui appliqué en premier sur
+  `glpi-vulnerability-manager`.
 
 ## [2.2.2] - 2026-08-19
 

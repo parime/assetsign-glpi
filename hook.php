@@ -86,10 +86,26 @@ function plugin_assetsign_item_pre_purge(CommonDBTM $item): void {
    }
 }
 
-function plugin_assetsign_dashboard_cards(): array {
+/**
+ * Hooks::DASHBOARD_CARDS callback (registered in setup.php).
+ *
+ * Plugin::doHookFunction() chains every plugin registered on this hook through the same
+ * accumulator ($ret = call_user_func($function, $ret) for each one in turn, never array_merge()-
+ * ing the results itself), so a callback declared with no parameter and returning only its own
+ * cards silently discards every other plugin's contribution whenever it runs later in the chain
+ * (confirmed live on an instance running this plugin alongside glpi-vulnerability-manager, whose
+ * own cards disappeared from the "Ajouter une carte" picker because of this exact bug on this
+ * plugin's side, same root cause fixed there first). $cards has to accept null, not just default
+ * to an empty array: Grid.php calls Plugin::doHookFunction(Hooks::DASHBOARD_CARDS) with no $parm,
+ * so the very first plugin in the chain is invoked with an explicit null argument, which does not
+ * fall through to a `array $cards = []` default (PHP only applies a default when the argument is
+ * omitted, not when null is passed for a non-nullable type).
+ */
+function plugin_assetsign_dashboard_cards(?array $cards = null): array {
+    $cards ??= [];
     $group = __('Assetsign & signature', 'assetsign');
 
-    return [
+    return $cards + [
         'assetsign_pending' => [
             'widgettype' => ['bigNumber'],
             'group'      => $group,
