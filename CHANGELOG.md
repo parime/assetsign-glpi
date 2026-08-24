@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-08-24
+
 ### Added
 
 - **Traductions complétées dans les 5 langues** (#91) : régénéré `locales/assetsign.pot` via

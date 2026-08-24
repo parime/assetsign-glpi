@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_ASSETSIGN_VERSION', '2.2.2');
+define('PLUGIN_ASSETSIGN_VERSION', '2.3.0');
 define('PLUGIN_ASSETSIGN_MIN_GLPI', '11.0.0');
 define('PLUGIN_ASSETSIGN_MAX_GLPI', '11.9.99');
 define('PLUGIN_ASSETSIGN_MIN_PHP', '8.3.0');
