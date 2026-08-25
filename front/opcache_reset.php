@@ -13,17 +13,29 @@
  * redemarrage manuel du service — contraignant sur un serveur en production
  * avec des utilisateurs actifs.
  *
- * Restreint aux requetes locales (127.0.0.1/::1) : ce endpoint ne fait rien
- * d'autre que vider un cache de compilation (aucune donnee exposee), mais
- * autant eviter qu'un appel externe puisse le declencher a volonte. Exempte
- * de connexion GLPI (Firewall::STRATEGY_NO_CHECK, cf. setup.php) puisqu'il
- * est appele sans session, depuis un script CLI.
+ * Protege par un jeton partage genere a l'installation (voir plugin_assetsign_install(),
+ * hook.php) plutot que par la seule adresse IP source : derriere un reverse-proxy en mode
+ * loopback, REMOTE_ADDR vaut 127.0.0.1 pour tout le trafic externe, rendant une restriction par
+ * IP seule contournable et permettant un appel repete non authentifie (revue de securite
+ * marketplace GLPI, low, #98). Le controle par IP reste en place en defense en profondeur (ce
+ * endpoint ne fait rien d'autre que vider un cache de compilation, aucune donnee exposee), mais
+ * n'est plus le seul rempart. Exempte de connexion GLPI (Firewall::STRATEGY_NO_CHECK, cf.
+ * setup.php) puisqu'il est appele sans session, depuis un script shell (update.sh).
  */
 
 header('Content-Type: text/plain');
 
 $remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
 if (!in_array($remoteAddr, ['127.0.0.1', '::1'], true)) {
+    http_response_code(403);
+    echo 'forbidden';
+    exit;
+}
+
+$tokenFile = GLPI_PLUGIN_DOC_DIR . '/assetsign_opcache_token';
+$expectedToken = is_file($tokenFile) ? trim((string) file_get_contents($tokenFile)) : '';
+$providedToken = $_GET['token'] ?? '';
+if ($expectedToken === '' || !is_string($providedToken) || !hash_equals($expectedToken, $providedToken)) {
     http_response_code(403);
     echo 'forbidden';
     exit;

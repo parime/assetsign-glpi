@@ -13,6 +13,9 @@ if (!defined('GLPI_DOC_DIR')) {
 if (!defined('GLPI_TMP_DIR')) {
     define('GLPI_TMP_DIR', '/tmp/glpi-phpstan-tmp');
 }
+if (!defined('GLPI_PLUGIN_DOC_DIR')) {
+    define('GLPI_PLUGIN_DOC_DIR', '/tmp/glpi-phpstan-plugin-doc');
+}
 
 /**
  * Autoload de GLPI lui-meme (classes globales CommonDBTM, Session, Toolbox...),
