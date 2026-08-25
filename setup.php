@@ -115,6 +115,10 @@ function plugin_init_assetsign(): void {
     // deroulante vient de leur classe parente.
     Plugin::registerClass(\GlpiPlugin\Assetsign\Accessory::class);
     Plugin::registerClass(\GlpiPlugin\Assetsign\MaintenanceChecklistItem::class);
+    // Checklists qualite reutilisables sur les mouvements Assetsign (attribution,
+    // restitution, don, vente) - cf. ROADMAP.md V1, issue #74. Distinct de
+    // MaintenanceChecklistItem (sous-systeme Maintenance, deliberement separe).
+    Plugin::registerClass(\GlpiPlugin\Assetsign\ChecklistItem::class);
     // Maintenance : sous-systeme volontairement separe du moteur Assetsign (cf.
     // Maintenance.php) — possede neanmoins son propre onglet sur les memes
     // materiels geres, comme Assetsign, pour rester decouvrable depuis la fiche

@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Checklists de contrôle qualité configurables, réutilisables sur les mouvements de matériel**
+  (issue #74, cf. `docs/design/ADR-passeport-v1.md` pour l'analyse complète et les 6 risques
+  techniques tranchés en amont, issue #76) : nouveau catalogue `ChecklistItem` (Configuration >
+  Intitulés, même motif que les points de contrôle de maintenance existants - case à cocher, texte
+  libre ou menu déroulant), chaque point taggé sur les types de mouvement où il s'applique
+  (Attribution/Restitution/Don/Vente). Un nouveau bloc « Contrôle qualité » apparaît sur la fiche
+  d'une Attribution tant qu'elle reste modifiable (résultats déjà enregistrés toujours affichés,
+  formulaire d'édition tant que `isStillEditable()`), quel que soit le mode de création
+  (déclenchement automatique par affectation/État, ou création manuelle Don/Vente). Le nombre de
+  contrôles remplis (badge coloré, X/Y) est fusionné dans la frise du Passeport matériel ET
+  utilisateur sans jamais dupliquer la donnée dans `glpi_plugin_assetsign_events` (pure agrégation
+  à l'affichage, batchée en 2 requêtes au total pour toute la frise - jamais une par événement).
+  Nouvel index composite `(itemtype, items_id, date)` sur `glpi_plugin_assetsign_events` au
+  passage (risque de volume identifié pendant l'analyse). « Mouvements structurés » (issue #75)
+  reste analysé mais non implémenté (schéma SQL proposé dans l'ADR) plutôt que de livrer les deux
+  items V1 à moitié.
+
 ## [2.3.1] - 2026-08-25
 
 ### Security

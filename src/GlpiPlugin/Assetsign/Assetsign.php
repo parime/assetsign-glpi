@@ -157,6 +157,17 @@ class Assetsign extends CommonDBTM
               ],
           ];
       }
+      if (ChecklistItem::canView()) {
+          $menu['options'][ChecklistItem::class] = [
+              'title' => ChecklistItem::getTypeName(Session::getPluralNumber()),
+              'page'  => ChecklistItem::getSearchURL(false),
+              'icon'  => ChecklistItem::getIcon(),
+              'links' => [
+                  'search' => ChecklistItem::getSearchURL(false),
+                  'add'    => ChecklistItem::getFormURL(false),
+              ],
+          ];
+      }
 
        return $menu;
    }
@@ -362,6 +373,13 @@ class Assetsign extends CommonDBTM
            'signature_proof' => (!$this->isNewID($ID) && (int) $this->fields['status'] === self::STATUS_SIGNED)
                ? Signature::getForAssetsign((int) $ID)
                : null,
+           // Checklist qualite (cf. ROADMAP.md V1, issue #74) : resultats deja
+           // enregistres TOUJOURS affiches (meme un point desactive depuis), le
+           // formulaire d'edition uniquement si applicable ET encore modifiable.
+           'checklist_results'   => $this->isNewID($ID) ? [] : $this->getChecklistResults(),
+           'checklist_items'     => $this->isNewID($ID) ? [] : ChecklistItem::getActiveItemsForMovementType((int) $this->fields['type']),
+           'checklist_values'    => $this->isNewID($ID) ? [] : $this->getChecklistValuesByItemId(),
+           'can_edit_checklist'  => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
            'csrf_token'   => \Session::getNewCSRFToken(),
        ]);
 
@@ -1488,6 +1506,107 @@ class Assetsign extends CommonDBTM
    }
 
     /**
+     * Points de controle qualite renseignes sur CETTE fiche (cf. ROADMAP.md V1,
+     * issue #74, ChecklistItem) - meme forme que Maintenance::getChecklistResults(),
+     * pour rester interchangeable cote gabarit Twig. Un point desactive ou
+     * retire du catalogue APRES l'enregistrement de cette valeur reste
+     * visible ici (jointure sur la ligne existante, pas sur le catalogue
+     * actif) : un constat historique ne doit jamais perdre silencieusement
+     * une reponse deja donnee.
+     * @return array<int, array{id: int, name: string, type: int, value: ?string}>
+     */
+   public function getChecklistResults(): array {
+       global $DB;
+
+       $results = [];
+      foreach ($DB->request([
+           'SELECT' => [
+               'glpi_plugin_assetsign_checklistitems.id',
+               'glpi_plugin_assetsign_checklistitems.name',
+               'glpi_plugin_assetsign_checklistitems.type',
+               'glpi_plugin_assetsign_checklistvalues.value',
+           ],
+           'FROM'   => 'glpi_plugin_assetsign_checklistvalues',
+           'INNER JOIN' => [
+               'glpi_plugin_assetsign_checklistitems' => [
+                   'FKEY' => [
+                       'glpi_plugin_assetsign_checklistvalues' => 'plugin_assetsign_checklistitems_id',
+                       'glpi_plugin_assetsign_checklistitems'  => 'id',
+                   ],
+               ],
+           ],
+           'WHERE' => ['glpi_plugin_assetsign_checklistvalues.plugin_assetsign_assetsigns_id' => $this->getID()],
+           'ORDER' => 'glpi_plugin_assetsign_checklistitems.name',
+       ]) as $row) {
+          $results[] = [
+              'id'    => (int) $row['id'],
+              'name'  => $row['name'],
+              'type'  => (int) $row['type'],
+              'value' => $row['value'],
+          ];
+      }
+       return $results;
+   }
+
+    /** @return array<int, string|null> Valeurs deja enregistrees, indexees par ID de ChecklistItem (pre-remplissage du formulaire d'edition). */
+   public function getChecklistValuesByItemId(): array {
+       $byId = [];
+      foreach ($this->getChecklistResults() as $result) {
+          $byId[$result['id']] = $result['value'];
+      }
+       return $byId;
+   }
+
+    /**
+     * Enregistre (ou remplace) les valeurs de checklist qualite soumises pour
+     * cette fiche - $itemValues est le tableau brut $_POST['checklist'] (id du
+     * ChecklistItem => valeur soumise), meme convention que
+     * Maintenance::createWithChecklist(). Seuls les points APPLICABLES au type
+     * de CETTE fiche (ChecklistItem::getActiveItemsForMovementType($this->fields['type']))
+     * sont pris en compte, jamais une valeur soumise pour un point etranger
+     * (formulaire modifie/rejoue). Contrairement a Maintenance (fiche immuable
+     * des sa creation), une Assetsign reste EDITABLE tant que
+     * isStillEditable() - meme garde que addAccessory()/updateObservations() :
+     * un technicien peut completer la checklist en plusieurs fois, jusqu'a la
+     * signature. Chaque appel remplace entierement la reponse existante pour
+     * un point donne (upsert par contrainte UNIQUE, jamais un doublon).
+     * @param array<int|string, mixed> $itemValues
+     */
+   public function setChecklistValues(array $itemValues): void {
+      if (!$this->isStillEditable()) {
+          return;
+      }
+
+       global $DB;
+
+      foreach (ChecklistItem::getActiveItemsForMovementType((int) $this->fields['type']) as $checklistItemId => $checklistItem) {
+         if (!array_key_exists($checklistItemId, $itemValues) && !array_key_exists((string) $checklistItemId, $itemValues)) {
+             continue;
+         }
+          $submitted = $itemValues[$checklistItemId] ?? $itemValues[(string) $checklistItemId];
+
+          $value = match ($checklistItem['type']) {
+              ChecklistItem::TYPE_TEXT, ChecklistItem::TYPE_SELECT => trim((string) $submitted),
+              default => null,
+          };
+
+            // Case a cocher : presence de la cle suffit. Texte/select : seule une
+            // valeur non vide est enregistree, sinon le point reste simplement
+            // absent (meme convention que Maintenance::createWithChecklist()).
+         if ($checklistItem['type'] !== ChecklistItem::TYPE_CHECKBOX && $value === '') {
+             continue;
+         }
+
+            $DB->updateOrInsert('glpi_plugin_assetsign_checklistvalues', [
+              'value' => $value,
+            ], [
+              'plugin_assetsign_assetsigns_id'     => $this->getID(),
+              'plugin_assetsign_checklistitems_id' => $checklistItemId,
+            ]);
+      }
+   }
+
+    /**
      * Regenere le PDF non signe apres ajout/modification/suppression d'un
      * repere d'etat des lieux visuel (DamageMarker). Les reperes sont geres
      * directement par front/damagemarker.php (pas par des methodes dediees
@@ -1939,6 +2058,30 @@ class Assetsign extends CommonDBTM
              $migration->addField($table, 'external_beneficiary_contact', 'string', ['after' => 'external_beneficiary_name']);
              $migration->migrationOneTable($table);
          }
+      }
+
+       // Resultats de checklist qualite (cf. ROADMAP.md V1, issue #74, ChecklistItem) :
+       // meme motif dual-table que glpi_plugin_assetsign_maintenancechecklistvalues
+       // (Maintenance.php), volontairement une table SEPAREE (jamais partagee entre
+       // Assetsign et Maintenance, ces deux sous-systemes restant deliberement
+       // independants) - rattachee ici plutot que dans ChecklistItem::install() : la
+       // contrainte de cle etrangere vers CETTE table (glpi_plugin_assetsign_assetsigns)
+       // exige qu'elle existe deja, comme DamageMarker::install() apres Maintenance::install()
+       // pour la meme raison (cf. hook.php).
+       $checklistValuesTable = 'glpi_plugin_assetsign_checklistvalues';
+      if (!$DB->tableExists($checklistValuesTable)) {
+          $migration->displayMessage('Création de la table ' . $checklistValuesTable);
+          $DB->doQuery("CREATE TABLE `$checklistValuesTable` (
+                `id` int unsigned NOT NULL AUTO_INCREMENT,
+                `plugin_assetsign_assetsigns_id` int unsigned NOT NULL,
+                `plugin_assetsign_checklistitems_id` int unsigned NOT NULL,
+                `value` text,
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `unicity` (`plugin_assetsign_assetsigns_id`,`plugin_assetsign_checklistitems_id`),
+                KEY `plugin_assetsign_checklistitems_id` (`plugin_assetsign_checklistitems_id`),
+                CONSTRAINT `fk_acv_assetsign` FOREIGN KEY (`plugin_assetsign_assetsigns_id`) REFERENCES `glpi_plugin_assetsign_assetsigns` (`id`) ON DELETE CASCADE,
+                CONSTRAINT `fk_acv_checklistitem` FOREIGN KEY (`plugin_assetsign_checklistitems_id`) REFERENCES `glpi_plugin_assetsign_checklistitems` (`id`) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
       }
 
        self::seedDefaultDisplayPreferences();

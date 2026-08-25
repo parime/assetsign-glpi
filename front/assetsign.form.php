@@ -69,6 +69,12 @@ if (isset($_POST['update_vente_details'])) {
     Html::back();
 }
 
+if (isset($_POST['submit_checklist'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    $controller->updateChecklist($assetsign, $_POST);
+    Html::back();
+}
+
 Session::checkRight(Assetsign::$rightname, READ);
 
 Html::header(Assetsign::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Assetsign::class);

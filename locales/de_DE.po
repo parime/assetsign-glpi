@@ -1,398 +1,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: assetsign\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-25 20:07+0000\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-msgid "Réforme"
-msgstr "Außerbetriebnahme"
-
-msgid "Passeport matériel"
-msgstr "Gerätepass"
-
-msgid "Score de santé"
-msgstr "Zustandswert"
-
-msgid "Nom de l'entreprise"
-msgstr "Firmenname"
-
-msgid ""
-"Optionnel : affiché à côté du logo sur les fiches PDF, en complément (pas en "
-"remplacement) du logo."
-msgstr ""
-"Optional: wird neben dem Logo auf PDF-Formularen angezeigt, zusätzlich zum "
-"Logo (nicht als Ersatz)."
-
-msgid "Protéger le PDF (restreindre la copie et l'édition)"
-msgstr "PDF schützen (Kopieren und Bearbeiten einschränken)"
-
-msgid ""
-"Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur "
-"qui respecte cette restriction — n'affecte jamais la possibilité de le "
-"consulter ou de l'imprimer."
-msgstr ""
-"Verschlüsselt das erzeugte PDF, um dessen Kopieren/Bearbeiten in einem "
-"Reader zu verhindern, der diese Einschränkung beachtet — beeinträchtigt "
-"niemals die Möglichkeit, es anzuzeigen oder zu drucken."
-
-msgid ""
-"Aucune fiche Attribution n'est créée ici : ce réglage ne fait qu'écrire "
-"automatiquement la date de réforme (champ natif GLPI « Réforme » de l'onglet "
-"Infocom) quand le matériel passe dans l'un des États ci-dessous, au lieu de "
-"la saisir à la main."
-msgstr ""
-"Hier wird kein Zuweisungsformular erstellt: Diese Einstellung schreibt nur "
-"automatisch das Außerbetriebnahmedatum (natives GLPI-Feld "
-"„Außerbetriebnahme“ im Reiter Finanz- und Verwaltungsinformationen), wenn "
-"das Gerät in einen der "
-"unten stehenden Status wechselt, anstatt es manuell einzutragen."
-
-msgid ""
-"Une date de réforme déjà renseignée (saisie manuelle ou déclenchement "
-"précédent) n'est jamais écrasée."
-msgstr ""
-"Ein bereits eingetragenes Außerbetriebnahmedatum (manuelle Eingabe oder "
-"vorheriger Auslöser) wird niemals überschrieben."
-
-msgid "Déclenchement par État du matériel"
-msgstr "Auslösung nach Gerätestatus"
-
-msgid ""
-"Le score de santé synthétise l’âge, les incidents, l’état physique et les "
-"mouvements du matériel. Les réglages sont propres à l’entité sélectionnée."
-msgstr ""
-"Der Zustandswert fasst Alter, Vorfälle, physischen Zustand und Bewegungen "
-"des Geräts zusammen. Die Einstellungen gelten nur für die ausgewählte "
-"Entität."
-
-msgid "Afficher un score de santé (0-100)"
-msgstr "Zustandswert anzeigen (0-100)"
-
-msgid "Calcul du score"
-msgstr "Berechnung des Werts"
-
-msgid ""
-"Les poids sont relatifs : ils n’ont pas à totaliser 100. Un facteur à 0 est "
-"ignoré."
-msgstr ""
-"Die Gewichtungen sind relativ: Sie müssen nicht in Summe 100 ergeben. Ein "
-"Faktor von 0 wird ignoriert."
-
-msgid "Poids : Âge"
-msgstr "Gewichtung: Alter"
-
-msgid "Poids : Incidents"
-msgstr "Gewichtung: Vorfälle"
-
-msgid "Poids : État physique"
-msgstr "Gewichtung: Physischer Zustand"
-
-msgid "Poids : Mouvements"
-msgstr "Gewichtung: Bewegungen"
-
-msgid "Couleurs et seuils"
-msgstr "Farben und Schwellenwerte"
-
-msgid ""
-"Le score utilise la couleur « Bon » à partir de son seuil, « Vigilance » "
-"entre les deux seuils et « Critique » en dessous. Les seuils sont inclusifs."
-msgstr ""
-"Der Wert verwendet die Farbe „Gut“ ab seinem Schwellenwert, „Achtung“ "
-"zwischen den beiden Schwellenwerten und „Kritisch“ darunter. Die "
-"Schwellenwerte sind inklusiv."
-
-msgid "Bon"
-msgstr "Gut"
-
-msgid "Vigilance"
-msgstr "Achtung"
-
-msgid "Critique"
-msgstr "Kritisch"
-
-msgid "En dessous du seuil Vigilance."
-msgstr "Unterhalb des Schwellenwerts „Achtung“."
-
-msgid ""
-"Le Passeport matériel agrège en lecture seule les événements des onglets "
-"Attribution/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel "
-"onglet du matériel concerné."
-msgstr ""
-"Der Gerätepass fasst schreibgeschützt die Ereignisse aus den obigen Reitern "
-"Zuweisung/Rückgabe/Spende/Verkauf/Wartung zusammen, in einem neuen Reiter "
-"des betreffenden Geräts."
-
-msgid "Activer le Passeport matériel"
-msgstr "Gerätepass aktivieren"
-
-msgid ""
-"Désactivé : l'onglet disparaît et aucun nouvel événement n'est enregistré. "
-"Les événements déjà enregistrés ne sont jamais supprimés — ils "
-"réapparaissent si vous réactivez."
-msgstr ""
-"Deaktiviert: Der Reiter verschwindet und es wird kein neues Ereignis "
-"erfasst. Bereits erfasste Ereignisse werden niemals gelöscht — sie "
-"erscheinen wieder, wenn Sie erneut aktivieren."
-
-msgid "Anonymiser l'identité des bénéficiaires après (années, 0 = jamais)"
-msgstr "Identität der Begünstigten anonymisieren nach (Jahre, 0 = nie)"
-
-msgid ""
-"Passé ce délai, le nom et l'e-mail du bénéficiaire sont retirés des "
-"événements du Passeport matériel (l'événement et sa date restent visibles). "
-"N'affecte jamais les fiches d'attribution/restitution elles-mêmes."
-msgstr ""
-"Nach Ablauf dieser Frist werden Name und E-Mail des Begünstigten aus den "
-"Ereignissen des Gerätepasses entfernt (das Ereignis und sein Datum bleiben "
-"sichtbar). Betrifft niemals die Zuweisungs-/Rückgabeformulare selbst."
-
-msgid "Types d'événement affichés dans la frise"
-msgstr "In der Zeitleiste angezeigte Ereignistypen"
-
-msgid ""
-"Décocher un type ne supprime rien : il n'est plus qu'affiché dans la frise, "
-"tant qu'il reste décoché."
-msgstr ""
-"Das Deaktivieren eines Typs löscht nichts: Er wird nur nicht mehr in der "
-"Zeitleiste angezeigt, solange er deaktiviert bleibt."
-
-msgid "Afficher les dates Infocom dans la frise"
-msgstr "Finanz- und Verwaltungsdaten in der Zeitleiste anzeigen"
-
-msgid ""
-"Achat, commande, livraison, mise en service, garantie, réforme : lues "
-"directement depuis l'onglet Infocom du matériel, jamais copiées ni "
-"modifiables depuis ici."
-msgstr ""
-"Kauf, Bestellung, Lieferung, Inbetriebnahme, Garantie, Außerbetriebnahme: "
-"direkt "
-"aus dem Reiter Finanz- und Verwaltungsinformationen des Geräts gelesen, hier "
-"nie kopiert oder bearbeitbar."
-
-msgid "Afficher les tickets liés dans la frise"
-msgstr "Verknüpfte Tickets in der Zeitleiste anzeigen"
-
-msgid ""
-"Lecture seule : chaque technicien ne voit que les tickets auxquels il a "
-"réellement accès, exactement comme sur l'onglet Tickets du matériel."
-msgstr ""
-"Schreibgeschützt: Jeder Techniker sieht nur die Tickets, auf die er "
-"tatsächlich Zugriff hat, genau wie im Reiter Tickets des Geräts."
-
-msgid ""
-"Ce gabarit est hérité d'une entité parente : l'enregistrer ici le modifie "
-"pour toutes les entités qui en héritent, pas seulement celle-ci."
-msgstr ""
-"Diese Vorlage wird von einer übergeordneten Entität geerbt: Das Speichern "
-"hier ändert sie für alle Entitäten, die davon erben, nicht nur für diese."
-
-msgid "Enregistrer le gabarit"
-msgstr "Vorlage speichern"
-
-msgid "Gérer tous les gabarits de ce type"
-msgstr "Alle Vorlagen dieses Typs verwalten"
-
-msgid "Modèle"
-msgstr "Modell"
-
-msgid "N° série"
-msgstr "Seriennr."
-
-msgid "État"
-msgstr "Status"
-
-msgid "Utilisateur actuel"
-msgstr "Aktueller Benutzer"
-
-msgid "Entité"
-msgstr "Entität"
-
-msgid "Achat"
-msgstr "Kauf"
-
-msgid "Fin de garantie"
-msgstr "Garantieende"
-
-msgid "Âge"
-msgstr "Alter"
-
-msgid "Temps utilisé"
-msgstr "Nutzungsdauer"
-
-msgid "Temps en stock"
-msgstr "Lagerzeit"
-
-msgid "de dégradation"
-msgstr "Abnutzung"
-
-msgid "poids"
-msgstr "Gewichtung"
-
-msgid "Forcer la recherche dans l'historique"
-msgstr "Suche im Verlauf erzwingen"
-
-msgid "Vies du matériel"
-msgstr "Lebenszyklen des Geräts"
-
-msgid "externe"
-msgstr "extern"
-
-msgid "aujourd'hui"
-msgstr "heute"
-
-msgid "Aucune attribution enregistrée pour le moment."
-msgstr "Bisher keine Zuweisung erfasst."
-
-msgid "Historique"
-msgstr "Verlauf"
-
-msgid "bénéficiaire anonymisé"
-msgstr "anonymisierter Begünstigter"
-
-msgid "Voir la fiche"
-msgstr "Formular ansehen"
-
-msgid "Aucun événement enregistré pour le moment."
-msgstr "Bisher kein Ereignis erfasst."
-
-msgid ""
-"Ces informations sont enregistrées au moment de la signature et permettent, "
-"en cas de litige, de vérifier que le PDF n'a pas été modifié depuis "
-"(l'empreinte ci-dessus doit correspondre à celle du fichier)."
-msgstr ""
-"Diese Informationen werden zum Zeitpunkt der Unterschrift erfasst und "
-"ermöglichen im Streitfall zu prüfen, dass das PDF seitdem nicht verändert "
-"wurde (der obige Fingerabdruck muss dem der Datei entsprechen)."
-
-msgid "Compte"
-msgstr "Konto"
-
-msgid "Entrée"
-msgstr "Eintritt"
-
-msgid "inconnue"
-msgstr "unbekannt"
-
-msgid "compte supprimé le"
-msgstr "Konto gelöscht am"
-
-msgid "compte désactivé le"
-msgstr "Konto deaktiviert am"
-
-msgid "compte actif"
-msgstr "aktives Konto"
-
-msgid "matériel supprimé"
-msgstr "Gerät gelöscht"
-
-msgid "Valider"
-msgstr "Bestätigen"
-
-msgid "Événement du passeport matériel"
-msgid_plural "Événements du passeport matériel"
-msgstr[0] "Gerätepass-Ereignis"
-msgstr[1] "Gerätepass-Ereignisse"
-
-msgid "Passeport utilisateur"
-msgstr "Benutzerpass"
-
-msgid "depuis l'achat"
-msgstr "seit dem Kauf"
-
-msgid "depuis l'entrée dans GLPI"
-msgstr "seit der Erfassung in GLPI"
-
-msgid "Incidents"
-msgstr "Vorfälle"
-
-msgid "État physique"
-msgstr "Physischer Zustand"
-
-msgid "Mouvements"
-msgstr "Bewegungen"
-
-msgid "Commande"
-msgstr "Bestellung"
-
-msgid "Livraison"
-msgstr "Lieferung"
-
-msgid "Mise en service"
-msgstr "Inbetriebnahme"
-
-msgid "Début de garantie"
-msgstr "Garantiebeginn"
-
-#, php-format
-msgid "Prix d'achat : %s %s"
-msgstr "Kaufpreis: %s %s"
-
-msgid "Ticket"
-msgstr "Ticket"
-
-msgid "Reconstitué automatiquement depuis l'historique GLPI."
-msgstr "Automatisch aus dem GLPI-Verlauf rekonstruiert."
-
-msgid "Utilisateur retiré"
-msgstr "Benutzer entfernt"
-
-#, php-format
-msgid "%d jour"
-msgid_plural "%d jours"
-msgstr[0] "%d Tag"
-msgstr[1] "%d Tage"
-
-#, php-format
-msgid "%d mois"
-msgid_plural "%d mois"
-msgstr[0] "%d Monat"
-msgstr[1] "%d Monate"
-
-#, php-format
-msgid "%d an"
-msgid_plural "%d ans"
-msgstr[0] "%d Jahr"
-msgstr[1] "%d Jahre"
-
-#, php-format
-msgid ""
-"Ce matériel n'a pas d'utilisateur assigné : <a href=\"%s\">créez maintenant "
-"la fiche de %s</a> (bénéficiaire interne ou externe)."
-msgstr ""
-"Diesem Gerät ist kein Benutzer zugewiesen: <a href=\"%s\">erstellen Sie "
-"jetzt das Formular für %s</a> (interner oder externer Begünstigter)."
-
-#, php-format
-msgid ""
-"État mis à jour automatiquement (%s) suite à la création d'une fiche par le "
-"plugin Assetsign & signature."
-msgstr ""
-"Status automatisch aktualisiert (%s) nach Erstellung eines Formulars durch "
-"das Plugin Assetsign & signature."
-
-msgid "AssetSign — Signature électronique"
-msgstr "AssetSign — Elektronische Unterschrift"
-
-msgid "Relance envoyée."
-msgstr "Erinnerung gesendet."
-
-msgid "Type de matériel invalide."
-msgstr "Ungültiger Gerätetyp."
-
-msgid "Utilisateur introuvable."
-msgstr "Benutzer nicht gefunden."
-
-msgid "Aucun nouvel événement trouvé dans l'historique."
-msgstr "Kein neues Ereignis im Verlauf gefunden."
-
-#, php-format
-msgid "%d événement retrouvé dans l'historique."
-msgid_plural "%d événements retrouvés dans l'historique."
-msgstr[0] "%d Ereignis im Verlauf gefunden."
-msgstr[1] "%d Ereignisse im Verlauf gefunden."
 
 #: templates/sign_page.html.twig front/sign.php:130
 msgid "Signature d'attribution de matériel"
@@ -400,14 +15,14 @@ msgstr "Unterschrift der Gerätezuweisung"
 
 #: templates/sign_page.html.twig templates/assetsign_form.html.twig
 #: templates/maintenance_create.html.twig templates/maintenance_form.html.twig
-#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:202
+#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:219
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:158
-#: src/GlpiPlugin/Assetsign/Maintenance.php:82
+#: src/GlpiPlugin/Assetsign/Maintenance.php:86
 msgid "Matériel"
 msgstr "Gerät"
 
 #: templates/sign_page.html.twig templates/assetsign_form.html.twig
-#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:211
+#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:228
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:64
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:159
 msgid "Bénéficiaire"
@@ -540,7 +155,7 @@ msgstr[0] "Zuweisung"
 msgstr[1] "Zuweisungen"
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:219
+#: src/GlpiPlugin/Assetsign/Assetsign.php:236
 msgid "Statut"
 msgstr "Status"
 
@@ -561,27 +176,27 @@ msgid "Signé le"
 msgstr "Unterschrieben am"
 
 #: templates/assetsign_form.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:249
+#: src/GlpiPlugin/Assetsign/Assetsign.php:266
 msgid "Nombre de relances"
 msgstr "Anzahl der Erinnerungen"
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Maintenance.php:89
+#: src/GlpiPlugin/Assetsign/Maintenance.php:93
 msgid "PDF"
 msgstr "PDF"
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:304
+#: src/GlpiPlugin/Assetsign/Assetsign.php:321
 msgid "Télécharger (signé)"
 msgstr "Herunterladen (unterschrieben)"
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:304
+#: src/GlpiPlugin/Assetsign/Assetsign.php:321
 msgid "Télécharger (non signé)"
 msgstr "Herunterladen (nicht unterschrieben)"
 
 #: templates/assetsign_form.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:384
+#: src/GlpiPlugin/Assetsign/Assetsign.php:408
 msgid "Relancer maintenant"
 msgstr "Jetzt erinnern"
 
@@ -590,7 +205,7 @@ msgid "Annuler cette demande de signature ?"
 msgstr "Diese Unterschriftsanfrage stornieren?"
 
 #: templates/assetsign_form.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:386
+#: src/GlpiPlugin/Assetsign/Assetsign.php:410
 msgid "Annuler la demande"
 msgstr "Anfrage stornieren"
 
@@ -656,6 +271,18 @@ msgstr "Bemerkungen"
 #: templates/assetsign_form.html.twig
 msgid "Remarque du bénéficiaire"
 msgstr "Anmerkung des Empfängers"
+
+#: templates/assetsign_form.html.twig
+msgid "Contrôle qualité"
+msgstr "Qualitätskontrolle"
+
+#: templates/assetsign_form.html.twig
+msgid ""
+"Aucun point de contrôle configuré pour ce type de mouvement (Configuration > "
+"Intitulés > Points de contrôle qualité)."
+msgstr ""
+"Kein Prüfpunkt für diesen Bewegungstyp konfiguriert (Konfiguration > Listen "
+"> Qualitätsprüfpunkte)."
 
 #: templates/assetsign_form.html.twig
 msgid "Accessoires remis"
@@ -796,14 +423,28 @@ msgid "Vente"
 msgstr "Verkauf"
 
 #: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:430
+msgid "Réforme"
+msgstr "Außerbetriebnahme"
+
+#: templates/config_form.html.twig
 msgid "Compléments"
 msgstr "Ergänzungen"
 
 #: templates/config_form.html.twig
 #: src/GlpiPlugin/Assetsign/PassportEvent.php:52
-#: src/GlpiPlugin/Assetsign/Maintenance.php:113
+#: src/GlpiPlugin/Assetsign/Maintenance.php:117
 msgid "Maintenance"
 msgstr "Wartung"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:132
+msgid "Passeport matériel"
+msgstr "Gerätepass"
+
+#: templates/config_form.html.twig templates/passport_tab.html.twig
+msgid "Score de santé"
+msgstr "Zustandswert"
 
 #: templates/config_form.html.twig
 msgid "Version du plugin"
@@ -881,6 +522,18 @@ msgstr ""
 "eine untergeordnete Entität bereits ein eigenes Logo hochgeladen hat."
 
 #: templates/config_form.html.twig
+msgid "Nom de l'entreprise"
+msgstr "Firmenname"
+
+#: templates/config_form.html.twig
+msgid ""
+"Optionnel : affiché à côté du logo sur les fiches PDF, en complément (pas en "
+"remplacement) du logo."
+msgstr ""
+"Optional: wird neben dem Logo auf PDF-Formularen angezeigt, zusätzlich zum "
+"Logo (nicht als Ersatz)."
+
+#: templates/config_form.html.twig
 msgid "Lien vers la charte informatique complète"
 msgstr "Link zur vollständigen IT-Nutzungsrichtlinie"
 
@@ -930,6 +583,20 @@ msgstr ""
 #: templates/config_form.html.twig
 msgid "Signature obligatoire"
 msgstr "Unterschrift erforderlich"
+
+#: templates/config_form.html.twig
+msgid "Protéger le PDF (restreindre la copie et l'édition)"
+msgstr "PDF schützen (Kopieren und Bearbeiten einschränken)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur "
+"qui respecte cette restriction — n'affecte jamais la possibilité de le "
+"consulter ou de l'imprimer."
+msgstr ""
+"Verschlüsselt das erzeugte PDF, um dessen Kopieren/Bearbeiten in einem "
+"Reader zu verhindern, der diese Einschränkung beachtet — beeinträchtigt "
+"niemals die Möglichkeit, es anzuzeigen oder zu drucken."
 
 #: templates/config_form.html.twig
 msgid "Types de matériel gérés par le plugin"
@@ -1018,6 +685,31 @@ msgid ""
 msgstr ""
 "Preis und Datum sind nicht automatisch bekannt: bitte anschließend im "
 "erstellten Blatt ergänzen."
+
+#: templates/config_form.html.twig
+msgid ""
+"Aucune fiche Attribution n'est créée ici : ce réglage ne fait qu'écrire "
+"automatiquement la date de réforme (champ natif GLPI « Réforme » de l'onglet "
+"Infocom) quand le matériel passe dans l'un des États ci-dessous, au lieu de "
+"la saisir à la main."
+msgstr ""
+"Hier wird kein Zuweisungsformular erstellt: Diese Einstellung schreibt nur "
+"automatisch das Außerbetriebnahmedatum (natives GLPI-Feld "
+"„Außerbetriebnahme“ im Reiter Finanz- und Verwaltungsinformationen), wenn "
+"das Gerät in einen der unten stehenden Status wechselt, anstatt es manuell "
+"einzutragen."
+
+#: templates/config_form.html.twig
+msgid ""
+"Une date de réforme déjà renseignée (saisie manuelle ou déclenchement "
+"précédent) n'est jamais écrasée."
+msgstr ""
+"Ein bereits eingetragenes Außerbetriebnahmedatum (manuelle Eingabe oder "
+"vorheriger Auslöser) wird niemals überschrieben."
+
+#: templates/config_form.html.twig
+msgid "Déclenchement par État du matériel"
+msgstr "Auslösung nach Gerätestatus"
 
 #: templates/config_form.html.twig
 msgid "Réglages transverses, applicables à tous les types de fiche signée."
@@ -1123,6 +815,152 @@ msgstr "Wartungsblätter ansehen"
 
 #: templates/config_form.html.twig
 msgid ""
+"Le score de santé synthétise l’âge, les incidents, l’état physique et les "
+"mouvements du matériel. Les réglages sont propres à l’entité sélectionnée."
+msgstr ""
+"Der Zustandswert fasst Alter, Vorfälle, physischen Zustand und Bewegungen "
+"des Geräts zusammen. Die Einstellungen gelten nur für die ausgewählte "
+"Entität."
+
+#: templates/config_form.html.twig
+msgid "Afficher un score de santé (0-100)"
+msgstr "Zustandswert anzeigen (0-100)"
+
+#: templates/config_form.html.twig
+msgid "Calcul du score"
+msgstr "Berechnung des Werts"
+
+#: templates/config_form.html.twig
+msgid ""
+"Les poids sont relatifs : ils n’ont pas à totaliser 100. Un facteur à 0 est "
+"ignoré."
+msgstr ""
+"Die Gewichtungen sind relativ: Sie müssen nicht in Summe 100 ergeben. Ein "
+"Faktor von 0 wird ignoriert."
+
+#: templates/config_form.html.twig
+msgid "Poids : Âge"
+msgstr "Gewichtung: Alter"
+
+#: templates/config_form.html.twig
+msgid "Poids : Incidents"
+msgstr "Gewichtung: Vorfälle"
+
+#: templates/config_form.html.twig
+msgid "Poids : État physique"
+msgstr "Gewichtung: Physischer Zustand"
+
+#: templates/config_form.html.twig
+msgid "Poids : Mouvements"
+msgstr "Gewichtung: Bewegungen"
+
+#: templates/config_form.html.twig
+msgid "Couleurs et seuils"
+msgstr "Farben und Schwellenwerte"
+
+#: templates/config_form.html.twig
+msgid ""
+"Le score utilise la couleur « Bon » à partir de son seuil, « Vigilance » "
+"entre les deux seuils et « Critique » en dessous. Les seuils sont inclusifs."
+msgstr ""
+"Der Wert verwendet die Farbe „Gut“ ab seinem Schwellenwert, „Achtung“ "
+"zwischen den beiden Schwellenwerten und „Kritisch“ darunter. Die "
+"Schwellenwerte sind inklusiv."
+
+#: templates/config_form.html.twig
+msgid "Bon"
+msgstr "Gut"
+
+#: templates/config_form.html.twig
+msgid "Vigilance"
+msgstr "Achtung"
+
+#: templates/config_form.html.twig
+msgid "Critique"
+msgstr "Kritisch"
+
+#: templates/config_form.html.twig
+msgid "En dessous du seuil Vigilance."
+msgstr "Unterhalb des Schwellenwerts „Achtung“."
+
+#: templates/config_form.html.twig
+msgid ""
+"Le Passeport matériel agrège en lecture seule les événements des onglets "
+"Attribution/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel "
+"onglet du matériel concerné."
+msgstr ""
+"Der Gerätepass fasst schreibgeschützt die Ereignisse aus den obigen Reitern "
+"Zuweisung/Rückgabe/Spende/Verkauf/Wartung zusammen, in einem neuen Reiter "
+"des betreffenden Geräts."
+
+#: templates/config_form.html.twig
+msgid "Activer le Passeport matériel"
+msgstr "Gerätepass aktivieren"
+
+#: templates/config_form.html.twig
+msgid ""
+"Désactivé : l'onglet disparaît et aucun nouvel événement n'est enregistré. "
+"Les événements déjà enregistrés ne sont jamais supprimés — ils "
+"réapparaissent si vous réactivez."
+msgstr ""
+"Deaktiviert: Der Reiter verschwindet und es wird kein neues Ereignis "
+"erfasst. Bereits erfasste Ereignisse werden niemals gelöscht — sie "
+"erscheinen wieder, wenn Sie erneut aktivieren."
+
+#: templates/config_form.html.twig
+msgid "Anonymiser l'identité des bénéficiaires après (années, 0 = jamais)"
+msgstr "Identität der Begünstigten anonymisieren nach (Jahre, 0 = nie)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Passé ce délai, le nom et l'e-mail du bénéficiaire sont retirés des "
+"événements du Passeport matériel (l'événement et sa date restent visibles). "
+"N'affecte jamais les fiches d'attribution/restitution elles-mêmes."
+msgstr ""
+"Nach Ablauf dieser Frist werden Name und E-Mail des Begünstigten aus den "
+"Ereignissen des Gerätepasses entfernt (das Ereignis und sein Datum bleiben "
+"sichtbar). Betrifft niemals die Zuweisungs-/Rückgabeformulare selbst."
+
+#: templates/config_form.html.twig
+msgid "Types d'événement affichés dans la frise"
+msgstr "In der Zeitleiste angezeigte Ereignistypen"
+
+#: templates/config_form.html.twig
+msgid ""
+"Décocher un type ne supprime rien : il n'est plus qu'affiché dans la frise, "
+"tant qu'il reste décoché."
+msgstr ""
+"Das Deaktivieren eines Typs löscht nichts: Er wird nur nicht mehr in der "
+"Zeitleiste angezeigt, solange er deaktiviert bleibt."
+
+#: templates/config_form.html.twig
+msgid "Afficher les dates Infocom dans la frise"
+msgstr "Finanz- und Verwaltungsdaten in der Zeitleiste anzeigen"
+
+#: templates/config_form.html.twig
+msgid ""
+"Achat, commande, livraison, mise en service, garantie, réforme : lues "
+"directement depuis l'onglet Infocom du matériel, jamais copiées ni "
+"modifiables depuis ici."
+msgstr ""
+"Kauf, Bestellung, Lieferung, Inbetriebnahme, Garantie, Außerbetriebnahme: "
+"direkt aus dem Reiter Finanz- und Verwaltungsinformationen des Geräts "
+"gelesen, hier nie kopiert oder bearbeitbar."
+
+#: templates/config_form.html.twig
+msgid "Afficher les tickets liés dans la frise"
+msgstr "Verknüpfte Tickets in der Zeitleiste anzeigen"
+
+#: templates/config_form.html.twig
+msgid ""
+"Lecture seule : chaque technicien ne voit que les tickets auxquels il a "
+"réellement accès, exactement comme sur l'onglet Tickets du matériel."
+msgstr ""
+"Schreibgeschützt: Jeder Techniker sieht nur die Tickets, auf die er "
+"tatsächlich Zugriff hat, genau wie im Reiter Tickets des Geräts."
+
+#: templates/config_form.html.twig
+msgid ""
 "Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. "
 "L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou "
 "changez d'onglet, avant même d'enregistrer."
@@ -1130,6 +968,22 @@ msgstr ""
 "Beispiel mit fiktiven Daten, gleiche Twig-Vorlagen wie das echte PDF. Die "
 "Vorschau aktualisiert sich automatisch, sobald Sie eine Einstellung ändern "
 "oder den Reiter wechseln, noch bevor Sie speichern."
+
+#: templates/config_form.html.twig
+msgid ""
+"Ce gabarit est hérité d'une entité parente : l'enregistrer ici le modifie "
+"pour toutes les entités qui en héritent, pas seulement celle-ci."
+msgstr ""
+"Diese Vorlage wird von einer übergeordneten Entität geerbt: Das Speichern "
+"hier ändert sie für alle Entitäten, die davon erben, nicht nur für diese."
+
+#: templates/config_form.html.twig
+msgid "Enregistrer le gabarit"
+msgstr "Vorlage speichern"
+
+#: templates/config_form.html.twig
+msgid "Gérer tous les gabarits de ce type"
+msgstr "Alle Vorlagen dieses Typs verwalten"
 
 #: templates/maintenance_tab.html.twig
 msgid "Aucune fiche de maintenance enregistrée pour ce matériel."
@@ -1163,8 +1017,8 @@ msgid "Créer la fiche"
 msgstr "Blatt erstellen"
 
 #: templates/maintenance_create.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:195
-#: src/GlpiPlugin/Assetsign/Maintenance.php:81
+#: src/GlpiPlugin/Assetsign/Assetsign.php:212
+#: src/GlpiPlugin/Assetsign/Maintenance.php:85
 msgid "Type de matériel"
 msgstr "Gerätetyp"
 
@@ -1180,6 +1034,97 @@ msgstr "Unterschreiben Sie unten, bevor Sie das Blatt erstellen."
 msgid "Merci de signer avant de créer la fiche."
 msgstr "Bitte unterschreiben Sie, bevor Sie das Blatt erstellen."
 
+#: templates/passport_tab.html.twig
+msgid "Modèle"
+msgstr "Modell"
+
+#: templates/passport_tab.html.twig
+msgid "N° série"
+msgstr "Seriennr."
+
+#: templates/passport_tab.html.twig
+msgid "État"
+msgstr "Status"
+
+#: templates/passport_tab.html.twig
+msgid "Utilisateur actuel"
+msgstr "Aktueller Benutzer"
+
+#: templates/passport_tab.html.twig
+msgid "Entité"
+msgstr "Entität"
+
+#: templates/passport_tab.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:427
+msgid "Achat"
+msgstr "Kauf"
+
+#: templates/passport_tab.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:460
+msgid "Fin de garantie"
+msgstr "Garantieende"
+
+#: templates/passport_tab.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:355
+msgid "Âge"
+msgstr "Alter"
+
+#: templates/passport_tab.html.twig
+msgid "Temps utilisé"
+msgstr "Nutzungsdauer"
+
+#: templates/passport_tab.html.twig
+msgid "Temps en stock"
+msgstr "Lagerzeit"
+
+#: templates/passport_tab.html.twig
+msgid "de dégradation"
+msgstr "Abnutzung"
+
+#: templates/passport_tab.html.twig
+msgid "poids"
+msgstr "Gewichtung"
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "Forcer la recherche dans l'historique"
+msgstr "Suche im Verlauf erzwingen"
+
+#: templates/passport_tab.html.twig
+msgid "Vies du matériel"
+msgstr "Lebenszyklen des Geräts"
+
+#: templates/passport_tab.html.twig
+msgid "externe"
+msgstr "extern"
+
+#: templates/passport_tab.html.twig
+msgid "aujourd'hui"
+msgstr "heute"
+
+#: templates/passport_tab.html.twig
+msgid "Aucune attribution enregistrée pour le moment."
+msgstr "Bisher keine Zuweisung erfasst."
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "Historique"
+msgstr "Verlauf"
+
+#: templates/passport_tab.html.twig
+msgid "bénéficiaire anonymisé"
+msgstr "anonymisierter Begünstigter"
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "contrôles qualité"
+msgstr "Qualitätsprüfungen"
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "Voir la fiche"
+msgstr "Formular ansehen"
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "Aucun événement enregistré pour le moment."
+msgstr "Bisher kein Ereignis erfasst."
+
 #: templates/maintenance_form.html.twig
 #: src/GlpiPlugin/Assetsign/Maintenance.php:34
 msgid "Fiche de maintenance"
@@ -1192,12 +1137,50 @@ msgid "Fiche PDF"
 msgstr "PDF-Blatt"
 
 #: templates/maintenance_form.html.twig
+msgid ""
+"Ces informations sont enregistrées au moment de la signature et permettent, "
+"en cas de litige, de vérifier que le PDF n'a pas été modifié depuis "
+"(l'empreinte ci-dessus doit correspondre à celle du fichier)."
+msgstr ""
+"Diese Informationen werden zum Zeitpunkt der Unterschrift erfasst und "
+"ermöglichen im Streitfall zu prüfen, dass das PDF seitdem nicht verändert "
+"wurde (der obige Fingerabdruck muss dem der Datei entsprechen)."
+
+#: templates/maintenance_form.html.twig
 msgid "Points de contrôle validés"
 msgstr "Bestätigte Prüfpunkte"
 
 #: templates/maintenance_form.html.twig
 msgid "Aucun point de contrôle validé."
 msgstr "Kein Prüfpunkt bestätigt."
+
+#: templates/passport_user_tab.html.twig
+msgid "Compte"
+msgstr "Konto"
+
+#: templates/passport_user_tab.html.twig
+msgid "Entrée"
+msgstr "Eintritt"
+
+#: templates/passport_user_tab.html.twig
+msgid "inconnue"
+msgstr "unbekannt"
+
+#: templates/passport_user_tab.html.twig
+msgid "compte supprimé le"
+msgstr "Konto gelöscht am"
+
+#: templates/passport_user_tab.html.twig
+msgid "compte désactivé le"
+msgstr "Konto deaktiviert am"
+
+#: templates/passport_user_tab.html.twig
+msgid "compte actif"
+msgstr "aktives Konto"
+
+#: templates/passport_user_tab.html.twig
+msgid "matériel supprimé"
+msgstr "Gerät gelöscht"
 
 #: templates/assetsign_tab.html.twig
 msgid "Aucune attribution enregistrée pour ce matériel."
@@ -1241,6 +1224,10 @@ msgid "Créer une fiche de %s"
 msgstr "%s-Blatt erstellen"
 
 #: templates/assetsign_tab.html.twig
+msgid "Valider"
+msgstr "Bestätigen"
+
+#: templates/assetsign_tab.html.twig
 msgid "Assigner un matériel à cet utilisateur"
 msgstr "Diesem Benutzer ein Gerät zuweisen"
 
@@ -1256,23 +1243,23 @@ msgstr ""
 msgid "Assigner"
 msgstr "Zuweisen"
 
-#: hook.php:90 src/GlpiPlugin/Assetsign/Config.php:77
+#: hook.php:107 src/GlpiPlugin/Assetsign/Config.php:77
 msgid "Assetsign & signature"
 msgstr "Übergabe & Unterschrift"
 
-#: hook.php:96
+#: hook.php:113
 msgid "Attributions en attente de signature"
 msgstr "Zuweisungen, die auf Unterschrift warten"
 
-#: hook.php:103
+#: hook.php:120
 msgid "Attributions signées"
 msgstr "Unterschriebene Zuweisungen"
 
-#: hook.php:110
+#: hook.php:127
 msgid "Attributions expirées"
 msgstr "Abgelaufene Zuweisungen"
 
-#: hook.php:117 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
+#: hook.php:134 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
 msgid "Échecs de création (30 derniers jours)"
 msgstr "Fehlgeschlagene Erstellungen (letzte 30 Tage)"
 
@@ -1304,7 +1291,7 @@ msgstr "Test-E-Mail gesendet."
 msgid "Fiche de maintenance créée."
 msgstr "Wartungsblatt erstellt."
 
-#: setup.php:213
+#: setup.php:217
 msgid "Aucune verification de configuration bloquante."
 msgstr "Keine blockierende Konfigurationsprüfung."
 
@@ -1314,6 +1301,91 @@ msgid_plural "Accessoires d'attribution"
 msgstr[0] "Zuweisungszubehör"
 msgstr[1] "Zuweisungszubehörteile"
 
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:38
+msgid "Événement du passeport matériel"
+msgid_plural "Événements du passeport matériel"
+msgstr[0] "Gerätepass-Ereignis"
+msgstr[1] "Gerätepass-Ereignisse"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:129
+msgid "Passeport utilisateur"
+msgstr "Benutzerpass"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:266
+msgid "depuis l'achat"
+msgstr "seit dem Kauf"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:266
+msgid "depuis l'entrée dans GLPI"
+msgstr "seit der Erfassung in GLPI"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:365
+msgid "Incidents"
+msgstr "Vorfälle"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:382
+msgid "État physique"
+msgstr "Physischer Zustand"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:386
+msgid "Mouvements"
+msgstr "Bewegungen"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:425
+msgid "Commande"
+msgstr "Bestellung"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:426
+msgid "Livraison"
+msgstr "Lieferung"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:428
+msgid "Mise en service"
+msgstr "Inbetriebnahme"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:429
+msgid "Début de garantie"
+msgstr "Garantiebeginn"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:449
+#, php-format
+msgid "Prix d'achat : %s %s"
+msgstr "Kaufpreis: %s %s"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:508
+msgid "Ticket"
+msgstr "Ticket"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:655
+msgid "Reconstitué automatiquement depuis l'historique GLPI."
+msgstr "Automatisch aus dem GLPI-Verlauf rekonstruiert."
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:893
+msgid "Utilisateur retiré"
+msgstr "Benutzer entfernt"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:922
+#, php-format
+msgid "%d jour"
+msgid_plural "%d jours"
+msgstr[0] "%d Tag"
+msgstr[1] "%d Tage"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:927
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:937
+#, php-format
+msgid "%d mois"
+msgid_plural "%d mois"
+msgstr[0] "%d Monat"
+msgstr[1] "%d Monate"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:932
+#, php-format
+msgid "%d an"
+msgid_plural "%d ans"
+msgstr[0] "%d Jahr"
+msgstr[1] "%d Jahre"
+
 #: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:25
 msgid "Point de contrôle de maintenance"
 msgid_plural "Points de contrôle de maintenance"
@@ -1321,26 +1393,32 @@ msgstr[0] "Wartungsprüfpunkt"
 msgstr[1] "Wartungsprüfpunkte"
 
 #: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:41
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:53
 msgid "Case à cocher"
 msgstr "Kontrollkästchen"
 
 #: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:42
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:54
 msgid "Texte libre"
 msgstr "Freitext"
 
 #: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:43
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:55
 msgid "Menu déroulant"
 msgstr "Dropdown-Menü"
 
 #: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:63
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:86
 msgid "Type de saisie"
 msgstr "Feldtyp"
 
 #: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:68
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:91
 msgid "Options du menu déroulant (une par ligne)"
 msgstr "Optionen des Dropdown-Menüs (eine pro Zeile)"
 
 #: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:87
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:115
 msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
 msgstr "Wird nur verwendet, wenn der Feldtyp \"Dropdown-Menü\" ist."
 
@@ -1356,37 +1434,37 @@ msgstr "Vorderansicht"
 msgid "Dessous"
 msgstr "Unterseite"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:227
+#: src/GlpiPlugin/Assetsign/Assetsign.php:244
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:157
 #: src/GlpiPlugin/Assetsign/Template.php:51
 msgid "Type d'attribution"
 msgstr "Zuweisungstyp"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:235
+#: src/GlpiPlugin/Assetsign/Assetsign.php:252
 msgid "Date d'envoi"
 msgstr "Sendedatum"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:242
+#: src/GlpiPlugin/Assetsign/Assetsign.php:259
 msgid "Date de signature"
 msgstr "Unterschriftsdatum"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:260
+#: src/GlpiPlugin/Assetsign/Assetsign.php:277
 msgid "PDF non signé"
 msgstr "Unterschriebenes PDF nicht vorhanden"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:268
+#: src/GlpiPlugin/Assetsign/Assetsign.php:285
 msgid "PDF signé"
 msgstr "Unterschriebenes PDF"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:281
+#: src/GlpiPlugin/Assetsign/Assetsign.php:298
 msgid "Bénéficiaire externe"
 msgstr "Externer Empfänger"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:395
+#: src/GlpiPlugin/Assetsign/Assetsign.php:419
 msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
 msgstr "Unterschrifts-Erinnerung an die ausgewählten Zuweisungen senden?"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:399
+#: src/GlpiPlugin/Assetsign/Assetsign.php:423
 msgid ""
 "Annuler les demandes de signature sélectionnées ? Le lien envoyé au "
 "bénéficiaire deviendra invalide."
@@ -1394,57 +1472,66 @@ msgstr ""
 "Ausgewählte Unterschriftsanfragen stornieren? Der an den Empfänger gesendete "
 "Link wird ungültig."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:465
-#: src/GlpiPlugin/Assetsign/Assetsign.php:474
+#: src/GlpiPlugin/Assetsign/Assetsign.php:489
+#: src/GlpiPlugin/Assetsign/Assetsign.php:498
 msgid "Attributions"
 msgstr "Zuweisungen"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:580
-#: src/GlpiPlugin/Assetsign/Maintenance.php:295
+#: src/GlpiPlugin/Assetsign/Assetsign.php:604
+#: src/GlpiPlugin/Assetsign/Maintenance.php:299
 msgid "Choisissez d'abord un type de matériel ci-dessus."
 msgstr "Wählen Sie zunächst oben einen Gerätetyp aus."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:627
+#: src/GlpiPlugin/Assetsign/Assetsign.php:651
 msgid "Brouillon"
 msgstr "Entwurf"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:628
+#: src/GlpiPlugin/Assetsign/Assetsign.php:652
 msgid "En attente"
 msgstr "Ausstehend"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:629
+#: src/GlpiPlugin/Assetsign/Assetsign.php:653
 msgid "Envoyé"
 msgstr "Gesendet"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:630
+#: src/GlpiPlugin/Assetsign/Assetsign.php:654
 msgid "Consulté"
 msgstr "Angesehen"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:631
+#: src/GlpiPlugin/Assetsign/Assetsign.php:655
 msgid "Signé"
 msgstr "Unterschrieben"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:632
+#: src/GlpiPlugin/Assetsign/Assetsign.php:656
 msgid "Expiré"
 msgstr "Abgelaufen"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:633
+#: src/GlpiPlugin/Assetsign/Assetsign.php:657
 msgid "Annulé"
 msgstr "Storniert"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:634
+#: src/GlpiPlugin/Assetsign/Assetsign.php:658
 msgid "Remis (bénéficiaire externe, sans signature)"
 msgstr "Übergeben (externer Empfänger, ohne Unterschrift)"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:812
+#: src/GlpiPlugin/Assetsign/Assetsign.php:834
+#, php-format
+msgid ""
+"Ce matériel n'a pas d'utilisateur assigné : <a href=\"%s\">créez maintenant "
+"la fiche de %s</a> (bénéficiaire interne ou externe)."
+msgstr ""
+"Diesem Gerät ist kein Benutzer zugewiesen: <a href=\"%s\">erstellen Sie "
+"jetzt das Formular für %s</a> (interner oder externer Begünstigter)."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:836
 msgid "don"
 msgstr "Spende"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:812
+#: src/GlpiPlugin/Assetsign/Assetsign.php:836
 msgid "vente"
 msgstr "Verkauf"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:832
+#: src/GlpiPlugin/Assetsign/Assetsign.php:856
 msgid ""
 "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut "
 "donc pas générer de fiche d'attribution ou de restitution. Assignez un "
@@ -1454,37 +1541,46 @@ msgstr ""
 "kein Zuweisungs- oder Rückgabeblatt erzeugen. Weisen Sie dem Gerät einen "
 "Benutzer zu, wenn eine Unterschrift erwartet wird."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:986
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1010
 msgid "Ce type de fiche ne peut pas être créé manuellement."
 msgstr "Dieser Blatttyp kann nicht manuell erstellt werden."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:995
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1019
 msgid "Le nom du bénéficiaire externe est obligatoire."
 msgstr "Der Name des externen Empfängers ist erforderlich."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:999
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1023
 msgid "Le bénéficiaire (utilisateur GLPI) est obligatoire."
 msgstr "Der Empfänger (GLPI-Benutzer) ist erforderlich."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1003
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1027
 #, php-format
 msgid "Type de matériel invalide : %s"
 msgstr "Ungültiger Gerätetyp: %s"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1018
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1042
 #: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:25
 msgid "Matériel introuvable."
 msgstr "Gerät nicht gefunden."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1040
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1064
 msgid "Échec de la création de la fiche."
 msgstr "Erstellung des Blatts fehlgeschlagen."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1140
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1125
+#, php-format
+msgid ""
+"État mis à jour automatiquement (%s) suite à la création d'une fiche par le "
+"plugin Assetsign & signature."
+msgstr ""
+"Status automatisch aktualisiert (%s) nach Erstellung eines Formulars durch "
+"das Plugin Assetsign & signature."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1164
 msgid "Annulée automatiquement (matériel réaffecté avant signature)"
 msgstr "Automatisch storniert (Gerät vor der Unterschrift neu zugewiesen)"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1160
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1184
 msgid ""
 "Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà "
 "annulée)."
@@ -1492,23 +1588,27 @@ msgstr ""
 "Diese Anfrage kann nicht mehr storniert werden (bereits unterschrieben, "
 "abgelaufen oder bereits storniert)."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1603
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1728
 msgid "Envoie les relances de signature dues"
 msgstr "Sendet fällige Unterschrifts-Erinnerungen"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1604
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1729
 msgid "Marque comme expirées les attributions hors délai"
 msgstr "Markiert Zuweisungen nach Fristablauf als abgelaufen"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1605
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1730
 msgid "Alerte le technicien des attributions sur le point d'expirer"
 msgstr "Benachrichtigt den Techniker bei bald ablaufenden Zuweisungen"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1619
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1744
 msgid "Cette attribution ne peut plus être relancée (déjà signée ou expirée)."
 msgstr ""
 "Für diese Zuweisung kann keine Erinnerung mehr gesendet werden (bereits "
 "unterschrieben oder abgelaufen)."
+
+#: src/GlpiPlugin/Assetsign/Config.php:72
+msgid "AssetSign — Signature électronique"
+msgstr "AssetSign — Elektronische Unterschrift"
 
 #: src/GlpiPlugin/Assetsign/Config.php:144
 msgid "Signature intégrée (canvas)"
@@ -1564,7 +1664,7 @@ msgid "Document sur le point d'expirer"
 msgstr "Dokument läuft bald ab"
 
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:77
-#: src/GlpiPlugin/Assetsign/Maintenance.php:83
+#: src/GlpiPlugin/Assetsign/Maintenance.php:87
 msgid "Technicien"
 msgstr "Techniker"
 
@@ -1643,13 +1743,53 @@ msgstr "Dieses Dokument entspricht nicht Ihrem Benutzerkonto."
 msgid "Fiche créée."
 msgstr "Blatt erstellt."
 
+#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:40
+msgid "Relance envoyée."
+msgstr "Erinnerung gesendet."
+
 #: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:46
 msgid "Demande annulée."
 msgstr "Anfrage storniert."
 
-#: src/GlpiPlugin/Assetsign/Maintenance.php:103
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:20
+msgid "Type de matériel invalide."
+msgstr "Ungültiger Gerätetyp."
+
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:36
+msgid "Utilisateur introuvable."
+msgstr "Benutzer nicht gefunden."
+
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:44
+msgid "Aucun nouvel événement trouvé dans l'historique."
+msgstr "Kein neues Ereignis im Verlauf gefunden."
+
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:48
+#, php-format
+msgid "%d événement retrouvé dans l'historique."
+msgid_plural "%d événements retrouvés dans l'historique."
+msgstr[0] "%d Ereignis im Verlauf gefunden."
+msgstr[1] "%d Ereignisse im Verlauf gefunden."
+
+#: src/GlpiPlugin/Assetsign/Maintenance.php:107
 msgid "Télécharger"
 msgstr "Herunterladen"
+
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:36
+msgid "Point de contrôle qualité"
+msgid_plural "Points de contrôle qualité"
+msgstr[0] "Qualitätsprüfpunkt"
+msgstr[1] "Qualitätsprüfpunkte"
+
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:96
+msgid "S'applique aux mouvements"
+msgstr "Gilt für Bewegungen"
+
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:131
+msgid ""
+"Un point non rattaché à aucun mouvement n'apparaît jamais sur aucune fiche."
+msgstr ""
+"Ein Prüfpunkt, der keiner Bewegung zugeordnet ist, erscheint nie auf einem "
+"Beleg."
 
 #: src/GlpiPlugin/Assetsign/Token.php:85
 msgid "Lien de signature inconnu."

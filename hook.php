@@ -10,6 +10,7 @@ use Glpi\Cache\CacheManager;
 use GlpiPlugin\Assetsign\Accessory;
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\AssetsignAccessory;
+use GlpiPlugin\Assetsign\ChecklistItem;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\CreationFailure;
 use GlpiPlugin\Assetsign\DamageMarker;
@@ -151,6 +152,7 @@ function plugin_assetsign_getDropdown(): array {
         Template::class                 => Template::getTypeName(2),
         Accessory::class                => Accessory::getTypeName(2),
         MaintenanceChecklistItem::class => MaintenanceChecklistItem::getTypeName(2),
+        ChecklistItem::class            => ChecklistItem::getTypeName(2),
     ];
 }
 
@@ -181,6 +183,11 @@ function plugin_assetsign_install(): bool {
     Template::install($migration);
     Accessory::install($migration);
     CreationFailure::install($migration);
+    // Avant Assetsign::install() : la contrainte de cle etrangere ajoutee par ce
+    // dernier vers glpi_plugin_assetsign_checklistitems (table des resultats de
+    // checklist qualite) exige que cette table existe deja - meme piege documente
+    // plus bas pour DamageMarker/Maintenance.
+    ChecklistItem::install($migration);
     Assetsign::install($migration);
     AssetsignAccessory::install($migration);
     VenteDetails::install($migration);
@@ -273,7 +280,9 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_assetsignaccessories',
         'glpi_plugin_assetsign_ventedetails',
         'glpi_plugin_assetsign_damagemarkers',
+        'glpi_plugin_assetsign_checklistvalues',
         'glpi_plugin_assetsign_assetsigns',
+        'glpi_plugin_assetsign_checklistitems',
         'glpi_plugin_assetsign_maintenancechecklistvalues',
         'glpi_plugin_assetsign_maintenances',
         'glpi_plugin_assetsign_maintenancechecklistitems',

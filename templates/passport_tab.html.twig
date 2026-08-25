@@ -101,6 +101,13 @@
             {% if event.comment %}
               <div class="text-muted small">{{ event.comment }}</div>
             {% endif %}
+            {% if event.checklist_summary is defined %}
+              <div class="mt-1">
+                <span class="badge" style="background-color: {{ event.checklist_summary.color }}; color: #fff;">
+                  <i class="ti ti-checklist"></i> {{ event.checklist_summary.done }}/{{ event.checklist_summary.total }} {{ __('contrôles qualité', 'assetsign') }}
+                </span>
+              </div>
+            {% endif %}
             {% if event.source_url %}
               <div><a href="{{ event.source_url }}">{{ __('Voir la fiche', 'assetsign') }}</a></div>
             {% endif %}
