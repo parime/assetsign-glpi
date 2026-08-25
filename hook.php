@@ -169,11 +169,11 @@ function plugin_assetsign_install(): bool {
     // par ce endpoint (verification hash_equals()) et par update.sh (meme systeme de fichiers,
     // execute sur la meme machine).
     $opcacheTokenFile = GLPI_PLUGIN_DOC_DIR . '/assetsign_opcache_token';
-    if (!is_file($opcacheTokenFile)) {
-        @mkdir(dirname($opcacheTokenFile), 0700, true);
-        file_put_contents($opcacheTokenFile, bin2hex(random_bytes(32)));
-        @chmod($opcacheTokenFile, 0600);
-    }
+   if (!is_file($opcacheTokenFile)) {
+       @mkdir(dirname($opcacheTokenFile), 0700, true);
+       file_put_contents($opcacheTokenFile, bin2hex(random_bytes(32)));
+       @chmod($opcacheTokenFile, 0600);
+   }
 
     $migration = new Migration(str_replace('.', '', PLUGIN_ASSETSIGN_VERSION));
 
