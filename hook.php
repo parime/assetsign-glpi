@@ -159,6 +159,22 @@ function plugin_assetsign_getDropdown(): array {
 // ----------------------------------------------------------------------------------
 
 function plugin_assetsign_install(): bool {
+    // Jeton partage pour front/opcache_reset.php (revue de securite marketplace GLPI, low,
+    // #98) : la restriction par REMOTE_ADDR==127.0.0.1/::1 seule est contournable derriere un
+    // reverse-proxy en mode loopback (REMOTE_ADDR vaut alors 127.0.0.1 pour tout le trafic
+    // externe), permettant un appel repete non authentifie (petit deni de service CPU). Genere
+    // une seule fois, persiste dans GLPI_PLUGIN_DOC_DIR (= GLPI_VAR_DIR/_plugins, constante GLPI
+    // deja dediee au stockage de documents plugin, hors racine web) plutot que dans un fichier du
+    // plugin lui-meme (qui pourrait etre ecrase par une future mise a jour du code). Lu a la fois
+    // par ce endpoint (verification hash_equals()) et par update.sh (meme systeme de fichiers,
+    // execute sur la meme machine).
+    $opcacheTokenFile = GLPI_PLUGIN_DOC_DIR . '/assetsign_opcache_token';
+    if (!is_file($opcacheTokenFile)) {
+        @mkdir(dirname($opcacheTokenFile), 0700, true);
+        file_put_contents($opcacheTokenFile, bin2hex(random_bytes(32)));
+        @chmod($opcacheTokenFile, 0600);
+    }
+
     $migration = new Migration(str_replace('.', '', PLUGIN_ASSETSIGN_VERSION));
 
     Config::install($migration);

@@ -27,7 +27,15 @@ php bin/console cache:clear
 # echoue (topologie reseau inhabituelle), le rappel ci-dessous reste le filet
 # de securite.
 OPCACHE_RESET_OK=0
-OPCACHE_RESET_URL="http://localhost/plugins/assetsign/front/opcache_reset.php"
+# Jeton partage (revue de securite marketplace GLPI, low, #98) : genere par
+# plugin_assetsign_install() dans GLPI_VAR_DIR/_plugins/, lu ici directement sur le meme systeme
+# de fichiers (ce script tourne sur la meme machine que le serveur web). Chemin en dur sur
+# l'emplacement par defaut de GLPI_VAR_DIR (GLPI_ROOT/files) : suffisant pour l'installation
+# standard ; une installation avec GLPI_VAR_DIR personnalise devra adapter cette ligne. Si le
+# fichier est absent (plugin jamais installe, ou chemin personnalise), curl echoue simplement
+# avec un jeton vide, le filet de securite habituel ci-dessous prend le relais.
+OPCACHE_TOKEN="$(cat "$GLPI_ROOT/files/_plugins/assetsign_opcache_token" 2>/dev/null || true)"
+OPCACHE_RESET_URL="http://localhost/plugins/assetsign/front/opcache_reset.php?token=${OPCACHE_TOKEN}"
 # 3 tentatives, avec une courte pause : juste apres cache:clear ci-dessus
 # (qui vide aussi le cache de routage Symfony, cf. CacheManager::
 # resetAllCaches()), constate en conditions reelles un court delai ou GLPI

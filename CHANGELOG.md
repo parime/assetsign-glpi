@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **`front/opcache_reset.php` protégé uniquement par une restriction d'adresse IP contournable**
+  (revue de sécurité marketplace GLPI, sévérité faible, issue #98) : la vérification
+  `REMOTE_ADDR==127.0.0.1/::1` seule est contournable derrière un reverse-proxy en mode loopback
+  (`REMOTE_ADDR` vaut alors `127.0.0.1` pour tout le trafic externe), permettant un appel répété
+  non authentifié (petit déni de service CPU). Corrigé en ajoutant un jeton partagé généré une
+  seule fois à l'installation (`plugin_assetsign_install()`, persisté dans
+  `GLPI_PLUGIN_DOC_DIR`, hors racine web), vérifié via `hash_equals()` en plus de (pas à la place
+  de) la restriction IP existante conservée en défense en profondeur. `update.sh` (seul appelant
+  réel de ce endpoint) lit ce même jeton sur le système de fichiers et le transmet. Vérifié en
+  conditions réelles : appel sans jeton ou avec un jeton incorrect → 403 ; avec le bon jeton → 200
+  ; cycle complet `update.sh` (migration, activation, vidage de cache, réinitialisation d'OPcache)
+  confirmé fonctionnel de bout en bout.
+
 ### Fixed
 
 - **Listes « Gestion des fiches » et « Fiches de maintenance » : aucune colonne ne permettait
