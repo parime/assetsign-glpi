@@ -131,4 +131,35 @@ class AssetsignFormControllerTest extends AssetsignTestCase
         $this->assertSame(42.5, (float) $details->fields['price']);
         $this->assertSame(date('Y-m-d'), $details->fields['sale_date']);
     }
+
+    public function testUpdateChecklistDelegatesToModel(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit AssetsignFormController Checklist');
+        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_SENT);
+
+        $item = new \GlpiPlugin\Assetsign\ChecklistItem();
+        $id = (int) $item->add([
+            'entities_id'    => 0,
+            'name'           => 'PHPUnit Checklist Controller',
+            'type'           => \GlpiPlugin\Assetsign\ChecklistItem::TYPE_CHECKBOX,
+            'is_active'      => 1,
+            'movement_types' => [Assetsign::TYPE_HANDOVER],
+        ]);
+
+        (new AssetsignFormController())->updateChecklist($assetsign, ['checklist' => [$id => '1']]);
+
+        $this->assertCount(1, $assetsign->getChecklistResults());
+    }
+
+    public function testUpdateChecklistWithoutChecklistKeyIsANoOp(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit AssetsignFormController ChecklistEmpty');
+        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_SENT);
+
+        // Aucune cle 'checklist' soumise (ex: formulaire sans point applicable) :
+        // ne doit jamais lever d'erreur.
+        (new AssetsignFormController())->updateChecklist($assetsign, []);
+
+        $this->assertCount(0, $assetsign->getChecklistResults());
+    }
 }

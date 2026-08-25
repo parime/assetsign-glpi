@@ -187,6 +187,7 @@ class PassportEvent extends CommonDBTM
           };
       }
        unset($row);
+       self::attachChecklistSummaries($rows);
 
        // getLivesForItem() sur les evenements REELS uniquement : les pseudo-evenements
        // Infocom ci-dessous n'ont pas de event_type/users_id, jamais mélangés à la
@@ -547,6 +548,7 @@ class PassportEvent extends CommonDBTM
           [$row['device_name'], $row['device_serial']] = self::resolveDeviceDisplay($row['itemtype'], (int) $row['items_id']);
       }
        unset($row);
+       self::attachChecklistSummaries($rows);
 
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/passport_user_tab.html.twig', [
            'events'       => array_reverse($rows), // le plus recent en premier dans la frise
@@ -774,6 +776,86 @@ class PassportEvent extends CommonDBTM
    }
 
     /**
+     * Ajoute un resume de checklist qualite ('checklist_summary' : done/total/color)
+     * a chaque ligne d'evenement provenant d'une Assetsign (cf. ROADMAP.md V1, issue
+     * #74) - PUREMENT une agregation a l'affichage, exactement comme
+     * getInfocomPseudoEvents()/getLinkedTicketPseudoEvents() : rien n'est jamais copie
+     * dans glpi_plugin_assetsign_events, la source de verite reste
+     * glpi_plugin_assetsign_checklistvalues (via source_itemtype/source_items_id, deja
+     * present sur chaque ligne). Batch en DEUX requetes au total (jamais une par
+     * evenement affiche) : le nombre de points APPLICABLES est mis en cache par type
+     * de mouvement le temps de l'appel (peu de types distincts), le nombre de points
+     * REMPLIS est recupere en une seule requete groupee sur tous les
+     * source_items_id concernes - meme souci de performance que documente dans
+     * ROADMAP.md ("Performance des indicateurs calcules... jamais recalcules a
+     * chaque affichage") applique ici a l'echelle d'un seul appel plutot qu'un cache
+     * persistant, un historique de materiel restant de taille raisonnable.
+     * Absent (`checklist_summary` jamais ajoute) si aucun point de controle n'est
+     * configure pour ce type de mouvement : l'absence de checklist n'est pas un
+     * defaut a signaler, contrairement a une checklist configuree mais incomplete.
+     * @param array<int, array<string, mixed>> $rows Modifie par reference.
+     */
+   private static function attachChecklistSummaries(array &$rows): void {
+       global $DB;
+
+       // PassportEvent::TYPE_* -> Assetsign::TYPE_* (numerotations differentes,
+       // cf. recordForAssetsign() dont ceci est l'inverse).
+       $eventTypeToAssetsignType = [
+           self::TYPE_ATTRIBUTION => Assetsign::TYPE_HANDOVER,
+           self::TYPE_RETURN      => Assetsign::TYPE_RETURN,
+           self::TYPE_DON         => Assetsign::TYPE_DON,
+           self::TYPE_VENTE       => Assetsign::TYPE_VENTE,
+       ];
+
+       $assetsignIds = [];
+       foreach ($rows as $row) {
+          if (($row['source_itemtype'] ?? null) === Assetsign::class && array_key_exists((int) $row['event_type'], $eventTypeToAssetsignType)) {
+             $assetsignIds[] = (int) $row['source_items_id'];
+          }
+       }
+       if ($assetsignIds === []) {
+          return;
+       }
+
+       $filledCounts = [];
+       foreach ($DB->request([
+           'SELECT'  => ['plugin_assetsign_assetsigns_id', new \QueryExpression('COUNT(*) AS filled')],
+           'FROM'    => 'glpi_plugin_assetsign_checklistvalues',
+           'WHERE'   => ['plugin_assetsign_assetsigns_id' => array_values(array_unique($assetsignIds))],
+           'GROUPBY' => 'plugin_assetsign_assetsigns_id',
+       ]) as $row) {
+          $filledCounts[(int) $row['plugin_assetsign_assetsigns_id']] = (int) $row['filled'];
+       }
+
+       $totalsByMovementType = [];
+       foreach ($rows as &$row) {
+          $eventType = (int) $row['event_type'];
+          if (($row['source_itemtype'] ?? null) !== Assetsign::class || !array_key_exists($eventType, $eventTypeToAssetsignType)) {
+             continue;
+          }
+          $movementType = $eventTypeToAssetsignType[$eventType];
+          if (!array_key_exists($movementType, $totalsByMovementType)) {
+             $totalsByMovementType[$movementType] = count(ChecklistItem::getActiveItemsForMovementType($movementType));
+          }
+          $total = $totalsByMovementType[$movementType];
+          if ($total === 0) {
+             continue;
+          }
+          $done = $filledCounts[(int) $row['source_items_id']] ?? 0;
+          $row['checklist_summary'] = [
+              'done'  => $done,
+              'total' => $total,
+              'color' => match (true) {
+                  $done >= $total => '#2fb344', // vert : tous les points remplis
+                  $done > 0       => '#f76707', // orange : partiellement rempli
+                  default         => '#6c757d', // gris : configure mais rien de rempli
+              },
+          ];
+       }
+       unset($row);
+   }
+
+    /**
      * Regroupe les evenements TYPE_ATTRIBUTION consecutifs par users_id : une nouvelle
      * "vie" commence a chaque fois que le beneficiaire change, jamais a chaque evenement
      * (une re-attribution au MEME utilisateur, par exemple apres une maintenance
@@ -931,5 +1013,15 @@ class PassportEvent extends CommonDBTM
                 KEY `date` (`date`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
       }
+
+       // Index composite couvrant la requete reellement executee par showForItem()
+       // (WHERE itemtype = ? AND items_id = ? AND event_type IN (...) ORDER BY date) :
+       // cf. docs/design/ADR-passeport-v1.md, risque "Volume de la table d'evenements"
+       // (issue #76). L'index 'item' pose a la creation de la table (itemtype, items_id)
+       // seul ne couvre pas le tri par date, qui retombe alors sur un filesort des que
+       // l'historique d'un materiel grossit - Migration::addKey() est idempotent
+       // (hasKey() verifie deja avant d'agir), donc sans effet sur une base ou cet
+       // index existe deja.
+       $migration->addKey($table, ['itemtype', 'items_id', 'date'], 'item_date');
    }
 }

@@ -67,4 +67,14 @@ final class AssetsignFormController
        $saleDate = (string) ($post['sale_date'] ?: date('Y-m-d'));
        $assetsign->updateVenteDetails((float) ($post['price'] ?? 0), $saleDate);
    }
+
+    /**
+     * $post['checklist'] : tableau brut $_POST (id du ChecklistItem => valeur
+     * soumise) - cf. ROADMAP.md V1, issue #74. Absent si aucune case/menu
+     * n'a ete soumis (formulaire sans aucun point applicable) : traite comme
+     * un tableau vide, jamais une erreur.
+     */
+   public function updateChecklist(Assetsign $assetsign, array $post): void {
+       $assetsign->setChecklistValues((array) ($post['checklist'] ?? []));
+   }
 }

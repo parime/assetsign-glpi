@@ -180,6 +180,50 @@
       {% endif %}
     {% endif %}
 
+    {% if checklist_results|length or checklist_items|length %}
+      <h3 class="mt-4">{{ __('Contrôle qualité', 'assetsign') }}</h3>
+      {% if checklist_results|length %}
+        <ul>
+          {% for result in checklist_results %}
+            <li>
+              <i class="ti ti-circle-check text-success"></i>
+              {{ result.name }}{% if result.value is not null and result.value != '' %} : {{ result.value }}{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if can_edit_checklist and checklist_items|length %}
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          {% for id, checklistItem in checklist_items %}
+            <div class="mb-2">
+              {% if checklistItem.type == 0 %}
+                <div class="form-check">
+                  <input type="checkbox" name="checklist[{{ id }}]" value="1" class="form-check-input" id="assetsign_checklist_{{ id }}" {{ checklist_values[id] is defined ? 'checked' : '' }}>
+                  <label class="form-check-label" for="assetsign_checklist_{{ id }}">{{ checklistItem.name }}</label>
+                </div>
+              {% elseif checklistItem.type == 1 %}
+                <label class="form-label" for="assetsign_checklist_{{ id }}">{{ checklistItem.name }}</label>
+                <input type="text" name="checklist[{{ id }}]" class="form-control" id="assetsign_checklist_{{ id }}" value="{{ checklist_values[id]|default('') }}">
+              {% elseif checklistItem.type == 2 %}
+                <label class="form-label" for="assetsign_checklist_{{ id }}">{{ checklistItem.name }}</label>
+                <select name="checklist[{{ id }}]" class="form-select" id="assetsign_checklist_{{ id }}">
+                  <option value="">-----</option>
+                  {% for opt in checklistItem.options %}
+                    <option value="{{ opt }}" {{ checklist_values[id]|default('') == opt ? 'selected' : '' }}>{{ opt }}</option>
+                  {% endfor %}
+                </select>
+              {% endif %}
+            </div>
+          {% endfor %}
+          <button type="submit" name="submit_checklist" class="btn btn-secondary btn-sm">{{ __('Enregistrer', 'assetsign') }}</button>
+        </form>
+      {% elseif checklist_results|length == 0 %}
+        <p class="text-muted">{{ __('Aucun point de contrôle configuré pour ce type de mouvement (Configuration > Intitulés > Points de contrôle qualité).', 'assetsign') }}</p>
+      {% endif %}
+    {% endif %}
+
     <h3 class="mt-4">{{ __('Accessoires remis', 'assetsign') }}</h3>
     {% if accessories|length %}
       <table class="table table-sm">
