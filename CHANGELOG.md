@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Listes « Gestion des fiches » et « Fiches de maintenance » : aucune colonne ne permettait
+  d'ouvrir la fiche elle-même** : la colonne ID était un simple nombre non cliquable (datatype
+  `number`), et la seule colonne déjà cliquable (le matériel concerné, `items_id`) pointe vers la
+  fiche du matériel lui-même (Ordinateur, etc.), pas vers l'attribution/la fiche de maintenance en
+  question (constat direct du porteur du plugin sur un écran comparable d'un autre plugin de la
+  même famille : clic sur l'ID fonctionne, clic sur le libellé de la ligne ne fait rien). La colonne
+  ID passe désormais en `datatype => 'itemlink'` (`itemtype => self::class`) sur
+  `Assetsign::rawSearchOptions()` et `Maintenance::rawSearchOptions()`, vérifié en conditions
+  réelles (HTML rendu : `<a href="…/assetsign.form.php?id=…">`/`<a href="…/maintenance.form.php?id=…">`).
+
 ## [2.3.0] - 2026-08-24
 
 ### Added
