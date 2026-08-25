@@ -77,7 +77,11 @@ class Maintenance extends CommonDBTM
    public function rawSearchOptions(): array {
        return [
            ['id' => 'common', 'name' => self::getTypeName(1)],
-           ['id' => 1, 'table' => self::getTable(), 'field' => 'id', 'name' => __('ID'), 'datatype' => 'number'],
+           // Row link (meme raison que Assetsign::rawSearchOptions() id=1 : la liste "Fiches de
+           // maintenance" n'offrait aucun moyen de revenir a showForm(), items_id (id=3) et
+           // users_id_tech (id=4) pointent respectivement vers le materiel et le technicien, pas
+           // vers cette fiche elle-meme).
+           ['id' => 1, 'table' => self::getTable(), 'field' => 'id', 'name' => __('ID'), 'datatype' => 'itemlink', 'itemtype' => self::class],
            ['id' => 2, 'table' => self::getTable(), 'field' => 'itemtype', 'name' => __('Type de matériel', 'assetsign'), 'datatype' => 'itemtype'],
            ['id' => 3, 'table' => self::getTable(), 'field' => 'items_id', 'name' => __('Matériel', 'assetsign'), 'datatype' => 'itemlink', 'itemlink_type' => ''],
            ['id' => 4, 'table' => 'glpi_users', 'field' => 'name', 'linkfield' => 'users_id_tech', 'name' => __('Technicien', 'assetsign'), 'datatype' => 'itemlink', 'itemlink_type' => 'User'],

@@ -181,12 +181,18 @@ class Assetsign extends CommonDBTM
            'name' => self::getTypeName(1),
        ];
 
+       // Row link (issue: la liste "Gestion des fiches" n'offrait aucun moyen de revenir a
+       // showForm() : la colonne 'id' etait un simple nombre non cliquable, et items_id (colonne 3
+       // ci-dessous) pointe vers le materiel cible, pas vers cette fiche Assetsign elle-meme) -
+       // 'itemlink' n'a besoin que d'*un* champ sur cette table pour deriver getFormURLWithID(),
+       // meme pattern que PluginVulnerabilitymanagerRisk::rawSearchOptions() (plugin jumeau).
        $tab[] = [
            'id'       => 1,
            'table'    => self::getTable(),
            'field'    => 'id',
            'name'     => __('ID'),
-           'datatype' => 'number',
+           'datatype' => 'itemlink',
+           'itemtype' => self::class,
        ];
        $tab[] = [
            'id'       => 2,
