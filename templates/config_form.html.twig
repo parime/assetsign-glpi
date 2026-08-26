@@ -43,6 +43,7 @@
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-movements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Mouvements', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport matériel', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Score de santé', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-residual-value" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Valeur résiduelle', 'assetsign') }}</button></li>
       </ul>
 
       <div class="tab-content">
@@ -380,6 +381,22 @@
             <div class="col-md-4"><label class="form-label">{{ __('Critique', 'assetsign') }}</label><input type="color" name="health_score_critical_color" class="form-control form-control-color" value="{{ config.health_score_critical_color|default('#d63939') }}"><div class="form-text">{{ __('En dessous du seuil Vigilance.', 'assetsign') }}</div></div>
           </div>
         </div>
+        {# ---------------------------------------------------------------- Valeur résiduelle #}
+        <div class="tab-pane fade" id="tab-residual-value" role="tabpanel">
+          <p class="text-muted">{{ __('Estimation simple de la valeur restante d\'un matériel (pas un module comptable complet) : aide à trancher entre réemploi et sortie de parc. Calcul linéaire à partir du prix d\'achat Infocom, sur une durée de vie utile réglable ci-dessous. Une saisie manuelle, disponible sur l\'onglet Passeport matériel de chaque matériel, l\'emporte toujours sur ce calcul.', 'assetsign') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_residual_value" value="0">
+            <input type="checkbox" name="enable_residual_value" value="1" class="form-check-input" id="enable_residual_value" {{ config.enable_residual_value|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_residual_value">{{ __('Afficher la valeur résiduelle sur le Passeport matériel', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Rien n\'est affiché tant que le prix d\'achat n\'est pas connu (onglet Infocom du matériel) : jamais une estimation inventée.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ __('Durée de vie utile (mois)', 'assetsign') }}</label>
+            <input type="number" name="residual_value_duration_months" class="form-control" style="width: 140px;" value="{{ config.residual_value_duration_months|default(60) }}" min="1">
+            <div class="form-text">{{ __('Durée sur laquelle la valeur d\'achat est amortie de façon linéaire jusqu\'à 0 - la "durée personnalisable" du calcul, propre à cette entité.', 'assetsign') }}</div>
+          </div>
+        </div>
+
         {# ---------------------------------------------------------------- Passeport matériel #}
         <div class="tab-pane fade" id="tab-passport" role="tabpanel">
           <p class="text-muted">{{ __('Le Passeport matériel agrège en lecture seule les événements des onglets Attribution/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel onglet du matériel concerné.', 'assetsign') }}</p>

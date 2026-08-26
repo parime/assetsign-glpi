@@ -22,6 +22,7 @@ use GlpiPlugin\Assetsign\NotificationTargetAssetsign;
 use GlpiPlugin\Assetsign\PassportEvent;
 use GlpiPlugin\Assetsign\Profile;
 use GlpiPlugin\Assetsign\Reminder;
+use GlpiPlugin\Assetsign\ResidualValue;
 use GlpiPlugin\Assetsign\Signature;
 use GlpiPlugin\Assetsign\Template;
 use GlpiPlugin\Assetsign\Token;
@@ -202,6 +203,11 @@ function plugin_assetsign_install(): bool {
     // remonte jusqu'a l'ecran d'installation).
     DamageMarker::install($migration);
     PassportEvent::install($migration);
+    // Aucune contrainte de cle etrangere (reference itemtype/items_id arbitraire,
+    // comme Movement/PassportEvent - jamais un type natif GLPI precis) : aucun
+    // ordre requis par rapport aux tables ci-dessus, placee ici pour rester
+    // groupee avec les autres indicateurs V2 du Passeport (issue #77).
+    ResidualValue::install($migration);
     Token::install($migration);
     // Avant Signature::install() : la contrainte de cle etrangere ajoutee par ce
     // dernier vers glpi_plugin_assetsign_movements (issue #75) exige que cette

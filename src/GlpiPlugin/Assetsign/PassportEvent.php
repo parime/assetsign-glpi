@@ -249,14 +249,26 @@ class PassportEvent extends CommonDBTM
            $health['color'] = $config->getHealthScoreColor($health['score']);
       }
 
+       $canEdit = \Session::haveRight(self::$rightname, UPDATE);
+       $manualResidual = $config->fields['enable_residual_value'] ? ResidualValue::getForItem($item->getType(), $item->getID()) : null;
+
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/passport_tab.html.twig', [
            'events'        => array_reverse($timelineRows), // le plus recent en premier dans la frise
            'lives'         => $lives,
-           'identity'      => self::getIdentityCard($item, $lives),
+           'identity'      => self::getIdentityCard($item, $lives, $config),
            'health'        => $health,
            'itemtype'      => $item->getType(),
            'items_id'      => $item->getID(),
-           'can_backfill'  => \Session::haveRight(self::$rightname, UPDATE),
+           'can_backfill'  => $canEdit,
+           // Champs propres a la saisie manuelle de la valeur residuelle (issue #77) :
+           // l'affichage en lecture (identity.residual_value) reste dans getIdentityCard()
+           // comme les autres indicateurs, mais le formulaire d'edition a besoin en plus
+           // de la valeur manuelle BRUTE actuelle (pour pre-remplir le champ) et du droit
+           // d'edition - meme droit que can_backfill (Profile::RIGHT_ASSETSIGN, UPDATE).
+           'residual_value_enabled'    => (bool) $config->fields['enable_residual_value'],
+           'residual_value_manual_raw' => $manualResidual !== null && $manualResidual->fields['manual_value'] !== null
+               ? (float) $manualResidual->fields['manual_value']
+               : null,
            'csrf_token'    => \Session::getNewCSRFToken(),
        ]);
    }
@@ -279,10 +291,15 @@ class PassportEvent extends CommonDBTM
      * inventee, le libelle precise toujours la source reelle), temps
      * reellement utilise (somme des "vies" deja calculees par
      * getLivesForItem(), jamais une deuxieme requete), temps en stock (le
-     * reste : age moins temps utilise, jamais negatif).
-     * @return array{name: string, serial: string, model: string, manufacturer: string, state: string, user: string, entity: string, buy_date: ?string, warranty_end: ?string, age: ?string, used_duration: ?string, used_percent: ?int, stock_duration: ?string}
+     * reste : age moins temps utilise, jamais negatif). Valeur residuelle (cf.
+     * ROADMAP.md, V2, issue #77) calculee ici aussi, meme principe de non-
+     * invention : `null` (rien affiche) si ni saisie manuelle ni achat Infocom
+     * connu, jamais une estimation a partir d'un achat inconnu - cf.
+     * getResidualValue() pour le detail du calcul et la priorite de la saisie
+     * manuelle.
+     * @return array{name: string, serial: string, model: string, manufacturer: string, state: string, user: string, entity: string, buy_date: ?string, warranty_end: ?string, age: ?string, used_duration: ?string, used_percent: ?int, stock_duration: ?string, residual_value: ?string, residual_value_is_manual: bool}
      */
-   private static function getIdentityCard(CommonDBTM $item, array $lives): array {
+   private static function getIdentityCard(CommonDBTM $item, array $lives, Config $config): array {
        $modelClass = $item->getType() . 'Model';
        $modelField = strtolower($item->getType()) . 'models_id';
        $modelName = '';
@@ -324,21 +341,86 @@ class PassportEvent extends CommonDBTM
          }
       }
 
+       $residualValue = null;
+       $residualIsManual = false;
+      if ($config->fields['enable_residual_value']) {
+          $residual = self::getResidualValue($item, $config);
+         if ($residual !== null) {
+             $residualValue = sprintf(
+                 '%s %s',
+                 number_format($residual['value'], 2, ',', ' '),
+                 $config->fields['currency_symbol'] ?: '€'
+             );
+             $residualIsManual = $residual['is_manual'];
+         }
+      }
+
        return [
-           'name'           => (string) ($item->fields['name'] ?? ''),
-           'serial'         => (string) ($item->fields['serial'] ?? ''),
-           'model'          => $modelName,
-           'manufacturer'   => empty($item->fields['manufacturers_id']) ? '' : \Dropdown::getDropdownName('glpi_manufacturers', (int) $item->fields['manufacturers_id']),
-           'state'          => empty($item->fields['states_id']) ? '' : \Dropdown::getDropdownName('glpi_states', (int) $item->fields['states_id']),
-           'user'           => empty($item->fields['users_id']) ? '' : \User::getFriendlyNameById((int) $item->fields['users_id']),
-           'entity'         => \Dropdown::getDropdownName('glpi_entities', (int) ($item->fields['entities_id'] ?? 0)),
-           'buy_date'       => $buyDate,
-           'warranty_end'   => $warrantyEnd,
-           'age'            => $age,
-           'used_duration'  => $usedDuration,
-           'used_percent'   => $usedPercent,
-           'stock_duration' => $stockDuration,
+           'name'                     => (string) ($item->fields['name'] ?? ''),
+           'serial'                   => (string) ($item->fields['serial'] ?? ''),
+           'model'                    => $modelName,
+           'manufacturer'             => empty($item->fields['manufacturers_id']) ? '' : \Dropdown::getDropdownName('glpi_manufacturers', (int) $item->fields['manufacturers_id']),
+           'state'                    => empty($item->fields['states_id']) ? '' : \Dropdown::getDropdownName('glpi_states', (int) $item->fields['states_id']),
+           'user'                     => empty($item->fields['users_id']) ? '' : \User::getFriendlyNameById((int) $item->fields['users_id']),
+           'entity'                   => \Dropdown::getDropdownName('glpi_entities', (int) ($item->fields['entities_id'] ?? 0)),
+           'buy_date'                 => $buyDate,
+           'warranty_end'             => $warrantyEnd,
+           'age'                      => $age,
+           'used_duration'            => $usedDuration,
+           'used_percent'             => $usedPercent,
+           'stock_duration'           => $stockDuration,
+           'residual_value'           => $residualValue,
+           'residual_value_is_manual' => $residualIsManual,
        ];
+   }
+
+    /**
+     * Valeur résiduelle estimée (V2, cf. ROADMAP.md — "Valeur résiduelle
+     * (linéaire / durée personnalisable / saisie manuelle)", issue #77). Deux
+     * sources, la saisie manuelle (ResidualValue::getForItem() - table dédiée,
+     * un type d'item natif GLPI ne pouvant recevoir de colonne supplémentaire,
+     * même patron que VenteDetails) l'emportant TOUJOURS sur le calcul
+     * automatique quand elle est présente :
+     * - Calcul linéaire : valeur d'achat (Infocom::value) × (1 − âge_jours /
+     *   durée_jours), plafonné à 0 - jamais négatif (un matériel plus vieux
+     *   que sa durée de vie utile configurée vaut 0, pas un nombre négatif).
+     *   Durée utile en mois configurable PAR ENTITÉ (Config::
+     *   residual_value_duration_months), jamais codée en dur - "durée
+     *   personnalisable" au sens de la roadmap désigne CE réglage, pas une
+     *   deuxième méthode de calcul.
+     * - Aucune valeur inventée : si Infocom n'a pas de valeur d'achat connue,
+     *   ou si la durée configurée est nulle (garde-fou division par zéro),
+     *   rien n'est calculable (null) - jamais une estimation à partir d'un
+     *   achat inconnu.
+     * @return array{value: float, is_manual: bool}|null null si non calculable ET aucune saisie manuelle.
+     */
+   private static function getResidualValue(CommonDBTM $item, Config $config): ?array {
+       $manual = ResidualValue::getForItem($item->getType(), $item->getID());
+      if ($manual !== null && $manual->fields['manual_value'] !== null) {
+          return ['value' => (float) $manual->fields['manual_value'], 'is_manual' => true];
+      }
+
+      if (!\Infocom::canApplyOn($item->getType())) {
+          return null;
+      }
+       $infocom = new \Infocom();
+      if (!$infocom->getFromDBforDevice($item->getType(), $item->getID())
+          || empty($infocom->fields['buy_date'])
+          || (float) $infocom->fields['value'] <= 0) {
+          return null;
+      }
+
+       $durationMonths = (int) $config->fields['residual_value_duration_months'];
+      if ($durationMonths <= 0) {
+          return null; // Duree mal configuree (0 ou negative) : rien de calculable plutot qu'une division par zero.
+      }
+
+       $ageDays = max(0, (int) floor((time() - strtotime($infocom->fields['buy_date'])) / DAY_TIMESTAMP));
+       $durationDays = $durationMonths * 30.44;
+       $fraction = max(0.0, 1 - $ageDays / $durationDays);
+       $value = round((float) $infocom->fields['value'] * $fraction, 2);
+
+       return ['value' => $value, 'is_manual' => false];
    }
 
     /**
