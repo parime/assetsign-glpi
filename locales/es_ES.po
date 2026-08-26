@@ -1803,6 +1803,191 @@ msgstr "Demasiados intentos, enlace desactivado por seguridad."
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purga los tokens de firma caducados o no válidos"
 
+#: templates/movement_form.html.twig src/GlpiPlugin/Assetsign/Movement.php:56
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:57
+msgid "Mouvement"
+msgid_plural "Mouvements"
+msgstr[0] "Movimiento"
+msgstr[1] "Movimientos"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:130
+msgid "Lieu de départ"
+msgstr "Lugar de origen"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:145
+msgid "Date de départ"
+msgstr "Fecha de salida"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:138
+msgid "Lieu de destination"
+msgstr "Lugar de destino"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:152
+msgid "Date de destination"
+msgstr "Fecha de destino"
+
+#: templates/movement_form.html.twig
+msgid "Créé le"
+msgstr "Creado el"
+
+#: templates/movement_form.html.twig
+msgid "Documents joints"
+msgstr "Documentos adjuntos"
+
+#: templates/movement_form.html.twig
+msgid "Aucun document joint (bulletin de livraison, document de transport...)."
+msgstr "Ningún documento adjunto (albarán, documento de transporte...)."
+
+#: templates/movement_form.html.twig
+msgid "Joindre le document"
+msgstr "Adjuntar documento"
+
+#: templates/movement_form.html.twig
+msgid "Actions"
+msgstr "Acciones"
+
+#: templates/movement_form.html.twig
+msgid "Marquer comme en cours (départ effectif)"
+msgstr "Marcar como en curso (salida efectiva)"
+
+#: templates/movement_form.html.twig
+msgid "Date d'arrivée"
+msgstr "Fecha de llegada"
+
+#: templates/movement_form.html.twig
+msgid "Marquer comme terminé (arrivée effective)"
+msgstr "Marcar como finalizado (llegada efectiva)"
+
+#: templates/movement_form.html.twig
+msgid "Annuler ce mouvement ?"
+msgstr "¿Cancelar este movimiento?"
+
+#: templates/movement_form.html.twig
+msgid "Annuler le mouvement"
+msgstr "Cancelar el movimiento"
+
+#: templates/movement_tab.html.twig
+msgid "Aucun mouvement enregistré pour ce matériel."
+msgstr "No hay ningún movimiento registrado para este equipo."
+
+#: templates/movement_tab.html.twig
+msgid "Départ"
+msgstr "Salida"
+
+#: templates/movement_tab.html.twig
+msgid "Destination"
+msgstr "Destino"
+
+#: templates/movement_tab.html.twig templates/movement_create.html.twig
+msgid "Nouveau mouvement"
+msgstr "Nuevo movimiento"
+
+#: templates/movement_tab.html.twig templates/movement_create.html.twig
+msgid "Créer le mouvement"
+msgstr "Crear el movimiento"
+
+#: templates/config_form.html.twig
+msgid ""
+"Un mouvement structuré généralise la notion de remise à n'importe quel "
+"déplacement physique de matériel (transfert inter-site, retour au stock, "
+"envoi vers un centre de réparation...) : lieu et date de départ, lieu et "
+"date de destination, document(s) joint(s) (onglet Documents natif), "
+"signature optionnelle. Alimente la même frise que le Passeport matériel."
+msgstr ""
+"Un movimiento estructurado generaliza el concepto de entrega a cualquier "
+"desplazamiento físico de material (transferencia entre sedes, devolución "
+"al almacén, envío a un centro de reparación...): lugar y fecha de salida, "
+"lugar y fecha de destino, documento(s) adjunto(s) (pestaña Documentos "
+"nativa), firma opcional. Alimenta la misma cronología que el Pasaporte del "
+"equipo."
+
+#: templates/config_form.html.twig
+msgid "Activer les mouvements structurés"
+msgstr "Activar los movimientos estructurados"
+
+#: templates/config_form.html.twig
+msgid ""
+"Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, "
+"ainsi qu'une entrée dédiée dans le menu Outils."
+msgstr ""
+"Añade una pestaña «Movimientos» a cada equipo gestionado por el plugin, "
+"así como una entrada dedicada en el menú Herramientas."
+
+#: templates/config_form.html.twig
+msgid "Faire signer le mouvement (pavé de signature)"
+msgstr "Solicitar firma del movimiento (panel de firma)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Si activé, un pavé de signature (identique à celui de la fiche de "
+"maintenance) apparaît sur le formulaire de création : le mouvement ne peut "
+"pas être créé sans signature. La personne présente est déjà connectée, aucun "
+"e-mail ni page séparée n'est utilisé."
+msgstr ""
+"Si está activado, aparece un panel de firma (idéntico al de la ficha de "
+"mantenimiento) en el formulario de creación: el movimiento no puede "
+"crearse sin firma. La persona presente ya ha iniciado sesión, no se "
+"utiliza ningún correo electrónico ni página aparte."
+
+#: templates/config_form.html.twig
+msgid "Voir les mouvements"
+msgstr "Ver los movimientos"
+
+#: templates/passport_tab.html.twig
+msgid "lieu inconnu"
+msgstr "lugar desconocido"
+
+#: front/movement.form.php:14
+msgid "Mouvement créé."
+msgstr "Movimiento creado."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:71
+msgid "Prévu"
+msgstr "Previsto"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:72
+msgid "En cours"
+msgstr "En curso"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:73
+msgid "Terminé"
+msgstr "Finalizado"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:168
+msgid "Déclaré par"
+msgstr "Declarado por"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:276
+msgid ""
+"La fonctionnalité « Mouvements » n'est pas activée pour cette entité "
+"(Configuration > Mouvements)."
+msgstr ""
+"La funcionalidad «Movimientos» no está activada para esta entidad "
+"(Configuración > Movimientos)."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:396
+#: src/GlpiPlugin/Assetsign/Movement.php:402
+#: src/GlpiPlugin/Assetsign/Movement.php:414
+msgid "Échec de l'envoi du document."
+msgstr "Error al enviar el documento."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:460
+msgid "Échec de la création du mouvement."
+msgstr "Error al crear el movimiento."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:514
+#, php-format
+msgid "Signature du mouvement #%d"
+msgstr "Firma del movimiento n.º %d"
+
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Configuración de entrega y firma"
 

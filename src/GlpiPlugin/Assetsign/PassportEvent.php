@@ -22,6 +22,10 @@ class PassportEvent extends CommonDBTM
    public const TYPE_DON         = 2;
    public const TYPE_VENTE       = 3;
    public const TYPE_MAINTENANCE = 4;
+    // Mouvement structuré (issue #75) : nouveau PRODUCTEUR d'événements sur la
+    // même frise, jamais une réécriture des producteurs existants (cf. ADR,
+    // section 1) - voir recordForMovement().
+   public const TYPE_MOVEMENT    = 5;
 
    public static $rightname = Profile::RIGHT_ASSETSIGN;
 
@@ -50,6 +54,7 @@ class PassportEvent extends CommonDBTM
            self::TYPE_DON         => __('Don', 'assetsign'),
            self::TYPE_VENTE       => __('Vente', 'assetsign'),
            self::TYPE_MAINTENANCE => __('Maintenance', 'assetsign'),
+           self::TYPE_MOVEMENT    => __('Mouvement', 'assetsign'),
        ];
    }
 
@@ -120,6 +125,38 @@ class PassportEvent extends CommonDBTM
        ]);
    }
 
+    /**
+     * Enregistre l'evenement correspondant a un mouvement structure (issue #75) -
+     * appelee depuis Movement::create(), une fois le mouvement reellement cree.
+     * Pas de snapshot beneficiaire ici (comme recordForMaintenance()) : un
+     * mouvement decrit un DEPLACEMENT du materiel, pas un changement de
+     * detenteur - getLivesForItem() (regroupement par "vies" d'attribution)
+     * n'a donc pas a en tenir compte, exactement comme pour la maintenance.
+     * Depart/destination ne sont JAMAIS dupliques ici (comme le resume de
+     * checklist qualite, cf. attachChecklistSummaries()) : lus a l'affichage
+     * depuis Movement via source_items_id, cf. attachMovementSummaries().
+     * `users_id` volontairement absent (comme recordForMaintenance()) : la
+     * personne qui declare le mouvement n'est pas un beneficiaire, l'inclure
+     * ferait apparaitre a tort ce mouvement sur SON Passeport utilisateur
+     * personnel (showForUser() filtre par users_id).
+     */
+   public static function recordForMovement(Movement $movement): void {
+      if (!Config::getForEntity((int) $movement->fields['entities_id'])->fields['enable_movements']) {
+          return;
+      }
+
+       (new self())->add([
+           'itemtype'        => $movement->fields['itemtype'],
+           'items_id'        => $movement->fields['items_id'],
+           'entities_id'     => (int) $movement->fields['entities_id'],
+           'event_type'      => self::TYPE_MOVEMENT,
+           'source_itemtype' => Movement::class,
+           'source_items_id' => $movement->getID(),
+           'date'            => $movement->fields['date_creation'] ?: date('Y-m-d H:i:s'),
+           'comment'         => $movement->fields['comment'] ?? '',
+       ]);
+   }
+
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
       if (!($item instanceof CommonDBTM) || !self::isEnabledForItem($item)) {
           return '';
@@ -183,11 +220,13 @@ class PassportEvent extends CommonDBTM
           $row['source_url'] = match ($row['source_itemtype'] ?? null) {
               Assetsign::class      => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.form.php?id=' . $row['source_items_id'],
               Maintenance::class => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/maintenance.form.php?id=' . $row['source_items_id'],
+              Movement::class    => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/movement.form.php?id=' . $row['source_items_id'],
               default            => null,
           };
       }
        unset($row);
        self::attachChecklistSummaries($rows);
+       self::attachMovementSummaries($rows);
 
        // getLivesForItem() sur les evenements REELS uniquement : les pseudo-evenements
        // Infocom ci-dessous n'ont pas de event_type/users_id, jamais mélangés à la
@@ -543,6 +582,7 @@ class PassportEvent extends CommonDBTM
           $row['source_url'] = match ($row['source_itemtype'] ?? null) {
               Assetsign::class      => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.form.php?id=' . $row['source_items_id'],
               Maintenance::class => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/maintenance.form.php?id=' . $row['source_items_id'],
+              Movement::class    => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/movement.form.php?id=' . $row['source_items_id'],
               default            => null,
           };
           [$row['device_name'], $row['device_serial']] = self::resolveDeviceDisplay($row['itemtype'], (int) $row['items_id']);
@@ -852,6 +892,55 @@ class PassportEvent extends CommonDBTM
               },
           ];
        }
+       unset($row);
+   }
+
+    /**
+     * Ajoute un resume ('movement_summary' : lieu/date de depart, lieu/date de
+     * destination, statut+couleur) a chaque ligne d'evenement TYPE_MOVEMENT (issue
+     * #75) - PUREMENT une agregation a l'affichage, exactement comme
+     * attachChecklistSummaries() : rien n'est jamais copie dans
+     * glpi_plugin_assetsign_events, la source de verite reste
+     * glpi_plugin_assetsign_movements (via source_items_id, deja present sur chaque
+     * ligne). Batch en UNE requete au total (jamais une par evenement affiche),
+     * meme souci de performance que documente dans l'ADR ("Performance des
+     * indicateurs calcules").
+     * @param array<int, array<string, mixed>> $rows Modifie par reference.
+     */
+   private static function attachMovementSummaries(array &$rows): void {
+       global $DB;
+
+       $movementIds = [];
+      foreach ($rows as $row) {
+         if (($row['source_itemtype'] ?? null) === Movement::class && (int) $row['event_type'] === self::TYPE_MOVEMENT) {
+             $movementIds[] = (int) $row['source_items_id'];
+         }
+      }
+      if ($movementIds === []) {
+          return;
+      }
+
+       $movementsById = [];
+      foreach ($DB->request(['FROM' => Movement::getTable(), 'WHERE' => ['id' => array_values(array_unique($movementIds))]]) as $movementRow) {
+          $movementsById[(int) $movementRow['id']] = $movementRow;
+      }
+
+       $statuses = Movement::getStatuses();
+      foreach ($rows as &$row) {
+         if (($row['source_itemtype'] ?? null) !== Movement::class || (int) $row['event_type'] !== self::TYPE_MOVEMENT) {
+             continue;
+         }
+          $movementRow = $movementsById[(int) $row['source_items_id']] ?? null;
+         if ($movementRow === null) {
+             continue;
+         }
+          $row['movement_summary'] = [
+              'location_from' => empty($movementRow['locations_id_from']) ? '' : \Dropdown::getDropdownName('glpi_locations', (int) $movementRow['locations_id_from']),
+              'location_to'   => empty($movementRow['locations_id_to']) ? '' : \Dropdown::getDropdownName('glpi_locations', (int) $movementRow['locations_id_to']),
+              'status_label'  => $statuses[(int) $movementRow['status']] ?? '',
+              'status_color'  => Movement::getStatusColor((int) $movementRow['status']),
+          ];
+      }
        unset($row);
    }
 

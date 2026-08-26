@@ -40,6 +40,7 @@
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-reforme" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Réforme', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Compléments', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Maintenance', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-movements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Mouvements', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport matériel', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Score de santé', 'assetsign') }}</button></li>
       </ul>
@@ -335,6 +336,24 @@
           </div>
           <a href="{{ config('root_doc') }}/front/dropdown.php?itemtype=GlpiPlugin%5CAssetsign%5CMaintenanceChecklistItem" class="btn btn-outline-secondary">{{ __('Gérer les points de contrôle', 'assetsign') }}</a>
           <a href="{{ config('root_doc') }}/plugins/assetsign/front/maintenance.php" class="btn btn-outline-secondary">{{ __('Voir les fiches de maintenance', 'assetsign') }}</a>
+        </div>
+
+        {# ---------------------------------------------------------------- Mouvements #}
+        <div class="tab-pane fade" id="tab-movements" role="tabpanel">
+          <p class="text-muted">{{ __('Un mouvement structuré généralise la notion de remise à n\'importe quel déplacement physique de matériel (transfert inter-site, retour au stock, envoi vers un centre de réparation...) : lieu et date de départ, lieu et date de destination, document(s) joint(s) (onglet Documents natif), signature optionnelle. Alimente la même frise que le Passeport matériel.', 'assetsign') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_movements" value="0">
+            <input type="checkbox" name="enable_movements" value="1" class="form-check-input" id="enable_movements" {{ config.enable_movements|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_movements">{{ __('Activer les mouvements structurés', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, ainsi qu\'une entrée dédiée dans le menu Outils.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_movement_signature" value="0">
+            <input type="checkbox" name="enable_movement_signature" value="1" class="form-check-input" id="enable_movement_signature" {{ config.enable_movement_signature|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_movement_signature">{{ __('Faire signer le mouvement (pavé de signature)', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Si activé, un pavé de signature (identique à celui de la fiche de maintenance) apparaît sur le formulaire de création : le mouvement ne peut pas être créé sans signature. La personne présente est déjà connectée, aucun e-mail ni page séparée n\'est utilisé.', 'assetsign') }}</div>
+          </div>
+          <a href="{{ config('root_doc') }}/plugins/assetsign/front/movement.php" class="btn btn-outline-secondary">{{ __('Voir les mouvements', 'assetsign') }}</a>
         </div>
 
         {# ---------------------------------------------------------------- Score de santé #}

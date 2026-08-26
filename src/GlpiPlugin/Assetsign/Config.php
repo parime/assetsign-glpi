@@ -27,7 +27,7 @@ class Config extends CommonDBTM
         'protect_pdf'                         => 0,
         'enable_passport'                     => 1,
         'passport_retention_years'            => 3,
-        'passport_visible_types'              => '[0,1,2,3,4]',
+        'passport_visible_types'              => '[0,1,2,3,4,5]',
         'show_infocom_dates'                  => 1,
         'show_linked_tickets'                 => 1,
         'enable_health_score'                 => 1,
@@ -53,6 +53,8 @@ class Config extends CommonDBTM
         'enable_vente'                        => 0,
         'enable_damage_annotation'            => 0,
         'enable_maintenance_signature'        => 0,
+        'enable_movements'                    => 0,
+        'enable_movement_signature'           => 0,
         'show_qr_code'                        => 0,
         'currency_symbol'                     => '€',
         'preview_watermark_text'              => 'APERÇU',
@@ -517,6 +519,8 @@ class Config extends CommonDBTM
            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
            'enable_damage_annotation' => (int) ($input['enable_damage_annotation'] ?? 0),
            'enable_maintenance_signature' => (int) ($input['enable_maintenance_signature'] ?? 0),
+           'enable_movements'     => (int) ($input['enable_movements'] ?? 0),
+           'enable_movement_signature' => (int) ($input['enable_movement_signature'] ?? 0),
            'show_qr_code'         => (int) ($input['show_qr_code'] ?? 0),
            'currency_symbol'      => trim($input['currency_symbol'] ?? '') ?: '€',
            'preview_watermark_text'    => trim($input['preview_watermark_text'] ?? '') ?: 'APERÇU',
@@ -591,7 +595,7 @@ class Config extends CommonDBTM
     /** Types d'evenement (PassportEvent::TYPE_*) a afficher dans la frise du Passeport materiel. */
    public function getPassportVisibleTypes(): array {
        $decoded = json_decode($this->fields['passport_visible_types'] ?? '', true);
-       return is_array($decoded) ? array_map('intval', $decoded) : [0, 1, 2, 3, 4];
+       return is_array($decoded) ? array_map('intval', $decoded) : [0, 1, 2, 3, 4, 5];
    }
 
    /** Couleur effective d'un score de santé, selon les seuils de l'entité. */
@@ -657,6 +661,8 @@ class Config extends CommonDBTM
                 `enable_vente` tinyint NOT NULL DEFAULT 0,
                 `enable_damage_annotation` tinyint NOT NULL DEFAULT 0,
                 `enable_maintenance_signature` tinyint NOT NULL DEFAULT 0,
+                `enable_movements` tinyint NOT NULL DEFAULT 0,
+                `enable_movement_signature` tinyint NOT NULL DEFAULT 0,
                 `show_qr_code` tinyint NOT NULL DEFAULT 0,
                 `currency_symbol` varchar(255) NOT NULL DEFAULT '€',
                 `preview_watermark_text` varchar(255) NOT NULL DEFAULT 'APERÇU',
@@ -746,6 +752,15 @@ class Config extends CommonDBTM
          }
          if (!$DB->fieldExists($table, 'enable_maintenance_signature')) {
              $migration->addField($table, 'enable_maintenance_signature', 'bool', ['value' => 0, 'after' => 'enable_damage_annotation']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_movements')) {
+             // Mouvements structurés (issue #75, cf. docs/design/ADR-passeport-v1.md
+             // section 3.2) : fonctionnalité opt-in, même convention que les autres
+             // bascules "enable_*" de ce bloc (défaut désactivé, rien ne change pour
+             // une entité qui n'active pas explicitement la fonctionnalité).
+             $migration->addField($table, 'enable_movements', 'bool', ['value' => 0, 'after' => 'enable_maintenance_signature']);
+             $migration->addField($table, 'enable_movement_signature', 'bool', ['value' => 0, 'after' => 'enable_movements']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'donation_states')) {

@@ -36,7 +36,7 @@ const PLUGIN_ASSETSIGN_HEALTH_DAMAGE_FULL_DEGRADATION_POINTS = 6; // 6 points (1
 const PLUGIN_ASSETSIGN_HEALTH_MOVEMENTS_FULL_DEGRADATION_COUNT = 5; // 5 "vies" (changements de detenteur)
 
 function plugin_init_assetsign(): void {
-    global $PLUGIN_HOOKS;
+    global $PLUGIN_HOOKS, $CFG_GLPI;
 
     $PLUGIN_HOOKS[Hooks::CSRF_COMPLIANT]['assetsign'] = true;
 
@@ -135,6 +135,20 @@ function plugin_init_assetsign(): void {
     Plugin::registerClass(\GlpiPlugin\Assetsign\PassportEvent::class, [
         'addtabon' => array_merge($manageableItemtypes, ['User']),
     ]);
+    // Mouvements structurés (issue #75, cf. docs/design/ADR-passeport-v1.md section
+    // 3.2) : nouvel onglet sur les mêmes matériels gérés que Assetsign/Maintenance
+    // (jamais sur 'User' - un mouvement décrit un déplacement de matériel, pas un
+    // changement de bénéficiaire, cf. PassportEvent::recordForMovement()).
+    Plugin::registerClass(\GlpiPlugin\Assetsign\Movement::class, [
+        'addtabon' => $manageableItemtypes,
+    ]);
+    // Onglet "Documents" natif GLPI sur la fiche du mouvement lui-même (bulletin de
+    // livraison, document de transport...) : réutilise Document_Item, la relation
+    // polymorphe déjà native GLPI (cf. risque 2.2 de l'ADR), jamais un nouveau
+    // stockage de documents. Même mécanisme que n'importe quel itemtype de plugin
+    // qui veut hériter de cet onglet sans le réécrire (CommonDBTM::defineTabs()
+    // ajoute automatiquement l'onglet Document dès que le type figure ici).
+    $CFG_GLPI['document_types'][] = \GlpiPlugin\Assetsign\Movement::class;
 
     // --- Notifications ------------------------------------------------------------
     // Rien a enregistrer explicitement : pour un itemtype namespace (GlpiPlugin\Assetsign\Assetsign),
@@ -171,7 +185,7 @@ function plugin_init_assetsign(): void {
     // (pas le format documente ['types'=>[...],'icon'=>'...']) — piege deja
     // rencontre et documente dans TROUBLESHOOTING.md.
     $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign'] = [
-        'tools' => [\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Maintenance::class],
+        'tools' => [\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Maintenance::class, \GlpiPlugin\Assetsign\Movement::class],
     ];
 
     if (Plugin::isPluginActive('assetsign')) {

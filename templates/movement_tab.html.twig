@@ -1,0 +1,80 @@
+<div class="card">
+  <div class="card-body">
+    {% if movements|length == 0 %}
+      <p>{{ __('Aucun mouvement enregistré pour ce matériel.', 'assetsign') }}</p>
+    {% else %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>{{ __('Départ', 'assetsign') }}</th>
+            <th>{{ __('Destination', 'assetsign') }}</th>
+            <th>{{ __('Statut', 'assetsign') }}</th>
+            <th>{{ __('Signé', 'assetsign') }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in movements %}
+          <tr>
+            <td>{{ m.location_from_name|default('') }}{% if m.date_from %}<br><span class="text-muted small">{{ m.date_from }}</span>{% endif %}</td>
+            <td>{{ m.location_to_name|default('') }}{% if m.date_to %}<br><span class="text-muted small">{{ m.date_to }}</span>{% endif %}</td>
+            <td><span class="badge" style="background-color: {{ m.status_color }}; color: #fff;">{{ m.status_label }}</span></td>
+            <td>{% if m.is_signed %}<i class="ti ti-check text-success"></i>{% else %}<i class="ti ti-minus text-muted"></i>{% endif %}</td>
+            <td><a href="{{ config('root_doc') }}/plugins/assetsign/front/movement.form.php?id={{ m.id }}">{{ __('Voir', 'assetsign') }}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+
+    {% if can_create %}
+      <hr>
+      <h3>{{ __('Nouveau mouvement', 'assetsign') }}</h3>
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/movement.form.php" class="row g-3">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="itemtype" value="{{ item.getType() }}">
+        <input type="hidden" name="items_id" value="{{ item.getID() }}">
+
+        <div class="col-md-3">
+          <label class="form-label">{{ __('Lieu de départ', 'assetsign') }}</label>
+          <select name="locations_id_from" class="form-select">
+            <option value="0">-----</option>
+            {% for id, name in locations %}
+              <option value="{{ id }}">{{ name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">{{ __('Date de départ', 'assetsign') }}</label>
+          <input type="datetime-local" name="date_from" class="form-control">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">{{ __('Lieu de destination', 'assetsign') }}</label>
+          <select name="locations_id_to" class="form-select">
+            <option value="0">-----</option>
+            {% for id, name in locations %}
+              <option value="{{ id }}">{{ name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">{{ __('Date de destination', 'assetsign') }}</label>
+          <input type="datetime-local" name="date_to" class="form-control">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">{{ __('Commentaire', 'assetsign') }}</label>
+          <textarea name="comment" class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="col-12">
+          {% include '@assetsign/technician_signature_edit.html.twig' %}
+        </div>
+
+        <div class="col-12">
+          <button type="submit" name="create" class="btn btn-secondary">{{ __('Créer le mouvement', 'assetsign') }}</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>

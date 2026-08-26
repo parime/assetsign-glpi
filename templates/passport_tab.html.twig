@@ -108,6 +108,16 @@
                 </span>
               </div>
             {% endif %}
+            {% if event.movement_summary is defined %}
+              <div class="mt-1">
+                <span class="text-muted small">
+                  {{ event.movement_summary.location_from|default(__('lieu inconnu', 'assetsign')) }}
+                  <i class="ti ti-arrow-right"></i>
+                  {{ event.movement_summary.location_to|default(__('lieu inconnu', 'assetsign')) }}
+                </span>
+                <span class="badge" style="background-color: {{ event.movement_summary.status_color }}; color: #fff;">{{ event.movement_summary.status_label }}</span>
+              </div>
+            {% endif %}
             {% if event.source_url %}
               <div><a href="{{ event.source_url }}">{{ __('Voir la fiche', 'assetsign') }}</a></div>
             {% endif %}

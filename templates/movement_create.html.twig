@@ -1,0 +1,57 @@
+<div class="card mb-3">
+  <div class="card-header">{{ __('Nouveau mouvement', 'assetsign') }}</div>
+  <div class="card-body">
+    <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/movement.form.php" class="row g-3">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+
+      <div class="col-md-4">
+        <label class="form-label">{{ __('Type de matériel', 'assetsign') }}</label>
+        {{ itemtype_dropdown_html|raw }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">{{ __('Matériel', 'assetsign') }}</label><br>
+        {{ item_dropdown_html|raw }}
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">{{ __('Lieu de départ', 'assetsign') }}</label>
+        <select name="locations_id_from" class="form-select">
+          <option value="0">-----</option>
+          {% for id, name in locations %}
+            <option value="{{ id }}">{{ name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">{{ __('Date de départ', 'assetsign') }}</label>
+        <input type="datetime-local" name="date_from" class="form-control">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">{{ __('Lieu de destination', 'assetsign') }}</label>
+        <select name="locations_id_to" class="form-select">
+          <option value="0">-----</option>
+          {% for id, name in locations %}
+            <option value="{{ id }}">{{ name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">{{ __('Date de destination', 'assetsign') }}</label>
+        <input type="datetime-local" name="date_to" class="form-control">
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">{{ __('Commentaire', 'assetsign') }}</label>
+        <textarea name="comment" class="form-control" rows="3"></textarea>
+      </div>
+
+      <div class="col-12">
+        {% include '@assetsign/technician_signature_edit.html.twig' %}
+      </div>
+
+      <div class="col-12">
+        <button type="submit" name="create" class="btn btn-primary">{{ __('Créer le mouvement', 'assetsign') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
