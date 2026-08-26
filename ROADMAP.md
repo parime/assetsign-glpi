@@ -21,6 +21,19 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
   même motif que `Movement::attachDocument()`), sans nouvelle table de stockage de fichiers. Le
   prix/acheteur/documents de la Vente restent hors périmètre (déjà couverts, cf. ligne "Fin de vie
   structurée" ci-dessous). Détail complet dans CHANGELOG.md `[Unreleased]`.
+- **QR code imprimable sur le matériel - livré** (issue #82, cf. tableau V3 ci-dessous et
+  `docs/design/ADR-passeport-v1.md`) : bouton « Imprimer une étiquette QR code » sur
+  l'onglet Passeport matériel, page dédiée minimaliste (`front/qrlabel.php` +
+  `templates/qr_label.html.twig`, bouton `window.print()`, CSS `@media print`). Le QR
+  code encode une URL absolue (`$CFG_GLPI['url_base']`, même convention que
+  `Assetsign::getSignUrl()`) utilisant `forcetab` (même convention que le lien « créez
+  maintenant la fiche » de `Assetsign::handleStateBasedTrigger()`) pour ouvrir
+  directement l'onglet Passeport matériel du matériel scanné. Aucun mécanisme d'accès
+  anonyme introduit — la connexion GLPI habituelle reste exigée, cohérent avec le reste
+  du plugin. Génération du QR code extraite de `Pdf\PdfRenderingHelpers` (jusque-là
+  privée, ne servait que le PDF) vers une nouvelle classe partagée `QrCode`, réutilisée
+  telle quelle par les deux. Nouveau réglage d'entité `enable_qr_label` (défaut actif,
+  distinct de `show_qr_code` qui ne concerne que le PDF).
 
 ## Réalisé récemment (2026-08-25)
 
@@ -137,7 +150,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 |---|---|---|---|---|---|
 | Passeport environnemental (empreinte fabrication, source, niveau de confiance ; sources : constructeur, une API externe dédiée, saisie manuelle) | Amorcer un volet RSE réaliste, sans données inventées | Reporting environnemental crédible | Moyenne/Haute (intégration API externe, gestion de son indisponibilité) | Fiche d'identité (V1) | Basse |
 | Bénéfice du réemploi ("impact évité" : durée prévue vs réelle) | Valoriser la prolongation de durée de vie | Argument RSE chiffré et transparent | Faible (calcul dérivé), une fois le passeport environnemental posé | Passeport environnemental, indicateurs temporels | Basse |
-| QR code sur le matériel (scan → état/historique/actions) | Accès terrain rapide sans chercher le matériel dans GLPI | Gain de temps technicien | Moyenne | Onglet Passeport matériel (MVP) | Basse |
+| ~~QR code sur le matériel (scan → état/historique/actions)~~ — **livré** (issue #82, cf. `docs/design/ADR-passeport-v1.md`) : bouton « Imprimer une étiquette QR code » sur l'onglet Passeport matériel, étiquette imprimable dédiée (`front/qrlabel.php`), QR code encodant un lien `forcetab` absolu vers le Passeport matériel (connexion GLPI requise si nécessaire, aucun accès anonyme introduit). | | | | | |
 | Kits/accessoires avec contrôle automatique au retour | Détecter un accessoire manquant à la restitution | Réduction de perte de matériel | Moyenne (nouvelle notion de kit, au-delà des accessoires actuels) | Checklists (V1) | Basse |
 | Dashboard RSE, app mobile technicien, signatures multiples | Extensions déjà identifiées comme envisageables | — | Haute (chacune un chantier à part) | Variable selon la fonctionnalité | Basse |
 

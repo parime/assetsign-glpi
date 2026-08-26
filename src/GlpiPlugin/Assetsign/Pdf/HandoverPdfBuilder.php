@@ -9,6 +9,7 @@ use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\DestructionDetails;
 use GlpiPlugin\Assetsign\DonDetails;
+use GlpiPlugin\Assetsign\QrCode;
 use GlpiPlugin\Assetsign\Template;
 use GlpiPlugin\Assetsign\VenteDetails;
 
@@ -96,7 +97,7 @@ final class HandoverPdfBuilder
            'logo_data_uri'       => $this->getLogoDataUri((int) $assetsign->fields['entities_id']),
            'company_name'        => $config->fields['company_name'] ?: null,
            'qr_data_uri'         => (bool) $config->fields['show_qr_code']
-               ? $this->getQrCodeDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/assetsign/front/assetsign.form.php?id=' . $assetsign->getID())
+               ? QrCode::toDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/assetsign/front/assetsign.form.php?id=' . $assetsign->getID())
                : null,
        ], $extra));
    }
@@ -194,7 +195,7 @@ final class HandoverPdfBuilder
            'company_name'        => $companyName,
            'currency_symbol'     => $currencySymbol,
            'qr_data_uri'         => $qrEnabled
-               ? $this->getQrCodeDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/assetsign/front/assetsign.form.php?id=0')
+               ? QrCode::toDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/assetsign/front/assetsign.form.php?id=0')
                : null,
            // Uniquement dans renderPreview(), JAMAIS dans renderHtml() (vrai PDF) :
            // c'est ce qui garantit qu'un vrai document genere ne peut pas se

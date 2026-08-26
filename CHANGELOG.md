@@ -34,6 +34,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   prestataire/certificat (destruction) et organisme/justificatif (don). `PassportEvent::TYPE_DESTRUCTION`
   (6) ajouté symétriquement à `TYPE_DON`/`TYPE_VENTE` pour la frise du Passeport matériel.
 
+- **QR code imprimable sur le matériel** (issue #82, ROADMAP.md V3) : nouveau bouton
+  « Imprimer une étiquette QR code » sur l'onglet Passeport matériel, ouvrant une page
+  dédiée (`front/qrlabel.php`) minimaliste et pensée pour l'impression (bouton
+  « Imprimer » via `window.print()`, CSS `@media print` masquant tout le reste). Le QR
+  code encode une URL ABSOLUE (domaine inclus, `$CFG_GLPI['url_base']`, même convention
+  que `Assetsign::getSignUrl()`) qui utilise le mécanisme standard `forcetab` du cœur
+  GLPI (même convention que le lien « créez maintenant la fiche » de
+  `Assetsign::handleStateBasedTrigger()`) pour ouvrir directement l'onglet Passeport
+  matériel du matériel scanné. Aucun mécanisme d'accès anonyme introduit : scanner le QR
+  code redirige vers un lien GLPI standard, qui exige la connexion habituelle si la
+  personne n'est pas déjà authentifiée sur son téléphone - cohérent avec le reste du
+  plugin (cf. README.md/SECURITY.md, aucune page n'est jamais accessible par un simple
+  lien anonyme). Génération du QR code (`BaconQrCode`, déjà fourni par le cœur GLPI,
+  jamais dupliqué dans le composer.json du plugin) extraite de `Pdf\PdfRenderingHelpers`
+  (qui ne servait jusqu'ici que le QR code des fiches PDF, réglage `show_qr_code`) vers
+  une nouvelle classe partagée `QrCode`, pour ne jamais dupliquer cette génération.
+  Nouveau réglage d'entité dédié `enable_qr_label` (défaut ACTIF, distinct de
+  `show_qr_code`) : Configuration > Assetsign & signature > Compléments.
+
 - **Mouvements structurés (départ/destination/documents/signature)** (issue #75, cf.
   `docs/design/ADR-passeport-v1.md` section 3.2 pour le schéma initialement proposé, tranché
   pendant l'analyse #76) : nouvelle classe `Movement`, généralisant la notion de remise
