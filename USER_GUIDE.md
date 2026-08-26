@@ -94,6 +94,8 @@ L'importance de chaque facteur se règle dans Configuration > AssetSign > Passep
 
 ![Réglages des poids du score de santé dans la configuration](docs/screenshots/passeport-reglages-poids.png)
 
+Un bouton **« Imprimer une étiquette QR code »** (désactivable par entité, Configuration > AssetSign > Compléments — réglage distinct du QR code des fiches PDF) ouvre une page dédiée, pensée pour l'impression, avec le nom/n° de série du matériel, le QR code et un bouton « Imprimer ». Une fois l'étiquette collée sur le matériel, la scanner avec un téléphone ouvre directement cet onglet Passeport matériel dans GLPI (connexion habituelle requise si nécessaire, comme n'importe quel lien GLPI — aucun accès anonyme).
+
 #### L'onglet « Assetsigns » sur la fiche d'un utilisateur
 
 Le même onglet Assetsigns existe aussi côté utilisateur (fiche d'un compte GLPI, Administration > Utilisateurs) — filtré cette fois par bénéficiaire plutôt que par matériel, avec une colonne supplémentaire indiquant à quel matériel chaque ligne correspond (une même personne ayant pu recevoir plusieurs matériels différents dans le temps) : pratique pour retrouver d'un coup d'œil tout ce qu'une personne a reçu, télécharger directement chaque PDF, sans avoir à connaître à l'avance sur quel matériel chercher. Un raccourci **"Assigner un matériel à cet utilisateur"** permet en plus d'affecter directement un matériel depuis cet écran (choix du type puis du matériel) — l'affectation déclenche automatiquement la création d'une remise, exactement comme changer le champ "Utilisateur" depuis la fiche du matériel :
@@ -138,6 +140,7 @@ Vue symétrique du Passeport matériel : une frise chronologique de tout ce qu'u
 - **Paramétrage organisé par onglet** (Configuration > AssetSign > Configuration) : un onglet par type de fiche (Général, Remise, Restitution, Don, Vente, Compléments, Maintenance), chacun avec ses propres réglages, son aperçu, et l'édition du gabarit par défaut de ce type directement intégrée dans l'onglet — un seul formulaire, un seul enregistrement malgré la navigation par onglets.
 - **Nom de l'entreprise et protection du PDF** (onglet Général) : un nom d'entreprise optionnel affiché à côté du logo sur les fiches PDF, et une case « Protéger le PDF » qui chiffre le document généré pour empêcher sa copie/modification dans un lecteur qui respecte cette restriction (la consultation et l'impression restent toujours possibles).
 - **QR code optionnel sur les fiches PDF** (désactivable, onglet Compléments) : renvoie directement vers la fiche correspondante dans GLPI, pratique pour la retrouver depuis un contrôle physique du matériel.
+- **Étiquette QR code imprimable sur le matériel** (désactivable par entité, onglet Compléments — réglage distinct du précédent) : bouton sur l'onglet Passeport matériel ouvrant une page dédiée à imprimer et coller sur le matériel ; scannée, elle renvoie directement vers ce même onglet Passeport matériel.
 - **Symbole monétaire personnalisable** (onglet Vente) : affiché après le prix sur le PDF (`€` par défaut, modifiable en `$`, `CHF`...) — utile pour toute organisation hors zone euro.
 - **Bouton « Envoyer un e-mail de test »** (onglet Général) : vérifie que l'envoi d'e-mail fonctionne avec la configuration actuelle, sans attendre une vraie fiche à signer.
 - **Suivi de version** (en tête de l'onglet Général) : compare la version installée à la dernière version publiée sur GitHub, pour repérer immédiatement un environnement resté sur une ancienne version.
@@ -295,6 +298,8 @@ How much each factor matters is set in Configuration > AssetSign > Asset Passpor
 
 ![Réglages des poids du score de santé dans la configuration](docs/screenshots/passeport-reglages-poids.png)
 
+A **"Print a QR code label"** button (can be disabled per entity, Configuration > AssetSign > Extras — a setting separate from the PDF QR code) opens a dedicated, print-friendly page with the equipment's name/serial number, the QR code, and a "Print" button. Once the label is stuck onto the equipment, scanning it with a phone opens this same Asset Passport tab directly in GLPI (the usual GLPI login is required if needed, like any GLPI link — no anonymous access).
+
 #### The "Assetsigns" tab on a user's record
 
 The same Assetsigns tab also exists on the user side (a GLPI account's record, Administration > Users) — filtered this time by recipient rather than by equipment, with an extra column showing which equipment each row corresponds to (the same person may have received several different pieces of equipment over time): handy for seeing at a glance everything a person has received, and downloading each PDF directly, with no need to know in advance which equipment to look under. A **"Assign equipment to this user"** shortcut also lets you assign equipment directly from this screen (choose the type, then the equipment) — the assignment automatically triggers the creation of a handover, exactly like changing the "User" field from the equipment record:
@@ -339,6 +344,7 @@ A view symmetrical to the Asset Passport: a timeline of everything a person has 
 - **Settings organized by tab** (Configuration > AssetSign > Configuration): one tab per record type (General, Handover, Return, Donation, Sale, Extras, Maintenance), each with its own settings, its preview, and the editing of that type's default template built directly into the tab — a single form, a single save despite the tabbed navigation.
 - **Company name and PDF protection** (General tab): an optional company name shown next to the logo on PDF records, and a "Protect the PDF" checkbox that encrypts the generated document to prevent copying/editing in a reader that respects this restriction (viewing and printing always remain possible).
 - **Optional QR code on PDF records** (can be disabled, Extras tab): links directly to the matching record in GLPI, handy for finding it during a physical check of the equipment.
+- **Printable QR code label on equipment** (can be disabled per entity, Extras tab — a setting separate from the one above): a button on the Asset Passport tab opens a dedicated page to print and stick onto the equipment; scanning it links directly back to that same Asset Passport tab.
 - **Customizable currency symbol** (Sale tab): shown after the price on the PDF (`€` by default, changeable to `$`, `CHF`...) — useful for any organization outside the euro zone.
 - **"Send a test e-mail" button** (General tab): checks that e-mail sending works with the current configuration, without waiting for a real record to sign.
 - **Version tracking** (at the top of the General tab): compares the installed version to the latest one published on GitHub, to immediately spot an environment still on an old version.

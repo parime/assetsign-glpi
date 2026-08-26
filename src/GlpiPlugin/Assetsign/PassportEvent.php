@@ -249,6 +249,16 @@ class PassportEvent extends CommonDBTM
            $health['color'] = $config->getHealthScoreColor($health['score']);
       }
 
+       // Etiquette QR code imprimable (cf. ROADMAP.md V3, issue #82) : gardee par le
+       // reglage dedie ET le droit READ (redondant avec le droit deja verifie par
+       // GLPI pour atteindre cet onglet, mais explicite ici comme demande - front/
+       // qrlabel.php revalide de toute facon les deux independamment, cf. son
+       // propre commentaire).
+       $qrLabelEnabled = (bool) $config->fields['enable_qr_label'] && \Session::haveRight(self::$rightname, READ);
+       $qrLabelUrl = $qrLabelEnabled
+           ? $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/qrlabel.php?itemtype=' . urlencode($item->getType()) . '&items_id=' . $item->getID()
+           : null;
+
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/passport_tab.html.twig', [
            'events'        => array_reverse($timelineRows), // le plus recent en premier dans la frise
            'lives'         => $lives,
@@ -257,6 +267,8 @@ class PassportEvent extends CommonDBTM
            'itemtype'      => $item->getType(),
            'items_id'      => $item->getID(),
            'can_backfill'  => \Session::haveRight(self::$rightname, UPDATE),
+           'qr_label_enabled' => $qrLabelEnabled,
+           'qr_label_url'     => $qrLabelUrl,
            'csrf_token'    => \Session::getNewCSRFToken(),
        ]);
    }

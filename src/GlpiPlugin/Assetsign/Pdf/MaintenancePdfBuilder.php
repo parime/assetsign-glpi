@@ -9,6 +9,7 @@ use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\Maintenance;
+use GlpiPlugin\Assetsign\QrCode;
 
 /**
  * Construit le PDF d'une fiche de maintenance, meme gabarit visuel (logo,
@@ -49,7 +50,7 @@ final class MaintenancePdfBuilder
    public function renderHtml(Maintenance $maintenance, ?string $signatureImage = null, ?string $signedAt = null): string {
        $config = Config::getForEntity((int) $maintenance->fields['entities_id']);
        $qrDataUri = (bool) $config->fields['show_qr_code']
-           ? $this->getQrCodeDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/assetsign/front/maintenance.form.php?id=' . $maintenance->getID())
+           ? QrCode::toDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/assetsign/front/maintenance.form.php?id=' . $maintenance->getID())
            : null;
 
        return TemplateRenderer::getInstance()->render('@assetsign/pdf/maintenance.html.twig', [
