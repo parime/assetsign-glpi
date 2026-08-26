@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assetsign\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-26 22:51+0000\n"
+"POT-Creation-Date: 2026-08-26 23:02+0000\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,7 +65,7 @@ msgstr "Una precisazione da aggiungere prima di firmare (facoltativo)."
 
 #: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
 #: templates/assetsign_form.html.twig templates/template_form.html.twig
-#: templates/config_form.html.twig
+#: templates/config_form.html.twig templates/passport_tab.html.twig
 msgid "Enregistrer"
 msgstr "Salva"
 
@@ -596,7 +596,7 @@ msgid "Destruction"
 msgstr "Distruzione"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:486
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:568
 msgid "Réforme"
 msgstr "Dismissione"
 
@@ -611,7 +611,7 @@ msgid "Maintenance"
 msgstr "Manutenzione"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:442
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:524
 #: src/GlpiPlugin/Assetsign/Movement.php:207
 msgid "Mouvements"
 msgstr "Movimenti"
@@ -624,6 +624,10 @@ msgstr "Passaporto del dispositivo"
 #: templates/config_form.html.twig templates/passport_tab.html.twig
 msgid "Score de santé"
 msgstr "Punteggio di salute"
+
+#: templates/config_form.html.twig
+msgid "Valeur résiduelle"
+msgstr "Valore residuo"
 
 #: templates/config_form.html.twig
 msgid "Version du plugin"
@@ -1146,6 +1150,45 @@ msgstr "Al di sotto della soglia di Attenzione."
 
 #: templates/config_form.html.twig
 msgid ""
+"Estimation simple de la valeur restante d'un matériel (pas un module "
+"comptable complet) : aide à trancher entre réemploi et sortie de parc. "
+"Calcul linéaire à partir du prix d'achat Infocom, sur une durée de vie utile "
+"réglable ci-dessous. Une saisie manuelle, disponible sur l'onglet Passeport "
+"matériel de chaque matériel, l'emporte toujours sur ce calcul."
+msgstr ""
+"Stima semplice del valore residuo di un dispositivo (non un modulo contabile "
+"completo): aiuta a decidere tra riutilizzo e dismissione. Calcolo lineare a "
+"partire dal prezzo di acquisto Infocom, su una vita utile regolabile qui "
+"sotto. Un inserimento manuale, disponibile nella scheda Passaporto del "
+"dispositivo di ciascun dispositivo, prevale sempre su questo calcolo."
+
+#: templates/config_form.html.twig
+msgid "Afficher la valeur résiduelle sur le Passeport matériel"
+msgstr "Mostra il valore residuo nel Passaporto del dispositivo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Rien n'est affiché tant que le prix d'achat n'est pas connu (onglet Infocom "
+"du matériel) : jamais une estimation inventée."
+msgstr ""
+"Non viene mostrato nulla finché il prezzo di acquisto non è noto (scheda "
+"Infocom del dispositivo): mai una stima inventata."
+
+#: templates/config_form.html.twig
+msgid "Durée de vie utile (mois)"
+msgstr "Vita utile (mesi)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Durée sur laquelle la valeur d'achat est amortie de façon linéaire jusqu'à 0 "
+"- la \"durée personnalisable\" du calcul, propre à cette entité."
+msgstr ""
+"Periodo durante il quale il valore di acquisto viene ammortizzato in modo "
+"lineare fino a 0 - la \"durata personalizzabile\" del calcolo, specifica per "
+"questa entità."
+
+#: templates/config_form.html.twig
+msgid ""
 "Le Passeport matériel agrège en lecture seule les événements des onglets "
 "Attribution/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel "
 "onglet du matériel concerné."
@@ -1311,17 +1354,17 @@ msgid "Entité"
 msgstr "Ente"
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:483
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:565
 msgid "Achat"
 msgstr "Acquisto"
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:516
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:598
 msgid "Fin de garantie"
 msgstr "Fine garanzia"
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:411
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:493
 msgid "Âge"
 msgstr "Anzianità"
 
@@ -1332,6 +1375,26 @@ msgstr "Tempo in uso"
 #: templates/passport_tab.html.twig
 msgid "Temps en stock"
 msgstr "Tempo in magazzino"
+
+#: templates/passport_tab.html.twig
+msgid "Valeur résiduelle (saisie manuelle)"
+msgstr "Valore residuo (inserimento manuale)"
+
+#: templates/passport_tab.html.twig
+msgid "Valeur résiduelle (estimée)"
+msgstr "Valore residuo (stimato)"
+
+#: templates/passport_tab.html.twig
+msgid "Valeur résiduelle manuelle"
+msgstr "Valore residuo manuale"
+
+#: templates/passport_tab.html.twig
+msgid "Revenir au calcul automatique"
+msgstr "Torna al calcolo automatico"
+
+#: templates/passport_tab.html.twig
+msgid "Une valeur saisie ici l'emporte toujours sur le calcul automatique."
+msgstr "Un valore inserito qui prevale sempre sul calcolo automatico."
 
 #: templates/passport_tab.html.twig
 msgid "de dégradation"
@@ -1523,23 +1586,23 @@ msgstr ""
 msgid "Assigner"
 msgstr "Assegna"
 
-#: hook.php:110 src/GlpiPlugin/Assetsign/Config.php:82
+#: hook.php:111 src/GlpiPlugin/Assetsign/Config.php:84
 msgid "Assetsign & signature"
 msgstr "Consegna e firma"
 
-#: hook.php:116
+#: hook.php:117
 msgid "Attributions en attente de signature"
 msgstr "Attribuzioni in attesa di firma"
 
-#: hook.php:123
+#: hook.php:124
 msgid "Attributions signées"
 msgstr "Attribuzioni firmate"
 
-#: hook.php:130
+#: hook.php:131
 msgid "Attributions expirées"
 msgstr "Attribuzioni scadute"
 
-#: hook.php:137 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
+#: hook.php:138 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
 msgid "Échecs de création (30 derniers jours)"
 msgstr "Creazioni fallite (ultimi 30 giorni)"
 
@@ -1595,71 +1658,71 @@ msgstr[1] "Eventi del passaporto del dispositivo"
 msgid "Passeport utilisateur"
 msgstr "Passaporto dell'utente"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:322
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:339
 msgid "depuis l'achat"
 msgstr "dall'acquisto"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:322
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:339
 msgid "depuis l'entrée dans GLPI"
 msgstr "dall'ingresso in GLPI"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:421
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:503
 msgid "Incidents"
 msgstr "Incidenti"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:438
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:520
 msgid "État physique"
 msgstr "Stato fisico"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:481
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:563
 msgid "Commande"
 msgstr "Ordine"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:482
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:564
 msgid "Livraison"
 msgstr "Consegna"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:484
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:566
 msgid "Mise en service"
 msgstr "Messa in servizio"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:485
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:567
 msgid "Début de garantie"
 msgstr "Inizio garanzia"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:505
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:587
 #, php-format
 msgid "Prix d'achat : %s %s"
 msgstr "Prezzo d'acquisto: %s %s"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:564
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:646
 msgid "Ticket"
 msgstr "Ticket"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:712
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:794
 msgid "Reconstitué automatiquement depuis l'historique GLPI."
 msgstr "Ricostruito automaticamente dalla cronologia di GLPI."
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1002
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1084
 msgid "Utilisateur retiré"
 msgstr "Utente rimosso"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1031
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1113
 #, php-format
 msgid "%d jour"
 msgid_plural "%d jours"
 msgstr[0] "%d giorno"
 msgstr[1] "%d giorni"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1036
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1046
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1118
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1128
 #, php-format
 msgid "%d mois"
 msgid_plural "%d mois"
 msgstr[0] "%d mese"
 msgstr[1] "%d mesi"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1041
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1123
 #, php-format
 msgid "%d an"
 msgid_plural "%d ans"
@@ -1841,6 +1904,7 @@ msgid "Type de matériel invalide : %s"
 msgstr "Tipo di dispositivo non valido: %s"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:1089
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:25
 #: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:25
 #: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:41
 msgid "Matériel introuvable."
@@ -1897,32 +1961,32 @@ msgid "Cette attribution ne peut plus être relancée (déjà signée ou expiré
 msgstr ""
 "Questa attribuzione non può più essere sollecitata (già firmata o scaduta)."
 
-#: src/GlpiPlugin/Assetsign/Config.php:77
+#: src/GlpiPlugin/Assetsign/Config.php:79
 msgid "AssetSign — Signature électronique"
 msgstr "AssetSign — Firma elettronica"
 
-#: src/GlpiPlugin/Assetsign/Config.php:149
+#: src/GlpiPlugin/Assetsign/Config.php:151
 msgid "Signature intégrée (canvas)"
 msgstr "Firma integrata (canvas)"
 
-#: src/GlpiPlugin/Assetsign/Config.php:201
-#: src/GlpiPlugin/Assetsign/Config.php:226
+#: src/GlpiPlugin/Assetsign/Config.php:203
+#: src/GlpiPlugin/Assetsign/Config.php:228
 msgid "Échec de l'envoi du logo."
 msgstr "Invio del logo non riuscito."
 
-#: src/GlpiPlugin/Assetsign/Config.php:207
+#: src/GlpiPlugin/Assetsign/Config.php:209
 msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
 msgstr "Il logo deve essere un'immagine (PNG, JPG, GIF o WEBP)."
 
-#: src/GlpiPlugin/Assetsign/Config.php:253
+#: src/GlpiPlugin/Assetsign/Config.php:255
 msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
 msgstr "Il vostro account GLPI non ha un indirizzo e-mail registrato."
 
-#: src/GlpiPlugin/Assetsign/Config.php:267
+#: src/GlpiPlugin/Assetsign/Config.php:269
 msgid "E-mail de test — Assetsign & signature"
 msgstr "E-mail di prova — Consegna e firma"
 
-#: src/GlpiPlugin/Assetsign/Config.php:268
+#: src/GlpiPlugin/Assetsign/Config.php:270
 msgid ""
 "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & "
 "signature fonctionne."
@@ -1930,7 +1994,7 @@ msgstr ""
 "Questa e-mail conferma che la configurazione di invio del plugin Consegna e "
 "firma funziona."
 
-#: src/GlpiPlugin/Assetsign/Config.php:271
+#: src/GlpiPlugin/Assetsign/Config.php:273
 msgid "Le serveur de messagerie a refusé l'envoi."
 msgstr "Il server di posta ha rifiutato l'invio."
 
@@ -2048,6 +2112,24 @@ msgstr "Firma troppo piccola, riprovare."
 msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
 msgstr "Firma vuota o tracciata in modo insufficiente, firmare nuovamente."
 
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:20
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:20
+#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:31
+msgid "Type de matériel invalide."
+msgstr "Tipo di dispositivo non valido."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:34
+msgid "La valeur résiduelle ne peut pas être négative."
+msgstr "Il valore residuo non può essere negativo."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:40
+msgid "Valeur résiduelle repassée en calcul automatique."
+msgstr "Valore residuo tornato al calcolo automatico."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:41
+msgid "Valeur résiduelle manuelle enregistrée."
+msgstr "Valore residuo manuale salvato."
+
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:37
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:54
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:80
@@ -2073,11 +2155,6 @@ msgstr "Sollecito inviato."
 #: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:56
 msgid "Demande annulée."
 msgstr "Richiesta annullata."
-
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:20
-#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:31
-msgid "Type de matériel invalide."
-msgstr "Tipo di dispositivo non valido."
 
 #: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:36
 msgid "Utilisateur introuvable."

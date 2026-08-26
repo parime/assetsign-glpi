@@ -110,4 +110,29 @@ class ConfigTest extends AssetsignTestCase
         $this->assertSame('#dd8800', $config->getHealthScoreColor(45));
         $this->assertSame('#aa1133', $config->getHealthScoreColor(44));
     }
+
+    public function testResidualValueSettingsArePersisted(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Residual Settings');
+        Config::upsertForEntity($entityId, [
+            'enable_residual_value' => 0,
+            'residual_value_duration_months' => 36,
+        ]);
+
+        $config = Config::getForEntity($entityId);
+        $this->assertSame(0, (int) $config->fields['enable_residual_value']);
+        $this->assertSame(36, (int) $config->fields['residual_value_duration_months']);
+    }
+
+    public function testResidualValueDurationIsFlooredAtOneMonth(): void
+    {
+        // "Duree personnalisable" (issue #77) : jamais 0, utilisee comme diviseur
+        // par PassportEvent::getResidualValue() - un formulaire mal rempli (vide,
+        // negatif) ne doit jamais produire une division par zero en base.
+        $entityId = $this->createTestEntity(0, 'PHPUnit Residual Duration Floor');
+        Config::upsertForEntity($entityId, ['residual_value_duration_months' => 0]);
+
+        $config = Config::getForEntity($entityId);
+        $this->assertSame(1, (int) $config->fields['residual_value_duration_months']);
+    }
 }

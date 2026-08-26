@@ -108,7 +108,7 @@ Départ/destination réutiliseraient la table native `glpi_locations` (`Location
 | V1 | Checklists de contrôle qualité configurables | [#74](https://github.com/parime/assetsign-glpi/issues/74) | **Livré** par cette PR (`ChecklistItem`, formulaire sur `Assetsign`, résumé dans la frise du Passeport) |
 | V1 | Mouvements structurés (départ/destination/documents/signature) | [#75](https://github.com/parime/assetsign-glpi/issues/75) | **Livré** (PR de suivi) - classe `Movement` dédiée (déviation documentée ci-dessus par rapport au schéma initialement proposé), `Location`/`Document_Item`/`Signature` natifs réutilisés tels quels, nouveau producteur sur la frise du Passeport (`PassportEvent::TYPE_MOVEMENT`) |
 | V1 (suivi) | Index composite `(itemtype, items_id, date)` sur `glpi_plugin_assetsign_events` | *(nouveau, cf. risque 2.1)* | **Livré** par cette PR (migration additive, aucune régression fonctionnelle) |
-| V2 | Valeur résiduelle | [#77](https://github.com/parime/assetsign-glpi/issues/77) | Non commencé - dépend de la Fiche d'identité (déjà livrée) |
+| V2 | Valeur résiduelle | [#77](https://github.com/parime/assetsign-glpi/issues/77) | **Livré** (PR de suivi) - calcul linéaire à l'affichage depuis `Infocom` (prix/date d'achat, jamais dupliqué), durée de vie utile "personnalisable" via un nouveau réglage `Config::residual_value_duration_months` (pas une deuxième méthode de calcul), saisie manuelle prioritaire via une table dédiée `ResidualValue` (même patron 1-vers-1 `itemtype`/`items_id` que `Movement` plutôt que `VenteDetails`, qui référence une `Assetsign` - un matériel géré peut avoir une valeur résiduelle sans jamais avoir eu d'Assetsign). Voir section 6 ci-dessous pour le détail des décisions. |
 | V2 | Fin de vie structurée (vente/don/destruction) | [#78](https://github.com/parime/assetsign-glpi/issues/78) | **Livré** : date de réforme automatique (2026-08-19), puis prestataire/certificat (destruction, nouveau type `Assetsign::TYPE_DESTRUCTION`) et organisme/justificatif (don, `DonDetails`) le 2026-08-26 (PR de suivi) |
 | V2 | Module d'aide à la décision | [#79](https://github.com/parime/assetsign-glpi/issues/79) | Non commencé - dépend du score de santé (livré) et de la valeur résiduelle (#77) |
 | V3 | Passeport environnemental | [#80](https://github.com/parime/assetsign-glpi/issues/80) | Non commencé - risque externe tranché par anticipation (section 2.5) |
@@ -121,3 +121,42 @@ Départ/destination réutiliseraient la table native `glpi_locations` (`Location
 ## 5. Vérification
 
 Voir CHANGELOG.md `[Unreleased]` et la description de la Pull Request associée à cette PR pour le détail de la vérification en conditions réelles (checklists créées/remplies sur les 4 types de mouvement, résumé affiché dans la frise du Passeport matériel/utilisateur, régression zéro sur les onglets Passeport/Attribution/Maintenance existants), la suite PHPUnit dédiée et les traductions des 5 nouvelles chaînes dans les 5 langues.
+
+## 6. Valeur résiduelle (issue #77) - décisions d'implémentation
+
+**Contexte** : troisième indicateur V2 du Passeport matériel, après le score de santé et les
+indicateurs temporels (tous deux calculés à l'affichage, section "Réalisé récemment" de
+ROADMAP.md). "Linéaire / durée personnalisable / saisie manuelle" (libellé de la roadmap) a été
+tranché comme : un calcul linéaire simple, une durée de vie utile réglable par l'administrateur
+(pas une deuxième méthode de calcul), et une saisie manuelle qui l'emporte toujours quand elle
+est présente.
+
+**Pourquoi une table dédiée (`ResidualValue`) plutôt qu'un champ sur `Config` ou sur
+`PassportEvent`** : la saisie manuelle est une donnée par MATÉRIEL, pas par entité (`Config`)
+ni un événement immuable de la frise (`PassportEvent`, qui ne fait qu'agréger, jamais stocker
+un indicateur calculé - cf. section 1, "Indicateurs et modules avancés... peuvent être
+recalculés/mis en cache sans jamais réécrire l'historique brut"). Suit exactement le patron
+déjà établi par `VenteDetails` (table 1-vers-1, `getForItem()`/`upsertForItem()`, `install()`
+enregistré dans `hook.php`) avec une différence assumée : la clé est `itemtype`/`items_id`
+(comme `Movement`), pas `plugin_assetsign_assetsigns_id` (comme `VenteDetails`) - un matériel
+peut avoir une valeur résiduelle sans jamais avoir eu la moindre `Assetsign` (jamais attribué,
+jamais vendu/donné), la table ne doit donc dépendre d'aucune fiche du plugin, seulement du
+matériel natif GLPI lui-même. Aucune contrainte de clé étrangère vers une table du plugin
+(contrairement à `VenteDetails` → `glpi_plugin_assetsign_assetsigns`) : `itemtype`/`items_id`
+référence un type d'item natif GLPI arbitraire, exactement comme `PassportEvent`/`Movement`
+le font déjà pour la même raison.
+
+**Pourquoi la durée est un réglage `Config` par entité, pas un champ par matériel** : "durée
+personnalisable" (libellé de la roadmap) désigne un réglage ADMINISTRATEUR, pas une saisie par
+matériel - cohérent avec le fait qu'un parc homogène (ex: tout le matériel bureautique d'une
+entité) partage généralement la même politique d'amortissement. Un réglage par matériel aurait
+multiplié les saisies pour un bénéfice marginal, alors que la saisie manuelle de la valeur
+elle-même (qui, elle, EST par matériel) couvre déjà le cas où un matériel précis a une
+trajectoire de valeur atypique.
+
+**Jamais de valeur inventée** : même garde-fou que l'âge/le temps utilisé (`getIdentityCard()`)
+- si `Infocom::value` ou `Infocom::buy_date` est absent, ou si la durée configurée est nulle
+(garde-fou division par zéro), rien n'est affiché (`null`), jamais un calcul par défaut sur une
+hypothèse inventée. La saisie manuelle reste cependant toujours disponible indépendamment de
+ce garde-fou (même principe que la saisie manuelle du futur passeport environnemental V3,
+section 2.5 : un vrai choix, jamais un simple repli dégradé).
