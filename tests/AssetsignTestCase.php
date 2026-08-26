@@ -139,6 +139,37 @@ abstract class AssetsignTestCase extends TestCase
     }
 
     /**
+     * Crée un Lieu GLPI (glpi_locations) directement en base, même motif et même
+     * raison que createTestState() : Location est aussi un CommonTreeDropdown
+     * (level/ancestors_cache), mais rien dans ce plugin ne parcourt la hiérarchie
+     * des lieux - seul un id valide à référencer dans locations_id_from/to est
+     * nécessaire ici (cf. MovementTest).
+     */
+    protected function createTestLocation(string $name): int
+    {
+        global $DB;
+
+        static $nextId = null;
+        if ($nextId === null) {
+            $nextId = random_int(700000, 799999);
+        }
+        $id = $nextId++;
+
+        $DB->insert('glpi_locations', [
+            'id'              => $id,
+            'name'            => $name,
+            'completename'    => $name,
+            'entities_id'     => 0,
+            'locations_id'    => 0,
+            'level'           => 1,
+            'ancestors_cache' => '[]',
+            'sons_cache'      => '[]',
+        ]);
+
+        return $id;
+    }
+
+    /**
      * Utilisateur de test avec prenom/nom garantis (contrairement au compte
      * 'glpi' du jeu de test, dont le prenom/nom ne sont pas forcement remplis
      * sur une instance fraichement installee — constate en CI, absent en local

@@ -11,15 +11,20 @@ use Migration;
  * PDF final, metadonnees de preuve fournies par le prestataire (certificat,
  * journal de consultation...).
  *
- * Rattachee a EXACTEMENT UNE fiche parente parmi deux possibles (colonnes
- * `plugin_assetsign_assetsigns_id`/`plugin_assetsign_maintenances_id`, toutes deux
- * nullables), meme convention que DamageMarker (cf. sa docblock de classe) :
+ * Rattachee a EXACTEMENT UNE fiche parente parmi trois possibles (colonnes
+ * `plugin_assetsign_assetsigns_id`/`plugin_assetsign_maintenances_id`/
+ * `plugin_assetsign_movements_id`, toutes nullables), meme convention que
+ * DamageMarker (cf. sa docblock de classe) :
  * - Assetsign : beneficiaire, via le flux jeton + page de signature publique
  *   (front/sign.php), preuve enregistree par markSigned().
  * - Maintenance : technicien deja authentifie, signature directement sur le
  *   formulaire de creation (pas de jeton, pas d'email), preuve enregistree
  *   par Maintenance::createWithChecklist() quand la signature est activee
  *   pour l'entite (Config::enable_maintenance_signature).
+ * - Movement (issue #75) : meme patron que Maintenance (personne deja
+ *   authentifiee, pas de jeton, pas d'email), preuve enregistree par
+ *   Movement::create() quand la signature est activee pour l'entite
+ *   (Config::enable_movement_signature).
  */
 class Signature extends CommonDBTM
 {
@@ -31,6 +36,10 @@ class Signature extends CommonDBTM
 
    public static function recordProofForMaintenance(Maintenance $maintenance, array $proof): int {
        return self::insertProof(['plugin_assetsign_maintenances_id' => $maintenance->getID()], $proof);
+   }
+
+   public static function recordProofForMovement(Movement $movement, array $proof): int {
+       return self::insertProof(['plugin_assetsign_movements_id' => $movement->getID()], $proof);
    }
 
    private static function insertProof(array $parentColumn, array $proof): int {
@@ -55,6 +64,11 @@ class Signature extends CommonDBTM
     /** Preuve de signature la plus recente pour une fiche de maintenance, ou null si non signee. */
    public static function getForMaintenance(int $maintenances_id): ?array {
        return self::getMostRecent(['plugin_assetsign_maintenances_id' => $maintenances_id]);
+   }
+
+    /** Preuve de signature la plus recente pour un mouvement, ou null si non signe. */
+   public static function getForMovement(int $movements_id): ?array {
+       return self::getMostRecent(['plugin_assetsign_movements_id' => $movements_id]);
    }
 
    private static function getMostRecent(array $criteria): ?array {
@@ -82,6 +96,7 @@ class Signature extends CommonDBTM
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                 `plugin_assetsign_assetsigns_id` int unsigned DEFAULT NULL,
                 `plugin_assetsign_maintenances_id` int unsigned DEFAULT NULL,
+                `plugin_assetsign_movements_id` int unsigned DEFAULT NULL,
                 `signer_name` varchar(255) DEFAULT NULL,
                 `signer_email` varchar(255) DEFAULT NULL,
                 `ip_address` varchar(46) DEFAULT NULL,
@@ -92,8 +107,10 @@ class Signature extends CommonDBTM
                 PRIMARY KEY (`id`),
                 KEY `plugin_assetsign_assetsigns_id` (`plugin_assetsign_assetsigns_id`),
                 KEY `plugin_assetsign_maintenances_id` (`plugin_assetsign_maintenances_id`),
+                KEY `plugin_assetsign_movements_id` (`plugin_assetsign_movements_id`),
                 CONSTRAINT `fk_signature_assetsign` FOREIGN KEY (`plugin_assetsign_assetsigns_id`) REFERENCES `glpi_plugin_assetsign_assetsigns` (`id`) ON DELETE CASCADE,
-                CONSTRAINT `fk_signature_maintenance` FOREIGN KEY (`plugin_assetsign_maintenances_id`) REFERENCES `glpi_plugin_assetsign_maintenances` (`id`) ON DELETE CASCADE
+                CONSTRAINT `fk_signature_maintenance` FOREIGN KEY (`plugin_assetsign_maintenances_id`) REFERENCES `glpi_plugin_assetsign_maintenances` (`id`) ON DELETE CASCADE,
+                CONSTRAINT `fk_signature_movement` FOREIGN KEY (`plugin_assetsign_movements_id`) REFERENCES `glpi_plugin_assetsign_movements` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
       } else {
           // Audit code mort : 'provider'/'provider_reference'/'proof_data'
@@ -122,6 +139,22 @@ class Signature extends CommonDBTM
              $DB->doQuery("ALTER TABLE `$table` ADD COLUMN `plugin_assetsign_maintenances_id` int unsigned DEFAULT NULL AFTER `plugin_assetsign_assetsigns_id`");
              $DB->doQuery("ALTER TABLE `$table` ADD KEY `plugin_assetsign_maintenances_id` (`plugin_assetsign_maintenances_id`)");
              $DB->doQuery("ALTER TABLE `$table` ADD CONSTRAINT `fk_signature_maintenance` FOREIGN KEY (`plugin_assetsign_maintenances_id`) REFERENCES `glpi_plugin_assetsign_maintenances` (`id`) ON DELETE CASCADE");
+         }
+
+         // Installation existante ne connaissant pas encore les preuves de
+         // signature de Movement (issue #75) : meme demarche que ci-dessus pour
+         // Maintenance, en SQL brut execute IMMEDIATEMENT (Migration::addField()
+         // met la modification en FILE D'ATTENTE jusqu'a la toute fin de
+         // l'installation, cf. le commentaire equivalent plus haut) - necessaire
+         // ici pour que la contrainte de cle etrangere vers
+         // glpi_plugin_assetsign_movements (creee juste avant, cf. hook.php) soit
+         // ajoutee dans la MEME requete que la colonne, sans depende de l'ordre
+         // d'execution d'une file d'attente.
+         if (!$DB->fieldExists($table, 'plugin_assetsign_movements_id')) {
+             $migration->displayMessage("Mise à jour de $table pour les preuves de signature de mouvement");
+             $DB->doQuery("ALTER TABLE `$table` ADD COLUMN `plugin_assetsign_movements_id` int unsigned DEFAULT NULL AFTER `plugin_assetsign_maintenances_id`");
+             $DB->doQuery("ALTER TABLE `$table` ADD KEY `plugin_assetsign_movements_id` (`plugin_assetsign_movements_id`)");
+             $DB->doQuery("ALTER TABLE `$table` ADD CONSTRAINT `fk_signature_movement` FOREIGN KEY (`plugin_assetsign_movements_id`) REFERENCES `glpi_plugin_assetsign_movements` (`id`) ON DELETE CASCADE");
          }
       }
    }

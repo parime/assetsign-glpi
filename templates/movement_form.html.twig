@@ -1,0 +1,102 @@
+<div class="card">
+  <div class="card-body">
+    <h2>
+      {{ _n('Mouvement', 'Mouvements', 1, 'assetsign') }} #{{ item.fields.id }}
+      <span class="badge" style="background-color: {{ status_color }}; color: #fff;">
+        {{ statuses[item.fields.status]|default('') }}
+      </span>
+    </h2>
+
+    <table class="table table-striped">
+      <tr>
+        <th>{{ __('Matériel', 'assetsign') }}</th>
+        <td>{{ item.fields.itemtype }} #{{ item.fields.items_id }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Lieu de départ', 'assetsign') }}</th>
+        <td>{{ location_from_name|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Date de départ', 'assetsign') }}</th>
+        <td>{{ item.fields.date_from|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Lieu de destination', 'assetsign') }}</th>
+        <td>{{ location_to_name|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Date de destination', 'assetsign') }}</th>
+        <td>{{ item.fields.date_to|default('') }}</td>
+      </tr>
+      <tr>
+        <th>{{ __('Créé le', 'assetsign') }}</th>
+        <td>{{ item.fields.date_creation }}</td>
+      </tr>
+    </table>
+
+    <h3 class="mt-4">{{ __('Commentaire', 'assetsign') }}</h3>
+    <p style="white-space: pre-line;">{{ item.fields.comment|default('') }}</p>
+
+    {% if signature_proof %}
+      <h3 class="mt-4">{{ __('Preuve de signature', 'assetsign') }}</h3>
+      <table class="table table-striped">
+        <tr>
+          <th>{{ __('Signataire', 'assetsign') }}</th>
+          <td>{{ signature_proof.signer_name|default('') }} ({{ signature_proof.signer_email|default('') }})</td>
+        </tr>
+        <tr>
+          <th>{{ __('Adresse IP', 'assetsign') }}</th>
+          <td>{{ signature_proof.ip_address|default('') }}</td>
+        </tr>
+        <tr>
+          <th>{{ __('Navigateur / appareil', 'assetsign') }}</th>
+          <td>{{ signature_proof.user_agent|default('') }}</td>
+        </tr>
+        <tr>
+          <th>{{ __('Empreinte du document (SHA-256)', 'assetsign') }}</th>
+          <td><code>{{ signature_proof.document_hash|default('') }}</code></td>
+        </tr>
+        <tr>
+          <th>{{ __('Horodatage', 'assetsign') }}</th>
+          <td>{{ signature_proof.signed_at|default('') }}</td>
+        </tr>
+      </table>
+    {% endif %}
+
+    <h3 class="mt-4">{{ __('Documents joints', 'assetsign') }}</h3>
+    {% if documents|length %}
+      <ul>
+        {% for doc in documents %}
+          <li><a href="{{ config('root_doc') }}/front/document.send.php?docid={{ doc.id }}" target="_blank">{{ doc.name }}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">{{ __('Aucun document joint (bulletin de livraison, document de transport...).', 'assetsign') }}</p>
+    {% endif %}
+    {% if can_attach_document %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/movement.form.php" enctype="multipart/form-data" class="d-flex gap-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div>
+          <input type="file" name="document_file" class="form-control form-control-sm">
+        </div>
+        <button type="submit" name="attach_document" class="btn btn-outline-secondary btn-sm">{{ __('Joindre le document', 'assetsign') }}</button>
+      </form>
+    {% endif %}
+
+    {% if can_transition %}
+      <h3 class="mt-4">{{ __('Actions', 'assetsign') }}</h3>
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/movement.form.php" class="d-flex gap-2 align-items-end flex-wrap">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <button type="submit" name="mark_in_transit" class="btn btn-outline-warning btn-sm">{{ __('Marquer comme en cours (départ effectif)', 'assetsign') }}</button>
+        <div>
+          <label class="form-label small mb-0">{{ __('Date d\'arrivée', 'assetsign') }}</label>
+          <input type="datetime-local" name="date_to" class="form-control form-control-sm">
+        </div>
+        <button type="submit" name="mark_completed" class="btn btn-outline-success btn-sm">{{ __('Marquer comme terminé (arrivée effective)', 'assetsign') }}</button>
+        <button type="submit" name="cancel_movement" class="btn btn-outline-danger btn-sm" onclick="return confirm({{ __('Annuler ce mouvement ?', 'assetsign')|json_encode|raw }});">{{ __('Annuler le mouvement', 'assetsign') }}</button>
+      </form>
+    {% endif %}
+  </div>
+</div>

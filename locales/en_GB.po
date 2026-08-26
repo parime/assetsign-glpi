@@ -1787,6 +1787,190 @@ msgstr "Too many attempts, link disabled for security."
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purges expired or invalid signature tokens"
 
+#: templates/movement_form.html.twig src/GlpiPlugin/Assetsign/Movement.php:56
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:57
+msgid "Mouvement"
+msgid_plural "Mouvements"
+msgstr[0] "Movement"
+msgstr[1] "Movements"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:130
+msgid "Lieu de départ"
+msgstr "Departure location"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:145
+msgid "Date de départ"
+msgstr "Departure date"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:138
+msgid "Lieu de destination"
+msgstr "Destination location"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:152
+msgid "Date de destination"
+msgstr "Destination date"
+
+#: templates/movement_form.html.twig
+msgid "Créé le"
+msgstr "Created on"
+
+#: templates/movement_form.html.twig
+msgid "Documents joints"
+msgstr "Attached documents"
+
+#: templates/movement_form.html.twig
+msgid "Aucun document joint (bulletin de livraison, document de transport...)."
+msgstr "No document attached (delivery note, transport document...)."
+
+#: templates/movement_form.html.twig
+msgid "Joindre le document"
+msgstr "Attach document"
+
+#: templates/movement_form.html.twig
+msgid "Actions"
+msgstr "Actions"
+
+#: templates/movement_form.html.twig
+msgid "Marquer comme en cours (départ effectif)"
+msgstr "Mark as in progress (actual departure)"
+
+#: templates/movement_form.html.twig
+msgid "Date d'arrivée"
+msgstr "Arrival date"
+
+#: templates/movement_form.html.twig
+msgid "Marquer comme terminé (arrivée effective)"
+msgstr "Mark as completed (actual arrival)"
+
+#: templates/movement_form.html.twig
+msgid "Annuler ce mouvement ?"
+msgstr "Cancel this movement?"
+
+#: templates/movement_form.html.twig
+msgid "Annuler le mouvement"
+msgstr "Cancel the movement"
+
+#: templates/movement_tab.html.twig
+msgid "Aucun mouvement enregistré pour ce matériel."
+msgstr "No movement recorded for this asset."
+
+#: templates/movement_tab.html.twig
+msgid "Départ"
+msgstr "Departure"
+
+#: templates/movement_tab.html.twig
+msgid "Destination"
+msgstr "Destination"
+
+#: templates/movement_tab.html.twig templates/movement_create.html.twig
+msgid "Nouveau mouvement"
+msgstr "New movement"
+
+#: templates/movement_tab.html.twig templates/movement_create.html.twig
+msgid "Créer le mouvement"
+msgstr "Create the movement"
+
+#: templates/config_form.html.twig
+msgid ""
+"Un mouvement structuré généralise la notion de remise à n'importe quel "
+"déplacement physique de matériel (transfert inter-site, retour au stock, "
+"envoi vers un centre de réparation...) : lieu et date de départ, lieu et "
+"date de destination, document(s) joint(s) (onglet Documents natif), "
+"signature optionnelle. Alimente la même frise que le Passeport matériel."
+msgstr ""
+"A structured movement generalises the concept of a handover to any "
+"physical movement of an asset (transfer between sites, return to stock, "
+"dispatch to a repair centre...): departure location and date, destination "
+"location and date, attached document(s) (native Documents tab), optional "
+"signature. Feeds the same timeline as the Asset passport."
+
+#: templates/config_form.html.twig
+msgid "Activer les mouvements structurés"
+msgstr "Enable structured movements"
+
+#: templates/config_form.html.twig
+msgid ""
+"Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, "
+"ainsi qu'une entrée dédiée dans le menu Outils."
+msgstr ""
+"Adds a \"Movements\" tab to every asset managed by the plugin, as well as "
+"a dedicated entry in the Tools menu."
+
+#: templates/config_form.html.twig
+msgid "Faire signer le mouvement (pavé de signature)"
+msgstr "Require a signature for the movement (signature pad)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Si activé, un pavé de signature (identique à celui de la fiche de "
+"maintenance) apparaît sur le formulaire de création : le mouvement ne peut "
+"pas être créé sans signature. La personne présente est déjà connectée, aucun "
+"e-mail ni page séparée n'est utilisé."
+msgstr ""
+"If enabled, a signature pad (identical to the one on the maintenance form) "
+"appears on the creation form: the movement cannot be created without a "
+"signature. The person present is already logged in, no e-mail or separate "
+"page is used."
+
+#: templates/config_form.html.twig
+msgid "Voir les mouvements"
+msgstr "View movements"
+
+#: templates/passport_tab.html.twig
+msgid "lieu inconnu"
+msgstr "unknown location"
+
+#: front/movement.form.php:14
+msgid "Mouvement créé."
+msgstr "Movement created."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:71
+msgid "Prévu"
+msgstr "Planned"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:72
+msgid "En cours"
+msgstr "In progress"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:73
+msgid "Terminé"
+msgstr "Completed"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:168
+msgid "Déclaré par"
+msgstr "Reported by"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:276
+msgid ""
+"La fonctionnalité « Mouvements » n'est pas activée pour cette entité "
+"(Configuration > Mouvements)."
+msgstr ""
+"The \"Movements\" feature is not enabled for this entity (Configuration > "
+"Movements)."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:396
+#: src/GlpiPlugin/Assetsign/Movement.php:402
+#: src/GlpiPlugin/Assetsign/Movement.php:414
+msgid "Échec de l'envoi du document."
+msgstr "Failed to upload the document."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:460
+msgid "Échec de la création du mouvement."
+msgstr "Failed to create the movement."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:514
+#, php-format
+msgid "Signature du mouvement #%d"
+msgstr "Signature of movement #%d"
+
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Handover & signature configuration"
 

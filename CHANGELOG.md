@@ -11,6 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Mouvements structurés (départ/destination/documents/signature)** (issue #75, cf.
+  `docs/design/ADR-passeport-v1.md` section 3.2 pour le schéma initialement proposé, tranché
+  pendant l'analyse #76) : nouvelle classe `Movement`, généralisant la notion de remise
+  (toujours personne A → personne B) à n'importe quel déplacement physique de matériel
+  (transfert inter-site, retour au stock, envoi vers un centre de réparation...) - lieu et date
+  de départ, lieu et date de destination (`Location`, dropdown natif GLPI, jamais une nouvelle
+  table de lieux), document(s) joint(s) (onglet Documents natif, `Document`/`Document_Item`,
+  jamais un nouveau stockage), signature optionnelle (`Signature`, même mécanisme déjà utilisé
+  par les fiches de maintenance, jamais un second système). Déviation assumée par rapport au
+  schéma initialement proposé dans l'ADR (deux colonnes ajoutées à `glpi_plugin_assetsign_assetsigns`
+  plutôt qu'une classe séparée) : un mouvement doit pouvoir exister sans aucune remise associée
+  (ex: un simple retour au stock n'a pas de bénéficiaire à faire signer), documentée dans l'ADR
+  lui-même. Nouvel onglet « Mouvements » sur chaque matériel géré, page dédiée (Outils >
+  Mouvements, liste avec filtres de recherche réels + création autonome), statuts colorés
+  (Prévu/En cours/Terminé/Annulé) avec actions de transition. Alimente la même frise que le
+  Passeport matériel (`glpi_plugin_assetsign_events`, nouveau type d'événement `TYPE_MOVEMENT`) -
+  un nouveau producteur d'événements, jamais une réécriture des producteurs existants. Fonctionnalité
+  et signature optionnelle toutes deux opt-in par entité (`Config::enable_movements`/
+  `enable_movement_signature`, défaut désactivé, comme les autres fonctionnalités du plugin).
+
 - **Checklists de contrôle qualité configurables, réutilisables sur les mouvements de matériel**
   (issue #74, cf. `docs/design/ADR-passeport-v1.md` pour l'analyse complète et les 6 risques
   techniques tranchés en amont, issue #76) : nouveau catalogue `ChecklistItem` (Configuration >

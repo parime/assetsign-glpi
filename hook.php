@@ -17,6 +17,7 @@ use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\Dashboard\CardProvider;
 use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
+use GlpiPlugin\Assetsign\Movement;
 use GlpiPlugin\Assetsign\NotificationTargetAssetsign;
 use GlpiPlugin\Assetsign\PassportEvent;
 use GlpiPlugin\Assetsign\Profile;
@@ -202,6 +203,11 @@ function plugin_assetsign_install(): bool {
     DamageMarker::install($migration);
     PassportEvent::install($migration);
     Token::install($migration);
+    // Avant Signature::install() : la contrainte de cle etrangere ajoutee par ce
+    // dernier vers glpi_plugin_assetsign_movements (issue #75) exige que cette
+    // table existe deja - meme piege deja documente pour DamageMarker/Maintenance
+    // et ChecklistItem/Assetsign plus haut.
+    Movement::install($migration);
     Signature::install($migration);
     Reminder::install($migration);
     Profile::install($migration);
@@ -276,6 +282,10 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_events',
         'glpi_plugin_assetsign_reminders',
         'glpi_plugin_assetsign_signatures',
+        // Apres 'glpi_plugin_assetsign_signatures' (qui la reference par cle
+        // etrangere, cf. Signature::install()) : meme ordre enfant-avant-parent
+        // que le reste de cette liste.
+        'glpi_plugin_assetsign_movements',
         'glpi_plugin_assetsign_tokens',
         'glpi_plugin_assetsign_assetsignaccessories',
         'glpi_plugin_assetsign_ventedetails',
