@@ -737,6 +737,47 @@ msgstr ""
 "finding it during a physical asset check."
 
 #: templates/config_form.html.twig
+msgid "Autoriser l'impression d'une étiquette QR code sur le matériel"
+msgstr "Allow printing a QR code label for equipment"
+
+#: templates/config_form.html.twig
+msgid ""
+"Différent du réglage ci-dessus (celui-ci concerne les fiches PDF) : ajoute "
+"un bouton sur l'onglet Passeport matériel pour imprimer une étiquette à "
+"coller physiquement sur le matériel. Scannée, elle ouvre directement son "
+"Passeport matériel dans GLPI (connexion requise, comme n'importe quel lien "
+"GLPI)."
+msgstr ""
+"Different from the setting above (which concerns PDF records): adds a "
+"button on the Asset Passport tab to print a label to stick onto the "
+"equipment. Once scanned, it opens that same Asset Passport directly in "
+"GLPI (login required, like any GLPI link)."
+
+#: templates/passport_tab.html.twig
+msgid "Imprimer une étiquette QR code"
+msgstr "Print a QR code label"
+
+#: templates/qr_label.html.twig
+msgid "Étiquette QR code"
+msgstr "QR code label"
+
+#: templates/qr_label.html.twig
+msgid "QR code du matériel"
+msgstr "Equipment QR code"
+
+#: templates/qr_label.html.twig
+msgid "QR code indisponible sur cet environnement."
+msgstr "QR code unavailable on this environment."
+
+#: templates/qr_label.html.twig
+msgid "Imprimer"
+msgstr "Print"
+
+#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php
+msgid "Étiquette QR code désactivée pour cette entité."
+msgstr "QR code label disabled for this entity."
+
+#: templates/config_form.html.twig
 msgid "Texte du filigrane sur l'aperçu"
 msgstr "Preview watermark text"
 

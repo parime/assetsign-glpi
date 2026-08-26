@@ -312,6 +312,12 @@
             <label class="form-check-label" for="show_qr_code">{{ __('Afficher un QR code sur les fiches PDF', 'assetsign') }}</label>
             <div class="form-text">{{ __('Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel.', 'assetsign') }}</div>
           </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_qr_label" value="0">
+            <input type="checkbox" name="enable_qr_label" value="1" class="form-check-input" id="enable_qr_label" {{ config.enable_qr_label|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_qr_label">{{ __('Autoriser l\'impression d\'une étiquette QR code sur le matériel', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Différent du réglage ci-dessus (celui-ci concerne les fiches PDF) : ajoute un bouton sur l\'onglet Passeport matériel pour imprimer une étiquette à coller physiquement sur le matériel. Scannée, elle ouvre directement son Passeport matériel dans GLPI (connexion requise, comme n\'importe quel lien GLPI).', 'assetsign') }}</div>
+          </div>
           <div class="row">
             <div class="col-auto mb-3">
               <label class="form-label">{{ __('Texte du filigrane sur l\'aperçu', 'assetsign') }}</label>
