@@ -132,6 +132,52 @@ class AssetsignFormControllerTest extends AssetsignTestCase
         $this->assertSame(date('Y-m-d'), $details->fields['sale_date']);
     }
 
+    public function testCreateManualCreatesDestructionAssetsignWithProviderName(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit AssetsignFormController CreateManualDestruction');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC CreateManualDestruction');
+
+        $message = (new AssetsignFormController())->createManual([
+            'itemtype'      => 'Computer',
+            'items_id'      => $computer->getID(),
+            'type'          => Assetsign::TYPE_DESTRUCTION,
+            'users_id'      => 2,
+            'provider_name' => 'Prestataire Controller',
+        ]);
+
+        $this->assertSame(__('Fiche créée.', 'assetsign'), $message);
+
+        $created = new Assetsign();
+        $this->assertTrue($created->getFromDBByCrit(['itemtype' => 'Computer', 'items_id' => $computer->getID(), 'type' => Assetsign::TYPE_DESTRUCTION]));
+        $details = \GlpiPlugin\Assetsign\DestructionDetails::getForAssetsign($created->getID());
+        $this->assertNotNull($details);
+        $this->assertSame('Prestataire Controller', $details->fields['provider_name']);
+    }
+
+    public function testUpdateDonDetailsDelegatesToModel(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit AssetsignFormController DonDetails');
+        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_DON, Assetsign::STATUS_SENT);
+
+        (new AssetsignFormController())->updateDonDetails($assetsign, ['organization_name' => 'Organisme Controller']);
+
+        $details = \GlpiPlugin\Assetsign\DonDetails::getForAssetsign($assetsign->getID());
+        $this->assertNotNull($details);
+        $this->assertSame('Organisme Controller', $details->fields['organization_name']);
+    }
+
+    public function testUpdateDestructionDetailsDelegatesToModel(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit AssetsignFormController DestructionDetails');
+        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_DESTRUCTION, Assetsign::STATUS_SENT);
+
+        (new AssetsignFormController())->updateDestructionDetails($assetsign, ['provider_name' => 'Prestataire Controller Update']);
+
+        $details = \GlpiPlugin\Assetsign\DestructionDetails::getForAssetsign($assetsign->getID());
+        $this->assertNotNull($details);
+        $this->assertSame('Prestataire Controller Update', $details->fields['provider_name']);
+    }
+
     public function testUpdateChecklistDelegatesToModel(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit AssetsignFormController Checklist');

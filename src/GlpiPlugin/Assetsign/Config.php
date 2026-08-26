@@ -27,7 +27,7 @@ class Config extends CommonDBTM
         'protect_pdf'                         => 0,
         'enable_passport'                     => 1,
         'passport_retention_years'            => 3,
-        'passport_visible_types'              => '[0,1,2,3,4,5]',
+        'passport_visible_types'              => '[0,1,2,3,4,5,6]',
         'show_infocom_dates'                  => 1,
         'show_linked_tickets'                 => 1,
         'enable_health_score'                 => 1,
@@ -51,6 +51,7 @@ class Config extends CommonDBTM
         'enable_observations'                 => 0,
         'enable_don'                          => 0,
         'enable_vente'                        => 0,
+        'enable_destruction'                  => 0,
         'enable_damage_annotation'            => 0,
         'enable_maintenance_signature'        => 0,
         'enable_movements'                    => 0,
@@ -67,6 +68,7 @@ class Config extends CommonDBTM
         'return_states'                       => '[]',
         'donation_states'                     => '[]',
         'vente_states'                        => '[]',
+        'destruction_states'                  => '[]',
         'reforme_states'                      => '[]',
     ];
 
@@ -151,6 +153,7 @@ class Config extends CommonDBTM
            'return_states'   => $config->getReturnStates(),
            'donation_states' => $config->getDonationStates(),
            'vente_states'    => $config->getVenteStates(),
+           'destruction_states' => $config->getDestructionStates(),
            'reforme_states'  => $config->getReformeStates(),
            'logo_document'   => $logoDocument,
            'logo_is_forced'  => $logoIsForced,
@@ -163,10 +166,11 @@ class Config extends CommonDBTM
            // entierement geree par Template::showForm()/CommonDBTM, ce bloc ne
            // fait que rapatrier l'affichage.
            'templates' => [
-               Assetsign::TYPE_HANDOVER => Template::getDefaultFor(Assetsign::TYPE_HANDOVER, $entities_id),
-               Assetsign::TYPE_RETURN   => Template::getDefaultFor(Assetsign::TYPE_RETURN, $entities_id),
-               Assetsign::TYPE_DON      => Template::getDefaultFor(Assetsign::TYPE_DON, $entities_id),
-               Assetsign::TYPE_VENTE    => Template::getDefaultFor(Assetsign::TYPE_VENTE, $entities_id),
+               Assetsign::TYPE_HANDOVER    => Template::getDefaultFor(Assetsign::TYPE_HANDOVER, $entities_id),
+               Assetsign::TYPE_RETURN      => Template::getDefaultFor(Assetsign::TYPE_RETURN, $entities_id),
+               Assetsign::TYPE_DON         => Template::getDefaultFor(Assetsign::TYPE_DON, $entities_id),
+               Assetsign::TYPE_VENTE       => Template::getDefaultFor(Assetsign::TYPE_VENTE, $entities_id),
+               Assetsign::TYPE_DESTRUCTION => Template::getDefaultFor(Assetsign::TYPE_DESTRUCTION, $entities_id),
            ],
            'passport_type_labels'   => PassportEvent::getTypeLabels(),
            'passport_visible_types' => $config->getPassportVisibleTypes(),
@@ -517,6 +521,7 @@ class Config extends CommonDBTM
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
+           'enable_destruction'   => (int) ($input['enable_destruction'] ?? 0),
            'enable_damage_annotation' => (int) ($input['enable_damage_annotation'] ?? 0),
            'enable_maintenance_signature' => (int) ($input['enable_maintenance_signature'] ?? 0),
            'enable_movements'     => (int) ($input['enable_movements'] ?? 0),
@@ -533,6 +538,7 @@ class Config extends CommonDBTM
            'return_states'        => json_encode(array_map('intval', $input['return_states'] ?? [])),
            'donation_states'      => json_encode(array_map('intval', $input['donation_states'] ?? [])),
            'vente_states'         => json_encode(array_map('intval', $input['vente_states'] ?? [])),
+           'destruction_states'   => json_encode(array_map('intval', $input['destruction_states'] ?? [])),
            'reforme_states'       => json_encode(array_map('intval', $input['reforme_states'] ?? [])),
        ];
 
@@ -580,6 +586,12 @@ class Config extends CommonDBTM
        return is_array($decoded) ? array_map('intval', $decoded) : [];
    }
 
+    /** États GLPI (glpi_states) qui, une fois atteints, déclenchent une destruction. */
+   public function getDestructionStates(): array {
+       $decoded = json_decode($this->fields['destruction_states'] ?? '', true);
+       return is_array($decoded) ? array_map('intval', $decoded) : [];
+   }
+
     /**
      * États GLPI (glpi_states) qui, une fois atteints, marquent le matériel comme
      * réformé : déclenche l'écriture automatique de `Infocom::decommission_date`
@@ -595,7 +607,7 @@ class Config extends CommonDBTM
     /** Types d'evenement (PassportEvent::TYPE_*) a afficher dans la frise du Passeport materiel. */
    public function getPassportVisibleTypes(): array {
        $decoded = json_decode($this->fields['passport_visible_types'] ?? '', true);
-       return is_array($decoded) ? array_map('intval', $decoded) : [0, 1, 2, 3, 4, 5];
+       return is_array($decoded) ? array_map('intval', $decoded) : [0, 1, 2, 3, 4, 5, 6];
    }
 
    /** Couleur effective d'un score de santé, selon les seuils de l'entité. */
@@ -659,6 +671,7 @@ class Config extends CommonDBTM
                 `enable_observations` tinyint NOT NULL DEFAULT 0,
                 `enable_don` tinyint NOT NULL DEFAULT 0,
                 `enable_vente` tinyint NOT NULL DEFAULT 0,
+                `enable_destruction` tinyint NOT NULL DEFAULT 0,
                 `enable_damage_annotation` tinyint NOT NULL DEFAULT 0,
                 `enable_maintenance_signature` tinyint NOT NULL DEFAULT 0,
                 `enable_movements` tinyint NOT NULL DEFAULT 0,
@@ -675,6 +688,7 @@ class Config extends CommonDBTM
                 `return_states` text,
                 `donation_states` text,
                 `vente_states` text,
+                `destruction_states` text,
                 `reforme_states` text,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
@@ -694,6 +708,7 @@ class Config extends CommonDBTM
               'enable_observations' => self::DEFAULTS['enable_observations'],
               'enable_don'         => self::DEFAULTS['enable_don'],
               'enable_vente'       => self::DEFAULTS['enable_vente'],
+              'enable_destruction' => self::DEFAULTS['enable_destruction'],
               'enable_damage_annotation' => self::DEFAULTS['enable_damage_annotation'],
               'enable_maintenance_signature' => self::DEFAULTS['enable_maintenance_signature'],
               'show_qr_code'       => self::DEFAULTS['show_qr_code'],
@@ -707,6 +722,7 @@ class Config extends CommonDBTM
               'return_states'      => self::DEFAULTS['return_states'],
               'donation_states'    => self::DEFAULTS['donation_states'],
               'vente_states'       => self::DEFAULTS['vente_states'],
+              'destruction_states' => self::DEFAULTS['destruction_states'],
               'reforme_states'     => self::DEFAULTS['reforme_states'],
               'date_creation'      => date('Y-m-d H:i:s'),
           ]);
@@ -773,6 +789,15 @@ class Config extends CommonDBTM
              // issue #78) : nouveau groupe d'États configurable, même mécanisme que
              // handover_states/return_states/donation_states/vente_states ci-dessus.
              $migration->addField($table, 'reforme_states', 'text', ['after' => 'vente_states']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_destruction')) {
+             // Destruction (issue #78, suite de la "fin de vie structurée" - reste
+             // apres la date de réforme automatique livrée ci-dessus) : même
+             // mécanisme que enable_don/enable_vente (bascule + groupe d'États
+             // déclencheurs dédié).
+             $migration->addField($table, 'enable_destruction', 'bool', ['value' => 0, 'after' => 'enable_vente']);
+             $migration->addField($table, 'destruction_states', 'text', ['after' => 'reforme_states']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'show_qr_code')) {

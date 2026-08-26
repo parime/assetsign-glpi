@@ -7,6 +7,8 @@ use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\DamageMarker;
+use GlpiPlugin\Assetsign\DestructionDetails;
+use GlpiPlugin\Assetsign\DonDetails;
 use GlpiPlugin\Assetsign\Template;
 use GlpiPlugin\Assetsign\VenteDetails;
 
@@ -43,6 +45,12 @@ final class HandoverPdfBuilder
        $venteDetails = ((int) $assetsign->fields['type'] === Assetsign::TYPE_VENTE)
            ? VenteDetails::getForAssetsign($assetsign->getID())
            : null;
+       $donDetails = ((int) $assetsign->fields['type'] === Assetsign::TYPE_DON)
+           ? DonDetails::getForAssetsign($assetsign->getID())
+           : null;
+       $destructionDetails = ((int) $assetsign->fields['type'] === Assetsign::TYPE_DESTRUCTION)
+           ? DestructionDetails::getForAssetsign($assetsign->getID())
+           : null;
 
        $user = $assetsign->getBeneficiary();
        $item = $assetsign->getTargetItem();
@@ -76,6 +84,8 @@ final class HandoverPdfBuilder
            'vente_sale_date'     => $venteDetails?->fields['sale_date']
                ? date('d/m/Y', strtotime($venteDetails->fields['sale_date']))
                : null,
+           'don_organization_name'        => $donDetails?->fields['organization_name'] ?: null,
+           'destruction_provider_name'    => $destructionDetails?->fields['provider_name'] ?: null,
            'currency_symbol'     => $config->fields['currency_symbol'] ?: '€',
            'damage_views'        => (bool) $config->fields['enable_damage_annotation']
                ? $this->getDamageViewsForPdf(DamageMarker::getForAssetsign($assetsign->getID()))
@@ -174,6 +184,8 @@ final class HandoverPdfBuilder
            'observations'        => $observationsEnabled ? __('Exemple : petite rayure sur le capot, sans gravité.', 'assetsign') : '',
            'vente_price'         => $type === Assetsign::TYPE_VENTE ? 199.00 : null,
            'vente_sale_date'     => $type === Assetsign::TYPE_VENTE ? date('d/m/Y') : null,
+           'don_organization_name'     => $type === Assetsign::TYPE_DON ? 'Association Locale' : null,
+           'destruction_provider_name' => $type === Assetsign::TYPE_DESTRUCTION ? 'Prestataire Exemple SAS' : null,
            'damage_views'        => $damageEnabled ? $this->getSampleDamageViews() : [],
            'page_title'          => $headings['page_title'],
            'material_heading'    => $headings['material_heading'],

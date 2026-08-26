@@ -34,8 +34,10 @@ class TemplateRenderingTest extends AssetsignTestCase
             'item'               => $computer,
             'assetsigns'            => [],
             'statuses'           => Assetsign::getStatuses(),
-            'manual_types'       => [Assetsign::TYPE_DON => 'Don', Assetsign::TYPE_VENTE => 'Vente'],
+            'manual_types'       => [Assetsign::TYPE_DON => 'Don', Assetsign::TYPE_VENTE => 'Vente', Assetsign::TYPE_DESTRUCTION => 'Destruction'],
             'type_vente'         => Assetsign::TYPE_VENTE,
+            'type_don'           => Assetsign::TYPE_DON,
+            'type_destruction'   => Assetsign::TYPE_DESTRUCTION,
             // Force le rendu du formulaire de creation manuelle (bloc contenant
             // {% do call('User::dropdown', ...) %}), quel que soit le droit
             // reel de la session de test.
@@ -77,6 +79,13 @@ class TemplateRenderingTest extends AssetsignTestCase
             'type_vente'                => Assetsign::TYPE_VENTE,
             'vente_details'             => null,
             'can_edit_vente_details'    => false,
+            'type_don'                  => Assetsign::TYPE_DON,
+            'don_details'               => null,
+            'can_edit_don_details'      => false,
+            'type_destruction'          => Assetsign::TYPE_DESTRUCTION,
+            'destruction_details'       => null,
+            'can_edit_destruction_details' => false,
+            'attached_documents'        => [],
             'signature_proof'           => null,
             'csrf_token'                => 'phpunit-test-token',
         ]);

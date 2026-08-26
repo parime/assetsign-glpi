@@ -65,6 +65,20 @@
 </table>
 {% endif %}
 
+{% if don_organization_name is not null and don_organization_name %}
+<h2>Détails du don</h2>
+<table class="info-table">
+    <tr><th>Organisme bénéficiaire</th><td>{{ don_organization_name }}</td></tr>
+</table>
+{% endif %}
+
+{% if destruction_provider_name is not null and destruction_provider_name %}
+<h2>Détails de la destruction</h2>
+<table class="info-table">
+    <tr><th>Prestataire</th><td>{{ destruction_provider_name }}</td></tr>
+</table>
+{% endif %}
+
 {% include '@assetsign/pdf/_damage_views.html.twig' %}
 
 {% if include_content %}

@@ -8,6 +8,20 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
 - **Proposer la création automatique des intitulés de base sur un GLPI fraîchement installé** — aujourd'hui, `install()` sème déjà quelques valeurs par défaut pour les intitulés propres au plugin (`Accessory`, `MaintenanceChecklistItem`, `Template`), mais rien ne compense l'absence d'intitulés **cœur GLPI** que le plugin utilise (ex: Etats déclencheurs de remise/restitution/don/vente) sur une instance neuve sans configuration métier existante — l'onglet Configuration affiche alors des listes de déclenchement par État vides, sans qu'il soit évident pour l'administrateur qu'il faut aller les créer ailleurs (Configuration > Listes déroulantes > États) avant que le plugin soit réellement utilisable. Idée : proposer (pas imposer) la création d'un jeu d'États de base pertinents pour le workflow du plugin, détectée quand aucun État n'existe encore ou qu'aucun n'est configuré comme déclencheur.
 - **Repères d'état des lieux visuel : décalage occasionnel signalé par l'utilisateur, cause probable identifiée et corrigée côté ressenti, mais pas totalement élucidée** — le positionnement lui-même (calcul `left`/`top` en %) s'est révélé exact au pixel dans tous les tests manuels (fiche Remise admin, page de signature réelle, fenêtre réduite à 900px) ; la vraie cause plausible du "repère pas au bon endroit" était plutôt la **latence perçue** : chaque ajout de repère attendait la régénération complète du PDF côté serveur (`Remise::refreshDamageAnnotationPdf()`) avant de s'afficher, mesurée à ~4,3 à 4,8 secondes dans l'environnement Docker de test — largement le temps pour l'utilisateur de cliquer ailleurs ou de perdre le fil avant que le repère n'apparaisse enfin à l'endroit du clic initial. **Corrigé** : affichage optimiste du repère (apparaît en ~10ms au clic, `public/js/sign/damage-annotation.js`), la confirmation serveur reste asynchrone en arrière-plan. Si un décalage réel (pas seulement perçu) se reproduit malgré ça, il faudra une capture d'écran précise (point cliqué vs position obtenue, navigateur/zoom) pour aller plus loin.
 
+## Réalisé récemment (2026-08-26)
+
+- **Fin de vie structurée : destruction (prestataire/certificat) et don (organisme/justificatif) - livrées**
+  (issue #78, dernier volet restant après la date de réforme automatique livrée le 2026-08-19, cf.
+  entrée ci-dessous) : nouveau type `Assetsign::TYPE_DESTRUCTION`, même traitement complet que
+  Don/Vente (déclenchement manuel, déclenchement automatique par État configurable, coordination
+  bidirectionnelle État ↔ fiche, gabarit PDF dédié). Le Don gagne un organisme bénéficiaire, jusqu'ici
+  sans aucune donnée dédiée. Prestataire/organisme stockés dans deux nouvelles tables dédiées
+  (`DestructionDetails`/`DonDetails`, même motif que `VenteDetails`) ; certificat/justificatif : upload
+  de fichier attaché comme Document natif GLPI directement sur la fiche (`Assetsign::attachUploadedDocument()`,
+  même motif que `Movement::attachDocument()`), sans nouvelle table de stockage de fichiers. Le
+  prix/acheteur/documents de la Vente restent hors périmètre (déjà couverts, cf. ligne "Fin de vie
+  structurée" ci-dessous). Détail complet dans CHANGELOG.md `[Unreleased]`.
+
 ## Réalisé récemment (2026-08-25)
 
 - **Analyse architecture + schéma SQL + ADR (issue #76) - livrée** : `docs/design/ADR-passeport-v1.md` tranche explicitement les 6 risques techniques listés dans la section dédiée ci-dessous, propose le schéma SQL du reste du V1 et redécoupe la roadmap par version en tickets réels croisés avec les issues GitHub ouvertes.
@@ -115,7 +129,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | ~~Score de santé matériel~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Indicateurs temporels~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle) | Estimation simple, pas un module comptable complet | Aide à trancher réemploi vs sortie | Faible/Moyenne | Fiche d'identité (V1) | Moyenne |
-| Fin de vie structurée (vente : prix/acheteur/documents ; don : organisme/justificatif ; destruction : prestataire/certificat) — ~~date de réforme automatique~~ **livrée le 2026-08-19** (cf. "Réalisé récemment" ci-dessus et issue #78), reste : prestataire/certificat pour la destruction, organisme/justificatif pour le don | Tracer proprement la sortie définitive | Conformité, preuve en cas de contrôle | Faible (déjà partiellement présent via Remise::TYPE_VENTE/TYPE_DON) | Timeline d'événements | Moyenne |
+| ~~Fin de vie structurée (vente : prix/acheteur/documents ; don : organisme/justificatif ; destruction : prestataire/certificat)~~ — **livrée** : date de réforme automatique le 2026-08-19, prestataire/certificat (destruction) et organisme/justificatif (don) le 2026-08-26 (cf. "Réalisé récemment" ci-dessus et issue #78) ; prix/acheteur/documents de la vente déjà couverts au préalable (`VenteDetails`, `users_id`) | Tracer proprement la sortie définitive | Conformité, preuve en cas de contrôle | Faible (déjà partiellement présent via Remise::TYPE_VENTE/TYPE_DON) | Timeline d'événements | Moyenne |
 | Module d'aide à la décision (moteur de règles simple, ex: "réévaluer"/"préparer remplacement" avec raisons) | Aider l'équipe IT à décider quoi faire d'un matériel | Passe d'une donnée brute à une recommandation | Moyenne (règles), architecture prête pour de l'IA plus tard sans y aller maintenant | Score de santé, valeur résiduelle | Basse/Moyenne |
 
 **V3 — extensions et intégrations externes**

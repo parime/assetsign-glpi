@@ -4,6 +4,8 @@ namespace GlpiPlugin\Assetsign\Tests;
 
 use GlpiPlugin\Assetsign\Accessory;
 use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\DestructionDetails;
+use GlpiPlugin\Assetsign\DonDetails;
 use GlpiPlugin\Assetsign\Pdf\HandoverPdfBuilder;
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Template;
@@ -813,6 +815,239 @@ class AssetsignTest extends AssetsignTestCase
      * l'utilisateur : createTabEntry() n'affiche alors aucun badge du tout,
      * pas un badge a "0").
      */
+    /**
+     * Destruction (issue #78, "fin de vie structuree") : meme motif exact que
+     * testCreateManualForVenteStoresPriceAndSaleDate() ci-dessus.
+     */
+    public function testCreateManualForDestructionStoresProviderName(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit CreateManual Destruction');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Destruction');
+
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DESTRUCTION, 2, [
+            'provider_name' => 'Prestataire Exemple SAS',
+        ]);
+
+        $this->assertSame(Assetsign::TYPE_DESTRUCTION, (int) $assetsign->fields['type']);
+        $details = DestructionDetails::getForAssetsign($assetsign->getID());
+        $this->assertNotNull($details, 'Une Destruction creee manuellement doit avoir sa ligne DestructionDetails.');
+        $this->assertSame('Prestataire Exemple SAS', $details->fields['provider_name']);
+    }
+
+    public function testCreateManualForDonStoresOrganizationName(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit CreateManual Don Organisme');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Don Organisme');
+
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, 2, [
+            'organization_name' => 'Association Locale',
+        ]);
+
+        $details = DonDetails::getForAssetsign($assetsign->getID());
+        $this->assertNotNull($details, 'Un Don cree manuellement doit avoir sa ligne DonDetails.');
+        $this->assertSame('Association Locale', $details->fields['organization_name']);
+    }
+
+    /**
+     * Coherence bidirectionnelle Etat <-> Destruction (issue #78), meme motif
+     * exact que testCreateManualSyncsItemStateToConfiguredDonationState().
+     */
+    public function testCreateManualSyncsItemStateToConfiguredDestructionState(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit CreateManual Destruction State Sync');
+        $destructionStateId = $this->createTestState('PHPUnit Etat Detruit Sync');
+        Config::upsertForEntity($entityId, ['destruction_states' => [$destructionStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Destruction State Sync');
+        $this->assertNotSame($destructionStateId, (int) $computer->fields['states_id']);
+
+        Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DESTRUCTION, 2);
+
+        $computer->getFromDB($computer->getID());
+        $this->assertSame(
+            $destructionStateId,
+            (int) $computer->fields['states_id'],
+            "Creer manuellement une fiche de destruction doit mettre a jour l'Etat du materiel vers l'Etat declencheur configure."
+        );
+    }
+
+    public function testHandleStateBasedTriggerCreatesDestructionOnConfiguredState(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit State Destruction');
+        $oldStateId = $this->createTestState('PHPUnit Etat Avant Destruction');
+        $destructionStateId = $this->createTestState('PHPUnit Etat Destruction');
+
+        Config::upsertForEntity($entityId, ['destruction_states' => [$destructionStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Destruction');
+        $computer->oldvalues = ['states_id' => $oldStateId];
+        $computer->fields['users_id'] = 2;
+        $computer->fields['states_id'] = $destructionStateId;
+
+        Assetsign::handleItemAssignment($computer);
+
+        $created = $this->findAssetsignFor($computer);
+        $this->assertNotNull($created, "Une destruction aurait du etre declenchee par le passage a l'Etat configure.");
+        $this->assertSame(Assetsign::TYPE_DESTRUCTION, (int) $created['type']);
+    }
+
+    public function testHandleStateBasedTriggerWarnsWhenDestructionHasNoUser(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit State Destruction NoUser');
+        $oldStateId = $this->createTestState('PHPUnit Etat Avant Destruction SansUser');
+        $destructionStateId = $this->createTestState('PHPUnit Etat Destruction SansUser');
+
+        Config::upsertForEntity($entityId, ['destruction_states' => [$destructionStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC State Destruction NoUser');
+        $computer->oldvalues = ['states_id' => $oldStateId];
+        $computer->fields['users_id'] = 0;
+        $computer->fields['states_id'] = $destructionStateId;
+
+        $_SESSION['MESSAGE_AFTER_REDIRECT'] = [];
+        Assetsign::handleItemAssignment($computer);
+
+        $this->assertNull(
+            $this->findAssetsignFor($computer),
+            'Aucune fiche automatique sans utilisateur : createManual() est le seul canal possible ici.'
+        );
+        $messages = implode(' ', $_SESSION['MESSAGE_AFTER_REDIRECT'][INFO] ?? []);
+        $this->assertStringContainsString(
+            __('destruction', 'assetsign'),
+            $messages,
+            'Un message INFO doit inviter a creer la fiche de destruction manuellement.'
+        );
+        $this->assertStringContainsString('forcetab=', $messages);
+        $this->assertStringContainsString(
+            'tab_params[assetsign_prefill_type]=' . Assetsign::TYPE_DESTRUCTION,
+            $messages,
+            'Le lien doit transmettre le type Destruction via tab_params.'
+        );
+    }
+
+    public function testUpdateDestructionDetailsUpsertsWhenNoneExisted(): void
+    {
+        // Reproduit une Destruction declenchee automatiquement par changement
+        // d'Etat : aucun DestructionDetails n'existe encore, le prestataire est
+        // renseigne apres coup (meme motif que testUpdateVenteDetailsUpsertsWhenNoneExisted()).
+        $entityId = $this->createTestEntity(0, 'PHPUnit Destruction Upsert');
+        $beforeStateId = $this->createTestState('PHPUnit Etat Avant Destruction Upsert');
+        $destructionStateId = $this->createTestState('PHPUnit Etat Destruction Upsert');
+        Config::upsertForEntity($entityId, ['destruction_states' => [$destructionStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Destruction Upsert');
+        $computer->oldvalues = ['states_id' => $beforeStateId];
+        $computer->fields['users_id'] = 2;
+        $computer->fields['states_id'] = $destructionStateId;
+        Assetsign::handleItemAssignment($computer);
+
+        $created = $this->findAssetsignFor($computer);
+        $this->assertNotNull($created);
+        $this->assertNull(DestructionDetails::getForAssetsign((int) $created['id']), 'Aucun prestataire connu a la creation automatique.');
+
+        $assetsign = new Assetsign();
+        $assetsign->getFromDB((int) $created['id']);
+        $assetsign->updateDestructionDetails('Prestataire Un');
+
+        $details = DestructionDetails::getForAssetsign($assetsign->getID());
+        $this->assertNotNull($details);
+        $this->assertSame('Prestataire Un', $details->fields['provider_name']);
+
+        // Un deuxieme appel doit METTRE A JOUR la meme ligne, pas en creer une deuxieme.
+        $assetsign->updateDestructionDetails('Prestataire Deux');
+        $this->assertSame('Prestataire Deux', DestructionDetails::getForAssetsign($assetsign->getID())->fields['provider_name']);
+    }
+
+    public function testUpdateDonDetailsUpsertsWhenNoneExisted(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Don Upsert');
+        $beforeStateId = $this->createTestState('PHPUnit Etat Avant Don Upsert');
+        $donationStateId = $this->createTestState('PHPUnit Etat Don Upsert');
+        Config::upsertForEntity($entityId, ['donation_states' => [$donationStateId]]);
+
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Don Upsert');
+        $computer->oldvalues = ['states_id' => $beforeStateId];
+        $computer->fields['users_id'] = 2;
+        $computer->fields['states_id'] = $donationStateId;
+        Assetsign::handleItemAssignment($computer);
+
+        $created = $this->findAssetsignFor($computer);
+        $this->assertNotNull($created);
+        $this->assertNull(DonDetails::getForAssetsign((int) $created['id']), 'Aucun organisme connu a la creation automatique.');
+
+        $assetsign = new Assetsign();
+        $assetsign->getFromDB((int) $created['id']);
+        $assetsign->updateDonDetails('Organisme Un');
+
+        $details = DonDetails::getForAssetsign($assetsign->getID());
+        $this->assertNotNull($details);
+        $this->assertSame('Organisme Un', $details->fields['organization_name']);
+
+        $assetsign->updateDonDetails('Organisme Deux');
+        $this->assertSame('Organisme Deux', DonDetails::getForAssetsign($assetsign->getID())->fields['organization_name']);
+    }
+
+    /**
+     * Justificatif/certificat facultatifs (issue #78) : aucun fichier
+     * selectionne (UPLOAD_ERR_NO_FILE, meme convention que Movement::attachDocument())
+     * ne doit jamais etre traite comme une erreur.
+     */
+    public function testAttachDocumentIsNoOpWhenNoFileSelected(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit AttachDocument NoFile');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC AttachDocument NoFile');
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, 2);
+
+        $countBefore = countElementsInTable('glpi_documents_items', ['itemtype' => Assetsign::class, 'items_id' => $assetsign->getID()]);
+        $assetsign->attachUploadedDocument(['name' => '', 'tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE, 'size' => 0]);
+        $countAfter = countElementsInTable('glpi_documents_items', ['itemtype' => Assetsign::class, 'items_id' => $assetsign->getID()]);
+
+        $this->assertSame($countBefore, $countAfter, "L'absence de fichier ne doit jamais attacher de document.");
+    }
+
+    /**
+     * getAttachedDocuments() (issue #78) : lit Document_Item pour cette fiche
+     * precise, meme motif que Movement::getAttachedDocuments() - verifie ici au
+     * niveau base (insertion directe d'un Document/Document_Item), le mecanisme
+     * d'upload lui-meme (is_uploaded_file()) n'etant testable qu'en conditions
+     * HTTP reelles, jamais en PHPUnit (meme constat deja documente pour
+     * Movement::attachDocument()/Config::uploadLogo(), aucun test unitaire ne
+     * couvre non plus leur chemin d'upload).
+     */
+    public function testGetAttachedDocumentsReturnsOnlyDocumentsLinkedToThisAssetsign(): void
+    {
+        global $DB;
+
+        $entityId = $this->createTestEntity(0, 'PHPUnit AttachedDocuments');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC AttachedDocuments');
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, 2);
+
+        $document = new \Document();
+        $documentId = (int) $document->add(['name' => 'PHPUnit justificatif.pdf', 'entities_id' => $entityId]);
+        (new \Document_Item())->add([
+            'documents_id' => $documentId,
+            'itemtype'     => Assetsign::class,
+            'items_id'     => $assetsign->getID(),
+        ]);
+
+        // Un document lie a un AUTRE type (ex: le materiel cible lui-meme, comme
+        // le fait le PDF signe/non signe) ne doit jamais etre confondu avec ceux
+        // attaches a CETTE fiche precise.
+        $otherDocument = new \Document();
+        $otherDocumentId = (int) $otherDocument->add(['name' => 'PHPUnit autre document.pdf', 'entities_id' => $entityId]);
+        (new \Document_Item())->add([
+            'documents_id' => $otherDocumentId,
+            'itemtype'     => 'Computer',
+            'items_id'     => $computer->getID(),
+        ]);
+
+        $documents = Assetsign::getAttachedDocuments($assetsign->getID());
+
+        $this->assertCount(1, $documents);
+        $this->assertSame($documentId, $documents[0]['id']);
+        $this->assertSame('PHPUnit justificatif.pdf', $documents[0]['name']);
+    }
+
     private static function extractBadgeCount(string $tabName): int
     {
         preg_match('/data-testid="tab-count-badge">(\d+)</', $tabName, $matches);

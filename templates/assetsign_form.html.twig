@@ -122,6 +122,55 @@
       </form>
     {% endif %}
 
+    {% if item.fields.type == type_don %}
+      <h3 class="mt-4">{{ __('Détails du don', 'assetsign') }}</h3>
+      {% if don_details is null %}
+        <p class="text-muted small">{{ __('Aucun organisme bénéficiaire renseigné pour le moment (fiche créée automatiquement) : le PDF ne le mentionne pas encore tant qu\'il n\'est pas saisi.', 'assetsign') }}</p>
+      {% endif %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Organisme bénéficiaire', 'assetsign') }}</label>
+          <input type="text" name="organization_name" class="form-control" value="{{ don_details.fields.organization_name|default('') }}" {{ can_edit_don_details ? '' : 'readonly' }}>
+        </div>
+        {% if can_edit_don_details %}
+          <div class="col-auto">
+            <button type="submit" name="update_don_details" class="btn btn-secondary btn-sm">{{ __('Enregistrer', 'assetsign') }}</button>
+          </div>
+        {% endif %}
+      </form>
+    {% endif %}
+
+    {% if item.fields.type == type_destruction %}
+      <h3 class="mt-4">{{ __('Détails de la destruction', 'assetsign') }}</h3>
+      {% if destruction_details is null %}
+        <p class="text-muted small">{{ __('Aucun prestataire renseigné pour le moment (fiche créée automatiquement) : le PDF ne le mentionne pas encore tant qu\'il n\'est pas saisi.', 'assetsign') }}</p>
+      {% endif %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Prestataire', 'assetsign') }}</label>
+          <input type="text" name="provider_name" class="form-control" value="{{ destruction_details.fields.provider_name|default('') }}" {{ can_edit_destruction_details ? '' : 'readonly' }}>
+        </div>
+        {% if can_edit_destruction_details %}
+          <div class="col-auto">
+            <button type="submit" name="update_destruction_details" class="btn btn-secondary btn-sm">{{ __('Enregistrer', 'assetsign') }}</button>
+          </div>
+        {% endif %}
+      </form>
+    {% endif %}
+
+    {% if attached_documents|length %}
+      <h3 class="mt-4">{{ __('Documents joints', 'assetsign') }}</h3>
+      <ul>
+        {% for doc in attached_documents %}
+          <li><a href="{{ config('root_doc') }}/front/document.send.php?docid={{ doc.id }}" target="_blank">{{ doc.name }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
     {% if observations_enabled %}
       <h3 class="mt-4">{{ __('Observations', 'assetsign') }}</h3>
       <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">

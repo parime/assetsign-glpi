@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_ASSETSIGN_VERSION', '2.3.1');
+define('PLUGIN_ASSETSIGN_VERSION', '2.4.0');
 define('PLUGIN_ASSETSIGN_MIN_GLPI', '11.0.0');
 define('PLUGIN_ASSETSIGN_MAX_GLPI', '11.9.99');
 define('PLUGIN_ASSETSIGN_MIN_PHP', '8.3.0');
@@ -49,6 +49,7 @@ function plugin_init_assetsign(): void {
     \GlpiPlugin\Assetsign\Workflow\WorkflowTypeRegistry::register(new \GlpiPlugin\Assetsign\Workflow\ReturnType());
     \GlpiPlugin\Assetsign\Workflow\WorkflowTypeRegistry::register(new \GlpiPlugin\Assetsign\Workflow\DonType());
     \GlpiPlugin\Assetsign\Workflow\WorkflowTypeRegistry::register(new \GlpiPlugin\Assetsign\Workflow\VenteType());
+    \GlpiPlugin\Assetsign\Workflow\WorkflowTypeRegistry::register(new \GlpiPlugin\Assetsign\Workflow\DestructionType());
 
     // --- Declenchement du workflow : affectation / restitution / echange -------------
     // Types geres en dur (Computer, Monitor, Peripheral, Phone) + tous les actifs
