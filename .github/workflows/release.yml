@@ -27,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
+      actions: write
     steps:
       - name: Récupère le code du plugin
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
@@ -146,3 +148,40 @@ jobs:
           gh release create "$GITHUB_REF_NAME" "$ARCHIVE_NAME" \
             --title "$GITHUB_REF_NAME" \
             --generate-notes
+
+      - name: Ouvre une PR de mise à jour du catalogue marketplace
+        # assetsign.xml derivait silencieusement des vraies releases (bloque sur la v2.0.0 alors
+        # que la v2.3.1 etait publiee, signale par un reviewer marketplace dans #105) car rien ne
+        # le maintenait synchronise avec les releases. Cette etape ouvre desormais une PR a chaque
+        # publication de release au lieu de compter sur quelqu'un pour y penser.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          python3 .github/scripts/update_marketplace_xml.py \
+            assetsign.xml "$VERSION" "~11.0" \
+            "https://github.com/parime/assetsign-glpi/releases/download/${GITHUB_REF_NAME}/${ARCHIVE_NAME}" \
+            "      " "         "
+
+          if git diff --quiet -- assetsign.xml; then
+            echo "Catalogue deja a jour, rien a faire."
+            exit 0
+          fi
+
+          BRANCH="chore/marketplace-xml-${VERSION}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add assetsign.xml
+          git commit -m "chore: ajoute la version ${VERSION} au catalogue marketplace"
+          git push origin "$BRANCH"
+
+          gh pr create --title "chore: ajoute la version ${VERSION} au catalogue marketplace" \
+            --body "Mise a jour automatique apres la publication de la release ${GITHUB_REF_NAME}. A fusionner une fois la CI verte." \
+            --base main --head "$BRANCH"
+
+          # Une PR/un push effectue avec le GITHUB_TOKEN par defaut ne declenche pas les workflows
+          # pull_request (garde-fou anti-boucle GitHub Actions -- meme limitation deja documentee
+          # dans auto-tag.yml pour release.yml lui-meme) -- on redeclenche donc explicitement la
+          # CI pour que la verification requise s'execute reellement au lieu de rester en attente.
+          gh workflow run ci.yml --ref "$BRANCH"
