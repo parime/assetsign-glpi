@@ -113,7 +113,7 @@ Départ/destination réutiliseraient la table native `glpi_locations` (`Location
 | V2 | Module d'aide à la décision | [#79](https://github.com/parime/assetsign-glpi/issues/79) | Non commencé - dépend du score de santé (livré) et de la valeur résiduelle (#77) |
 | V3 | Passeport environnemental | [#80](https://github.com/parime/assetsign-glpi/issues/80) | Non commencé - risque externe tranché par anticipation (section 2.5) |
 | V3 | Bénéfice du réemploi | [#81](https://github.com/parime/assetsign-glpi/issues/81) | Non commencé - dépend de #80 |
-| V3 | QR code sur le matériel | [#82](https://github.com/parime/assetsign-glpi/issues/82) | Non commencé |
+| V3 | QR code sur le matériel | [#82](https://github.com/parime/assetsign-glpi/issues/82) | **Livré** (PR de suivi) - étiquette imprimable sur l'onglet Passeport matériel, QR code encodant un lien `forcetab` absolu (`front/qrlabel.php`), génération QR extraite en classe partagée `QrCode` (jusqu'ici dupliquée nulle part, réutilisée telle quelle par le PDF) |
 | V3 | Kits/accessoires avec contrôle automatique | [#83](https://github.com/parime/assetsign-glpi/issues/83) | Non commencé - dépend des checklists (#74, livré) |
 | V3 | Dashboard RSE, app mobile technicien, signatures multiples | [#84](https://github.com/parime/assetsign-glpi/issues/84) | Non commencé, grab-bag à redécouper le moment venu |
 | - | Repères d'état des lieux visuel : veille récidive décalage | [#86](https://github.com/parime/assetsign-glpi/issues/86) | Watch-only, sans rapport avec le Passeport - non traité ici |

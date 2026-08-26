@@ -78,15 +78,24 @@
   </div>
 {% endif %}
 
-{% if can_backfill %}
-  <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/passport_backfill.php" class="mb-2">
-    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
-    <input type="hidden" name="itemtype" value="{{ itemtype }}">
-    <input type="hidden" name="items_id" value="{{ items_id }}">
-    <button type="submit" class="btn btn-sm btn-outline-secondary">
-      <i class="ti ti-history"></i> {{ __('Forcer la recherche dans l\'historique', 'assetsign') }}
-    </button>
-  </form>
+{% if can_backfill or qr_label_enabled %}
+  <div class="d-flex flex-wrap gap-2 mb-2">
+    {% if can_backfill %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/passport_backfill.php" class="m-0">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="itemtype" value="{{ itemtype }}">
+        <input type="hidden" name="items_id" value="{{ items_id }}">
+        <button type="submit" class="btn btn-sm btn-outline-secondary">
+          <i class="ti ti-history"></i> {{ __('Forcer la recherche dans l\'historique', 'assetsign') }}
+        </button>
+      </form>
+    {% endif %}
+    {% if qr_label_enabled %}
+      <a href="{{ qr_label_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary">
+        <i class="ti ti-qrcode"></i> {{ __('Imprimer une étiquette QR code', 'assetsign') }}
+      </a>
+    {% endif %}
+  </div>
 {% endif %}
 
 <div class="passport-summary mb-4">

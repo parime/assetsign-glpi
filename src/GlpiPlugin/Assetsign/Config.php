@@ -56,6 +56,7 @@ class Config extends CommonDBTM
         'enable_movements'                    => 0,
         'enable_movement_signature'           => 0,
         'show_qr_code'                        => 0,
+        'enable_qr_label'                     => 1,
         'currency_symbol'                     => '€',
         'preview_watermark_text'              => 'APERÇU',
         'preview_watermark_opacity'           => 25,
@@ -524,6 +525,7 @@ class Config extends CommonDBTM
            'enable_movements'     => (int) ($input['enable_movements'] ?? 0),
            'enable_movement_signature' => (int) ($input['enable_movement_signature'] ?? 0),
            'show_qr_code'         => (int) ($input['show_qr_code'] ?? 0),
+           'enable_qr_label'      => (int) ($input['enable_qr_label'] ?? 0),
            'currency_symbol'      => trim($input['currency_symbol'] ?? '') ?: '€',
            'preview_watermark_text'    => trim($input['preview_watermark_text'] ?? '') ?: 'APERÇU',
            'preview_watermark_opacity' => max(5, min(100, (int) ($input['preview_watermark_opacity'] ?? 25))),
@@ -670,6 +672,7 @@ class Config extends CommonDBTM
                 `enable_movements` tinyint NOT NULL DEFAULT 0,
                 `enable_movement_signature` tinyint NOT NULL DEFAULT 0,
                 `show_qr_code` tinyint NOT NULL DEFAULT 0,
+                `enable_qr_label` tinyint NOT NULL DEFAULT 1,
                 `currency_symbol` varchar(255) NOT NULL DEFAULT '€',
                 `preview_watermark_text` varchar(255) NOT NULL DEFAULT 'APERÇU',
                 `preview_watermark_opacity` int unsigned NOT NULL DEFAULT 25,
@@ -705,6 +708,7 @@ class Config extends CommonDBTM
               'enable_damage_annotation' => self::DEFAULTS['enable_damage_annotation'],
               'enable_maintenance_signature' => self::DEFAULTS['enable_maintenance_signature'],
               'show_qr_code'       => self::DEFAULTS['show_qr_code'],
+              'enable_qr_label'    => self::DEFAULTS['enable_qr_label'],
               'currency_symbol'    => self::DEFAULTS['currency_symbol'],
               'preview_watermark_text'    => self::DEFAULTS['preview_watermark_text'],
               'preview_watermark_opacity' => self::DEFAULTS['preview_watermark_opacity'],
@@ -794,6 +798,15 @@ class Config extends CommonDBTM
          if (!$DB->fieldExists($table, 'show_qr_code')) {
              $migration->addField($table, 'show_qr_code', 'bool', ['value' => 0, 'after' => 'enable_maintenance_signature']);
              $migration->addField($table, 'currency_symbol', 'string', ['value' => '€', 'after' => 'show_qr_code']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_qr_label')) {
+             // Etiquette QR code imprimable sur le materiel (cf. ROADMAP.md V3, issue
+             // #82) : reglage DISTINCT de show_qr_code ci-dessus (celui-ci concerne le
+             // QR code incruste sur les fiches PDF) - defaut ACTIF (contrairement a
+             // show_qr_code), pour que la fonctionnalite soit immediatement
+             // decouvrable depuis l'onglet Passeport materiel sans reglage prealable.
+             $migration->addField($table, 'enable_qr_label', 'bool', ['value' => 1, 'after' => 'show_qr_code']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'preview_watermark_text')) {

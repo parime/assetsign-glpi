@@ -878,6 +878,48 @@ msgstr ""
 "ritrovarla durante un controllo fisico del dispositivo."
 
 #: templates/config_form.html.twig
+msgid "Autoriser l'impression d'une étiquette QR code sur le matériel"
+msgstr "Consentire la stampa di un'etichetta con codice QR sul dispositivo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Différent du réglage ci-dessus (celui-ci concerne les fiches PDF) : ajoute "
+"un bouton sur l'onglet Passeport matériel pour imprimer une étiquette à "
+"coller physiquement sur le matériel. Scannée, elle ouvre directement son "
+"Passeport matériel dans GLPI (connexion requise, comme n'importe quel lien "
+"GLPI)."
+msgstr ""
+"Diverso dall'impostazione precedente (che riguarda le schede PDF): "
+"aggiunge un pulsante nella scheda Passaporto del dispositivo per stampare "
+"un'etichetta da incollare fisicamente sul dispositivo. Una volta "
+"scansionata, apre direttamente lo stesso Passaporto del dispositivo in "
+"GLPI (richiede l'accesso, come qualsiasi link di GLPI)."
+
+#: templates/passport_tab.html.twig
+msgid "Imprimer une étiquette QR code"
+msgstr "Stampa un'etichetta con codice QR"
+
+#: templates/qr_label.html.twig
+msgid "Étiquette QR code"
+msgstr "Etichetta con codice QR"
+
+#: templates/qr_label.html.twig
+msgid "QR code du matériel"
+msgstr "Codice QR del dispositivo"
+
+#: templates/qr_label.html.twig
+msgid "QR code indisponible sur cet environnement."
+msgstr "Codice QR non disponibile su questo ambiente."
+
+#: templates/qr_label.html.twig
+msgid "Imprimer"
+msgstr "Stampa"
+
+#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php
+msgid "Étiquette QR code désactivée pour cette entité."
+msgstr "Etichetta con codice QR disattivata per questa entità."
+
+#: templates/config_form.html.twig
 msgid "Texte du filigrane sur l'aperçu"
 msgstr "Testo della filigrana nell'anteprima"
 

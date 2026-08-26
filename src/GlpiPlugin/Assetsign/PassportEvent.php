@@ -252,6 +252,16 @@ class PassportEvent extends CommonDBTM
        $canEdit = \Session::haveRight(self::$rightname, UPDATE);
        $manualResidual = $config->fields['enable_residual_value'] ? ResidualValue::getForItem($item->getType(), $item->getID()) : null;
 
+       // Etiquette QR code imprimable (cf. ROADMAP.md V3, issue #82) : gardee par le
+       // reglage dedie ET le droit READ (redondant avec le droit deja verifie par
+       // GLPI pour atteindre cet onglet, mais explicite ici comme demande - front/
+       // qrlabel.php revalide de toute facon les deux independamment, cf. son
+       // propre commentaire).
+       $qrLabelEnabled = (bool) $config->fields['enable_qr_label'] && \Session::haveRight(self::$rightname, READ);
+       $qrLabelUrl = $qrLabelEnabled
+           ? $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/qrlabel.php?itemtype=' . urlencode($item->getType()) . '&items_id=' . $item->getID()
+           : null;
+
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/passport_tab.html.twig', [
            'events'        => array_reverse($timelineRows), // le plus recent en premier dans la frise
            'lives'         => $lives,
@@ -269,6 +279,8 @@ class PassportEvent extends CommonDBTM
            'residual_value_manual_raw' => $manualResidual !== null && $manualResidual->fields['manual_value'] !== null
                ? (float) $manualResidual->fields['manual_value']
                : null,
+           'qr_label_enabled' => $qrLabelEnabled,
+           'qr_label_url'     => $qrLabelUrl,
            'csrf_token'    => \Session::getNewCSRFToken(),
        ]);
    }

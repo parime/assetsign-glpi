@@ -83,6 +83,43 @@ class PassportEventTest extends AssetsignTestCase
         $this->assertSame(Maintenance::class, $event['source_itemtype']);
     }
 
+    /**
+     * Bouton « Imprimer une étiquette QR code » (cf. ROADMAP.md V3, issue #82) :
+     * affiché sur l'onglet Passeport matériel uniquement quand Config::enable_qr_label
+     * est actif pour l'entité (réglage par défaut, cf. Config::DEFAULTS) — jamais un
+     * réglage global, chaque entité peut le désactiver indépendamment.
+     */
+    public function testShowForItemDisplaysQrLabelButtonWhenEnabled(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Passport QrLabel Enabled');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport QrLabel Enabled');
+
+        ob_start();
+        PassportEvent::showForItem($computer);
+        $html = ob_get_clean();
+
+        $this->assertStringContainsString(__('Imprimer une étiquette QR code', 'assetsign'), $html);
+        // '&' est echappe en '&amp;' par Twig dans un attribut href (auto-echappement,
+        // comportement attendu) : verifie les deux parametres separement plutot
+        // qu'une chaine de requete brute avec un '&' litteral.
+        $this->assertStringContainsString('/front/qrlabel.php?itemtype=Computer', $html);
+        $this->assertStringContainsString('items_id=' . $computer->getID(), $html);
+        $this->assertNoStrayNumericTextNode($html, 'passport_tab.html.twig (bouton QR code actif)');
+    }
+
+    public function testShowForItemHidesQrLabelButtonWhenDisabled(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Passport QrLabel Disabled');
+        Config::upsertForEntity($entityId, ['enable_qr_label' => 0]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport QrLabel Disabled');
+
+        ob_start();
+        PassportEvent::showForItem($computer);
+        $html = ob_get_clean();
+
+        $this->assertStringNotContainsString(__('Imprimer une étiquette QR code', 'assetsign'), $html);
+    }
+
     public function testGetLivesForItemGroupsConsecutiveAttributionsBySameUser(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Passport Lives');
