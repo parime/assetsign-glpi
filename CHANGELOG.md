@@ -11,6 +11,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle)** (issue #77,
+  cf. ROADMAP.md tableau V2 et `docs/design/ADR-passeport-v1.md`) : nouvel indicateur en tête
+  du Passeport matériel, estimation simple (pas un module comptable complet) pour aider à
+  trancher réemploi vs sortie de parc. Calcul linéaire à partir du prix d'achat et de la date
+  d'achat déjà lus depuis `Infocom` (même source que la fiche d'identité/le score de santé,
+  jamais dupliquée) : `valeur = prix_achat × max(0, 1 − âge_jours / durée_jours)`, plafonné à
+  0. Durée de vie utile "personnalisable" au sens de la roadmap = un nouveau réglage par
+  entité (`Config::residual_value_duration_months`, mois, défaut 60), pas une deuxième méthode
+  de calcul - onglet dédié « Valeur résiduelle » de la page de configuration
+  (`Config::enable_residual_value`, activé par défaut). Aucune valeur inventée : rien n'est
+  affiché tant que le prix d'achat Infocom est inconnu, exactement comme l'âge/le temps
+  utilisé le font déjà. Saisie manuelle toujours prioritaire sur le calcul automatique
+  (nouvelle classe `ResidualValue`, table dédiée `glpi_plugin_assetsign_residualvalues`
+  1-vers-1 sur `itemtype`/`items_id` - un type d'item natif GLPI ne pouvant recevoir de
+  colonne supplémentaire, même patron que `VenteDetails`/`Movement`), avec un petit
+  formulaire inline sur l'onglet Passeport matériel (`front/residualvalue.form.php`,
+  `Api\ResidualValueFormController`) permettant de saisir une valeur ou de revenir au calcul
+  automatique - jamais un simple repli dégradé, un vrai choix toujours disponible. Le libellé
+  distingue toujours explicitement une valeur « estimée » d'une valeur « saisie manuelle »,
+  pour ne jamais laisser croire à l'un ou l'autre à tort.
+
 - **QR code imprimable sur le matériel** (issue #82, ROADMAP.md V3) : nouveau bouton
   « Imprimer une étiquette QR code » sur l'onglet Passeport matériel, ouvrant une page
   dédiée (`front/qrlabel.php`) minimaliste et pensée pour l'impression (bouton

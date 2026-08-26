@@ -28,8 +28,41 @@
     {% if identity.stock_duration %}
       <div class="col-auto"><strong>{{ __('Temps en stock', 'assetsign') }} :</strong> {{ identity.stock_duration }}</div>
     {% endif %}
+    {% if identity.residual_value %}
+      <div class="col-auto">
+        <strong>{{ identity.residual_value_is_manual ? __('Valeur résiduelle (saisie manuelle)', 'assetsign') : __('Valeur résiduelle (estimée)', 'assetsign') }} :</strong>
+        {{ identity.residual_value }}
+      </div>
+    {% endif %}
   </div>
 </div>
+
+{% if residual_value_enabled and can_backfill %}
+  <div class="mb-4">
+    <div class="d-flex align-items-end gap-2 flex-wrap">
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/residualvalue.form.php" class="d-flex align-items-end gap-2">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="itemtype" value="{{ itemtype }}">
+        <input type="hidden" name="items_id" value="{{ items_id }}">
+        <div>
+          <label class="form-label mb-0" for="residual_value_manual">{{ __('Valeur résiduelle manuelle', 'assetsign') }}</label>
+          <input type="number" step="0.01" min="0" name="manual_value" id="residual_value_manual" class="form-control" style="width: 140px;" value="{{ residual_value_manual_raw is not null ? residual_value_manual_raw : '' }}">
+        </div>
+        <button type="submit" class="btn btn-sm btn-outline-primary">{{ __('Enregistrer', 'assetsign') }}</button>
+      </form>
+      {% if residual_value_manual_raw is not null %}
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/residualvalue.form.php">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="itemtype" value="{{ itemtype }}">
+          <input type="hidden" name="items_id" value="{{ items_id }}">
+          <input type="hidden" name="manual_value" value="">
+          <button type="submit" class="btn btn-sm btn-outline-secondary">{{ __('Revenir au calcul automatique', 'assetsign') }}</button>
+        </form>
+      {% endif %}
+    </div>
+    <div class="form-text">{{ __('Une valeur saisie ici l\'emporte toujours sur le calcul automatique.', 'assetsign') }}</div>
+  </div>
+{% endif %}
 
 {% if health %}
   <div class="mb-4">

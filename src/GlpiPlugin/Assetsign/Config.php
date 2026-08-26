@@ -69,6 +69,8 @@ class Config extends CommonDBTM
         'donation_states'                     => '[]',
         'vente_states'                        => '[]',
         'reforme_states'                      => '[]',
+        'enable_residual_value'               => 1,
+        'residual_value_duration_months'      => 60,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -536,6 +538,10 @@ class Config extends CommonDBTM
            'donation_states'      => json_encode(array_map('intval', $input['donation_states'] ?? [])),
            'vente_states'         => json_encode(array_map('intval', $input['vente_states'] ?? [])),
            'reforme_states'       => json_encode(array_map('intval', $input['reforme_states'] ?? [])),
+           'enable_residual_value' => (int) ($input['enable_residual_value'] ?? 0),
+           // "Duree personnalisable" (cf. ROADMAP.md, issue #77) : minimum 1 mois,
+           // jamais 0 - PassportEvent::getResidualValue() s'en sert comme diviseur.
+           'residual_value_duration_months' => max(1, (int) ($input['residual_value_duration_months'] ?? 60)),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -679,6 +685,8 @@ class Config extends CommonDBTM
                 `donation_states` text,
                 `vente_states` text,
                 `reforme_states` text,
+                `enable_residual_value` tinyint NOT NULL DEFAULT 1,
+                `residual_value_duration_months` int unsigned NOT NULL DEFAULT 60,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -777,6 +785,14 @@ class Config extends CommonDBTM
              // issue #78) : nouveau groupe d'États configurable, même mécanisme que
              // handover_states/return_states/donation_states/vente_states ci-dessus.
              $migration->addField($table, 'reforme_states', 'text', ['after' => 'vente_states']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_residual_value')) {
+             // Valeur résiduelle (cf. ROADMAP.md, V2, issue #77) : durée utile
+             // "personnalisable" = ce réglage en mois, jamais codée en dur - même
+             // convention "enable_* + paramètres" que le score de santé ci-dessus.
+             $migration->addField($table, 'enable_residual_value', 'bool', ['value' => 1, 'after' => 'reforme_states']);
+             $migration->addField($table, 'residual_value_duration_months', 'integer', ['value' => 60, 'after' => 'enable_residual_value']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'show_qr_code')) {

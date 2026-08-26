@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assetsign\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 20:07+0000\n"
+"POT-Creation-Date: 2026-08-26 22:00+0000\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,9 +13,11 @@ msgstr ""
 msgid "Signature d'attribution de matériel"
 msgstr "Firma de atribución de equipo"
 
-#: templates/sign_page.html.twig templates/assetsign_form.html.twig
+#: templates/sign_page.html.twig templates/movement_form.html.twig
+#: templates/assetsign_form.html.twig templates/movement_create.html.twig
 #: templates/maintenance_create.html.twig templates/maintenance_form.html.twig
 #: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:219
+#: src/GlpiPlugin/Assetsign/Movement.php:121
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:158
 #: src/GlpiPlugin/Assetsign/Maintenance.php:86
 msgid "Matériel"
@@ -62,7 +64,7 @@ msgstr "Una aclaración que añadir antes de firmar (opcional)."
 
 #: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
 #: templates/assetsign_form.html.twig templates/template_form.html.twig
-#: templates/config_form.html.twig
+#: templates/config_form.html.twig templates/passport_tab.html.twig
 msgid "Enregistrer"
 msgstr "Guardar"
 
@@ -143,19 +145,160 @@ msgstr "Eliminar"
 msgid "Remarque enregistrée."
 msgstr "Observación guardada."
 
+#: templates/movement_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:57
+#: src/GlpiPlugin/Assetsign/Movement.php:56
+msgid "Mouvement"
+msgid_plural "Mouvements"
+msgstr[0] "Movimiento"
+msgstr[1] "Movimientos"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:130
+msgid "Lieu de départ"
+msgstr "Lugar de origen"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:145
+msgid "Date de départ"
+msgstr "Fecha de salida"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:138
+msgid "Lieu de destination"
+msgstr "Lugar de destino"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:152
+msgid "Date de destination"
+msgstr "Fecha de destino"
+
+#: templates/movement_form.html.twig
+msgid "Créé le"
+msgstr "Creado el"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/assetsign_form.html.twig templates/maintenance_tab.html.twig
+#: templates/movement_create.html.twig templates/maintenance_create.html.twig
+#: templates/maintenance_form.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:183
+msgid "Commentaire"
+msgstr "Comentario"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Preuve de signature"
+msgstr "Prueba de firma"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Signataire"
+msgstr "Firmante"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Adresse IP"
+msgstr "Dirección IP"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Navigateur / appareil"
+msgstr "Navegador / dispositivo"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Empreinte du document (SHA-256)"
+msgstr "Huella del documento (SHA-256)"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Horodatage"
+msgstr "Marca de tiempo"
+
+#: templates/movement_form.html.twig
+msgid "Documents joints"
+msgstr "Documentos adjuntos"
+
+#: templates/movement_form.html.twig
+msgid "Aucun document joint (bulletin de livraison, document de transport...)."
+msgstr "Ningún documento adjunto (albarán, documento de transporte...)."
+
+#: templates/movement_form.html.twig
+msgid "Joindre le document"
+msgstr "Adjuntar documento"
+
+#: templates/movement_form.html.twig
+msgid "Actions"
+msgstr "Acciones"
+
+#: templates/movement_form.html.twig
+msgid "Marquer comme en cours (départ effectif)"
+msgstr "Marcar como en curso (salida efectiva)"
+
+#: templates/movement_form.html.twig
+msgid "Date d'arrivée"
+msgstr "Fecha de llegada"
+
+#: templates/movement_form.html.twig
+msgid "Marquer comme terminé (arrivée effective)"
+msgstr "Marcar como finalizado (llegada efectiva)"
+
+#: templates/movement_form.html.twig
+msgid "Annuler ce mouvement ?"
+msgstr "¿Cancelar este movimiento?"
+
+#: templates/movement_form.html.twig
+msgid "Annuler le mouvement"
+msgstr "Cancelar el movimiento"
+
+#: templates/movement_tab.html.twig
+msgid "Aucun mouvement enregistré pour ce matériel."
+msgstr "No hay ningún movimiento registrado para este equipo."
+
+#: templates/movement_tab.html.twig
+msgid "Départ"
+msgstr "Salida"
+
+#: templates/movement_tab.html.twig
+msgid "Destination"
+msgstr "Destino"
+
+#: templates/movement_tab.html.twig templates/assetsign_form.html.twig
+#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:236
+#: src/GlpiPlugin/Assetsign/Movement.php:159
+msgid "Statut"
+msgstr "Estado"
+
+#: templates/movement_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:655
+#: src/GlpiPlugin/Assetsign/Movement.php:176
+msgid "Signé"
+msgstr "Firmado"
+
+#: templates/movement_tab.html.twig templates/maintenance_tab.html.twig
+#: templates/assetsign_tab.html.twig
+msgid "Voir"
+msgstr "Ver"
+
+#: templates/movement_tab.html.twig templates/movement_create.html.twig
+msgid "Nouveau mouvement"
+msgstr "Nuevo movimiento"
+
+#: templates/movement_tab.html.twig templates/movement_create.html.twig
+msgid "Créer le mouvement"
+msgstr "Crear el movimiento"
+
 #: templates/assetsign_form.html.twig templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:48
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:52
 #: src/GlpiPlugin/Assetsign/Assetsign.php:101
 #: src/GlpiPlugin/Assetsign/Workflow/HandoverType.php:21
 msgid "Attribution"
 msgid_plural "Attributions"
 msgstr[0] "Atribución"
 msgstr[1] "Atribuciones"
-
-#: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:236
-msgid "Statut"
-msgstr "Estado"
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
 msgid "Externe"
@@ -206,30 +349,6 @@ msgstr "¿Cancelar esta solicitud de firma?"
 #: src/GlpiPlugin/Assetsign/Assetsign.php:410
 msgid "Annuler la demande"
 msgstr "Cancelar la solicitud"
-
-#: templates/assetsign_form.html.twig templates/maintenance_form.html.twig
-msgid "Preuve de signature"
-msgstr "Prueba de firma"
-
-#: templates/assetsign_form.html.twig templates/maintenance_form.html.twig
-msgid "Signataire"
-msgstr "Firmante"
-
-#: templates/assetsign_form.html.twig templates/maintenance_form.html.twig
-msgid "Adresse IP"
-msgstr "Dirección IP"
-
-#: templates/assetsign_form.html.twig templates/maintenance_form.html.twig
-msgid "Navigateur / appareil"
-msgstr "Navegador / dispositivo"
-
-#: templates/assetsign_form.html.twig templates/maintenance_form.html.twig
-msgid "Empreinte du document (SHA-256)"
-msgstr "Huella del documento (SHA-256)"
-
-#: templates/assetsign_form.html.twig templates/maintenance_form.html.twig
-msgid "Horodatage"
-msgstr "Marca de tiempo"
 
 #: templates/assetsign_form.html.twig
 msgid ""
@@ -292,11 +411,6 @@ msgstr "Accesorio"
 #: templates/assetsign_form.html.twig
 msgid "Quantité"
 msgstr "Cantidad"
-
-#: templates/assetsign_form.html.twig templates/maintenance_tab.html.twig
-#: templates/maintenance_create.html.twig templates/maintenance_form.html.twig
-msgid "Commentaire"
-msgstr "Comentario"
 
 #: templates/assetsign_form.html.twig
 msgid "Retirer"
@@ -401,25 +515,25 @@ msgid "Général"
 msgstr "General"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:49
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:53
 #: src/GlpiPlugin/Assetsign/Workflow/ReturnType.php:16
 msgid "Restitution"
 msgstr "Restitución"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:50
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:54
 #: src/GlpiPlugin/Assetsign/Workflow/DonType.php:23
 msgid "Don"
 msgstr "Donación"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:51
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:55
 #: src/GlpiPlugin/Assetsign/Workflow/VenteType.php:23
 msgid "Vente"
 msgstr "Venta"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:430
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:551
 msgid "Réforme"
 msgstr "Desmantelamiento"
 
@@ -428,19 +542,29 @@ msgid "Compléments"
 msgstr "Complementos"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:52
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:56
 #: src/GlpiPlugin/Assetsign/Maintenance.php:117
 msgid "Maintenance"
 msgstr "Mantenimiento"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:132
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:507
+#: src/GlpiPlugin/Assetsign/Movement.php:207
+msgid "Mouvements"
+msgstr "Movimientos"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:169
 msgid "Passeport matériel"
 msgstr "Pasaporte del equipo"
 
 #: templates/config_form.html.twig templates/passport_tab.html.twig
 msgid "Score de santé"
 msgstr "Puntuación de estado"
+
+#: templates/config_form.html.twig
+msgid "Valeur résiduelle"
+msgstr "Valor residual"
 
 #: templates/config_form.html.twig
 msgid "Version du plugin"
@@ -848,6 +972,52 @@ msgstr "Ver las fichas de mantenimiento"
 
 #: templates/config_form.html.twig
 msgid ""
+"Un mouvement structuré généralise la notion de remise à n'importe quel "
+"déplacement physique de matériel (transfert inter-site, retour au stock, "
+"envoi vers un centre de réparation...) : lieu et date de départ, lieu et "
+"date de destination, document(s) joint(s) (onglet Documents natif), "
+"signature optionnelle. Alimente la même frise que le Passeport matériel."
+msgstr ""
+"Un movimiento estructurado generaliza el concepto de entrega a cualquier "
+"desplazamiento físico de material (transferencia entre sedes, devolución al "
+"almacén, envío a un centro de reparación...): lugar y fecha de salida, lugar "
+"y fecha de destino, documento(s) adjunto(s) (pestaña Documentos nativa), "
+"firma opcional. Alimenta la misma cronología que el Pasaporte del equipo."
+
+#: templates/config_form.html.twig
+msgid "Activer les mouvements structurés"
+msgstr "Activar los movimientos estructurados"
+
+#: templates/config_form.html.twig
+msgid ""
+"Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, "
+"ainsi qu'une entrée dédiée dans le menu Outils."
+msgstr ""
+"Añade una pestaña «Movimientos» a cada equipo gestionado por el plugin, así "
+"como una entrada dedicada en el menú Herramientas."
+
+#: templates/config_form.html.twig
+msgid "Faire signer le mouvement (pavé de signature)"
+msgstr "Solicitar firma del movimiento (panel de firma)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Si activé, un pavé de signature (identique à celui de la fiche de "
+"maintenance) apparaît sur le formulaire de création : le mouvement ne peut "
+"pas être créé sans signature. La personne présente est déjà connectée, aucun "
+"e-mail ni page séparée n'est utilisé."
+msgstr ""
+"Si está activado, aparece un panel de firma (idéntico al de la ficha de "
+"mantenimiento) en el formulario de creación: el movimiento no puede crearse "
+"sin firma. La persona presente ya ha iniciado sesión, no se utiliza ningún "
+"correo electrónico ni página aparte."
+
+#: templates/config_form.html.twig
+msgid "Voir les mouvements"
+msgstr "Ver los movimientos"
+
+#: templates/config_form.html.twig
+msgid ""
 "Le score de santé synthétise l’âge, les incidents, l’état physique et les "
 "mouvements du matériel. Les réglages sont propres à l’entité sélectionnée."
 msgstr ""
@@ -914,6 +1084,35 @@ msgstr "Crítico"
 #: templates/config_form.html.twig
 msgid "En dessous du seuil Vigilance."
 msgstr "Por debajo del umbral de Atención."
+
+#: templates/config_form.html.twig
+msgid ""
+"Estimation simple de la valeur restante d'un matériel (pas un module "
+"comptable complet) : aide à trancher entre réemploi et sortie de parc. "
+"Calcul linéaire à partir du prix d'achat Infocom, sur une durée de vie utile "
+"réglable ci-dessous. Une saisie manuelle, disponible sur l'onglet Passeport "
+"matériel de chaque matériel, l'emporte toujours sur ce calcul."
+msgstr "Estimación simple del valor restante de un equipo (no un módulo contable completo): ayuda a decidir entre la reutilización y la baja. Cálculo lineal a partir del precio de compra de Infocom, sobre una vida útil ajustable a continuación. Una entrada manual, disponible en la pestaña Pasaporte del equipo de cada equipo, siempre prevalece sobre este cálculo."
+
+#: templates/config_form.html.twig
+msgid "Afficher la valeur résiduelle sur le Passeport matériel"
+msgstr "Mostrar el valor residual en el Pasaporte del equipo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Rien n'est affiché tant que le prix d'achat n'est pas connu (onglet Infocom "
+"du matériel) : jamais une estimation inventée."
+msgstr "No se muestra nada mientras no se conozca el precio de compra (pestaña Infocom del equipo): nunca una estimación inventada."
+
+#: templates/config_form.html.twig
+msgid "Durée de vie utile (mois)"
+msgstr "Vida útil (meses)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Durée sur laquelle la valeur d'achat est amortie de façon linéaire jusqu'à 0 "
+"- la \"durée personnalisable\" du calcul, propre à cette entité."
+msgstr "Período durante el cual el valor de compra se amortiza de forma lineal hasta 0 - la \"duración personalizable\" del cálculo, propia de esta entidad."
 
 #: templates/config_form.html.twig
 msgid ""
@@ -1025,10 +1224,6 @@ msgstr "Ninguna ficha de mantenimiento registrada para este equipo."
 msgid "Date"
 msgstr "Fecha"
 
-#: templates/maintenance_tab.html.twig templates/assetsign_tab.html.twig
-msgid "Voir"
-msgstr "Ver"
-
 #: templates/maintenance_tab.html.twig templates/maintenance_form.html.twig
 msgid "Télécharger en PDF"
 msgstr "Descargar en PDF"
@@ -1049,8 +1244,9 @@ msgstr ""
 msgid "Créer la fiche"
 msgstr "Crear la ficha"
 
-#: templates/maintenance_create.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:212
+#: templates/movement_create.html.twig templates/maintenance_create.html.twig
+#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:212
+#: src/GlpiPlugin/Assetsign/Movement.php:114
 #: src/GlpiPlugin/Assetsign/Maintenance.php:85
 msgid "Type de matériel"
 msgstr "Tipo de equipo"
@@ -1088,17 +1284,17 @@ msgid "Entité"
 msgstr "Entidad"
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:427
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:548
 msgid "Achat"
 msgstr "Compra"
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:460
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:581
 msgid "Fin de garantie"
 msgstr "Fin de garantía"
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:355
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:476
 msgid "Âge"
 msgstr "Antigüedad"
 
@@ -1109,6 +1305,26 @@ msgstr "Tiempo en uso"
 #: templates/passport_tab.html.twig
 msgid "Temps en stock"
 msgstr "Tiempo en almacén"
+
+#: templates/passport_tab.html.twig
+msgid "Valeur résiduelle (saisie manuelle)"
+msgstr "Valor residual (entrada manual)"
+
+#: templates/passport_tab.html.twig
+msgid "Valeur résiduelle (estimée)"
+msgstr "Valor residual (estimado)"
+
+#: templates/passport_tab.html.twig
+msgid "Valeur résiduelle manuelle"
+msgstr "Valor residual manual"
+
+#: templates/passport_tab.html.twig
+msgid "Revenir au calcul automatique"
+msgstr "Volver al cálculo automático"
+
+#: templates/passport_tab.html.twig
+msgid "Une valeur saisie ici l'emporte toujours sur le calcul automatique."
+msgstr "Un valor introducido aquí siempre prevalece sobre el cálculo automático."
 
 #: templates/passport_tab.html.twig
 msgid "de dégradation"
@@ -1149,6 +1365,10 @@ msgstr "beneficiario anonimizado"
 #: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
 msgid "contrôles qualité"
 msgstr "controles de calidad"
+
+#: templates/passport_tab.html.twig
+msgid "lieu inconnu"
+msgstr "lugar desconocido"
 
 #: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
 msgid "Voir la fiche"
@@ -1276,23 +1496,23 @@ msgstr ""
 msgid "Assigner"
 msgstr "Asignar"
 
-#: hook.php:107 src/GlpiPlugin/Assetsign/Config.php:77
+#: hook.php:109 src/GlpiPlugin/Assetsign/Config.php:81
 msgid "Assetsign & signature"
 msgstr "Entrega y firma"
 
-#: hook.php:113
+#: hook.php:115
 msgid "Attributions en attente de signature"
 msgstr "Atribuciones pendientes de firma"
 
-#: hook.php:120
+#: hook.php:122
 msgid "Attributions signées"
 msgstr "Atribuciones firmadas"
 
-#: hook.php:127
+#: hook.php:129
 msgid "Attributions expirées"
 msgstr "Atribuciones caducadas"
 
-#: hook.php:134 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
+#: hook.php:136 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
 msgid "Échecs de création (30 derniers jours)"
 msgstr "Fallos de creación (últimos 30 días)"
 
@@ -1324,7 +1544,11 @@ msgstr "Correo de prueba enviado."
 msgid "Fiche de maintenance créée."
 msgstr "Ficha de mantenimiento creada."
 
-#: setup.php:217
+#: front/movement.form.php:14
+msgid "Mouvement créé."
+msgstr "Movimiento creado."
+
+#: setup.php:231
 msgid "Aucune verification de configuration bloquante."
 msgstr "Ninguna verificación de configuración bloqueante."
 
@@ -1334,85 +1558,81 @@ msgid_plural "Accessoires d'attribution"
 msgstr[0] "Accesorio de atribución"
 msgstr[1] "Accesorios de atribución"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:38
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:42
 msgid "Événement du passeport matériel"
 msgid_plural "Événements du passeport matériel"
 msgstr[0] "Evento del pasaporte del equipo"
 msgstr[1] "Eventos del pasaporte del equipo"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:129
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:166
 msgid "Passeport utilisateur"
 msgstr "Pasaporte del usuario"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:266
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:322
 msgid "depuis l'achat"
 msgstr "desde la compra"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:266
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:322
 msgid "depuis l'entrée dans GLPI"
 msgstr "desde el alta en GLPI"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:365
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:486
 msgid "Incidents"
 msgstr "Incidencias"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:382
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:503
 msgid "État physique"
 msgstr "Estado físico"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:386
-msgid "Mouvements"
-msgstr "Movimientos"
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:425
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:546
 msgid "Commande"
 msgstr "Pedido"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:426
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:547
 msgid "Livraison"
 msgstr "Entrega"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:428
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:549
 msgid "Mise en service"
 msgstr "Puesta en servicio"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:429
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:550
 msgid "Début de garantie"
 msgstr "Inicio de garantía"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:449
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:570
 #, php-format
 msgid "Prix d'achat : %s %s"
 msgstr "Precio de compra: %s %s"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:508
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:629
 msgid "Ticket"
 msgstr "Ticket"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:655
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:777
 msgid "Reconstitué automatiquement depuis l'historique GLPI."
 msgstr "Reconstruido automáticamente a partir del historial de GLPI."
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:893
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1064
 msgid "Utilisateur retiré"
 msgstr "Usuario retirado"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:922
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1093
 #, php-format
 msgid "%d jour"
 msgid_plural "%d jours"
 msgstr[0] "%d día"
 msgstr[1] "%d días"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:927
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:937
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1098
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1108
 #, php-format
 msgid "%d mois"
 msgid_plural "%d mois"
 msgstr[0] "%d mes"
 msgstr[1] "%d meses"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:932
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1103
 #, php-format
 msgid "%d an"
 msgid_plural "%d ans"
@@ -1511,6 +1731,7 @@ msgid "Attributions"
 msgstr "Atribuciones"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:604
+#: src/GlpiPlugin/Assetsign/Movement.php:294
 #: src/GlpiPlugin/Assetsign/Maintenance.php:299
 msgid "Choisissez d'abord un type de matériel ci-dessus."
 msgstr "Elija primero un tipo de equipo arriba."
@@ -1531,15 +1752,12 @@ msgstr "Enviado"
 msgid "Consulté"
 msgstr "Consultado"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:655
-msgid "Signé"
-msgstr "Firmado"
-
 #: src/GlpiPlugin/Assetsign/Assetsign.php:656
 msgid "Expiré"
 msgstr "Caducado"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:657
+#: src/GlpiPlugin/Assetsign/Movement.php:74
 msgid "Annulé"
 msgstr "Cancelado"
 
@@ -1592,6 +1810,7 @@ msgid "Type de matériel invalide : %s"
 msgstr "Tipo de equipo no válido: %s"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:1042
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:25
 #: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:25
 msgid "Matériel introuvable."
 msgstr "Equipo no encontrado."
@@ -1638,32 +1857,32 @@ msgstr ""
 "A esta atribución ya no se le puede enviar un recordatorio (ya firmada o "
 "caducada)."
 
-#: src/GlpiPlugin/Assetsign/Config.php:72
+#: src/GlpiPlugin/Assetsign/Config.php:76
 msgid "AssetSign — Signature électronique"
 msgstr "AssetSign — Firma electrónica"
 
-#: src/GlpiPlugin/Assetsign/Config.php:144
+#: src/GlpiPlugin/Assetsign/Config.php:148
 msgid "Signature intégrée (canvas)"
 msgstr "Firma integrada (lienzo)"
 
-#: src/GlpiPlugin/Assetsign/Config.php:194
-#: src/GlpiPlugin/Assetsign/Config.php:219
+#: src/GlpiPlugin/Assetsign/Config.php:198
+#: src/GlpiPlugin/Assetsign/Config.php:223
 msgid "Échec de l'envoi du logo."
 msgstr "Error al enviar el logotipo."
 
-#: src/GlpiPlugin/Assetsign/Config.php:200
+#: src/GlpiPlugin/Assetsign/Config.php:204
 msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
 msgstr "El logotipo debe ser una imagen (PNG, JPG, GIF o WEBP)."
 
-#: src/GlpiPlugin/Assetsign/Config.php:246
+#: src/GlpiPlugin/Assetsign/Config.php:250
 msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
 msgstr "Su cuenta GLPI no tiene una dirección de correo registrada."
 
-#: src/GlpiPlugin/Assetsign/Config.php:260
+#: src/GlpiPlugin/Assetsign/Config.php:264
 msgid "E-mail de test — Assetsign & signature"
 msgstr "Correo de prueba — Entrega y firma"
 
-#: src/GlpiPlugin/Assetsign/Config.php:261
+#: src/GlpiPlugin/Assetsign/Config.php:265
 msgid ""
 "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & "
 "signature fonctionne."
@@ -1671,9 +1890,48 @@ msgstr ""
 "Este correo confirma que la configuración de envío del plugin Entrega y "
 "firma funciona."
 
-#: src/GlpiPlugin/Assetsign/Config.php:264
+#: src/GlpiPlugin/Assetsign/Config.php:268
 msgid "Le serveur de messagerie a refusé l'envoi."
 msgstr "El servidor de correo ha rechazado el envío."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:71
+msgid "Prévu"
+msgstr "Previsto"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:72
+msgid "En cours"
+msgstr "En curso"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:73
+msgid "Terminé"
+msgstr "Finalizado"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:168
+msgid "Déclaré par"
+msgstr "Declarado por"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:276
+msgid ""
+"La fonctionnalité « Mouvements » n'est pas activée pour cette entité "
+"(Configuration > Mouvements)."
+msgstr ""
+"La funcionalidad «Movimientos» no está activada para esta entidad "
+"(Configuración > Movimientos)."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:396
+#: src/GlpiPlugin/Assetsign/Movement.php:402
+#: src/GlpiPlugin/Assetsign/Movement.php:414
+msgid "Échec de l'envoi du document."
+msgstr "Error al enviar el documento."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:460
+msgid "Échec de la création du mouvement."
+msgstr "Error al crear el movimiento."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:514
+#, php-format
+msgid "Signature du mouvement #%d"
+msgstr "Firma del movimiento n.º %d"
 
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:50
 msgid "Nouvelle attribution de matériel"
@@ -1756,6 +2014,23 @@ msgstr "Firma demasiado pequeña, inténtelo de nuevo."
 msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
 msgstr "Firma vacía o insuficientemente trazada, vuelva a firmar."
 
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:20
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:20
+msgid "Type de matériel invalide."
+msgstr "Tipo de equipo no válido."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:34
+msgid "La valeur résiduelle ne peut pas être négative."
+msgstr "El valor residual no puede ser negativo."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:40
+msgid "Valeur résiduelle repassée en calcul automatique."
+msgstr "Valor residual devuelto al cálculo automático."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:41
+msgid "Valeur résiduelle manuelle enregistrée."
+msgstr "Valor residual manual guardado."
+
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:37
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:54
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:80
@@ -1781,10 +2056,6 @@ msgstr "Recordatorio enviado."
 #: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:46
 msgid "Demande annulée."
 msgstr "Solicitud cancelada."
-
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:20
-msgid "Type de matériel invalide."
-msgstr "Tipo de equipo no válido."
 
 #: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:36
 msgid "Utilisateur introuvable."
@@ -1844,191 +2115,6 @@ msgstr "Demasiados intentos, enlace desactivado por seguridad."
 #: src/GlpiPlugin/Assetsign/Token.php:139
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purga los tokens de firma caducados o no válidos"
-
-#: templates/movement_form.html.twig src/GlpiPlugin/Assetsign/Movement.php:56
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:57
-msgid "Mouvement"
-msgid_plural "Mouvements"
-msgstr[0] "Movimiento"
-msgstr[1] "Movimientos"
-
-#: templates/movement_form.html.twig templates/movement_tab.html.twig
-#: templates/movement_create.html.twig
-#: src/GlpiPlugin/Assetsign/Movement.php:130
-msgid "Lieu de départ"
-msgstr "Lugar de origen"
-
-#: templates/movement_form.html.twig templates/movement_tab.html.twig
-#: templates/movement_create.html.twig
-#: src/GlpiPlugin/Assetsign/Movement.php:145
-msgid "Date de départ"
-msgstr "Fecha de salida"
-
-#: templates/movement_form.html.twig templates/movement_tab.html.twig
-#: templates/movement_create.html.twig
-#: src/GlpiPlugin/Assetsign/Movement.php:138
-msgid "Lieu de destination"
-msgstr "Lugar de destino"
-
-#: templates/movement_form.html.twig templates/movement_tab.html.twig
-#: templates/movement_create.html.twig
-#: src/GlpiPlugin/Assetsign/Movement.php:152
-msgid "Date de destination"
-msgstr "Fecha de destino"
-
-#: templates/movement_form.html.twig
-msgid "Créé le"
-msgstr "Creado el"
-
-#: templates/movement_form.html.twig
-msgid "Documents joints"
-msgstr "Documentos adjuntos"
-
-#: templates/movement_form.html.twig
-msgid "Aucun document joint (bulletin de livraison, document de transport...)."
-msgstr "Ningún documento adjunto (albarán, documento de transporte...)."
-
-#: templates/movement_form.html.twig
-msgid "Joindre le document"
-msgstr "Adjuntar documento"
-
-#: templates/movement_form.html.twig
-msgid "Actions"
-msgstr "Acciones"
-
-#: templates/movement_form.html.twig
-msgid "Marquer comme en cours (départ effectif)"
-msgstr "Marcar como en curso (salida efectiva)"
-
-#: templates/movement_form.html.twig
-msgid "Date d'arrivée"
-msgstr "Fecha de llegada"
-
-#: templates/movement_form.html.twig
-msgid "Marquer comme terminé (arrivée effective)"
-msgstr "Marcar como finalizado (llegada efectiva)"
-
-#: templates/movement_form.html.twig
-msgid "Annuler ce mouvement ?"
-msgstr "¿Cancelar este movimiento?"
-
-#: templates/movement_form.html.twig
-msgid "Annuler le mouvement"
-msgstr "Cancelar el movimiento"
-
-#: templates/movement_tab.html.twig
-msgid "Aucun mouvement enregistré pour ce matériel."
-msgstr "No hay ningún movimiento registrado para este equipo."
-
-#: templates/movement_tab.html.twig
-msgid "Départ"
-msgstr "Salida"
-
-#: templates/movement_tab.html.twig
-msgid "Destination"
-msgstr "Destino"
-
-#: templates/movement_tab.html.twig templates/movement_create.html.twig
-msgid "Nouveau mouvement"
-msgstr "Nuevo movimiento"
-
-#: templates/movement_tab.html.twig templates/movement_create.html.twig
-msgid "Créer le mouvement"
-msgstr "Crear el movimiento"
-
-#: templates/config_form.html.twig
-msgid ""
-"Un mouvement structuré généralise la notion de remise à n'importe quel "
-"déplacement physique de matériel (transfert inter-site, retour au stock, "
-"envoi vers un centre de réparation...) : lieu et date de départ, lieu et "
-"date de destination, document(s) joint(s) (onglet Documents natif), "
-"signature optionnelle. Alimente la même frise que le Passeport matériel."
-msgstr ""
-"Un movimiento estructurado generaliza el concepto de entrega a cualquier "
-"desplazamiento físico de material (transferencia entre sedes, devolución "
-"al almacén, envío a un centro de reparación...): lugar y fecha de salida, "
-"lugar y fecha de destino, documento(s) adjunto(s) (pestaña Documentos "
-"nativa), firma opcional. Alimenta la misma cronología que el Pasaporte del "
-"equipo."
-
-#: templates/config_form.html.twig
-msgid "Activer les mouvements structurés"
-msgstr "Activar los movimientos estructurados"
-
-#: templates/config_form.html.twig
-msgid ""
-"Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, "
-"ainsi qu'une entrée dédiée dans le menu Outils."
-msgstr ""
-"Añade una pestaña «Movimientos» a cada equipo gestionado por el plugin, "
-"así como una entrada dedicada en el menú Herramientas."
-
-#: templates/config_form.html.twig
-msgid "Faire signer le mouvement (pavé de signature)"
-msgstr "Solicitar firma del movimiento (panel de firma)"
-
-#: templates/config_form.html.twig
-msgid ""
-"Si activé, un pavé de signature (identique à celui de la fiche de "
-"maintenance) apparaît sur le formulaire de création : le mouvement ne peut "
-"pas être créé sans signature. La personne présente est déjà connectée, aucun "
-"e-mail ni page séparée n'est utilisé."
-msgstr ""
-"Si está activado, aparece un panel de firma (idéntico al de la ficha de "
-"mantenimiento) en el formulario de creación: el movimiento no puede "
-"crearse sin firma. La persona presente ya ha iniciado sesión, no se "
-"utiliza ningún correo electrónico ni página aparte."
-
-#: templates/config_form.html.twig
-msgid "Voir les mouvements"
-msgstr "Ver los movimientos"
-
-#: templates/passport_tab.html.twig
-msgid "lieu inconnu"
-msgstr "lugar desconocido"
-
-#: front/movement.form.php:14
-msgid "Mouvement créé."
-msgstr "Movimiento creado."
-
-#: src/GlpiPlugin/Assetsign/Movement.php:71
-msgid "Prévu"
-msgstr "Previsto"
-
-#: src/GlpiPlugin/Assetsign/Movement.php:72
-msgid "En cours"
-msgstr "En curso"
-
-#: src/GlpiPlugin/Assetsign/Movement.php:73
-msgid "Terminé"
-msgstr "Finalizado"
-
-#: src/GlpiPlugin/Assetsign/Movement.php:168
-msgid "Déclaré par"
-msgstr "Declarado por"
-
-#: src/GlpiPlugin/Assetsign/Movement.php:276
-msgid ""
-"La fonctionnalité « Mouvements » n'est pas activée pour cette entité "
-"(Configuration > Mouvements)."
-msgstr ""
-"La funcionalidad «Movimientos» no está activada para esta entidad "
-"(Configuración > Movimientos)."
-
-#: src/GlpiPlugin/Assetsign/Movement.php:396
-#: src/GlpiPlugin/Assetsign/Movement.php:402
-#: src/GlpiPlugin/Assetsign/Movement.php:414
-msgid "Échec de l'envoi du document."
-msgstr "Error al enviar el documento."
-
-#: src/GlpiPlugin/Assetsign/Movement.php:460
-msgid "Échec de la création du mouvement."
-msgstr "Error al crear el movimiento."
-
-#: src/GlpiPlugin/Assetsign/Movement.php:514
-#, php-format
-msgid "Signature du mouvement #%d"
-msgstr "Firma del movimiento n.º %d"
 
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Configuración de entrega y firma"

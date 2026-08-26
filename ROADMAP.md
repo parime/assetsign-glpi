@@ -8,6 +8,20 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
 - **Proposer la création automatique des intitulés de base sur un GLPI fraîchement installé** — aujourd'hui, `install()` sème déjà quelques valeurs par défaut pour les intitulés propres au plugin (`Accessory`, `MaintenanceChecklistItem`, `Template`), mais rien ne compense l'absence d'intitulés **cœur GLPI** que le plugin utilise (ex: Etats déclencheurs de remise/restitution/don/vente) sur une instance neuve sans configuration métier existante — l'onglet Configuration affiche alors des listes de déclenchement par État vides, sans qu'il soit évident pour l'administrateur qu'il faut aller les créer ailleurs (Configuration > Listes déroulantes > États) avant que le plugin soit réellement utilisable. Idée : proposer (pas imposer) la création d'un jeu d'États de base pertinents pour le workflow du plugin, détectée quand aucun État n'existe encore ou qu'aucun n'est configuré comme déclencheur.
 - **Repères d'état des lieux visuel : décalage occasionnel signalé par l'utilisateur, cause probable identifiée et corrigée côté ressenti, mais pas totalement élucidée** — le positionnement lui-même (calcul `left`/`top` en %) s'est révélé exact au pixel dans tous les tests manuels (fiche Remise admin, page de signature réelle, fenêtre réduite à 900px) ; la vraie cause plausible du "repère pas au bon endroit" était plutôt la **latence perçue** : chaque ajout de repère attendait la régénération complète du PDF côté serveur (`Remise::refreshDamageAnnotationPdf()`) avant de s'afficher, mesurée à ~4,3 à 4,8 secondes dans l'environnement Docker de test — largement le temps pour l'utilisateur de cliquer ailleurs ou de perdre le fil avant que le repère n'apparaisse enfin à l'endroit du clic initial. **Corrigé** : affichage optimiste du repère (apparaît en ~10ms au clic, `public/js/sign/damage-annotation.js`), la confirmation serveur reste asynchrone en arrière-plan. Si un décalage réel (pas seulement perçu) se reproduit malgré ça, il faudra une capture d'écran précise (point cliqué vs position obtenue, navigateur/zoom) pour aller plus loin.
 
+## Réalisé récemment (2026-08-27)
+
+- **Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle) - livrée** (issue #77,
+  cf. tableau V2 ci-dessous) : nouvel indicateur en tête du Passeport matériel, calculé à
+  l'affichage à partir du prix/de la date d'achat déjà lus depuis `Infocom` (même source que
+  la fiche d'identité/le score de santé, jamais dupliquée) - `valeur = prix_achat × max(0, 1 −
+  âge_jours / durée_jours)`, plafonné à 0. La "durée personnalisable" est un réglage par
+  entité (`Config::residual_value_duration_months`, mois, défaut 60), pas une deuxième méthode
+  de calcul. Saisie manuelle toujours prioritaire sur le calcul automatique (nouvelle classe/
+  table dédiée `ResidualValue`, même patron 1-vers-1 `itemtype`/`items_id` que `Movement`),
+  avec un petit formulaire inline sur le Passeport matériel pour saisir une valeur ou revenir
+  au calcul automatique - jamais un simple repli dégradé. Aucune valeur inventée quand le prix
+  d'achat est inconnu, exactement comme l'âge/le temps utilisé.
+
 ## Réalisé récemment (2026-08-26)
 
 - **QR code imprimable sur le matériel - livré** (issue #82, cf. tableau V3 ci-dessous et
@@ -130,7 +144,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 |---|---|---|---|---|---|
 | ~~Score de santé matériel~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Indicateurs temporels~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
-| Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle) | Estimation simple, pas un module comptable complet | Aide à trancher réemploi vs sortie | Faible/Moyenne | Fiche d'identité (V1) | Moyenne |
+| ~~Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle)~~ — **livrée**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | Fin de vie structurée (vente : prix/acheteur/documents ; don : organisme/justificatif ; destruction : prestataire/certificat) — ~~date de réforme automatique~~ **livrée le 2026-08-19** (cf. "Réalisé récemment" ci-dessus et issue #78), reste : prestataire/certificat pour la destruction, organisme/justificatif pour le don | Tracer proprement la sortie définitive | Conformité, preuve en cas de contrôle | Faible (déjà partiellement présent via Remise::TYPE_VENTE/TYPE_DON) | Timeline d'événements | Moyenne |
 | Module d'aide à la décision (moteur de règles simple, ex: "réévaluer"/"préparer remplacement" avec raisons) | Aider l'équipe IT à décider quoi faire d'un matériel | Passe d'une donnée brute à une recommandation | Moyenne (règles), architecture prête pour de l'IA plus tard sans y aller maintenant | Score de santé, valeur résiduelle | Basse/Moyenne |
 
