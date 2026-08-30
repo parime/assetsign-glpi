@@ -456,6 +456,34 @@ msgstr ""
 "Aucun point de contrôle configuré pour ce type de mouvement (Configuration > "
 "Intitulés > Points de contrôle qualité)."
 
+#: templates/assetsign_form.html.twig src/GlpiPlugin/Assetsign/Kit.php:30
+msgid "Kit d'accessoires"
+msgid_plural "Kits d'accessoires"
+msgstr[0] "Kit d'accessoires"
+msgstr[1] "Kits d'accessoires"
+
+#: templates/assetsign_form.html.twig
+msgid "Kit assigné :"
+msgstr "Kit assigné :"
+
+#: templates/assetsign_form.html.twig
+msgid "Aucun kit assigné pour le moment."
+msgstr "Aucun kit assigné pour le moment."
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "accessoires du kit restitués"
+msgstr "accessoires du kit restitués"
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "Accessoire(s) manquant(s) :"
+msgstr "Accessoire(s) manquant(s) :"
+
+#: templates/assetsign_form.html.twig
+msgid "Assigner / changer le kit"
+msgstr "Assigner / changer le kit"
+
 #: templates/assetsign_form.html.twig
 msgid "Accessoires remis"
 msgstr "Accessoires remis"
@@ -1634,6 +1662,18 @@ msgstr "Mouvement créé."
 msgid "Aucune verification de configuration bloquante."
 msgstr "Aucune verification de configuration bloquante."
 
+#: src/GlpiPlugin/Assetsign/Kit.php:128
+msgid "Accessoires attendus dans ce kit"
+msgstr "Accessoires attendus dans ce kit"
+
+#: src/GlpiPlugin/Assetsign/Kit.php:151
+msgid ""
+"Ces accessoires seront automatiquement vérifiés à la restitution si ce kit "
+"est assigné à une remise."
+msgstr ""
+"Ces accessoires seront automatiquement vérifiés à la restitution si ce kit "
+"est assigné à une remise."
+
 #: src/GlpiPlugin/Assetsign/Accessory.php:17
 msgid "Accessoire d'attribution"
 msgid_plural "Accessoires d'attribution"
@@ -2209,6 +2249,36 @@ msgstr "Trop de tentatives, lien désactivé par sécurité."
 #: src/GlpiPlugin/Assetsign/Token.php:139
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purge les jetons de signature expirés ou invalides"
+
+msgid "Aide à la décision"
+msgstr "Aide à la décision"
+
+msgid "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+msgstr "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+
+msgid "Afficher les recommandations sur le Passeport matériel"
+msgstr "Afficher les recommandations sur le Passeport matériel"
+
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
+msgstr "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
+
+msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+msgstr "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+
+msgid "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+msgstr "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+
+msgid "Prévoir un remplacement"
+msgstr "Prévoir un remplacement"
+
+msgid "score de santé faible : %d/100"
+msgstr "score de santé faible : %d/100"
+
+msgid "Réévaluer l'usage"
+msgstr "Réévaluer l'usage"
+
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
+msgstr "valeur résiduelle faible : %d %% du prix d'achat"
 
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Configuration assetsign & signature"

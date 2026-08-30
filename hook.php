@@ -17,6 +17,7 @@ use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\Dashboard\CardProvider;
 use GlpiPlugin\Assetsign\DestructionDetails;
 use GlpiPlugin\Assetsign\DonDetails;
+use GlpiPlugin\Assetsign\Kit;
 use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Movement;
@@ -155,6 +156,7 @@ function plugin_assetsign_getDropdown(): array {
     return [
         Template::class                 => Template::getTypeName(2),
         Accessory::class                => Accessory::getTypeName(2),
+        Kit::class                      => Kit::getTypeName(2),
         MaintenanceChecklistItem::class => MaintenanceChecklistItem::getTypeName(2),
         ChecklistItem::class            => ChecklistItem::getTypeName(2),
     ];
@@ -186,6 +188,14 @@ function plugin_assetsign_install(): bool {
     Config::install($migration);
     Template::install($migration);
     Accessory::install($migration);
+    // Apres Accessory::install() (le kit d'exemple seme ci-dessous reference des
+    // accessoires par nom) et avant Assetsign::install() : la nouvelle colonne
+    // plugin_assetsign_kits_id de ce dernier (issue #83, "Kits/accessoires avec
+    // controle automatique au retour") reste sans contrainte de cle etrangere
+    // (meme choix que plugin_assetsign_templates_id, cf. son propre commentaire
+    // dans Assetsign::install()), mais autant que la table existe deja pour
+    // rester coherent avec l'ordre du reste de cette liste.
+    Kit::install($migration);
     CreationFailure::install($migration);
     // Avant Assetsign::install() : la contrainte de cle etrangere ajoutee par ce
     // dernier vers glpi_plugin_assetsign_checklistitems (table des resultats de
@@ -311,6 +321,7 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_maintenances',
         'glpi_plugin_assetsign_maintenancechecklistitems',
         'glpi_plugin_assetsign_accessories',
+        'glpi_plugin_assetsign_kits',
         'glpi_plugin_assetsign_templates',
         'glpi_plugin_assetsign_configs',
         'glpi_plugin_assetsign_creationfailures',

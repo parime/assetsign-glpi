@@ -45,6 +45,7 @@
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport matériel', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Score de santé', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-residual-value" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Valeur résiduelle', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-decision-aid" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Aide à la décision', 'assetsign') }}</button></li>
       </ul>
 
       <div class="tab-content">
@@ -423,6 +424,24 @@
             <label class="form-label">{{ __('Durée de vie utile (mois)', 'assetsign') }}</label>
             <input type="number" name="residual_value_duration_months" class="form-control" style="width: 140px;" value="{{ config.residual_value_duration_months|default(60) }}" min="1">
             <div class="form-text">{{ __('Durée sur laquelle la valeur d\'achat est amortie de façon linéaire jusqu\'à 0 - la "durée personnalisable" du calcul, propre à cette entité.', 'assetsign') }}</div>
+          </div>
+        </div>
+
+        {# ---------------------------------------------------------------- Aide à la décision #}
+        <div class="tab-pane fade" id="tab-decision-aid" role="tabpanel">
+          <p class="text-muted">{{ __('Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n\'est jamais affichée si l\'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d\'achat inconnu...).', 'assetsign') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_decision_aid" value="0">
+            <input type="checkbox" name="enable_decision_aid" value="1" class="form-check-input" id="enable_decision_aid" {{ config.enable_decision_aid|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_decision_aid">{{ __('Afficher les recommandations sur le Passeport matériel', 'assetsign') }}</label>
+          </div>
+          <div class="mb-3">
+            <div class="form-text">{{ __('« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l\'onglet Score de santé — pas de second réglage redondant pour la même notion.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ __('Seuil de valeur résiduelle déclenchant « Réévaluer l\'usage » (% du prix d\'achat)', 'assetsign') }}</label>
+            <input type="number" name="residual_value_low_threshold_percent" class="form-control" style="width: 140px;" min="0" max="100" value="{{ config.residual_value_low_threshold_percent|default(20) }}">
+            <div class="form-text">{{ __('En dessous de ce pourcentage du prix d\'achat d\'origine, la recommandation « Réévaluer l\'usage » est affichée.', 'assetsign') }}</div>
           </div>
         </div>
 

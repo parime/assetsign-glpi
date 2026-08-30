@@ -11,6 +11,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Kits/accessoires avec contrôle automatique au retour** (issue #83, cf. ROADMAP.md tableau V3
+  et `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` — un GROUPE nommé et réutilisable
+  d'accessoires censés voyager ensemble avec une remise (ex: « Kit ordinateur portable standard » =
+  Chargeur + Sacoche + Souris). Même motif exact que `ChecklistItem` (issue #74) plutôt qu'un
+  mécanisme parallèle : dropdown standard GLPI (CRUD/recherche/droits génériques gratuits), la
+  composition du kit (`accessories_id`) stockée en JSON directement sur la ligne du catalogue —
+  volontairement **pas** une nouvelle table pivot, un Kit n'ayant qu'une seule caractéristique
+  propre (sa composition), contrairement à `AssetsignAccessory` qui porte en plus une quantité et
+  un commentaire PROPRES À CHAQUE remise. Nouveau champ `plugin_assetsign_kits_id` sur `Assetsign`
+  (pas de contrainte de clé étrangère, même choix déjà fait pour `plugin_assetsign_templates_id`) :
+  un technicien peut tagguer une Attribution (ou une Restitution) « utilise le Kit X », éditable
+  tant que la fiche reste modifiable (`Assetsign::updateKit()`, même garde `isStillEditable()` que
+  `addAccessory()`/`updateVenteDetails()`). Le kit assigné à l'Attribution est reporté
+  **automatiquement** sur la Restitution créée ensuite pour le même matériel
+  (`Assetsign::resolveKitForAutomaticCreation()`, appelée depuis `createAssetsign()`) — un simple
+  report d'une donnée déjà réellement saisie, jamais une invention, même principe que
+  `writeDecommissionDateIfMissing()` (date de réforme automatique) — reste corrigeable ensuite par
+  un technicien. Cœur de la détection automatique : `Kit::computeCompleteness()`, une comparaison
+  PURE (aucun accès base, testée unitairement pour les cas complet/un manquant/tout manquant/aucun
+  kit assigné) entre les accessoires ATTENDUS par le kit et ceux RÉELLEMENT enregistrés sur la
+  Restitution (`AssetsignAccessory`, déjà existant — aucune nouvelle saisie requise), par simple
+  PRÉSENCE d'accessoire, jamais par quantité. Affiché à deux endroits : sur la fiche Assetsign
+  elle-même (section « Kit d'accessoires », à côté des accessoires) et, PUREMENT calculé à
+  l'affichage comme le résumé de checklist qualité (`PassportEvent::attachChecklistSummaries()`),
+  en badge coloré fusionné dans la frise du Passeport matériel/utilisateur sur l'événement de
+  Restitution (`PassportEvent::attachKitSummaries()`, batché en 4 requêtes au total pour toute la
+  frise, jamais une par événement affiché — même souci de performance documenté dans l'ADR) : vert
+  si complet, orange si un ou plusieurs accessoires manquent, rouge si aucun accessoire du kit
+  n'est revenu (perte totale, sévérité volontairement distincte du gris « pas encore rempli » de la
+  checklist qualité). Absent (aucun badge) si aucun kit n'est assigné à la Restitution, ou si le
+  kit assigné n'a plus aucun accessoire attendu configuré : l'absence de kit n'est pas un défaut à
+  signaler.
+
+- **Module d'aide à la décision** (issue #79, cf. ROADMAP.md tableau V2 et
+  `docs/design/ADR-passeport-v1.md`) : troisième indicateur en tête du Passeport matériel,
+  après le score de santé et la valeur résiduelle dont il dépend explicitement. Moteur de
+  RÈGLES SIMPLE à seuils, explicitement PAS du machine learning (la roadmap le précise :
+  "architecture prête pour de l'IA plus tard sans y aller maintenant") — deux règles
+  indépendantes, chacune avec son libellé et sa raison explicite, calculées à l'affichage
+  (`PassportEvent::getDecisionAidRecommendations()`), jamais persistées ni mises en cache,
+  exactement comme le score de santé et la valeur résiduelle : « Prévoir un remplacement »
+  (score de santé sous le seuil « Vigilance » déjà réglable,
+  `Config::health_score_warning_threshold` — réutilisé tel quel, aucun second réglage
+  redondant) et « Réévaluer l'usage » (valeur résiduelle sous un pourcentage réglable du prix
+  d'achat d'origine, nouveau réglage `Config::residual_value_low_threshold_percent`, seul
+  nouveau seuil introduit par cette PR). Chaque règle exige que sa propre donnée source soit
+  réellement disponible (score de santé calculable, valeur résiduelle ET prix d'achat
+  d'origine tous deux connus) — jamais une recommandation inventée à partir d'une donnée
+  manquante ou d'une fonctionnalité désactivée. Plusieurs règles déclenchées simultanément :
+  toutes affichées, jamais une seule masquant les autres — un vrai outil d'aide à la décision
+  ne doit jamais cacher un facteur contributif. Nouvel onglet dédié « Aide à la décision » de
+  la page de configuration (`Config::enable_decision_aid`, activé par défaut), nouveau bloc
+  d'alertes colorées (Tabler `alert-danger`/`alert-warning`) sur l'onglet Passeport matériel,
+  sibling visuel du score de santé et de la valeur résiduelle — silencieux (aucun bloc
+  affiché) quand rien n'est à signaler ou que les deux indicateurs sources sont indisponibles,
+  même convention que ces deux blocs. Aucune nouvelle table : `getDecisionAidRecommendations()`
+  reste le seul point d'entrée consulté par `showForItem()`, de sorte qu'un futur moteur
+  différent (modèle entraîné, appel à un service externe...) pourrait la remplacer sans
+  toucher à l'affichage ni aux deux indicateurs sources — "architecture prête pour l'IA" au
+  sens de la roadmap, sans construire d'abstraction supplémentaire par anticipation.
+
 - **Fin de vie structurée : destruction (prestataire/certificat) et don (organisme/justificatif)**
   (issue #78, dernière partie de "fin de vie structurée" — la date de réforme automatique était déjà
   livrée le 2026-08-19, cf. entrée correspondante ci-dessous dans l'historique) : nouveau type

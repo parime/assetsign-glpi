@@ -8,6 +8,39 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
 - **Proposer la création automatique des intitulés de base sur un GLPI fraîchement installé** — aujourd'hui, `install()` sème déjà quelques valeurs par défaut pour les intitulés propres au plugin (`Accessory`, `MaintenanceChecklistItem`, `Template`), mais rien ne compense l'absence d'intitulés **cœur GLPI** que le plugin utilise (ex: Etats déclencheurs de remise/restitution/don/vente) sur une instance neuve sans configuration métier existante — l'onglet Configuration affiche alors des listes de déclenchement par État vides, sans qu'il soit évident pour l'administrateur qu'il faut aller les créer ailleurs (Configuration > Listes déroulantes > États) avant que le plugin soit réellement utilisable. Idée : proposer (pas imposer) la création d'un jeu d'États de base pertinents pour le workflow du plugin, détectée quand aucun État n'existe encore ou qu'aucun n'est configuré comme déclencheur.
 - **Repères d'état des lieux visuel : décalage occasionnel signalé par l'utilisateur, cause probable identifiée et corrigée côté ressenti, mais pas totalement élucidée** — le positionnement lui-même (calcul `left`/`top` en %) s'est révélé exact au pixel dans tous les tests manuels (fiche Remise admin, page de signature réelle, fenêtre réduite à 900px) ; la vraie cause plausible du "repère pas au bon endroit" était plutôt la **latence perçue** : chaque ajout de repère attendait la régénération complète du PDF côté serveur (`Remise::refreshDamageAnnotationPdf()`) avant de s'afficher, mesurée à ~4,3 à 4,8 secondes dans l'environnement Docker de test — largement le temps pour l'utilisateur de cliquer ailleurs ou de perdre le fil avant que le repère n'apparaisse enfin à l'endroit du clic initial. **Corrigé** : affichage optimiste du repère (apparaît en ~10ms au clic, `public/js/sign/damage-annotation.js`), la confirmation serveur reste asynchrone en arrière-plan. Si un décalage réel (pas seulement perçu) se reproduit malgré ça, il faudra une capture d'écran précise (point cliqué vs position obtenue, navigateur/zoom) pour aller plus loin.
 
+## Réalisé récemment (2026-08-30)
+
+- **Kits/accessoires avec contrôle automatique au retour - livrée** (issue #83, cf. tableau V3
+  ci-dessus et `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` (dropdown standard
+  GLPI, même motif que `ChecklistItem` — une liste d'accessoires attendus, `accessories_id`,
+  stockée en JSON directement sur la ligne du catalogue, jamais une nouvelle table pivot).
+  Une Attribution/Restitution peut être tagguée « utilise le Kit X » (nouveau champ
+  `plugin_assetsign_kits_id` sur `Assetsign`, éditable tant que la fiche reste modifiable,
+  même garde `isStillEditable()` que les accessoires/observations). Le kit assigné à
+  l'Attribution est reporté **automatiquement** sur la Restitution créée ensuite pour le même
+  matériel (report d'une donnée déjà réellement saisie, jamais une invention — même principe
+  que la date de réforme automatique livrée le 2026-08-19), reste corrigeable manuellement
+  ensuite. À l'affichage, les accessoires attendus par le kit sont comparés à ceux réellement
+  enregistrés sur la Restitution (`AssetsignAccessory`, déjà existant) : badge coloré sur la
+  frise du Passeport matériel/utilisateur (vert = complet, orange = accessoire(s) manquant(s),
+  rouge = rien n'est revenu), calculé PUREMENT à l'affichage et batché (4 requêtes au total pour
+  toute la frise, jamais une par événement affiché), exactement comme le résumé de checklist
+  qualité déjà livré pour l'issue #74.
+- **Module d'aide à la décision - livré** (issue #79, cf. tableau V2 ci-dessous) : troisième
+  indicateur du Passeport matériel, après le score de santé et la valeur résiduelle dont il
+  dépend explicitement (toutes deux déjà livrées, cf. entrées ci-dessous). Moteur de règles
+  simple à seuils, explicitement **pas** du machine learning ("architecture prête pour de
+  l'IA plus tard sans y aller maintenant", au sens où `getDecisionAidRecommendations()` reste
+  le seul point d'entrée consulté par l'affichage - un futur moteur différent pourrait la
+  remplacer sans rien toucher d'autre, sans construire d'abstraction supplémentaire par
+  anticipation) : « Prévoir un remplacement » sous le seuil de score de santé déjà réglable
+  (réutilisé tel quel, aucun second réglage redondant), « Réévaluer l'usage » sous un
+  pourcentage réglable du prix d'achat d'origine (seul nouveau réglage introduit,
+  `Config::residual_value_low_threshold_percent`). Chaque règle exige sa propre donnée
+  source réellement disponible - jamais une recommandation inventée. Plusieurs règles
+  déclenchées : toutes affichées, jamais une seule masquant les autres. Calculé à
+  l'affichage, jamais persisté, même principe que les deux indicateurs dont il dépend.
+
 ## Réalisé récemment (2026-08-27)
 
 - **Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle) - livrée** (issue #77,
@@ -157,7 +190,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | ~~Indicateurs temporels~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle)~~ — **livrée**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Fin de vie structurée (vente : prix/acheteur/documents ; don : organisme/justificatif ; destruction : prestataire/certificat)~~ — **livrée** : date de réforme automatique le 2026-08-19, prestataire/certificat (destruction) et organisme/justificatif (don) le 2026-08-26 (cf. "Réalisé récemment" ci-dessus et issue #78) ; prix/acheteur/documents de la vente déjà couverts au préalable (`VenteDetails`, `users_id`) | Tracer proprement la sortie définitive | Conformité, preuve en cas de contrôle | Faible (déjà partiellement présent via Remise::TYPE_VENTE/TYPE_DON) | Timeline d'événements | Moyenne |
-| Module d'aide à la décision (moteur de règles simple, ex: "réévaluer"/"préparer remplacement" avec raisons) | Aider l'équipe IT à décider quoi faire d'un matériel | Passe d'une donnée brute à une recommandation | Moyenne (règles), architecture prête pour de l'IA plus tard sans y aller maintenant | Score de santé, valeur résiduelle | Basse/Moyenne |
+| ~~Module d'aide à la décision (moteur de règles simple, ex: "réévaluer"/"préparer remplacement" avec raisons)~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 
 **V3 — extensions et intégrations externes**
 | Fonctionnalité | Objectif métier | Valeur utilisateur | Difficulté | Dépendances | Priorité |
@@ -165,7 +198,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | Passeport environnemental (empreinte fabrication, source, niveau de confiance ; sources : constructeur, une API externe dédiée, saisie manuelle) | Amorcer un volet RSE réaliste, sans données inventées | Reporting environnemental crédible | Moyenne/Haute (intégration API externe, gestion de son indisponibilité) | Fiche d'identité (V1) | Basse |
 | Bénéfice du réemploi ("impact évité" : durée prévue vs réelle) | Valoriser la prolongation de durée de vie | Argument RSE chiffré et transparent | Faible (calcul dérivé), une fois le passeport environnemental posé | Passeport environnemental, indicateurs temporels | Basse |
 | ~~QR code sur le matériel (scan → état/historique/actions)~~ — **livré** (issue #82, cf. `docs/design/ADR-passeport-v1.md`) : bouton « Imprimer une étiquette QR code » sur l'onglet Passeport matériel, étiquette imprimable dédiée (`front/qrlabel.php`), QR code encodant un lien `forcetab` absolu vers le Passeport matériel (connexion GLPI requise si nécessaire, aucun accès anonyme introduit). | | | | | |
-| Kits/accessoires avec contrôle automatique au retour | Détecter un accessoire manquant à la restitution | Réduction de perte de matériel | Moyenne (nouvelle notion de kit, au-delà des accessoires actuels) | Checklists (V1) | Basse |
+| ~~Kits/accessoires avec contrôle automatique au retour~~ — **livrée** (issue #83, cf. `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` (composition d'accessoires réutilisable), assignable à une Attribution/Restitution, report automatique du kit de l'Attribution vers la Restitution suivante, comparaison automatique (accessoires attendus vs réellement restitués) affichée en badge coloré sur la frise du Passeport matériel. | | | | | |
 | Dashboard RSE, app mobile technicien, signatures multiples | Extensions déjà identifiées comme envisageables | — | Haute (chacune un chantier à part) | Variable selon la fonctionnalité | Basse |
 
 ### Passeport utilisateur (vue symétrique) — MVP livré le 2026-08-05

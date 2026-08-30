@@ -454,6 +454,34 @@ msgstr ""
 "Ningún punto de control configurado para este tipo de movimiento "
 "(Configuración > Listas desplegables > Puntos de control de calidad)."
 
+#: templates/assetsign_form.html.twig src/GlpiPlugin/Assetsign/Kit.php:30
+msgid "Kit d'accessoires"
+msgid_plural "Kits d'accessoires"
+msgstr[0] "Kit de accesorios"
+msgstr[1] "Kits de accesorios"
+
+#: templates/assetsign_form.html.twig
+msgid "Kit assigné :"
+msgstr "Kit asignado:"
+
+#: templates/assetsign_form.html.twig
+msgid "Aucun kit assigné pour le moment."
+msgstr "Ningún kit asignado por el momento."
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "accessoires du kit restitués"
+msgstr "accesorios del kit devueltos"
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "Accessoire(s) manquant(s) :"
+msgstr "Accesorio(s) faltante(s):"
+
+#: templates/assetsign_form.html.twig
+msgid "Assigner / changer le kit"
+msgstr "Asignar / cambiar el kit"
+
 #: templates/assetsign_form.html.twig
 msgid "Accessoires remis"
 msgstr "Accesorios entregados"
@@ -1635,6 +1663,18 @@ msgstr "Movimiento creado."
 msgid "Aucune verification de configuration bloquante."
 msgstr "Ninguna verificación de configuración bloqueante."
 
+#: src/GlpiPlugin/Assetsign/Kit.php:128
+msgid "Accessoires attendus dans ce kit"
+msgstr "Accesorios esperados en este kit"
+
+#: src/GlpiPlugin/Assetsign/Kit.php:151
+msgid ""
+"Ces accessoires seront automatiquement vérifiés à la restitution si ce kit "
+"est assigné à une remise."
+msgstr ""
+"Estos accesorios se verificarán automáticamente en la devolución si este "
+"kit está asignado a una entrega."
+
 #: src/GlpiPlugin/Assetsign/Accessory.php:17
 msgid "Accessoire d'attribution"
 msgid_plural "Accessoires d'attribution"
@@ -2211,6 +2251,36 @@ msgstr "Demasiados intentos, enlace desactivado por seguridad."
 #: src/GlpiPlugin/Assetsign/Token.php:139
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purga los tokens de firma caducados o no válidos"
+
+msgid "Aide à la décision"
+msgstr "Ayuda a la decisión"
+
+msgid "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+msgstr "Motor de reglas simple (sin aprendizaje automático) que combina la puntuación de salud y el valor residual anteriores para recomendar una acción en el Pasaporte del equipo, siempre mostrando su(s) motivo(s). Nunca se muestra ninguna recomendación si el indicador correspondiente no está disponible (puntuación de salud desactivada, precio de compra desconocido...)."
+
+msgid "Afficher les recommandations sur le Passeport matériel"
+msgstr "Mostrar las recomendaciones en el Pasaporte del equipo"
+
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
+msgstr "«Prever una sustitución» se activa por debajo del umbral «Alerta» ya configurado en la pestaña Puntuación de salud — sin un segundo ajuste redundante para la misma noción."
+
+msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+msgstr "Umbral de valor residual que activa «Reevaluar el uso» (% del precio de compra)"
+
+msgid "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+msgstr "Por debajo de este porcentaje del precio de compra original, se muestra la recomendación «Reevaluar el uso»."
+
+msgid "Prévoir un remplacement"
+msgstr "Prever una sustitución"
+
+msgid "score de santé faible : %d/100"
+msgstr "puntuación de salud baja: %d/100"
+
+msgid "Réévaluer l'usage"
+msgstr "Reevaluar el uso"
+
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
+msgstr "valor residual bajo: %d%% del precio de compra"
 
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Configuración de entrega y firma"

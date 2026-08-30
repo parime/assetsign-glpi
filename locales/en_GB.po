@@ -453,6 +453,34 @@ msgstr ""
 "No checklist item configured for this movement type (Setup > Dropdowns > "
 "Quality checklist items)."
 
+#: templates/assetsign_form.html.twig src/GlpiPlugin/Assetsign/Kit.php:30
+msgid "Kit d'accessoires"
+msgid_plural "Kits d'accessoires"
+msgstr[0] "Accessory kit"
+msgstr[1] "Accessory kits"
+
+#: templates/assetsign_form.html.twig
+msgid "Kit assigné :"
+msgstr "Assigned kit:"
+
+#: templates/assetsign_form.html.twig
+msgid "Aucun kit assigné pour le moment."
+msgstr "No kit assigned yet."
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "accessoires du kit restitués"
+msgstr "kit accessories returned"
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "Accessoire(s) manquant(s) :"
+msgstr "Missing accessory(ies):"
+
+#: templates/assetsign_form.html.twig
+msgid "Assigner / changer le kit"
+msgstr "Assign / change the kit"
+
 #: templates/assetsign_form.html.twig
 msgid "Accessoires remis"
 msgstr "Accessories handed over"
@@ -1617,6 +1645,18 @@ msgstr "Movement created."
 msgid "Aucune verification de configuration bloquante."
 msgstr "No blocking configuration check."
 
+#: src/GlpiPlugin/Assetsign/Kit.php:128
+msgid "Accessoires attendus dans ce kit"
+msgstr "Accessories expected in this kit"
+
+#: src/GlpiPlugin/Assetsign/Kit.php:151
+msgid ""
+"Ces accessoires seront automatiquement vérifiés à la restitution si ce kit "
+"est assigné à une remise."
+msgstr ""
+"These accessories will be automatically checked on return if this kit is "
+"assigned to a handover."
+
 #: src/GlpiPlugin/Assetsign/Accessory.php:17
 msgid "Accessoire d'attribution"
 msgid_plural "Accessoires d'attribution"
@@ -2193,6 +2233,36 @@ msgstr "Too many attempts, link disabled for security."
 #: src/GlpiPlugin/Assetsign/Token.php:139
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purges expired or invalid signature tokens"
+
+msgid "Aide à la décision"
+msgstr "Decision support"
+
+msgid "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+msgstr "Simple rule engine (no machine learning) combining the health score and the residual value above to recommend an action on the Equipment Passport, always with its reason(s) shown. No recommendation is ever shown if the corresponding indicator is itself unavailable (health score disabled, unknown purchase price...)."
+
+msgid "Afficher les recommandations sur le Passeport matériel"
+msgstr "Show recommendations on the Equipment Passport"
+
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
+msgstr "\"Plan a replacement\" triggers below the \"Warning\" threshold already set in the Health score tab — no second, redundant setting for the same notion."
+
+msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+msgstr "Residual value threshold triggering \"Reassess usage\" (% of purchase price)"
+
+msgid "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+msgstr "Below this percentage of the original purchase price, the \"Reassess usage\" recommendation is shown."
+
+msgid "Prévoir un remplacement"
+msgstr "Plan a replacement"
+
+msgid "score de santé faible : %d/100"
+msgstr "low health score: %d/100"
+
+msgid "Réévaluer l'usage"
+msgstr "Reassess usage"
+
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
+msgstr "low residual value: %d%% of the purchase price"
 
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Handover & signature configuration"

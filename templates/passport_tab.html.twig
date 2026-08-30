@@ -78,6 +78,23 @@
   </div>
 {% endif %}
 
+{% if decision_aid|length %}
+  <div class="mb-4">
+    <strong>{{ __('Aide à la décision', 'assetsign') }}</strong>
+    <div class="mt-2">
+      {% for reco in decision_aid %}
+        <div class="alert alert-{{ reco.severity == 'critical' ? 'danger' : 'warning' }} d-flex align-items-start gap-2 py-2 px-3 mb-2">
+          <i class="ti ti-{{ reco.severity == 'critical' ? 'alert-triangle' : 'alert-circle' }} fs-3"></i>
+          <div>
+            <div class="fw-bold">{{ reco.label }}</div>
+            <div class="text-muted small">{{ reco.reason }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
 {% if can_backfill or qr_label_enabled %}
   <div class="d-flex flex-wrap gap-2 mb-2">
     {% if can_backfill %}
@@ -148,6 +165,16 @@
                 <span class="badge" style="background-color: {{ event.checklist_summary.color }}; color: #fff;">
                   <i class="ti ti-checklist"></i> {{ event.checklist_summary.done }}/{{ event.checklist_summary.total }} {{ __('contrôles qualité', 'assetsign') }}
                 </span>
+              </div>
+            {% endif %}
+            {% if event.kit_summary is defined %}
+              <div class="mt-1">
+                <span class="badge" style="background-color: {{ event.kit_summary.color }}; color: #fff;" title="{{ event.kit_summary.kit_name }}">
+                  <i class="ti ti-package"></i> {{ event.kit_summary.returned_count }}/{{ event.kit_summary.expected_total }} {{ __('accessoires du kit restitués', 'assetsign') }}
+                </span>
+                {% if event.kit_summary.missing_names|length %}
+                  <div class="text-muted small">{{ __('Accessoire(s) manquant(s) :', 'assetsign') }} {{ event.kit_summary.missing_names|join(', ') }}</div>
+                {% endif %}
               </div>
             {% endif %}
             {% if event.movement_summary is defined %}

@@ -110,11 +110,11 @@ Départ/destination réutiliseraient la table native `glpi_locations` (`Location
 | V1 (suivi) | Index composite `(itemtype, items_id, date)` sur `glpi_plugin_assetsign_events` | *(nouveau, cf. risque 2.1)* | **Livré** par cette PR (migration additive, aucune régression fonctionnelle) |
 | V2 | Valeur résiduelle | [#77](https://github.com/parime/assetsign-glpi/issues/77) | **Livré** (PR de suivi) - calcul linéaire à l'affichage depuis `Infocom` (prix/date d'achat, jamais dupliqué), durée de vie utile "personnalisable" via un nouveau réglage `Config::residual_value_duration_months` (pas une deuxième méthode de calcul), saisie manuelle prioritaire via une table dédiée `ResidualValue` (même patron 1-vers-1 `itemtype`/`items_id` que `Movement` plutôt que `VenteDetails`, qui référence une `Assetsign` - un matériel géré peut avoir une valeur résiduelle sans jamais avoir eu d'Assetsign). Voir section 6 ci-dessous pour le détail des décisions. |
 | V2 | Fin de vie structurée (vente/don/destruction) | [#78](https://github.com/parime/assetsign-glpi/issues/78) | **Livré** : date de réforme automatique (2026-08-19), puis prestataire/certificat (destruction, nouveau type `Assetsign::TYPE_DESTRUCTION`) et organisme/justificatif (don, `DonDetails`) le 2026-08-26 (PR de suivi) |
-| V2 | Module d'aide à la décision | [#79](https://github.com/parime/assetsign-glpi/issues/79) | Non commencé - dépend du score de santé (livré) et de la valeur résiduelle (#77) |
+| V2 | Module d'aide à la décision | [#79](https://github.com/parime/assetsign-glpi/issues/79) | **Livré** (PR de suivi) - moteur de règles simple (pas de machine learning) sur le score de santé et la valeur résiduelle, tous deux déjà livrés. Voir section 7 ci-dessous pour le détail des décisions. |
 | V3 | Passeport environnemental | [#80](https://github.com/parime/assetsign-glpi/issues/80) | Non commencé - risque externe tranché par anticipation (section 2.5) |
 | V3 | Bénéfice du réemploi | [#81](https://github.com/parime/assetsign-glpi/issues/81) | Non commencé - dépend de #80 |
 | V3 | QR code sur le matériel | [#82](https://github.com/parime/assetsign-glpi/issues/82) | **Livré** (PR de suivi) - étiquette imprimable sur l'onglet Passeport matériel, QR code encodant un lien `forcetab` absolu (`front/qrlabel.php`), génération QR extraite en classe partagée `QrCode` (jusqu'ici dupliquée nulle part, réutilisée telle quelle par le PDF) |
-| V3 | Kits/accessoires avec contrôle automatique | [#83](https://github.com/parime/assetsign-glpi/issues/83) | Non commencé - dépend des checklists (#74, livré) |
+| V3 | Kits/accessoires avec contrôle automatique | [#83](https://github.com/parime/assetsign-glpi/issues/83) | **Livré** (PR de suivi) - nouveau catalogue `Kit` (composition en JSON, même motif que `ChecklistItem`), champ `plugin_assetsign_kits_id` sur `Assetsign`, report automatique du kit de l'Attribution vers la Restitution suivante, comparaison accessoires attendus/restitués (`Kit::computeCompleteness()`) affichée en badge colore sur la frise du Passeport (`PassportEvent::attachKitSummaries()`) |
 | V3 | Dashboard RSE, app mobile technicien, signatures multiples | [#84](https://github.com/parime/assetsign-glpi/issues/84) | Non commencé, grab-bag à redécouper le moment venu |
 | - | Repères d'état des lieux visuel : veille récidive décalage | [#86](https://github.com/parime/assetsign-glpi/issues/86) | Watch-only, sans rapport avec le Passeport - non traité ici |
 
@@ -160,3 +160,92 @@ trajectoire de valeur atypique.
 hypothèse inventée. La saisie manuelle reste cependant toujours disponible indépendamment de
 ce garde-fou (même principe que la saisie manuelle du futur passeport environnemental V3,
 section 2.5 : un vrai choix, jamais un simple repli dégradé).
+
+## 7. Module d'aide à la décision (issue #79) - décisions d'implémentation
+
+**Contexte** : troisième indicateur V2 du Passeport matériel, explicitement dépendant des deux
+premiers (score de santé, section précédente et ROADMAP.md ; valeur résiduelle, section 6
+ci-dessus). "Moteur de règles simple... architecture prête pour de l'IA plus tard sans y aller
+maintenant" (libellé de la roadmap, issue #79) a été tranché comme : des seuils simples et
+transparents sur les indicateurs déjà calculés, **jamais un modèle entraîné ni un appel à un
+service externe** - le champ "prête pour l'IA" est couvert par le seul fait que
+`PassportEvent::getDecisionAidRecommendations()` reste l'unique point d'entrée consulté par
+`showForItem()`, de sorte qu'un futur moteur différent pourrait la remplacer sans toucher à
+l'affichage (`passport_tab.html.twig` ne connaît que la forme du tableau retourné) ni aux deux
+indicateurs sources - aucune interface/abstraction supplémentaire n'a été ajoutée par
+anticipation, cf. principe déjà appliqué ailleurs dans ce document de ne jamais construire une
+brique avant d'en avoir réellement besoin.
+
+**Pourquoi aucune nouvelle table** : même principe que le score de santé et les indicateurs
+temporels (section 1, "Indicateurs... calculés à l'affichage... aucune table dédiée à ce
+jour") - une recommandation est une lecture combinée de deux indicateurs eux-mêmes déjà
+calculés à l'affichage, jamais une donnée qui aurait un sens à persister ou à faire évoluer
+indépendamment de ses sources. Le risque de performance identifié par anticipation section 2.4
+("si un futur indicateur V2... s'avère coûteux à l'échelle du parc entier... il devra passer par
+un recalcul planifié") ne s'applique pas ici : aucune requête SQL supplémentaire n'est ajoutée
+par ce module lui-même au-delà d'une seule lecture `Infocom` dédiée (prix d'achat d'origine,
+nécessaire pour la règle de valeur résiduelle) - même ordre de grandeur qu'un seul matériel
+déjà largement sous le seuil qui justifierait cette complexité.
+
+**Pourquoi réutiliser `health_score_warning_threshold` plutôt qu'un nouveau seuil dédié** :
+la roadmap ne demande pas une deuxième notion de "score de santé faible", seulement une action
+à déclencher quand le score existant franchit un seuil déjà signifiant pour l'administrateur
+(le même qui colore déjà le score en orange "Vigilance", `Config::getHealthScoreColor()`) - un
+second réglage aurait dupliqué une décision déjà prise ailleurs dans l'écran de configuration,
+à l'encontre de la consigne explicite de garder ce moteur "simple" plutôt que d'ajouter une
+deuxième sprawl de configuration. La valeur résiduelle, elle, n'avait jusqu'ici **aucun** seuil
+configurable (seulement un calcul et un affichage) : un nouveau réglage
+(`Config::residual_value_low_threshold_percent`, pourcentage du prix d'achat d'origine) était
+donc réellement nécessaire, contrairement au score de santé.
+
+**Jamais de recommandation inventée** : chaque règle vérifie explicitement que sa propre donnée
+source est réellement disponible avant de se déclencher - score de santé calculable (`null`
+sinon, ex: fonctionnalité désactivée ou tous les poids à 0) pour la première règle ; valeur
+résiduelle calculée (manuelle ou automatique) **et** prix d'achat d'origine connu (`Infocom::
+value`) pour la seconde - une valeur résiduelle manuelle sans aucun prix d'achat Infocom connu
+ne permet aucune proportion calculable, donc aucune recommandation, même discipline que
+partout ailleurs dans ce fichier ("jamais une valeur inventée").
+
+**Plusieurs règles déclenchées simultanément** : toutes affichées, jamais une seule masquant les
+autres - décision explicite pour rester un vrai outil d'aide à la décision (cacher un facteur
+contributif irait à l'encontre de l'objectif même de la fonctionnalité), au prix d'une structure
+de données volontairement simple (`list<array{label, reason, severity}>`) plutôt qu'une seule
+recommandation "gagnante".
+
+## 8. Kits/accessoires avec contrôle automatique au retour (issue #83) - décisions d'implémentation
+
+**Pourquoi un champ JSON sur le catalogue plutôt qu'une nouvelle table pivot** : la composition
+d'un kit (`Kit::accessories_id`) suit exactement le patron déjà établi par
+`ChecklistItem::movement_types` (section 3.1) plutôt que le motif pivot d'`AssetsignAccessory` -
+un Kit n'a qu'une seule caractéristique propre (SA composition), alors qu'`AssetsignAccessory`
+doit en plus porter une quantité et un commentaire PROPRES À CHAQUE remise (deux besoins
+différents). La comparaison de complétude (`Kit::computeCompleteness()`) se fait d'ailleurs par
+simple PRÉSENCE d'un identifiant Accessory, jamais par quantité, ce qui confirme que la
+quantité n'est pas une notion du kit lui-même.
+
+**Pourquoi `plugin_assetsign_kits_id` est une colonne directe sur `Assetsign` plutôt qu'un
+mouvement structuré ou une jointure sur l'historique** : une Attribution/Restitution donnée
+utilise AU PLUS un seul kit (relation plusieurs-vers-un), contrairement à la relation
+plusieurs-vers-plusieurs entre une remise et ses accessoires - une simple colonne suffit,
+sans contrainte de clé étrangère (même choix déjà fait pour
+`plugin_assetsign_templates_id` : un Kit purgé ne doit jamais entraîner la suppression en
+cascade de tout l'historique des remises qui l'ont utilisé).
+
+**Report automatique du kit de l'Attribution vers la Restitution**
+(`Assetsign::resolveKitForAutomaticCreation()`, appelée depuis `createAssetsign()`) : sans
+mécanisme dédié de "paire Attribution/Restitution" dans le modèle existant (`getLivesForItem()`
+ne fait qu'un regroupement d'AFFICHAGE, jamais un lien de données), le report se fait par la
+dernière Attribution réelle du même matériel (`itemtype`/`items_id`, `ORDER BY date_creation
+DESC LIMIT 1`) - un simple report d'une donnée déjà réellement saisie, jamais une invention,
+même principe que `writeDecommissionDateIfMissing()` (date de réforme automatique, copier un
+fait réel plutôt que d'en deviner un). Reste corrigeable ensuite par un technicien
+(`Assetsign::updateKit()`, disponible sur n'importe quel type de fiche, pas seulement
+Attribution) : un report automatique erroné ou absent n'est jamais un blocage définitif.
+
+**Badge rouge distinct du gris de la checklist qualité** : `attachChecklistSummaries()`
+utilise le gris pour "configuré mais rien de rempli", un état neutre (l'administrateur n'a
+simplement pas encore eu le temps). Pour le contrôle de kit, ce même état ("aucun accessoire
+du kit n'est revenu") est un signal réel de perte de matériel, pas un simple retard de saisie -
+`Kit::colorForCompleteness()` utilise donc le rouge plutôt que le gris pour ce cas précis,
+seule différence assumée avec le motif checklist par ailleurs scrupuleusement reproduit
+(agrégation en lecture, batchée, jamais de duplication dans `glpi_plugin_assetsign_events`).

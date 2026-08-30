@@ -81,6 +81,12 @@ if (isset($_POST['update_destruction_details'])) {
     Html::back();
 }
 
+if (isset($_POST['update_kit'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    $controller->updateKit($assetsign, $_POST);
+    Html::back();
+}
+
 if (isset($_POST['submit_checklist'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
     $controller->updateChecklist($assetsign, $_POST);

@@ -73,6 +73,8 @@ class Config extends CommonDBTM
         'reforme_states'                      => '[]',
         'enable_residual_value'               => 1,
         'residual_value_duration_months'      => 60,
+        'enable_decision_aid'                 => 1,
+        'residual_value_low_threshold_percent' => 20,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -548,6 +550,12 @@ class Config extends CommonDBTM
            // "Duree personnalisable" (cf. ROADMAP.md, issue #77) : minimum 1 mois,
            // jamais 0 - PassportEvent::getResidualValue() s'en sert comme diviseur.
            'residual_value_duration_months' => max(1, (int) ($input['residual_value_duration_months'] ?? 60)),
+           'enable_decision_aid' => (int) ($input['enable_decision_aid'] ?? 0),
+           // Seuil dedie a la valeur residuelle (issue #79) : le score de sante,
+           // lui, reutilise directement health_score_warning_threshold ci-dessus,
+           // deja regle dans l'onglet "Score de sante" - pas de second reglage
+           // redondant pour ce premier indicateur.
+           'residual_value_low_threshold_percent' => max(0, min(100, (int) ($input['residual_value_low_threshold_percent'] ?? 20))),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -701,6 +709,8 @@ class Config extends CommonDBTM
                 `reforme_states` text,
                 `enable_residual_value` tinyint NOT NULL DEFAULT 1,
                 `residual_value_duration_months` int unsigned NOT NULL DEFAULT 60,
+                `enable_decision_aid` tinyint NOT NULL DEFAULT 1,
+                `residual_value_low_threshold_percent` int unsigned NOT NULL DEFAULT 20,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -818,6 +828,16 @@ class Config extends CommonDBTM
              // convention "enable_* + paramètres" que le score de santé ci-dessus.
              $migration->addField($table, 'enable_residual_value', 'bool', ['value' => 1, 'after' => 'reforme_states']);
              $migration->addField($table, 'residual_value_duration_months', 'integer', ['value' => 60, 'after' => 'enable_residual_value']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_decision_aid')) {
+             // Module d'aide à la décision (cf. ROADMAP.md, V2, issue #79) : moteur
+             // de règles simple combinant le score de santé et la valeur résiduelle
+             // ci-dessus, tous deux déjà réglables - seul un nouveau seuil dédié est
+             // introduit (residual_value_low_threshold_percent), le score de santé
+             // réutilise directement health_score_warning_threshold, déjà existant.
+             $migration->addField($table, 'enable_decision_aid', 'bool', ['value' => 1, 'after' => 'residual_value_duration_months']);
+             $migration->addField($table, 'residual_value_low_threshold_percent', 'integer', ['value' => 20, 'after' => 'enable_decision_aid']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'show_qr_code')) {
