@@ -8,6 +8,23 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
 - **Proposer la création automatique des intitulés de base sur un GLPI fraîchement installé** — aujourd'hui, `install()` sème déjà quelques valeurs par défaut pour les intitulés propres au plugin (`Accessory`, `MaintenanceChecklistItem`, `Template`), mais rien ne compense l'absence d'intitulés **cœur GLPI** que le plugin utilise (ex: Etats déclencheurs de remise/restitution/don/vente) sur une instance neuve sans configuration métier existante — l'onglet Configuration affiche alors des listes de déclenchement par État vides, sans qu'il soit évident pour l'administrateur qu'il faut aller les créer ailleurs (Configuration > Listes déroulantes > États) avant que le plugin soit réellement utilisable. Idée : proposer (pas imposer) la création d'un jeu d'États de base pertinents pour le workflow du plugin, détectée quand aucun État n'existe encore ou qu'aucun n'est configuré comme déclencheur.
 - **Repères d'état des lieux visuel : décalage occasionnel signalé par l'utilisateur, cause probable identifiée et corrigée côté ressenti, mais pas totalement élucidée** — le positionnement lui-même (calcul `left`/`top` en %) s'est révélé exact au pixel dans tous les tests manuels (fiche Remise admin, page de signature réelle, fenêtre réduite à 900px) ; la vraie cause plausible du "repère pas au bon endroit" était plutôt la **latence perçue** : chaque ajout de repère attendait la régénération complète du PDF côté serveur (`Remise::refreshDamageAnnotationPdf()`) avant de s'afficher, mesurée à ~4,3 à 4,8 secondes dans l'environnement Docker de test — largement le temps pour l'utilisateur de cliquer ailleurs ou de perdre le fil avant que le repère n'apparaisse enfin à l'endroit du clic initial. **Corrigé** : affichage optimiste du repère (apparaît en ~10ms au clic, `public/js/sign/damage-annotation.js`), la confirmation serveur reste asynchrone en arrière-plan. Si un décalage réel (pas seulement perçu) se reproduit malgré ça, il faudra une capture d'écran précise (point cliqué vs position obtenue, navigateur/zoom) pour aller plus loin.
 
+## Réalisé récemment (2026-08-30)
+
+- **Module d'aide à la décision - livré** (issue #79, cf. tableau V2 ci-dessous) : troisième
+  indicateur du Passeport matériel, après le score de santé et la valeur résiduelle dont il
+  dépend explicitement (toutes deux déjà livrées, cf. entrées ci-dessous). Moteur de règles
+  simple à seuils, explicitement **pas** du machine learning ("architecture prête pour de
+  l'IA plus tard sans y aller maintenant", au sens où `getDecisionAidRecommendations()` reste
+  le seul point d'entrée consulté par l'affichage - un futur moteur différent pourrait la
+  remplacer sans rien toucher d'autre, sans construire d'abstraction supplémentaire par
+  anticipation) : « Prévoir un remplacement » sous le seuil de score de santé déjà réglable
+  (réutilisé tel quel, aucun second réglage redondant), « Réévaluer l'usage » sous un
+  pourcentage réglable du prix d'achat d'origine (seul nouveau réglage introduit,
+  `Config::residual_value_low_threshold_percent`). Chaque règle exige sa propre donnée
+  source réellement disponible - jamais une recommandation inventée. Plusieurs règles
+  déclenchées : toutes affichées, jamais une seule masquant les autres. Calculé à
+  l'affichage, jamais persisté, même principe que les deux indicateurs dont il dépend.
+
 ## Réalisé récemment (2026-08-27)
 
 - **Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle) - livrée** (issue #77,
@@ -157,7 +174,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | ~~Indicateurs temporels~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle)~~ — **livrée**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Fin de vie structurée (vente : prix/acheteur/documents ; don : organisme/justificatif ; destruction : prestataire/certificat)~~ — **livrée** : date de réforme automatique le 2026-08-19, prestataire/certificat (destruction) et organisme/justificatif (don) le 2026-08-26 (cf. "Réalisé récemment" ci-dessus et issue #78) ; prix/acheteur/documents de la vente déjà couverts au préalable (`VenteDetails`, `users_id`) | Tracer proprement la sortie définitive | Conformité, preuve en cas de contrôle | Faible (déjà partiellement présent via Remise::TYPE_VENTE/TYPE_DON) | Timeline d'événements | Moyenne |
-| Module d'aide à la décision (moteur de règles simple, ex: "réévaluer"/"préparer remplacement" avec raisons) | Aider l'équipe IT à décider quoi faire d'un matériel | Passe d'une donnée brute à une recommandation | Moyenne (règles), architecture prête pour de l'IA plus tard sans y aller maintenant | Score de santé, valeur résiduelle | Basse/Moyenne |
+| ~~Module d'aide à la décision (moteur de règles simple, ex: "réévaluer"/"préparer remplacement" avec raisons)~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 
 **V3 — extensions et intégrations externes**
 | Fonctionnalité | Objectif métier | Valeur utilisateur | Difficulté | Dépendances | Priorité |
