@@ -63,7 +63,10 @@ class PassportEventDecisionAidTest extends AssetsignTestCase
        $html = ob_get_clean();
 
        $this->assertStringContainsString(__('Prévoir un remplacement', 'assetsign'), $html);
-       $this->assertStringContainsString('score de santé faible', $html);
+       // Passe par __()/sprintf() plutot qu'un litteral francais brut : la
+       // suite tourne parfois avec l'anglais comme langue active (cf. CI),
+       // un texte source fige echouerait alors a tort.
+       $this->assertStringContainsString(sprintf(__('score de santé faible : %d/100', 'assetsign'), 70), $html);
        $this->assertStringNotContainsString($this->htmlLabel(__('Réévaluer l\'usage', 'assetsign')), $html);
        $this->assertNoStrayNumericTextNode($html, 'Le module d\'aide à la décision doit se rendre sans fuite Twig.');
    }
@@ -93,7 +96,12 @@ class PassportEventDecisionAidTest extends AssetsignTestCase
        $html = ob_get_clean();
 
        $this->assertStringContainsString($this->htmlLabel(__('Réévaluer l\'usage', 'assetsign')), $html);
-       $this->assertStringContainsString('valeur résiduelle faible', $html);
+       // Idem ci-dessus (testLowHealthScoreTriggersReplacementRecommendation) :
+       // __()/sprintf() plutot qu'un litteral francais brut.
+       $this->assertStringContainsString(
+           $this->htmlLabel(sprintf(__('valeur résiduelle faible : %d %% du prix d\'achat', 'assetsign'), 0)),
+           $html
+       );
        $this->assertStringNotContainsString(__('Prévoir un remplacement', 'assetsign'), $html);
        $this->assertNoStrayNumericTextNode($html, 'Le module d\'aide à la décision doit se rendre sans fuite Twig.');
    }
