@@ -26,6 +26,9 @@ class PassportEvent extends CommonDBTM
     // même frise, jamais une réécriture des producteurs existants (cf. ADR,
     // section 1) - voir recordForMovement().
    public const TYPE_MOVEMENT    = 5;
+    // Destruction (issue #78, "fin de vie structurée") : même motif exact que
+    // TYPE_DON/TYPE_VENTE ci-dessus, cf. recordForAssetsign().
+   public const TYPE_DESTRUCTION = 6;
 
    public static $rightname = Profile::RIGHT_ASSETSIGN;
 
@@ -55,6 +58,7 @@ class PassportEvent extends CommonDBTM
            self::TYPE_VENTE       => __('Vente', 'assetsign'),
            self::TYPE_MAINTENANCE => __('Maintenance', 'assetsign'),
            self::TYPE_MOVEMENT    => __('Mouvement', 'assetsign'),
+           self::TYPE_DESTRUCTION => __('Destruction', 'assetsign'),
        ];
    }
 
@@ -68,10 +72,11 @@ class PassportEvent extends CommonDBTM
      */
    public static function recordForAssetsign(Assetsign $assetsign): void {
        $typeMap = [
-           Assetsign::TYPE_HANDOVER => self::TYPE_ATTRIBUTION,
-           Assetsign::TYPE_RETURN   => self::TYPE_RETURN,
-           Assetsign::TYPE_DON      => self::TYPE_DON,
-           Assetsign::TYPE_VENTE    => self::TYPE_VENTE,
+           Assetsign::TYPE_HANDOVER    => self::TYPE_ATTRIBUTION,
+           Assetsign::TYPE_RETURN      => self::TYPE_RETURN,
+           Assetsign::TYPE_DON         => self::TYPE_DON,
+           Assetsign::TYPE_VENTE       => self::TYPE_VENTE,
+           Assetsign::TYPE_DESTRUCTION => self::TYPE_DESTRUCTION,
        ];
        $eventType = $typeMap[(int) $assetsign->fields['type']] ?? null;
        if ($eventType === null) {
@@ -854,6 +859,8 @@ class PassportEvent extends CommonDBTM
              $events[] = ['event_type' => self::TYPE_DON, 'users_id' => $currentUser, 'date' => $date];
          } else if (in_array($newState, $config->getVenteStates(), true)) {
              $events[] = ['event_type' => self::TYPE_VENTE, 'users_id' => $currentUser, 'date' => $date];
+         } else if (in_array($newState, $config->getDestructionStates(), true)) {
+             $events[] = ['event_type' => self::TYPE_DESTRUCTION, 'users_id' => $currentUser, 'date' => $date];
          }
       }
 
@@ -939,6 +946,7 @@ class PassportEvent extends CommonDBTM
            self::TYPE_RETURN      => Assetsign::TYPE_RETURN,
            self::TYPE_DON         => Assetsign::TYPE_DON,
            self::TYPE_VENTE       => Assetsign::TYPE_VENTE,
+           self::TYPE_DESTRUCTION => Assetsign::TYPE_DESTRUCTION,
        ];
 
        $assetsignIds = [];

@@ -68,6 +68,26 @@ class PassportEventTest extends AssetsignTestCase
         $this->assertSame(0, (int) $event['users_id']);
     }
 
+    /**
+     * Destruction (issue #78, "fin de vie structuree") : meme motif exact que
+     * testCreateManualDonRecordsDonEventWithExternalSnapshot() ci-dessus.
+     */
+    public function testCreateManualDestructionRecordsDestructionEvent(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Passport Destruction');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Passport Destruction');
+
+        Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DESTRUCTION, 2, [
+            'provider_name' => 'Prestataire Exemple',
+        ]);
+
+        $events = $this->eventsFor('Computer', $computer->getID());
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertSame(PassportEvent::TYPE_DESTRUCTION, (int) $event['event_type']);
+        $this->assertSame(Assetsign::class, $event['source_itemtype']);
+    }
+
     public function testCreateWithChecklistRecordsMaintenanceEventWithoutSnapshot(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Passport Maintenance');

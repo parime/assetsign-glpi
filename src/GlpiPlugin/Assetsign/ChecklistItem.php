@@ -231,7 +231,7 @@ class ChecklistItem extends CommonDropdown
               'name'           => $name,
               'is_active'      => 1,
               'type'           => self::TYPE_CHECKBOX,
-              'movement_types' => json_encode([Assetsign::TYPE_RETURN, Assetsign::TYPE_DON, Assetsign::TYPE_VENTE]),
+              'movement_types' => json_encode([Assetsign::TYPE_RETURN, Assetsign::TYPE_DON, Assetsign::TYPE_VENTE, Assetsign::TYPE_DESTRUCTION]),
               'date_creation'  => date('Y-m-d H:i:s'),
              ]);
          }

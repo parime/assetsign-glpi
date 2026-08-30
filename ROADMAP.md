@@ -24,6 +24,17 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
 
 ## Réalisé récemment (2026-08-26)
 
+- **Fin de vie structurée : destruction (prestataire/certificat) et don (organisme/justificatif) - livrées**
+  (issue #78, dernier volet restant après la date de réforme automatique livrée le 2026-08-19, cf.
+  entrée ci-dessous) : nouveau type `Assetsign::TYPE_DESTRUCTION`, même traitement complet que
+  Don/Vente (déclenchement manuel, déclenchement automatique par État configurable, coordination
+  bidirectionnelle État ↔ fiche, gabarit PDF dédié). Le Don gagne un organisme bénéficiaire, jusqu'ici
+  sans aucune donnée dédiée. Prestataire/organisme stockés dans deux nouvelles tables dédiées
+  (`DestructionDetails`/`DonDetails`, même motif que `VenteDetails`) ; certificat/justificatif : upload
+  de fichier attaché comme Document natif GLPI directement sur la fiche (`Assetsign::attachUploadedDocument()`,
+  même motif que `Movement::attachDocument()`), sans nouvelle table de stockage de fichiers. Le
+  prix/acheteur/documents de la Vente restent hors périmètre (déjà couverts, cf. ligne "Fin de vie
+  structurée" ci-dessous). Détail complet dans CHANGELOG.md `[Unreleased]`.
 - **QR code imprimable sur le matériel - livré** (issue #82, cf. tableau V3 ci-dessous et
   `docs/design/ADR-passeport-v1.md`) : bouton « Imprimer une étiquette QR code » sur
   l'onglet Passeport matériel, page dédiée minimaliste (`front/qrlabel.php` +
@@ -145,7 +156,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | ~~Score de santé matériel~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Indicateurs temporels~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle)~~ — **livrée**, cf. "Réalisé récemment" ci-dessus. | | | | | |
-| Fin de vie structurée (vente : prix/acheteur/documents ; don : organisme/justificatif ; destruction : prestataire/certificat) — ~~date de réforme automatique~~ **livrée le 2026-08-19** (cf. "Réalisé récemment" ci-dessus et issue #78), reste : prestataire/certificat pour la destruction, organisme/justificatif pour le don | Tracer proprement la sortie définitive | Conformité, preuve en cas de contrôle | Faible (déjà partiellement présent via Remise::TYPE_VENTE/TYPE_DON) | Timeline d'événements | Moyenne |
+| ~~Fin de vie structurée (vente : prix/acheteur/documents ; don : organisme/justificatif ; destruction : prestataire/certificat)~~ — **livrée** : date de réforme automatique le 2026-08-19, prestataire/certificat (destruction) et organisme/justificatif (don) le 2026-08-26 (cf. "Réalisé récemment" ci-dessus et issue #78) ; prix/acheteur/documents de la vente déjà couverts au préalable (`VenteDetails`, `users_id`) | Tracer proprement la sortie définitive | Conformité, preuve en cas de contrôle | Faible (déjà partiellement présent via Remise::TYPE_VENTE/TYPE_DON) | Timeline d'événements | Moyenne |
 | Module d'aide à la décision (moteur de règles simple, ex: "réévaluer"/"préparer remplacement" avec raisons) | Aider l'équipe IT à décider quoi faire d'un matériel | Passe d'une donnée brute à une recommandation | Moyenne (règles), architecture prête pour de l'IA plus tard sans y aller maintenant | Score de santé, valeur résiduelle | Basse/Moyenne |
 
 **V3 — extensions et intégrations externes**

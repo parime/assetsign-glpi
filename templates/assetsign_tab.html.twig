@@ -37,7 +37,7 @@
 
     {% if can_create_manual %}
       <hr>
-      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end" id="assetsign-manual-form">
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" enctype="multipart/form-data" class="row g-2 align-items-end" id="assetsign-manual-form">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="itemtype" value="{{ item.getType() }}">
         <input type="hidden" name="items_id" value="{{ item.getID() }}">
@@ -67,13 +67,31 @@
           <input type="text" name="external_contact" class="form-control" placeholder="{{ __('E-mail ou téléphone', 'assetsign') }}">
         </div>
 
-        <div class="col-auto assetsign-manual-vente-field" style="display: none;">
+        <div class="col-auto assetsign-manual-type-field assetsign-manual-vente-field" style="display: none;">
           <label class="form-label">{{ __('Prix', 'assetsign') }}</label>
           <input type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;">
         </div>
-        <div class="col-auto assetsign-manual-vente-field" style="display: none;">
+        <div class="col-auto assetsign-manual-type-field assetsign-manual-vente-field" style="display: none;">
           <label class="form-label">{{ __('Date de vente', 'assetsign') }}</label>
           <input type="date" name="sale_date" class="form-control">
+        </div>
+
+        <div class="col-auto assetsign-manual-type-field assetsign-manual-don-field" style="display: none;">
+          <label class="form-label">{{ __('Organisme bénéficiaire', 'assetsign') }}</label>
+          <input type="text" name="organization_name" class="form-control" placeholder="{{ __('Ex. Association Locale...', 'assetsign') }}">
+        </div>
+        <div class="col-auto assetsign-manual-type-field assetsign-manual-don-field" style="display: none;">
+          <label class="form-label">{{ __('Justificatif (facultatif)', 'assetsign') }}</label>
+          <input type="file" name="justificatif" class="form-control">
+        </div>
+
+        <div class="col-auto assetsign-manual-type-field assetsign-manual-destruction-field" style="display: none;">
+          <label class="form-label">{{ __('Prestataire', 'assetsign') }}</label>
+          <input type="text" name="provider_name" class="form-control" placeholder="{{ __('Ex. Prestataire Exemple SAS...', 'assetsign') }}">
+        </div>
+        <div class="col-auto assetsign-manual-type-field assetsign-manual-destruction-field" style="display: none;">
+          <label class="form-label">{{ __('Certificat de destruction (facultatif)', 'assetsign') }}</label>
+          <input type="file" name="certificat" class="form-control">
         </div>
 
         <div class="col-auto">
@@ -91,16 +109,28 @@
         (function () {
           var form = document.getElementById('assetsign-manual-form');
           var typeInput = document.getElementById('assetsign-manual-type');
-          var venteFields = form.querySelectorAll('.assetsign-manual-vente-field');
+          // Un seul groupe generique (assetsign-manual-type-field), chacun taggé
+          // EN PLUS avec la classe de son propre type (assetsign-manual-vente-field,
+          // -don-field, -destruction-field...) : permet d'ajouter un futur type sans
+          // reecrire cette logique de bascule, seulement son propre groupe de champs
+          // dans le formulaire ci-dessus.
+          var allTypeFields = form.querySelectorAll('.assetsign-manual-type-field');
+          var typeFieldClasses = {
+            '{{ type_vente }}': 'assetsign-manual-vente-field',
+            '{{ type_don }}': 'assetsign-manual-don-field',
+            '{{ type_destruction }}': 'assetsign-manual-destruction-field'
+          };
           var internalFields = form.querySelectorAll('.assetsign-manual-internal-field');
           var externalFields = form.querySelectorAll('.assetsign-manual-external-field');
           var beneficiaryRadios = form.querySelectorAll('input[name="beneficiary_type"]');
           var typeButtons = form.querySelectorAll('.assetsign-manual-type-btn');
           var submitBtn = form.querySelector('.assetsign-manual-submit-btn');
 
-          function toggleVenteFields() {
-            var isVente = typeInput.value === '{{ type_vente }}';
-            venteFields.forEach(function (el) { el.style.display = isVente ? '' : 'none'; });
+          function toggleTypeFields() {
+            var activeClass = typeFieldClasses[typeInput.value];
+            allTypeFields.forEach(function (el) {
+              el.style.display = (activeClass && el.classList.contains(activeClass)) ? '' : 'none';
+            });
           }
 
           // Chaque bouton "Créer une fiche de X" fixe le type et révèle les
@@ -116,7 +146,7 @@
             btn.addEventListener('click', function () {
               typeInput.value = btn.dataset.type;
               typeButtons.forEach(function (b) { b.classList.toggle('active', b === btn); });
-              toggleVenteFields();
+              toggleTypeFields();
               submitBtn.style.display = '';
             });
           });
@@ -130,7 +160,7 @@
             radio.addEventListener('change', toggleBeneficiaryFields);
           });
 
-          toggleVenteFields();
+          toggleTypeFields();
           toggleBeneficiaryFields();
 
           {% if prefill_type is not null %}

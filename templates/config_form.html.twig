@@ -37,6 +37,7 @@
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-return" type="button" role="tab" data-assetsign-preview-type="1">{{ __('Restitution', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-don" type="button" role="tab" data-assetsign-preview-type="3">{{ __('Don', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-vente" type="button" role="tab" data-assetsign-preview-type="4">{{ __('Vente', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-destruction" type="button" role="tab" data-assetsign-preview-type="5">{{ __('Destruction', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-reforme" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Réforme', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Compléments', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Maintenance', 'assetsign') }}</button></li>
@@ -270,6 +271,28 @@
               <div class="form-check">
                 <input type="checkbox" name="vente_states[]" value="{{ id }}" class="form-check-input" id="vente_state_{{ id }}" {{ id in vente_states ? 'checked' : '' }}>
                 <label class="form-check-label" for="vente_state_{{ id }}">{{ name }}</label>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        {# ---------------------------------------------------------------- Destruction #}
+        <div class="tab-pane fade" id="tab-destruction" role="tabpanel">
+          {{ _self.template_editor(5, templates[5], entity_id) }}
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_destruction" value="0">
+            <input type="checkbox" name="enable_destruction" value="1" class="form-check-input" id="enable_destruction" {{ config.enable_destruction|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_destruction">{{ __('Autoriser la création de fiches de destruction de matériel', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Ajoute un bouton « Créer une fiche de destruction » (avec prestataire et certificat) sur l\'onglet Attribution de chaque matériel géré par le plugin.', 'assetsign') }}</div>
+          </div>
+
+          {% if all_states|length %}
+            <h4 class="mt-4">{{ __('Déclenchement par État du matériel (optionnel)', 'assetsign') }}</h4>
+            <p class="text-muted small">{{ __('Le prestataire et le certificat ne sont pas connus automatiquement : à compléter ensuite sur la fiche créée.', 'assetsign') }}</p>
+            {% for id, name in all_states %}
+              <div class="form-check">
+                <input type="checkbox" name="destruction_states[]" value="{{ id }}" class="form-check-input" id="destruction_state_{{ id }}" {{ id in destruction_states ? 'checked' : '' }}>
+                <label class="form-check-label" for="destruction_state_{{ id }}">{{ name }}</label>
               </div>
             {% endfor %}
           {% endif %}

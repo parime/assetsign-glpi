@@ -71,6 +71,12 @@ class Assetsign extends CommonDBTM
     // au nouveau detenteur, cf. handleUserBasedTrigger())
    public const TYPE_DON   = 3; // don de materiel (declenchement manuel, cf. createManual())
    public const TYPE_VENTE = 4; // vente de materiel (declenchement manuel, prix/date cf. VenteDetails)
+    /**
+     * Destruction de materiel (issue #78, "fin de vie structuree") : meme
+     * declenchement manuel que Don/Vente, prestataire/certificat propres a ce
+     * type stockes dans DestructionDetails (meme motif 1-vers-1 que VenteDetails).
+     */
+   public const TYPE_DESTRUCTION = 5;
 
     /**
      * Types autorises pour une creation MANUELLE (cf. createManual()) : la
@@ -80,7 +86,7 @@ class Assetsign extends CommonDBTM
      * faite par cancelPendingAssetsignsFor() et pourrait laisser des fiches
      * orphelines pour un meme materiel.
      */
-   private const MANUALLY_CREATABLE_TYPES = [self::TYPE_DON, self::TYPE_VENTE];
+   private const MANUALLY_CREATABLE_TYPES = [self::TYPE_DON, self::TYPE_VENTE, self::TYPE_DESTRUCTION];
 
     /**
      * Statuts "envoyee mais pas encore signee" : utilise par le bouton "Relancer
@@ -365,6 +371,25 @@ class Assetsign extends CommonDBTM
                ? VenteDetails::getForAssetsign((int) $ID)
                : null,
            'can_edit_vente_details' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
+           // Organisme beneficiaire (Don) / prestataire (Destruction) : meme motif
+           // que vente_details ci-dessus (issue #78, "fin de vie structuree").
+           'type_don'         => self::TYPE_DON,
+           'don_details'      => (!$this->isNewID($ID) && (int) $this->fields['type'] === self::TYPE_DON)
+               ? DonDetails::getForAssetsign((int) $ID)
+               : null,
+           'can_edit_don_details' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
+           'type_destruction' => self::TYPE_DESTRUCTION,
+           'destruction_details' => (!$this->isNewID($ID) && (int) $this->fields['type'] === self::TYPE_DESTRUCTION)
+               ? DestructionDetails::getForAssetsign((int) $ID)
+               : null,
+           'can_edit_destruction_details' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
+           // Justificatif (Don) / certificat (Destruction) joints via
+           // attachUploadedDocument() (issue #78) : cette fiche n'a pas d'onglet
+           // "Documents" natif (showForm() est un affichage autonome, jamais
+           // enveloppe par le cadre d'onglets standard de CommonDBTM) - sans ce
+           // bloc, un document pourtant bien attache en base (Document_Item)
+           // resterait invisible depuis la fiche elle-meme.
+           'attached_documents' => $this->isNewID($ID) ? [] : self::getAttachedDocuments((int) $ID),
            // Preuve de signature (adresse IP, empreinte du document...) : la seule
            // trace de ces informations jusqu'ici etait a l'interieur du PDF signe
            // lui-meme (cf. handover.html.twig) — rien ne les affichait cote GLPI,
@@ -531,6 +556,9 @@ class Assetsign extends CommonDBTM
       if ($config->fields['enable_vente']) {
           $manualTypes[self::TYPE_VENTE] = Workflow\WorkflowTypeRegistry::get(self::TYPE_VENTE)->getLabel();
       }
+      if ($config->fields['enable_destruction']) {
+          $manualTypes[self::TYPE_DESTRUCTION] = Workflow\WorkflowTypeRegistry::get(self::TYPE_DESTRUCTION)->getLabel();
+      }
 
        // Pre-selection du type (Don/Vente) et ouverture immediate du formulaire,
        // quand on arrive ici via le lien "creez maintenant la fiche" propose par
@@ -550,6 +578,8 @@ class Assetsign extends CommonDBTM
            'statuses'      => self::getStatuses(),
            'manual_types'  => $manualTypes,
            'type_vente'    => self::TYPE_VENTE,
+           'type_don'      => self::TYPE_DON,
+           'type_destruction' => self::TYPE_DESTRUCTION,
            'can_create_manual' => $manualTypes !== [] && Session::haveRight(self::$rightname, UPDATE),
            'show_item_column' => false,
            'csrf_token'    => \Session::getNewCSRFToken(),
@@ -822,10 +852,14 @@ class Assetsign extends CommonDBTM
        // a completer (cf. assetsign_tab.html.twig) plutot que de laisser le
        // technicien chercher l'onglet puis le bouton lui-meme.
       if ($currentUser === 0
-           && (in_array($newState, $config->getDonationStates(), true) || in_array($newState, $config->getVenteStates(), true))
+           && (in_array($newState, $config->getDonationStates(), true)
+               || in_array($newState, $config->getVenteStates(), true)
+               || in_array($newState, $config->getDestructionStates(), true))
        ) {
           $isDon = in_array($newState, $config->getDonationStates(), true);
-          $targetType = $isDon ? self::TYPE_DON : self::TYPE_VENTE;
+          $isVente = !$isDon && in_array($newState, $config->getVenteStates(), true);
+           $targetType = $isDon ? self::TYPE_DON : ($isVente ? self::TYPE_VENTE : self::TYPE_DESTRUCTION);
+           $targetLabel = $isDon ? __('don', 'assetsign') : ($isVente ? __('vente', 'assetsign') : __('destruction', 'assetsign'));
            $link = $item::getFormURLWithID($item->getID())
                . '&forcetab=' . urlencode(self::class . '$1')
                . '&tab_params[assetsign_prefill_type]=' . $targetType;
@@ -833,7 +867,7 @@ class Assetsign extends CommonDBTM
               sprintf(
                   __('Ce matériel n\'a pas d\'utilisateur assigné : <a href="%s">créez maintenant la fiche de %s</a> (bénéficiaire interne ou externe).', 'assetsign'),
                   htmlspecialchars($link, ENT_QUOTES),
-                  $isDon ? __('don', 'assetsign') : __('vente', 'assetsign')
+                  $targetLabel
               ),
               false,
               INFO
@@ -886,6 +920,15 @@ class Assetsign extends CommonDBTM
        // technicien la complete ensuite via Assetsign::updateVenteDetails().
       if (in_array($newState, $config->getVenteStates(), true)) {
           self::createAssetsign($item, self::TYPE_VENTE, $currentUser);
+          return;
+      }
+
+       // Meme principe que la Vente ci-dessus, applique a la Destruction (issue
+       // #78) : ni DestructionDetails ni document (certificat) ne sont connus au
+       // moment d'un simple changement d'Etat — completes ensuite via
+       // Assetsign::updateDestructionDetails().
+      if (in_array($newState, $config->getDestructionStates(), true)) {
+          self::createAssetsign($item, self::TYPE_DESTRUCTION, $currentUser);
       }
    }
 
@@ -982,22 +1025,26 @@ class Assetsign extends CommonDBTM
    }
 
     /**
-     * Point d'entree PUBLIC pour les types a declenchement manuel (Don, Vente) :
-     * contrairement a createAssetsign() (privee, appelee depuis les hooks
-     * d'affectation/etat), rien ne signale automatiquement "ce materiel est
-     * donne/vendu" — un technicien choisit explicitement de creer la fiche
-     * depuis l'onglet Assetsign du materiel (cf. assetsign_tab.html.twig,
-     * front/assetsign.form.php action "create_manual").
+     * Point d'entree PUBLIC pour les types a declenchement manuel (Don, Vente,
+     * Destruction) : contrairement a createAssetsign() (privee, appelee depuis
+     * les hooks d'affectation/etat), rien ne signale automatiquement "ce
+     * materiel est donne/vendu/detruit" — un technicien choisit explicitement
+     * de creer la fiche depuis l'onglet Assetsign du materiel (cf.
+     * assetsign_tab.html.twig, front/assetsign.form.php action "create_manual").
      *
-     * @param array $extra Donnees specifiques au type ('price'/'sale_date' pour
-     *                      TYPE_VENTE, cf. VenteDetails) — ignorees pour les
-     *                      types qui n'en utilisent pas. 'beneficiary_type'
+     * @param array $extra Donnees specifiques au type — ignorees pour les types
+     *                      qui n'en utilisent pas : 'price'/'sale_date' (TYPE_VENTE,
+     *                      cf. VenteDetails) ; 'organization_name' (TYPE_DON, cf.
+     *                      DonDetails) + 'justificatif' (entree $_FILES, document
+     *                      joint, cf. Assetsign::attachUploadedDocument()) ; 'provider_name'
+     *                      (TYPE_DESTRUCTION, cf. DestructionDetails) + 'certificat'
+     *                      (entree $_FILES). 'beneficiary_type'
      *                      (BENEFICIARY_INTERNAL par defaut, ou
      *                      BENEFICIARY_EXTERNAL), et dans ce dernier cas
      *                      'external_name' (obligatoire)/'external_contact'
      *                      (facultatif, email ou telephone en texte libre) —
-     *                      un don/une vente peut concerner quelqu'un hors de
-     *                      l'entreprise, sans compte GLPI.
+     *                      un don/une vente/une destruction peut concerner
+     *                      quelqu'un hors de l'entreprise, sans compte GLPI.
      *
      * Effet de bord : met aussi a jour l'Etat du materiel lui-meme si l'entite
      * a configure un Etat declencheur pour ce type (cf. syncItemStateAfterManualCreation()).
@@ -1071,8 +1118,30 @@ class Assetsign extends CommonDBTM
           // pouvoir lire le prix/la date de vente (cf. VenteDetails, HandoverPdfBuilder).
           VenteDetails::createForAssetsign($id, (float) ($extra['price'] ?? 0), (string) ($extra['sale_date'] ?? date('Y-m-d')));
       }
+      if ($type === self::TYPE_DON) {
+          // Meme raison que la Vente ci-dessus : cree AVANT launchWorkflow() pour
+          // que le PDF affiche deja l'organisme beneficiaire (cf. DonDetails).
+          DonDetails::createForAssetsign($id, trim((string) ($extra['organization_name'] ?? '')));
+      }
+      if ($type === self::TYPE_DESTRUCTION) {
+          DestructionDetails::createForAssetsign($id, trim((string) ($extra['provider_name'] ?? '')));
+      }
 
        $assetsign->launchWorkflow($config);
+
+       // Justificatif (Don) / certificat (Destruction) : simple document natif
+       // GLPI attache a la fiche elle-meme (cf. Assetsign::attachUploadedDocument()),
+       // jamais integre au PDF genere ci-dessus - contrairement au prix/organisme/
+       // prestataire (textes courts, pertinents dans le corps du document), un
+       // fichier joint (souvent un PDF/scan lui-meme) n'a pas besoin d'etre
+       // fusionne dans le contrat : apres launchWorkflow() suffit, plus simple
+       // et sans risque d'impacter la generation du PDF non signe.
+      if ($type === self::TYPE_DON && !empty($extra['justificatif'])) {
+          $assetsign->attachUploadedDocument($extra['justificatif']);
+      }
+      if ($type === self::TYPE_DESTRUCTION && !empty($extra['certificat'])) {
+          $assetsign->attachUploadedDocument($extra['certificat']);
+      }
 
        self::syncItemStateAfterManualCreation($item, $type, $config);
 
@@ -1098,7 +1167,12 @@ class Assetsign extends CommonDBTM
           return; // Itemtype sans notion d'Etat GLPI (ne devrait pas arriver pour les types geres, defensif).
       }
 
-       $targetStates = $type === self::TYPE_DON ? $config->getDonationStates() : $config->getVenteStates();
+       $targetStates = match ($type) {
+           self::TYPE_DON         => $config->getDonationStates(),
+           self::TYPE_VENTE       => $config->getVenteStates(),
+           self::TYPE_DESTRUCTION => $config->getDestructionStates(),
+           default                => [],
+       };
       if ($targetStates === []) {
           return; // Aucun Etat declencheur configure pour ce type : rien a synchroniser.
       }
@@ -1503,6 +1577,103 @@ class Assetsign extends CommonDBTM
       }
        VenteDetails::upsertForAssetsign($this->getID(), $price, $saleDate);
        $this->regenerateUnsignedPdf();
+   }
+
+    /**
+     * Renseigne ou corrige l'organisme beneficiaire d'un Don, meme motif que
+     * updateVenteDetails() (utile pour un Don declenche automatiquement par
+     * changement d'Etat, ou aucun organisme n'est connu a la creation).
+     */
+   public function updateDonDetails(string $organizationName): void {
+      if ((int) $this->fields['type'] !== self::TYPE_DON || !$this->isStillEditable()) {
+          return;
+      }
+       DonDetails::upsertForAssetsign($this->getID(), $organizationName);
+       $this->regenerateUnsignedPdf();
+   }
+
+    /**
+     * Renseigne ou corrige le prestataire d'une Destruction, meme motif que
+     * updateVenteDetails()/updateDonDetails() ci-dessus (issue #78).
+     */
+   public function updateDestructionDetails(string $providerName): void {
+      if ((int) $this->fields['type'] !== self::TYPE_DESTRUCTION || !$this->isStillEditable()) {
+          return;
+      }
+       DestructionDetails::upsertForAssetsign($this->getID(), $providerName);
+       $this->regenerateUnsignedPdf();
+   }
+
+    /**
+     * Joint un document natif GLPI (Document/Document_Item) a cette fiche
+     * elle-meme — justificatif de don ou certificat de destruction (issue #78),
+     * sans nouvelle table de stockage. showForm() n'est PAS enveloppee par le
+     * cadre d'onglets standard de CommonDBTM (fiche en lecture seule autonome,
+     * cf. son propre commentaire) : aucun onglet "Documents" natif n'existe
+     * donc sur cette fiche — le document est plutot re-liste explicitement via
+     * getAttachedDocuments() ci-dessous, affiche dans assetsign_form.html.twig
+     * (meme motif que Movement::getAttachedDocuments()/movement_form.html.twig).
+     * copy() plutot que move_uploaded_file() (GLPI reconstruit un objet Request
+     * depuis $_FILES a certains points de la requete, cf. commentaire
+     * equivalent de Config::uploadLogo()), silencieux si aucun fichier n'a ete
+     * selectionne (facultatif), message d'erreur si un fichier a ete choisi
+     * mais est invalide.
+     */
+   public function attachUploadedDocument(array $file): void {
+      if (($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+          return; // aucun fichier selectionne : rien a faire, pas une erreur
+      }
+      if (($file['error'] ?? null) !== UPLOAD_ERR_OK || empty($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+          \Session::addMessageAfterRedirect(__('Échec de l\'envoi du document.', 'assetsign'), false, ERROR);
+          return;
+      }
+
+       $tmpName = uniqid('assetsign_doc_', true) . '_' . basename((string) $file['name']);
+      if (!copy($file['tmp_name'], GLPI_TMP_DIR . '/' . $tmpName)) {
+          \Session::addMessageAfterRedirect(__('Échec de l\'envoi du document.', 'assetsign'), false, ERROR);
+          return;
+      }
+
+       $document = new Document();
+       $documents_id = $document->add([
+           'name'          => (string) ($file['name'] ?? $tmpName),
+           'entities_id'   => $this->fields['entities_id'],
+           '_filename'     => [$tmpName],
+           '_tag_filename' => [$tmpName],
+       ]);
+      if (!$documents_id) {
+          \Session::addMessageAfterRedirect(__('Échec de l\'envoi du document.', 'assetsign'), false, ERROR);
+          return;
+      }
+
+       (new Document_Item())->add([
+           'documents_id' => $documents_id,
+           'itemtype'     => self::class,
+           'items_id'     => $this->getID(),
+       ]);
+   }
+
+    /**
+     * Documents joints a CETTE fiche via attachUploadedDocument() (justificatif
+     * de don, certificat de destruction — issue #78) : reutilise Document_Item,
+     * la relation polymorphe deja native GLPI, jamais un nouveau stockage.
+     * Meme motif exact que Movement::getAttachedDocuments().
+     * @return list<array{id: int, name: string}>
+     */
+   public static function getAttachedDocuments(int $assetsigns_id): array {
+       global $DB;
+
+       $documents = [];
+      foreach ($DB->request([
+          'SELECT'     => ['glpi_documents.id', 'glpi_documents.name'],
+          'FROM'       => 'glpi_documents_items',
+          'INNER JOIN' => ['glpi_documents' => ['FKEY' => ['glpi_documents_items' => 'documents_id', 'glpi_documents' => 'id']]],
+          'WHERE'      => ['glpi_documents_items.itemtype' => self::class, 'glpi_documents_items.items_id' => $assetsigns_id],
+          'ORDER'      => 'glpi_documents.date_creation DESC',
+      ]) as $row) {
+          $documents[] = ['id' => (int) $row['id'], 'name' => (string) $row['name']];
+      }
+       return $documents;
    }
 
     /**

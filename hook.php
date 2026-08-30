@@ -15,6 +15,8 @@ use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\CreationFailure;
 use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\Dashboard\CardProvider;
+use GlpiPlugin\Assetsign\DestructionDetails;
+use GlpiPlugin\Assetsign\DonDetails;
 use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Movement;
@@ -193,6 +195,10 @@ function plugin_assetsign_install(): bool {
     Assetsign::install($migration);
     AssetsignAccessory::install($migration);
     VenteDetails::install($migration);
+    // Meme motif 1-vers-1 que VenteDetails ci-dessus (issue #78, "fin de vie
+    // structuree") : Don et Destruction ont chacun leur propre table dediee.
+    DonDetails::install($migration);
+    DestructionDetails::install($migration);
     MaintenanceChecklistItem::install($migration);
     Maintenance::install($migration);
     // Apres Maintenance : la contrainte de cle etrangere ajoutee par
@@ -295,6 +301,8 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_tokens',
         'glpi_plugin_assetsign_assetsignaccessories',
         'glpi_plugin_assetsign_ventedetails',
+        'glpi_plugin_assetsign_dondetails',
+        'glpi_plugin_assetsign_destructiondetails',
         'glpi_plugin_assetsign_damagemarkers',
         'glpi_plugin_assetsign_checklistvalues',
         'glpi_plugin_assetsign_assetsigns',

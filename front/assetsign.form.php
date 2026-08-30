@@ -11,7 +11,7 @@ $controller = new AssetsignFormController();
 if (isset($_POST['create_manual'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
    try {
-       Session::addMessageAfterRedirect($controller->createManual($_POST));
+       Session::addMessageAfterRedirect($controller->createManual($_POST, $_FILES));
    } catch (\Throwable $e) {
        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
    }
@@ -66,6 +66,18 @@ if (isset($_POST['update_observations'])) {
 if (isset($_POST['update_vente_details'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
     $controller->updateVenteDetails($assetsign, $_POST);
+    Html::back();
+}
+
+if (isset($_POST['update_don_details'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    $controller->updateDonDetails($assetsign, $_POST);
+    Html::back();
+}
+
+if (isset($_POST['update_destruction_details'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    $controller->updateDestructionDetails($assetsign, $_POST);
     Html::back();
 }
 

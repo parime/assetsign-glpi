@@ -13,7 +13,13 @@ use GlpiPlugin\Assetsign\Assetsign;
  */
 final class AssetsignFormController
 {
-   public function createManual(array $post): string {
+    /**
+     * $files : $_FILES du formulaire de creation manuelle (justificatif de don,
+     * certificat de destruction) — parametre distinct de $post plutot qu'un
+     * simple merge, meme convention que la separation native $_POST/$_FILES de
+     * PHP, transmis tel quel jusqu'a Assetsign::createManual()/attachDocument().
+     */
+   public function createManual(array $post, array $files = []): string {
        Assetsign::createManual(
            (string) ($post['itemtype'] ?? ''),
            (int) ($post['items_id'] ?? 0),
@@ -28,6 +34,10 @@ final class AssetsignFormController
                'beneficiary_type' => (int) ($post['beneficiary_type'] ?? 0),
                'external_name'    => (string) ($post['external_name'] ?? ''),
                'external_contact' => (string) ($post['external_contact'] ?? ''),
+               'organization_name' => (string) ($post['organization_name'] ?? ''),
+               'justificatif'     => $files['justificatif'] ?? null,
+               'provider_name'    => (string) ($post['provider_name'] ?? ''),
+               'certificat'       => $files['certificat'] ?? null,
            ]
        );
 
@@ -66,6 +76,14 @@ final class AssetsignFormController
        // '?:' et non '??' : meme raison que createManual() ci-dessus.
        $saleDate = (string) ($post['sale_date'] ?: date('Y-m-d'));
        $assetsign->updateVenteDetails((float) ($post['price'] ?? 0), $saleDate);
+   }
+
+   public function updateDonDetails(Assetsign $assetsign, array $post): void {
+       $assetsign->updateDonDetails((string) ($post['organization_name'] ?? ''));
+   }
+
+   public function updateDestructionDetails(Assetsign $assetsign, array $post): void {
+       $assetsign->updateDestructionDetails((string) ($post['provider_name'] ?? ''));
    }
 
     /**

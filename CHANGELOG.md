@@ -11,6 +11,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Fin de vie structurée : destruction (prestataire/certificat) et don (organisme/justificatif)**
+  (issue #78, dernière partie de "fin de vie structurée" — la date de réforme automatique était déjà
+  livrée le 2026-08-19, cf. entrée correspondante ci-dessous dans l'historique) : nouveau type
+  `Assetsign::TYPE_DESTRUCTION` (5), avec le même traitement complet que Don/Vente (déclenchement
+  manuel via `createManual()`, déclenchement automatique par changement d'État configurable
+  `Config::getDestructionStates()`, coordination bidirectionnelle État ↔ fiche via
+  `syncItemStateAfterManualCreation()`, gabarit PDF dédié `Workflow\DestructionType`). Le Don
+  (`Assetsign::TYPE_DON`, déjà existant) gagne un organisme bénéficiaire, jusqu'ici sans aucune donnée
+  dédiée. Prestataire (Destruction) et organisme (Don) stockés dans deux nouvelles tables dédiées
+  1-vers-1 avec `Assetsign` (`DestructionDetails`/`DonDetails`, même motif exact que `VenteDetails`
+  déjà en place pour le prix de vente), éditables après coup via `Assetsign::updateDestructionDetails()`/
+  `updateDonDetails()` — nécessaire pour une fiche déclenchée automatiquement par changement d'État,
+  où ni le prestataire ni l'organisme ne sont connus au moment de la création (même logique déjà
+  appliquée au prix de la Vente). Certificat de destruction et justificatif de don : upload de fichier
+  simple (`<input type="file">`), attaché en tant que Document natif GLPI directement sur la fiche
+  Assetsign elle-même (`Assetsign::attachUploadedDocument()`, nouvelle méthode reprenant exactement le motif
+  déjà utilisé par `Movement::attachDocument()`) — visible depuis l'onglet Documents natif de la fiche,
+  sans nouvelle table de stockage de fichiers. Le prix/acheteur/documents de la Vente n'étaient PAS
+  dans le périmètre de cette PR : déjà couverts (prix via `VenteDetails`, acheteur via `users_id`),
+  cf. ROADMAP.md qui avait explicitement restreint le périmètre restant de l'issue #78 à
+  prestataire/certificat (destruction) et organisme/justificatif (don). `PassportEvent::TYPE_DESTRUCTION`
+  (6) ajouté symétriquement à `TYPE_DON`/`TYPE_VENTE` pour la frise du Passeport matériel.
+
 - **Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle)** (issue #77,
   cf. ROADMAP.md tableau V2 et `docs/design/ADR-passeport-v1.md`) : nouvel indicateur en tête
   du Passeport matériel, estimation simple (pas un module comptable complet) pour aider à

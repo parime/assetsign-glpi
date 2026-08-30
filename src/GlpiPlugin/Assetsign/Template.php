@@ -162,6 +162,7 @@ class Template extends CommonDBTM
           self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_RETURN, 'Gabarit de restitution par défaut');
           self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_DON, 'Gabarit de don par défaut');
           self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_VENTE, 'Gabarit de vente par défaut');
+          self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_DESTRUCTION, 'Gabarit de destruction par défaut');
       } else {
           // Montee de version : desactive les gabarits de l'ancien type "Echange"
           // (valeur 2, retiree — cf. Assetsign::TYPE_EXCHANGE) sans les supprimer,
@@ -184,6 +185,7 @@ class Template extends CommonDBTM
           // type, et toute fiche serait generee sans aucune condition affichee).
           self::seedIfMissing($table, \GlpiPlugin\Assetsign\Assetsign::TYPE_DON, 'Gabarit de don par défaut');
           self::seedIfMissing($table, \GlpiPlugin\Assetsign\Assetsign::TYPE_VENTE, 'Gabarit de vente par défaut');
+          self::seedIfMissing($table, \GlpiPlugin\Assetsign\Assetsign::TYPE_DESTRUCTION, 'Gabarit de destruction par défaut');
       }
 
        self::seedDefaultDisplayPreferences();
