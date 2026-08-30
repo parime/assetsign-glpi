@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-30 14:12+0000\n"
+"POT-Creation-Date: 2026-08-30 14:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -606,7 +606,7 @@ msgid "Destruction"
 msgstr ""
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:569
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:665
 msgid "Réforme"
 msgstr ""
 
@@ -621,7 +621,7 @@ msgid "Maintenance"
 msgstr ""
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:525
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:534
 #: src/GlpiPlugin/Assetsign/Movement.php:207
 msgid "Mouvements"
 msgstr ""
@@ -637,6 +637,10 @@ msgstr ""
 
 #: templates/config_form.html.twig
 msgid "Valeur résiduelle"
+msgstr ""
+
+#: templates/config_form.html.twig templates/passport_tab.html.twig
+msgid "Aide à la décision"
 msgstr ""
 
 #: templates/config_form.html.twig
@@ -1096,6 +1100,39 @@ msgstr ""
 
 #: templates/config_form.html.twig
 msgid ""
+"Moteur de règles simple (pas de machine learning) qui combine le score de "
+"santé et la valeur résiduelle ci-dessus pour recommander une action sur le "
+"Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune "
+"recommandation n'est jamais affichée si l'indicateur correspondant est lui-"
+"même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Afficher les recommandations sur le Passeport matériel"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid ""
+"« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » "
+"déjà réglé dans l'onglet Score de santé — pas de second réglage redondant "
+"pour la même notion."
+msgstr ""
+
+#: templates/config_form.html.twig
+#, php-format
+msgid ""
+"Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix "
+"d'achat)"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid ""
+"En dessous de ce pourcentage du prix d'achat d'origine, la recommandation "
+"« Réévaluer l'usage » est affichée."
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid ""
 "Le Passeport matériel agrège en lecture seule les événements des onglets "
 "Attribution/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel "
 "onglet du matériel concerné."
@@ -1237,17 +1274,17 @@ msgid "Entité"
 msgstr ""
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:566
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:662
 msgid "Achat"
 msgstr ""
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:599
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:695
 msgid "Fin de garantie"
 msgstr ""
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:494
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:503
 msgid "Âge"
 msgstr ""
 
@@ -1464,7 +1501,7 @@ msgstr ""
 msgid "Assigner"
 msgstr ""
 
-#: hook.php:112 src/GlpiPlugin/Assetsign/Config.php:84
+#: hook.php:112 src/GlpiPlugin/Assetsign/Config.php:86
 msgid "Assetsign & signature"
 msgstr ""
 
@@ -1546,71 +1583,89 @@ msgstr[1] ""
 msgid "Passeport utilisateur"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:340
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:349
 msgid "depuis l'achat"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:340
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:349
 msgid "depuis l'entrée dans GLPI"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:504
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:513
 msgid "Incidents"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:521
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:530
 msgid "État physique"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:564
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:613
+msgid "Prévoir un remplacement"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:614
+#, php-format
+msgid "score de santé faible : %d/100"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:626
+msgid "Réévaluer l'usage"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:627
+#, php-format
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:660
 msgid "Commande"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:565
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:661
 msgid "Livraison"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:567
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:663
 msgid "Mise en service"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:568
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:664
 msgid "Début de garantie"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:588
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:684
 #, php-format
 msgid "Prix d'achat : %s %s"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:647
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:743
 msgid "Ticket"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:796
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:892
 msgid "Reconstitué automatiquement depuis l'historique GLPI."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1189
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1285
 msgid "Utilisateur retiré"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1218
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1314
 #, php-format
 msgid "%d jour"
 msgid_plural "%d jours"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1223
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1233
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1319
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1329
 #, php-format
 msgid "%d mois"
 msgid_plural "%d mois"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1228
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1324
 #, php-format
 msgid "%d an"
 msgid_plural "%d ans"
@@ -1837,38 +1892,38 @@ msgstr ""
 msgid "Cette attribution ne peut plus être relancée (déjà signée ou expirée)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:79
+#: src/GlpiPlugin/Assetsign/Config.php:81
 msgid "AssetSign — Signature électronique"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:151
+#: src/GlpiPlugin/Assetsign/Config.php:153
 msgid "Signature intégrée (canvas)"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:203
-#: src/GlpiPlugin/Assetsign/Config.php:228
+#: src/GlpiPlugin/Assetsign/Config.php:205
+#: src/GlpiPlugin/Assetsign/Config.php:230
 msgid "Échec de l'envoi du logo."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:209
+#: src/GlpiPlugin/Assetsign/Config.php:211
 msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:255
+#: src/GlpiPlugin/Assetsign/Config.php:257
 msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:269
+#: src/GlpiPlugin/Assetsign/Config.php:271
 msgid "E-mail de test — Assetsign & signature"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:270
+#: src/GlpiPlugin/Assetsign/Config.php:272
 msgid ""
 "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & "
 "signature fonctionne."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:273
+#: src/GlpiPlugin/Assetsign/Config.php:275
 msgid "Le serveur de messagerie a refusé l'envoi."
 msgstr ""
 

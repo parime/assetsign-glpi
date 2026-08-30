@@ -26,6 +26,20 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
   rouge = rien n'est revenu), calculé PUREMENT à l'affichage et batché (4 requêtes au total pour
   toute la frise, jamais une par événement affiché), exactement comme le résumé de checklist
   qualité déjà livré pour l'issue #74.
+- **Module d'aide à la décision - livré** (issue #79, cf. tableau V2 ci-dessous) : troisième
+  indicateur du Passeport matériel, après le score de santé et la valeur résiduelle dont il
+  dépend explicitement (toutes deux déjà livrées, cf. entrées ci-dessous). Moteur de règles
+  simple à seuils, explicitement **pas** du machine learning ("architecture prête pour de
+  l'IA plus tard sans y aller maintenant", au sens où `getDecisionAidRecommendations()` reste
+  le seul point d'entrée consulté par l'affichage - un futur moteur différent pourrait la
+  remplacer sans rien toucher d'autre, sans construire d'abstraction supplémentaire par
+  anticipation) : « Prévoir un remplacement » sous le seuil de score de santé déjà réglable
+  (réutilisé tel quel, aucun second réglage redondant), « Réévaluer l'usage » sous un
+  pourcentage réglable du prix d'achat d'origine (seul nouveau réglage introduit,
+  `Config::residual_value_low_threshold_percent`). Chaque règle exige sa propre donnée
+  source réellement disponible - jamais une recommandation inventée. Plusieurs règles
+  déclenchées : toutes affichées, jamais une seule masquant les autres. Calculé à
+  l'affichage, jamais persisté, même principe que les deux indicateurs dont il dépend.
 
 ## Réalisé récemment (2026-08-27)
 
@@ -176,7 +190,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | ~~Indicateurs temporels~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle)~~ — **livrée**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 | ~~Fin de vie structurée (vente : prix/acheteur/documents ; don : organisme/justificatif ; destruction : prestataire/certificat)~~ — **livrée** : date de réforme automatique le 2026-08-19, prestataire/certificat (destruction) et organisme/justificatif (don) le 2026-08-26 (cf. "Réalisé récemment" ci-dessus et issue #78) ; prix/acheteur/documents de la vente déjà couverts au préalable (`VenteDetails`, `users_id`) | Tracer proprement la sortie définitive | Conformité, preuve en cas de contrôle | Faible (déjà partiellement présent via Remise::TYPE_VENTE/TYPE_DON) | Timeline d'événements | Moyenne |
-| Module d'aide à la décision (moteur de règles simple, ex: "réévaluer"/"préparer remplacement" avec raisons) | Aider l'équipe IT à décider quoi faire d'un matériel | Passe d'une donnée brute à une recommandation | Moyenne (règles), architecture prête pour de l'IA plus tard sans y aller maintenant | Score de santé, valeur résiduelle | Basse/Moyenne |
+| ~~Module d'aide à la décision (moteur de règles simple, ex: "réévaluer"/"préparer remplacement" avec raisons)~~ — **livré**, cf. "Réalisé récemment" ci-dessus. | | | | | |
 
 **V3 — extensions et intégrations externes**
 | Fonctionnalité | Objectif métier | Valeur utilisateur | Difficulté | Dépendances | Priorité |

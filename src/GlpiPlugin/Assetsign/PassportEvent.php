@@ -255,6 +255,14 @@ class PassportEvent extends CommonDBTM
            $health['color'] = $config->getHealthScoreColor($health['score']);
       }
 
+       // Module d'aide a la decision (cf. ROADMAP.md V2, issue #79) : reutilise les
+       // DEUX indicateurs V2 deja calcules ci-dessus/ci-dessous, jamais un troisieme
+       // calcul independant - cf. getDecisionAidRecommendations() pour le detail.
+       $residualForDecisionAid = $config->fields['enable_residual_value'] ? self::getResidualValue($item, $config) : null;
+       $decisionAid = $config->fields['enable_decision_aid']
+           ? self::getDecisionAidRecommendations($config, $item, $health, $residualForDecisionAid)
+           : [];
+
        $canEdit = \Session::haveRight(self::$rightname, UPDATE);
        $manualResidual = $config->fields['enable_residual_value'] ? ResidualValue::getForItem($item->getType(), $item->getID()) : null;
 
@@ -273,6 +281,7 @@ class PassportEvent extends CommonDBTM
            'lives'         => $lives,
            'identity'      => self::getIdentityCard($item, $lives, $config),
            'health'        => $health,
+           'decision_aid'  => $decisionAid,
            'itemtype'      => $item->getType(),
            'items_id'      => $item->getID(),
            'can_backfill'  => $canEdit,
@@ -536,6 +545,93 @@ class PassportEvent extends CommonDBTM
        $score = max(0, min(100, (int) round(100 - $weightedDegradation)));
 
        return ['score' => $score, 'breakdown' => $breakdown];
+   }
+
+    /**
+     * Prix d'achat d'origine (Infocom::value), pour le calcul de proportion du
+     * module d'aide a la decision ci-dessous (cf. getDecisionAidRecommendations()) -
+     * lecture Infocom independante et dediee, memes principe et convention que
+     * getResidualValue()/getHealthScore() plus haut (chaque indicateur relit ce
+     * dont il a besoin, cf. ADR-passeport-v1.md section 2.4 : requete unique bien
+     * en-deca du seuil qui justifierait un cache). Jamais 0 ni negatif (sinon la
+     * proportion resterait indefinie) - `null` dans ce cas comme partout ailleurs
+     * dans ce fichier, jamais une valeur inventee.
+     */
+   private static function getOriginalPurchaseValue(CommonDBTM $item): ?float {
+      if (!\Infocom::canApplyOn($item->getType())) {
+          return null;
+      }
+       $infocom = new \Infocom();
+      if (!$infocom->getFromDBforDevice($item->getType(), $item->getID()) || (float) $infocom->fields['value'] <= 0) {
+          return null;
+      }
+       return (float) $infocom->fields['value'];
+   }
+
+    /**
+     * Module d'aide a la decision (troisieme brique du V2, cf. ROADMAP.md —
+     * "Module d'aide a la decision (moteur de regles simple, ex: 'reevaluer'/
+     * 'preparer remplacement' avec raisons)", issue #79). Moteur de REGLES SIMPLE
+     * a seuils, explicitement PAS du machine learning (la roadmap le precise :
+     * "architecture prete pour de l'IA plus tard sans y aller maintenant") — deux
+     * regles independantes sur les deux indicateurs V2 deja livres (score de
+     * sante, valeur residuelle), chacune retournant son propre libelle ET sa
+     * propre raison explicite, jamais une simple note opaque. "Architecture prete
+     * pour l'IA" au sens de la roadmap = cette methode reste le SEUL point
+     * d'entree consulte par showForItem() : un futur scoreur different (modele
+     * entraine, appel a un service externe...) pourrait la remplacer sans toucher
+     * ni a l'affichage (passport_tab.html.twig ne connait que la forme du
+     * tableau retourne) ni aux deux indicateurs sources - aucune abstraction
+     * supplementaire ajoutee par anticipation, cf. consigne explicite de ne pas
+     * construire cette brique avant d'en avoir reellement besoin.
+     * - "Prevoir un remplacement" (severite 'critical') : score de sante en
+     *   dessous du seuil "Vigilance" DEJA reglable (Config::
+     *   health_score_warning_threshold, meme seuil que la couleur orange de
+     *   getHealthScoreColor()) - reutilise tel quel plutot que d'ajouter un
+     *   deuxieme reglage redondant pour la meme notion.
+     * - "Reevaluer l'usage" (severite 'warning') : valeur residuelle sous un
+     *   pourcentage reglable du prix d'achat d'origine (Config::
+     *   residual_value_low_threshold_percent, seul nouveau reglage introduit ici -
+     *   la valeur residuelle, contrairement au score de sante, n'avait jusqu'ici
+     *   aucun seuil configurable).
+     * Chaque regle exige que SA propre donnee source soit reellement disponible
+     * (score de sante calculable, ET valeur residuelle ET prix d'achat d'origine
+     * tous deux connus) - jamais une recommandation a partir d'une donnee
+     * manquante ou d'une fonctionnalite desactivee, meme discipline que le reste
+     * de ce fichier ("jamais une valeur inventee"). Plusieurs regles declenchees :
+     * TOUTES affichees (jamais une seule masquant les autres) - un vrai outil
+     * d'aide a la decision ne doit jamais cacher un facteur contributif.
+     * @param array{score: int, breakdown: array}|null $health Deja calcule par showForItem() (jamais un second calcul).
+     * @param array{value: float, is_manual: bool}|null $residual Deja calcule par showForItem() (jamais un second calcul).
+     * @return list<array{label: string, reason: string, severity: string}> severity: 'warning'|'critical'. Tableau vide si rien a signaler ou si les deux indicateurs sources sont indisponibles.
+     */
+   private static function getDecisionAidRecommendations(Config $config, CommonDBTM $item, ?array $health, ?array $residual): array {
+       $recommendations = [];
+
+      if ($health !== null && $health['score'] < (int) $config->fields['health_score_warning_threshold']) {
+          $recommendations[] = [
+              'label'    => __('Prévoir un remplacement', 'assetsign'),
+              'reason'   => sprintf(__('score de santé faible : %d/100', 'assetsign'), $health['score']),
+              'severity' => 'critical',
+          ];
+      }
+
+      if ($residual !== null) {
+          $originalValue = self::getOriginalPurchaseValue($item);
+         if ($originalValue !== null) {
+             $percent = $residual['value'] / $originalValue * 100;
+             $threshold = (int) $config->fields['residual_value_low_threshold_percent'];
+            if ($percent < $threshold) {
+                $recommendations[] = [
+                    'label'    => __('Réévaluer l\'usage', 'assetsign'),
+                    'reason'   => sprintf(__('valeur résiduelle faible : %d %% du prix d\'achat', 'assetsign'), (int) round($percent)),
+                    'severity' => 'warning',
+                ];
+            }
+         }
+      }
+
+       return $recommendations;
    }
 
     /**

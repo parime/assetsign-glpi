@@ -110,7 +110,7 @@ Départ/destination réutiliseraient la table native `glpi_locations` (`Location
 | V1 (suivi) | Index composite `(itemtype, items_id, date)` sur `glpi_plugin_assetsign_events` | *(nouveau, cf. risque 2.1)* | **Livré** par cette PR (migration additive, aucune régression fonctionnelle) |
 | V2 | Valeur résiduelle | [#77](https://github.com/parime/assetsign-glpi/issues/77) | **Livré** (PR de suivi) - calcul linéaire à l'affichage depuis `Infocom` (prix/date d'achat, jamais dupliqué), durée de vie utile "personnalisable" via un nouveau réglage `Config::residual_value_duration_months` (pas une deuxième méthode de calcul), saisie manuelle prioritaire via une table dédiée `ResidualValue` (même patron 1-vers-1 `itemtype`/`items_id` que `Movement` plutôt que `VenteDetails`, qui référence une `Assetsign` - un matériel géré peut avoir une valeur résiduelle sans jamais avoir eu d'Assetsign). Voir section 6 ci-dessous pour le détail des décisions. |
 | V2 | Fin de vie structurée (vente/don/destruction) | [#78](https://github.com/parime/assetsign-glpi/issues/78) | **Livré** : date de réforme automatique (2026-08-19), puis prestataire/certificat (destruction, nouveau type `Assetsign::TYPE_DESTRUCTION`) et organisme/justificatif (don, `DonDetails`) le 2026-08-26 (PR de suivi) |
-| V2 | Module d'aide à la décision | [#79](https://github.com/parime/assetsign-glpi/issues/79) | Non commencé - dépend du score de santé (livré) et de la valeur résiduelle (#77) |
+| V2 | Module d'aide à la décision | [#79](https://github.com/parime/assetsign-glpi/issues/79) | **Livré** (PR de suivi) - moteur de règles simple (pas de machine learning) sur le score de santé et la valeur résiduelle, tous deux déjà livrés. Voir section 7 ci-dessous pour le détail des décisions. |
 | V3 | Passeport environnemental | [#80](https://github.com/parime/assetsign-glpi/issues/80) | Non commencé - risque externe tranché par anticipation (section 2.5) |
 | V3 | Bénéfice du réemploi | [#81](https://github.com/parime/assetsign-glpi/issues/81) | Non commencé - dépend de #80 |
 | V3 | QR code sur le matériel | [#82](https://github.com/parime/assetsign-glpi/issues/82) | **Livré** (PR de suivi) - étiquette imprimable sur l'onglet Passeport matériel, QR code encodant un lien `forcetab` absolu (`front/qrlabel.php`), génération QR extraite en classe partagée `QrCode` (jusqu'ici dupliquée nulle part, réutilisée telle quelle par le PDF) |
@@ -161,7 +161,58 @@ hypothèse inventée. La saisie manuelle reste cependant toujours disponible ind
 ce garde-fou (même principe que la saisie manuelle du futur passeport environnemental V3,
 section 2.5 : un vrai choix, jamais un simple repli dégradé).
 
-## 7. Kits/accessoires avec contrôle automatique au retour (issue #83) - décisions d'implémentation
+## 7. Module d'aide à la décision (issue #79) - décisions d'implémentation
+
+**Contexte** : troisième indicateur V2 du Passeport matériel, explicitement dépendant des deux
+premiers (score de santé, section précédente et ROADMAP.md ; valeur résiduelle, section 6
+ci-dessus). "Moteur de règles simple... architecture prête pour de l'IA plus tard sans y aller
+maintenant" (libellé de la roadmap, issue #79) a été tranché comme : des seuils simples et
+transparents sur les indicateurs déjà calculés, **jamais un modèle entraîné ni un appel à un
+service externe** - le champ "prête pour l'IA" est couvert par le seul fait que
+`PassportEvent::getDecisionAidRecommendations()` reste l'unique point d'entrée consulté par
+`showForItem()`, de sorte qu'un futur moteur différent pourrait la remplacer sans toucher à
+l'affichage (`passport_tab.html.twig` ne connaît que la forme du tableau retourné) ni aux deux
+indicateurs sources - aucune interface/abstraction supplémentaire n'a été ajoutée par
+anticipation, cf. principe déjà appliqué ailleurs dans ce document de ne jamais construire une
+brique avant d'en avoir réellement besoin.
+
+**Pourquoi aucune nouvelle table** : même principe que le score de santé et les indicateurs
+temporels (section 1, "Indicateurs... calculés à l'affichage... aucune table dédiée à ce
+jour") - une recommandation est une lecture combinée de deux indicateurs eux-mêmes déjà
+calculés à l'affichage, jamais une donnée qui aurait un sens à persister ou à faire évoluer
+indépendamment de ses sources. Le risque de performance identifié par anticipation section 2.4
+("si un futur indicateur V2... s'avère coûteux à l'échelle du parc entier... il devra passer par
+un recalcul planifié") ne s'applique pas ici : aucune requête SQL supplémentaire n'est ajoutée
+par ce module lui-même au-delà d'une seule lecture `Infocom` dédiée (prix d'achat d'origine,
+nécessaire pour la règle de valeur résiduelle) - même ordre de grandeur qu'un seul matériel
+déjà largement sous le seuil qui justifierait cette complexité.
+
+**Pourquoi réutiliser `health_score_warning_threshold` plutôt qu'un nouveau seuil dédié** :
+la roadmap ne demande pas une deuxième notion de "score de santé faible", seulement une action
+à déclencher quand le score existant franchit un seuil déjà signifiant pour l'administrateur
+(le même qui colore déjà le score en orange "Vigilance", `Config::getHealthScoreColor()`) - un
+second réglage aurait dupliqué une décision déjà prise ailleurs dans l'écran de configuration,
+à l'encontre de la consigne explicite de garder ce moteur "simple" plutôt que d'ajouter une
+deuxième sprawl de configuration. La valeur résiduelle, elle, n'avait jusqu'ici **aucun** seuil
+configurable (seulement un calcul et un affichage) : un nouveau réglage
+(`Config::residual_value_low_threshold_percent`, pourcentage du prix d'achat d'origine) était
+donc réellement nécessaire, contrairement au score de santé.
+
+**Jamais de recommandation inventée** : chaque règle vérifie explicitement que sa propre donnée
+source est réellement disponible avant de se déclencher - score de santé calculable (`null`
+sinon, ex: fonctionnalité désactivée ou tous les poids à 0) pour la première règle ; valeur
+résiduelle calculée (manuelle ou automatique) **et** prix d'achat d'origine connu (`Infocom::
+value`) pour la seconde - une valeur résiduelle manuelle sans aucun prix d'achat Infocom connu
+ne permet aucune proportion calculable, donc aucune recommandation, même discipline que
+partout ailleurs dans ce fichier ("jamais une valeur inventée").
+
+**Plusieurs règles déclenchées simultanément** : toutes affichées, jamais une seule masquant les
+autres - décision explicite pour rester un vrai outil d'aide à la décision (cacher un facteur
+contributif irait à l'encontre de l'objectif même de la fonctionnalité), au prix d'une structure
+de données volontairement simple (`list<array{label, reason, severity}>`) plutôt qu'une seule
+recommandation "gagnante".
+
+## 8. Kits/accessoires avec contrôle automatique au retour (issue #83) - décisions d'implémentation
 
 **Pourquoi un champ JSON sur le catalogue plutôt qu'une nouvelle table pivot** : la composition
 d'un kit (`Kit::accessories_id`) suit exactement le patron déjà établi par

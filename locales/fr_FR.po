@@ -2250,6 +2250,36 @@ msgstr "Trop de tentatives, lien désactivé par sécurité."
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purge les jetons de signature expirés ou invalides"
 
+msgid "Aide à la décision"
+msgstr "Aide à la décision"
+
+msgid "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+msgstr "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+
+msgid "Afficher les recommandations sur le Passeport matériel"
+msgstr "Afficher les recommandations sur le Passeport matériel"
+
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
+msgstr "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
+
+msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+msgstr "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+
+msgid "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+msgstr "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+
+msgid "Prévoir un remplacement"
+msgstr "Prévoir un remplacement"
+
+msgid "score de santé faible : %d/100"
+msgstr "score de santé faible : %d/100"
+
+msgid "Réévaluer l'usage"
+msgstr "Réévaluer l'usage"
+
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
+msgstr "valeur résiduelle faible : %d %% du prix d'achat"
+
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Configuration assetsign & signature"
 

@@ -44,6 +44,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   kit assigné n'a plus aucun accessoire attendu configuré : l'absence de kit n'est pas un défaut à
   signaler.
 
+- **Module d'aide à la décision** (issue #79, cf. ROADMAP.md tableau V2 et
+  `docs/design/ADR-passeport-v1.md`) : troisième indicateur en tête du Passeport matériel,
+  après le score de santé et la valeur résiduelle dont il dépend explicitement. Moteur de
+  RÈGLES SIMPLE à seuils, explicitement PAS du machine learning (la roadmap le précise :
+  "architecture prête pour de l'IA plus tard sans y aller maintenant") — deux règles
+  indépendantes, chacune avec son libellé et sa raison explicite, calculées à l'affichage
+  (`PassportEvent::getDecisionAidRecommendations()`), jamais persistées ni mises en cache,
+  exactement comme le score de santé et la valeur résiduelle : « Prévoir un remplacement »
+  (score de santé sous le seuil « Vigilance » déjà réglable,
+  `Config::health_score_warning_threshold` — réutilisé tel quel, aucun second réglage
+  redondant) et « Réévaluer l'usage » (valeur résiduelle sous un pourcentage réglable du prix
+  d'achat d'origine, nouveau réglage `Config::residual_value_low_threshold_percent`, seul
+  nouveau seuil introduit par cette PR). Chaque règle exige que sa propre donnée source soit
+  réellement disponible (score de santé calculable, valeur résiduelle ET prix d'achat
+  d'origine tous deux connus) — jamais une recommandation inventée à partir d'une donnée
+  manquante ou d'une fonctionnalité désactivée. Plusieurs règles déclenchées simultanément :
+  toutes affichées, jamais une seule masquant les autres — un vrai outil d'aide à la décision
+  ne doit jamais cacher un facteur contributif. Nouvel onglet dédié « Aide à la décision » de
+  la page de configuration (`Config::enable_decision_aid`, activé par défaut), nouveau bloc
+  d'alertes colorées (Tabler `alert-danger`/`alert-warning`) sur l'onglet Passeport matériel,
+  sibling visuel du score de santé et de la valeur résiduelle — silencieux (aucun bloc
+  affiché) quand rien n'est à signaler ou que les deux indicateurs sources sont indisponibles,
+  même convention que ces deux blocs. Aucune nouvelle table : `getDecisionAidRecommendations()`
+  reste le seul point d'entrée consulté par `showForItem()`, de sorte qu'un futur moteur
+  différent (modèle entraîné, appel à un service externe...) pourrait la remplacer sans
+  toucher à l'affichage ni aux deux indicateurs sources — "architecture prête pour l'IA" au
+  sens de la roadmap, sans construire d'abstraction supplémentaire par anticipation.
+
 - **Fin de vie structurée : destruction (prestataire/certificat) et don (organisme/justificatif)**
   (issue #78, dernière partie de "fin de vie structurée" — la date de réforme automatique était déjà
   livrée le 2026-08-19, cf. entrée correspondante ci-dessous dans l'historique) : nouveau type
