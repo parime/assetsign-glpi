@@ -2225,6 +2225,36 @@ msgstr "Zu viele Versuche, Link aus Sicherheitsgründen deaktiviert."
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Löscht abgelaufene oder ungültige Signatur-Tokens"
 
+msgid "Aide à la décision"
+msgstr "Entscheidungshilfe"
+
+msgid "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+msgstr "Einfache Regel-Engine (kein maschinelles Lernen), die den obigen Gesundheitswert und Restwert kombiniert, um eine Maßnahme im Gerätepass zu empfehlen, stets mit Angabe des Grundes bzw. der Gründe. Es wird nie eine Empfehlung angezeigt, wenn der entsprechende Indikator selbst nicht verfügbar ist (Gesundheitswert deaktiviert, Kaufpreis unbekannt...)."
+
+msgid "Afficher les recommandations sur le Passeport matériel"
+msgstr "Empfehlungen im Gerätepass anzeigen"
+
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
+msgstr "„Ersatz einplanen“ wird unterhalb des bereits im Tab Gesundheitswert eingestellten Schwellenwerts „Warnung“ ausgelöst — keine zweite, redundante Einstellung für denselben Sachverhalt."
+
+msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+msgstr "Restwertschwelle, die „Nutzung neu bewerten“ auslöst (% des Kaufpreises)"
+
+msgid "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+msgstr "Unterhalb dieses Prozentsatzes des ursprünglichen Kaufpreises wird die Empfehlung „Nutzung neu bewerten“ angezeigt."
+
+msgid "Prévoir un remplacement"
+msgstr "Ersatz einplanen"
+
+msgid "score de santé faible : %d/100"
+msgstr "niedriger Gesundheitswert: %d/100"
+
+msgid "Réévaluer l'usage"
+msgstr "Nutzung neu bewerten"
+
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
+msgstr "niedriger Restwert: %d%% des Kaufpreises"
+
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Konfiguration Übergabe & Unterschrift"
 

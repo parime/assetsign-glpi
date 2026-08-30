@@ -2212,6 +2212,36 @@ msgstr "Demasiados intentos, enlace desactivado por seguridad."
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Purga los tokens de firma caducados o no válidos"
 
+msgid "Aide à la décision"
+msgstr "Ayuda a la decisión"
+
+msgid "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+msgstr "Motor de reglas simple (sin aprendizaje automático) que combina la puntuación de salud y el valor residual anteriores para recomendar una acción en el Pasaporte del equipo, siempre mostrando su(s) motivo(s). Nunca se muestra ninguna recomendación si el indicador correspondiente no está disponible (puntuación de salud desactivada, precio de compra desconocido...)."
+
+msgid "Afficher les recommandations sur le Passeport matériel"
+msgstr "Mostrar las recomendaciones en el Pasaporte del equipo"
+
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
+msgstr "«Prever una sustitución» se activa por debajo del umbral «Alerta» ya configurado en la pestaña Puntuación de salud — sin un segundo ajuste redundante para la misma noción."
+
+msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+msgstr "Umbral de valor residual que activa «Reevaluar el uso» (% del precio de compra)"
+
+msgid "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+msgstr "Por debajo de este porcentaje del precio de compra original, se muestra la recomendación «Reevaluar el uso»."
+
+msgid "Prévoir un remplacement"
+msgstr "Prever una sustitución"
+
+msgid "score de santé faible : %d/100"
+msgstr "puntuación de salud baja: %d/100"
+
+msgid "Réévaluer l'usage"
+msgstr "Reevaluar el uso"
+
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
+msgstr "valor residual bajo: %d%% del precio de compra"
+
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Configuración de entrega y firma"
 

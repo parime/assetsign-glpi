@@ -2219,6 +2219,36 @@ msgstr "Troppi tentativi, link disattivato per sicurezza."
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Elimina i token di firma scaduti o non validi"
 
+msgid "Aide à la décision"
+msgstr "Supporto alla decisione"
+
+msgid "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+msgstr "Motore di regole semplice (senza machine learning) che combina il punteggio di salute e il valore residuo sopra indicati per raccomandare un'azione sul Passaporto del dispositivo, sempre mostrando il motivo o i motivi. Nessuna raccomandazione viene mai mostrata se l'indicatore corrispondente non è esso stesso disponibile (punteggio di salute disattivato, prezzo di acquisto sconosciuto...)."
+
+msgid "Afficher les recommandations sur le Passeport matériel"
+msgstr "Mostra le raccomandazioni nel Passaporto del dispositivo"
+
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
+msgstr "«Prevedere una sostituzione» si attiva al di sotto della soglia «Attenzione» già impostata nella scheda Punteggio di salute — nessuna seconda impostazione ridondante per la stessa nozione."
+
+msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+msgstr "Soglia di valore residuo che attiva «Rivalutare l'utilizzo» (% del prezzo di acquisto)"
+
+msgid "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+msgstr "Al di sotto di questa percentuale del prezzo di acquisto originale, viene mostrata la raccomandazione «Rivalutare l'utilizzo»."
+
+msgid "Prévoir un remplacement"
+msgstr "Prevedere una sostituzione"
+
+msgid "score de santé faible : %d/100"
+msgstr "punteggio di salute basso: %d/100"
+
+msgid "Réévaluer l'usage"
+msgstr "Rivalutare l'utilizzo"
+
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
+msgstr "valore residuo basso: %d%% del prezzo di acquisto"
+
 #~ msgid "Configuration assetsign & signature"
 #~ msgstr "Configurazione consegna e firma"
 
