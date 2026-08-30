@@ -150,6 +150,16 @@
                 </span>
               </div>
             {% endif %}
+            {% if event.kit_summary is defined %}
+              <div class="mt-1">
+                <span class="badge" style="background-color: {{ event.kit_summary.color }}; color: #fff;" title="{{ event.kit_summary.kit_name }}">
+                  <i class="ti ti-package"></i> {{ event.kit_summary.returned_count }}/{{ event.kit_summary.expected_total }} {{ __('accessoires du kit restitués', 'assetsign') }}
+                </span>
+                {% if event.kit_summary.missing_names|length %}
+                  <div class="text-muted small">{{ __('Accessoire(s) manquant(s) :', 'assetsign') }} {{ event.kit_summary.missing_names|join(', ') }}</div>
+                {% endif %}
+              </div>
+            {% endif %}
             {% if event.movement_summary is defined %}
               <div class="mt-1">
                 <span class="text-muted small">

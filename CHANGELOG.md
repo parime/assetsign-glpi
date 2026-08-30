@@ -11,6 +11,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Kits/accessoires avec contrôle automatique au retour** (issue #83, cf. ROADMAP.md tableau V3
+  et `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` — un GROUPE nommé et réutilisable
+  d'accessoires censés voyager ensemble avec une remise (ex: « Kit ordinateur portable standard » =
+  Chargeur + Sacoche + Souris). Même motif exact que `ChecklistItem` (issue #74) plutôt qu'un
+  mécanisme parallèle : dropdown standard GLPI (CRUD/recherche/droits génériques gratuits), la
+  composition du kit (`accessories_id`) stockée en JSON directement sur la ligne du catalogue —
+  volontairement **pas** une nouvelle table pivot, un Kit n'ayant qu'une seule caractéristique
+  propre (sa composition), contrairement à `AssetsignAccessory` qui porte en plus une quantité et
+  un commentaire PROPRES À CHAQUE remise. Nouveau champ `plugin_assetsign_kits_id` sur `Assetsign`
+  (pas de contrainte de clé étrangère, même choix déjà fait pour `plugin_assetsign_templates_id`) :
+  un technicien peut tagguer une Attribution (ou une Restitution) « utilise le Kit X », éditable
+  tant que la fiche reste modifiable (`Assetsign::updateKit()`, même garde `isStillEditable()` que
+  `addAccessory()`/`updateVenteDetails()`). Le kit assigné à l'Attribution est reporté
+  **automatiquement** sur la Restitution créée ensuite pour le même matériel
+  (`Assetsign::resolveKitForAutomaticCreation()`, appelée depuis `createAssetsign()`) — un simple
+  report d'une donnée déjà réellement saisie, jamais une invention, même principe que
+  `writeDecommissionDateIfMissing()` (date de réforme automatique) — reste corrigeable ensuite par
+  un technicien. Cœur de la détection automatique : `Kit::computeCompleteness()`, une comparaison
+  PURE (aucun accès base, testée unitairement pour les cas complet/un manquant/tout manquant/aucun
+  kit assigné) entre les accessoires ATTENDUS par le kit et ceux RÉELLEMENT enregistrés sur la
+  Restitution (`AssetsignAccessory`, déjà existant — aucune nouvelle saisie requise), par simple
+  PRÉSENCE d'accessoire, jamais par quantité. Affiché à deux endroits : sur la fiche Assetsign
+  elle-même (section « Kit d'accessoires », à côté des accessoires) et, PUREMENT calculé à
+  l'affichage comme le résumé de checklist qualité (`PassportEvent::attachChecklistSummaries()`),
+  en badge coloré fusionné dans la frise du Passeport matériel/utilisateur sur l'événement de
+  Restitution (`PassportEvent::attachKitSummaries()`, batché en 4 requêtes au total pour toute la
+  frise, jamais une par événement affiché — même souci de performance documenté dans l'ADR) : vert
+  si complet, orange si un ou plusieurs accessoires manquent, rouge si aucun accessoire du kit
+  n'est revenu (perte totale, sévérité volontairement distincte du gris « pas encore rempli » de la
+  checklist qualité). Absent (aucun badge) si aucun kit n'est assigné à la Restitution, ou si le
+  kit assigné n'a plus aucun accessoire attendu configuré : l'absence de kit n'est pas un défaut à
+  signaler.
+
 - **Fin de vie structurée : destruction (prestataire/certificat) et don (organisme/justificatif)**
   (issue #78, dernière partie de "fin de vie structurée" — la date de réforme automatique était déjà
   livrée le 2026-08-19, cf. entrée correspondante ci-dessous dans l'historique) : nouveau type

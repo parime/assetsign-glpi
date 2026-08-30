@@ -454,6 +454,34 @@ msgstr ""
 "Ningún punto de control configurado para este tipo de movimiento "
 "(Configuración > Listas desplegables > Puntos de control de calidad)."
 
+#: templates/assetsign_form.html.twig src/GlpiPlugin/Assetsign/Kit.php:30
+msgid "Kit d'accessoires"
+msgid_plural "Kits d'accessoires"
+msgstr[0] "Kit de accesorios"
+msgstr[1] "Kits de accesorios"
+
+#: templates/assetsign_form.html.twig
+msgid "Kit assigné :"
+msgstr "Kit asignado:"
+
+#: templates/assetsign_form.html.twig
+msgid "Aucun kit assigné pour le moment."
+msgstr "Ningún kit asignado por el momento."
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "accessoires du kit restitués"
+msgstr "accesorios del kit devueltos"
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "Accessoire(s) manquant(s) :"
+msgstr "Accesorio(s) faltante(s):"
+
+#: templates/assetsign_form.html.twig
+msgid "Assigner / changer le kit"
+msgstr "Asignar / cambiar el kit"
+
 #: templates/assetsign_form.html.twig
 msgid "Accessoires remis"
 msgstr "Accesorios entregados"
@@ -1634,6 +1662,18 @@ msgstr "Movimiento creado."
 #: setup.php:232
 msgid "Aucune verification de configuration bloquante."
 msgstr "Ninguna verificación de configuración bloqueante."
+
+#: src/GlpiPlugin/Assetsign/Kit.php:128
+msgid "Accessoires attendus dans ce kit"
+msgstr "Accesorios esperados en este kit"
+
+#: src/GlpiPlugin/Assetsign/Kit.php:151
+msgid ""
+"Ces accessoires seront automatiquement vérifiés à la restitution si ce kit "
+"est assigné à une remise."
+msgstr ""
+"Estos accesorios se verificarán automáticamente en la devolución si este "
+"kit está asignado a una entrega."
 
 #: src/GlpiPlugin/Assetsign/Accessory.php:17
 msgid "Accessoire d'attribution"
