@@ -114,7 +114,7 @@ Départ/destination réutiliseraient la table native `glpi_locations` (`Location
 | V3 | Passeport environnemental | [#80](https://github.com/parime/assetsign-glpi/issues/80) | Non commencé - risque externe tranché par anticipation (section 2.5) |
 | V3 | Bénéfice du réemploi | [#81](https://github.com/parime/assetsign-glpi/issues/81) | Non commencé - dépend de #80 |
 | V3 | QR code sur le matériel | [#82](https://github.com/parime/assetsign-glpi/issues/82) | **Livré** (PR de suivi) - étiquette imprimable sur l'onglet Passeport matériel, QR code encodant un lien `forcetab` absolu (`front/qrlabel.php`), génération QR extraite en classe partagée `QrCode` (jusqu'ici dupliquée nulle part, réutilisée telle quelle par le PDF) |
-| V3 | Kits/accessoires avec contrôle automatique | [#83](https://github.com/parime/assetsign-glpi/issues/83) | Non commencé - dépend des checklists (#74, livré) |
+| V3 | Kits/accessoires avec contrôle automatique | [#83](https://github.com/parime/assetsign-glpi/issues/83) | **Livré** (PR de suivi) - nouveau catalogue `Kit` (composition en JSON, même motif que `ChecklistItem`), champ `plugin_assetsign_kits_id` sur `Assetsign`, report automatique du kit de l'Attribution vers la Restitution suivante, comparaison accessoires attendus/restitués (`Kit::computeCompleteness()`) affichée en badge colore sur la frise du Passeport (`PassportEvent::attachKitSummaries()`) |
 | V3 | Dashboard RSE, app mobile technicien, signatures multiples | [#84](https://github.com/parime/assetsign-glpi/issues/84) | Non commencé, grab-bag à redécouper le moment venu |
 | - | Repères d'état des lieux visuel : veille récidive décalage | [#86](https://github.com/parime/assetsign-glpi/issues/86) | Watch-only, sans rapport avec le Passeport - non traité ici |
 
@@ -211,3 +211,41 @@ autres - décision explicite pour rester un vrai outil d'aide à la décision (c
 contributif irait à l'encontre de l'objectif même de la fonctionnalité), au prix d'une structure
 de données volontairement simple (`list<array{label, reason, severity}>`) plutôt qu'une seule
 recommandation "gagnante".
+
+## 8. Kits/accessoires avec contrôle automatique au retour (issue #83) - décisions d'implémentation
+
+**Pourquoi un champ JSON sur le catalogue plutôt qu'une nouvelle table pivot** : la composition
+d'un kit (`Kit::accessories_id`) suit exactement le patron déjà établi par
+`ChecklistItem::movement_types` (section 3.1) plutôt que le motif pivot d'`AssetsignAccessory` -
+un Kit n'a qu'une seule caractéristique propre (SA composition), alors qu'`AssetsignAccessory`
+doit en plus porter une quantité et un commentaire PROPRES À CHAQUE remise (deux besoins
+différents). La comparaison de complétude (`Kit::computeCompleteness()`) se fait d'ailleurs par
+simple PRÉSENCE d'un identifiant Accessory, jamais par quantité, ce qui confirme que la
+quantité n'est pas une notion du kit lui-même.
+
+**Pourquoi `plugin_assetsign_kits_id` est une colonne directe sur `Assetsign` plutôt qu'un
+mouvement structuré ou une jointure sur l'historique** : une Attribution/Restitution donnée
+utilise AU PLUS un seul kit (relation plusieurs-vers-un), contrairement à la relation
+plusieurs-vers-plusieurs entre une remise et ses accessoires - une simple colonne suffit,
+sans contrainte de clé étrangère (même choix déjà fait pour
+`plugin_assetsign_templates_id` : un Kit purgé ne doit jamais entraîner la suppression en
+cascade de tout l'historique des remises qui l'ont utilisé).
+
+**Report automatique du kit de l'Attribution vers la Restitution**
+(`Assetsign::resolveKitForAutomaticCreation()`, appelée depuis `createAssetsign()`) : sans
+mécanisme dédié de "paire Attribution/Restitution" dans le modèle existant (`getLivesForItem()`
+ne fait qu'un regroupement d'AFFICHAGE, jamais un lien de données), le report se fait par la
+dernière Attribution réelle du même matériel (`itemtype`/`items_id`, `ORDER BY date_creation
+DESC LIMIT 1`) - un simple report d'une donnée déjà réellement saisie, jamais une invention,
+même principe que `writeDecommissionDateIfMissing()` (date de réforme automatique, copier un
+fait réel plutôt que d'en deviner un). Reste corrigeable ensuite par un technicien
+(`Assetsign::updateKit()`, disponible sur n'importe quel type de fiche, pas seulement
+Attribution) : un report automatique erroné ou absent n'est jamais un blocage définitif.
+
+**Badge rouge distinct du gris de la checklist qualité** : `attachChecklistSummaries()`
+utilise le gris pour "configuré mais rien de rempli", un état neutre (l'administrateur n'a
+simplement pas encore eu le temps). Pour le contrôle de kit, ce même état ("aucun accessoire
+du kit n'est revenu") est un signal réel de perte de matériel, pas un simple retard de saisie -
+`Kit::colorForCompleteness()` utilise donc le rouge plutôt que le gris pour ce cas précis,
+seule différence assumée avec le motif checklist par ailleurs scrupuleusement reproduit
+(agrégation en lecture, batchée, jamais de duplication dans `glpi_plugin_assetsign_events`).

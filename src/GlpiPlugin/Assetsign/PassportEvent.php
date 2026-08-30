@@ -231,6 +231,7 @@ class PassportEvent extends CommonDBTM
       }
        unset($row);
        self::attachChecklistSummaries($rows);
+       self::attachKitSummaries($rows);
        self::attachMovementSummaries($rows);
 
        // getLivesForItem() sur les evenements REELS uniquement : les pseudo-evenements
@@ -784,6 +785,7 @@ class PassportEvent extends CommonDBTM
       }
        unset($row);
        self::attachChecklistSummaries($rows);
+       self::attachKitSummaries($rows);
 
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/passport_user_tab.html.twig', [
            'events'       => array_reverse($rows), // le plus recent en premier dans la frise
@@ -1090,6 +1092,109 @@ class PassportEvent extends CommonDBTM
               },
           ];
        }
+       unset($row);
+   }
+
+    /**
+     * Ajoute un resume ('kit_summary') aux evenements TYPE_RETURN issus d'une
+     * Assetsign a laquelle un Kit est assigne (cf. ROADMAP.md V3, issue #83,
+     * "Kits/accessoires avec controle automatique au retour") - PUREMENT une
+     * agregation a l'affichage, meme motif exact qu'attachChecklistSummaries() :
+     * rien n'est jamais copie dans glpi_plugin_assetsign_events, la comparaison
+     * (Kit::computeCompleteness()) est refaite a chaque affichage a partir des
+     * VRAIES donnees (Kit::accessories_id, glpi_plugin_assetsign_assetsignaccessories
+     * de CHAQUE Restitution concernee). Batch en QUATRE requetes AU TOTAL pour
+     * toute la frise (jamais une par evenement affiche, meme souci de
+     * performance que documente dans l'ADR, section "Performance des
+     * indicateurs calcules") : 1) quel Kit (le cas echeant) est assigne a
+     * chaque Restitution affichee, 2) composition de chaque Kit DISTINCT
+     * concerne, 3) accessoires reellement restitues sur ces memes Restitutions,
+     * 4) libelles des accessoires (pour la liste des manquants) — jamais une
+     * cinquieme requete par ligne pour resoudre un nom. Absent (`kit_summary`
+     * jamais ajoute) si aucun kit n'est assigne a cette Restitution, ou si le
+     * kit assigne n'a plus aucun accessoire attendu configure : l'absence de
+     * kit n'est pas un defaut a signaler, meme logique que l'absence de
+     * checklist configuree.
+     * @param array<int, array<string, mixed>> $rows Modifie par reference.
+     */
+   private static function attachKitSummaries(array &$rows): void {
+       global $DB;
+
+       $returnAssetsignIds = [];
+      foreach ($rows as $row) {
+         if (($row['source_itemtype'] ?? null) === Assetsign::class && (int) $row['event_type'] === self::TYPE_RETURN) {
+             $returnAssetsignIds[] = (int) $row['source_items_id'];
+         }
+      }
+      if ($returnAssetsignIds === []) {
+          return;
+      }
+
+       // 1/4 : quel Kit (le cas echeant) est assigne a chaque Restitution affichee.
+       $kitIdByAssetsignId = [];
+      foreach ($DB->request([
+          'SELECT' => ['id', 'plugin_assetsign_kits_id'],
+          'FROM'   => Assetsign::getTable(),
+          'WHERE'  => ['id' => array_values(array_unique($returnAssetsignIds)), 'plugin_assetsign_kits_id' => ['>', 0]],
+      ]) as $row) {
+          $kitIdByAssetsignId[(int) $row['id']] = (int) $row['plugin_assetsign_kits_id'];
+      }
+      if ($kitIdByAssetsignId === []) {
+          return; // Aucune des Restitutions affichees n'a de kit assigne.
+      }
+
+       // 2/4 : composition (accessoires ATTENDUS) de chaque Kit distinct concerne.
+       $expectedIdsByKitId = [];
+       $kitNameById = [];
+      foreach ($DB->request(['FROM' => Kit::getTable(), 'WHERE' => ['id' => array_values(array_unique($kitIdByAssetsignId))]]) as $row) {
+          $expectedIdsByKitId[(int) $row['id']] = Kit::decodeAccessoryIds((string) ($row['accessories_id'] ?? ''));
+          $kitNameById[(int) $row['id']] = (string) $row['name'];
+      }
+
+       // 3/4 : accessoires REELLEMENT restitues (AssetsignAccessory) sur chacune
+       // des Restitutions concernees.
+       $actualIdsByAssetsignId = [];
+      foreach ($DB->request([
+          'FROM'  => 'glpi_plugin_assetsign_assetsignaccessories',
+          'WHERE' => ['plugin_assetsign_assetsigns_id' => array_keys($kitIdByAssetsignId)],
+      ]) as $row) {
+          $actualIdsByAssetsignId[(int) $row['plugin_assetsign_assetsigns_id']][] = (int) $row['plugin_assetsign_accessories_id'];
+      }
+
+       // 4/4 : libelles des accessoires (pour la liste des manquants) - uniquement
+       // ceux reellement attendus par au moins un des kits concernes.
+       $allExpectedIds = array_values(array_unique(array_merge([], ...array_values($expectedIdsByKitId))));
+       $accessoryNameById = [];
+      if ($allExpectedIds !== []) {
+         foreach ($DB->request(['FROM' => Accessory::getTable(), 'WHERE' => ['id' => $allExpectedIds]]) as $row) {
+             $accessoryNameById[(int) $row['id']] = (string) $row['name'];
+         }
+      }
+
+      foreach ($rows as &$row) {
+          $assetsignId = (int) $row['source_items_id'];
+          $kitId = $kitIdByAssetsignId[$assetsignId] ?? null;
+         if ($kitId === null) {
+             continue;
+         }
+          $expected = $expectedIdsByKitId[$kitId] ?? [];
+         if ($expected === []) {
+             continue;
+         }
+          $actual = $actualIdsByAssetsignId[$assetsignId] ?? [];
+          $completeness = Kit::computeCompleteness($expected, $actual);
+
+          $row['kit_summary'] = [
+              'kit_name'       => $kitNameById[$kitId] ?? '',
+              'expected_total' => $completeness['expected_total'],
+              'returned_count' => $completeness['returned_count'],
+              'missing_names'  => array_map(
+                  static fn (int $id): string => $accessoryNameById[$id] ?? ('#' . $id),
+                  $completeness['missing_ids']
+              ),
+              'color' => Kit::colorForCompleteness($completeness),
+          ];
+      }
        unset($row);
    }
 

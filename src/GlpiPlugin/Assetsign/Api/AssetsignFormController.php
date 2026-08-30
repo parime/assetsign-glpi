@@ -86,6 +86,11 @@ final class AssetsignFormController
        $assetsign->updateDestructionDetails((string) ($post['provider_name'] ?? ''));
    }
 
+    /** Assigne/change/retire le Kit d'accessoires de cette remise (cf. ROADMAP.md V3, issue #83). */
+   public function updateKit(Assetsign $assetsign, array $post): void {
+       $assetsign->updateKit((int) ($post['plugin_assetsign_kits_id'] ?? 0));
+   }
+
     /**
      * $post['checklist'] : tableau brut $_POST (id du ChecklistItem => valeur
      * soumise) - cf. ROADMAP.md V1, issue #74. Absent si aucune case/menu

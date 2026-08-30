@@ -405,6 +405,15 @@ class Assetsign extends CommonDBTM
            'checklist_items'     => $this->isNewID($ID) ? [] : ChecklistItem::getActiveItemsForMovementType((int) $this->fields['type']),
            'checklist_values'    => $this->isNewID($ID) ? [] : $this->getChecklistValuesByItemId(),
            'can_edit_checklist'  => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
+           // Kit d'accessoires (cf. ROADMAP.md V3, issue #83) : section affichee
+           // uniquement pour Attribution/Restitution (types_handover/type_return,
+           // les deux seuls types pour lesquels un "controle au retour" a un
+           // sens), meme droit/garde que le reste de cette fiche (can_edit_accessories,
+           // reutilise plutot qu'invente : meme isStillEditable() + droit UPDATE).
+           'type_handover'    => self::TYPE_HANDOVER,
+           'type_return'      => self::TYPE_RETURN,
+           'kit'              => $this->isNewID($ID) ? null : $this->getKit(),
+           'kit_completeness' => $this->isNewID($ID) ? null : $this->getKitCompleteness(),
            'csrf_token'   => \Session::getNewCSRFToken(),
        ]);
 
@@ -1004,6 +1013,7 @@ class Assetsign extends CommonDBTM
            'users_id'                    => $users_id,
            'users_id_tech'               => Session::getLoginUserID() ?: 0,
            'plugin_assetsign_templates_id'  => $template ? $template->getID() : 0,
+           'plugin_assetsign_kits_id'    => self::resolveKitForAutomaticCreation($item, $type),
            'type'                        => $type,
            'status'                      => self::STATUS_PENDING,
        ]);
@@ -1022,6 +1032,40 @@ class Assetsign extends CommonDBTM
 
        $assetsign->getFromDB($id);
        $assetsign->launchWorkflow($config);
+   }
+
+    /**
+     * Report automatique du Kit assigne a la DERNIERE Attribution de ce materiel
+     * vers une nouvelle Restitution (V3, issue #83) : evite de faire ressaisir
+     * au technicien un kit deja choisi a la remise, tout en restant un simple
+     * report d'une VRAIE donnee deja saisie — jamais une invention (meme
+     * principe que writeDecommissionDateIfMissing() : copier un fait reel,
+     * jamais en deviner un). Reste corrigeable ensuite via updateKit() (ex:
+     * kit determine seulement au moment de la restitution, ou report errone
+     * a corriger). Concerne UNIQUEMENT la Restitution : Don/Vente/Destruction
+     * n'ont pas de notion de "controle au retour", et une Attribution n'a
+     * evidemment rien a reporter depuis elle-meme.
+     */
+   private static function resolveKitForAutomaticCreation(CommonDBTM $item, int $type): int {
+      if ($type !== self::TYPE_RETURN) {
+          return 0;
+      }
+
+       global $DB;
+       $lastHandover = $DB->request([
+           'FROM'  => self::getTable(),
+           'WHERE' => [
+               'itemtype'                    => $item->getType(),
+               'items_id'                    => $item->getID(),
+               'type'                        => self::TYPE_HANDOVER,
+               'is_deleted'                  => 0,
+               'plugin_assetsign_kits_id'    => ['>', 0],
+           ],
+           'ORDER' => 'date_creation DESC',
+           'LIMIT' => 1,
+       ])->current();
+
+       return $lastHandover !== null ? (int) $lastHandover['plugin_assetsign_kits_id'] : 0;
    }
 
     /**
@@ -1830,6 +1874,81 @@ class Assetsign extends CommonDBTM
        return $template->getFromDB($this->fields['plugin_assetsign_templates_id']) ? $template : null;
    }
 
+    /** Kit assigne a cette fiche (V3, issue #83), meme motif que getTemplate() ci-dessus. */
+   public function getKit(): ?Kit {
+      if (!$this->fields['plugin_assetsign_kits_id']) {
+          return null;
+      }
+       $kit = new Kit();
+       return $kit->getFromDB($this->fields['plugin_assetsign_kits_id']) ? $kit : null;
+   }
+
+    /**
+     * Assigne (ou retire, kits_id=0) le Kit utilise pour cette remise (cf.
+     * ROADMAP.md V3, issue #83, "Kits/accessoires avec controle automatique au
+     * retour"), meme garde isStillEditable() que updateVenteDetails()/
+     * updateDonDetails() et meme regeneration du PDF non signe qu'addAccessory().
+     * Pose volontairement sur N'IMPORTE QUEL type de fiche (pas seulement
+     * Attribution) : un technicien doit pouvoir assigner/corriger le kit
+     * directement sur la Restitution elle-meme (ex: kit determine apres coup,
+     * ou correction d'un report automatique errone — cf.
+     * resolveKitForAutomaticCreation() ci-dessous), pas seulement a
+     * l'Attribution d'origine.
+     */
+   public function updateKit(int $kits_id): void {
+      if (!$this->isStillEditable()) {
+          return;
+      }
+       $this->update(['id' => $this->getID(), 'plugin_assetsign_kits_id' => max(0, $kits_id)]);
+       $this->regenerateUnsignedPdf();
+   }
+
+    /**
+     * Resultat du controle automatique de kit pour CETTE fiche (V3, issue #83) —
+     * `null` (jamais un tableau "vide") si aucun kit n'est assigne, ou si le kit
+     * assigne n'a plus aucun accessoire attendu configure : meme principe de
+     * non-invention que getResidualValue()/attachChecklistSummaries(), l'absence
+     * de kit n'est pas un defaut a signaler. Les accessoires "reellement
+     * restitues" sont ceux enregistres sur CETTE fiche precise (getAccessories(),
+     * deja alimentee par addAccessory() — les accessoires physiquement rendus au
+     * technicien au moment de LA restitution), jamais ceux de l'attribution
+     * d'origine. PUREMENT calcule a l'affichage (cf. ADR-passeport-v1.md,
+     * risque 2.2) : aucune donnee copiee, la comparaison (Kit::computeCompleteness())
+     * est refaite depuis les tables reelles a chaque appel — sans consequence de
+     * performance ici (un seul enregistrement, contrairement a
+     * PassportEvent::attachKitSummaries() qui doit batcher pour toute une frise).
+     * @return array{kit_name: string, expected_total: int, returned_count: int, missing_names: string[], complete: bool, color: string}|null
+     */
+   public function getKitCompleteness(): ?array {
+       $kit = $this->getKit();
+      if ($kit === null) {
+          return null;
+      }
+
+       $expectedIds = $kit->getExpectedAccessoryIds();
+      if ($expectedIds === []) {
+          return null;
+      }
+
+       $actualIds = array_map(static fn (array $a): int => (int) $a['accessories_id'], $this->getAccessories());
+       $result = Kit::computeCompleteness($expectedIds, $actualIds);
+
+       $names = $kit->getExpectedAccessoryNames();
+       $missingNames = array_map(
+           static fn (int $id): string => $names[$id] ?? ('#' . $id),
+           $result['missing_ids']
+       );
+
+       return [
+           'kit_name'       => (string) $kit->fields['name'],
+           'expected_total' => $result['expected_total'],
+           'returned_count' => $result['returned_count'],
+           'missing_names'  => $missingNames,
+           'complete'       => $result['complete'],
+           'color'          => Kit::colorForCompleteness($result),
+       ];
+   }
+
     // ================================================================================
     // Transitions de statut
     // ================================================================================
@@ -2161,6 +2280,7 @@ class Assetsign extends CommonDBTM
                 `external_beneficiary_name` varchar(255) DEFAULT NULL,
                 `external_beneficiary_contact` varchar(255) DEFAULT NULL,
                 `plugin_assetsign_templates_id` int unsigned NOT NULL DEFAULT 0,
+                `plugin_assetsign_kits_id` int unsigned NOT NULL DEFAULT 0,
                 `type` tinyint NOT NULL DEFAULT 0,
                 `status` tinyint NOT NULL DEFAULT 0,
                 `document_id_unsigned` int unsigned NOT NULL DEFAULT 0,
@@ -2185,6 +2305,7 @@ class Assetsign extends CommonDBTM
                 KEY `status` (`status`),
                 KEY `type` (`type`),
                 KEY `plugin_assetsign_templates_id` (`plugin_assetsign_templates_id`),
+                KEY `plugin_assetsign_kits_id` (`plugin_assetsign_kits_id`),
                 KEY `is_deleted` (`is_deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
           $DB->doQuery($query);
@@ -2228,6 +2349,19 @@ class Assetsign extends CommonDBTM
              $migration->addField($table, 'external_beneficiary_name', 'string', ['after' => 'beneficiary_type']);
              $migration->addField($table, 'external_beneficiary_contact', 'string', ['after' => 'external_beneficiary_name']);
              $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'plugin_assetsign_kits_id')) {
+             // V3, issue #83 ("Kits/accessoires avec controle automatique au
+             // retour") : 0 = aucun kit assigne, meme repli que
+             // plugin_assetsign_templates_id (jamais NULL). Pas de contrainte de
+             // cle etrangere vers glpi_plugin_assetsign_kits, meme choix deja
+             // fait pour plugin_assetsign_templates_id (cf. son propre
+             // commentaire plus haut) : un Kit purge ne doit jamais entrainer la
+             // suppression en cascade de tout l'historique des remises qui l'ont
+             // utilise — seule une KEY (index de lecture) est necessaire.
+             $migration->addField($table, 'plugin_assetsign_kits_id', 'integer', ['value' => 0, 'after' => 'plugin_assetsign_templates_id']);
+             $migration->migrationOneTable($table);
+             $migration->addKey($table, 'plugin_assetsign_kits_id');
          }
       }
 

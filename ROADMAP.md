@@ -10,6 +10,22 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
 
 ## Réalisé récemment (2026-08-30)
 
+- **Kits/accessoires avec contrôle automatique au retour - livrée** (issue #83, cf. tableau V3
+  ci-dessus et `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` (dropdown standard
+  GLPI, même motif que `ChecklistItem` — une liste d'accessoires attendus, `accessories_id`,
+  stockée en JSON directement sur la ligne du catalogue, jamais une nouvelle table pivot).
+  Une Attribution/Restitution peut être tagguée « utilise le Kit X » (nouveau champ
+  `plugin_assetsign_kits_id` sur `Assetsign`, éditable tant que la fiche reste modifiable,
+  même garde `isStillEditable()` que les accessoires/observations). Le kit assigné à
+  l'Attribution est reporté **automatiquement** sur la Restitution créée ensuite pour le même
+  matériel (report d'une donnée déjà réellement saisie, jamais une invention — même principe
+  que la date de réforme automatique livrée le 2026-08-19), reste corrigeable manuellement
+  ensuite. À l'affichage, les accessoires attendus par le kit sont comparés à ceux réellement
+  enregistrés sur la Restitution (`AssetsignAccessory`, déjà existant) : badge coloré sur la
+  frise du Passeport matériel/utilisateur (vert = complet, orange = accessoire(s) manquant(s),
+  rouge = rien n'est revenu), calculé PUREMENT à l'affichage et batché (4 requêtes au total pour
+  toute la frise, jamais une par événement affiché), exactement comme le résumé de checklist
+  qualité déjà livré pour l'issue #74.
 - **Module d'aide à la décision - livré** (issue #79, cf. tableau V2 ci-dessous) : troisième
   indicateur du Passeport matériel, après le score de santé et la valeur résiduelle dont il
   dépend explicitement (toutes deux déjà livrées, cf. entrées ci-dessous). Moteur de règles
@@ -182,7 +198,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | Passeport environnemental (empreinte fabrication, source, niveau de confiance ; sources : constructeur, une API externe dédiée, saisie manuelle) | Amorcer un volet RSE réaliste, sans données inventées | Reporting environnemental crédible | Moyenne/Haute (intégration API externe, gestion de son indisponibilité) | Fiche d'identité (V1) | Basse |
 | Bénéfice du réemploi ("impact évité" : durée prévue vs réelle) | Valoriser la prolongation de durée de vie | Argument RSE chiffré et transparent | Faible (calcul dérivé), une fois le passeport environnemental posé | Passeport environnemental, indicateurs temporels | Basse |
 | ~~QR code sur le matériel (scan → état/historique/actions)~~ — **livré** (issue #82, cf. `docs/design/ADR-passeport-v1.md`) : bouton « Imprimer une étiquette QR code » sur l'onglet Passeport matériel, étiquette imprimable dédiée (`front/qrlabel.php`), QR code encodant un lien `forcetab` absolu vers le Passeport matériel (connexion GLPI requise si nécessaire, aucun accès anonyme introduit). | | | | | |
-| Kits/accessoires avec contrôle automatique au retour | Détecter un accessoire manquant à la restitution | Réduction de perte de matériel | Moyenne (nouvelle notion de kit, au-delà des accessoires actuels) | Checklists (V1) | Basse |
+| ~~Kits/accessoires avec contrôle automatique au retour~~ — **livrée** (issue #83, cf. `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` (composition d'accessoires réutilisable), assignable à une Attribution/Restitution, report automatique du kit de l'Attribution vers la Restitution suivante, comparaison automatique (accessoires attendus vs réellement restitués) affichée en badge coloré sur la frise du Passeport matériel. | | | | | |
 | Dashboard RSE, app mobile technicien, signatures multiples | Extensions déjà identifiées comme envisageables | — | Haute (chacune un chantier à part) | Variable selon la fonctionnalité | Basse |
 
 ### Passeport utilisateur (vue symétrique) — MVP livré le 2026-08-05

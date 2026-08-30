@@ -273,6 +273,40 @@
       {% endif %}
     {% endif %}
 
+    {% if item.fields.type == type_handover or item.fields.type == type_return %}
+      <h3 class="mt-4">{{ __('Kit d\'accessoires', 'assetsign') }}</h3>
+      <p>
+        {% if kit is not null %}
+          {{ __('Kit assigné :', 'assetsign') }} <strong>{{ kit.fields.name }}</strong>
+        {% else %}
+          <span class="text-muted">{{ __('Aucun kit assigné pour le moment.', 'assetsign') }}</span>
+        {% endif %}
+      </p>
+      {% if kit_completeness is not null %}
+        <div class="mb-2">
+          <span class="badge" style="background-color: {{ kit_completeness.color }}; color: #fff;">
+            <i class="ti ti-package"></i> {{ kit_completeness.returned_count }}/{{ kit_completeness.expected_total }} {{ __('accessoires du kit restitués', 'assetsign') }}
+          </span>
+          {% if kit_completeness.missing_names|length %}
+            <div class="text-muted small">{{ __('Accessoire(s) manquant(s) :', 'assetsign') }} {{ kit_completeness.missing_names|join(', ') }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+      {% if can_edit_accessories %}
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <div class="col-auto">
+            <label class="form-label">{{ __('Assigner / changer le kit', 'assetsign') }}</label>
+            {% do call('GlpiPlugin\\Assetsign\\Kit::dropdown', [{'name': 'plugin_assetsign_kits_id', 'value': item.fields.plugin_assetsign_kits_id, 'display_emptychoice': true}]) %}
+          </div>
+          <div class="col-auto">
+            <button type="submit" name="update_kit" class="btn btn-secondary btn-sm">{{ __('Enregistrer', 'assetsign') }}</button>
+          </div>
+        </form>
+      {% endif %}
+    {% endif %}
+
     <h3 class="mt-4">{{ __('Accessoires remis', 'assetsign') }}</h3>
     {% if accessories|length %}
       <table class="table table-sm">
