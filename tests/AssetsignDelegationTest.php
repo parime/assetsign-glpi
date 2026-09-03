@@ -67,7 +67,19 @@ class AssetsignDelegationTest extends AssetsignTestCase
             'WHERE' => ['itemtype' => Assetsign::class, 'items_id' => $assetsign->getID()],
         ]));
         $this->assertNotEmpty($rows, 'delegateSignatureTo() doit écrire explicitement dans l\'historique (Assetsign::$dohistory reste à false).');
-        $this->assertStringContainsString('délégué', (string) end($rows)['new_value']);
+
+        // Le message est traduit via __() (cf. Assetsign::delegateSignatureTo()) : on le
+        // reconstruit de la même façon plutôt que de figer un fragment français en dur,
+        // pour que le test reste valide quelle que soit la langue de l'environnement
+        // d'exécution (le même principe est déjà suivi par les autres tests du plugin).
+        $delegate = new \User();
+        $delegate->getFromDB($delegateId);
+        $expectedMessage = sprintf(
+            __('Signature déléguée à %s (motif : %s)', 'assetsign'),
+            formatUserName(0, $delegate->fields['name'], $delegate->fields['realname'], $delegate->fields['firstname']),
+            'Motif de test'
+        );
+        $this->assertSame($expectedMessage, (string) end($rows)['new_value']);
     }
 
     public function testDelegateSignatureToRejectsSameAsOriginalBeneficiary(): void
