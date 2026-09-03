@@ -1339,8 +1339,12 @@ class Assetsign extends CommonDBTM
      * cf. Config::enable_signature_delegation) que par le beneficiaire
      * lui-meme depuis la page de signature (front/sign.php, cf.
      * Config::enable_self_service_delegation) : $initiatedByUsersId distingue
-     * les deux cas dans l'historique natif (deja capture par update(), meme
-     * raisonnement que cancelRequest() ci-dessus).
+     * les deux cas dans l'historique natif, ecrit explicitement ci-dessous
+     * (\Log::history(), meme mecanisme que cancelPendingAssetsignsFor() —
+     * contrairement a cancelRequest(), Assetsign::$dohistory n'est jamais
+     * passe a true, update() seul ne journalise donc rien automatiquement ;
+     * verifie en conditions reelles pendant le developpement de cette
+     * fonctionnalite).
      *
      * Regenere systematiquement le jeton de signature : l'ancien lien, deja
      * envoye au beneficiaire d'origine, devient donc invalide dans le meme
@@ -1385,6 +1389,18 @@ class Assetsign extends CommonDBTM
            'delegated_by_users_id' => $initiatedByUsersId,
        ]);
 
+       \Log::history(
+           $this->getID(),
+           self::class,
+           ['0', '', sprintf(
+               __('Signature déléguée à %s (motif : %s)', 'assetsign'),
+               formatUserName(0, $delegate->fields['name'], $delegate->fields['realname'], $delegate->fields['firstname']),
+               trim($reason) !== '' ? trim($reason) : '—'
+           )],
+           0,
+           \Log::HISTORY_LOG_SIMPLE_MESSAGE
+       );
+
        $config = Config::getForEntity((int) $this->fields['entities_id']);
        // Regenere/cree le jeton meme si la fiche n'en avait pas encore
        // (statut DRAFT/PENDING avant tout envoi) : Token::regenerateForAssetsign()
@@ -1421,6 +1437,14 @@ class Assetsign extends CommonDBTM
            'delegation_reason'     => '',
            'delegated_by_users_id' => 0,
        ]);
+
+       \Log::history(
+           $this->getID(),
+           self::class,
+           ['0', '', __('Délégation de signature révoquée', 'assetsign')],
+           0,
+           \Log::HISTORY_LOG_SIMPLE_MESSAGE
+       );
 
        $config = Config::getForEntity((int) $this->fields['entities_id']);
        $raw = Token::regenerateForAssetsign($this, (int) $config->fields['link_validity_days']);
@@ -1563,9 +1587,9 @@ class Assetsign extends CommonDBTM
        $delegateId = (int) ($this->fields['delegated_users_id'] ?? 0);
       if ($delegateId > 0 && $delegateId === (int) \Session::getLoginUserID()) {
            $delegate = $this->getDelegate();
-          if ($delegate !== null) {
+         if ($delegate !== null) {
               return $delegate;
-          }
+         }
       }
        return $this->getBeneficiary();
    }

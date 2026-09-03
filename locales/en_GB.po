@@ -2292,3 +2292,211 @@ msgstr "low residual value: %d%% of the purchase price"
 
 #~ msgid "Points de contrôle de maintenance"
 #~ msgstr "Maintenance checklist items"
+
+msgid "Vous signez en tant que délégué de"
+msgstr "You are signing as the delegate of"
+
+
+msgid "Vous n'êtes pas disponible ?"
+msgstr "Not available?"
+
+
+msgid ""
+"Vous pouvez déléguer la signature à un autre compte GLPI (manager, RH, "
+"collègue...). Ce lien deviendra invalide dès la délégation confirmée : la "
+"personne désignée recevra son propre lien par e-mail."
+msgstr ""
+"You can delegate the signature to another GLPI account (manager, HR, "
+"colleague...). This link will become invalid as soon as the delegation is "
+"confirmed: the designated person will receive their own link by e-mail."
+
+
+msgid "Je ne suis pas disponible, déléguer la signature à quelqu'un d'autre"
+msgstr "I am not available, delegate the signature to someone else"
+
+
+msgid "Déléguer à"
+msgstr "Delegate to"
+
+
+msgid "Motif (obligatoire)"
+msgstr "Reason (required)"
+
+
+msgid "Confirmer la délégation"
+msgstr "Confirm delegation"
+
+
+msgid "Merci de choisir un compte utilisateur."
+msgstr "Please choose a user account."
+
+
+msgid "Le motif de la délégation est obligatoire."
+msgstr "The reason for the delegation is required."
+
+
+msgid ""
+"La signature a été déléguée. La personne désignée va recevoir son propre "
+"lien par e-mail."
+msgstr ""
+"The signature has been delegated. The designated person will receive their "
+"own link by e-mail."
+
+
+msgid "Signature déléguée à"
+msgstr "Signature delegated to"
+
+
+msgid "le"
+msgstr "on"
+
+
+msgid "motif"
+msgstr "reason"
+
+
+msgid "Révoquer la délégation et rendre la main au bénéficiaire d'origine ?"
+msgstr ""
+"Revoke the delegation and hand control back to the original beneficiary?"
+
+
+msgid "Révoquer"
+msgstr "Revoke"
+
+
+msgid "Déléguer la signature"
+msgstr "Delegate the signature"
+
+
+msgid ""
+"Désigne un autre compte GLPI pour signer à la place du bénéficiaire "
+"d'origine (absence prolongée, congés, départ...). Le lien de signature "
+"envoyé au bénéficiaire d'origine devient invalide dès la délégation."
+msgstr ""
+"Designates another GLPI account to sign in place of the original beneficiary"
+" (extended absence, leave, departure...). The signature link sent to the "
+"original beneficiary becomes invalid as soon as the delegation is made."
+
+
+msgid "Motif"
+msgstr "Reason"
+
+
+msgid "Déléguer"
+msgstr "Delegate"
+
+
+msgid "Délégation de signature"
+msgstr "Signature delegation"
+
+
+msgid ""
+"Permet de continuer une restitution/remise bloquée par l'absence prolongée "
+"du bénéficiaire désigné (congés, arrêt maladie, départ...), en confiant la "
+"signature à un autre compte GLPI. Le bénéficiaire d'origine reste tracé "
+"comme signataire prévu ; la personne qui signe réellement, la date et le "
+"motif de la délégation sont conservés (historique de la fiche, PDF signé)."
+msgstr ""
+"Allows a return/handover blocked by the extended absence of the designated "
+"beneficiary (leave, sick leave, departure...) to continue, by entrusting the"
+" signature to another GLPI account. The original beneficiary remains "
+"recorded as the intended signer; the person who actually signs, the date and"
+" the reason for the delegation are kept (record history, signed PDF)."
+
+
+msgid "Autoriser un technicien/administrateur à déléguer la signature"
+msgstr "Allow a technician/administrator to delegate the signature"
+
+
+msgid ""
+"Ajoute un bouton « Déléguer la signature » sur la fiche Assetsign (droit de "
+"modification requis), pour un bénéficiaire interne (compte GLPI) uniquement."
+msgstr ""
+"Adds a \"Delegate the signature\" button on the Assetsign record (update "
+"right required), for an internal beneficiary (GLPI account) only."
+
+
+msgid ""
+"Autoriser le bénéficiaire à se déléguer lui-même depuis la page de signature"
+msgstr "Allow the beneficiary to delegate themselves from the signature page"
+
+
+msgid ""
+"Nécessite le réglage ci-dessus. Le bénéficiaire choisit lui-même un autre "
+"compte GLPI (motif obligatoire) depuis son lien de signature ; ce lien "
+"devient alors invalide, seul le nouveau lien envoyé au délégué fonctionne."
+msgstr ""
+"Requires the setting above. The beneficiary chooses another GLPI account "
+"themselves (reason required) from their signature link; this link then "
+"becomes invalid, only the new link sent to the delegate works."
+
+
+msgid "Signature déléguée."
+msgstr "Signature delegated."
+
+
+msgid ""
+"Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
+msgstr "Delegation revoked: the original beneficiary can sign again."
+
+
+msgid "La délégation n'est pas activée pour cette entité."
+msgstr "Delegation is not enabled for this entity."
+
+
+msgid ""
+"Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée)."
+msgstr ""
+"This request can no longer be delegated (already signed, expired or "
+"cancelled)."
+
+
+msgid ""
+"La délégation n'est possible que pour un bénéficiaire interne (compte GLPI)."
+msgstr ""
+"Delegation is only possible for an internal beneficiary (GLPI account)."
+
+
+msgid "Le compte délégué doit être différent du bénéficiaire d'origine."
+msgstr "The delegate account must be different from the original beneficiary."
+
+
+msgid "Compte utilisateur délégué introuvable."
+msgstr "Delegate user account not found."
+
+
+msgid "Signature déléguée à %s (motif : %s)"
+msgstr "Signature delegated to %s (reason: %s)"
+
+
+msgid "Cette demande n'est pas déléguée."
+msgstr "This request is not delegated."
+
+
+msgid ""
+"Cette délégation ne peut plus être révoquée (déjà signée, expirée ou "
+"annulée)."
+msgstr ""
+"This delegation can no longer be revoked (already signed, expired or "
+"cancelled)."
+
+
+msgid "Délégation de signature révoquée"
+msgstr "Signature delegation revoked"
+
+
+msgid "Signature déléguée"
+msgstr "Signature delegated"
+
+
+msgid "Délégué"
+msgstr "Delegate"
+
+
+msgid "Signataire délégué"
+msgstr "Delegate signer"
+
+
+msgid "Motif de la délégation"
+msgstr "Reason for the delegation"
+
