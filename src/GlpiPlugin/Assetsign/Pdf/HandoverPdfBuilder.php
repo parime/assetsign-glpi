@@ -99,6 +99,13 @@ final class HandoverPdfBuilder
            'qr_data_uri'         => (bool) $config->fields['show_qr_code']
                ? QrCode::toDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/assetsign/front/assetsign.form.php?id=' . $assetsign->getID())
                : null,
+           // Delegation de signature (issue #115) : toujours lu depuis
+           // $assetsign->fields (pas seulement au moment de la signature, cf.
+           // $extra ci-dessus) — un PDF non signe regenere apres delegation
+           // (ex: ajout d'un accessoire) doit deja mentionner le delegue.
+           'delegated_users_id' => (int) ($assetsign->fields['delegated_users_id'] ?? 0),
+           'delegation_date'    => $assetsign->fields['delegation_date'] ?? null,
+           'delegation_reason'  => $assetsign->fields['delegation_reason'] ?? null,
        ], $extra));
    }
 

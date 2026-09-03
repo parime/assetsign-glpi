@@ -56,6 +56,13 @@ class Config extends CommonDBTM
         'enable_maintenance_signature'        => 0,
         'enable_movements'                    => 0,
         'enable_movement_signature'           => 0,
+        // Delegation de signature (issue #115) : deux bascules independantes,
+        // la seconde ne pouvant etre active QUE si la premiere l'est aussi
+        // (self-service = un mode de delegation EN PLUS du mode
+        // technicien/admin, jamais tout seul) - dependance appliquee cote
+        // serveur dans upsertForEntity() ci-dessous, pas seulement en JS.
+        'enable_signature_delegation'         => 0,
+        'enable_self_service_delegation'      => 0,
         'show_qr_code'                        => 0,
         'enable_qr_label'                     => 1,
         'currency_symbol'                     => '€',
@@ -531,6 +538,14 @@ class Config extends CommonDBTM
            'enable_maintenance_signature' => (int) ($input['enable_maintenance_signature'] ?? 0),
            'enable_movements'     => (int) ($input['enable_movements'] ?? 0),
            'enable_movement_signature' => (int) ($input['enable_movement_signature'] ?? 0),
+           'enable_signature_delegation'    => (int) ($input['enable_signature_delegation'] ?? 0),
+           // Force a 0 si le reglage parent est desactive, meme si le formulaire
+           // (JS defaillant, appel direct...) soumettait quand meme la case a 1 —
+           // la garde JS du formulaire (cf. config_form.html.twig) n'est qu'un
+           // confort visuel, jamais la seule protection.
+           'enable_self_service_delegation' => ((int) ($input['enable_signature_delegation'] ?? 0) === 1)
+               ? (int) ($input['enable_self_service_delegation'] ?? 0)
+               : 0,
            'show_qr_code'         => (int) ($input['show_qr_code'] ?? 0),
            'enable_qr_label'      => (int) ($input['enable_qr_label'] ?? 0),
            'currency_symbol'      => trim($input['currency_symbol'] ?? '') ?: '€',
@@ -692,6 +707,8 @@ class Config extends CommonDBTM
                 `enable_maintenance_signature` tinyint NOT NULL DEFAULT 0,
                 `enable_movements` tinyint NOT NULL DEFAULT 0,
                 `enable_movement_signature` tinyint NOT NULL DEFAULT 0,
+                `enable_signature_delegation` tinyint NOT NULL DEFAULT 0,
+                `enable_self_service_delegation` tinyint NOT NULL DEFAULT 0,
                 `show_qr_code` tinyint NOT NULL DEFAULT 0,
                 `enable_qr_label` tinyint NOT NULL DEFAULT 1,
                 `currency_symbol` varchar(255) NOT NULL DEFAULT '€',
@@ -799,6 +816,16 @@ class Config extends CommonDBTM
              // une entité qui n'active pas explicitement la fonctionnalité).
              $migration->addField($table, 'enable_movements', 'bool', ['value' => 0, 'after' => 'enable_maintenance_signature']);
              $migration->addField($table, 'enable_movement_signature', 'bool', ['value' => 0, 'after' => 'enable_movements']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_signature_delegation')) {
+             // Delegation de la signature de restitution (issue #115) : deux
+             // reglages opt-in, meme convention "enable_*" que le reste de ce
+             // bloc - le second (self-service, cf. son propre commentaire dans
+             // DEFAULTS ci-dessus) n'a de sens que si le premier est actif,
+             // dependance imposee par upsertForEntity() a l'ecriture, pas ici.
+             $migration->addField($table, 'enable_signature_delegation', 'bool', ['value' => 0, 'after' => 'enable_movement_signature']);
+             $migration->addField($table, 'enable_self_service_delegation', 'bool', ['value' => 0, 'after' => 'enable_signature_delegation']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'donation_states')) {

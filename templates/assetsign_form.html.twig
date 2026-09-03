@@ -71,6 +71,45 @@
       {% endif %}
     </div>
 
+    {% if delegate %}
+      <div class="alert alert-warning mt-4">
+        <i class="ti ti-user-share"></i>
+        {% set delegate_name = (delegate.firstname|default('') ~ ' ' ~ delegate.realname|default(''))|trim %}
+        {{ __('Signature déléguée à', 'assetsign') }} <strong>{{ delegate_name is empty ? delegate.name|default('') : delegate_name }}</strong>
+        {{ __('le', 'assetsign') }} {{ item.fields.delegation_date|default('') }}
+        {% if item.fields.delegation_reason is defined and item.fields.delegation_reason %}
+          — {{ __('motif', 'assetsign') }} : {{ item.fields.delegation_reason }}
+        {% endif %}
+        {% if can_delegate %}
+          <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">
+            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="id" value="{{ item.fields.id }}">
+            <button type="submit" name="revoke_delegation" class="btn btn-sm btn-outline-danger ms-2" onclick="return confirm('{{ __('Révoquer la délégation et rendre la main au bénéficiaire d\'origine ?', 'assetsign')|e('js') }}');">{{ __('Révoquer', 'assetsign') }}</button>
+          </form>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if delegation_enabled and can_delegate %}
+      <h3 class="mt-4">{{ __('Déléguer la signature', 'assetsign') }}</h3>
+      <p class="text-muted small">{{ __('Désigne un autre compte GLPI pour signer à la place du bénéficiaire d\'origine (absence prolongée, congés, départ...). Le lien de signature envoyé au bénéficiaire d\'origine devient invalide dès la délégation.', 'assetsign') }}</p>
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Déléguer à', 'assetsign') }}</label>
+          {% do call('User::dropdown', [{'name': 'delegate_users_id'}]) %}
+        </div>
+        <div class="col-auto">
+          <label class="form-label">{{ __('Motif', 'assetsign') }}</label>
+          <input type="text" name="delegation_reason" class="form-control">
+        </div>
+        <div class="col-auto">
+          <button type="submit" name="delegate_signature" class="btn btn-secondary">{{ __('Déléguer', 'assetsign') }}</button>
+        </div>
+      </form>
+    {% endif %}
+
     {% if signature_proof %}
       <h3 class="mt-4">{{ __('Preuve de signature', 'assetsign') }}</h3>
       <table class="table table-striped">

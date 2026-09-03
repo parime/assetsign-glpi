@@ -22,9 +22,17 @@ final class SignatureStamper
    public function apply(\GlpiPlugin\Assetsign\Assetsign $assetsign, string $signaturePngDataUrl): array {
        $signedAt = date('Y-m-d H:i:s');
 
+       // getActualSigner() (pas le beneficiaire d'origine systematiquement) :
+       // reflete qui a REELLEMENT signe (cf. son docblock, issue #115) — sans
+       // quoi la ligne "Signataire" du PDF final resterait fausse des qu'un
+       // delegue signe a la place du beneficiaire d'origine.
+       $signer = $assetsign->getActualSigner();
+
        $html = $this->builder->renderHtml($assetsign, [
            'signature_image' => $signaturePngDataUrl,
            'signed_at'       => $signedAt,
+           'signer_name'     => trim(\formatUserName(0, $signer['name'] ?? '', $signer['realname'] ?? '', $signer['firstname'] ?? '')),
+           'signer_email'    => $signer['email'] ?? '',
        ]);
 
        $protect = (bool) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['protect_pdf'];

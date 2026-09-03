@@ -201,6 +201,49 @@ final class DefaultNotificationContent
                        . '<p>Si consiglia di contattare il beneficiario in altro modo (chiamata, visita di persona) prima della scadenza del link.</p>',
                ],
            ],
+           'delegated' => [
+               'name'  => 'Attribution : signature déléguée',
+               'fr_FR' => [
+                   'subject' => 'La signature d\'un document de ##assetsign.type## vous a été déléguée',
+                   'html'    => '<p>Bonjour ##assetsign.delegate.name##,</p>'
+                       . '<p>La signature du document de ##assetsign.type## pour le matériel <strong>##assetsign.item.name##</strong>, normalement confiée à ##assetsign.user.name##, vous a été déléguée.</p>'
+                       . '<p>Motif : ##assetsign.delegation.reason##</p>'
+                       . '<p><a href="##assetsign.sign_url##">Consulter et signer le document</a></p>'
+                       . '<p>Ce lien est valable jusqu\'au ##assetsign.deadline##.</p>',
+               ],
+               'en_GB' => [
+                   'subject' => 'A ##assetsign.type## document signature has been delegated to you',
+                   'html'    => '<p>Hello ##assetsign.delegate.name##,</p>'
+                       . '<p>Signing the ##assetsign.type## document for the equipment <strong>##assetsign.item.name##</strong>, normally handled by ##assetsign.user.name##, has been delegated to you.</p>'
+                       . '<p>Reason: ##assetsign.delegation.reason##</p>'
+                       . '<p><a href="##assetsign.sign_url##">View and sign the document</a></p>'
+                       . '<p>This link is valid until ##assetsign.deadline##.</p>',
+               ],
+               'es_ES' => [
+                   'subject' => 'Se le ha delegado la firma de un documento de ##assetsign.type##',
+                   'html'    => '<p>Hola ##assetsign.delegate.name##,</p>'
+                       . '<p>La firma del documento de ##assetsign.type## para el equipo <strong>##assetsign.item.name##</strong>, normalmente a cargo de ##assetsign.user.name##, se le ha delegado.</p>'
+                       . '<p>Motivo: ##assetsign.delegation.reason##</p>'
+                       . '<p><a href="##assetsign.sign_url##">Consultar y firmar el documento</a></p>'
+                       . '<p>Este enlace es válido hasta el ##assetsign.deadline##.</p>',
+               ],
+               'de_DE' => [
+                   'subject' => 'Die Unterschrift eines ##assetsign.type##-Dokuments wurde Ihnen übertragen',
+                   'html'    => '<p>Hallo ##assetsign.delegate.name##,</p>'
+                       . '<p>Die Unterschrift des ##assetsign.type##-Dokuments für das Gerät <strong>##assetsign.item.name##</strong>, normalerweise durch ##assetsign.user.name##, wurde Ihnen übertragen.</p>'
+                       . '<p>Grund: ##assetsign.delegation.reason##</p>'
+                       . '<p><a href="##assetsign.sign_url##">Dokument ansehen und unterschreiben</a></p>'
+                       . '<p>Dieser Link ist gültig bis ##assetsign.deadline##.</p>',
+               ],
+               'it_IT' => [
+                   'subject' => 'La firma di un documento di ##assetsign.type## vi è stata delegata',
+                   'html'    => '<p>Ciao ##assetsign.delegate.name##,</p>'
+                       . '<p>La firma del documento di ##assetsign.type## per il dispositivo <strong>##assetsign.item.name##</strong>, normalmente a carico di ##assetsign.user.name##, vi è stata delegata.</p>'
+                       . '<p>Motivo: ##assetsign.delegation.reason##</p>'
+                       . '<p><a href="##assetsign.sign_url##">Consulta e firma il documento</a></p>'
+                       . '<p>Questo link è valido fino al ##assetsign.deadline##.</p>',
+               ],
+           ],
            default => throw new \RuntimeException("Plugin assetsign : évènement de notification inconnu ($event)."),
        };
 

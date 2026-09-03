@@ -2310,3 +2310,211 @@ msgstr "valor residual bajo: %d%% del precio de compra"
 
 #~ msgid "Points de contrôle de maintenance"
 #~ msgstr "Puntos de control de mantenimiento"
+
+msgid "Vous signez en tant que délégué de"
+msgstr "Está firmando como delegado de"
+
+
+msgid "Vous n'êtes pas disponible ?"
+msgstr "¿No está disponible?"
+
+
+msgid ""
+"Vous pouvez déléguer la signature à un autre compte GLPI (manager, RH, "
+"collègue...). Ce lien deviendra invalide dès la délégation confirmée : la "
+"personne désignée recevra son propre lien par e-mail."
+msgstr ""
+"Puede delegar la firma a otra cuenta GLPI (responsable, RRHH, compañero...)."
+" Este enlace dejará de ser válido en cuanto se confirme la delegación: la "
+"persona designada recibirá su propio enlace por correo electrónico."
+
+
+msgid "Je ne suis pas disponible, déléguer la signature à quelqu'un d'autre"
+msgstr "No estoy disponible, delegar la firma a otra persona"
+
+
+msgid "Déléguer à"
+msgstr "Delegar a"
+
+
+msgid "Motif (obligatoire)"
+msgstr "Motivo (obligatorio)"
+
+
+msgid "Confirmer la délégation"
+msgstr "Confirmar la delegación"
+
+
+msgid "Merci de choisir un compte utilisateur."
+msgstr "Por favor, elija una cuenta de usuario."
+
+
+msgid "Le motif de la délégation est obligatoire."
+msgstr "El motivo de la delegación es obligatorio."
+
+
+msgid ""
+"La signature a été déléguée. La personne désignée va recevoir son propre "
+"lien par e-mail."
+msgstr ""
+"La firma se ha delegado. La persona designada recibirá su propio enlace por "
+"correo electrónico."
+
+
+msgid "Signature déléguée à"
+msgstr "Firma delegada a"
+
+
+msgid "le"
+msgstr "el"
+
+
+msgid "motif"
+msgstr "motivo"
+
+
+msgid "Révoquer la délégation et rendre la main au bénéficiaire d'origine ?"
+msgstr ""
+"¿Revocar la delegación y devolver el control al beneficiario original?"
+
+
+msgid "Révoquer"
+msgstr "Revocar"
+
+
+msgid "Déléguer la signature"
+msgstr "Delegar la firma"
+
+
+msgid ""
+"Désigne un autre compte GLPI pour signer à la place du bénéficiaire "
+"d'origine (absence prolongée, congés, départ...). Le lien de signature "
+"envoyé au bénéficiaire d'origine devient invalide dès la délégation."
+msgstr ""
+"Designa otra cuenta GLPI para firmar en lugar del beneficiario original "
+"(ausencia prolongada, vacaciones, baja...). El enlace de firma enviado al "
+"beneficiario original deja de ser válido en cuanto se realiza la delegación."
+
+
+msgid "Motif"
+msgstr "Motivo"
+
+
+msgid "Déléguer"
+msgstr "Delegar"
+
+
+msgid "Délégation de signature"
+msgstr "Delegación de la firma"
+
+
+msgid ""
+"Permet de continuer une restitution/remise bloquée par l'absence prolongée "
+"du bénéficiaire désigné (congés, arrêt maladie, départ...), en confiant la "
+"signature à un autre compte GLPI. Le bénéficiaire d'origine reste tracé "
+"comme signataire prévu ; la personne qui signe réellement, la date et le "
+"motif de la délégation sont conservés (historique de la fiche, PDF signé)."
+msgstr ""
+"Permite continuar una restitución/entrega bloqueada por la ausencia "
+"prolongada del beneficiario designado (vacaciones, baja médica, salida...), "
+"confiando la firma a otra cuenta GLPI. El beneficiario original sigue "
+"registrado como firmante previsto; la persona que realmente firma, la fecha "
+"y el motivo de la delegación se conservan (historial de la ficha, PDF "
+"firmado)."
+
+
+msgid "Autoriser un technicien/administrateur à déléguer la signature"
+msgstr "Permitir que un técnico/administrador delegue la firma"
+
+
+msgid ""
+"Ajoute un bouton « Déléguer la signature » sur la fiche Assetsign (droit de "
+"modification requis), pour un bénéficiaire interne (compte GLPI) uniquement."
+msgstr ""
+"Añade un botón «Delegar la firma» en la ficha Assetsign (se requiere el "
+"derecho de modificación), solo para un beneficiario interno (cuenta GLPI)."
+
+
+msgid ""
+"Autoriser le bénéficiaire à se déléguer lui-même depuis la page de signature"
+msgstr ""
+"Permitir que el beneficiario se delegue a sí mismo desde la página de firma"
+
+
+msgid ""
+"Nécessite le réglage ci-dessus. Le bénéficiaire choisit lui-même un autre "
+"compte GLPI (motif obligatoire) depuis son lien de signature ; ce lien "
+"devient alors invalide, seul le nouveau lien envoyé au délégué fonctionne."
+msgstr ""
+"Requiere el ajuste anterior. El propio beneficiario elige otra cuenta GLPI "
+"(motivo obligatorio) desde su enlace de firma; ese enlace deja entonces de "
+"ser válido, solo funciona el nuevo enlace enviado al delegado."
+
+
+msgid "Signature déléguée."
+msgstr "Firma delegada."
+
+
+msgid ""
+"Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
+msgstr "Delegación revocada: el beneficiario original puede volver a firmar."
+
+
+msgid "La délégation n'est pas activée pour cette entité."
+msgstr "La delegación no está activada para esta entidad."
+
+
+msgid ""
+"Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée)."
+msgstr ""
+"Esta solicitud ya no puede delegarse (ya firmada, caducada o cancelada)."
+
+
+msgid ""
+"La délégation n'est possible que pour un bénéficiaire interne (compte GLPI)."
+msgstr ""
+"La delegación solo es posible para un beneficiario interno (cuenta GLPI)."
+
+
+msgid "Le compte délégué doit être différent du bénéficiaire d'origine."
+msgstr "La cuenta delegada debe ser distinta del beneficiario original."
+
+
+msgid "Compte utilisateur délégué introuvable."
+msgstr "No se encontró la cuenta de usuario delegada."
+
+
+msgid "Signature déléguée à %s (motif : %s)"
+msgstr "Firma delegada a %s (motivo: %s)"
+
+
+msgid "Cette demande n'est pas déléguée."
+msgstr "Esta solicitud no está delegada."
+
+
+msgid ""
+"Cette délégation ne peut plus être révoquée (déjà signée, expirée ou "
+"annulée)."
+msgstr ""
+"Esta delegación ya no puede revocarse (ya firmada, caducada o cancelada)."
+
+
+msgid "Délégation de signature révoquée"
+msgstr "Delegación de firma revocada"
+
+
+msgid "Signature déléguée"
+msgstr "Firma delegada"
+
+
+msgid "Délégué"
+msgstr "Delegado"
+
+
+msgid "Signataire délégué"
+msgstr "Firmante delegado"
+
+
+msgid "Motif de la délégation"
+msgstr "Motivo de la delegación"
+

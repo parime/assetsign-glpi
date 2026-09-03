@@ -39,6 +39,9 @@
     {% set beneficiary_name = (user.firstname ~ ' ' ~ user.realname)|trim %}
     {% if beneficiary_name is empty %}{% set beneficiary_name = user.name %}{% endif %}
     <p>{{ __('Matériel', 'assetsign') }} : <strong>{{ item.name }}</strong> — {{ __('Bénéficiaire', 'assetsign') }} : <strong>{{ beneficiary_name }}</strong></p>
+    {% if is_delegate_signer %}
+      <p>{{ __('Vous signez en tant que délégué de', 'assetsign') }} <strong>{{ beneficiary_name }}</strong>.</p>
+    {% endif %}
     {% endif %}
   </header>
 
@@ -92,7 +95,29 @@
       {% endif %}
     </div>
 
-    <div class="card sign-zone">
+    {% if can_delegate_self %}
+      <div class="card" id="delegate-card">
+        <h2>{{ __('Vous n\'êtes pas disponible ?', 'assetsign') }}</h2>
+        <p class="hint">{{ __('Vous pouvez déléguer la signature à un autre compte GLPI (manager, RH, collègue...). Ce lien deviendra invalide dès la délégation confirmée : la personne désignée recevra son propre lien par e-mail.', 'assetsign') }}</p>
+        <button type="button" id="btn-toggle-delegate">{{ __('Je ne suis pas disponible, déléguer la signature à quelqu\'un d\'autre', 'assetsign') }}</button>
+        <div id="delegate-form" hidden style="margin-top:14px;">
+          <div class="mb-2">
+            <label class="form-label" for="delegate-user">{{ __('Déléguer à', 'assetsign') }}</label>
+            {% do call('User::dropdown', [{'name': 'delegate_users_id', 'rand': 'delegate_user'}]) %}
+          </div>
+          <div class="mb-2">
+            <label class="form-label" for="delegate-reason">{{ __('Motif (obligatoire)', 'assetsign') }}</label>
+            <textarea id="delegate-reason" class="assetsign-comment" rows="2"></textarea>
+          </div>
+          <div class="actions">
+            <button type="button" id="btn-submit-delegate" class="primary">{{ __('Confirmer la délégation', 'assetsign') }}</button>
+          </div>
+          <p id="delegate-status-msg" style="font-size:.85rem;color:var(--ink-soft);"></p>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="card sign-zone" id="sign-zone-card">
       <label class="consent">
         <input type="checkbox" id="consent-checkbox">
         <span>{{ __('J\'ai lu et j\'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus.', 'assetsign') }}</span>
@@ -185,6 +210,73 @@
         }).catch(function () {
           status.textContent = window.ASSETSIGN_I18N.networkError;
           btn.disabled = false;
+        });
+      });
+    })();
+  </script>
+{% endif %}
+
+{% if can_delegate_self %}
+  <script>
+    (function () {
+      var toggleBtn = document.getElementById('btn-toggle-delegate');
+      var form = document.getElementById('delegate-form');
+      var submitBtn = document.getElementById('btn-submit-delegate');
+      var reasonInput = document.getElementById('delegate-reason');
+      var status = document.getElementById('delegate-status-msg');
+      var signZoneCard = document.getElementById('sign-zone-card');
+
+      toggleBtn.addEventListener('click', function () {
+        form.hidden = !form.hidden;
+      });
+
+      submitBtn.addEventListener('click', function () {
+        // Le nom du champ (pas son id, qui varie avec le "rand" genere par
+        // Dropdown::show()) est le seul reperage fiable ici.
+        var select = document.querySelector('select[name="delegate_users_id"]');
+        var delegateId = select ? select.value : '';
+        if (!delegateId) {
+          status.textContent = {{ __('Merci de choisir un compte utilisateur.', 'assetsign')|json_encode|raw }};
+          return;
+        }
+        if (!reasonInput.value.trim()) {
+          status.textContent = {{ __('Le motif de la délégation est obligatoire.', 'assetsign')|json_encode|raw }};
+          return;
+        }
+
+        submitBtn.disabled = true;
+        status.textContent = window.ASSETSIGN_I18N.sending;
+
+        window.assetsignQueuedFetch(window.location.pathname, function () {
+          return {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+              t: window.ASSETSIGN_SIGN_TOKEN,
+              delegate_signature: '1',
+              delegate_users_id: delegateId,
+              delegation_reason: reasonInput.value,
+              _glpi_csrf_token: window.ASSETSIGN_CSRF_TOKEN
+            }).toString()
+          };
+        }).then(function (res) { return res.json(); }).then(function (data) {
+          if (data.success) {
+            // Le jeton de ce lien vient d'etre invalide par la delegation
+            // (cf. Assetsign::delegateSignatureTo()) : on ne recharge donc
+            // jamais la page avec l'ancien jeton, on affiche directement un
+            // message de confirmation et on retire les zones devenues
+            // inutilisables (delegation + signature elles-memes).
+            status.textContent = {{ __('La signature a été déléguée. La personne désignée va recevoir son propre lien par e-mail.', 'assetsign')|json_encode|raw }};
+            form.hidden = true;
+            toggleBtn.hidden = true;
+            if (signZoneCard) { signZoneCard.hidden = true; }
+          } else {
+            status.textContent = {{ __('Erreur', 'assetsign')|json_encode|raw }} + ' : ' + data.error;
+            submitBtn.disabled = false;
+          }
+        }).catch(function () {
+          status.textContent = window.ASSETSIGN_I18N.networkError;
+          submitBtn.disabled = false;
         });
       });
     })();

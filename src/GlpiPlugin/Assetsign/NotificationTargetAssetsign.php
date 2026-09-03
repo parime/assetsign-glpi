@@ -44,6 +44,12 @@ class NotificationTargetAssetsign extends NotificationTarget
      */
    public const TARGET_BENEFICIARY = 900001;
    public const TARGET_TECHNICIAN  = 900002;
+    /**
+     * Compte delegue pour signer (cf. Assetsign::delegateSignatureTo(), issue
+     * #115) : meme motif que TARGET_BENEFICIARY/TARGET_TECHNICIAN ci-dessus
+     * (notification directe par e-mail, sans exiger de droit/profil GLPI).
+     */
+   public const TARGET_DELEGATE = 900003;
 
    public function getEvents(): array {
        return [
@@ -52,6 +58,7 @@ class NotificationTargetAssetsign extends NotificationTarget
            'signed'        => __('Document signé', 'assetsign'),
            'expired'       => __('Document expiré', 'assetsign'),
            'expiring_soon' => __('Document sur le point d\'expirer', 'assetsign'),
+           'delegated'     => __('Signature déléguée', 'assetsign'),
        ];
    }
 
@@ -59,8 +66,12 @@ class NotificationTargetAssetsign extends NotificationTarget
        // Le beneficiaire recoit deja des relances periodiques pendant la meme
        // fenetre (evenement "reminder", cf. Assetsign::runReminders()) : lui envoyer
        // aussi "expiring_soon" (qui s'adresse au technicien, pas a lui) ferait
-       // doublon. Tous les autres evenements le concernent directement.
-      if ($event !== 'expiring_soon') {
+       // doublon. Tous les autres evenements le concernent directement, SAUF
+       // "delegated" (issue #115) : c'est justement le DELEGUE, pas le
+       // beneficiaire d'origine (deja informe implicitement en initiant lui-meme
+       // la delegation en self-service, ou par le technicien qui l'a faite a sa
+       // place), qui doit recevoir le nouveau lien de signature.
+      if (!in_array($event, ['expiring_soon', 'delegated'], true)) {
           $this->addTarget(self::TARGET_BENEFICIARY, __('Bénéficiaire', 'assetsign'));
       }
 
@@ -76,6 +87,10 @@ class NotificationTargetAssetsign extends NotificationTarget
       if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
           $this->addTarget(self::TARGET_TECHNICIAN, __('Technicien', 'assetsign'));
       }
+
+      if ($event === 'delegated') {
+          $this->addTarget(self::TARGET_DELEGATE, __('Délégué', 'assetsign'));
+      }
    }
 
     /**
@@ -89,6 +104,8 @@ class NotificationTargetAssetsign extends NotificationTarget
           $this->addUserFieldByEmail('users_id');
       } else if ($target === self::TARGET_TECHNICIAN) {
           $this->addUserFieldByEmail('users_id_tech');
+      } else if ($target === self::TARGET_DELEGATE) {
+          $this->addUserFieldByEmail('delegated_users_id');
       }
    }
 
@@ -142,6 +159,15 @@ class NotificationTargetAssetsign extends NotificationTarget
        $this->data['##assetsign.sign_url##'] = $assetsign->getSignUrl();
        $this->data['##assetsign.deadline##'] = $assetsign->getExpiryDate() ?? '';
 
+       // Delegation de signature (issue #115) : vide si aucune delegation
+       // active, non seulement pour l'evenement "delegated" — un gabarit
+       // personnalise pourrait vouloir les afficher ailleurs (ex: "signed").
+       $delegate = $assetsign->getDelegate();
+       $this->data['##assetsign.delegate.name##'] = $delegate
+           ? formatUserName(0, $delegate['name'] ?? '', $delegate['realname'] ?? '', $delegate['firstname'] ?? '')
+           : '';
+       $this->data['##assetsign.delegation.reason##'] = (string) ($assetsign->fields['delegation_reason'] ?? '');
+
        $this->getTags();
       foreach ($this->tag_descriptions[NotificationTarget::TAG_LANGUAGE] as $tag => $values) {
          if (!isset($this->data[$tag])) {
@@ -159,6 +185,8 @@ class NotificationTargetAssetsign extends NotificationTarget
            'assetsign.user.name' => __('Bénéficiaire', 'assetsign'),
            'assetsign.sign_url'  => __('Lien de signature', 'assetsign'),
            'assetsign.deadline'  => __('Date limite de signature', 'assetsign'),
+           'assetsign.delegate.name'      => __('Signataire délégué', 'assetsign'),
+           'assetsign.delegation.reason'  => __('Motif de la délégation', 'assetsign'),
        ];
 
        foreach ($tags as $tag => $label) {
@@ -252,7 +280,7 @@ class NotificationTargetAssetsign extends NotificationTarget
               'notificationtemplates_id' => $templates_id,
           ]);
 
-         if ($event !== 'expiring_soon') {
+         if (!in_array($event, ['expiring_soon', 'delegated'], true)) {
             (new NotificationTarget())->add([
               'notifications_id' => $notifications_id,
               'type'             => Notification::USER_TYPE,
@@ -265,6 +293,14 @@ class NotificationTargetAssetsign extends NotificationTarget
                 'notifications_id' => $notifications_id,
                 'type'             => Notification::USER_TYPE,
                 'items_id'         => self::TARGET_TECHNICIAN,
+            ]);
+         }
+
+         if ($event === 'delegated') {
+            (new NotificationTarget())->add([
+                'notifications_id' => $notifications_id,
+                'type'             => Notification::USER_TYPE,
+                'items_id'         => self::TARGET_DELEGATE,
             ]);
          }
       }

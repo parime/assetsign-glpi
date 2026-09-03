@@ -2324,3 +2324,225 @@ msgstr "niedriger Restwert: %d%% des Kaufpreises"
 
 #~ msgid "Points de contrôle de maintenance"
 #~ msgstr "Wartungsprüfpunkte"
+
+msgid "Vous signez en tant que délégué de"
+msgstr "Sie unterschreiben als Bevollmächtigter von"
+
+
+msgid "Vous n'êtes pas disponible ?"
+msgstr "Sie sind nicht verfügbar?"
+
+
+msgid ""
+"Vous pouvez déléguer la signature à un autre compte GLPI (manager, RH, "
+"collègue...). Ce lien deviendra invalide dès la délégation confirmée : la "
+"personne désignée recevra son propre lien par e-mail."
+msgstr ""
+"Sie können die Unterschrift an ein anderes GLPI-Konto delegieren "
+"(Vorgesetzter, Personalabteilung, Kollege...). Dieser Link wird ungültig, "
+"sobald die Delegation bestätigt ist: die bestimmte Person erhält per E-Mail "
+"ihren eigenen Link."
+
+
+msgid "Je ne suis pas disponible, déléguer la signature à quelqu'un d'autre"
+msgstr ""
+"Ich bin nicht verfügbar, Unterschrift an eine andere Person delegieren"
+
+
+msgid "Déléguer à"
+msgstr "Delegieren an"
+
+
+msgid "Motif (obligatoire)"
+msgstr "Grund (erforderlich)"
+
+
+msgid "Confirmer la délégation"
+msgstr "Delegation bestätigen"
+
+
+msgid "Merci de choisir un compte utilisateur."
+msgstr "Bitte wählen Sie ein Benutzerkonto aus."
+
+
+msgid "Le motif de la délégation est obligatoire."
+msgstr "Der Grund für die Delegation ist erforderlich."
+
+
+msgid ""
+"La signature a été déléguée. La personne désignée va recevoir son propre "
+"lien par e-mail."
+msgstr ""
+"Die Unterschrift wurde delegiert. Die bestimmte Person erhält per E-Mail "
+"ihren eigenen Link."
+
+
+msgid "Signature déléguée à"
+msgstr "Unterschrift delegiert an"
+
+
+msgid "le"
+msgstr "am"
+
+
+msgid "motif"
+msgstr "Grund"
+
+
+msgid "Révoquer la délégation et rendre la main au bénéficiaire d'origine ?"
+msgstr ""
+"Delegation widerrufen und die Kontrolle an den ursprünglichen Empfänger "
+"zurückgeben?"
+
+
+msgid "Révoquer"
+msgstr "Widerrufen"
+
+
+msgid "Déléguer la signature"
+msgstr "Unterschrift delegieren"
+
+
+msgid ""
+"Désigne un autre compte GLPI pour signer à la place du bénéficiaire "
+"d'origine (absence prolongée, congés, départ...). Le lien de signature "
+"envoyé au bénéficiaire d'origine devient invalide dès la délégation."
+msgstr ""
+"Bestimmt ein anderes GLPI-Konto, das anstelle des ursprünglichen Empfängers "
+"unterschreibt (längere Abwesenheit, Urlaub, Austritt...). Der an den "
+"ursprünglichen Empfänger gesendete Unterschrifts-Link wird ungültig, sobald "
+"die Delegation erfolgt."
+
+
+msgid "Motif"
+msgstr "Grund"
+
+
+msgid "Déléguer"
+msgstr "Delegieren"
+
+
+msgid "Délégation de signature"
+msgstr "Unterschriftsdelegation"
+
+
+msgid ""
+"Permet de continuer une restitution/remise bloquée par l'absence prolongée "
+"du bénéficiaire désigné (congés, arrêt maladie, départ...), en confiant la "
+"signature à un autre compte GLPI. Le bénéficiaire d'origine reste tracé "
+"comme signataire prévu ; la personne qui signe réellement, la date et le "
+"motif de la délégation sont conservés (historique de la fiche, PDF signé)."
+msgstr ""
+"Ermöglicht es, eine durch die längere Abwesenheit des bestimmten Empfängers "
+"(Urlaub, Krankheit, Austritt...) blockierte Rückgabe/Übergabe fortzusetzen, "
+"indem die Unterschrift einem anderen GLPI-Konto anvertraut wird. Der "
+"ursprüngliche Empfänger bleibt als vorgesehener Unterzeichner erfasst; die "
+"Person, die tatsächlich unterschreibt, das Datum und der Grund der "
+"Delegation werden aufbewahrt (Historie des Datensatzes, unterschriebenes "
+"PDF)."
+
+
+msgid "Autoriser un technicien/administrateur à déléguer la signature"
+msgstr ""
+"Einem Techniker/Administrator erlauben, die Unterschrift zu delegieren"
+
+
+msgid ""
+"Ajoute un bouton « Déléguer la signature » sur la fiche Assetsign (droit de "
+"modification requis), pour un bénéficiaire interne (compte GLPI) uniquement."
+msgstr ""
+"Fügt der Assetsign-Karteikarte eine Schaltfläche „Unterschrift delegieren\" "
+"hinzu (Änderungsrecht erforderlich), nur für einen internen Empfänger (GLPI-"
+"Konto)."
+
+
+msgid ""
+"Autoriser le bénéficiaire à se déléguer lui-même depuis la page de signature"
+msgstr ""
+"Dem Empfänger erlauben, sich selbst von der Unterschriftsseite aus zu "
+"delegieren"
+
+
+msgid ""
+"Nécessite le réglage ci-dessus. Le bénéficiaire choisit lui-même un autre "
+"compte GLPI (motif obligatoire) depuis son lien de signature ; ce lien "
+"devient alors invalide, seul le nouveau lien envoyé au délégué fonctionne."
+msgstr ""
+"Erfordert die obige Einstellung. Der Empfänger wählt selbst ein anderes "
+"GLPI-Konto (Grund erforderlich) von seinem Unterschrifts-Link aus; dieser "
+"Link wird dann ungültig, nur der neue, an den Bevollmächtigten gesendete "
+"Link funktioniert."
+
+
+msgid "Signature déléguée."
+msgstr "Unterschrift delegiert."
+
+
+msgid ""
+"Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
+msgstr ""
+"Delegation widerrufen: der ursprüngliche Empfänger kann wieder "
+"unterschreiben."
+
+
+msgid "La délégation n'est pas activée pour cette entité."
+msgstr "Die Delegation ist für diese Organisationseinheit nicht aktiviert."
+
+
+msgid ""
+"Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée)."
+msgstr ""
+"Diese Anfrage kann nicht mehr delegiert werden (bereits unterschrieben, "
+"abgelaufen oder storniert)."
+
+
+msgid ""
+"La délégation n'est possible que pour un bénéficiaire interne (compte GLPI)."
+msgstr ""
+"Die Delegation ist nur für einen internen Empfänger (GLPI-Konto) möglich."
+
+
+msgid "Le compte délégué doit être différent du bénéficiaire d'origine."
+msgstr ""
+"Das delegierte Konto muss sich vom ursprünglichen Empfänger unterscheiden."
+
+
+msgid "Compte utilisateur délégué introuvable."
+msgstr "Delegiertes Benutzerkonto nicht gefunden."
+
+
+msgid "Signature déléguée à %s (motif : %s)"
+msgstr "Unterschrift delegiert an %s (Grund: %s)"
+
+
+msgid "Cette demande n'est pas déléguée."
+msgstr "Diese Anfrage ist nicht delegiert."
+
+
+msgid ""
+"Cette délégation ne peut plus être révoquée (déjà signée, expirée ou "
+"annulée)."
+msgstr ""
+"Diese Delegation kann nicht mehr widerrufen werden (bereits unterschrieben, "
+"abgelaufen oder storniert)."
+
+
+msgid "Délégation de signature révoquée"
+msgstr "Unterschriftsdelegation widerrufen"
+
+
+msgid "Signature déléguée"
+msgstr "Unterschrift delegiert"
+
+
+msgid "Délégué"
+msgstr "Bevollmächtigter"
+
+
+msgid "Signataire délégué"
+msgstr "Delegierter Unterzeichner"
+
+
+msgid "Motif de la délégation"
+msgstr "Grund der Delegation"
+

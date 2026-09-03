@@ -74,6 +74,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
     exit;
 }
 
+// --- Auto-delegation par le beneficiaire (issue #115) ------------------------------
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delegate_signature'])) {
+    header('Content-Type: application/json');
+
+   try {
+       $controller->delegateSelfService(
+           $token,
+           (int) ($_POST['delegate_users_id'] ?? 0),
+           (string) ($_POST['delegation_reason'] ?? '')
+       );
+
+       header('X-Assetsign-Csrf-Token: ' . Session::getNewCSRFToken());
+       echo json_encode(['success' => true]);
+   } catch (\Throwable $e) {
+       http_response_code(400);
+       echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+   }
+    exit;
+}
+
 // --- Soumission de la signature ---------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
@@ -119,6 +139,17 @@ try {
         'damage_markers_by_view' => $damageEnabled ? Assetsign::groupMarkersByView(DamageMarker::getForAssetsign($assetsign->getID())) : [],
         'beneficiary_comment'    => $assetsign->fields['beneficiary_comment'] ?? '',
         'can_edit_comment'       => $assetsign->isStillEditable(),
+        // Auto-delegation (issue #115) : formulaire affiche uniquement au
+        // beneficiaire D'ORIGINE connecte (pas au delegue lui-meme, qui n'a
+        // pas vocation a re-deleguer depuis cette page — seul un admin le
+        // peut, cf. front/assetsign.form.php), et seulement si la fiche est
+        // encore modifiable ET le reglage self-service actif pour l'entite.
+        'self_service_delegation_enabled' => (bool) $config->fields['enable_self_service_delegation'],
+        'is_delegate_signer'     => $data['is_delegate_signer'],
+        'can_delegate_self'      => !$data['is_delegate_signer']
+            && $assetsign->isStillEditable()
+            && (bool) $config->fields['enable_self_service_delegation'],
+        'delegate'               => $assetsign->getDelegate(),
         // Volontairement DIFFERENT de Assetsign::getPdfHeadings() (fixe en francais,
         // car c'est le contenu d'un PDF archive, cf. commentaire sur
         // getCanonicalTypeLabel()) : cette page-ci est une interface consultee en

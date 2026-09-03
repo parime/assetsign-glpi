@@ -2309,3 +2309,211 @@ msgstr "valeur résiduelle faible : %d %% du prix d'achat"
 
 #~ msgid "Points de contrôle de maintenance"
 #~ msgstr "Points de contrôle de maintenance"
+
+msgid "Vous signez en tant que délégué de"
+msgstr "Vous signez en tant que délégué de"
+
+
+msgid "Vous n'êtes pas disponible ?"
+msgstr "Vous n'êtes pas disponible ?"
+
+
+msgid ""
+"Vous pouvez déléguer la signature à un autre compte GLPI (manager, RH, "
+"collègue...). Ce lien deviendra invalide dès la délégation confirmée : la "
+"personne désignée recevra son propre lien par e-mail."
+msgstr ""
+"Vous pouvez déléguer la signature à un autre compte GLPI (manager, RH, "
+"collègue...). Ce lien deviendra invalide dès la délégation confirmée : la "
+"personne désignée recevra son propre lien par e-mail."
+
+
+msgid "Je ne suis pas disponible, déléguer la signature à quelqu'un d'autre"
+msgstr "Je ne suis pas disponible, déléguer la signature à quelqu'un d'autre"
+
+
+msgid "Déléguer à"
+msgstr "Déléguer à"
+
+
+msgid "Motif (obligatoire)"
+msgstr "Motif (obligatoire)"
+
+
+msgid "Confirmer la délégation"
+msgstr "Confirmer la délégation"
+
+
+msgid "Merci de choisir un compte utilisateur."
+msgstr "Merci de choisir un compte utilisateur."
+
+
+msgid "Le motif de la délégation est obligatoire."
+msgstr "Le motif de la délégation est obligatoire."
+
+
+msgid ""
+"La signature a été déléguée. La personne désignée va recevoir son propre "
+"lien par e-mail."
+msgstr ""
+"La signature a été déléguée. La personne désignée va recevoir son propre "
+"lien par e-mail."
+
+
+msgid "Signature déléguée à"
+msgstr "Signature déléguée à"
+
+
+msgid "le"
+msgstr "le"
+
+
+msgid "motif"
+msgstr "motif"
+
+
+msgid "Révoquer la délégation et rendre la main au bénéficiaire d'origine ?"
+msgstr "Révoquer la délégation et rendre la main au bénéficiaire d'origine ?"
+
+
+msgid "Révoquer"
+msgstr "Révoquer"
+
+
+msgid "Déléguer la signature"
+msgstr "Déléguer la signature"
+
+
+msgid ""
+"Désigne un autre compte GLPI pour signer à la place du bénéficiaire "
+"d'origine (absence prolongée, congés, départ...). Le lien de signature "
+"envoyé au bénéficiaire d'origine devient invalide dès la délégation."
+msgstr ""
+"Désigne un autre compte GLPI pour signer à la place du bénéficiaire "
+"d'origine (absence prolongée, congés, départ...). Le lien de signature "
+"envoyé au bénéficiaire d'origine devient invalide dès la délégation."
+
+
+msgid "Motif"
+msgstr "Motif"
+
+
+msgid "Déléguer"
+msgstr "Déléguer"
+
+
+msgid "Délégation de signature"
+msgstr "Délégation de signature"
+
+
+msgid ""
+"Permet de continuer une restitution/remise bloquée par l'absence prolongée "
+"du bénéficiaire désigné (congés, arrêt maladie, départ...), en confiant la "
+"signature à un autre compte GLPI. Le bénéficiaire d'origine reste tracé "
+"comme signataire prévu ; la personne qui signe réellement, la date et le "
+"motif de la délégation sont conservés (historique de la fiche, PDF signé)."
+msgstr ""
+"Permet de continuer une restitution/remise bloquée par l'absence prolongée "
+"du bénéficiaire désigné (congés, arrêt maladie, départ...), en confiant la "
+"signature à un autre compte GLPI. Le bénéficiaire d'origine reste tracé "
+"comme signataire prévu ; la personne qui signe réellement, la date et le "
+"motif de la délégation sont conservés (historique de la fiche, PDF signé)."
+
+
+msgid "Autoriser un technicien/administrateur à déléguer la signature"
+msgstr "Autoriser un technicien/administrateur à déléguer la signature"
+
+
+msgid ""
+"Ajoute un bouton « Déléguer la signature » sur la fiche Assetsign (droit de "
+"modification requis), pour un bénéficiaire interne (compte GLPI) uniquement."
+msgstr ""
+"Ajoute un bouton « Déléguer la signature » sur la fiche Assetsign (droit de "
+"modification requis), pour un bénéficiaire interne (compte GLPI) uniquement."
+
+
+msgid ""
+"Autoriser le bénéficiaire à se déléguer lui-même depuis la page de signature"
+msgstr ""
+"Autoriser le bénéficiaire à se déléguer lui-même depuis la page de signature"
+
+
+msgid ""
+"Nécessite le réglage ci-dessus. Le bénéficiaire choisit lui-même un autre "
+"compte GLPI (motif obligatoire) depuis son lien de signature ; ce lien "
+"devient alors invalide, seul le nouveau lien envoyé au délégué fonctionne."
+msgstr ""
+"Nécessite le réglage ci-dessus. Le bénéficiaire choisit lui-même un autre "
+"compte GLPI (motif obligatoire) depuis son lien de signature ; ce lien "
+"devient alors invalide, seul le nouveau lien envoyé au délégué fonctionne."
+
+
+msgid "Signature déléguée."
+msgstr "Signature déléguée."
+
+
+msgid ""
+"Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
+msgstr ""
+"Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
+
+
+msgid "La délégation n'est pas activée pour cette entité."
+msgstr "La délégation n'est pas activée pour cette entité."
+
+
+msgid ""
+"Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée)."
+msgstr ""
+"Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée)."
+
+
+msgid ""
+"La délégation n'est possible que pour un bénéficiaire interne (compte GLPI)."
+msgstr ""
+"La délégation n'est possible que pour un bénéficiaire interne (compte GLPI)."
+
+
+msgid "Le compte délégué doit être différent du bénéficiaire d'origine."
+msgstr "Le compte délégué doit être différent du bénéficiaire d'origine."
+
+
+msgid "Compte utilisateur délégué introuvable."
+msgstr "Compte utilisateur délégué introuvable."
+
+
+msgid "Signature déléguée à %s (motif : %s)"
+msgstr "Signature déléguée à %s (motif : %s)"
+
+
+msgid "Cette demande n'est pas déléguée."
+msgstr "Cette demande n'est pas déléguée."
+
+
+msgid ""
+"Cette délégation ne peut plus être révoquée (déjà signée, expirée ou "
+"annulée)."
+msgstr ""
+"Cette délégation ne peut plus être révoquée (déjà signée, expirée ou "
+"annulée)."
+
+
+msgid "Délégation de signature révoquée"
+msgstr "Délégation de signature révoquée"
+
+
+msgid "Signature déléguée"
+msgstr "Signature déléguée"
+
+
+msgid "Délégué"
+msgstr "Délégué"
+
+
+msgid "Signataire délégué"
+msgstr "Signataire délégué"
+
+
+msgid "Motif de la délégation"
+msgstr "Motif de la délégation"
+
