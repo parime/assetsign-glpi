@@ -304,6 +304,19 @@ class Assetsign extends CommonDBTM
            'name'     => __('Bénéficiaire externe', 'assetsign'),
            'datatype' => 'string',
        ];
+       // Delegue actuel (issue #115) : meme motif que la colonne 4 (jointe sur
+       // glpi_users), colonne dediee car il s'agit d'une jointure DIFFERENTE
+       // (linkfield delegated_users_id, pas users_id) - vide pour toute fiche
+       // non deleguee.
+       $tab[] = [
+           'id'       => 13,
+           'table'    => 'glpi_users',
+           'field'    => 'name',
+           'linkfield' => 'delegated_users_id',
+           'name'     => __('Signature déléguée à', 'assetsign'),
+           'datatype' => 'itemlink',
+           'itemlink_type' => 'User',
+       ];
 
        return $tab;
    }
@@ -398,6 +411,15 @@ class Assetsign extends CommonDBTM
            'signature_proof' => (!$this->isNewID($ID) && (int) $this->fields['status'] === self::STATUS_SIGNED)
                ? Signature::getForAssetsign((int) $ID)
                : null,
+           // Delegation de signature (issue #115) : bouton "Deleguer" affiche
+           // seulement si le reglage entite est actif ET que le beneficiaire
+           // est interne (cf. delegateSignatureTo()) — meme droit/garde que le
+           // reste de cette fiche (isStillEditable() + droit UPDATE).
+           'delegation_enabled' => !$this->isNewID($ID)
+               && (bool) Config::getForEntity((int) $this->fields['entities_id'])->fields['enable_signature_delegation']
+               && (int) $this->fields['beneficiary_type'] === self::BENEFICIARY_INTERNAL,
+           'delegate'         => $this->isNewID($ID) ? null : $this->getDelegate(),
+           'can_delegate'     => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
            // Checklist qualite (cf. ROADMAP.md V1, issue #74) : resultats deja
            // enregistres TOUJOURS affiches (meme un point desactive depuis), le
            // formulaire d'edition uniquement si applicable ET encore modifiable.
@@ -1307,6 +1329,107 @@ class Assetsign extends CommonDBTM
    }
 
     /**
+     * Delegue la signature de cette fiche a un autre compte GLPI (issue #115).
+     * 'users_id' (le beneficiaire d'origine) n'est JAMAIS modifie : seules les
+     * 4 colonnes dediees (delegated_users_id/delegation_date/delegation_reason/
+     * delegated_by_users_id) changent, pour garder une tracabilite complete
+     * (signataire prevu vs signataire reel) — cf. getActualSigner().
+     *
+     * Utilisee aussi bien par un technicien/admin (front/assetsign.form.php,
+     * cf. Config::enable_signature_delegation) que par le beneficiaire
+     * lui-meme depuis la page de signature (front/sign.php, cf.
+     * Config::enable_self_service_delegation) : $initiatedByUsersId distingue
+     * les deux cas dans l'historique natif (deja capture par update(), meme
+     * raisonnement que cancelRequest() ci-dessus).
+     *
+     * Regenere systematiquement le jeton de signature : l'ancien lien, deja
+     * envoye au beneficiaire d'origine, devient donc invalide dans le meme
+     * mouvement. C'est le choix retenu ici pour repondre a "le beneficiaire
+     * d'origine ne doit plus pouvoir signer lui-meme apres avoir delegue" —
+     * plus simple qu'un etat de delegation actif/inactif verifie a chaque
+     * acces (aucune modification necessaire a assertCurrentUserIsAuthorizedSigner(),
+     * qui continue d'accepter users_id OU delegated_users_id : dans les
+     * faits, seul le NOUVEAU lien - envoye au delegue - reste valide). Un
+     * administrateur peut rendre la main au beneficiaire d'origine via
+     * revokeDelegation() ci-dessous (seule voie de "revocation" retenue,
+     * volontairement reservee a l'admin).
+     *
+     * @throws \RuntimeException si la fiche n'est plus modifiable, si le
+     *                            beneficiaire n'est pas interne, ou si le
+     *                            compte delegue est introuvable/identique au
+     *                            beneficiaire d'origine.
+     */
+   public function delegateSignatureTo(int $delegateUsersId, string $reason, int $initiatedByUsersId): void {
+      if (!$this->isStillEditable()) {
+          throw new \RuntimeException(__('Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée).', 'assetsign'));
+      }
+      if ((int) $this->fields['beneficiary_type'] !== self::BENEFICIARY_INTERNAL) {
+          // Cf. commentaire de classe / launchWorkflow() : un beneficiaire
+          // externe n'a de toute facon aucun flux de signature a distance.
+          throw new \RuntimeException(__('La délégation n\'est possible que pour un bénéficiaire interne (compte GLPI).', 'assetsign'));
+      }
+      if ($delegateUsersId === (int) $this->fields['users_id']) {
+          throw new \RuntimeException(__('Le compte délégué doit être différent du bénéficiaire d\'origine.', 'assetsign'));
+      }
+
+       $delegate = new \User();
+      if ($delegateUsersId <= 0 || !$delegate->getFromDB($delegateUsersId)) {
+          throw new \RuntimeException(__('Compte utilisateur délégué introuvable.', 'assetsign'));
+      }
+
+       $this->update([
+           'id'                    => $this->getID(),
+           'delegated_users_id'    => $delegateUsersId,
+           'delegation_date'       => date('Y-m-d H:i:s'),
+           'delegation_reason'     => trim($reason),
+           'delegated_by_users_id' => $initiatedByUsersId,
+       ]);
+
+       $config = Config::getForEntity((int) $this->fields['entities_id']);
+       // Regenere/cree le jeton meme si la fiche n'en avait pas encore
+       // (statut DRAFT/PENDING avant tout envoi) : Token::regenerateForAssetsign()
+       // invalide simplement (aucun effet si aucun jeton n'existait) puis en
+       // cree un nouveau, meme mecanisme que CanvasProvider::createRequest().
+       $raw = Token::regenerateForAssetsign($this, (int) $config->fields['link_validity_days']);
+       $this->_current_raw_token = $raw;
+
+       NotificationEvent::raiseEvent('delegated', $this);
+   }
+
+    /**
+     * Rend la main au beneficiaire d'origine (admin uniquement, cf.
+     * front/assetsign.form.php) : seule voie de "revocation" d'une delegation,
+     * cf. le commentaire de delegateSignatureTo(). Regenere le jeton (meme
+     * raisonnement : l'ancien lien, envoye au delegue, devient invalide) et
+     * renvoie l'evenement 'new' (contenu deja generique — "un document vous
+     * attend" reste vrai ici, pas besoin d'un gabarit de notification dedie).
+     *
+     * @throws \RuntimeException si la fiche n'est pas deleguee ou plus modifiable.
+     */
+   public function revokeDelegation(): void {
+      if ((int) ($this->fields['delegated_users_id'] ?? 0) <= 0) {
+          throw new \RuntimeException(__('Cette demande n\'est pas déléguée.', 'assetsign'));
+      }
+      if (!$this->isStillEditable()) {
+          throw new \RuntimeException(__('Cette délégation ne peut plus être révoquée (déjà signée, expirée ou annulée).', 'assetsign'));
+      }
+
+       $this->update([
+           'id'                    => $this->getID(),
+           'delegated_users_id'    => 0,
+           'delegation_date'       => null,
+           'delegation_reason'     => '',
+           'delegated_by_users_id' => 0,
+       ]);
+
+       $config = Config::getForEntity((int) $this->fields['entities_id']);
+       $raw = Token::regenerateForAssetsign($this, (int) $config->fields['link_validity_days']);
+       $this->_current_raw_token = $raw;
+
+       NotificationEvent::raiseEvent('new', $this);
+   }
+
+    /**
      * Genere le PDF, cree le jeton de signature, envoie la notification initiale.
      */
    public function launchWorkflow(?Config $config = null): void {
@@ -1401,6 +1524,50 @@ class Assetsign extends CommonDBTM
        $fields = $user->fields;
        $fields['email'] = \UserEmail::getDefaultForUser((int) $this->fields['users_id']) ?: '';
        return $fields;
+   }
+
+    /**
+     * Compte GLPI actuellement delegue pour signer cette fiche (issue #115),
+     * ou null si aucune delegation n'est active. Meme forme de tableau que
+     * getBeneficiary() (firstname/realname/name/email).
+     */
+   public function getDelegate(): ?array {
+       $delegateId = (int) ($this->fields['delegated_users_id'] ?? 0);
+      if ($delegateId <= 0) {
+          return null;
+      }
+
+       $user = new \User();
+      if (!$user->getFromDB($delegateId)) {
+          return null;
+      }
+       $fields = $user->fields;
+       $fields['email'] = \UserEmail::getDefaultForUser($delegateId) ?: '';
+       return $fields;
+   }
+
+    /**
+     * Identite du signataire REEL (delegue ou beneficiaire d'origine), utilisee
+     * pour la ligne "Signataire" du PDF final et pour la preuve de signature
+     * (glpi_plugin_assetsign_signatures) — cf. SignController::submit(). Sans
+     * cette distinction, un document signe par un delegue afficherait quand
+     * meme le nom du beneficiaire d'origine (getBeneficiary()), ce qui serait
+     * faux au sens de la preuve de signature.
+     *
+     * Compare l'utilisateur EFFECTIVEMENT connecte (pas simplement
+     * delegated_users_id) : si la fiche est deleguee mais que, par un chemin
+     * quelconque, c'est encore le beneficiaire d'origine qui signe, la preuve
+     * doit refleter QUI a reellement signe, pas qui est designe en base.
+     */
+   public function getActualSigner(): array {
+       $delegateId = (int) ($this->fields['delegated_users_id'] ?? 0);
+      if ($delegateId > 0 && $delegateId === (int) \Session::getLoginUserID()) {
+           $delegate = $this->getDelegate();
+          if ($delegate !== null) {
+              return $delegate;
+          }
+      }
+       return $this->getBeneficiary();
    }
 
    public function getTargetItem(): array {
@@ -2276,6 +2443,10 @@ class Assetsign extends CommonDBTM
                 `items_id` int unsigned NOT NULL DEFAULT 0,
                 `users_id` int unsigned NOT NULL DEFAULT 0,
                 `users_id_tech` int unsigned NOT NULL DEFAULT 0,
+                `delegated_users_id` int unsigned NOT NULL DEFAULT 0,
+                `delegation_date` timestamp NULL DEFAULT NULL,
+                `delegation_reason` text,
+                `delegated_by_users_id` int unsigned NOT NULL DEFAULT 0,
                 `beneficiary_type` tinyint unsigned NOT NULL DEFAULT 0,
                 `external_beneficiary_name` varchar(255) DEFAULT NULL,
                 `external_beneficiary_contact` varchar(255) DEFAULT NULL,
@@ -2300,6 +2471,7 @@ class Assetsign extends CommonDBTM
                 KEY `item` (`itemtype`,`items_id`),
                 KEY `users_id` (`users_id`),
                 KEY `users_id_tech` (`users_id_tech`),
+                KEY `delegated_users_id` (`delegated_users_id`),
                 KEY `entities_id` (`entities_id`),
                 KEY `is_recursive` (`is_recursive`),
                 KEY `status` (`status`),
@@ -2362,6 +2534,22 @@ class Assetsign extends CommonDBTM
              $migration->addField($table, 'plugin_assetsign_kits_id', 'integer', ['value' => 0, 'after' => 'plugin_assetsign_templates_id']);
              $migration->migrationOneTable($table);
              $migration->addKey($table, 'plugin_assetsign_kits_id');
+         }
+         if (!$DB->fieldExists($table, 'delegated_users_id')) {
+             // Delegation de signature (issue #115) : 'users_id' (le
+             // beneficiaire d'origine) n'est JAMAIS modifie par une delegation -
+             // ces 4 colonnes, toutes a 0/NULL par defaut (aucun effet pour une
+             // fiche existante), portent l'etat de delegation separement, pour
+             // garder une tracabilite complete (signataire prevu vs signataire
+             // reel, cf. delegateSignatureTo()). 'delegated_by_users_id'
+             // distingue une delegation faite par un technicien/admin de celle
+             // faite par le beneficiaire lui-meme (self-service).
+             $migration->addField($table, 'delegated_users_id', 'integer', ['value' => 0, 'after' => 'users_id_tech']);
+             $migration->addField($table, 'delegation_date', 'timestamp', ['after' => 'delegated_users_id']);
+             $migration->addField($table, 'delegation_reason', 'text', ['after' => 'delegation_date']);
+             $migration->addField($table, 'delegated_by_users_id', 'integer', ['value' => 0, 'after' => 'delegation_reason']);
+             $migration->migrationOneTable($table);
+             $migration->addKey($table, 'delegated_users_id');
          }
       }
 

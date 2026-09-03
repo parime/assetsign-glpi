@@ -42,6 +42,7 @@
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Compléments', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Maintenance', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-movements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Mouvements', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-delegation" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Délégation de signature', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport matériel', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Score de santé', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-residual-value" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Valeur résiduelle', 'assetsign') }}</button></li>
@@ -387,6 +388,23 @@
           <a href="{{ config('root_doc') }}/plugins/assetsign/front/movement.php" class="btn btn-outline-secondary">{{ __('Voir les mouvements', 'assetsign') }}</a>
         </div>
 
+        {# ---------------------------------------------------------------- Délégation de signature #}
+        <div class="tab-pane fade" id="tab-delegation" role="tabpanel">
+          <p class="text-muted">{{ __('Permet de continuer une restitution/remise bloquée par l\'absence prolongée du bénéficiaire désigné (congés, arrêt maladie, départ...), en confiant la signature à un autre compte GLPI. Le bénéficiaire d\'origine reste tracé comme signataire prévu ; la personne qui signe réellement, la date et le motif de la délégation sont conservés (historique de la fiche, PDF signé).', 'assetsign') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_signature_delegation" value="0">
+            <input type="checkbox" name="enable_signature_delegation" value="1" class="form-check-input" id="enable_signature_delegation" {{ config.enable_signature_delegation|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_signature_delegation">{{ __('Autoriser un technicien/administrateur à déléguer la signature', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Ajoute un bouton « Déléguer la signature » sur la fiche Assetsign (droit de modification requis), pour un bénéficiaire interne (compte GLPI) uniquement.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_self_service_delegation" value="0">
+            <input type="checkbox" name="enable_self_service_delegation" value="1" class="form-check-input" id="enable_self_service_delegation" {{ config.enable_self_service_delegation|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_self_service_delegation">{{ __('Autoriser le bénéficiaire à se déléguer lui-même depuis la page de signature', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Nécessite le réglage ci-dessus. Le bénéficiaire choisit lui-même un autre compte GLPI (motif obligatoire) depuis son lien de signature ; ce lien devient alors invalide, seul le nouveau lien envoyé au délégué fonctionne.', 'assetsign') }}</div>
+          </div>
+        </div>
+
         {# ---------------------------------------------------------------- Score de santé #}
         <div class="tab-pane fade" id="tab-health" role="tabpanel">
           <p class="text-muted">{{ __('Le score de santé synthétise l’âge, les incidents, l’état physique et les mouvements du matériel. Les réglages sont propres à l’entité sélectionnée.', 'assetsign') }}</p>
@@ -651,6 +669,25 @@
       typeInput.dispatchEvent(new Event('change', { bubbles: true }));
     });
   });
+
+  // Delegation de signature (issue #115) : "auto-delegation" (self-service)
+  // n'a de sens que si la delegation technicien/admin est deja active — la
+  // meme regle est de toute facon reappliquee cote serveur dans
+  // Config::upsertForEntity() (jamais la seule protection), mais la
+  // desactiver/griser ici evite de laisser croire qu'elle est prise en
+  // compte alors que le reglage parent est decoche.
+  var delegationParent = document.getElementById('enable_signature_delegation');
+  var delegationChild = document.getElementById('enable_self_service_delegation');
+  if (delegationParent && delegationChild) {
+    var syncSelfServiceDelegation = function () {
+      delegationChild.disabled = !delegationParent.checked;
+      if (!delegationParent.checked) {
+        delegationChild.checked = false;
+      }
+    };
+    delegationParent.addEventListener('change', syncSelfServiceDelegation);
+    syncSelfServiceDelegation();
+  }
 })();
 </script>
 <script>

@@ -56,6 +56,23 @@ final class AssetsignFormController
        return __('Demande annulée.', 'assetsign');
    }
 
+    /** Delegation par un technicien/admin depuis la fiche (issue #115). */
+   public function delegateSignature(Assetsign $assetsign, array $post): string {
+       $assetsign->delegateSignatureTo(
+           (int) ($post['delegate_users_id'] ?? 0),
+           (string) ($post['delegation_reason'] ?? ''),
+           (int) \Session::getLoginUserID()
+       );
+
+       return __('Signature déléguée.', 'assetsign');
+   }
+
+   public function revokeDelegation(Assetsign $assetsign): string {
+       $assetsign->revokeDelegation();
+
+       return __('Délégation révoquée : le bénéficiaire d\'origine peut de nouveau signer.', 'assetsign');
+   }
+
    public function addAccessory(Assetsign $assetsign, array $post): void {
        $assetsign->addAccessory(
            (int) ($post['plugin_assetsign_accessories_id'] ?? 0),

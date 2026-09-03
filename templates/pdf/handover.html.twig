@@ -120,8 +120,19 @@
         <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">
-            Signataire : {{ beneficiary_name }} ({{ user.email }})
+            Signataire : {{ signer_name|default(beneficiary_name) }} ({{ signer_email|default(user.email) }})
         </p>
+        {% if delegated_users_id %}
+        {# Delegation de signature (issue #115) : delegated_users_id>0 sur une
+           fiche SIGNEE est ici une preuve suffisante qu'il s'agissait bien
+           d'une signature deleguee — cf. Assetsign::delegateSignatureTo(),
+           qui invalide systematiquement l'ancien jeton (celui du beneficiaire
+           d'origine) des la delegation : seul le nouveau lien, envoye au
+           delegue, peut aboutir a une signature. #}
+        <p class="proof">
+            Signature déléguée par {{ beneficiary_name }} le {{ delegation_date|date('d/m/Y') }}{% if delegation_reason %} — motif : {{ delegation_reason }}{% endif %}
+        </p>
+        {% endif %}
     {% elseif beneficiary_is_external %}
         {# Beneficiaire externe : aucune signature electronique possible (pas
            de compte GLPI pour se connecter), le document genere EST le

@@ -11,6 +11,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Délégation de la signature de restitution** (issue #115) : un document en attente de signature
+  (Attribution/Restitution/Don/Vente/Destruction, bénéficiaire **interne** uniquement — un
+  bénéficiaire externe n'a de toute façon aucun flux de signature à distance, cf.
+  `Assetsign::launchWorkflow()`) peut désormais être délégué à un autre compte GLPI existant, pour
+  ne plus bloquer le processus en cas d'absence prolongée (congés, arrêt maladie, départ...). Deux
+  modes, chacun activable indépendamment par entité (`front/config.php`, onglet « Délégation de
+  signature »), le second nécessitant le premier (dépendance vérifiée en JS **et** côté serveur
+  dans `Config::upsertForEntity()`) : (1) un technicien/administrateur (droit `UPDATE` sur
+  `Profile::RIGHT_ASSETSIGN`) désigne un délégué depuis la fiche Assetsign
+  (`enable_signature_delegation`) ; (2) le bénéficiaire lui-même se délègue depuis sa page de
+  signature (`enable_self_service_delegation`, motif obligatoire dans ce cas). Traçabilité complète
+  via 4 nouvelles colonnes additives sur `glpi_plugin_assetsign_assetsigns`
+  (`delegated_users_id`/`delegation_date`/`delegation_reason`/`delegated_by_users_id`) : le
+  bénéficiaire d'origine (`users_id`) n'est jamais modifié, l'historique natif GLPI capture chaque
+  délégation (`Assetsign::delegateSignatureTo()`, même mécanisme que `cancelRequest()`). La
+  délégation régénère systématiquement le jeton de signature : l'ancien lien (déjà envoyé au
+  bénéficiaire d'origine) devient invalide dans le même mouvement — c'est le seul mécanisme de
+  « révocation » retenu (plus simple qu'un état actif/inactif vérifié à chaque accès), un
+  administrateur pouvant rendre la main au bénéficiaire d'origine via `Assetsign::revokeDelegation()`
+  (bouton « Révoquer » sur la fiche). `SignController::assertCurrentUserIsAuthorizedSigner()`
+  (renommée depuis `assertCurrentUserIsBeneficiary()`) accepte désormais le bénéficiaire d'origine
+  **ou** le délégué ; `Assetsign::getActualSigner()` résout l'identité du signataire réellement
+  connecté (pas systématiquement le bénéficiaire d'origine) pour la preuve de signature ET la ligne
+  « Signataire » du PDF final, qui porte en plus une mention explicite de délégation (délégué par
+  qui, quand, pour quel motif) quand applicable. Nouvel événement de notification `delegated`
+  (`NotificationTargetAssetsign`, cible dédiée `TARGET_DELEGATE`) : le délégué reçoit son propre
+  lien de signature par e-mail, dans les 5 langues déjà supportées par le plugin.
+
 - **Kits/accessoires avec contrôle automatique au retour** (issue #83, cf. ROADMAP.md tableau V3
   et `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` — un GROUPE nommé et réutilisable
   d'accessoires censés voyager ensemble avec une remise (ex: « Kit ordinateur portable standard » =

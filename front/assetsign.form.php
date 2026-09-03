@@ -45,6 +45,26 @@ if (isset($_POST['cancel_request'])) {
     Html::back();
 }
 
+if (isset($_POST['delegate_signature'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       Session::addMessageAfterRedirect($controller->delegateSignature($assetsign, $_POST));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
+}
+
+if (isset($_POST['revoke_delegation'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       Session::addMessageAfterRedirect($controller->revokeDelegation($assetsign));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
+}
+
 if (isset($_POST['add_accessory'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
     $controller->addAccessory($assetsign, $_POST);
