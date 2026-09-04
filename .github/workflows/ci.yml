@@ -77,7 +77,22 @@ jobs:
         # versions declarees contre la base d'avisories npm, exactement comme
         # composer audit le fait cote PHP. Node.js est deja fourni par le
         # runner ubuntu-latest, pas besoin de Docker pour cette etape.
-        run: npm audit
+        #
+        # Boucle de nouvelle tentative (jusqu'a 3 x 15s) : l'endpoint
+        # registry.npmjs.org/-/npm/v1/security/advisories/bulk s'est deja
+        # montre transitoirement inaccessible (timeout reseau cote registre
+        # npm, reproduit aussi bien en local que sur le runner GitHub -
+        # aucun lien avec un pare-feu specifique) - meme raisonnement que la
+        # boucle de nouvelle tentative sur database:update plus bas : une
+        # panne cote fournisseur externe ne doit pas a elle seule faire
+        # echouer une CI qui n'a rien a se reprocher.
+        run: |
+          for i in 1 2 3; do
+            npm audit && exit 0
+            echo "npm audit a echoue (tentative $i/3), nouvel essai dans 15s..."
+            sleep 15
+          done
+          npm audit
 
       - name: Valide composer.json/composer.lock
         # Rapide (pas besoin de PHP/Docker), echoue avant meme de demarrer les
