@@ -313,9 +313,10 @@ class PassportEvent extends CommonDBTM
            // - il faut explicitement verifier carbon_footprint_manufacturing,
            // jamais uniquement la presence de la ligne.
            'environmental' => ($environmentalData !== null && $environmentalData->fields['carbon_footprint_manufacturing'] !== null) ? [
-               'value'      => $environmentalData->fields['carbon_footprint_manufacturing'] !== null
-                   ? (float) $environmentalData->fields['carbon_footprint_manufacturing']
-                   : null,
+               // La garde ci-dessus a deja etabli que carbon_footprint_manufacturing
+               // n'est pas null dans cette branche - pas de second test redondant
+               // (PHPStan le signale a raison : "always evaluate to true").
+               'value'            => (float) $environmentalData->fields['carbon_footprint_manufacturing'],
                'source_label'     => EnvironmentalData::getSourceLabels()[$environmentalData->fields['source']] ?? null,
                'confidence_label' => EnvironmentalData::getConfidenceLabels()[$environmentalData->fields['confidence_level']] ?? null,
                'confidence_color' => EnvironmentalData::getConfidenceColor($environmentalData->fields['confidence_level']),
