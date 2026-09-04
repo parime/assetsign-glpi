@@ -307,7 +307,12 @@ class PassportEvent extends CommonDBTM
            // source/confiance/date, ou tout `null` si rien n'est saisi - jamais une
            // valeur inventee) + champs bruts pour pre-remplir le formulaire d'edition.
            'environmental_enabled' => $environmentalEnabled,
-           'environmental' => $environmentalData !== null ? [
+           // upsertForItem() conserve la ligne meme apres un effacement (memes
+           // 3 champs remis a null, cf. son docblock) : `$environmentalData`
+           // n'est donc PAS un indicateur fiable de "une valeur est affichable"
+           // - il faut explicitement verifier carbon_footprint_manufacturing,
+           // jamais uniquement la presence de la ligne.
+           'environmental' => ($environmentalData !== null && $environmentalData->fields['carbon_footprint_manufacturing'] !== null) ? [
                'value'      => $environmentalData->fields['carbon_footprint_manufacturing'] !== null
                    ? (float) $environmentalData->fields['carbon_footprint_manufacturing']
                    : null,

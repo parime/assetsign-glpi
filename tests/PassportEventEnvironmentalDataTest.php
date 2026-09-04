@@ -81,6 +81,41 @@ class PassportEventEnvironmentalDataTest extends AssetsignTestCase
         $this->assertStringNotContainsString(__('Empreinte de fabrication non renseignée.', 'assetsign'), $html);
     }
 
+    /**
+     * Regression : upsertForItem(..., null, null, null) conserve la ligne
+     * (cf. son docblock) - les 3 champs sont remis a null mais la ligne
+     * existe toujours. L'affichage doit se baser sur la VALEUR
+     * (carbon_footprint_manufacturing), jamais sur la simple presence de la
+     * ligne, sous peine d'afficher un bloc "rempli" vide (ex: "kg CO2-eq"
+     * sans aucun chiffre devant) apres un effacement.
+     */
+    public function testClearedDataDisplaysExplicitAbsenceAgain(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Environmental Cleared');
+        Config::upsertForEntity($entityId, [
+            'enable_passport' => 1,
+            'passport_visible_types' => [0, 1, 2, 3, 4],
+            'enable_environmental_passport' => 1,
+        ]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Environmental Cleared');
+        EnvironmentalData::upsertForItem('Computer', $computer->getID(), 156.75, EnvironmentalData::SOURCE_MANUFACTURER, EnvironmentalData::CONFIDENCE_HIGH);
+        EnvironmentalData::upsertForItem('Computer', $computer->getID(), null, null, null);
+
+        ob_start();
+        PassportEvent::showForItem($computer);
+        $html = ob_get_clean();
+
+        $this->assertStringContainsString(__('Empreinte de fabrication non renseignée.', 'assetsign'), $html);
+        $this->assertStringNotContainsString('156.75', $html);
+        // "kg CO2-eq" reste legitimement present dans le LABEL du champ de
+        // saisie (cf. templates/passport_tab.html.twig) - seule la ligne
+        // d'AFFICHAGE ("Empreinte de fabrication : X kg CO2-eq") ne doit plus
+        // apparaitre, verifiee via l'absence du bouton "Effacer" ci-dessous
+        // (n'existe que quand `environmental` est non nul, meme condition
+        // Twig que le bloc d'affichage).
+        $this->assertStringNotContainsString(__('Effacer', 'assetsign'), $html);
+    }
+
     public function testEditFormOnlyVisibleWithUpdateRight(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Environmental Form Visibility');
