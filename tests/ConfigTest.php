@@ -124,6 +124,35 @@ class ConfigTest extends AssetsignTestCase
         $this->assertSame(36, (int) $config->fields['residual_value_duration_months']);
     }
 
+    public function testUpsertForEntityRejectsDangerousCharterUrlSchemes(): void
+    {
+        // Finding LOW "url-scheme-injection" (rapport de securite 2.6.0) :
+        // charter_url etait echappe a l'affichage mais jamais valide sur son
+        // SCHEMA, avant d'etre imprime en attribut href du PDF genere - un
+        // schema autre que http(s) (javascript:, data:...) est desormais
+        // silencieusement ignore plutot que stocke tel quel.
+        $entityId = $this->createTestEntity(0, 'PHPUnit Charter Url Scheme');
+
+        foreach (['javascript:alert(1)', 'data:text/html,<script>alert(1)</script>', 'vbscript:msgbox(1)'] as $dangerous) {
+            Config::upsertForEntity($entityId, ['charter_url' => $dangerous]);
+            $config = Config::getForEntity($entityId);
+            $this->assertSame('', $config->fields['charter_url'], "Le schema dangereux '$dangerous' ne doit jamais etre stocke.");
+        }
+    }
+
+    public function testUpsertForEntityAcceptsHttpAndHttpsCharterUrl(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Charter Url Valid');
+
+        Config::upsertForEntity($entityId, ['charter_url' => 'https://exemple.test/charte.pdf']);
+        $config = Config::getForEntity($entityId);
+        $this->assertSame('https://exemple.test/charte.pdf', $config->fields['charter_url']);
+
+        Config::upsertForEntity($entityId, ['charter_url' => 'http://exemple.test/charte.pdf']);
+        $config = Config::getForEntity($entityId);
+        $this->assertSame('http://exemple.test/charte.pdf', $config->fields['charter_url']);
+    }
+
     public function testResidualValueDurationIsFlooredAtOneMonth(): void
     {
         // "Duree personnalisable" (issue #77) : jamais 0, utilisee comme diviseur

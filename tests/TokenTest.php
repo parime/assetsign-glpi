@@ -127,6 +127,32 @@ class TokenTest extends AssetsignTestCase
         }
     }
 
+    public function testValidateAloneNeverCountsTowardsMaxAttempts(): void
+    {
+        // Finding LOW "Token::validate() increments attempts before the
+        // identity check" (rapport de securite 2.6.0) : recordAttempt() est
+        // desormais un appel EXPLICITE et separe, precisement pour qu'un
+        // simple appel a validate() (ex: chemins qui echouent avant
+        // l'autorisation) ne compte plus dans la limite anti-abus. Ce test
+        // verifie la propriete au niveau le plus bas, directement sur Token -
+        // cf. SignControllerTest::testUnauthorizedAccessDoesNotCountTowardsTokenLockout()
+        // pour la meme propriete verifiee via le vrai chemin d'appel
+        // (SignController).
+        $entityId = $this->createTestEntity(0, 'PHPUnit Token NoAutoIncrement');
+        $assetsign = $this->createBareAssetsign($entityId);
+        $raw = Token::createForAssetsign($assetsign, 30);
+
+        // Largement au-dela de MAX_ATTEMPTS (20, constante privee de Token) :
+        // sans le correctif, cette boucle aurait desactive le jeton bien
+        // avant sa fin.
+        for ($i = 0; $i < 50; $i++) {
+            Token::validate($raw);
+        }
+
+        $token = Token::validate($raw);
+        $this->assertSame(0, (int) $token->fields['attempts'], 'validate() seul ne doit jamais incrementer le compteur de tentatives.');
+    }
+
     public function testGetExpiryForAssetsignReturnsLatestValidTokenExpiry(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Token Expiry');

@@ -113,6 +113,53 @@ class PassportEventKitSummaryTest extends AssetsignTestCase
        $this->assertStringContainsString('#dc3545', $html, 'Rien de revenu : perte totale, badge rouge attendu.');
    }
 
+   public function testShowForItemDoesNotAttachKitSummaryToUnrelatedEventWithColliddingSourceId(): void {
+       // Bug d'attribution note dans le rapport de securite 2.6.0
+       // (PassportEvent::attachKitSummaries()) : la boucle d'affectation finale
+       // relisait $row['source_items_id'] pour CHAQUE ligne sans reappliquer le
+       // filtre source_itemtype===Assetsign::class && event_type===TYPE_RETURN
+       // de la boucle de collecte - un evenement Movement/Maintenance dont
+       // source_items_id coincide numeriquement avec une Restitution ayant un
+       // kit se voyait a tort decore du kit_summary de CETTE Restitution.
+       $entityId = $this->createTestEntity(0, 'PHPUnit PassportKit Collision');
+       $computer = $this->createTestComputer($entityId, 'PHPUnit PC PassportKit Collision');
+       $charger = $this->createAccessory('PHPUnit PassportKit Chargeur Collision');
+       $kit = $this->createKit('PHPUnit PassportKit Kit Collision', [$charger]);
+
+       $assetsign = $this->createReturnAssetsign($entityId, $computer, $kit->getID());
+       AssetsignAccessory::attach($assetsign->getID(), $charger, 1);
+       PassportEvent::recordForAssetsign($assetsign);
+
+       // Evenement DECOY, sans rapport avec la Restitution : meme materiel
+       // (pour apparaitre dans le meme showForItem()), mais source_itemtype
+       // Movement et source_items_id calque EXACTEMENT sur l'id de la
+       // Restitution ci-dessus - exactement la collision decrite par le
+       // rapport, provoquee ici deliberement plutot qu'attendue par hasard.
+       (new PassportEvent())->add([
+           'itemtype'        => 'Computer',
+           'items_id'        => $computer->getID(),
+           'entities_id'     => $entityId,
+           'event_type'      => PassportEvent::TYPE_MOVEMENT,
+           'source_itemtype' => \GlpiPlugin\Assetsign\Movement::class,
+           'source_items_id' => $assetsign->getID(),
+           'date'            => date('Y-m-d H:i:s'),
+       ]);
+
+       ob_start();
+       PassportEvent::showForItem($computer);
+       $html = ob_get_clean();
+
+       // __() (pas la chaine francaise en dur) : la locale par defaut de
+       // l'environnement de test rend en anglais (cf. les autres tests de ce
+       // fichier, qui evitent deja le texte traduit au profit du badge "1/1"
+       // et de sa couleur).
+       $this->assertSame(
+           1,
+           substr_count($html, __('accessoires du kit restitués', 'assetsign')),
+           'Le badge de completude du kit ne doit apparaitre QUE sur la ligne de Restitution reelle, jamais sur un evenement sans rapport dont l\'id source coincide.'
+       );
+   }
+
    public function testShowForItemOmitsBadgeWhenNoKitAssignedToReturn(): void {
        $entityId = $this->createTestEntity(0, 'PHPUnit PassportKit None');
        $computer = $this->createTestComputer($entityId, 'PHPUnit PC PassportKit None');
