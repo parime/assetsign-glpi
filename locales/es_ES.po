@@ -2177,6 +2177,10 @@ msgstr "Debe iniciar sesión para acceder a este documento."
 msgid "Ce document ne correspond pas à votre compte utilisateur."
 msgstr "Este documento no corresponde a su cuenta de usuario."
 
+
+msgid "Seul le bénéficiaire d'origine peut déléguer la signature depuis cette page."
+msgstr "Solo el beneficiario original puede delegar la firma desde esta página."
+
 #: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:44
 msgid "Fiche créée."
 msgstr "Ficha creada."
@@ -2480,8 +2484,20 @@ msgid "Le compte délégué doit être différent du bénéficiaire d'origine."
 msgstr "La cuenta delegada debe ser distinta del beneficiario original."
 
 
+msgid "La délégation de signature est désactivée pour cette entité."
+msgstr "La delegación de firma está desactivada para esta entidad."
+
+
 msgid "Compte utilisateur délégué introuvable."
 msgstr "No se encontró la cuenta de usuario delegada."
+
+
+msgid "Le compte délégué est désactivé ou supprimé."
+msgstr "La cuenta delegada está desactivada o eliminada."
+
+
+msgid "Le compte délégué n'a pas accès à l'entité de ce dossier."
+msgstr "La cuenta delegada no tiene acceso a la entidad de este expediente."
 
 
 msgid "Signature déléguée à %s (motif : %s)"

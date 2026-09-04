@@ -93,14 +93,14 @@ class Config extends CommonDBTM
    }
 
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
-      if ($item->getType() === 'Entity') {
+      if ($item->getType() === 'Entity' && \Session::haveRight(self::$rightname, READ)) {
           return __('Assetsign & signature', 'assetsign');
       }
        return '';
    }
 
    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool {
-      if ($item->getType() !== 'Entity') {
+      if ($item->getType() !== 'Entity' || !\Session::haveRight(self::$rightname, READ)) {
           return false;
       }
        self::showConfigForm((int) $item->getID());
@@ -497,6 +497,14 @@ class Config extends CommonDBTM
     /**
      * Cree ou met a jour la ligne de configuration d'une entite (formulaire d'onglet Entity).
      */
+   public static function sanitizeCharterUrl(string $url): string {
+       $url = trim($url);
+      if ($url === '' || \Toolbox::isValidWebUrl($url)) {
+          return $url;
+      }
+       return '';
+   }
+
    public static function upsertForEntity(int $entities_id, array $input): void {
        $managedItemtypes = [];
       foreach (self::getAllManageableItemtypes() as $itemtype) {
@@ -510,7 +518,11 @@ class Config extends CommonDBTM
            'sender_email'         => $input['sender_email'] ?? '',
            'logo_documents_id'    => (int) ($input['logo_documents_id'] ?? 0),
            'logo_force_children'  => (int) ($input['logo_force_children'] ?? 0),
-           'charter_url'          => trim($input['charter_url'] ?? ''),
+           // Toolbox::isValidWebUrl() n'accepte que http(s):// : sans ce
+           // filtre, ce champ (echappe mais jamais valide sur son schema)
+           // acceptait tout, y compris javascript:/data: - affiche tel quel
+           // en attribut href du PDF genere (templates/pdf/handover.html.twig).
+           'charter_url'          => self::sanitizeCharterUrl($input['charter_url'] ?? ''),
            'default_provider'     => $input['default_provider'] ?? 'canvas',
            'reminder_delays'      => $input['reminder_delays'] ?? '3,7,7',
            'max_reminders'        => (int) ($input['max_reminders'] ?? 0),

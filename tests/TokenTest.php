@@ -94,15 +94,21 @@ class TokenTest extends AssetsignTestCase
 
         // MAX_ATTEMPTS vaut 20 (constante privee de Token) : 20 validations
         // reussissent, la 21e doit echouer et desactiver definitivement le jeton.
+        // recordAttempt() (pas seulement validate()) : depuis la correction du
+        // finding DoS du rapport de securite 2.6.0, l'incrementation est
+        // separee de la validation pure pour ne compter que les acces
+        // reellement autorises (cf. Token::recordAttempt()) - ce test simule
+        // donc directement la sequence complete qu'un appelant legitime
+        // (SignController) effectue.
         for ($i = 0; $i < 20; $i++) {
-            Token::validate($raw);
+            Token::validate($raw)->recordAttempt();
         }
 
         try {
-            Token::validate($raw);
+            Token::validate($raw)->recordAttempt();
             $this->fail('La 21e tentative aurait du etre rejetee (MAX_ATTEMPTS depasse).');
         } catch (RuntimeException $e) {
-            // __() avec la meme chaine source que Token::validate() plutot que le
+            // __() avec la meme chaine source que Token::recordAttempt() plutot que le
             // texte francais en dur : ce test doit rester valable quelle que soit
             // la langue de l'environnement d'execution (meme piege que deja
             // rencontre et corrige sur AssetsignTest.php - cf. TROUBLESHOOTING.md).
@@ -119,6 +125,32 @@ class TokenTest extends AssetsignTestCase
         } catch (RuntimeException $e) {
             $this->assertSame(__('Ce lien de signature n\'est plus valide.', 'assetsign'), $e->getMessage());
         }
+    }
+
+    public function testValidateAloneNeverCountsTowardsMaxAttempts(): void
+    {
+        // Finding LOW "Token::validate() increments attempts before the
+        // identity check" (rapport de securite 2.6.0) : recordAttempt() est
+        // desormais un appel EXPLICITE et separe, precisement pour qu'un
+        // simple appel a validate() (ex: chemins qui echouent avant
+        // l'autorisation) ne compte plus dans la limite anti-abus. Ce test
+        // verifie la propriete au niveau le plus bas, directement sur Token -
+        // cf. SignControllerTest::testUnauthorizedAccessDoesNotCountTowardsTokenLockout()
+        // pour la meme propriete verifiee via le vrai chemin d'appel
+        // (SignController).
+        $entityId = $this->createTestEntity(0, 'PHPUnit Token NoAutoIncrement');
+        $assetsign = $this->createBareAssetsign($entityId);
+        $raw = Token::createForAssetsign($assetsign, 30);
+
+        // Largement au-dela de MAX_ATTEMPTS (20, constante privee de Token) :
+        // sans le correctif, cette boucle aurait desactive le jeton bien
+        // avant sa fin.
+        for ($i = 0; $i < 50; $i++) {
+            Token::validate($raw);
+        }
+
+        $token = Token::validate($raw);
+        $this->assertSame(0, (int) $token->fields['attempts'], 'validate() seul ne doit jamais incrementer le compteur de tentatives.');
     }
 
     public function testGetExpiryForAssetsignReturnsLatestValidTokenExpiry(): void

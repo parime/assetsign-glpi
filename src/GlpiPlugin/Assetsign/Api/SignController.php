@@ -42,6 +42,9 @@ final class SignController
       }
 
        $this->assertCurrentUserIsAuthorizedSigner($assetsign);
+       // Apres, pas avant (cf. Token::recordAttempt()) : ne compte que les
+       // acces reellement autorises dans la limite anti-abus du jeton.
+       $token->recordAttempt();
 
        return $assetsign;
    }
@@ -59,6 +62,9 @@ final class SignController
       }
 
        $this->assertCurrentUserIsAuthorizedSigner($assetsign);
+       // Apres, pas avant (cf. Token::recordAttempt()) : ne compte que les
+       // acces reellement autorises dans la limite anti-abus du jeton.
+       $token->recordAttempt();
 
       if ((int) $assetsign->fields['status'] === Assetsign::STATUS_SENT) {
           $assetsign->markViewed();
@@ -97,6 +103,9 @@ final class SignController
       }
 
        $this->assertCurrentUserIsAuthorizedSigner($assetsign);
+       // Apres, pas avant (cf. Token::recordAttempt()) : ne compte que les
+       // acces reellement autorises dans la limite anti-abus du jeton.
+       $token->recordAttempt();
 
        // Le controle cote client (signature_pad.isEmpty()) ne protege que contre
        // les erreurs d'usage normales ; un appel direct (ou un client modifie)
@@ -145,6 +154,20 @@ final class SignController
       }
 
        $this->assertCurrentUserIsAuthorizedSigner($assetsign);
+       // Apres, pas avant (cf. Token::recordAttempt()) : ne compte que les
+       // acces reellement autorises dans la limite anti-abus du jeton.
+       $token->recordAttempt();
+
+      // Seul le beneficiaire D'ORIGINE peut s'auto-deleguer depuis cette page
+      // (cf. commentaire de front/sign.php) : assertCurrentUserIsAuthorizedSigner()
+      // accepte par conception le beneficiaire OU le delegue courant, ce qui
+      // sans ce garde-fou permettrait a un delegue de re-deleguer en chaine
+      // (B -> C -> D...) sans que le beneficiaire d'origine n'en soit jamais
+      // informe - seul un admin/technicien a vocation a re-deleguer.
+       $currentDelegateId = (int) ($assetsign->fields['delegated_users_id'] ?? 0);
+      if ($currentDelegateId > 0 && $currentDelegateId === (int) Session::getLoginUserID()) {
+          throw new \RuntimeException(__('Seul le bénéficiaire d\'origine peut déléguer la signature depuis cette page.', 'assetsign'));
+      }
 
        $config = Config::getForEntity((int) $assetsign->fields['entities_id']);
       if (!$config->fields['enable_self_service_delegation']) {

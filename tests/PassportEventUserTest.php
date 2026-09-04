@@ -67,6 +67,41 @@ class PassportEventUserTest extends AssetsignTestCase
         $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'assetsign'), $html);
     }
 
+    public function testShowForUserExcludesEventsFromEntitiesOutsideSessionScope(): void
+    {
+        // Finding MEDIUM "cross-entity-disclosure, aggravated" (rapport de
+        // securite 2.6.0) : meme defaut que Assetsign::showForUser() (filtre
+        // uniquement par users_id, jamais par entite active de la session),
+        // et ici encore plus impactant depuis 2.6.0 puisque attachKitSummaries()
+        // decore ces memes lignes avec des noms de kits/accessoires.
+        $visibleEntityId = $this->createTestEntity(0, 'PHPUnit Passport User Visible');
+        $hiddenEntityId = $this->createTestEntity(0, 'PHPUnit Passport User Hidden');
+        $userId = $this->createTestUser('Jean', 'CrossEntity');
+        $user = new \User();
+        $user->getFromDB($userId);
+
+        $visibleComputer = $this->createTestComputerWithSerial($visibleEntityId, 'PHPUnit PC Passport Visible', 'SN-VISIBLE');
+        $visibleComputer->oldvalues = ['users_id' => 0];
+        $visibleComputer->fields['users_id'] = $userId;
+        Assetsign::handleItemAssignment($visibleComputer);
+
+        $hiddenComputer = $this->createTestComputerWithSerial($hiddenEntityId, 'PHPUnit PC Passport Hidden', 'SN-HIDDEN');
+        $hiddenComputer->oldvalues = ['users_id' => 0];
+        $hiddenComputer->fields['users_id'] = $userId;
+        Assetsign::handleItemAssignment($hiddenComputer);
+
+        // cf. AssetsignTest::testShowForUserExcludesRecordsFromEntitiesOutsideSessionScope()
+        // pour le meme mecanisme de simulation de perimetre de session.
+        $_SESSION['glpiactiveentities'] = array_values(array_diff($_SESSION['glpiactiveentities'], [$hiddenEntityId]));
+
+        ob_start();
+        PassportEvent::showForUser($user);
+        $html = ob_get_clean();
+
+        $this->assertStringContainsString('PHPUnit PC Passport Visible', $html);
+        $this->assertStringNotContainsString('PHPUnit PC Passport Hidden', $html, "Un evenement du passeport d'une entite hors du perimetre de session ne doit jamais fuiter.");
+    }
+
     public function testShowForUserFallsBackWhenDeviceIsPurged(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Passport User Purged');

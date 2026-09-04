@@ -98,7 +98,9 @@
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
           <label class="form-label">{{ __('Déléguer à', 'assetsign') }}</label>
-          {% do call('User::dropdown', [{'name': 'delegate_users_id'}]) %}
+          {# cf. sign_page.html.twig : 'right'='all' (pas le defaut 'id',
+             limite a l'utilisateur courant) + 'entity' scope au dossier. #}
+          {% do call('User::dropdown', [{'name': 'delegate_users_id', 'right': 'all', 'entity': item.fields.entities_id}]) %}
         </div>
         <div class="col-auto">
           <label class="form-label">{{ __('Motif', 'assetsign') }}</label>

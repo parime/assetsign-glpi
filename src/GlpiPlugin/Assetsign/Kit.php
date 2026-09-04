@@ -140,7 +140,11 @@ class Kit extends CommonDropdown
        // Nouveau kit : rien de pre-coche par defaut, meme convention que
        // ChecklistItem::movement_types (l'administrateur choisit explicitement).
        $selected = $this->isNewItem() ? [] : $this->getExpectedAccessoryIds();
-      foreach ($DB->request(['FROM' => Accessory::getTable(), 'WHERE' => ['is_active' => 1], 'ORDER' => 'name']) as $row) {
+      foreach ($DB->request([
+          'FROM'  => Accessory::getTable(),
+          'WHERE' => ['is_active' => 1] + getEntitiesRestrictCriteria(Accessory::getTable(), '', '', true),
+          'ORDER' => 'name',
+      ]) as $row) {
           $checked = in_array((int) $row['id'], $selected, true) ? ' checked' : '';
           echo '<label class="form-check form-check-inline">'
               . '<input type="checkbox" class="form-check-input" name="accessories_id[]" value="' . (int) $row['id'] . '"' . $checked . '>'

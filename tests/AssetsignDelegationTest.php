@@ -26,9 +26,10 @@ class AssetsignDelegationTest extends AssetsignTestCase
     public function testDelegateSignatureToWritesTraceabilityFields(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Delegation Basic');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation Basic');
         $beneficiaryId = $this->createTestUser('Ben', 'Eficiary');
-        $delegateId = $this->createTestUser('Del', 'Egate');
+        $delegateId = $this->createTestUser('Del', 'Egate', ['_entities_id' => $entityId]);
         $this->makeEmail($delegateId, 'delegate.basic@example.test');
 
         $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
@@ -55,9 +56,10 @@ class AssetsignDelegationTest extends AssetsignTestCase
         global $DB;
 
         $entityId = $this->createTestEntity(0, 'PHPUnit Delegation History');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation History');
         $beneficiaryId = $this->createTestUser('Ben', 'History');
-        $delegateId = $this->createTestUser('Del', 'History');
+        $delegateId = $this->createTestUser('Del', 'History', ['_entities_id' => $entityId]);
 
         $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
         $assetsign->delegateSignatureTo($delegateId, 'Motif de test', 2);
@@ -97,13 +99,89 @@ class AssetsignDelegationTest extends AssetsignTestCase
     public function testDelegateSignatureToRejectsUnknownUser(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Delegation UnknownUser');
+        // Sans activer le commutateur ici, le rejet interviendrait au controle
+        // enable_signature_delegation (verifie avant la resolution du compte)
+        // au lieu du controle "compte introuvable" que ce test vise
+        // precisement - cf. testDelegateSignatureToRejectsWhenDelegationDisabledForEntity
+        // pour l'autre cas.
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation UnknownUser');
         $beneficiaryId = $this->createTestUser('Ben', 'UnknownUser');
 
         $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(__('Compte utilisateur délégué introuvable.', 'assetsign'));
         $assetsign->delegateSignatureTo(999999, 'motif', 2);
+    }
+
+    public function testDelegateSignatureToRejectsWhenDelegationDisabledForEntity(): void
+    {
+        // Regression du finding LOW "enable_signature_delegation est seulement
+        // verifie cote Twig sur le chemin technicien" (rapport de securite
+        // 2.6.0) : le commutateur doit desormais etre revalide directement
+        // dans delegateSignatureTo(), quel que soit l'appelant.
+        $entityId = $this->createTestEntity(0, 'PHPUnit Delegation Disabled');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 0]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation Disabled');
+        $beneficiaryId = $this->createTestUser('Ben', 'Disabled');
+        $delegateId = $this->createTestUser('Del', 'Disabled', ['_entities_id' => $entityId]);
+
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
+
+        $this->expectExceptionMessage(__('La délégation de signature est désactivée pour cette entité.', 'assetsign'));
+        $assetsign->delegateSignatureTo($delegateId, 'motif', 2);
+    }
+
+    public function testDelegateSignatureToRejectsDelegateWithoutAccessToEntity(): void
+    {
+        // Finding MEDIUM "Delegation target accepted from POST with no entity
+        // or account-state validation" (rapport de securite 2.6.0) : un compte
+        // sans acces a l'entite du dossier ne doit plus pouvoir etre designe.
+        $entityId = $this->createTestEntity(0, 'PHPUnit Delegation NoEntityAccess');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation NoEntityAccess');
+        $beneficiaryId = $this->createTestUser('Ben', 'NoEntityAccess');
+        // Cree SANS _entities_id => $entityId : ce compte n'a acces qu'a la
+        // racine (entite par defaut), pas a l'entite du dossier ci-dessus.
+        $delegateId = $this->createTestUser('Del', 'NoEntityAccess');
+
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
+
+        $this->expectExceptionMessage(__('Le compte délégué n\'a pas accès à l\'entité de ce dossier.', 'assetsign'));
+        $assetsign->delegateSignatureTo($delegateId, 'motif', 2);
+    }
+
+    public function testDelegateSignatureToRejectsDisabledDelegate(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Delegation DisabledAccount');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation DisabledAccount');
+        $beneficiaryId = $this->createTestUser('Ben', 'DisabledAccount');
+        $delegateId = $this->createTestUser('Del', 'DisabledAccount', [
+            '_entities_id' => $entityId,
+            'is_active'    => 0,
+        ]);
+
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
+
+        $this->expectExceptionMessage(__('Le compte délégué est désactivé ou supprimé.', 'assetsign'));
+        $assetsign->delegateSignatureTo($delegateId, 'motif', 2);
+    }
+
+    public function testDelegateSignatureToRejectsDeletedDelegate(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit Delegation DeletedAccount');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation DeletedAccount');
+        $beneficiaryId = $this->createTestUser('Ben', 'DeletedAccount');
+        $delegateId = $this->createTestUser('Del', 'DeletedAccount', ['_entities_id' => $entityId]);
+        $delegate = new \User();
+        $delegate->update(['id' => $delegateId, 'is_deleted' => 1]);
+
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
+
+        $this->expectExceptionMessage(__('Le compte délégué est désactivé ou supprimé.', 'assetsign'));
+        $assetsign->delegateSignatureTo($delegateId, 'motif', 2);
     }
 
     public function testDelegateSignatureToRejectsExternalBeneficiary(): void
@@ -138,9 +216,10 @@ class AssetsignDelegationTest extends AssetsignTestCase
     public function testRevokeDelegationRestoresOriginalBeneficiaryAccess(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Delegation Revoke');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation Revoke');
         $beneficiaryId = $this->createTestUser('Ben', 'Revoke');
-        $delegateId = $this->createTestUser('Del', 'Revoke');
+        $delegateId = $this->createTestUser('Del', 'Revoke', ['_entities_id' => $entityId]);
 
         $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
         $assetsign->delegateSignatureTo($delegateId, 'motif', 2);
@@ -177,9 +256,10 @@ class AssetsignDelegationTest extends AssetsignTestCase
     public function testGetActualSignerReturnsDelegateOnlyWhenDelegateIsConnected(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Delegation ActualSigner');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation ActualSigner');
         $beneficiaryId = $this->createTestUser('Ben', 'ActualSigner');
-        $delegateId = $this->createTestUser('Del', 'ActualSigner');
+        $delegateId = $this->createTestUser('Del', 'ActualSigner', ['_entities_id' => $entityId]);
 
         $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
         $assetsign->delegateSignatureTo($delegateId, 'motif', 2);
@@ -196,9 +276,10 @@ class AssetsignDelegationTest extends AssetsignTestCase
     public function testSignControllerAcceptsBothOriginalBeneficiaryAndDelegate(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Delegation SignController');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation SignController');
         $beneficiaryId = $this->createTestUser('Ben', 'SignController');
-        $delegateId = $this->createTestUser('Del', 'SignController');
+        $delegateId = $this->createTestUser('Del', 'SignController', ['_entities_id' => $entityId]);
         $strangerId = $this->createTestUser('Str', 'SignController');
 
         $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
@@ -216,12 +297,42 @@ class AssetsignDelegationTest extends AssetsignTestCase
         $controller->loadAuthorizedAssetsign($token);
     }
 
+    public function testDelegateSelfServiceRejectsReDelegationByCurrentDelegate(): void
+    {
+        // Finding MEDIUM "A delegate can re-delegate the signature; the gate
+        // is template-only" (rapport de securite 2.6.0) : assertCurrentUserIsAuthorizedSigner()
+        // accepte par conception le beneficiaire OU le delegue courant, donc
+        // sans ce garde-fou explicite le delegue pouvait re-deleguer en
+        // chaine (B -> C) depuis cette meme page - seul le beneficiaire
+        // d'ORIGINE (A) a vocation a s'auto-deleguer.
+        $entityId = $this->createTestEntity(0, 'PHPUnit Delegation ReDelegate');
+        Config::upsertForEntity($entityId, [
+            'enable_signature_delegation'    => 1,
+            'enable_self_service_delegation' => 1,
+        ]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation ReDelegate');
+        $beneficiaryId = $this->createTestUser('Ben', 'ReDelegate');
+        $firstDelegateId = $this->createTestUser('Del', 'ReDelegateFirst', ['_entities_id' => $entityId]);
+        $secondDelegateId = $this->createTestUser('Del', 'ReDelegateSecond', ['_entities_id' => $entityId]);
+
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
+        $assetsign->delegateSignatureTo($firstDelegateId, 'motif initial', $beneficiaryId);
+        $tokenAfterFirstDelegation = $assetsign->_current_raw_token;
+
+        // Le premier delegue tente de transferer la signature a un second
+        // compte, depuis la meme page de signature que celle du beneficiaire.
+        $_SESSION['glpiID'] = $firstDelegateId;
+        $this->expectExceptionMessage(__('Seul le bénéficiaire d\'origine peut déléguer la signature depuis cette page.', 'assetsign'));
+        (new SignController())->delegateSelfService($tokenAfterFirstDelegation, $secondDelegateId, 'tentative de re-delegation');
+    }
+
     public function testAssetsignFormControllerDelegateAndRevokeWrappers(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Delegation FormController');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation FormController');
         $beneficiaryId = $this->createTestUser('Ben', 'FormController');
-        $delegateId = $this->createTestUser('Del', 'FormController');
+        $delegateId = $this->createTestUser('Del', 'FormController', ['_entities_id' => $entityId]);
 
         $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
 

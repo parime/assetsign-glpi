@@ -4,6 +4,7 @@ namespace GlpiPlugin\Assetsign\Pdf;
 
 use Document;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\RichText\RichText;
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\DamageMarker;
@@ -73,9 +74,18 @@ final class HandoverPdfBuilder
            'item'                => $item,
            'itemtype'            => Assetsign::getCanonicalItemtypeLabel($assetsign->fields['itemtype']),
            'accessories'         => $assetsign->getAccessories(),
-           'contract'            => $this->resolvePlaceholders($template?->fields['content'] ?? '', $placeholders),
+           // RichText::getSafeHtml() (pas seulement htmlspecialchars, qui casserait
+           // la mise en forme voulue du gabarit) : ce contenu est affiche via
+           // {{ contract|raw }}/{{ charter|raw }} dans le twig PDF, et provient
+           // d'un champ de configuration modifiable par toute personne ayant
+           // Config::$rightname ou Template::$rightname UPDATE - non purifie
+           // jusqu'ici, un compte disposant de ce droit (mais pas forcement
+           // d'un droit d'administration GLPI plus large) pouvait stocker du
+           // JS qui s'executerait a chaque generation de PDF (rendu HTML avant
+           // impression) et sur la page d'apercu (front/preview.php).
+           'contract'            => RichText::getSafeHtml($this->resolvePlaceholders($template?->fields['content'] ?? '', $placeholders)),
            'include_content'     => (bool) ($template?->fields['include_content'] ?? true),
-           'charter'             => $this->resolvePlaceholders($template?->fields['charter_content'] ?? '', $placeholders),
+           'charter'             => RichText::getSafeHtml($this->resolvePlaceholders($template?->fields['charter_content'] ?? '', $placeholders)),
            'include_charter'     => (bool) ($template?->fields['include_charter'] ?? true),
            'charter_url'         => $config->fields['charter_url'] ?: null,
            'enable_observations' => (bool) $config->fields['enable_observations'],
@@ -106,7 +116,24 @@ final class HandoverPdfBuilder
            'delegated_users_id' => (int) ($assetsign->fields['delegated_users_id'] ?? 0),
            'delegation_date'    => $assetsign->fields['delegation_date'] ?? null,
            'delegation_reason'  => $assetsign->fields['delegation_reason'] ?? null,
+           // Qui a REELLEMENT autorise la delegation (technicien/admin ou le
+           // beneficiaire lui-meme), distinct du beneficiaire d'origine
+           // toujours affiche par ailleurs (cf. delegated_by_users_id,
+           // Assetsign::delegateSignatureTo()) - sans ca le PDF archive
+           // affirmait a tort que le beneficiaire avait toujours delegue lui-meme.
+           'delegated_by_name'  => $this->resolveDelegatedByName((int) ($assetsign->fields['delegated_by_users_id'] ?? 0)),
        ], $extra));
+   }
+
+   private function resolveDelegatedByName(int $usersId): ?string {
+      if ($usersId <= 0) {
+          return null;
+      }
+       $initiator = new \User();
+      if (!$initiator->getFromDB($usersId)) {
+          return null;
+      }
+       return trim(\formatUserName(0, $initiator->fields['name'] ?? '', $initiator->fields['realname'] ?? '', $initiator->fields['firstname'] ?? ''));
    }
 
     /**
@@ -142,7 +169,7 @@ final class HandoverPdfBuilder
            ? (bool) $overrides['include_charter']
            : (bool) ($template?->fields['include_charter'] ?? true);
        $charterUrl = array_key_exists('charter_url', $overrides)
-           ? (trim((string) $overrides['charter_url']) ?: null)
+           ? (Config::sanitizeCharterUrl((string) $overrides['charter_url']) ?: null)
            : ($config->fields['charter_url'] ?: null);
        $companyName = array_key_exists('company_name', $overrides)
            ? (trim((string) $overrides['company_name']) ?: null)
@@ -183,9 +210,13 @@ final class HandoverPdfBuilder
            'item'                => ['name' => 'PC-EXEMPLE-001', 'serial' => 'SN-EXEMPLE-042', 'otherserial' => 'INV-1234', 'manufacturer_name' => 'Dell', 'model_name' => 'Latitude 5440'],
            'itemtype'            => Assetsign::getCanonicalItemtypeLabel('Computer'),
            'accessories'         => [],
-           'contract'            => $this->resolvePlaceholders(array_key_exists('content', $overrides) ? (string) $overrides['content'] : ($template?->fields['content'] ?? ''), $placeholders),
+           // RichText::getSafeHtml() : cf. renderHtml() ci-dessus - ce chemin est
+           // meme plus expose, puisque le contenu vient ici directement du
+           // POST de live-preview.js (front/preview.php), affiche en HTML brut
+           // dans le navigateur AVANT tout enregistrement.
+           'contract'            => RichText::getSafeHtml($this->resolvePlaceholders(array_key_exists('content', $overrides) ? (string) $overrides['content'] : ($template?->fields['content'] ?? ''), $placeholders)),
            'include_content'     => $includeContent,
-           'charter'             => $this->resolvePlaceholders(array_key_exists('charter_content', $overrides) ? (string) $overrides['charter_content'] : ($template?->fields['charter_content'] ?? ''), $placeholders),
+           'charter'             => RichText::getSafeHtml($this->resolvePlaceholders(array_key_exists('charter_content', $overrides) ? (string) $overrides['charter_content'] : ($template?->fields['charter_content'] ?? ''), $placeholders)),
            'include_charter'     => $includeCharter,
            'charter_url'         => $charterUrl,
            'enable_observations' => $observationsEnabled,

@@ -807,6 +807,138 @@ class AssetsignTest extends AssetsignTestCase
         $this->assertStringContainsString('docid=999', $html, 'Le lien de telechargement du PDF signe doit pointer vers le bon document.');
     }
 
+    public function testShowForUserExcludesRecordsFromEntitiesOutsideSessionScope(): void
+    {
+        // Finding MEDIUM "cross-entity-disclosure" (rapport de securite
+        // 2.6.0) : cette methode ne filtrait auparavant que par users_id, sans
+        // jamais restreindre aux entites actives de la session - un meme
+        // beneficiaire ayant recu du materiel dans plusieurs entites, un
+        // utilisateur consultant sa fiche depuis une entite ou il n'a PAS
+        // acces pouvait voir les attributions faites dans une AUTRE entite.
+        $visibleEntityId = $this->createTestEntity(0, 'PHPUnit ShowForUser Visible');
+        $hiddenEntityId = $this->createTestEntity(0, 'PHPUnit ShowForUser Hidden');
+        $beneficiaryId = $this->createTestUser('Ben', 'CrossEntity');
+
+        $visibleComputer = $this->createTestComputer($visibleEntityId, 'PHPUnit PC ShowForUser Visible');
+        (new Assetsign())->add([
+            'entities_id' => $visibleEntityId,
+            'itemtype'    => 'Computer',
+            'items_id'    => $visibleComputer->getID(),
+            'users_id'    => $beneficiaryId,
+            'type'        => Assetsign::TYPE_HANDOVER,
+            'status'      => Assetsign::STATUS_SIGNED,
+        ]);
+
+        $hiddenComputer = $this->createTestComputer($hiddenEntityId, 'PHPUnit PC ShowForUser Hidden');
+        (new Assetsign())->add([
+            'entities_id' => $hiddenEntityId,
+            'itemtype'    => 'Computer',
+            'items_id'    => $hiddenComputer->getID(),
+            'users_id'    => $beneficiaryId,
+            'type'        => Assetsign::TYPE_HANDOVER,
+            'status'      => Assetsign::STATUS_SIGNED,
+        ]);
+
+        // Simule une session dont les entites actives ne couvrent QUE
+        // l'entite "visible" (createTestEntity() ajoute chaque entite creee a
+        // $_SESSION['glpiactiveentities'] - on retire ici precisement celle
+        // qu'on veut voir masquee).
+        $_SESSION['glpiactiveentities'] = array_values(array_diff($_SESSION['glpiactiveentities'], [$hiddenEntityId]));
+
+        ob_start();
+        Assetsign::showForUser($beneficiaryId);
+        $html = ob_get_clean();
+
+        $this->assertStringContainsString('PHPUnit PC ShowForUser Visible', $html);
+        $this->assertStringNotContainsString('PHPUnit PC ShowForUser Hidden', $html, "Une attribution d'une entite hors du perimetre de session ne doit jamais fuiter.");
+    }
+
+    public function testRenderHtmlSanitizesScriptTagsInContractAndCharter(): void
+    {
+        // Finding MEDIUM "stored-xss" (rapport de securite 2.6.0) : le
+        // contrat/la charte du gabarit sont affiches via {{ contract|raw }} /
+        // {{ charter|raw }} dans le PDF - un compte disposant du droit
+        // Config/Template (pas forcement un droit d'administration GLPI plus
+        // large) pouvait y stocker du JS execute a chaque generation.
+        $entityId = $this->createTestEntity(0, 'PHPUnit XSS Sanitize');
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC XSS Sanitize');
+
+        $template = new Template();
+        $templateId = (int) $template->add([
+            'entities_id'     => $entityId,
+            'type'            => Assetsign::TYPE_HANDOVER,
+            'name'            => 'PHPUnit Template XSS',
+            'content'         => 'Contrat <script>alert(1)</script> normal.',
+            'charter_content' => 'Charte <img src=x onerror=alert(1)> normale.',
+            'include_content' => 1,
+            'include_charter' => 1,
+        ]);
+
+        $assetsign = new Assetsign();
+        $assetsignId = (int) $assetsign->add([
+            'entities_id'                   => $entityId,
+            'itemtype'                      => 'Computer',
+            'items_id'                      => $computer->getID(),
+            'users_id'                      => 2,
+            'users_id_tech'                 => 2,
+            'type'                          => Assetsign::TYPE_HANDOVER,
+            'status'                        => Assetsign::STATUS_SIGNED,
+            'plugin_assetsign_templates_id' => $templateId,
+        ]);
+        $assetsign->getFromDB($assetsignId);
+
+        $html = (new HandoverPdfBuilder())->renderHtml($assetsign);
+
+        $this->assertStringNotContainsString('<script', $html, 'Une balise <script> ne doit jamais survivre au rendu du PDF.');
+        $this->assertStringNotContainsString('onerror=', $html, 'Un gestionnaire d\'evenement inline ne doit jamais survivre au rendu du PDF.');
+        $this->assertStringContainsString('Contrat', $html, 'Le texte legitime autour du contenu malveillant doit rester affiche.');
+        $this->assertStringContainsString('Charte', $html);
+    }
+
+    public function testRenderHtmlAttributesDelegationToActualInitiatorNotAlwaysBeneficiary(): void
+    {
+        // Finding MEDIUM "The archived signed PDF always states the
+        // beneficiary authorised the delegation" (rapport de securite 2.6.0) :
+        // sur une delegation initiee par un technicien, le PDF affirmait a
+        // tort que c'etait le beneficiaire lui-meme qui avait delegue.
+        $entityId = $this->createTestEntity(0, 'PHPUnit Delegation PdfAttribution');
+        Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
+        $computer = $this->createTestComputer($entityId, 'PHPUnit PC Delegation PdfAttribution');
+        $beneficiaryId = $this->createTestUser('Ben', 'PdfAttribution');
+        $delegateId = $this->createTestUser('Del', 'PdfAttribution', ['_entities_id' => $entityId]);
+        $technicianId = $this->createTestUser('Tech', 'PdfAttribution');
+
+        $assetsign = Assetsign::createManual('Computer', $computer->getID(), Assetsign::TYPE_DON, $beneficiaryId);
+        // Initie par le TECHNICIEN (troisieme argument), pas par le
+        // beneficiaire lui-meme.
+        $assetsign->delegateSignatureTo($delegateId, 'motif', $technicianId);
+        $assetsign->getFromDB($assetsign->getID());
+
+        // Le bloc "Signature déléguée par..." n'est rendu que dans la branche
+        // {% if signature_image %} du gabarit (fiche SIGNEE) - reproduit ici
+        // les memes variables additionnelles que SignatureStamper::apply(),
+        // seul appelant reel de renderHtml() avec une signature.
+        $html = (new HandoverPdfBuilder())->renderHtml($assetsign, [
+            'signature_image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+            'signed_at'       => date('Y-m-d H:i:s'),
+        ]);
+
+        $technician = new \User();
+        $technician->getFromDB($technicianId);
+        $technicianName = trim(formatUserName(0, $technician->fields['name'], $technician->fields['realname'], $technician->fields['firstname']));
+
+        $beneficiary = new \User();
+        $beneficiary->getFromDB($beneficiaryId);
+        $beneficiaryName = trim(formatUserName(0, $beneficiary->fields['name'], $beneficiary->fields['realname'], $beneficiary->fields['firstname']));
+
+        $this->assertStringContainsString($technicianName, $html, 'Le PDF doit nommer le VRAI initiateur de la delegation.');
+        $this->assertStringNotContainsString(
+            sprintf('Signature déléguée par %s', $beneficiaryName),
+            $html,
+            'Le PDF ne doit plus affirmer a tort que le beneficiaire a delegue lui-meme.'
+        );
+    }
+
     /** Derniere assetsign (par id) pour ce materiel, ou null. $excludeId ignore un id precis (ex: l'ancienne assetsign annulee). */
     /**
      * Extrait le nombre affiche dans le badge de decompte d'un libelle

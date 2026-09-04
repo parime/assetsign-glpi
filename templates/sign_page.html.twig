@@ -103,7 +103,13 @@
         <div id="delegate-form" hidden style="margin-top:14px;">
           <div class="mb-2">
             <label class="form-label" for="delegate-user">{{ __('Déléguer à', 'assetsign') }}</label>
-            {% do call('User::dropdown', [{'name': 'delegate_users_id', 'rand': 'delegate_user'}]) %}
+            {# 'right': 'all' (pas le defaut 'id', qui ne liste QUE l'utilisateur
+               courant et rendait cette fonctionnalite inutilisable) + 'entity'
+               scope au dossier concerne : c'est le meme perimetre que
+               Assetsign::delegateSignatureTo() revalide desormais cote serveur
+               (Profile_User::getUserEntities()), donc rien de choisissable ici
+               ne peut plus etre rejete la-bas. #}
+            {% do call('User::dropdown', [{'name': 'delegate_users_id', 'rand': 'delegate_user', 'right': 'all', 'entity': assetsign.entities_id}]) %}
           </div>
           <div class="mb-2">
             <label class="form-label" for="delegate-reason">{{ __('Motif (obligatoire)', 'assetsign') }}</label>

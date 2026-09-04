@@ -76,8 +76,6 @@ class Token extends CommonDBTM
      * @throws RuntimeException si absent, expire, deja utilise ou invalide.
      */
    public static function validate(string $raw): self {
-       global $DB;
-
        $token = new self();
        $found = $token->getFromDBByCrit(['token_hash' => self::hash($raw)]);
 
@@ -103,17 +101,34 @@ class Token extends CommonDBTM
           throw new \RuntimeException(__('Ce lien de signature a expiré.', 'assetsign'));
       }
 
-       $DB->update(self::getTable(), [
-           'attempts' => $token->fields['attempts'] + 1,
-           'ip_used'  => $_SERVER['REMOTE_ADDR'] ?? null,
-       ], ['id' => $token->getID()]);
+       return $token;
+   }
 
-      if ($token->fields['attempts'] + 1 > self::MAX_ATTEMPTS) {
-          $DB->update(self::getTable(), ['is_valid' => 0], ['id' => $token->getID()]);
+    /**
+     * Comptabilise un acces reussi au document (jeton valide ET utilisateur
+     * connecte autorise a le signer). Volontairement separe de validate() :
+     * y incrementer 'attempts' inconditionnellement permettait a n'importe
+     * quel compte GLPI authentifie ayant mis la main sur le lien (transfert
+     * d'e-mail...) de faire desactiver le jeton du VRAI beneficiaire
+     * (MAX_ATTEMPTS) sans jamais avoir ete lui-meme autorise a signer -
+     * appeler cette methode seulement APRES assertCurrentUserIsAuthorizedSigner()
+     * borne le compteur aux acces reellement legitimes.
+     *
+     * @throws RuntimeException si le nombre maximal de tentatives est atteint
+     *                          (jeton desactive par cet appel meme)
+     */
+   public function recordAttempt(): void {
+       global $DB;
+
+       $DB->update(self::getTable(), [
+           'attempts' => $this->fields['attempts'] + 1,
+           'ip_used'  => $_SERVER['REMOTE_ADDR'] ?? null,
+       ], ['id' => $this->getID()]);
+
+      if ($this->fields['attempts'] + 1 > self::MAX_ATTEMPTS) {
+          $DB->update(self::getTable(), ['is_valid' => 0], ['id' => $this->getID()]);
           throw new \RuntimeException(__('Trop de tentatives, lien désactivé par sécurité.', 'assetsign'));
       }
-
-       return $token;
    }
 
    public function markUsed(): void {

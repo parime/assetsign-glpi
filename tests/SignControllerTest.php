@@ -82,6 +82,35 @@ class SignControllerTest extends AssetsignTestCase
         (new SignController())->loadAuthorizedAssetsign('jeton-invalide');
     }
 
+    public function testUnauthorizedAccessDoesNotCountTowardsTokenLockout(): void
+    {
+        // Finding LOW "denial-of-service" (rapport de securite 2.6.0) : avant
+        // correctif, Token::validate() incrementait 'attempts' AVANT meme le
+        // controle d'identite - un tiers authentifie mais non concerne (lien
+        // recupere par erreur, transfert d'e-mail...) pouvait donc, par ses
+        // seules tentatives rejetees, desactiver definitivement le lien du
+        // VRAI beneficiaire (MAX_ATTEMPTS = 20). Ce test rejoue exactement ce
+        // scenario et verifie que le beneficiaire garde l'usage de son jeton.
+        $entityId = $this->createTestEntity(0, 'PHPUnit Sign TokenLockoutDoS');
+        $assetsign = $this->createBareAssetsign($entityId, usersId: 2);
+        $raw = Token::createForAssetsign($assetsign, 30);
+
+        $_SESSION['glpiID'] = 4; // Un tiers authentifie, pas le beneficiaire (2).
+        for ($i = 0; $i < 30; $i++) {
+            try {
+                (new SignController())->loadAuthorizedAssetsign($raw);
+                $this->fail('Le tiers non autorise ne doit jamais pouvoir charger ce document.');
+            } catch (RuntimeException $e) {
+                // Attendu a chaque iteration - c'est justement l'echec repete
+                // d'un tiers non autorise qui ne doit rien consommer.
+            }
+        }
+
+        $_SESSION['glpiID'] = 2; // Le vrai beneficiaire.
+        $loaded = (new SignController())->loadAuthorizedAssetsign($raw);
+        $this->assertSame($assetsign->getID(), $loaded->getID(), 'Le beneficiaire doit pouvoir utiliser son lien apres 30 tentatives rejetees d\'un tiers.');
+    }
+
     public function testShowMarksAssetsignViewedOnFirstAccess(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Sign Show');
