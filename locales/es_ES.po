@@ -2518,3 +2518,95 @@ msgstr "Firmante delegado"
 msgid "Motif de la délégation"
 msgstr "Motivo de la delegación"
 
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Constructeur"
+msgstr "Fabricante"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "API externe dédiée"
+msgstr "API externa dedicada"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Saisie manuelle"
+msgstr "Entrada manual"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Élevé"
+msgstr "Alto"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Moyen"
+msgstr "Medio"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Faible"
+msgstr "Bajo"
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "L'empreinte de fabrication ne peut pas être négative."
+msgstr "La huella de fabricación no puede ser negativa."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Source invalide."
+msgstr "Fuente no válida."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Niveau de confiance invalide."
+msgstr "Nivel de confianza no válido."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Empreinte environnementale effacée."
+msgstr "Huella ambiental borrada."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Empreinte environnementale enregistrée."
+msgstr "Huella ambiental guardada."
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte environnementale (fabrication)"
+msgstr "Huella ambiental (fabricación)"
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication"
+msgstr "Huella de fabricación"
+
+#: templates/passport_tab.html.twig
+msgid "Source"
+msgstr "Fuente"
+
+#: templates/passport_tab.html.twig
+msgid "Niveau de confiance"
+msgstr "Nivel de confianza"
+
+#: templates/passport_tab.html.twig
+msgid "Dernière mise à jour"
+msgstr "Última actualización"
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication non renseignée."
+msgstr "Huella de fabricación no indicada."
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication (kg CO2-eq)"
+msgstr "Huella de fabricación (kg CO2-eq)"
+
+#: templates/passport_tab.html.twig
+msgid "Toujours une saisie manuelle dans cette version : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre), jamais une recherche automatique."
+msgstr "Siempre una entrada manual en esta versión: la fuente precisa de dónde proviene la cifra (ficha del fabricante, una herramienta externa consultada, una estimación propia), nunca una búsqueda automática."
+
+#: templates/config_form.html.twig
+msgid "Passeport environnemental"
+msgstr "Pasaporte ambiental"
+
+#: templates/config_form.html.twig
+msgid "Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l'implémentation (cf. issue #80) : l'API publique Boavizta n'expose, pour les ordinateurs/portables, que des moyennes de catégorie (\"laptop pro/perso\"), jamais une valeur propre au modèle réel présent dans GLPI — l'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement."
+msgstr "Punto de partida del componente RSE del Pasaporte del equipo (huella de fabricación, en kg CO2-eq). Investigación realizada antes de la implementación (véase la incidencia #80): la API pública de Boavizta solo expone promedios de categoría (\"portátil profesional/personal\") para ordenadores/portátiles, nunca un valor propio del modelo real presente en GLPI — mostrarlo como el dato de ESTE equipo sería un dato inventado. Por eso esta versión se limita a la entrada manual: la fuente (fabricante / API externa dedicada / entrada manual) y el nivel de confianza los declara la persona que introduce el valor, nunca se calculan automáticamente."
+
+#: templates/config_form.html.twig
+msgid "Afficher le passeport environnemental sur le Passeport matériel"
+msgstr "Mostrar el pasaporte ambiental en el Pasaporte del equipo"
+
+#: templates/config_form.html.twig
+msgid "Rien n'est affiché tant qu'aucune valeur n'a été saisie manuellement : jamais une estimation par défaut."
+msgstr "No se muestra nada hasta que se haya introducido un valor manualmente: nunca una estimación por defecto."
+

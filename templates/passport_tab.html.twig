@@ -64,6 +64,72 @@
   </div>
 {% endif %}
 
+{% if environmental_enabled %}
+  <div class="mb-4">
+    <h4>{{ __('Empreinte environnementale (fabrication)', 'assetsign') }}</h4>
+    {% if environmental %}
+      <div class="row g-2 mb-2">
+        <div class="col-auto"><strong>{{ __('Empreinte de fabrication', 'assetsign') }} :</strong> {{ environmental.value }} kg CO2-eq</div>
+        {% if environmental.source_label %}
+          <div class="col-auto"><strong>{{ __('Source', 'assetsign') }} :</strong> {{ environmental.source_label }}</div>
+        {% endif %}
+        {% if environmental.confidence_label %}
+          <div class="col-auto">
+            <strong>{{ __('Niveau de confiance', 'assetsign') }} :</strong>
+            <span class="badge" style="background-color: {{ environmental.confidence_color }}; color: #fff;">{{ environmental.confidence_label }}</span>
+          </div>
+        {% endif %}
+        {% if environmental.date_mod %}
+          <div class="col-auto"><strong>{{ __('Dernière mise à jour', 'assetsign') }} :</strong> {{ environmental.date_mod|formatted_date }}</div>
+        {% endif %}
+      </div>
+    {% else %}
+      <p class="text-muted">{{ __('Empreinte de fabrication non renseignée.', 'assetsign') }}</p>
+    {% endif %}
+
+    {% if can_backfill %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/environmentaldata.form.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="itemtype" value="{{ itemtype }}">
+        <input type="hidden" name="items_id" value="{{ items_id }}">
+        <div class="col-auto">
+          <label class="form-label mb-0" for="environmental_value">{{ __('Empreinte de fabrication (kg CO2-eq)', 'assetsign') }}</label>
+          <input type="number" step="0.01" min="0" name="carbon_footprint_manufacturing" id="environmental_value" class="form-control" style="width: 160px;" value="{{ environmental_raw.value is not null ? environmental_raw.value : '' }}">
+        </div>
+        <div class="col-auto">
+          <label class="form-label mb-0" for="environmental_source">{{ __('Source', 'assetsign') }}</label>
+          <select name="source" id="environmental_source" class="form-select">
+            {% for value, label in environmental_source_labels %}
+              <option value="{{ value }}" {{ environmental_raw.source == value ? 'selected' : '' }}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto">
+          <label class="form-label mb-0" for="environmental_confidence">{{ __('Niveau de confiance', 'assetsign') }}</label>
+          <select name="confidence_level" id="environmental_confidence" class="form-select">
+            {% for value, label in environmental_confidence_labels %}
+              <option value="{{ value }}" {{ environmental_raw.confidence == value ? 'selected' : '' }}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-sm btn-outline-primary">{{ __('Enregistrer', 'assetsign') }}</button>
+        </div>
+      </form>
+      {% if environmental %}
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/environmentaldata.form.php" class="mt-2">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="itemtype" value="{{ itemtype }}">
+          <input type="hidden" name="items_id" value="{{ items_id }}">
+          <input type="hidden" name="carbon_footprint_manufacturing" value="">
+          <button type="submit" class="btn btn-sm btn-outline-secondary">{{ __('Effacer', 'assetsign') }}</button>
+        </form>
+      {% endif %}
+      <div class="form-text">{{ __('Toujours une saisie manuelle dans cette version : la source précise d\'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre), jamais une recherche automatique.', 'assetsign') }}</div>
+    {% endif %}
+  </div>
+{% endif %}
+
 {% if health %}
   <div class="mb-4">
     <strong>{{ __('Score de santé', 'assetsign') }} :</strong>

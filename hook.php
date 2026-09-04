@@ -17,6 +17,7 @@ use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\Dashboard\CardProvider;
 use GlpiPlugin\Assetsign\DestructionDetails;
 use GlpiPlugin\Assetsign\DonDetails;
+use GlpiPlugin\Assetsign\EnvironmentalData;
 use GlpiPlugin\Assetsign\Kit;
 use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
@@ -224,6 +225,10 @@ function plugin_assetsign_install(): bool {
     // ordre requis par rapport aux tables ci-dessus, placee ici pour rester
     // groupee avec les autres indicateurs V2 du Passeport (issue #77).
     ResidualValue::install($migration);
+    // Meme motif (aucune contrainte de cle etrangere, itemtype/items_id
+    // arbitraire) que ResidualValue juste au-dessus - passeport environnemental
+    // (cf. ROADMAP.md V3, issue #80).
+    EnvironmentalData::install($migration);
     Token::install($migration);
     // Avant Signature::install() : la contrainte de cle etrangere ajoutee par ce
     // dernier vers glpi_plugin_assetsign_movements (issue #75) exige que cette
@@ -322,6 +327,7 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_maintenancechecklistitems',
         'glpi_plugin_assetsign_accessories',
         'glpi_plugin_assetsign_kits',
+        'glpi_plugin_assetsign_environmentaldatas',
         'glpi_plugin_assetsign_templates',
         'glpi_plugin_assetsign_configs',
         'glpi_plugin_assetsign_creationfailures',

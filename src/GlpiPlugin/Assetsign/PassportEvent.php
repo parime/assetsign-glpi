@@ -266,6 +266,13 @@ class PassportEvent extends CommonDBTM
        $canEdit = \Session::haveRight(self::$rightname, UPDATE);
        $manualResidual = $config->fields['enable_residual_value'] ? ResidualValue::getForItem($item->getType(), $item->getID()) : null;
 
+       // Passeport environnemental (cf. ROADMAP.md V3, issue #80) : saisie
+       // manuelle uniquement dans cette version (cf. le docblock d'
+       // EnvironmentalData pour la decision documentee) - jamais de valeur par
+       // defaut, `environmentalData` reste `null` tant que rien n'a ete saisi.
+       $environmentalEnabled = (bool) $config->fields['enable_environmental_passport'];
+       $environmentalData = $environmentalEnabled ? EnvironmentalData::getForItem($item->getType(), $item->getID()) : null;
+
        // Etiquette QR code imprimable (cf. ROADMAP.md V3, issue #82) : gardee par le
        // reglage dedie ET le droit READ (redondant avec le droit deja verifie par
        // GLPI pour atteindre cet onglet, mais explicite ici comme demande - front/
@@ -296,6 +303,34 @@ class PassportEvent extends CommonDBTM
                : null,
            'qr_label_enabled' => $qrLabelEnabled,
            'qr_label_url'     => $qrLabelUrl,
+           // Passeport environnemental (issue #80) : donnees d'affichage (valeur/
+           // source/confiance/date, ou tout `null` si rien n'est saisi - jamais une
+           // valeur inventee) + champs bruts pour pre-remplir le formulaire d'edition.
+           'environmental_enabled' => $environmentalEnabled,
+           // upsertForItem() conserve la ligne meme apres un effacement (memes
+           // 3 champs remis a null, cf. son docblock) : `$environmentalData`
+           // n'est donc PAS un indicateur fiable de "une valeur est affichable"
+           // - il faut explicitement verifier carbon_footprint_manufacturing,
+           // jamais uniquement la presence de la ligne.
+           'environmental' => ($environmentalData !== null && $environmentalData->fields['carbon_footprint_manufacturing'] !== null) ? [
+               // La garde ci-dessus a deja etabli que carbon_footprint_manufacturing
+               // n'est pas null dans cette branche - pas de second test redondant
+               // (PHPStan le signale a raison : "always evaluate to true").
+               'value'            => (float) $environmentalData->fields['carbon_footprint_manufacturing'],
+               'source_label'     => EnvironmentalData::getSourceLabels()[$environmentalData->fields['source']] ?? null,
+               'confidence_label' => EnvironmentalData::getConfidenceLabels()[$environmentalData->fields['confidence_level']] ?? null,
+               'confidence_color' => EnvironmentalData::getConfidenceColor($environmentalData->fields['confidence_level']),
+               'date_mod'   => $environmentalData->fields['date_mod'] ?? null,
+           ] : null,
+           'environmental_source_labels'     => EnvironmentalData::getSourceLabels(),
+           'environmental_confidence_labels' => EnvironmentalData::getConfidenceLabels(),
+           'environmental_raw' => [
+               'value'      => $environmentalData !== null && $environmentalData->fields['carbon_footprint_manufacturing'] !== null
+                   ? (float) $environmentalData->fields['carbon_footprint_manufacturing']
+                   : null,
+               'source'     => $environmentalData !== null ? $environmentalData->fields['source'] : null,
+               'confidence' => $environmentalData !== null ? $environmentalData->fields['confidence_level'] : null,
+           ],
            'csrf_token'    => \Session::getNewCSRFToken(),
        ]);
    }

@@ -2546,3 +2546,95 @@ msgstr "Delegierter Unterzeichner"
 msgid "Motif de la délégation"
 msgstr "Grund der Delegation"
 
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Constructeur"
+msgstr "Hersteller"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "API externe dédiée"
+msgstr "Dedizierte externe API"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Saisie manuelle"
+msgstr "Manuelle Eingabe"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Élevé"
+msgstr "Hoch"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Moyen"
+msgstr "Mittel"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Faible"
+msgstr "Niedrig"
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "L'empreinte de fabrication ne peut pas être négative."
+msgstr "Der Herstellungs-Fußabdruck darf nicht negativ sein."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Source invalide."
+msgstr "Ungültige Quelle."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Niveau de confiance invalide."
+msgstr "Ungültiges Vertrauensniveau."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Empreinte environnementale effacée."
+msgstr "Umweltfußabdruck gelöscht."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Empreinte environnementale enregistrée."
+msgstr "Umweltfußabdruck gespeichert."
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte environnementale (fabrication)"
+msgstr "Umweltfußabdruck (Herstellung)"
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication"
+msgstr "Herstellungs-Fußabdruck"
+
+#: templates/passport_tab.html.twig
+msgid "Source"
+msgstr "Quelle"
+
+#: templates/passport_tab.html.twig
+msgid "Niveau de confiance"
+msgstr "Vertrauensniveau"
+
+#: templates/passport_tab.html.twig
+msgid "Dernière mise à jour"
+msgstr "Zuletzt aktualisiert"
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication non renseignée."
+msgstr "Herstellungs-Fußabdruck nicht angegeben."
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication (kg CO2-eq)"
+msgstr "Herstellungs-Fußabdruck (kg CO2-eq)"
+
+#: templates/passport_tab.html.twig
+msgid "Toujours une saisie manuelle dans cette version : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre), jamais une recherche automatique."
+msgstr "In dieser Version stets eine manuelle Eingabe: die Quelle gibt an, woher der Wert stammt (Herstellerdatenblatt, ein von Ihnen konsultiertes externes Tool, eigene Schätzung), nie eine automatische Suche."
+
+#: templates/config_form.html.twig
+msgid "Passeport environnemental"
+msgstr "Umweltpass"
+
+#: templates/config_form.html.twig
+msgid "Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l'implémentation (cf. issue #80) : l'API publique Boavizta n'expose, pour les ordinateurs/portables, que des moyennes de catégorie (\"laptop pro/perso\"), jamais une valeur propre au modèle réel présent dans GLPI — l'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement."
+msgstr "Startpunkt für den CSR-Baustein des Geräte-Passes (Herstellungs-Fußabdruck, in kg CO2-eq). Vor der Umsetzung durchgeführte Recherche (siehe Issue #80): Die öffentliche Boavizta-API liefert für Computer/Laptops nur Kategoriedurchschnitte (\"Laptop pro/privat\"), nie einen Wert, der zum tatsächlichen, in GLPI vorhandenen Modell passt — ihn als Angabe für DIESES Gerät anzuzeigen wäre eine erfundene Angabe. Diese Version bleibt daher rein manuell: Quelle (Hersteller / dedizierte externe API / manuelle Eingabe) und Vertrauensniveau werden von der eingebenden Person angegeben, nie automatisch berechnet."
+
+#: templates/config_form.html.twig
+msgid "Afficher le passeport environnemental sur le Passeport matériel"
+msgstr "Umweltpass im Geräte-Pass anzeigen"
+
+#: templates/config_form.html.twig
+msgid "Rien n'est affiché tant qu'aucune valeur n'a été saisie manuellement : jamais une estimation par défaut."
+msgstr "Es wird nichts angezeigt, solange kein Wert manuell eingegeben wurde: nie eine Standardschätzung."
+
