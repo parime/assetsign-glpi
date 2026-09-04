@@ -9,6 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **Rapport de sécurité 2.6.0, traité intégralement** : correctifs sur la délégation de signature
+  (validation serveur du délégué — entité/statut actif — jusque-là vérifiée seulement côté Twig ;
+  interdiction de re-délégation en chaîne B→C→D en auto-délégation) et 10 failles MEDIUM + 2 LOW
+  héritées de la 2.5.0 jamais corrigées : contrôles de droit READ manquants sur les onglets
+  Attributions/Maintenance/Passeport/Config/Mouvements, restriction d'entité manquante sur
+  `front/config.php`/`front/preview.php` (`Session::haveAccessToEntity()`) et sur
+  `Assetsign::showForUser()`/`PassportEvent::showForUser()`, XSS stocké potentiel via le contrat/la
+  charte non purifiés avant rendu PDF (`RichText::getSafeHtml()`), schéma d'URL non validé sur
+  `charter_url`, et une possibilité de déni de service sur le jeton de signature (un tiers
+  authentifié pouvait épuiser la limite de tentatives d'un lien qui ne lui appartenait pas —
+  `Token::recordAttempt()` séparé de `Token::validate()`, ne compte plus que les accès réellement
+  autorisés).
+
+### Fixed
+
+- **Délégation de signature inutilisable en pratique** (rapporté sur la marketplace GLPI) : la liste
+  déroulante de sélection du délégué (`User::dropdown`) n'affichait que le compte actuellement
+  connecté (paramètre `right` par défaut `'id'`), rendant la fonctionnalité livrée en 2.6.0 non
+  fonctionnelle pour désigner qui que ce soit d'autre.
+
 ### Added
 
 - **Passeport environnemental (empreinte de fabrication)** (issue #80, cf. ROADMAP.md V3) : amorce du
