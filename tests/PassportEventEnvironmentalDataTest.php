@@ -49,8 +49,12 @@ class PassportEventEnvironmentalDataTest extends AssetsignTestCase
         $this->assertStringContainsString(__('Empreinte environnementale (fabrication)', 'assetsign'), $html);
         // Jamais une valeur inventee : le message d'absence explicite doit
         // apparaitre, jamais un chiffre (0, ou une estimation quelconque).
+        // "kg CO2-eq" reste legitimement present dans le LABEL du formulaire de
+        // saisie (toujours affiche pour un utilisateur habilite, cf. can_backfill) -
+        // seule l'absence du bouton "Effacer" (n'existe que quand une valeur est
+        // deja enregistree) prouve qu'aucun chiffre n'est affiche.
         $this->assertStringContainsString(__('Empreinte de fabrication non renseignée.', 'assetsign'), $html);
-        $this->assertStringNotContainsString('kg CO2-eq', $html);
+        $this->assertStringNotContainsString(__('Effacer', 'assetsign'), $html);
     }
 
     public function testManualValueDisplaysWithSourceConfidenceAndDate(): void

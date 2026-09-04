@@ -43,13 +43,13 @@ class EnvironmentalData extends CommonDBTM
 {
    public static $rightname = Profile::RIGHT_ASSETSIGN;
 
-    public const SOURCE_MANUFACTURER = 'manufacturer';
-    public const SOURCE_EXTERNAL_API = 'external_api';
-    public const SOURCE_MANUAL       = 'manual';
+   public const SOURCE_MANUFACTURER = 'manufacturer';
+   public const SOURCE_EXTERNAL_API = 'external_api';
+   public const SOURCE_MANUAL       = 'manual';
 
-    public const CONFIDENCE_HIGH   = 'high';
-    public const CONFIDENCE_MEDIUM = 'medium';
-    public const CONFIDENCE_LOW    = 'low';
+   public const CONFIDENCE_HIGH   = 'high';
+   public const CONFIDENCE_MEDIUM = 'medium';
+   public const CONFIDENCE_LOW    = 'low';
 
    public static function getForItem(string $itemtype, int $items_id): ?self {
        $data = new self();
@@ -109,13 +109,13 @@ class EnvironmentalData extends CommonDBTM
        ];
 
        $existing = self::getForItem($itemtype, $items_id);
-      if ($existing !== null) {
+       if ($existing !== null) {
           $existing->update(['id' => $existing->getID()] + $data);
           return;
-      }
-      if ($carbonFootprint === null) {
+       }
+       if ($carbonFootprint === null) {
           return; // Rien a effacer, rien a creer.
-      }
+       }
        (new self())->add(['itemtype' => $itemtype, 'items_id' => $items_id] + $data);
    }
 
