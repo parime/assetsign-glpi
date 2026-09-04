@@ -110,6 +110,9 @@ class Maintenance extends CommonDBTM
    }
 
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
+      if (!Session::haveRight(self::$rightname, READ)) {
+          return '';
+      }
       if (!in_array($item->getType(), Config::getAllManageableItemtypes(), true)) {
           return '';
       }
@@ -118,6 +121,9 @@ class Maintenance extends CommonDBTM
    }
 
    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool {
+      if (!Session::haveRight(self::$rightname, READ)) {
+          return false;
+      }
       if (!($item instanceof CommonDBTM)) {
           return false;
       }

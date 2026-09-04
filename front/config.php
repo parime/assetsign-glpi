@@ -11,6 +11,15 @@ if (isset($_POST['update'])) {
     // deja le jeton de maniere centrale pour toute requete POST, et consomme le
     // jeton a usage unique — le revalider ici echouerait a tort.
     $entities_id = (int) ($_POST['entities_id'] ?? 0);
+   if (!Session::haveAccessToEntity($entities_id)) {
+       // Config::$rightname est un droit global : sans ce controle, un
+       // utilisateur avec le droit UPDATE dans SON entite pouvait modifier la
+       // configuration (logo, gabarits par defaut, seuils...) de n'importe
+       // quelle AUTRE entite du meme GLPI simplement en changeant entities_id.
+       // AccessDeniedHttpException (pas Html::displayRightError(), deprecated
+       // en 11.0) : meme convention que Session::checkRight() ci-dessus.
+       throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+   }
 
     $input = $_POST;
     // Par defaut, ne touche pas au logo existant (le champ de televersement est
@@ -35,6 +44,9 @@ if (isset($_POST['update'])) {
 if (isset($_POST['send_test_email'])) {
     Session::checkRight(Config::$rightname, UPDATE);
     $entities_id = (int) ($_POST['entities_id'] ?? 0);
+   if (!Session::haveAccessToEntity($entities_id)) {
+       throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+   }
     $error = Config::sendTestEmail($entities_id);
    if ($error === '') {
        Session::addMessageAfterRedirect(__('E-mail de test envoyé.', 'assetsign'));
@@ -48,6 +60,9 @@ if (isset($_POST['send_test_email'])) {
 // de l'onglet "Assetsign & signature" sur la fiche d'une entite) : par defaut,
 // affiche/edite la configuration de l'entite active de la session.
 $entities_id = (int) ($_GET['entities_id'] ?? Session::getActiveEntity());
+if (!Session::haveAccessToEntity($entities_id)) {
+    throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+}
 
 Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'tools', Assetsign::class);
 

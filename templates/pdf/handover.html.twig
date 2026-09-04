@@ -130,7 +130,7 @@
            d'origine) des la delegation : seul le nouveau lien, envoye au
            delegue, peut aboutir a une signature. #}
         <p class="proof">
-            Signature déléguée par {{ beneficiary_name }} le {{ delegation_date|date('d/m/Y') }}{% if delegation_reason %} — motif : {{ delegation_reason }}{% endif %}
+            Signature déléguée par {{ delegated_by_name|default(beneficiary_name) }} le {{ delegation_date|date('d/m/Y') }}{% if delegation_reason %} — motif : {{ delegation_reason }}{% endif %}
         </p>
         {% endif %}
     {% elseif beneficiary_is_external %}

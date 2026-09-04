@@ -540,6 +540,9 @@ class Assetsign extends CommonDBTM
    }
 
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
+      if (!Session::haveRight(self::$rightname, READ)) {
+          return '';
+      }
       if ($item->getType() === 'User') {
           $count = countElementsInTable(self::getTable(), ['users_id' => $item->getID(), 'is_deleted' => 0]);
           return self::createTabEntry(__('Attributions', 'assetsign'), $count);
@@ -555,6 +558,9 @@ class Assetsign extends CommonDBTM
    }
 
    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool {
+      if (!Session::haveRight(self::$rightname, READ)) {
+          return false;
+      }
       if (!($item instanceof CommonDBTM)) {
           return false;
       }
@@ -634,7 +640,8 @@ class Assetsign extends CommonDBTM
 
        $rows = iterator_to_array($DB->request([
            'FROM'  => self::getTable(),
-           'WHERE' => ['users_id' => $users_id, 'is_deleted' => 0],
+           'WHERE' => ['users_id' => $users_id, 'is_deleted' => 0]
+               + getEntitiesRestrictCriteria(self::getTable(), '', '', true),
            'ORDER' => 'date_creation DESC',
        ]));
 
@@ -1375,10 +1382,31 @@ class Assetsign extends CommonDBTM
       if ($delegateUsersId === (int) $this->fields['users_id']) {
           throw new \RuntimeException(__('Le compte délégué doit être différent du bénéficiaire d\'origine.', 'assetsign'));
       }
+      $config = Config::getForEntity((int) $this->fields['entities_id']);
+      if (!$config->fields['enable_signature_delegation']) {
+          // Revalide le commutateur cote serveur : le formulaire technicien ne
+          // le verifiait jusqu'ici que par affichage conditionnel (Twig), a
+          // l'inverse du chemin self-service qui l'a toujours fait - meme
+          // discipline que Config::upsertForEntity() applique deja pour
+          // enable_self_service_delegation.
+          throw new \RuntimeException(__('La délégation de signature est désactivée pour cette entité.', 'assetsign'));
+      }
 
        $delegate = new \User();
       if ($delegateUsersId <= 0 || !$delegate->getFromDB($delegateUsersId)) {
           throw new \RuntimeException(__('Compte utilisateur délégué introuvable.', 'assetsign'));
+      }
+      if (!$delegate->fields['is_active'] || $delegate->fields['is_deleted']) {
+          throw new \RuntimeException(__('Le compte délégué est désactivé ou supprimé.', 'assetsign'));
+      }
+      $delegateEntities = \Profile_User::getUserEntities($delegateUsersId, true);
+      if (!in_array((int) $this->fields['entities_id'], $delegateEntities, true)) {
+          // Session::haveAccessToEntity() ne verifie que la session en cours
+          // et ne peut pas etre utilise pour un compte tiers (le delegue) :
+          // Profile_User::getUserEntities() est l'equivalent pour un
+          // utilisateur arbitraire (recursif, pour couvrir les profils dont
+          // l'acces vient d'une entite parente).
+          throw new \RuntimeException(__('Le compte délégué n\'a pas accès à l\'entité de ce dossier.', 'assetsign'));
       }
 
        $this->update([

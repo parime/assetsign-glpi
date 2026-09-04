@@ -23,6 +23,13 @@ header('Content-Type: text/html; charset=UTF-8');
 header('X-Assetsign-Csrf-Token: ' . \Session::getNewCSRFToken());
 
 $entities_id = (int) ($_POST['entities_id'] ?? 0);
+if (!Session::haveAccessToEntity($entities_id)) {
+    // Config/Template::$rightname sont des droits globaux (cf. le controle
+    // ci-dessus) : sans ce garde-fou, un utilisateur avec le droit READ dans
+    // SON entite pouvait faire generer un apercu (logo, gabarit, watermark...)
+    // en fournissant l'entities_id de N'IMPORTE QUELLE autre entite du GLPI.
+    throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+}
 $type = (int) ($_POST['type'] ?? Assetsign::TYPE_HANDOVER);
 
 $overrides = [];

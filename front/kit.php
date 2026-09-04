@@ -12,7 +12,7 @@ Html::header(Kit::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Assetsign::clas
 if (Kit::canCreate()) {
     echo "<div class='mb-3'>";
     echo "<a class='btn btn-primary' href='" . htmlspecialchars(Kit::getFormURL()) . "'>";
-    echo "<i class='ti ti-plus'></i> " . __('Ajouter');
+    echo "<i class='ti ti-plus'></i> " . __('Add');
     echo "</a>";
     echo "</div>";
 }

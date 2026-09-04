@@ -163,6 +163,9 @@ class PassportEvent extends CommonDBTM
    }
 
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
+      if (!\Session::haveRight(self::$rightname, READ)) {
+          return '';
+      }
       if (!($item instanceof CommonDBTM) || !self::isEnabledForItem($item)) {
           return '';
       }
@@ -175,6 +178,9 @@ class PassportEvent extends CommonDBTM
    }
 
    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool {
+      if (!\Session::haveRight(self::$rightname, READ)) {
+          return false;
+      }
       if (!($item instanceof CommonDBTM) || !self::isEnabledForItem($item)) {
           return false;
       }
@@ -803,7 +809,8 @@ class PassportEvent extends CommonDBTM
 
        $rows = iterator_to_array($DB->request([
            'FROM'  => self::getTable(),
-           'WHERE' => ['users_id' => $item->getID()],
+           'WHERE' => ['users_id' => $item->getID()]
+               + getEntitiesRestrictCriteria(self::getTable(), '', '', true),
            'ORDER' => 'date ASC',
        ]));
 
@@ -1207,6 +1214,14 @@ class PassportEvent extends CommonDBTM
       }
 
       foreach ($rows as &$row) {
+         // Reapplique le meme filtre que la collecte initiale ($returnAssetsignIds
+         // ci-dessus) : sans ca, un evenement Movement/Maintenance dont
+         // source_items_id coincide numeriquement avec un Assetsign de
+         // Restitution ayant un kit se voyait a tort decore du kit_summary
+         // de CET Assetsign, sur un enregistrement sans rapport.
+         if (($row['source_itemtype'] ?? null) !== Assetsign::class || (int) $row['event_type'] !== self::TYPE_RETURN) {
+             continue;
+         }
           $assetsignId = (int) $row['source_items_id'];
           $kitId = $kitIdByAssetsignId[$assetsignId] ?? null;
          if ($kitId === null) {

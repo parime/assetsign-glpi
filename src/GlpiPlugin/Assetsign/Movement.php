@@ -200,6 +200,9 @@ class Movement extends CommonDBTM
    }
 
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
+      if (!Session::haveRight(self::$rightname, READ)) {
+          return '';
+      }
       if (!($item instanceof CommonDBTM) || !self::isEnabledForItem($item)) {
           return '';
       }
@@ -208,6 +211,9 @@ class Movement extends CommonDBTM
    }
 
    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool {
+      if (!Session::haveRight(self::$rightname, READ)) {
+          return false;
+      }
       if (!($item instanceof CommonDBTM) || !self::isEnabledForItem($item)) {
           return false;
       }

@@ -94,15 +94,21 @@ class TokenTest extends AssetsignTestCase
 
         // MAX_ATTEMPTS vaut 20 (constante privee de Token) : 20 validations
         // reussissent, la 21e doit echouer et desactiver definitivement le jeton.
+        // recordAttempt() (pas seulement validate()) : depuis la correction du
+        // finding DoS du rapport de securite 2.6.0, l'incrementation est
+        // separee de la validation pure pour ne compter que les acces
+        // reellement autorises (cf. Token::recordAttempt()) - ce test simule
+        // donc directement la sequence complete qu'un appelant legitime
+        // (SignController) effectue.
         for ($i = 0; $i < 20; $i++) {
-            Token::validate($raw);
+            Token::validate($raw)->recordAttempt();
         }
 
         try {
-            Token::validate($raw);
+            Token::validate($raw)->recordAttempt();
             $this->fail('La 21e tentative aurait du etre rejetee (MAX_ATTEMPTS depasse).');
         } catch (RuntimeException $e) {
-            // __() avec la meme chaine source que Token::validate() plutot que le
+            // __() avec la meme chaine source que Token::recordAttempt() plutot que le
             // texte francais en dur : ce test doit rester valable quelle que soit
             // la langue de l'environnement d'execution (meme piege que deja
             // rencontre et corrige sur AssetsignTest.php - cf. TROUBLESHOOTING.md).
