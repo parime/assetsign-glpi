@@ -2528,3 +2528,95 @@ msgstr "Firmatario delegato"
 msgid "Motif de la délégation"
 msgstr "Motivo della delega"
 
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Constructeur"
+msgstr "Costruttore"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "API externe dédiée"
+msgstr "API esterna dedicata"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Saisie manuelle"
+msgstr "Inserimento manuale"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Élevé"
+msgstr "Alto"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Moyen"
+msgstr "Medio"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Faible"
+msgstr "Basso"
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "L'empreinte de fabrication ne peut pas être négative."
+msgstr "L'impronta di fabbricazione non può essere negativa."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Source invalide."
+msgstr "Fonte non valida."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Niveau de confiance invalide."
+msgstr "Livello di affidabilità non valido."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Empreinte environnementale effacée."
+msgstr "Impronta ambientale cancellata."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Empreinte environnementale enregistrée."
+msgstr "Impronta ambientale salvata."
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte environnementale (fabrication)"
+msgstr "Impronta ambientale (fabbricazione)"
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication"
+msgstr "Impronta di fabbricazione"
+
+#: templates/passport_tab.html.twig
+msgid "Source"
+msgstr "Fonte"
+
+#: templates/passport_tab.html.twig
+msgid "Niveau de confiance"
+msgstr "Livello di affidabilità"
+
+#: templates/passport_tab.html.twig
+msgid "Dernière mise à jour"
+msgstr "Ultimo aggiornamento"
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication non renseignée."
+msgstr "Impronta di fabbricazione non indicata."
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication (kg CO2-eq)"
+msgstr "Impronta di fabbricazione (kg CO2-eq)"
+
+#: templates/passport_tab.html.twig
+msgid "Toujours une saisie manuelle dans cette version : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre), jamais une recherche automatique."
+msgstr "Sempre un inserimento manuale in questa versione: la fonte precisa da dove proviene il valore (scheda del costruttore, uno strumento esterno consultato, una stima propria), mai una ricerca automatica."
+
+#: templates/config_form.html.twig
+msgid "Passeport environnemental"
+msgstr "Passaporto ambientale"
+
+#: templates/config_form.html.twig
+msgid "Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l'implémentation (cf. issue #80) : l'API publique Boavizta n'expose, pour les ordinateurs/portables, que des moyennes de catégorie (\"laptop pro/perso\"), jamais une valeur propre au modèle réel présent dans GLPI — l'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement."
+msgstr "Avvio della componente RSE del Passaporto del dispositivo (impronta di fabbricazione, in kg CO2-eq). Ricerca condotta prima dell'implementazione (cfr. issue #80): l'API pubblica Boavizta espone, per computer/portatili, solo medie di categoria (\"laptop pro/personale\"), mai un valore specifico del modello reale presente in GLPI — mostrarlo come il dato di QUESTO dispositivo sarebbe un dato inventato. Questa versione resta quindi solo a inserimento manuale: la fonte (costruttore / API esterna dedicata / inserimento manuale) e il livello di affidabilità sono dichiarati da chi inserisce il valore, mai calcolati automaticamente."
+
+#: templates/config_form.html.twig
+msgid "Afficher le passeport environnemental sur le Passeport matériel"
+msgstr "Mostra il passaporto ambientale nel Passaporto del dispositivo"
+
+#: templates/config_form.html.twig
+msgid "Rien n'est affiché tant qu'aucune valeur n'a été saisie manuellement : jamais une estimation par défaut."
+msgstr "Non viene mostrato nulla finché non è stato inserito manualmente un valore: mai una stima predefinita."
+

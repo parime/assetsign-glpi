@@ -82,6 +82,10 @@ class Config extends CommonDBTM
         'residual_value_duration_months'      => 60,
         'enable_decision_aid'                 => 1,
         'residual_value_low_threshold_percent' => 20,
+        // Passeport environnemental (cf. ROADMAP.md V3, issue #80) : desactive
+        // par defaut, meme convention que les autres modules optionnels du
+        // Passeport materiel ci-dessus (enable_residual_value, enable_decision_aid...).
+        'enable_environmental_passport'       => 0,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -571,6 +575,7 @@ class Config extends CommonDBTM
            // deja regle dans l'onglet "Score de sante" - pas de second reglage
            // redondant pour ce premier indicateur.
            'residual_value_low_threshold_percent' => max(0, min(100, (int) ($input['residual_value_low_threshold_percent'] ?? 20))),
+           'enable_environmental_passport' => (int) ($input['enable_environmental_passport'] ?? 0),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -728,6 +733,7 @@ class Config extends CommonDBTM
                 `residual_value_duration_months` int unsigned NOT NULL DEFAULT 60,
                 `enable_decision_aid` tinyint NOT NULL DEFAULT 1,
                 `residual_value_low_threshold_percent` int unsigned NOT NULL DEFAULT 20,
+                `enable_environmental_passport` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -865,6 +871,15 @@ class Config extends CommonDBTM
              // réutilise directement health_score_warning_threshold, déjà existant.
              $migration->addField($table, 'enable_decision_aid', 'bool', ['value' => 1, 'after' => 'residual_value_duration_months']);
              $migration->addField($table, 'residual_value_low_threshold_percent', 'integer', ['value' => 20, 'after' => 'enable_decision_aid']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_environmental_passport')) {
+             // Passeport environnemental (cf. ROADMAP.md V3, issue #80) : bascule
+             // opt-in, meme convention "enable_*" que le reste de ce bloc - defaut
+             // DESACTIVE (contrairement a enable_residual_value/enable_decision_aid,
+             // actifs par defaut) car cette fonctionnalite depend entierement d'une
+             // saisie manuelle qu'aucune instance existante n'a encore faite.
+             $migration->addField($table, 'enable_environmental_passport', 'bool', ['value' => 0, 'after' => 'residual_value_low_threshold_percent']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'show_qr_code')) {

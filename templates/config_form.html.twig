@@ -47,6 +47,7 @@
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Score de santé', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-residual-value" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Valeur résiduelle', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-decision-aid" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Aide à la décision', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-environmental" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport environnemental', 'assetsign') }}</button></li>
       </ul>
 
       <div class="tab-content">
@@ -460,6 +461,17 @@
             <label class="form-label">{{ __('Seuil de valeur résiduelle déclenchant « Réévaluer l\'usage » (% du prix d\'achat)', 'assetsign') }}</label>
             <input type="number" name="residual_value_low_threshold_percent" class="form-control" style="width: 140px;" min="0" max="100" value="{{ config.residual_value_low_threshold_percent|default(20) }}">
             <div class="form-text">{{ __('En dessous de ce pourcentage du prix d\'achat d\'origine, la recommandation « Réévaluer l\'usage » est affichée.', 'assetsign') }}</div>
+          </div>
+        </div>
+
+        {# ---------------------------------------------------------------- Passeport environnemental #}
+        <div class="tab-pane fade" id="tab-environmental" role="tabpanel">
+          <p class="text-muted">{{ __('Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l\'implémentation (cf. issue #80) : l\'API publique Boavizta n\'expose, pour les ordinateurs/portables, que des moyennes de catégorie ("laptop pro/perso"), jamais une valeur propre au modèle réel présent dans GLPI — l\'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement.', 'assetsign') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_environmental_passport" value="0">
+            <input type="checkbox" name="enable_environmental_passport" value="1" class="form-check-input" id="enable_environmental_passport" {{ config.enable_environmental_passport|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_environmental_passport">{{ __('Afficher le passeport environnemental sur le Passeport matériel', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Rien n\'est affiché tant qu\'aucune valeur n\'a été saisie manuellement : jamais une estimation par défaut.', 'assetsign') }}</div>
           </div>
         </div>
 

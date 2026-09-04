@@ -11,6 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Passeport environnemental (empreinte de fabrication)** (issue #80, cf. ROADMAP.md V3) : amorce du
+  volet RSE sur le Passeport matériel, activable par entité (`enable_environmental_passport`, défaut
+  désactivé — nouvel onglet « Passeport environnemental » de la configuration). Nouvelle table dédiée
+  `glpi_plugin_assetsign_environmentaldatas` (1-vers-1 `itemtype`/`items_id`, même patron que
+  `ResidualValue`/`Movement`) : empreinte de fabrication en kg CO2-eq, source (constructeur / API
+  externe dédiée / saisie manuelle) et niveau de confiance (élevé/moyen/faible, badge coloré — même
+  convention que `Movement::getStatusColor()`), tous nullable, jamais de valeur par défaut. Formulaire
+  de saisie manuelle sur l'onglet Passeport matériel (droit `UPDATE`), absence explicite tant que rien
+  n'est saisi. **Recherche menée avant l'implémentation** (commentaire posté sur l'issue #80) : l'API
+  publique Boavizta (piste notée dans ROADMAP.md, section « Envisagé ») n'expose, pour les
+  ordinateurs/portables, que 2 « archétypes » génériques par catégorie (moyennes "pro"/"perso"),
+  jamais une valeur propre à un modèle réel, et rien dans GLPI ne permet de choisir objectivement
+  entre les deux — l'afficher comme la donnée de fabrication de CE matériel aurait été une donnée
+  inventée, contraire au principe fondateur du plugin. **Scope réduit à la saisie manuelle uniquement
+  dans cette version** en conséquence : le champ `source` garde ses 3 valeurs (pour ne pas fermer la
+  porte à une vraie intégration future par modèle exact), mais aucun appel réseau ni bouton
+  « Rechercher automatiquement » dans cette version — la source trace d'où le technicien tient le
+  chiffre (fiche constructeur, outil externe consulté à la main, estimation propre), pas un mécanisme
+  d'automatisation.
+
 - **Délégation de la signature de restitution** (issue #115) : un document en attente de signature
   (Attribution/Restitution/Don/Vente/Destruction, bénéficiaire **interne** uniquement — un
   bénéficiaire externe n'a de toute façon aucun flux de signature à distance, cf.
