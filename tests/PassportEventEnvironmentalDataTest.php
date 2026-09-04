@@ -51,10 +51,12 @@ class PassportEventEnvironmentalDataTest extends AssetsignTestCase
         // apparaitre, jamais un chiffre (0, ou une estimation quelconque).
         // "kg CO2-eq" reste legitimement present dans le LABEL du formulaire de
         // saisie (toujours affiche pour un utilisateur habilite, cf. can_backfill) -
-        // seule l'absence du bouton "Effacer" (n'existe que quand une valeur est
-        // deja enregistree) prouve qu'aucun chiffre n'est affiche.
+        // seule l'absence du formulaire "Effacer" (n'existe que quand une valeur
+        // est deja enregistree) prouve qu'aucun chiffre n'est affiche. Marqueur
+        // HTML precis plutot que le libelle traduit du bouton (cf. commentaire de
+        // testClearedDataDisplaysExplicitAbsenceAgain() pour la raison).
         $this->assertStringContainsString(__('Empreinte de fabrication non renseignée.', 'assetsign'), $html);
-        $this->assertStringNotContainsString(__('Effacer', 'assetsign'), $html);
+        $this->assertStringNotContainsString('name="carbon_footprint_manufacturing" value=""', $html);
     }
 
     public function testManualValueDisplaysWithSourceConfidenceAndDate(): void
@@ -114,10 +116,14 @@ class PassportEventEnvironmentalDataTest extends AssetsignTestCase
         // "kg CO2-eq" reste legitimement present dans le LABEL du champ de
         // saisie (cf. templates/passport_tab.html.twig) - seule la ligne
         // d'AFFICHAGE ("Empreinte de fabrication : X kg CO2-eq") ne doit plus
-        // apparaitre, verifiee via l'absence du bouton "Effacer" ci-dessous
-        // (n'existe que quand `environmental` est non nul, meme condition
-        // Twig que le bloc d'affichage).
-        $this->assertStringNotContainsString(__('Effacer', 'assetsign'), $html);
+        // apparaitre. Verifie via l'absence du formulaire "Effacer" (n'existe
+        // que quand `environmental` est non nul, meme condition Twig que le
+        // bloc d'affichage) en cherchant son marqueur HTML precis plutot que
+        // le libelle traduit du bouton - un simple mot traduit ("Clear" en
+        // anglais) est une fausse piste ici, sous-chaine accidentelle du nom
+        // d'entite de ce test ("...Cleared"), qui ne se serait jamais vue en
+        // francais mais a fait echouer ce test en anglais sur la vraie CI.
+        $this->assertStringNotContainsString('name="carbon_footprint_manufacturing" value=""', $html);
     }
 
     public function testEditFormOnlyVisibleWithUpdateRight(): void
