@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.1] - 2026-09-04
+
 ### Security
 
 - **Rapport de sécurité 2.6.0, traité intégralement** : correctifs sur la délégation de signature
@@ -31,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   connecté (paramètre `right` par défaut `'id'`), rendant la fonctionnalité livrée en 2.6.0 non
   fonctionnelle pour désigner qui que ce soit d'autre.
 
+## [2.7.0] - 2026-09-04
+
 ### Added
 
 - **Passeport environnemental (empreinte de fabrication)** (issue #80, cf. ROADMAP.md V3) : amorce du
@@ -52,6 +56,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   « Rechercher automatiquement » dans cette version — la source trace d'où le technicien tient le
   chiffre (fiche constructeur, outil externe consulté à la main, estimation propre), pas un mécanisme
   d'automatisation.
+
+## [2.6.0] - 2026-09-03
+
+### Added
 
 - **Délégation de la signature de restitution** (issue #115) : un document en attente de signature
   (Attribution/Restitution/Don/Vente/Destruction, bénéficiaire **interne** uniquement — un
@@ -142,6 +150,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   toucher à l'affichage ni aux deux indicateurs sources — "architecture prête pour l'IA" au
   sens de la roadmap, sans construire d'abstraction supplémentaire par anticipation.
 
+## [2.5.0] - 2026-08-30
+
+### Added
+
 - **Fin de vie structurée : destruction (prestataire/certificat) et don (organisme/justificatif)**
   (issue #78, dernière partie de "fin de vie structurée" — la date de réforme automatique était déjà
   livrée le 2026-08-19, cf. entrée correspondante ci-dessous dans l'historique) : nouveau type
@@ -185,6 +197,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   automatique - jamais un simple repli dégradé, un vrai choix toujours disponible. Le libellé
   distingue toujours explicitement une valeur « estimée » d'une valeur « saisie manuelle »,
   pour ne jamais laisser croire à l'un ou l'autre à tort.
+
+## [2.4.0] - 2026-08-26
+
+### Added
 
 - **QR code imprimable sur le matériel** (issue #82, ROADMAP.md V3) : nouveau bouton
   « Imprimer une étiquette QR code » sur l'onglet Passeport matériel, ouvrant une page
