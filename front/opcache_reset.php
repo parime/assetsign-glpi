@@ -23,19 +23,20 @@
  * setup.php) puisqu'il est appele sans session, depuis un script shell (update.sh).
  */
 
-header('Content-Type: text/plain');
+use GlpiPlugin\Assetsign\Security\OpcacheResetGuard;
 
-$remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
-if (!in_array($remoteAddr, ['127.0.0.1', '::1'], true)) {
-    http_response_code(403);
-    echo 'forbidden';
-    exit;
-}
+header('Content-Type: text/plain');
 
 $tokenFile = GLPI_PLUGIN_DOC_DIR . '/assetsign_opcache_token';
 $expectedToken = is_file($tokenFile) ? trim((string) file_get_contents($tokenFile)) : '';
-$providedToken = $_GET['token'] ?? '';
-if ($expectedToken === '' || !is_string($providedToken) || !hash_equals($expectedToken, $providedToken)) {
+$providedToken = $_GET['token'] ?? null;
+
+$authorized = (new OpcacheResetGuard())->isAuthorized(
+    $_SERVER['REMOTE_ADDR'] ?? '',
+    is_string($providedToken) ? $providedToken : null,
+    $expectedToken
+);
+if (!$authorized) {
     http_response_code(403);
     echo 'forbidden';
     exit;
