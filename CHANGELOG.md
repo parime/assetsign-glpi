@@ -61,6 +61,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests pour `Api\MovementFormController` et `Api\PassportBackfillController` — c'étaient les
+  deux seuls contrôleurs de la famille `Api\*Controller` (aux côtés d'`AssetsignFormController`,
+  `MaintenanceFormController`, `ResidualValueFormController`, `QrLabelController`,
+  `SignController`, tous déjà testés) sans test dédié couvrant leur propre logique de garde
+  (itemtype valide, matériel/utilisateur trouvable et lisible par l'utilisateur courant).
+- `Security\OpcacheResetGuard`, extraite de `front/opcache_reset.php` pour rendre testable en
+  PHPUnit la logique d'autorisation (liste blanche d'IP + comparaison de jeton en temps constant)
+  de ce point d'entrée — le seul déjà visé par une faille réelle (revue de sécurité marketplace
+  GLPI, low, #98) et qui n'avait jusqu'ici aucun test de non-régression. Comportement du front
+  inchangé, purement une extraction.
+
 - **Délégation de la signature de restitution** (issue #115) : un document en attente de signature
   (Attribution/Restitution/Don/Vente/Destruction, bénéficiaire **interne** uniquement — un
   bénéficiaire externe n'a de toute façon aucun flux de signature à distance, cf.
