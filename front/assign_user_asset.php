@@ -1,6 +1,7 @@
 <?php
 
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\Security\AssetAssignmentGuard;
 
 Session::checkRight(Assetsign::$rightname, UPDATE);
 
@@ -12,19 +13,11 @@ $itemtype = (string) ($_POST['itemtype'] ?? '');
 $items_id = (int) ($_POST['items_id'] ?? 0);
 $users_id = (int) ($_POST['users_id'] ?? 0);
 
-if (!is_subclass_of($itemtype, CommonDBTM::class)) {
-    Html::displayNotFoundError();
-}
-
-// Faux positif deja revu (cf. ARCHITECTURE.md) : is_subclass_of() ci-dessus restreint deja
-// l'instanciation a la famille GLPI CommonDBTM, et can($items_id, UPDATE) juste en dessous
-// encadre tout acces aux donnees de l'objet instancie - meme motif que Assetsign::createManual().
-$item = new $itemtype(); // nosemgrep: php.lang.security.injection.tainted-object-instantiation.tainted-object-instantiation
-// !can($items_id, UPDATE) : meme garde-fou de segregation par entite que
-// Assetsign::createManual()/Maintenance::createWithChecklist() (cf. TROUBLESHOOTING.md) -
-// le droit generique Assetsign::$rightname verifie ci-dessus n'est jamais
-// restreint par entite a lui seul.
-if (!$item->getFromDB($items_id) || !$item->can($items_id, UPDATE)) {
+// AssetAssignmentGuard::resolveAssignableItem() encadre l'itemtype (famille CommonDBTM
+// uniquement) et la segregation par entite (can($items_id, UPDATE)) - cf. son propre docblock,
+// meme garde-fou que Assetsign::createManual()/Maintenance::createWithChecklist().
+$item = (new AssetAssignmentGuard())->resolveAssignableItem($itemtype, $items_id);
+if ($item === null) {
     Html::displayNotFoundError();
 }
 
