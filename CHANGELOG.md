@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **La délégation d'auto-signature (page reçue par e-mail par le bénéficiaire lui-même) était
+  totalement non fonctionnelle** : `sign_page.html.twig` est une page volontairement autonome, sans
+  jQuery (JS moderne fetch/module uniquement) — le widget `User::dropdown()` y génère du JS qui
+  suppose jQuery disponible et ne s'initialisait donc jamais, laissant un menu « Déléguer à » bloqué
+  sur « ----- », quel que soit le profil ou la version. Bug distinct et plus ancien que celui déjà
+  corrigé sur les deux menus techniciens/admin (`right='id'` vs `'all'`), découvert en retestant
+  l'issue #115 en conditions réelles (instance neuve, Playwright). Remplacé par un `<select>` simple
+  rempli côté serveur (`Assetsign::getDelegateCandidates()`, même périmètre `right='all'` + entité) :
+  aucune dépendance JS, aucun changement du script de soumission existant (il lit déjà le `<select>`
+  natif par son attribut `name`).
+
 - **Le menu « Destinataire » du formulaire de création manuelle (Don/Vente/Destruction,
   `assetsign_tab.html.twig`) ne proposait que le compte actuellement connecté**, quel que soit son
   profil — exactement le même bug que celui déjà corrigé pour les deux menus de délégation de

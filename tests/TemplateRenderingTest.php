@@ -118,11 +118,14 @@ class TemplateRenderingTest extends AssetsignTestCase
    }
 
     /**
-     * Same regression guard as `testAssetsignTabTemplateDoesNotLeakDropdownFieldId()`, for the
-     * self-service delegation dropdown on the beneficiary's own signature page — the third and
-     * last real `User::dropdown()` call in this plugin.
+     * `sign_page.html.twig`'s delegate dropdown is a plain, server-populated `<select>`, not a
+     * `User::dropdown()` AJAX widget (see `Assetsign::getDelegateCandidates()`'s own docblock for
+     * why: this page loads no jQuery, so the select2 widget the other two dropdowns use never
+     * initializes here — a real bug found by testing issue #115 with Playwright, independent of
+     * the `right='id'` vs `'all'` fix already covered by the two tests above). This confirms every
+     * candidate passed in actually renders as a real, selectable `<option>`.
      */
-   public function testSignPageTemplateDelegateDropdownIsNotRestrictedToTheCurrentUser(): void {
+   public function testSignPageTemplateDelegateDropdownRendersEveryCandidateAsARealOption(): void {
        $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering SignPage');
        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_DON, Assetsign::STATUS_SENT);
 
@@ -142,9 +145,12 @@ class TemplateRenderingTest extends AssetsignTestCase
            'can_edit_comment'         => false,
            'self_service_delegation_enabled' => true,
            'is_delegate_signer'       => false,
-           // Force le rendu du formulaire d'auto-delegation (bloc contenant
-           // {% do call('User::dropdown', ..., {'right': 'all'}) %}).
+           // Force le rendu du formulaire d'auto-delegation (bloc contenant le <select>).
            'can_delegate_self'        => true,
+           'delegate_candidates'      => [
+               ['id' => 123456, 'label' => 'PHPUnit Candidate One'],
+               ['id' => 123457, 'label' => 'PHPUnit Candidate Two'],
+           ],
            'delegate'                 => null,
            'page_title'               => 'PHPUnit',
            'pdf_url'                  => '',
@@ -152,6 +158,7 @@ class TemplateRenderingTest extends AssetsignTestCase
        ]);
 
        $this->assertStringContainsString('name="delegate_users_id"', $html, 'Le formulaire d\'auto-delegation doit etre rendu pour que ce test ait un sens.');
-       $this->assertUserDropdownIsNotRestrictedToTheCurrentUser($html, 'sign_page.html.twig (menu Deleguer a)');
+       $this->assertStringContainsString('<option value="123456">PHPUnit Candidate One</option>', $html);
+       $this->assertStringContainsString('<option value="123457">PHPUnit Candidate Two</option>', $html);
    }
 }

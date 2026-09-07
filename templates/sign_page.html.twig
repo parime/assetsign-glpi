@@ -103,13 +103,26 @@
         <div id="delegate-form" hidden style="margin-top:14px;">
           <div class="mb-2">
             <label class="form-label" for="delegate-user">{{ __('Déléguer à', 'assetsign') }}</label>
-            {# 'right': 'all' (pas le defaut 'id', qui ne liste QUE l'utilisateur
-               courant et rendait cette fonctionnalite inutilisable) + 'entity'
-               scope au dossier concerne : c'est le meme perimetre que
-               Assetsign::delegateSignatureTo() revalide desormais cote serveur
-               (Profile_User::getUserEntities()), donc rien de choisissable ici
-               ne peut plus etre rejete la-bas. #}
-            {% do call('User::dropdown', [{'name': 'delegate_users_id', 'rand': 'delegate_user', 'right': 'all', 'entity': assetsign.entities_id}]) %}
+            {# <select> simple, rempli cote serveur (Assetsign::getDelegateCandidates(),
+               meme perimetre right='all' + entite que le widget AJAX ci-dessous
+               remplacait) plutot que le widget AJAX User::dropdown() : cette page est
+               volontairement autonome, sans jQuery (JS moderne fetch/module
+               uniquement, cf. le reste de ce gabarit) — le JS que User::dropdown()
+               genere suppose jQuery disponible et ne s'initialisait donc jamais ici,
+               laissant un menu bloque sur "-----" (bug reel trouve en testant
+               l'issue #115 en conditions reelles, independant du correctif
+               right='id' vs 'all' applique aux deux autres menus de ce plugin).
+               Aucun changement cote JS necessaire : le script de soumission plus bas
+               lit deja select[name="delegate_users_id"] via le DOM natif. #}
+            <select name="delegate_users_id" id="delegate-user" class="form-select">
+              {# Dropdown::EMPTY_VALUE, pas __('-----') : c'est une constante GLPI native
+                 (5 tirets), jamais traduite nulle part dans le coeur non plus — pas une
+                 vraie chaine de langue. #}
+              <option value="0">{{ constant('Dropdown::EMPTY_VALUE') }}</option>
+              {% for candidate in delegate_candidates %}
+              <option value="{{ candidate.id }}">{{ candidate.label }}</option>
+              {% endfor %}
+            </select>
           </div>
           <div class="mb-2">
             <label class="form-label" for="delegate-reason">{{ __('Motif (obligatoire)', 'assetsign') }}</label>
