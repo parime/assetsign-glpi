@@ -1599,6 +1599,38 @@ class Assetsign extends CommonDBTM
    }
 
     /**
+     * Comptes GLPI eligibles comme delegue pour une entite donnee (issue #115) —
+     * memes criteres (`right => 'all'`, restreint a l'entite) que la liste
+     * deroulante equivalente cote technicien/admin (assetsign_form.html.twig),
+     * mais rendue en `<option>` simples plutot qu'en widget AJAX select2 : la
+     * page de signature (sign_page.html.twig) est une page volontairement
+     * autonome, sans jQuery (JS moderne fetch/module uniquement) — le widget
+     * `User::dropdown()` y genere du JS qui suppose jQuery disponible et ne
+     * s'initialise donc jamais, laissant un `<select>` vide avec pour seule
+     * option "-----" (bug reel trouve en testant issue #115 en conditions
+     * reelles avec Playwright, independant du correctif right='id' vs 'all').
+     * Une liste simple, pre-remplie cote serveur, ne depend d'aucun JS pour
+     * fonctionner. La validation reelle (compte actif, acces a l'entite, motif
+     * obligatoire...) reste faite par delegateSignatureTo() a la soumission —
+     * cette liste n'est qu'un confort d'affichage, jamais la seule barriere.
+     *
+     * @return array<int, array{id: int, label: string}>
+     */
+   public static function getDelegateCandidates(int $entitiesId): array {
+       $candidates = [];
+      foreach (\User::getSqlSearchResult(false, 'all', $entitiesId) as $row) {
+          $candidates[] = [
+              'id'    => (int) $row['id'],
+              'label' => trim(formatUserName(0, $row['name'], $row['realname'], $row['firstname'])),
+          ];
+      }
+
+       usort($candidates, static fn (array $a, array $b): int => strcasecmp($a['label'], $b['label']));
+
+       return $candidates;
+   }
+
+    /**
      * Identite du signataire REEL (delegue ou beneficiaire d'origine), utilisee
      * pour la ligne "Signataire" du PDF final et pour la preuve de signature
      * (glpi_plugin_assetsign_signatures) — cf. SignController::submit(). Sans

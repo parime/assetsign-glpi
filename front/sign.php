@@ -124,6 +124,12 @@ try {
     $assetsign = $data['assetsign'];
     $config = \GlpiPlugin\Assetsign\Config::getForEntity((int) $assetsign->fields['entities_id']);
     $damageEnabled = (bool) $config->fields['enable_damage_annotation'];
+    // Auto-delegation (issue #115) : formulaire affiche uniquement au beneficiaire
+    // D'ORIGINE connecte (pas au delegue lui-meme), et seulement si la fiche est
+    // encore modifiable ET le reglage self-service actif pour l'entite.
+    $canDelegateSelf = !$data['is_delegate_signer']
+        && $assetsign->isStillEditable()
+        && (bool) $config->fields['enable_self_service_delegation'];
 
     TemplateRenderer::getInstance()->display('@assetsign/sign_page.html.twig', [
         'token'      => $token,
@@ -139,16 +145,13 @@ try {
         'damage_markers_by_view' => $damageEnabled ? Assetsign::groupMarkersByView(DamageMarker::getForAssetsign($assetsign->getID())) : [],
         'beneficiary_comment'    => $assetsign->fields['beneficiary_comment'] ?? '',
         'can_edit_comment'       => $assetsign->isStillEditable(),
-        // Auto-delegation (issue #115) : formulaire affiche uniquement au
-        // beneficiaire D'ORIGINE connecte (pas au delegue lui-meme, qui n'a
-        // pas vocation a re-deleguer depuis cette page — seul un admin le
-        // peut, cf. front/assetsign.form.php), et seulement si la fiche est
-        // encore modifiable ET le reglage self-service actif pour l'entite.
         'self_service_delegation_enabled' => (bool) $config->fields['enable_self_service_delegation'],
         'is_delegate_signer'     => $data['is_delegate_signer'],
-        'can_delegate_self'      => !$data['is_delegate_signer']
-            && $assetsign->isStillEditable()
-            && (bool) $config->fields['enable_self_service_delegation'],
+        'can_delegate_self'      => $canDelegateSelf,
+        // Rendue en <option> simples plutot qu'en widget AJAX (cf. Assetsign::
+        // getDelegateCandidates() pour le pourquoi) : ne calcule la liste que si
+        // le bloc est reellement affiche, jamais sur une simple consultation.
+        'delegate_candidates'    => $canDelegateSelf ? Assetsign::getDelegateCandidates((int) $assetsign->fields['entities_id']) : [],
         'delegate'               => $assetsign->getDelegate(),
         // Volontairement DIFFERENT de Assetsign::getPdfHeadings() (fixe en francais,
         // car c'est le contenu d'un PDF archive, cf. commentaire sur
