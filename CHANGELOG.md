@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Tests de contenu pour `Pdf\MaintenancePdfBuilder::renderHtml()` — jusqu'ici seulement exercée
+  indirectement via `Maintenance::createWithChecklist()` (qui vérifie qu'un `Document` est bien
+  attaché, jamais ce que le HTML rendu contient réellement). Vérifie, à la même granularité que
+  `AssetsignTest` pour `HandoverPdfBuilder::renderHtml()`, la présence conditionnelle des points de
+  contrôle renseignés, du bloc QR code (`show_qr_code`), de la section état des lieux visuel
+  (`enable_damage_annotation`) et de la zone de signature (`enable_maintenance_signature`).
 - `Security\AssetAssignmentGuard`, extraite de `front/assign_user_asset.php` pour rendre testable en
   PHPUnit contre de vraies fixtures (entité/matériel/session) la logique de garde de ce front —
   itemtype restreint à la famille `CommonDBTM` (faux positif tainted-object-instantiation déjà revu,
