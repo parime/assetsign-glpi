@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Security\AssetAssignmentGuard`, extraite de `front/assign_user_asset.php` pour rendre testable en
+  PHPUnit contre de vraies fixtures (entité/matériel/session) la logique de garde de ce front —
+  itemtype restreint à la famille `CommonDBTM` (faux positif tainted-object-instantiation déjà revu,
+  cf. ARCHITECTURE.md) puis `can($items_id, UPDATE)` (même garde-fou de ségrégation par entité que
+  `Assetsign::createManual()`). Même motif que `Security\OpcacheResetGuard`, comportement du front
+  inchangé, purement une extraction.
+- Tests pour `Profile::install()`/`uninstall()` — aucun test dédié jusqu'ici. Couvre la nuance
+  documentée directement dans la classe : un droit opérationnel (Admin/Technician) n'est écrit qu'à
+  la création de la ligne et respecte une révocation manuelle sur une réinstallation ultérieure,
+  alors que Super-Admin est toujours réinitialisé à tous les droits à chaque exécution.
+- Tests pour `Pdf\SignatureStamper::apply()` — aucun test direct jusqu'ici (`SignControllerTest` ne
+  couvre que la garde d'autorisation, jamais le flux de signature réel ; les assertions de contenu
+  PDF existantes passent toutes par `HandoverPdfBuilder::renderHtml()` directement). Vérifie
+  l'écriture réelle du fichier signé dans `GLPI_TMP_DIR`, la correspondance du hash SHA-256 avec le
+  contenu réel sur disque, l'horodatage `signed_at`, et le chiffrement effectif du PDF quand
+  `protect_pdf` est activé pour l'entité (entrée `/Encrypt` du PDF produit par CPDF).
+
 ## [2.7.1] - 2026-09-04
 
 ### Security
