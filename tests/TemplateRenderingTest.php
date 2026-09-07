@@ -25,74 +25,133 @@ use GlpiPlugin\Assetsign\Assetsign;
  */
 class TemplateRenderingTest extends AssetsignTestCase
 {
-    public function testAssetsignTabTemplateDoesNotLeakDropdownFieldId(): void
-    {
-        $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering AssetsignTab');
-        $computer = $this->createTestComputer($entityId, 'PHPUnit PC TemplateRendering');
+   public function testAssetsignTabTemplateDoesNotLeakDropdownFieldId(): void {
+       $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering AssetsignTab');
+       $computer = $this->createTestComputer($entityId, 'PHPUnit PC TemplateRendering');
 
-        $html = TemplateRenderer::getInstance()->render('@assetsign/assetsign_tab.html.twig', [
-            'item'               => $computer,
-            'assetsigns'            => [],
-            'statuses'           => Assetsign::getStatuses(),
-            'manual_types'       => [Assetsign::TYPE_DON => 'Don', Assetsign::TYPE_VENTE => 'Vente', Assetsign::TYPE_DESTRUCTION => 'Destruction'],
-            'type_vente'         => Assetsign::TYPE_VENTE,
-            'type_don'           => Assetsign::TYPE_DON,
-            'type_destruction'   => Assetsign::TYPE_DESTRUCTION,
-            // Force le rendu du formulaire de creation manuelle (bloc contenant
-            // {% do call('User::dropdown', ...) %}), quel que soit le droit
-            // reel de la session de test.
-            'can_create_manual'  => true,
-            'csrf_token'         => 'phpunit-test-token',
-        ]);
+       $html = TemplateRenderer::getInstance()->render('@assetsign/assetsign_tab.html.twig', [
+           'item'               => $computer,
+           'assetsigns'            => [],
+           'statuses'           => Assetsign::getStatuses(),
+           'manual_types'       => [Assetsign::TYPE_DON => 'Don', Assetsign::TYPE_VENTE => 'Vente', Assetsign::TYPE_DESTRUCTION => 'Destruction'],
+           'type_vente'         => Assetsign::TYPE_VENTE,
+           'type_don'           => Assetsign::TYPE_DON,
+           'type_destruction'   => Assetsign::TYPE_DESTRUCTION,
+           // Force le rendu du formulaire de creation manuelle (bloc contenant
+           // {% do call('User::dropdown', ...) %}), quel que soit le droit
+           // reel de la session de test.
+           'can_create_manual'  => true,
+           'csrf_token'         => 'phpunit-test-token',
+       ]);
 
-        // name="users_id" (pas un libelle traduit) : le test doit rester valable
-        // quelle que soit la langue de l'environnement d'execution (echec reel
-        // constate en CI, qui rend en anglais - "Destinataire" n'y apparait pas).
-        $this->assertStringContainsString('name="users_id"', $html, 'Le formulaire de creation manuelle doit etre rendu pour que ce test ait un sens.');
-        $this->assertNoStrayNumericTextNode($html, 'assetsign_tab.html.twig (menu Destinataire)');
-    }
+       // name="users_id" (pas un libelle traduit) : le test doit rester valable
+       // quelle que soit la langue de l'environnement d'execution (echec reel
+       // constate en CI, qui rend en anglais - "Destinataire" n'y apparait pas).
+       $this->assertStringContainsString('name="users_id"', $html, 'Le formulaire de creation manuelle doit etre rendu pour que ce test ait un sens.');
+       $this->assertNoStrayNumericTextNode($html, 'assetsign_tab.html.twig (menu Destinataire)');
+       $this->assertUserDropdownIsNotRestrictedToTheCurrentUser($html, 'assetsign_tab.html.twig (menu Destinataire)');
+   }
 
-    public function testAssetsignFormTemplateDoesNotLeakAccessoryDropdownFieldId(): void
-    {
-        $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering AssetsignForm');
-        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_DON, Assetsign::STATUS_SENT);
+    /**
+     * Regression guard for issue #115's own class of bug (see the same fix already applied to
+     * `assetsign_form.html.twig`/`sign_page.html.twig`'s delegation dropdowns): this "Destinataire"
+     * picker on the manual Don/Vente/Destruction creation form used the same `User::dropdown()`
+     * default (`right => 'id'`, which restricts the list to the currently logged-in user only,
+     * regardless of profile) — never fixed alongside the delegation dropdowns, even though it's
+     * the exact same underlying defect. `Html::jsAjaxDropdown()` embeds the resolved options as a
+     * literal JSON blob in an inline `<script>` (confirmed by rendering this template directly and
+     * inspecting the output), so `"right":"all"` appearing in the HTML is a direct, reliable proxy
+     * for "this dropdown can actually list other users" — not just "the widget renders".
+     */
+   private function assertUserDropdownIsNotRestrictedToTheCurrentUser(string $html, string $context): void {
+       $this->assertStringContainsString('"right":"all"', $html, "$context : la liste doit pouvoir proposer d'autres utilisateurs que celui actuellement connecte (right='all'), pas seulement lui (right='id', le defaut de User::dropdown()).");
+   }
 
-        $html = TemplateRenderer::getInstance()->render('@assetsign/assetsign_form.html.twig', [
-            'item'                      => $assetsign,
-            'params'                    => [],
-            'statuses'                  => Assetsign::getStatuses(),
-            'types'                     => Assetsign::getTypes(),
-            'beneficiary'               => [],
-            'target_item'               => [],
-            'reminders'                 => 0,
-            'can_remind'                => false,
-            'accessories'               => [],
-            // Force le rendu du formulaire d'ajout d'accessoire (bloc contenant
-            // {% do call('GlpiPlugin\Assetsign\Accessory::dropdown', ...) %}).
-            'can_edit_accessories'      => true,
-            'observations_enabled'      => false,
-            'damage_annotation_enabled' => false,
-            'damage_views'              => [],
-            'damage_images'             => [],
-            'damage_markers_by_view'    => [],
-            'can_edit_damage_markers'   => false,
-            'type_vente'                => Assetsign::TYPE_VENTE,
-            'vente_details'             => null,
-            'can_edit_vente_details'    => false,
-            'type_don'                  => Assetsign::TYPE_DON,
-            'don_details'               => null,
-            'can_edit_don_details'      => false,
-            'type_destruction'          => Assetsign::TYPE_DESTRUCTION,
-            'destruction_details'       => null,
-            'can_edit_destruction_details' => false,
-            'attached_documents'        => [],
-            'signature_proof'           => null,
-            'csrf_token'                => 'phpunit-test-token',
-        ]);
+   public function testAssetsignFormTemplateDoesNotLeakAccessoryDropdownFieldId(): void {
+       $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering AssetsignForm');
+       $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_DON, Assetsign::STATUS_SENT);
 
-        // name="plugin_assetsign_accessories_id" (pas un libelle traduit) : meme
-        // raison que ci-dessus (independance a la langue de l'environnement).
-        $this->assertStringContainsString('name="plugin_assetsign_accessories_id"', $html, 'Le formulaire d\'ajout d\'accessoire doit etre rendu pour que ce test ait un sens.');
-        $this->assertNoStrayNumericTextNode($html, 'assetsign_form.html.twig (menu Ajouter un accessoire)');
-    }
+       $html = TemplateRenderer::getInstance()->render('@assetsign/assetsign_form.html.twig', [
+           'item'                      => $assetsign,
+           'params'                    => [],
+           'statuses'                  => Assetsign::getStatuses(),
+           'types'                     => Assetsign::getTypes(),
+           'beneficiary'               => [],
+           'target_item'               => [],
+           'reminders'                 => 0,
+           'can_remind'                => false,
+           'accessories'               => [],
+           // Force le rendu du formulaire d'ajout d'accessoire (bloc contenant
+           // {% do call('GlpiPlugin\Assetsign\Accessory::dropdown', ...) %}).
+           'can_edit_accessories'      => true,
+           'observations_enabled'      => false,
+           'damage_annotation_enabled' => false,
+           'damage_views'              => [],
+           'damage_images'             => [],
+           'damage_markers_by_view'    => [],
+           'can_edit_damage_markers'   => false,
+           'type_vente'                => Assetsign::TYPE_VENTE,
+           'vente_details'             => null,
+           'can_edit_vente_details'    => false,
+           'type_don'                  => Assetsign::TYPE_DON,
+           'don_details'               => null,
+           'can_edit_don_details'      => false,
+           'type_destruction'          => Assetsign::TYPE_DESTRUCTION,
+           'destruction_details'       => null,
+           'can_edit_destruction_details' => false,
+           'attached_documents'        => [],
+           'signature_proof'           => null,
+           'csrf_token'                => 'phpunit-test-token',
+           // Force le rendu du formulaire de delegation (bloc contenant
+           // {% do call('User::dropdown', ..., {'right': 'all'}) %}) — voir
+           // testAssetsignFormTemplateDelegateDropdownIsNotRestrictedToTheCurrentUser().
+           'delegation_enabled'        => true,
+           'can_delegate'              => true,
+       ]);
+
+       // name="plugin_assetsign_accessories_id" (pas un libelle traduit) : meme
+       // raison que ci-dessus (independance a la langue de l'environnement).
+       $this->assertStringContainsString('name="plugin_assetsign_accessories_id"', $html, 'Le formulaire d\'ajout d\'accessoire doit etre rendu pour que ce test ait un sens.');
+       $this->assertNoStrayNumericTextNode($html, 'assetsign_form.html.twig (menu Ajouter un accessoire)');
+       $this->assertStringContainsString('name="delegate_users_id"', $html, 'Le formulaire de delegation doit etre rendu pour que ce test ait un sens.');
+       $this->assertUserDropdownIsNotRestrictedToTheCurrentUser($html, 'assetsign_form.html.twig (menu Deleguer a)');
+   }
+
+    /**
+     * Same regression guard as `testAssetsignTabTemplateDoesNotLeakDropdownFieldId()`, for the
+     * self-service delegation dropdown on the beneficiary's own signature page — the third and
+     * last real `User::dropdown()` call in this plugin.
+     */
+   public function testSignPageTemplateDelegateDropdownIsNotRestrictedToTheCurrentUser(): void {
+       $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering SignPage');
+       $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_DON, Assetsign::STATUS_SENT);
+
+       $html = TemplateRenderer::getInstance()->render('@assetsign/sign_page.html.twig', [
+           'token'                    => 'phpunit-test-token',
+           'csrf_token'               => 'phpunit-test-token',
+           'assetsign'                => $assetsign->fields,
+           'user'                     => [],
+           'item'                     => [],
+           'expiry'                   => '',
+           'can_edit_damage_markers'  => false,
+           'damage_annotation_enabled' => false,
+           'damage_views'             => [],
+           'damage_images'            => [],
+           'damage_markers_by_view'   => [],
+           'beneficiary_comment'      => '',
+           'can_edit_comment'         => false,
+           'self_service_delegation_enabled' => true,
+           'is_delegate_signer'       => false,
+           // Force le rendu du formulaire d'auto-delegation (bloc contenant
+           // {% do call('User::dropdown', ..., {'right': 'all'}) %}).
+           'can_delegate_self'        => true,
+           'delegate'                 => null,
+           'page_title'               => 'PHPUnit',
+           'pdf_url'                  => '',
+           'error'                    => null,
+       ]);
+
+       $this->assertStringContainsString('name="delegate_users_id"', $html, 'Le formulaire d\'auto-delegation doit etre rendu pour que ce test ait un sens.');
+       $this->assertUserDropdownIsNotRestrictedToTheCurrentUser($html, 'sign_page.html.twig (menu Deleguer a)');
+   }
 }

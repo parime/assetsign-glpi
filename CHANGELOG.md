@@ -9,8 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Le menu « Destinataire » du formulaire de création manuelle (Don/Vente/Destruction,
+  `assetsign_tab.html.twig`) ne proposait que le compte actuellement connecté**, quel que soit son
+  profil — exactement le même bug que celui déjà corrigé pour les deux menus de délégation de
+  signature (`right => 'id'`, le défaut de `User::dropdown()`, jamais aligné sur `'all'` dans #122
+  quand ce correctif avait été appliqué aux deux autres menus). Rapporté à nouveau sur l'issue #115
+  après la sortie de ce correctif, ce qui a permis de découvrir ce troisième site jamais traité.
+
 ### Added
 
+- Tests de rendu confirmant que les 3 menus `User::dropdown()` du plugin (délégation
+  technicien/admin, auto-délégation bénéficiaire, destinataire de création manuelle) proposent
+  effectivement d'autres comptes que celui connecté (`"right":"all"` dans le JSON de configuration
+  du widget, présent dans le HTML rendu) — aucun des trois n'était couvert jusqu'ici, ce qui a
+  laissé ce troisième site du même bug passer inaperçu depuis #122.
 - Tests de contenu pour `Pdf\MaintenancePdfBuilder::renderHtml()` — jusqu'ici seulement exercée
   indirectement via `Maintenance::createWithChecklist()` (qui vérifie qu'un `Document` est bien
   attaché, jamais ce que le HTML rendu contient réellement). Vérifie, à la même granularité que

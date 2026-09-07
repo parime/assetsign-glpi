@@ -56,7 +56,11 @@
 
         <div class="col-auto assetsign-manual-internal-field">
           <label class="form-label">{{ __('Destinataire', 'assetsign') }}</label>
-          {% do call('User::dropdown', [{'name': 'users_id'}]) %}
+          {# 'right': 'all' (pas le defaut 'id', qui ne liste QUE l'utilisateur
+             courant - meme bug/correctif que la delegation de signature,
+             cf. assetsign_form.html.twig/sign_page.html.twig et issue #115)
+             + 'entity' scope au materiel concerne. #}
+          {% do call('User::dropdown', [{'name': 'users_id', 'right': 'all', 'entity': item.fields.entities_id}]) %}
         </div>
         <div class="col-auto assetsign-manual-external-field" style="display: none;">
           <label class="form-label">{{ __('Nom du bénéficiaire externe', 'assetsign') }}</label>
