@@ -2658,3 +2658,43 @@ msgstr "Umweltpass im Geräte-Pass anzeigen"
 msgid "Rien n'est affiché tant qu'aucune valeur n'a été saisie manuellement : jamais une estimation par défaut."
 msgstr "Es wird nichts angezeigt, solange kein Wert manuell eingegeben wurde: nie eine Standardschätzung."
 
+#: templates/config_form.html.twig:480
+msgid "Afficher le bénéfice du réemploi (impact évité)"
+msgstr "Wiederverwendungsvorteil anzeigen (vermiedene Auswirkung)"
+
+#: templates/config_form.html.twig:481
+msgid "Valorise la prolongation d'usage au-delà de la durée d'amortissement du matériel (champ natif GLPI \"Durée d'amortissement\", en années). N'affiche rien tant que cette durée n'est pas dépassée, ou si l'empreinte carbone ci-dessus n'a pas été saisie : jamais une estimation."
+msgstr "Bewertet die Nutzungsverlängerung über die Abschreibungsdauer des Geräts hinaus (natives GLPI-Feld \"Abschreibungsdauer\", in Jahren). Zeigt nichts an, solange diese Dauer nicht überschritten ist oder der oben angegebene CO2-Fußabdruck nicht erfasst wurde: niemals eine Schätzung."
+
+#: templates/passport_tab.html.twig:135
+msgid "Bénéfice du réemploi"
+msgstr "Wiederverwendungsvorteil"
+
+#: templates/passport_tab.html.twig:138
+msgid "Impact évité"
+msgstr "Vermiedene Auswirkung"
+
+#: templates/passport_tab.html.twig:143
+msgid "Encore en service"
+msgstr "Noch in Betrieb"
+
+#: templates/passport_tab.html.twig:144
+msgid "Réformé"
+msgstr "Ausgemustert"
+
+#: templates/passport_tab.html.twig:145
+msgid "après"
+msgstr "nach"
+
+#: templates/passport_tab.html.twig:145 templates/passport_tab.html.twig:146
+msgid "an(s)"
+msgstr "Jahr(e)"
+
+#: templates/passport_tab.html.twig:146
+msgid "durée d'amortissement prévue"
+msgstr "geplante Abschreibungsdauer"
+
+#: templates/passport_tab.html.twig:149
+msgid "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
+msgstr "Dank der Nutzungsverlängerung über die geplante Abschreibungsdauer hinaus (native GLPI-Infocom-Dauer) vermiedene Herstellungsauswirkung. Es wird nichts angezeigt, solange diese Dauer nicht überschritten ist."
+

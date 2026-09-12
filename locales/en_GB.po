@@ -2608,3 +2608,43 @@ msgstr "Show the environmental passport on the Hardware Passport"
 msgid "Rien n'est affiché tant qu'aucune valeur n'a été saisie manuellement : jamais une estimation par défaut."
 msgstr "Nothing is shown until a value has been entered manually: never a default estimate."
 
+#: templates/config_form.html.twig:480
+msgid "Afficher le bénéfice du réemploi (impact évité)"
+msgstr "Show reuse benefit (avoided impact)"
+
+#: templates/config_form.html.twig:481
+msgid "Valorise la prolongation d'usage au-delà de la durée d'amortissement du matériel (champ natif GLPI \"Durée d'amortissement\", en années). N'affiche rien tant que cette durée n'est pas dépassée, ou si l'empreinte carbone ci-dessus n'a pas été saisie : jamais une estimation."
+msgstr "Values the extension of use beyond the equipment's depreciation duration (native GLPI field \"Depreciation duration\", in years). Displays nothing until this duration is exceeded, or if the carbon footprint above has not been entered: never an estimate."
+
+#: templates/passport_tab.html.twig:135
+msgid "Bénéfice du réemploi"
+msgstr "Reuse benefit"
+
+#: templates/passport_tab.html.twig:138
+msgid "Impact évité"
+msgstr "Avoided impact"
+
+#: templates/passport_tab.html.twig:143
+msgid "Encore en service"
+msgstr "Still in service"
+
+#: templates/passport_tab.html.twig:144
+msgid "Réformé"
+msgstr "Decommissioned"
+
+#: templates/passport_tab.html.twig:145
+msgid "après"
+msgstr "after"
+
+#: templates/passport_tab.html.twig:145 templates/passport_tab.html.twig:146
+msgid "an(s)"
+msgstr "year(s)"
+
+#: templates/passport_tab.html.twig:146
+msgid "durée d'amortissement prévue"
+msgstr "planned depreciation duration"
+
+#: templates/passport_tab.html.twig:149
+msgid "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
+msgstr "Manufacturing impact avoided thanks to the extension of use beyond the planned depreciation duration (native GLPI Infocom duration). Nothing is displayed until this duration is exceeded."
+
