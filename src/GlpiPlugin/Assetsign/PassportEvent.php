@@ -279,6 +279,14 @@ class PassportEvent extends CommonDBTM
        $environmentalEnabled = (bool) $config->fields['enable_environmental_passport'];
        $environmentalData = $environmentalEnabled ? EnvironmentalData::getForItem($item->getType(), $item->getID()) : null;
 
+       // Benefice du reemploi / "impact evite" (cf. ROADMAP.md V3, issue #81) : voir
+       // getReuseBenefit() pour la methodologie complete - reste `null` (rien
+       // affiche) tant que la duree reelle n'a pas depasse la duree d'amortissement
+       // prevue, ou que l'un des trois prealables (sink_time, use_date, empreinte
+       // carbone) manque.
+       $reuseBenefitEnabled = (bool) $config->fields['enable_reuse_benefit'];
+       $reuseBenefit = $reuseBenefitEnabled ? self::getReuseBenefit($item, $config) : null;
+
        // Etiquette QR code imprimable (cf. ROADMAP.md V3, issue #82) : gardee par le
        // reglage dedie ET le droit READ (redondant avec le droit deja verifie par
        // GLPI pour atteindre cet onglet, mais explicite ici comme demande - front/
@@ -337,6 +345,12 @@ class PassportEvent extends CommonDBTM
                'source'     => $environmentalData !== null ? $environmentalData->fields['source'] : null,
                'confidence' => $environmentalData !== null ? $environmentalData->fields['confidence_level'] : null,
            ],
+           // Benefice du reemploi (issue #81) : `null` si le reglage est desactive,
+           // si un prealable manque, ou si la duree reelle n'a pas encore depasse la
+           // duree d'amortissement prevue - jamais un 0 dans ces cas (cf.
+           // getReuseBenefit() pour le detail complet).
+           'reuse_benefit_enabled' => $reuseBenefitEnabled,
+           'reuse_benefit'         => $reuseBenefit,
            'csrf_token'    => \Session::getNewCSRFToken(),
        ]);
    }
@@ -489,6 +503,68 @@ class PassportEvent extends CommonDBTM
        $value = round((float) $infocom->fields['value'] * $fraction, 2);
 
        return ['value' => $value, 'is_manual' => false];
+   }
+
+    /**
+     * Benefice du reemploi / "impact evite" (cf. ROADMAP.md V3, issue #81) : valorise
+     * la prolongation de duree de vie au-dela de la duree d'amortissement prevue,
+     * jamais une donnee inventee — trois prealables REELS et deja saisis dans GLPI/ce
+     * plugin, tous obligatoires, `null` sinon (meme convention que getResidualValue()
+     * ci-dessus et le principe fondateur documente dans EnvironmentalData) :
+     * - `Infocom::sink_time` (duree d'amortissement comptable, en ANNEES — confirme
+     *   contre le core GLPI, `Infocom::rawSearchOptions()` id 56, `'unit' => 'year'`),
+     *   la "duree prevue" : c'est un champ natif deja rempli par l'utilisateur/sa
+     *   comptabilite, jamais une moyenne sectorielle inventee par ce plugin.
+     * - `Infocom::use_date` (mise en service) et `Infocom::decommission_date` (reforme,
+     *   ou la date du jour si le materiel est encore en service) pour la "duree
+     *   reelle".
+     * - `EnvironmentalData::carbon_footprint_manufacturing` (issue #80) : l'empreinte
+     *   de fabrication, seule valeur a "eviter".
+     *
+     * Formule (methode standard "evitement proportionnel" en economie circulaire) :
+     * `empreinte × (duree_reelle − duree_prevue) / duree_prevue`, seulement si
+     * `duree_reelle > duree_prevue` — tant que le materiel n'a pas depasse sa duree
+     * d'amortissement, aucun benefice a valoriser (retourne `null`, jamais 0 ni une
+     * valeur negative).
+     *
+     * @return array{avoided_impact: float, planned_years: float, actual_years: float, is_still_in_service: bool}|null
+     */
+   private static function getReuseBenefit(CommonDBTM $item, Config $config): ?array {
+      if (!\Infocom::canApplyOn($item->getType())) {
+          return null;
+      }
+       $infocom = new \Infocom();
+      if (!$infocom->getFromDBforDevice($item->getType(), $item->getID())
+          || empty($infocom->fields['use_date'])) {
+          return null;
+      }
+
+       $plannedYears = (float) ($infocom->fields['sink_time'] ?? 0);
+      if ($plannedYears <= 0) {
+          return null;
+      }
+
+       $environmental = EnvironmentalData::getForItem($item->getType(), $item->getID());
+      if ($environmental === null || $environmental->fields['carbon_footprint_manufacturing'] === null) {
+          return null;
+      }
+       $footprint = (float) $environmental->fields['carbon_footprint_manufacturing'];
+
+       $isStillInService = empty($infocom->fields['decommission_date']);
+       $endTimestamp = $isStillInService ? time() : strtotime($infocom->fields['decommission_date']);
+       $actualYears = max(0.0, ($endTimestamp - strtotime($infocom->fields['use_date'])) / (DAY_TIMESTAMP * 365.25));
+
+       $extraYears = $actualYears - $plannedYears;
+      if ($extraYears <= 0) {
+          return null; // Pas encore prolonge au-dela de la duree prevue : rien a valoriser pour l'instant.
+      }
+
+       return [
+           'avoided_impact'       => round($footprint * ($extraYears / $plannedYears), 2),
+           'planned_years'        => $plannedYears,
+           'actual_years'         => round($actualYears, 1),
+           'is_still_in_service'  => $isStillInService,
+       ];
    }
 
     /**

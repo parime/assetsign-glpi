@@ -473,6 +473,13 @@
             <label class="form-check-label" for="enable_environmental_passport">{{ __('Afficher le passeport environnemental sur le Passeport matériel', 'assetsign') }}</label>
             <div class="form-text">{{ __('Rien n\'est affiché tant qu\'aucune valeur n\'a été saisie manuellement : jamais une estimation par défaut.', 'assetsign') }}</div>
           </div>
+
+          <div class="mb-3 form-check">
+            <input type="hidden" name="enable_reuse_benefit" value="0">
+            <input type="checkbox" name="enable_reuse_benefit" value="1" class="form-check-input" id="enable_reuse_benefit" {{ config.enable_reuse_benefit|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_reuse_benefit">{{ __('Afficher le bénéfice du réemploi (impact évité)', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Valorise la prolongation d\'usage au-delà de la durée d\'amortissement du matériel (champ natif GLPI "Durée d\'amortissement", en années). N\'affiche rien tant que cette durée n\'est pas dépassée, ou si l\'empreinte carbone ci-dessus n\'a pas été saisie : jamais une estimation.', 'assetsign') }}</div>
+          </div>
         </div>
 
         {# ---------------------------------------------------------------- Passeport matériel #}

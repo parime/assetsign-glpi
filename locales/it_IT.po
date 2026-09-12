@@ -2636,3 +2636,43 @@ msgstr "Mostra il passaporto ambientale nel Passaporto del dispositivo"
 msgid "Rien n'est affiché tant qu'aucune valeur n'a été saisie manuellement : jamais une estimation par défaut."
 msgstr "Non viene mostrato nulla finché non è stato inserito manualmente un valore: mai una stima predefinita."
 
+#: templates/config_form.html.twig:480
+msgid "Afficher le bénéfice du réemploi (impact évité)"
+msgstr "Mostra il beneficio del riutilizzo (impatto evitato)"
+
+#: templates/config_form.html.twig:481
+msgid "Valorise la prolongation d'usage au-delà de la durée d'amortissement du matériel (champ natif GLPI \"Durée d'amortissement\", en années). N'affiche rien tant que cette durée n'est pas dépassée, ou si l'empreinte carbone ci-dessus n'a pas été saisie : jamais une estimation."
+msgstr "Valorizza il prolungamento d'uso oltre la durata di ammortamento dell'apparecchiatura (campo nativo GLPI \"Durata di ammortamento\", in anni). Non mostra nulla finché questa durata non è superata, o se l'impronta di carbonio sopra non è stata inserita: mai una stima."
+
+#: templates/passport_tab.html.twig:135
+msgid "Bénéfice du réemploi"
+msgstr "Beneficio del riutilizzo"
+
+#: templates/passport_tab.html.twig:138
+msgid "Impact évité"
+msgstr "Impatto evitato"
+
+#: templates/passport_tab.html.twig:143
+msgid "Encore en service"
+msgstr "Ancora in servizio"
+
+#: templates/passport_tab.html.twig:144
+msgid "Réformé"
+msgstr "Dismesso"
+
+#: templates/passport_tab.html.twig:145
+msgid "après"
+msgstr "dopo"
+
+#: templates/passport_tab.html.twig:145 templates/passport_tab.html.twig:146
+msgid "an(s)"
+msgstr "anno/i"
+
+#: templates/passport_tab.html.twig:146
+msgid "durée d'amortissement prévue"
+msgstr "durata di ammortamento prevista"
+
+#: templates/passport_tab.html.twig:149
+msgid "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
+msgstr "Impatto di fabbricazione evitato grazie al prolungamento d'uso oltre la durata di ammortamento prevista (durata nativa Infocom di GLPI). Non viene mostrato nulla finché questa durata non è superata."
+

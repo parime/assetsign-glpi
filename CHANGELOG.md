@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Bénéfice du réemploi / « impact évité »** (issue #81) : nouvelle section du Passeport matériel
+  valorisant la prolongation d'usage au-delà de la durée d'amortissement comptable du matériel
+  (`Infocom::sink_time`, champ natif GLPI déjà saisi, en années). Calcul « évitement proportionnel »
+  standard (économie circulaire) à partir de trois données réelles obligatoires — durée
+  d'amortissement prévue, dates de mise en service/réforme, empreinte carbone de fabrication déjà
+  saisie (issue #80) — jamais une moyenne sectorielle inventée : reste `null` (aucun affichage) tant
+  que la durée réelle n'a pas dépassé la durée prévue, ou si l'un des trois prérequis manque, dans le
+  droit fil du principe fondateur du plugin (`EnvironmentalData`, ne jamais estimer). Désactivé par
+  défaut (case à cocher dédiée dans le paramétrage Environnement de l'entité), pour la même raison que
+  le passeport environnemental : dépend entièrement de saisies manuelles préalables qu'aucune instance
+  existante n'a encore faites pour ce nouvel indicateur.
+
 ### Fixed
 
 - **La délégation d'auto-signature (page reçue par e-mail par le bénéficiaire lui-même) était
