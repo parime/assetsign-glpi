@@ -189,7 +189,12 @@ class PassportEventReuseBenefitTest extends AssetsignTestCase
         $this->assertStringNotContainsString(__('Encore en service', 'assetsign'), $html);
         // Duree reelle affichee doit etre ~6 ans (10 - 4), pas ~10 ans : preuve
         // que decommission_date est bien utilisee comme borne de fin, pas la
-        // date du jour.
-        $this->assertStringContainsString('après 6 an(s)', $html);
+        // date du jour. Chaines passees par __() (pas de texte francais en dur) :
+        // la CI s'execute en anglais, contrairement a l'instance de developpement
+        // partagee qui s'execute en francais (cf. TROUBLESHOOTING.md).
+        $this->assertStringContainsString(
+            sprintf('%s 6 %s', __('après', 'assetsign'), __('an(s)', 'assetsign')),
+            $html
+        );
     }
 }
