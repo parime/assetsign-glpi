@@ -43,6 +43,15 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
 }
 
 $kernel = new \Glpi\Kernel\Kernel('production');
+// Une simple variable locale ici ne devient jamais une vraie globale PHP (ce bootstrap est inclus
+// depuis l'intérieur d'une méthode, pas exécuté au premier niveau d'un script) — du code historique
+// de GLPI (ex. les chemins dépendant de isAPI()/getMainRequest(), atteints depuis des hooks
+// CommonDBTM::add() comme la mise en file d'une notification) fait `global $kernel` en interne et
+// ne trouve rien sans ceci, plantant avec "Call to a member function getMainRequest() on null".
+// Confirmé en conditions réelles sur le plugin jumeau glpi-iso27001-management : exactement ce
+// plantage sur tout test créant un User, avant l'ajout de cette ligne — même correctif préventif
+// appliqué ici avant qu'un scénario de test similaire ne le déclenche dans ce plugin-ci.
+$GLOBALS['kernel'] = $kernel;
 $kernel->boot();
 
 if (!\Plugin::isPluginActive('assetsign')) {
