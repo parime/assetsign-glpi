@@ -1,0 +1,31 @@
+name: "💡 Suggestion / Feature request"
+description: "Proposer une nouvelle fonctionnalité ou une amélioration · Suggest a new feature or improvement"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ce plugin couvre le cycle de remise/restitution/don/vente de matériel (signature électronique, état des lieux, passeport matériel) : voir ROADMAP.md pour la philosophie du projet et les pistes déjà envisagées.
+        This plugin covers the equipment handover/return/donation/sale lifecycle (electronic signature, state-of-play, material passport): see ROADMAP.md for the project's philosophy and already-considered ideas.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problème à résoudre · Problem to solve"
+      description: "Quel besoin métier ou quelle friction cette suggestion adresse-t-elle ? · What business need or friction does this address?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "Solution proposée · Proposed solution"
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives envisagées · Alternatives considered"
+    validations:
+      required: false

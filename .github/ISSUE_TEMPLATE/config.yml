@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: "📖 Documentation"
+    url: https://github.com/parime/assetsign-glpi#readme
+    about: "README, ARCHITECTURE.md, USER_GUIDE.md et ROADMAP.md avant d'ouvrir une issue · README, ARCHITECTURE.md, USER_GUIDE.md and ROADMAP.md before opening an issue"
