@@ -38,7 +38,13 @@ const PLUGIN_ASSETSIGN_HEALTH_MOVEMENTS_FULL_DEGRADATION_COUNT = 5; // 5 "vies" 
 function plugin_init_assetsign(): void {
     global $PLUGIN_HOOKS, $CFG_GLPI;
 
-    $PLUGIN_HOOKS[Hooks::CSRF_COMPLIANT]['assetsign'] = true;
+    // Clé littérale plutôt que la constante Hooks::CSRF_COMPLIANT : GLPI 12.0.0-rc2 a supprimé
+    // cette constante (confirmé en testant en direct contre un conteneur GLPI 12 réel — le plugin
+    // n'atteint alors même jamais son propre refus de version, la fonction fatale ici avant que
+    // le plafond MAX_GLPI ne soit évalué). La clé de tableau elle-même ('csrf_compliant') reste
+    // identique dans GLPI 12, seule la constante qui la nommait a disparu — même convention déjà
+    // utilisée sans souci par les plugins jumeaux Configuration-glpi-auto et glpi-iso27001-management.
+    $PLUGIN_HOOKS['csrf_compliant']['assetsign'] = true;
 
     // --- Types de fiche geres par le plugin ------------------------------------------
     // Enregistres a chaque requete (comme le reste de cette fonction) : ajouter un
