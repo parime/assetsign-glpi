@@ -63,7 +63,26 @@ class DamageMarker extends CommonDBTM
        ];
    }
 
-   public static function getViewImageFilenames(): array {
+    /**
+     * Le materiel gere par defaut le plus visuellement different d'un ordinateur portable
+     * (Computer/Monitor/Peripheral partagent tous une silhouette "boitier rectangulaire" pour
+     * laquelle les 3 illustrations generiques restent plausibles) est Phone : trouve en verifiant
+     * en conditions reelles la parite fonctionnelle PC/telephone — la fiche de signature d'un
+     * telephone affichait bien un "Etat des lieux visuel" complet (marqueurs, PDF...), mais avec
+     * les 3 memes photos d'ordinateur portable qu'un Computer, jamais un telephone. Nouvelles
+     * illustrations dediees (public/images/damage-views/*_telephone.jpg) utilisees uniquement
+     * pour ce type ; tout le reste (Computer, Monitor, Peripheral, actifs personnalises...) garde
+     * les 3 vues generiques existantes, inchangees.
+     */
+   public static function getViewImageFilenames(?string $itemtype = null): array {
+      if ($itemtype === 'Phone') {
+          return [
+              0 => 'arriere_telephone.jpg',
+              1 => 'avant_telephone.jpg',
+              2 => 'dessous_telephone.jpg',
+          ];
+      }
+
        return [
            0 => 'arriere.jpg',
            1 => 'avant.jpg',

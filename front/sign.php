@@ -141,7 +141,7 @@ try {
         'can_edit_damage_markers' => $assetsign->isStillEditable(),
         'damage_annotation_enabled' => $damageEnabled,
         'damage_views'   => $damageEnabled ? DamageMarker::getViewLabels() : [],
-        'damage_images'  => $damageEnabled ? DamageMarker::getViewImageFilenames() : [],
+        'damage_images'  => $damageEnabled ? DamageMarker::getViewImageFilenames($assetsign->fields['itemtype'] ?? null) : [],
         'damage_markers_by_view' => $damageEnabled ? Assetsign::groupMarkersByView(DamageMarker::getForAssetsign($assetsign->getID())) : [],
         'beneficiary_comment'    => $assetsign->fields['beneficiary_comment'] ?? '',
         'can_edit_comment'       => $assetsign->isStillEditable(),

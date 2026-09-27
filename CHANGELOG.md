@@ -56,6 +56,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   basée sur `isPluginActive()`, cassait l'installation sur GLPI 11 avec « type de workflow inconnu
   (id=0) », `WorkflowTypeRegistry` n'étant alors jamais peuplée pendant l'installation).
 
+- **L'« état des lieux visuel » (repères de dommage) affichait toujours les 3 photos d'un
+  ordinateur portable, même pour un Téléphone** — trouvé en vérifiant en conditions réelles la
+  parité fonctionnelle PC/téléphone (attribution complète avec signature électronique réelle sur
+  un vrai Téléphone). La fiche affichait bien « Type : Téléphone » et l'onglet fonctionnait
+  entièrement (marqueurs, signature, PDF), mais `DamageMarker::getViewImageFilenames()` renvoyait
+  systématiquement les 3 mêmes illustrations génériques (`public/images/damage-views/*.jpg`),
+  quel que soit le type de matériel réel. Nouvelles illustrations dédiées
+  (`*_telephone.jpg`) utilisées uniquement pour `Phone` ; tout le reste (Computer, Monitor,
+  Peripheral, actifs personnalisés...) garde les 3 vues génériques existantes, inchangées.
+
 ### Added
 
 - Tests de rendu confirmant que les 3 menus `User::dropdown()` du plugin (délégation
