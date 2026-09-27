@@ -43,6 +43,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   quand ce correctif avait été appliqué aux deux autres menus). Rapporté à nouveau sur l'issue #115
   après la sortie de ce correctif, ce qui a permis de découvrir ce troisième site jamais traité.
 
+- **`plugin_init_assetsign()` plantait en erreur fatale PHP sur une version de GLPI incompatible**
+  au lieu de laisser GLPI afficher son propre refus de version — confirmé en testant en direct
+  contre un vrai conteneur GLPI 12.0.0-rc2 : `Type of GlpiPlugin\Assetsign\Assetsign::$rightname
+  must be string, as in class CommonGLPI` (GLPI 12 type désormais cette propriété). Le correctif du
+  même type sur `Hooks::CSRF_COMPLIANT` (plus haut dans ce fichier) n'avait traité qu'un symptôme :
+  toute la fonction référence de vraies classes du plugin (`WorkflowTypeRegistry`,
+  `Assetsign::class`...) sans aucun garde-fou de version. Ajout d'un `version_compare(GLPI_VERSION,
+  PLUGIN_ASSETSIGN_MAX_GLPI, '>')` explicite en tête de fonction — pas un
+  `Plugin::isPluginActive('assetsign')` : cette même fonction est aussi nécessaire *pendant*
+  `plugin:install` lui-même, avant que le plugin soit actif (une première version de ce correctif,
+  basée sur `isPluginActive()`, cassait l'installation sur GLPI 11 avec « type de workflow inconnu
+  (id=0) », `WorkflowTypeRegistry` n'étant alors jamais peuplée pendant l'installation).
+
 ### Added
 
 - Tests de rendu confirmant que les 3 menus `User::dropdown()` du plugin (délégation

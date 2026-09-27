@@ -39,12 +39,28 @@ function plugin_init_assetsign(): void {
     global $PLUGIN_HOOKS, $CFG_GLPI;
 
     // Clé littérale plutôt que la constante Hooks::CSRF_COMPLIANT : GLPI 12.0.0-rc2 a supprimé
-    // cette constante (confirmé en testant en direct contre un conteneur GLPI 12 réel — le plugin
-    // n'atteint alors même jamais son propre refus de version, la fonction fatale ici avant que
-    // le plafond MAX_GLPI ne soit évalué). La clé de tableau elle-même ('csrf_compliant') reste
-    // identique dans GLPI 12, seule la constante qui la nommait a disparu — même convention déjà
-    // utilisée sans souci par les plugins jumeaux Configuration-glpi-auto et glpi-iso27001-management.
+    // cette constante. La clé de tableau elle-même ('csrf_compliant') reste identique dans GLPI 12,
+    // seule la constante qui la nommait a disparu — même convention déjà utilisée sans souci par
+    // les plugins jumeaux Configuration-glpi-auto et glpi-iso27001-management.
     $PLUGIN_HOOKS['csrf_compliant']['assetsign'] = true;
+
+    // Tout ce qui suit référence de vraies classes du plugin (WorkflowTypeRegistry ci-dessous,
+    // Assetsign::class/Maintenance::class/Movement::class dans le hook MENU_TOADD plus bas...) —
+    // sans ce garde-fou, cette fonction plante en erreur fatale PHP sur une version de GLPI
+    // incompatible (confirmé en direct contre un conteneur GLPI 12.0.0-rc2 réel :
+    // "Type of GlpiPlugin\Assetsign\Assetsign::$rightname must be string, as in class CommonGLPI" —
+    // GLPI 12 a typé cette propriété alors que ce plugin ne le fait pas).
+    //
+    // Comparaison de version explicite, PAS `Plugin::isPluginActive('assetsign')` : cette fonction
+    // est aussi appelée (et son contenu genuinement necessaire) PENDANT `plugin:install` lui-meme,
+    // avant que le plugin ne soit actif — confirme en conditions reelles, la premiere version de ce
+    // correctif cassait l'installation sur GLPI 11 avec "Plugin assetsign : type de workflow
+    // inconnu (id=0)" (WorkflowTypeRegistry jamais peuplee car `isPluginActive()` renvoie faux
+    // pendant l'installation elle-meme). Seule la VERSION de GLPI doit court-circuiter cette
+    // fonction, jamais l'etat d'activation.
+   if (version_compare(GLPI_VERSION, PLUGIN_ASSETSIGN_MAX_GLPI, '>')) {
+       return;
+   }
 
     // --- Types de fiche geres par le plugin ------------------------------------------
     // Enregistres a chaque requete (comme le reste de cette fonction) : ajouter un
