@@ -100,7 +100,9 @@ class TemplateRenderingTest extends AssetsignTestCase
            'destruction_details'       => null,
            'can_edit_destruction_details' => false,
            'attached_documents'        => [],
-           'signature_proof'           => null,
+           'signature_proofs'          => [],
+           'cosigner'                  => null,
+           'cosigner_pending'          => false,
            'csrf_token'                => 'phpunit-test-token',
            // Force le rendu du formulaire de delegation (bloc contenant
            // {% do call('User::dropdown', ..., {'right': 'all'}) %}) — voir
@@ -145,6 +147,8 @@ class TemplateRenderingTest extends AssetsignTestCase
            'can_edit_comment'         => false,
            'self_service_delegation_enabled' => true,
            'is_delegate_signer'       => false,
+           'is_cosigner'              => false,
+           'cosigner'                 => null,
            // Force le rendu du formulaire d'auto-delegation (bloc contenant le <select>).
            'can_delegate_self'        => true,
            'delegate_candidates'      => [

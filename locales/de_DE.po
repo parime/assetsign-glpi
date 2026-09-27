@@ -2698,3 +2698,48 @@ msgstr "geplante Abschreibungsdauer"
 msgid "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
 msgstr "Dank der Nutzungsverlängerung über die geplante Abschreibungsdauer hinaus (native GLPI-Infocom-Dauer) vermiedene Herstellungsauswirkung. Es wird nichts angezeigt, solange diese Dauer nicht überschritten ist."
 
+
+msgid "Ce document a déjà été signé par"
+msgstr "Dieses Dokument wurde bereits unterschrieben von"
+
+msgid "Télécharger (signé et contre-signé)"
+msgstr "Herunterladen (unterschrieben und gegengezeichnet)"
+
+msgid "(bénéficiaire uniquement)"
+msgstr "(nur Empfänger)"
+
+msgid "En attente de la contre-signature de"
+msgstr "Warten auf Gegenzeichnung von"
+
+msgid "responsable hiérarchique"
+msgstr "Vorgesetzter"
+
+msgid "Contre-signé par"
+msgstr "Gegengezeichnet von"
+
+msgid "Responsable hiérarchique"
+msgstr "Vorgesetzter"
+
+msgid "Contre-signature"
+msgstr "Gegenzeichnung"
+
+msgid "Exiger la contre-signature du responsable hiérarchique"
+msgstr "Gegenzeichnung durch den Vorgesetzten verlangen"
+
+msgid "Contre-signature d'attribution de matériel"
+msgstr "Gegenzeichnung der Geräteübergabe"
+
+msgid "La signature du bénéficiaire est introuvable pour cette fiche."
+msgstr "Die Unterschrift des Empfängers konnte für diesen Datensatz nicht gefunden werden."
+
+msgid "La délégation n'est pas disponible pour le rôle de contre-signataire."
+msgstr "Die Delegation ist für die Rolle des Gegenzeichners nicht verfügbar."
+
+msgid "Signé par le bénéficiaire, en attente du responsable"
+msgstr "Vom Empfänger unterschrieben, wartet auf den Vorgesetzten"
+
+msgid "Contre-signature requise"
+msgstr "Gegenzeichnung erforderlich"
+
+msgid "Responsable hiérarchique (contre-signataire)"
+msgstr "Vorgesetzter (Gegenzeichner)"

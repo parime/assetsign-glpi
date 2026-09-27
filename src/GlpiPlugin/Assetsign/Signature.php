@@ -61,6 +61,25 @@ class Signature extends CommonDBTM
        return self::getMostRecent(['plugin_assetsign_assetsigns_id' => $assetsigns_id]);
    }
 
+    /**
+     * TOUTES les preuves de signature d'une remise, de la plus ancienne a la
+     * plus recente (issue #143, signatures multiples) : contrairement a
+     * getForAssetsign() ci-dessus (une seule, la plus recente), necessaire
+     * des qu'une contre-signature est possible - deux lignes existent alors
+     * (beneficiaire puis responsable), la plus recente seule ne suffit plus
+     * a rendre compte de qui a signe quoi.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+   public static function getAllForAssetsign(int $assetsigns_id): array {
+       global $DB;
+       return iterator_to_array($DB->request([
+           'FROM'  => self::getTable(),
+           'WHERE' => ['plugin_assetsign_assetsigns_id' => $assetsigns_id],
+           'ORDER' => 'date_creation ASC',
+       ]));
+   }
+
     /** Preuve de signature la plus recente pour une fiche de maintenance, ou null si non signee. */
    public static function getForMaintenance(int $maintenances_id): ?array {
        return self::getMostRecent(['plugin_assetsign_maintenances_id' => $maintenances_id]);

@@ -117,7 +117,7 @@ Départ/destination réutiliseraient la table native `glpi_locations` (`Location
 | V3 | Kits/accessoires avec contrôle automatique | [#83](https://github.com/parime/assetsign-glpi/issues/83) | **Livré** (PR de suivi) - nouveau catalogue `Kit` (composition en JSON, même motif que `ChecklistItem`), champ `plugin_assetsign_kits_id` sur `Assetsign`, report automatique du kit de l'Attribution vers la Restitution suivante, comparaison accessoires attendus/restitués (`Kit::computeCompleteness()`) affichée en badge colore sur la frise du Passeport (`PassportEvent::attachKitSummaries()`) |
 | V3 | Dashboard RSE | [#142](https://github.com/parime/assetsign-glpi/issues/142) | Non commencé |
 | V3 | App mobile technicien | ~~#84~~ | **Refusée par l'utilisateur** (2026-09-27) - parité Téléphone/PC déjà couverte côté web (PR #141) |
-| V3 | Signatures multiples | [#143](https://github.com/parime/assetsign-glpi/issues/143) | Non commencé |
+| V3 | Signatures multiples | [#143](https://github.com/parime/assetsign-glpi/issues/143) | **Livré** - contre-signature du responsable hiérarchique (`User::users_id_supervisor`), `Config::enable_co_signature`, nouveau statut `STATUS_AWAITING_COSIGNATURE`, jeton et notification dédiés, PDF final à deux blocs de signature |
 | - | Repères d'état des lieux visuel : veille récidive décalage | [#86](https://github.com/parime/assetsign-glpi/issues/86) | Watch-only, sans rapport avec le Passeport - non traité ici |
 
 ## 5. Vérification

@@ -2666,3 +2666,48 @@ msgstr "duración de amortización prevista"
 msgid "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
 msgstr "Impacto de fabricación evitado gracias a la prolongación de uso más allá de la duración de amortización prevista (duración nativa de Infocom de GLPI). No se muestra nada mientras esta duración no se supere."
 
+
+msgid "Ce document a déjà été signé par"
+msgstr "Este documento ya ha sido firmado por"
+
+msgid "Télécharger (signé et contre-signé)"
+msgstr "Descargar (firmado y contrafirmado)"
+
+msgid "(bénéficiaire uniquement)"
+msgstr "(solo beneficiario)"
+
+msgid "En attente de la contre-signature de"
+msgstr "Esperando la contrafirma de"
+
+msgid "responsable hiérarchique"
+msgstr "responsable jerárquico"
+
+msgid "Contre-signé par"
+msgstr "Contrafirmado por"
+
+msgid "Responsable hiérarchique"
+msgstr "Responsable jerárquico"
+
+msgid "Contre-signature"
+msgstr "Contrafirma"
+
+msgid "Exiger la contre-signature du responsable hiérarchique"
+msgstr "Exigir la contrafirma del responsable jerárquico"
+
+msgid "Contre-signature d'attribution de matériel"
+msgstr "Contrafirma de la entrega de equipo"
+
+msgid "La signature du bénéficiaire est introuvable pour cette fiche."
+msgstr "No se ha encontrado la firma del beneficiario para esta ficha."
+
+msgid "La délégation n'est pas disponible pour le rôle de contre-signataire."
+msgstr "La delegación no está disponible para el rol de contrafirmante."
+
+msgid "Signé par le bénéficiaire, en attente du responsable"
+msgstr "Firmado por el beneficiario, a la espera del responsable jerárquico"
+
+msgid "Contre-signature requise"
+msgstr "Contrafirma requerida"
+
+msgid "Responsable hiérarchique (contre-signataire)"
+msgstr "Responsable jerárquico (contrafirmante)"

@@ -22,9 +22,12 @@ $controller = new SignController();
 // --- Flux binaire du PDF non signé, consommé par PDF.js côté client -------------
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && ($_GET['action'] ?? '') === 'pdf') {
    try {
-       $assetsign = $controller->loadAuthorizedAssetsign($token);
+       // getPdfDocumentId() (pas directement document_id_unsigned) : sert le
+       // PDF deja signe par le beneficiaire (document_id_signed) a un jeton
+       // responsable, cf. son docblock (issue #143).
+       $documents_id = $controller->getPdfDocumentId($token);
        $document = new Document();
-       $document->getFromDB((int) $assetsign->fields['document_id_unsigned']);
+       $document->getFromDB($documents_id);
        $path = GLPI_DOC_DIR . '/' . $document->fields['filepath'];
 
        header('Content-Type: application/pdf');
@@ -153,16 +156,23 @@ try {
         // le bloc est reellement affiche, jamais sur une simple consultation.
         'delegate_candidates'    => $canDelegateSelf ? Assetsign::getDelegateCandidates((int) $assetsign->fields['entities_id']) : [],
         'delegate'               => $assetsign->getDelegate(),
+        // Signatures multiples (issue #143) : bandeau dedie sur la page de
+        // signature quand le responsable hierarchique consulte le document
+        // deja signe par le beneficiaire, cf. sign_page.html.twig.
+        'is_cosigner'            => $data['is_cosigner'],
+        'cosigner'               => $data['cosigner'],
         // Volontairement DIFFERENT de Assetsign::getPdfHeadings() (fixe en francais,
         // car c'est le contenu d'un PDF archive, cf. commentaire sur
         // getCanonicalTypeLabel()) : cette page-ci est une interface consultee en
         // direct par le beneficiaire, deja entierement traduite via __() ailleurs
         // dans sign_page.html.twig (cf. le titre du navigateur et le <h1>) — y
         // laisser fuiter un texte fixe y aurait ete incoherent avec le reste.
-        'page_title' => match ((int) $data['assetsign']->fields['type']) {
-            Assetsign::TYPE_RETURN => __('Signature de restitution de matériel', 'assetsign'),
-            default              => __('Signature d\'attribution de matériel', 'assetsign'),
-        },
+        'page_title' => $data['is_cosigner']
+            ? __('Contre-signature d\'attribution de matériel', 'assetsign')
+            : match ((int) $data['assetsign']->fields['type']) {
+                Assetsign::TYPE_RETURN => __('Signature de restitution de matériel', 'assetsign'),
+                default              => __('Signature d\'attribution de matériel', 'assetsign'),
+            },
         // $CFG_GLPI['root_doc'] (pas un chemin fixe depuis la racine du domaine) :
         // une installation GLPI dans un sous-dossier (ex: /glpi) casserait sinon
         // silencieusement le chargement du PDF dans la page de signature.

@@ -11,6 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Signatures multiples (issue #143)** : une Attribution peut désormais exiger, en plus de la
+  signature du bénéficiaire, la contre-signature de son responsable hiérarchique
+  (`User::users_id_supervisor`, déjà renseigné par l'annuaire) — réglage par entité
+  `Config::enable_co_signature`, désactivé par défaut. Le bénéficiaire signe d'abord (flux
+  inchangé) ; le document, déjà signé une fois, est ensuite transmis au responsable pour
+  contre-signature (nouveau statut `STATUS_AWAITING_COSIGNATURE`, nouveau lien/jeton dédié,
+  nouvelle notification « Contre-signature requise ») avant d'être considéré comme définitivement
+  signé (`document_id_cosigned`, PDF final à deux blocs de signature). Sans responsable renseigné
+  pour le bénéficiaire, l'attribution reste mono-signataire, comme aujourd'hui — aucun changement
+  de comportement pour les entités qui n'activent pas ce réglage. Limité aux Attributions (pas aux
+  restitutions, dons, ventes, destructions, maintenances ou mouvements) pour cette première
+  version.
+
 - **Bénéfice du réemploi / « impact évité »** (issue #81) : nouvelle section du Passeport matériel
   valorisant la prolongation d'usage au-delà de la durée d'amortissement comptable du matériel
   (`Infocom::sink_time`, champ natif GLPI déjà saisi, en années). Calcul « évitement proportionnel »
