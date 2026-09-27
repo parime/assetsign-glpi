@@ -99,7 +99,7 @@ final class HandoverPdfBuilder
            'destruction_provider_name'    => $destructionDetails?->fields['provider_name'] ?: null,
            'currency_symbol'     => $config->fields['currency_symbol'] ?: '€',
            'damage_views'        => (bool) $config->fields['enable_damage_annotation']
-               ? $this->getDamageViewsForPdf(DamageMarker::getForAssetsign($assetsign->getID()))
+               ? $this->getDamageViewsForPdf(DamageMarker::getForAssetsign($assetsign->getID()), $assetsign->fields['itemtype'])
                : [],
            'page_title'          => $headings['page_title'],
            'material_heading'    => $headings['material_heading'],

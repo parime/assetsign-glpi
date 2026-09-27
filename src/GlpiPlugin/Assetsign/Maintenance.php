@@ -154,7 +154,7 @@ class Maintenance extends CommonDBTM
            // reste du formulaire.
            'damage_annotation_enabled' => (bool) Config::getForEntity($entities_id)->fields['enable_damage_annotation'],
            'damage_views'    => DamageMarker::getViewLabels(),
-           'damage_images'   => DamageMarker::getViewImageFilenames(),
+           'damage_images'   => DamageMarker::getViewImageFilenames($item->getType()),
            // Signature du technicien : optionnelle (Config::enable_maintenance_signature,
            // defaut desactivee), capturee cote client (canvas) AVANT la creation
            // de la fiche et soumise d'un bloc avec le reste du formulaire — meme
@@ -184,7 +184,7 @@ class Maintenance extends CommonDBTM
            'damage_annotation_enabled' => !$this->isNewID($ID)
                && (bool) Config::getForEntity((int) $this->fields['entities_id'])->fields['enable_damage_annotation'],
            'damage_views'   => DamageMarker::getViewLabels(),
-           'damage_images'  => DamageMarker::getViewImageFilenames(),
+           'damage_images'  => DamageMarker::getViewImageFilenames($this->fields['itemtype'] ?? null),
            'damage_markers_by_view' => $this->isNewID($ID) ? [] : Assetsign::groupMarkersByView(DamageMarker::getForMaintenance((int) $ID)),
            'signature_proof' => $this->isNewID($ID) ? null : Signature::getForMaintenance((int) $ID),
        ]);

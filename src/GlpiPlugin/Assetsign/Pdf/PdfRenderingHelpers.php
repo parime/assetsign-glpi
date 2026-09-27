@@ -106,14 +106,14 @@ trait PdfRenderingHelpers
      *        en forme pour le gabarit.
      * @return array<int, array{label: string, image_data_uri: string, markers: array}>
      */
-   private function getDamageViewsForPdf(array $markers): array {
+   private function getDamageViewsForPdf(array $markers, ?string $itemtype = null): array {
        $byView = [];
       foreach ($markers as $marker) {
           $byView[(int) $marker['view_index']][] = $marker;
       }
 
        $labels = DamageMarker::getCanonicalViewLabels();
-       $filenames = DamageMarker::getViewImageFilenames();
+       $filenames = DamageMarker::getViewImageFilenames($itemtype);
 
        $views = [];
       foreach ($filenames as $viewIndex => $filename) {

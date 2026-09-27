@@ -373,7 +373,7 @@ class Assetsign extends CommonDBTM
            'damage_annotation_enabled' => !$this->isNewID($ID)
                && (bool) Config::getForEntity((int) $this->fields['entities_id'])->fields['enable_damage_annotation'],
            'damage_views'   => DamageMarker::getViewLabels(),
-           'damage_images'  => DamageMarker::getViewImageFilenames(),
+           'damage_images'  => DamageMarker::getViewImageFilenames($this->fields['itemtype'] ?? null),
            'damage_markers_by_view' => $this->isNewID($ID) ? [] : self::groupMarkersByView(DamageMarker::getForAssetsign((int) $ID)),
            'can_edit_damage_markers' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
            // Prix/date de vente : editables apres coup, notamment pour une Vente

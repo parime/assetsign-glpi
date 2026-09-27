@@ -61,7 +61,7 @@ final class MaintenancePdfBuilder
            'checklist_results'   => $maintenance->getChecklistResults(),
            'comment'             => $maintenance->fields['comment'] ?? '',
            'damage_views'        => (bool) $config->fields['enable_damage_annotation']
-               ? $this->getDamageViewsForPdf(DamageMarker::getForMaintenance($maintenance->getID()))
+               ? $this->getDamageViewsForPdf(DamageMarker::getForMaintenance($maintenance->getID()), $maintenance->fields['itemtype'])
                : [],
            'signature_required'  => (bool) $config->fields['enable_maintenance_signature'],
            'signature_image'     => $signatureImage,
