@@ -115,7 +115,9 @@ Départ/destination réutiliseraient la table native `glpi_locations` (`Location
 | V3 | Bénéfice du réemploi | [#81](https://github.com/parime/assetsign-glpi/issues/81) | Non commencé - dépend de #80 |
 | V3 | QR code sur le matériel | [#82](https://github.com/parime/assetsign-glpi/issues/82) | **Livré** (PR de suivi) - étiquette imprimable sur l'onglet Passeport matériel, QR code encodant un lien `forcetab` absolu (`front/qrlabel.php`), génération QR extraite en classe partagée `QrCode` (jusqu'ici dupliquée nulle part, réutilisée telle quelle par le PDF) |
 | V3 | Kits/accessoires avec contrôle automatique | [#83](https://github.com/parime/assetsign-glpi/issues/83) | **Livré** (PR de suivi) - nouveau catalogue `Kit` (composition en JSON, même motif que `ChecklistItem`), champ `plugin_assetsign_kits_id` sur `Assetsign`, report automatique du kit de l'Attribution vers la Restitution suivante, comparaison accessoires attendus/restitués (`Kit::computeCompleteness()`) affichée en badge colore sur la frise du Passeport (`PassportEvent::attachKitSummaries()`) |
-| V3 | Dashboard RSE, app mobile technicien, signatures multiples | [#84](https://github.com/parime/assetsign-glpi/issues/84) | Non commencé, grab-bag à redécouper le moment venu |
+| V3 | Dashboard RSE | [#142](https://github.com/parime/assetsign-glpi/issues/142) | Non commencé |
+| V3 | App mobile technicien | ~~#84~~ | **Refusée par l'utilisateur** (2026-09-27) - parité Téléphone/PC déjà couverte côté web (PR #141) |
+| V3 | Signatures multiples | [#143](https://github.com/parime/assetsign-glpi/issues/143) | Non commencé |
 | - | Repères d'état des lieux visuel : veille récidive décalage | [#86](https://github.com/parime/assetsign-glpi/issues/86) | Watch-only, sans rapport avec le Passeport - non traité ici |
 
 ## 5. Vérification
