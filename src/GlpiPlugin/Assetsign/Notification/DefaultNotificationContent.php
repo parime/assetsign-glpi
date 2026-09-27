@@ -244,6 +244,44 @@ final class DefaultNotificationContent
                        . '<p>Questo link è valido fino al ##assetsign.deadline##.</p>',
                ],
            ],
+           'cosignature_requested' => [
+               'name'  => 'Attribution : contre-signature requise',
+               'fr_FR' => [
+                   'subject' => 'Votre contre-signature est requise pour un document de ##assetsign.type##',
+                   'html'    => '<p>Bonjour ##assetsign.cosigner.name##,</p>'
+                       . '<p>##assetsign.user.name## a signé le document de ##assetsign.type## pour le matériel <strong>##assetsign.item.name##</strong>. Votre contre-signature, en tant que responsable hiérarchique, est désormais requise pour finaliser cette attribution.</p>'
+                       . '<p><a href="##assetsign.sign_url##">Consulter et contre-signer le document</a></p>'
+                       . '<p>Ce lien est valable jusqu\'au ##assetsign.deadline##.</p>',
+               ],
+               'en_GB' => [
+                   'subject' => 'Your countersignature is required for a ##assetsign.type## document',
+                   'html'    => '<p>Hello ##assetsign.cosigner.name##,</p>'
+                       . '<p>##assetsign.user.name## has signed the ##assetsign.type## document for the equipment <strong>##assetsign.item.name##</strong>. Your countersignature, as line manager, is now required to finalise this handover.</p>'
+                       . '<p><a href="##assetsign.sign_url##">View and countersign the document</a></p>'
+                       . '<p>This link is valid until ##assetsign.deadline##.</p>',
+               ],
+               'es_ES' => [
+                   'subject' => 'Se requiere su contrafirma para un documento de ##assetsign.type##',
+                   'html'    => '<p>Hola ##assetsign.cosigner.name##,</p>'
+                       . '<p>##assetsign.user.name## ha firmado el documento de ##assetsign.type## para el equipo <strong>##assetsign.item.name##</strong>. Su contrafirma, como responsable jerárquico, es ahora necesaria para finalizar esta entrega.</p>'
+                       . '<p><a href="##assetsign.sign_url##">Consultar y contrafirmar el documento</a></p>'
+                       . '<p>Este enlace es válido hasta el ##assetsign.deadline##.</p>',
+               ],
+               'de_DE' => [
+                   'subject' => 'Ihre Gegenzeichnung ist für ein ##assetsign.type##-Dokument erforderlich',
+                   'html'    => '<p>Hallo ##assetsign.cosigner.name##,</p>'
+                       . '<p>##assetsign.user.name## hat das ##assetsign.type##-Dokument für das Gerät <strong>##assetsign.item.name##</strong> unterschrieben. Ihre Gegenzeichnung als Vorgesetzter ist nun erforderlich, um diese Übergabe abzuschließen.</p>'
+                       . '<p><a href="##assetsign.sign_url##">Dokument ansehen und gegenzeichnen</a></p>'
+                       . '<p>Dieser Link ist gültig bis ##assetsign.deadline##.</p>',
+               ],
+               'it_IT' => [
+                   'subject' => 'La vostra controfirma è richiesta per un documento di ##assetsign.type##',
+                   'html'    => '<p>Ciao ##assetsign.cosigner.name##,</p>'
+                       . '<p>##assetsign.user.name## ha firmato il documento di ##assetsign.type## per il dispositivo <strong>##assetsign.item.name##</strong>. La vostra controfirma, in qualità di responsabile gerarchico, è ora richiesta per finalizzare questa consegna.</p>'
+                       . '<p><a href="##assetsign.sign_url##">Consulta e controfirma il documento</a></p>'
+                       . '<p>Questo link è valido fino al ##assetsign.deadline##.</p>',
+               ],
+           ],
            default => throw new \RuntimeException("Plugin assetsign : évènement de notification inconnu ($event)."),
        };
 

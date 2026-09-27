@@ -201,7 +201,7 @@ Table candidate supplémentaire pour la couche 3 : `glpi_plugin_remise_asset_met
 | ~~Kits/accessoires avec contrôle automatique au retour~~ — **livrée** (issue #83, cf. `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` (composition d'accessoires réutilisable), assignable à une Attribution/Restitution, report automatique du kit de l'Attribution vers la Restitution suivante, comparaison automatique (accessoires attendus vs réellement restitués) affichée en badge coloré sur la frise du Passeport matériel. | | | | | |
 | Dashboard RSE (issue #142) | Extensions déjà identifiées comme envisageables | — | Haute | Variable selon la fonctionnalité | Basse |
 | ~~App mobile technicien~~ — **refusée par l'utilisateur** (2026-09-27, issue #84) : la parité fonctionnelle Téléphone/PC visée par ce besoin est déjà couverte côté web (issue liée, PR #141) sans nécessiter d'application dédiée. | | | | | |
-| Signatures multiples (issue #143) | Extensions déjà identifiées comme envisageables | — | Haute | Variable selon la fonctionnalité | Basse |
+| ~~Signatures multiples~~ — **livré** (issue #143) : contre-signature du responsable hiérarchique du bénéficiaire (`User::users_id_supervisor`), en plus de la signature de ce dernier, pour une Attribution. Réglage par entité `Config::enable_co_signature`, désactivé par défaut ; sans responsable renseigné, l'attribution reste mono-signataire. | | | | | |
 
 ### Passeport utilisateur (vue symétrique) — MVP livré le 2026-08-05
 

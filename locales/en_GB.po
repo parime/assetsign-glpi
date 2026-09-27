@@ -2648,3 +2648,48 @@ msgstr "planned depreciation duration"
 msgid "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
 msgstr "Manufacturing impact avoided thanks to the extension of use beyond the planned depreciation duration (native GLPI Infocom duration). Nothing is displayed until this duration is exceeded."
 
+
+msgid "Ce document a déjà été signé par"
+msgstr "This document has already been signed by"
+
+msgid "Télécharger (signé et contre-signé)"
+msgstr "Download (signed and countersigned)"
+
+msgid "(bénéficiaire uniquement)"
+msgstr "(beneficiary only)"
+
+msgid "En attente de la contre-signature de"
+msgstr "Awaiting countersignature from"
+
+msgid "responsable hiérarchique"
+msgstr "line manager"
+
+msgid "Contre-signé par"
+msgstr "Countersigned by"
+
+msgid "Responsable hiérarchique"
+msgstr "Line manager"
+
+msgid "Contre-signature"
+msgstr "Countersignature"
+
+msgid "Exiger la contre-signature du responsable hiérarchique"
+msgstr "Require the line manager's countersignature"
+
+msgid "Contre-signature d'attribution de matériel"
+msgstr "Equipment handover countersignature"
+
+msgid "La signature du bénéficiaire est introuvable pour cette fiche."
+msgstr "The beneficiary's signature could not be found for this record."
+
+msgid "La délégation n'est pas disponible pour le rôle de contre-signataire."
+msgstr "Delegation is not available for the countersigner role."
+
+msgid "Signé par le bénéficiaire, en attente du responsable"
+msgstr "Signed by the beneficiary, awaiting the line manager"
+
+msgid "Contre-signature requise"
+msgstr "Countersignature required"
+
+msgid "Responsable hiérarchique (contre-signataire)"
+msgstr "Line manager (countersigner)"

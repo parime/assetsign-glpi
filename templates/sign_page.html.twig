@@ -42,6 +42,13 @@
     {% if is_delegate_signer %}
       <p>{{ __('Vous signez en tant que délégué de', 'assetsign') }} <strong>{{ beneficiary_name }}</strong>.</p>
     {% endif %}
+    {% if is_cosigner %}
+      {# Signatures multiples (issue #143) : le responsable hierarchique
+         consulte ici le document DEJA signe par le beneficiaire (cf.
+         SignController::getPdfDocumentId()) — ce bandeau explique pourquoi
+         il se retrouve sur cette page alors qu'il n'est pas le beneficiaire. #}
+      <p class="cosigner-banner">{{ __('Ce document a déjà été signé par', 'assetsign') }} <strong>{{ beneficiary_name }}</strong> {{ __('le', 'assetsign') }} {{ assetsign.date_mod|date('d/m/Y à H:i') }}. {{ __('Votre signature, en tant que responsable hiérarchique, est requise pour finaliser cette attribution.', 'assetsign') }}</p>
+    {% endif %}
     {% endif %}
   </header>
 

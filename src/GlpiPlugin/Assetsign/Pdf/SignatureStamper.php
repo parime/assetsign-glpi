@@ -44,4 +44,33 @@ final class SignatureStamper
 
        return ['path' => $path, 'hash' => $hash, 'signed_at' => $signedAt];
    }
+
+    /**
+     * Rend le PDF final a DEUX signatures (issue #143), lors de la
+     * contre-signature. Distincte de apply() ci-dessus : PAS de resolution
+     * automatique via getActualSigner() (qui compare l'identite de la
+     * session courante a delegated_users_id — inadaptee ici, la session
+     * courante est TOUJOURS le responsable a cette etape, jamais le
+     * beneficiaire). Les deux identites sont donc fournies explicitement par
+     * l'appelant (SignController::submit()) : celle du beneficiaire,
+     * reconstituee depuis ce qui a ete enregistre a l'etape precedente
+     * (cosigner_pending_signature + la preuve de signature deja stockee),
+     * et celle du responsable, tout juste soumise.
+     *
+     * @param array{signature_image:string,signed_at:string,signer_name:string,signer_email:string} $beneficiarySigner
+     * @param array{signature_image:string,signed_at:string,signer_name:string,signer_email:string} $cosignerSigner
+     * @return array{path:string,hash:string,signed_at:string}
+     */
+   public function applyCosignature(\GlpiPlugin\Assetsign\Assetsign $assetsign, array $beneficiarySigner, array $cosignerSigner): array {
+       $html = $this->builder->renderHtml($assetsign, $beneficiarySigner + ['cosigner' => $cosignerSigner]);
+
+       $protect = (bool) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['protect_pdf'];
+       $binary = $this->builder->renderPdf($html, $protect);
+       $hash = hash('sha256', $binary);
+
+       $path = GLPI_TMP_DIR . '/' . uniqid('assetsign_cosigned_', true) . '.pdf';
+       file_put_contents($path, $binary);
+
+       return ['path' => $path, 'hash' => $hash, 'signed_at' => $cosignerSigner['signed_at']];
+   }
 }

@@ -145,6 +145,21 @@
     {% endif %}
 </div>
 
+{% if cosigner is defined and cosigner %}
+{# Signatures multiples (issue #143) : second bloc de signature, uniquement
+   present sur le PDF final produit par SignatureStamper::applyCosignature()
+   une fois la contre-signature du responsable hierarchique obtenue — jamais
+   sur le PDF intermediaire signe par le seul beneficiaire (document_id_signed),
+   ni sur une fiche qui ne requiert pas de contre-signature. #}
+<div class="signature-zone">
+    <p>Contre-signé électroniquement le {{ cosigner.signed_at|date('d/m/Y à H:i') }}</p>
+    <img src="{{ cosigner.signature_image }}" class="signature-img">
+    <p class="proof">
+        Responsable hiérarchique : {{ cosigner.signer_name }} ({{ cosigner.signer_email }})
+    </p>
+</div>
+{% endif %}
+
 {% if qr_data_uri %}
 <div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
 {% endif %}

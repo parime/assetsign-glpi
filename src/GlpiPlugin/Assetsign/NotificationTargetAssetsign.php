@@ -50,6 +50,13 @@ class NotificationTargetAssetsign extends NotificationTarget
      * (notification directe par e-mail, sans exiger de droit/profil GLPI).
      */
    public const TARGET_DELEGATE = 900003;
+    /**
+     * Responsable hierarchique du beneficiaire, snapshote comme
+     * contre-signataire (cf. Assetsign::launchWorkflow(), issue #143). Meme
+     * motif que TARGET_BENEFICIARY/TECHNICIAN/DELEGATE ci-dessus (notification
+     * directe par e-mail, sans exiger de droit/profil GLPI).
+     */
+   public const TARGET_COSIGNER = 900004;
 
    public function getEvents(): array {
        return [
@@ -59,10 +66,22 @@ class NotificationTargetAssetsign extends NotificationTarget
            'expired'       => __('Document expiré', 'assetsign'),
            'expiring_soon' => __('Document sur le point d\'expirer', 'assetsign'),
            'delegated'     => __('Signature déléguée', 'assetsign'),
+           // Signatures multiples (issue #143) : le beneficiaire vient de
+           // signer, la fiche attend desormais la contre-signature du
+           // responsable hierarchique.
+           'cosignature_requested' => __('Contre-signature requise', 'assetsign'),
        ];
    }
 
    public function addAdditionalTargets($event = '') {
+       /** @var Assetsign $assetsign */
+       $assetsign = $this->obj;
+       // Signatures multiples (issue #143) : une fois la fiche passee en
+       // attente de contre-signature, "reminder" doit relancer le
+       // RESPONSABLE (qui doit encore agir), pas le beneficiaire (qui a deja
+       // signe) — meme raisonnement que l'exclusion de "delegated" ci-dessous.
+       $awaitingCosignature = (int) ($assetsign->fields['status'] ?? 0) === Assetsign::STATUS_AWAITING_COSIGNATURE;
+
        // Le beneficiaire recoit deja des relances periodiques pendant la meme
        // fenetre (evenement "reminder", cf. Assetsign::runReminders()) : lui envoyer
        // aussi "expiring_soon" (qui s'adresse au technicien, pas a lui) ferait
@@ -70,8 +89,12 @@ class NotificationTargetAssetsign extends NotificationTarget
        // "delegated" (issue #115) : c'est justement le DELEGUE, pas le
        // beneficiaire d'origine (deja informe implicitement en initiant lui-meme
        // la delegation en self-service, ou par le technicien qui l'a faite a sa
-       // place), qui doit recevoir le nouveau lien de signature.
-      if (!in_array($event, ['expiring_soon', 'delegated'], true)) {
+       // place), qui doit recevoir le nouveau lien de signature. Meme exclusion
+       // pour "cosignature_requested" (issue #143) : le beneficiaire vient
+       // justement de signer, c'est le responsable qui doit etre notifie.
+      if ($awaitingCosignature && $event === 'reminder') {
+          $this->addTarget(self::TARGET_COSIGNER, __('Responsable hiérarchique', 'assetsign'));
+      } else if (!in_array($event, ['expiring_soon', 'delegated', 'cosignature_requested'], true)) {
           $this->addTarget(self::TARGET_BENEFICIARY, __('Bénéficiaire', 'assetsign'));
       }
 
@@ -91,6 +114,19 @@ class NotificationTargetAssetsign extends NotificationTarget
       if ($event === 'delegated') {
           $this->addTarget(self::TARGET_DELEGATE, __('Délégué', 'assetsign'));
       }
+
+       // Le responsable hierarchique (issue #143) recoit : l'invitation
+       // initiale a contre-signer, une relance pendant que c'est lui le
+       // signataire attendu (ci-dessus), et la confirmation finale une fois
+       // la fiche reellement signee (au meme titre que le beneficiaire/
+       // technicien ci-dessus) — mais pas "expiring_soon" (deja recu par le
+       // technicien, meme choix que pour le beneficiaire).
+      if ($event === 'cosignature_requested'
+          || ($event === 'expired' && $awaitingCosignature)
+          || ($event === 'signed' && (int) ($assetsign->fields['cosigner_users_id'] ?? 0) > 0)
+      ) {
+          $this->addTarget(self::TARGET_COSIGNER, __('Responsable hiérarchique', 'assetsign'));
+      }
    }
 
     /**
@@ -106,6 +142,8 @@ class NotificationTargetAssetsign extends NotificationTarget
           $this->addUserFieldByEmail('users_id_tech');
       } else if ($target === self::TARGET_DELEGATE) {
           $this->addUserFieldByEmail('delegated_users_id');
+      } else if ($target === self::TARGET_COSIGNER) {
+          $this->addUserFieldByEmail('cosigner_users_id');
       }
    }
 
@@ -168,6 +206,13 @@ class NotificationTargetAssetsign extends NotificationTarget
            : '';
        $this->data['##assetsign.delegation.reason##'] = (string) ($assetsign->fields['delegation_reason'] ?? '');
 
+       // Signatures multiples (issue #143) : vide si aucune contre-signature
+       // requise, meme raisonnement que delegate.name ci-dessus.
+       $cosigner = $assetsign->getCosigner();
+       $this->data['##assetsign.cosigner.name##'] = $cosigner
+           ? formatUserName(0, $cosigner['name'] ?? '', $cosigner['realname'] ?? '', $cosigner['firstname'] ?? '')
+           : '';
+
        $this->getTags();
       foreach ($this->tag_descriptions[NotificationTarget::TAG_LANGUAGE] as $tag => $values) {
          if (!isset($this->data[$tag])) {
@@ -187,6 +232,7 @@ class NotificationTargetAssetsign extends NotificationTarget
            'assetsign.deadline'  => __('Date limite de signature', 'assetsign'),
            'assetsign.delegate.name'      => __('Signataire délégué', 'assetsign'),
            'assetsign.delegation.reason'  => __('Motif de la délégation', 'assetsign'),
+           'assetsign.cosigner.name'      => __('Responsable hiérarchique (contre-signataire)', 'assetsign'),
        ];
 
        foreach ($tags as $tag => $label) {
@@ -280,7 +326,7 @@ class NotificationTargetAssetsign extends NotificationTarget
               'notificationtemplates_id' => $templates_id,
           ]);
 
-         if (!in_array($event, ['expiring_soon', 'delegated'], true)) {
+         if (!in_array($event, ['expiring_soon', 'delegated', 'cosignature_requested'], true)) {
             (new NotificationTarget())->add([
               'notifications_id' => $notifications_id,
               'type'             => Notification::USER_TYPE,
@@ -301,6 +347,14 @@ class NotificationTargetAssetsign extends NotificationTarget
                 'notifications_id' => $notifications_id,
                 'type'             => Notification::USER_TYPE,
                 'items_id'         => self::TARGET_DELEGATE,
+            ]);
+         }
+
+         if ($event === 'cosignature_requested') {
+            (new NotificationTarget())->add([
+                'notifications_id' => $notifications_id,
+                'type'             => Notification::USER_TYPE,
+                'items_id'         => self::TARGET_COSIGNER,
             ]);
          }
       }

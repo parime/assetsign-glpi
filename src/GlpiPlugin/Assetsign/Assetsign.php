@@ -50,6 +50,14 @@ class Assetsign extends CommonDBTM
      * qui consulte l'historique (preuve de signature, export...).
      */
    public const STATUS_COMPLETED_NO_SIGNATURE = 8;
+    /**
+     * Signatures multiples (issue #143) : le beneficiaire a signe, la fiche
+     * attend desormais la contre-signature du responsable hierarchique
+     * (cf. cosigner_users_id, Config::enable_co_signature). Statut
+     * intermediaire distinct de STATUS_SIGNED (qui reste reserve a une fiche
+     * ENTIEREMENT signee) — voir markAwaitingCosignature()/markCosigned().
+     */
+   public const STATUS_AWAITING_COSIGNATURE = 9;
 
     // --- Beneficiaire ---------------------------------------------------------------
     /** Beneficiaire = un compte utilisateur GLPI existant (`users_id`). */
@@ -93,8 +101,16 @@ class Assetsign extends CommonDBTM
      * maintenant", les crons de relance/expiration, et le widget "En attente" du
      * tableau de bord (Dashboard\CardProvider::pending()) — une seule definition
      * partagee plutot que ce couple de statuts recopie a chaque endroit.
+     *
+     * STATUS_AWAITING_COSIGNATURE inclus (issue #143) : ces trois crons/widget
+     * n'ont pas besoin d'un second jeu de champs "cosigner_*" pour la relance/
+     * expiration (cf. le commentaire sur date_sent/date_viewed/reminder_count
+     * dans install() plus bas) — ces colonnes sont reutilisees telles quelles
+     * pour suivre l'etape EN COURS, que ce soit celle du beneficiaire ou celle
+     * du responsable. sendReminderNow() distingue ensuite qui relancer/quel
+     * jeton regenerer selon le statut exact.
      */
-   public const STATUSES_AWAITING_SIGNATURE = [self::STATUS_SENT, self::STATUS_VIEWED];
+   public const STATUSES_AWAITING_SIGNATURE = [self::STATUS_SENT, self::STATUS_VIEWED, self::STATUS_AWAITING_COSIGNATURE];
 
     /**
      * Statuts pour lesquels le PDF non signe peut encore etre modifie (accessoires,
@@ -408,9 +424,18 @@ class Assetsign extends CommonDBTM
            // lui-meme (cf. handover.html.twig) — rien ne les affichait cote GLPI,
            // alors que glpi_plugin_assetsign_signatures les enregistre a chaque
            // signature (Signature::recordProofForAssetsign(), appele par markSigned()).
-           'signature_proof' => (!$this->isNewID($ID) && (int) $this->fields['status'] === self::STATUS_SIGNED)
-               ? Signature::getForAssetsign((int) $ID)
-               : null,
+           //
+           // Signatures multiples (issue #143) : getAllForAssetsign() (toutes les
+           // preuves, pas seulement la plus recente) des que la fiche a signe au
+           // moins une fois OU attend une contre-signature — sans ca, la preuve du
+           // beneficiaire deviendrait invisible cote admin des que le responsable
+           // contre-signe (Signature::getForAssetsign() ne renverrait plus alors
+           // que la preuve la plus recente, celle du responsable).
+           'signature_proofs' => (!$this->isNewID($ID) && in_array((int) $this->fields['status'], [self::STATUS_SIGNED, self::STATUS_AWAITING_COSIGNATURE], true))
+               ? Signature::getAllForAssetsign((int) $ID)
+               : [],
+           'cosigner'         => $this->isNewID($ID) ? null : $this->getCosigner(),
+           'cosigner_pending' => !$this->isNewID($ID) && (int) $this->fields['status'] === self::STATUS_AWAITING_COSIGNATURE,
            // Delegation de signature (issue #115) : bouton "Deleguer" affiche
            // seulement si le reglage entite est actif ET que le beneficiaire
            // est interne (cf. delegateSignatureTo()) — meme droit/garde que le
@@ -724,6 +749,7 @@ class Assetsign extends CommonDBTM
            self::STATUS_EXPIRED   => __('Expiré', 'assetsign'),
            self::STATUS_CANCELLED => __('Annulé', 'assetsign'),
            self::STATUS_COMPLETED_NO_SIGNATURE => __('Remis (bénéficiaire externe, sans signature)', 'assetsign'),
+           self::STATUS_AWAITING_COSIGNATURE => __('Signé par le bénéficiaire, en attente du responsable', 'assetsign'),
        ];
    }
 
@@ -1520,6 +1546,26 @@ class Assetsign extends CommonDBTM
           return;
       }
 
+       // Signatures multiples (issue #143), Attribution uniquement (cf.
+       // Config::enable_co_signature) : responsable hierarchique du
+       // beneficiaire (User::users_id_supervisor, deja renseigne par
+       // l'annuaire) SNAPSHOTE ici, au lancement — jamais relu dynamiquement
+       // ensuite, pour que le signataire attendu ne change pas en cours de
+       // route si l'organigramme est modifie pendant que la fiche est en
+       // circulation. Si aucun responsable n'est renseigne, la fiche reste
+       // mono-signataire (0 = pas de contre-signature requise, meme
+       // convention "0 = absent" que delegated_users_id ci-dessus) : jamais
+       // de blocage pour donnee organisationnelle manquante.
+      if ($config->fields['enable_co_signature'] && (int) $this->fields['type'] === self::TYPE_HANDOVER) {
+          $beneficiary = new \User();
+         if ($beneficiary->getFromDB((int) $this->fields['users_id'])) {
+             $supervisorId = (int) ($beneficiary->fields['users_id_supervisor'] ?? 0);
+            if ($supervisorId > 0 && $supervisorId !== (int) $this->fields['users_id']) {
+                $this->update(['id' => $this->getID(), 'cosigner_users_id' => $supervisorId]);
+            }
+         }
+      }
+
        // Delegue au fournisseur configure (uniquement le canvas natif pour l'instant,
        // cf. Provider\ProviderFactory).
        // Le jeton brut n'est jamais stocke : il transite en propriete volatile le temps
@@ -1595,6 +1641,27 @@ class Assetsign extends CommonDBTM
       }
        $fields = $user->fields;
        $fields['email'] = \UserEmail::getDefaultForUser($delegateId) ?: '';
+       return $fields;
+   }
+
+    /**
+     * Responsable hierarchique snapshote comme contre-signataire (issue #143),
+     * ou null si aucune contre-signature n'est requise pour cette fiche.
+     * Meme forme de tableau que getBeneficiary()/getDelegate()
+     * (firstname/realname/name/email).
+     */
+   public function getCosigner(): ?array {
+       $cosignerId = (int) ($this->fields['cosigner_users_id'] ?? 0);
+      if ($cosignerId <= 0) {
+          return null;
+      }
+
+       $user = new \User();
+      if (!$user->getFromDB($cosignerId)) {
+          return null;
+      }
+       $fields = $user->fields;
+       $fields['email'] = \UserEmail::getDefaultForUser($cosignerId) ?: '';
        return $fields;
    }
 
@@ -2211,6 +2278,13 @@ class Assetsign extends CommonDBTM
               'status'     => self::STATUS_VIEWED,
               'date_viewed'=> date('Y-m-d H:i:s'),
           ]);
+      } else if ((int) $this->fields['status'] === self::STATUS_AWAITING_COSIGNATURE && empty($this->fields['date_viewed'])) {
+          // Contre-signature (issue #143) : date_viewed reutilise pour
+          // l'etape en cours (cf. commentaire sur STATUSES_AWAITING_SIGNATURE)
+          // — pas de transition de statut ici (contrairement au cas
+          // beneficiaire ci-dessus), juste l'horodatage de premiere
+          // consultation par le responsable.
+          $this->update(['id' => $this->getID(), 'date_viewed' => date('Y-m-d H:i:s')]);
       }
    }
 
@@ -2228,6 +2302,82 @@ class Assetsign extends CommonDBTM
            'status'             => self::STATUS_SIGNED,
            'document_id_signed' => $document->getID(),
            'date_signed'        => date('Y-m-d H:i:s'),
+       ]);
+
+       Token::invalidateForAssetsign($this->getID());
+       NotificationEvent::raiseEvent('signed', $this);
+   }
+
+    /**
+     * Signatures multiples (issue #143) : le beneficiaire vient de signer, et
+     * cette fiche requiert une contre-signature (cosigner_users_id > 0, cf.
+     * launchWorkflow()) — la fiche n'est PAS encore consideree signee
+     * (STATUS_AWAITING_COSIGNATURE, statut intermediaire). Le PDF signe par
+     * le seul beneficiaire est tout de meme attache comme document_id_signed
+     * (tracabilite de cette etape) ; markCosigned() ci-dessous produira le
+     * PDF final (document_id_cosigned) une fois la contre-signature obtenue.
+     *
+     * $rawSignatureImagePng (data URI PNG, meme format que celui traite par
+     * SignatureStamper) est conserve en base (cosigner_pending_signature) le
+     * temps de l'attente : SignatureStamper re-rend tout le gabarit Twig a
+     * chaque etape (pas de calque/overlay, cf. son docblock) — sans le
+     * reinjecter au moment de la contre-signature, la signature du
+     * beneficiaire disparaitrait purement et simplement du PDF final.
+     *
+     * Ne declenche PAS elle-meme la notification 'cosignature_requested' :
+     * contrairement a markSigned()/markCosigned(), le jeton du responsable
+     * n'existe pas encore a ce stade (cree par l'appelant juste apres, cf.
+     * SignController::submitBeneficiarySignature()) — la notifier ici
+     * resoudrait ##assetsign.sign_url## avant que _current_raw_token ne soit
+     * renseigne, donc vide.
+     */
+   public function markAwaitingCosignature(string $signedPdfPath, array $proof, string $rawSignatureImagePng): void {
+       $document = $this->attachDocument($signedPdfPath, $this->getDocumentTitle() . ' [signée bénéficiaire]');
+
+       Signature::recordProofForAssetsign($this, $proof);
+
+       $this->update([
+           'id'                         => $this->getID(),
+           'status'                     => self::STATUS_AWAITING_COSIGNATURE,
+           'document_id_signed'         => $document->getID(),
+           'cosigner_pending_signature' => $rawSignatureImagePng,
+           // Reutilises pour suivre l'etape EN COURS (desormais celle du
+           // responsable) plutot que de dupliquer un jeu de colonnes
+           // cosigner_* parallele — cf. commentaire sur
+           // STATUSES_AWAITING_SIGNATURE.
+           'date_sent'                  => date('Y-m-d H:i:s'),
+           'date_viewed'                => null,
+           'reminder_count'             => 0,
+       ]);
+
+       // Jeton BENEFICIAIRE invalide (deja utilise pour cette signature) — un
+       // nouveau jeton, distinct, est cree pour le responsable par
+       // l'appelant (cf. SignController::submitBeneficiarySignature()), qui
+       // declenche ensuite lui-meme la notification 'cosignature_requested'
+       // (cf. commentaire ci-dessus).
+       Token::invalidateForAssetsign($this->getID());
+   }
+
+    /**
+     * Contre-signature terminee (issue #143) : la fiche devient reellement
+     * SIGNEE — document_id_cosigned (PAS document_id_signed, qui reste le
+     * PDF intermediaire signe par le seul beneficiaire, conserve pour la
+     * tracabilite, cf. markAwaitingCosignature() ci-dessus). Distinct de
+     * markSigned() : cible une colonne differente et efface
+     * cosigner_pending_signature (plus necessaire une fois le PDF final
+     * produit — inutile de garder cette image de signature en base).
+     */
+   public function markCosigned(string $signedPdfPath, array $proof): void {
+       $document = $this->attachDocument($signedPdfPath, $this->getDocumentTitle() . ' [signée]');
+
+       Signature::recordProofForAssetsign($this, $proof);
+
+       $this->update([
+           'id'                         => $this->getID(),
+           'status'                     => self::STATUS_SIGNED,
+           'document_id_cosigned'       => $document->getID(),
+           'date_signed'                => date('Y-m-d H:i:s'),
+           'cosigner_pending_signature' => '',
        ]);
 
        Token::invalidateForAssetsign($this->getID());
@@ -2286,10 +2436,23 @@ class Assetsign extends CommonDBTM
       }
 
        $config = Config::getForEntity((int) $this->fields['entities_id']);
-       $provider = Provider\ProviderFactory::for($config);
 
-       // Nouvelle demande a chaque relance : le jeton precedent est invalide dans le meme mouvement.
-       $provider->createRequest($this, '');
+      if ((int) $this->fields['status'] === self::STATUS_AWAITING_COSIGNATURE) {
+          // Contre-signature (issue #143) : jamais geree par un prestataire
+          // externe — Provider vise les futures integrations SaaS pour la
+          // signature du BENEFICIAIRE (cf. docblock de CanvasProvider), hors
+          // perimetre pour cette premiere version de la contre-signature.
+          // Jeton "responsable" regenere directement, meme mecanisme que
+          // Token::regenerateForAssetsign() utilise par CanvasProvider mais
+          // scope au role cosigner.
+          $raw = Token::regenerateForAssetsign($this, (int) $config->fields['link_validity_days'], forCosigner: true);
+          $this->_current_raw_token = $raw;
+      } else {
+          $provider = Provider\ProviderFactory::for($config);
+          // Nouvelle demande a chaque relance : le jeton precedent est invalide dans le meme mouvement.
+          $provider->createRequest($this, '');
+      }
+
        NotificationEvent::raiseEvent('reminder', $this);
 
        $newCount = (int) $this->fields['reminder_count'] + 1;
@@ -2540,6 +2703,9 @@ class Assetsign extends CommonDBTM
                 `status` tinyint NOT NULL DEFAULT 0,
                 `document_id_unsigned` int unsigned NOT NULL DEFAULT 0,
                 `document_id_signed` int unsigned NOT NULL DEFAULT 0,
+                `cosigner_users_id` int unsigned NOT NULL DEFAULT 0,
+                `cosigner_pending_signature` longtext,
+                `document_id_cosigned` int unsigned NOT NULL DEFAULT 0,
                 `reminder_count` int unsigned NOT NULL DEFAULT 0,
                 `date_sent` timestamp NULL DEFAULT NULL,
                 `date_viewed` timestamp NULL DEFAULT NULL,
@@ -2556,6 +2722,7 @@ class Assetsign extends CommonDBTM
                 KEY `users_id` (`users_id`),
                 KEY `users_id_tech` (`users_id_tech`),
                 KEY `delegated_users_id` (`delegated_users_id`),
+                KEY `cosigner_users_id` (`cosigner_users_id`),
                 KEY `entities_id` (`entities_id`),
                 KEY `is_recursive` (`is_recursive`),
                 KEY `status` (`status`),
@@ -2634,6 +2801,26 @@ class Assetsign extends CommonDBTM
              $migration->addField($table, 'delegated_by_users_id', 'integer', ['value' => 0, 'after' => 'delegation_reason']);
              $migration->migrationOneTable($table);
              $migration->addKey($table, 'delegated_users_id');
+         }
+         if (!$DB->fieldExists($table, 'cosigner_users_id')) {
+             // Signatures multiples (issue #143) : contre-signature du
+             // responsable hierarchique du beneficiaire, en plus de la
+             // signature de ce dernier - meme convention "0 = absent" que
+             // delegated_users_id ci-dessus (jamais NULL). cosigner_users_id
+             // est snapshote au lancement (cf. launchWorkflow()), jamais
+             // relu dynamiquement. cosigner_pending_signature conserve
+             // temporairement l'image de signature du beneficiaire (data URI
+             // PNG) le temps de la contre-signature - necessaire car
+             // SignatureStamper re-rend tout le PDF depuis zero a chaque
+             // etape (pas de calque/overlay). document_id_cosigned est le
+             // PDF final a deux signatures, distinct de document_id_signed
+             // qui reste le PDF intermediaire signe par le seul beneficiaire
+             // (conserve pour la tracabilite).
+             $migration->addField($table, 'cosigner_users_id', 'integer', ['value' => 0, 'after' => 'document_id_signed']);
+             $migration->addField($table, 'cosigner_pending_signature', 'longtext', ['after' => 'cosigner_users_id']);
+             $migration->addField($table, 'document_id_cosigned', 'integer', ['value' => 0, 'after' => 'cosigner_pending_signature']);
+             $migration->migrationOneTable($table);
+             $migration->addKey($table, 'cosigner_users_id');
          }
       }
 

@@ -38,15 +38,20 @@
         <th>{{ __('Nombre de relances', 'assetsign') }}</th>
         <td>{{ reminders }}</td>
       </tr>
-      {% if item.fields.document_id_unsigned or item.fields.document_id_signed %}
+      {% if item.fields.document_id_unsigned or item.fields.document_id_signed or item.fields.document_id_cosigned %}
       <tr>
         <th>{{ __('PDF', 'assetsign') }}</th>
         <td>
-          {% if item.fields.document_id_signed %}
-            <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_signed }}" target="_blank">{{ __('Télécharger (signé)', 'assetsign') }}</a>
+          {% if item.fields.document_id_cosigned %}
+            {# Signatures multiples (issue #143) : PDF final a deux signatures,
+               prioritaire sur document_id_signed ci-dessous (qui ne reste alors
+               que le PDF intermediaire signe par le seul beneficiaire). #}
+            <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_cosigned }}" target="_blank">{{ __('Télécharger (signé et contre-signé)', 'assetsign') }}</a>
+          {% elseif item.fields.document_id_signed %}
+            <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_signed }}" target="_blank">{{ __('Télécharger (signé)', 'assetsign') }}{{ cosigner_pending ? ' ' ~ __('(bénéficiaire uniquement)', 'assetsign') : '' }}</a>
           {% endif %}
           {% if item.fields.document_id_unsigned %}
-            {% if item.fields.document_id_signed %} — {% endif %}
+            {% if item.fields.document_id_signed or item.fields.document_id_cosigned %} — {% endif %}
             <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_unsigned }}" target="_blank">{{ __('Télécharger (non signé)', 'assetsign') }}</a>
           {% endif %}
         </td>
@@ -112,30 +117,54 @@
       </form>
     {% endif %}
 
-    {% if signature_proof %}
+    {% if cosigner %}
+      {# Signatures multiples (issue #143) : statut de la contre-signature du
+         responsable hierarchique, meme emplacement/style que le bloc
+         delegation ci-dessus. #}
+      <div class="alert {{ cosigner_pending ? 'alert-info' : 'alert-success' }} mt-4">
+        <i class="ti ti-user-check"></i>
+        {% set cosigner_name = (cosigner.firstname|default('') ~ ' ' ~ cosigner.realname|default(''))|trim %}
+        {% if cosigner_pending %}
+          {{ __('En attente de la contre-signature de', 'assetsign') }} <strong>{{ cosigner_name is empty ? cosigner.name|default('') : cosigner_name }}</strong> ({{ __('responsable hiérarchique', 'assetsign') }})
+        {% else %}
+          {{ __('Contre-signé par', 'assetsign') }} <strong>{{ cosigner_name is empty ? cosigner.name|default('') : cosigner_name }}</strong> ({{ __('responsable hiérarchique', 'assetsign') }})
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if signature_proofs|length %}
       <h3 class="mt-4">{{ __('Preuve de signature', 'assetsign') }}</h3>
-      <table class="table table-striped">
-        <tr>
-          <th>{{ __('Signataire', 'assetsign') }}</th>
-          <td>{{ signature_proof.signer_name|default('') }} ({{ signature_proof.signer_email|default('') }})</td>
-        </tr>
-        <tr>
-          <th>{{ __('Adresse IP', 'assetsign') }}</th>
-          <td>{{ signature_proof.ip_address|default('') }}</td>
-        </tr>
-        <tr>
-          <th>{{ __('Navigateur / appareil', 'assetsign') }}</th>
-          <td>{{ signature_proof.user_agent|default('') }}</td>
-        </tr>
-        <tr>
-          <th>{{ __('Empreinte du document (SHA-256)', 'assetsign') }}</th>
-          <td><code>{{ signature_proof.document_hash|default('') }}</code></td>
-        </tr>
-        <tr>
-          <th>{{ __('Horodatage', 'assetsign') }}</th>
-          <td>{{ signature_proof.signed_at|default('') }}</td>
-        </tr>
-      </table>
+      {% for proof in signature_proofs %}
+        {# Signatures multiples (issue #143) : plusieurs preuves possibles
+           (beneficiaire puis responsable) — libelle uniquement affiche quand
+           il y en a plus d'une, pour ne rien changer visuellement au cas
+           mono-signataire habituel. #}
+        {% if signature_proofs|length > 1 %}
+          <h4 class="mt-3">{{ loop.first ? __('Bénéficiaire', 'assetsign') : __('Responsable hiérarchique', 'assetsign') }}</h4>
+        {% endif %}
+        <table class="table table-striped">
+          <tr>
+            <th>{{ __('Signataire', 'assetsign') }}</th>
+            <td>{{ proof.signer_name|default('') }} ({{ proof.signer_email|default('') }})</td>
+          </tr>
+          <tr>
+            <th>{{ __('Adresse IP', 'assetsign') }}</th>
+            <td>{{ proof.ip_address|default('') }}</td>
+          </tr>
+          <tr>
+            <th>{{ __('Navigateur / appareil', 'assetsign') }}</th>
+            <td>{{ proof.user_agent|default('') }}</td>
+          </tr>
+          <tr>
+            <th>{{ __('Empreinte du document (SHA-256)', 'assetsign') }}</th>
+            <td><code>{{ proof.document_hash|default('') }}</code></td>
+          </tr>
+          <tr>
+            <th>{{ __('Horodatage', 'assetsign') }}</th>
+            <td>{{ proof.signed_at|default('') }}</td>
+          </tr>
+        </table>
+      {% endfor %}
       <p class="text-muted small">{{ __('Ces informations sont enregistrées au moment de la signature et permettent, en cas de litige, de vérifier que le PDF signé n\'a pas été modifié depuis (l\'empreinte ci-dessus doit correspondre à celle du fichier).', 'assetsign') }}</p>
     {% endif %}
 

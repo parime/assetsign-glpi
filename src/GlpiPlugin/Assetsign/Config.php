@@ -92,6 +92,12 @@ class Config extends CommonDBTM
         // (empreinte carbone ET duree d'amortissement Infocom::sink_time) qu'aucune
         // instance existante n'a encore faites pour ce nouvel indicateur.
         'enable_reuse_benefit'                => 0,
+        // Signatures multiples (issue #143) : contre-signature du responsable
+        // hierarchique du beneficiaire (User::users_id_supervisor), en plus
+        // de la signature du beneficiaire lui-meme, pour une Attribution
+        // (TYPE_HANDOVER) uniquement. Desactive par defaut, meme convention
+        // "enable_*" opt-in que le reste de ce bloc.
+        'enable_co_signature'                 => 0,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -595,6 +601,7 @@ class Config extends CommonDBTM
            'residual_value_low_threshold_percent' => max(0, min(100, (int) ($input['residual_value_low_threshold_percent'] ?? 20))),
            'enable_environmental_passport' => (int) ($input['enable_environmental_passport'] ?? 0),
            'enable_reuse_benefit' => (int) ($input['enable_reuse_benefit'] ?? 0),
+           'enable_co_signature' => (int) ($input['enable_co_signature'] ?? 0),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -754,6 +761,7 @@ class Config extends CommonDBTM
                 `residual_value_low_threshold_percent` int unsigned NOT NULL DEFAULT 20,
                 `enable_environmental_passport` tinyint NOT NULL DEFAULT 0,
                 `enable_reuse_benefit` tinyint NOT NULL DEFAULT 0,
+                `enable_co_signature` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -908,6 +916,18 @@ class Config extends CommonDBTM
              // juste au-dessus, pour la meme raison (depend d'une saisie manuelle
              // qu'aucune instance existante n'a encore faite).
              $migration->addField($table, 'enable_reuse_benefit', 'bool', ['value' => 0, 'after' => 'enable_environmental_passport']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_co_signature')) {
+             // Signatures multiples (issue #143) : contre-signature du
+             // responsable hierarchique du beneficiaire, en plus de la
+             // signature de ce dernier - meme convention "enable_*" opt-in,
+             // defaut desactive, que le reste de ce bloc. Si aucun
+             // responsable n'est renseigne pour le beneficiaire au moment du
+             // lancement, la remise reste mono-signataire (cf.
+             // Assetsign::launchWorkflow()) : jamais de blocage pour donnee
+             // organisationnelle manquante.
+             $migration->addField($table, 'enable_co_signature', 'bool', ['value' => 0, 'after' => 'enable_reuse_benefit']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'show_qr_code')) {

@@ -31,7 +31,7 @@ class Token extends CommonDBTM
      */
    public const CLEANUP_RETENTION_DAYS = 90;
 
-   public static function createForAssetsign(Assetsign $assetsign, int $validityDays): string {
+   public static function createForAssetsign(Assetsign $assetsign, int $validityDays, bool $forCosigner = false): string {
        global $DB;
 
        $raw = self::generateRaw();
@@ -53,22 +53,43 @@ class Token extends CommonDBTM
            'date_expiration'          => new \QueryExpression('DATE_ADD(NOW(), INTERVAL ' . (int) $validityDays . ' DAY)'),
            'is_valid'                 => 1,
            'ip_created'               => $_SERVER['REMOTE_ADDR'] ?? null,
+           // Signatures multiples (issue #143) : un jeton "responsable" et un
+           // jeton "beneficiaire" peuvent coexister pour la meme fiche
+           // (l'historique du premier reste consultable) sans jamais
+           // s'authentifier l'un pour l'autre — c'est ce champ, pas
+           // l'identite de la session, qui determine le role du signataire
+           // courant (cf. SignController::assertCurrentUserIsAuthorizedSigner()).
+           'for_cosigner'             => $forCosigner ? 1 : 0,
        ]);
 
        return $raw;
    }
 
     /**
-     * Invalide les jetons existants et en emet un nouveau (utilise pour les relances).
+     * Invalide les jetons existants (du meme role uniquement, cf.
+     * $forCosigner) et en emet un nouveau (utilise pour les relances).
      */
-   public static function regenerateForAssetsign(Assetsign $assetsign, int $validityDays): string {
-       self::invalidateForAssetsign($assetsign->getID());
-       return self::createForAssetsign($assetsign, $validityDays);
+   public static function regenerateForAssetsign(Assetsign $assetsign, int $validityDays, bool $forCosigner = false): string {
+       self::invalidateForAssetsign($assetsign->getID(), $forCosigner);
+       return self::createForAssetsign($assetsign, $validityDays, $forCosigner);
    }
 
-   public static function invalidateForAssetsign(int $assetsigns_id): void {
+    /**
+     * $forCosigner === null (par defaut) invalide TOUS les jetons de la
+     * fiche, quel que soit leur role — utilise par les transitions
+     * terminales (signature complete, expiration) ou plus aucun jeton ne
+     * doit rester utilisable. Un role explicite (true/false) n'invalide que
+     * les jetons de ce role, utilise par regenerateForAssetsign() ci-dessus
+     * pour ne jamais toucher au jeton de l'AUTRE signataire en cours de
+     * relance (issue #143).
+     */
+   public static function invalidateForAssetsign(int $assetsigns_id, ?bool $forCosigner = null): void {
        global $DB;
-       $DB->update(self::getTable(), ['is_valid' => 0], ['plugin_assetsign_assetsigns_id' => $assetsigns_id]);
+       $criteria = ['plugin_assetsign_assetsigns_id' => $assetsigns_id];
+      if ($forCosigner !== null) {
+          $criteria['for_cosigner'] = $forCosigner ? 1 : 0;
+      }
+       $DB->update(self::getTable(), ['is_valid' => 0], $criteria);
    }
 
     /**
@@ -199,6 +220,7 @@ class Token extends CommonDBTM
                 `attempts` int unsigned NOT NULL DEFAULT 0,
                 `ip_created` varchar(46) DEFAULT NULL,
                 `ip_used` varchar(46) DEFAULT NULL,
+                `for_cosigner` tinyint NOT NULL DEFAULT 0,
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `token_hash` (`token_hash`),
                 KEY `plugin_assetsign_assetsigns_id` (`plugin_assetsign_assetsigns_id`),
@@ -206,6 +228,16 @@ class Token extends CommonDBTM
                 KEY `is_valid` (`is_valid`),
                 CONSTRAINT `fk_token_assetsign` FOREIGN KEY (`plugin_assetsign_assetsigns_id`) REFERENCES `glpi_plugin_assetsign_assetsigns` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+      } else if (!$DB->fieldExists($table, 'for_cosigner')) {
+          // Signatures multiples (issue #143) : distingue un jeton
+          // "beneficiaire" d'un jeton "responsable" pour la meme fiche, cf.
+          // le commentaire de createForAssetsign() ci-dessus. 'bool' (pas
+          // 'tinyint') : seul un type "logique" reconnu par
+          // Migration::fieldFormat() fait que 'value' produise reellement
+          // une clause DEFAULT — meme piege deja documente ailleurs dans ce
+          // plugin (cf. Config::install()).
+          $migration->addField($table, 'for_cosigner', 'bool', ['value' => 0]);
+          $migration->migrationOneTable($table);
       }
    }
 }

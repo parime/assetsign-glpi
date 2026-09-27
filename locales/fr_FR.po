@@ -2665,3 +2665,48 @@ msgstr "durée d'amortissement prévue"
 msgid "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
 msgstr "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
 
+
+msgid "Ce document a déjà été signé par"
+msgstr "Ce document a déjà été signé par"
+
+msgid "Télécharger (signé et contre-signé)"
+msgstr "Télécharger (signé et contre-signé)"
+
+msgid "(bénéficiaire uniquement)"
+msgstr "(bénéficiaire uniquement)"
+
+msgid "En attente de la contre-signature de"
+msgstr "En attente de la contre-signature de"
+
+msgid "responsable hiérarchique"
+msgstr "responsable hiérarchique"
+
+msgid "Contre-signé par"
+msgstr "Contre-signé par"
+
+msgid "Responsable hiérarchique"
+msgstr "Responsable hiérarchique"
+
+msgid "Contre-signature"
+msgstr "Contre-signature"
+
+msgid "Exiger la contre-signature du responsable hiérarchique"
+msgstr "Exiger la contre-signature du responsable hiérarchique"
+
+msgid "Contre-signature d'attribution de matériel"
+msgstr "Contre-signature d'attribution de matériel"
+
+msgid "La signature du bénéficiaire est introuvable pour cette fiche."
+msgstr "La signature du bénéficiaire est introuvable pour cette fiche."
+
+msgid "La délégation n'est pas disponible pour le rôle de contre-signataire."
+msgstr "La délégation n'est pas disponible pour le rôle de contre-signataire."
+
+msgid "Signé par le bénéficiaire, en attente du responsable"
+msgstr "Signé par le bénéficiaire, en attente du responsable"
+
+msgid "Contre-signature requise"
+msgstr "Contre-signature requise"
+
+msgid "Responsable hiérarchique (contre-signataire)"
+msgstr "Responsable hiérarchique (contre-signataire)"
