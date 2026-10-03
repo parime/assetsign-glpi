@@ -28,7 +28,9 @@ use Session;
  */
 class Maintenance extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_MAINTENANCE;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_MAINTENANCE;
 
    public static function getTypeName($nb = 0): string {
        return _n('Fiche de maintenance', 'Fiches de maintenance', $nb, 'assetsign');

@@ -41,7 +41,9 @@ use Migration;
  */
 class EnvironmentalData extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public const SOURCE_MANUFACTURER = 'manufacturer';
    public const SOURCE_EXTERNAL_API = 'external_api';

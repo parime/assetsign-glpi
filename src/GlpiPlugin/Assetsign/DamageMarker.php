@@ -31,7 +31,9 @@ use Migration;
  */
 class DamageMarker extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public const SEVERITY_MINOR = 0;
    public const SEVERITY_MAJOR = 1;

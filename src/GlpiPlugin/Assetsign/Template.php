@@ -11,7 +11,9 @@ use Migration;
  */
 class Template extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_TEMPLATE;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_TEMPLATE;
 
     /**
      * Texte pre-rempli propose a l'administrateur pour un NOUVEAU gabarit — pas

@@ -13,7 +13,9 @@ use Migration;
  */
 class Reminder extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function log(Assetsign $assetsign): void {
        global $DB;

@@ -19,7 +19,9 @@ use Session;
  */
 class Assetsign extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
     /**
      * Jeton de signature brut, valide uniquement le temps de la requete en cours

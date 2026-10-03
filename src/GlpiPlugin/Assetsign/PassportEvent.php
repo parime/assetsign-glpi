@@ -30,7 +30,10 @@ class PassportEvent extends CommonDBTM
     // TYPE_DON/TYPE_VENTE ci-dessus, cf. recordForAssetsign().
    public const TYPE_DESTRUCTION = 6;
 
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
     /**
      * Nom de table force explicitement : la derivation automatique de GLPI a partir du nom
@@ -631,7 +634,7 @@ class PassportEvent extends CommonDBTM
 
        // Etat physique : marqueurs de degat, relies a l'item via Assetsign OU Maintenance.
        $damagePoints = (int) $DB->request([
-           'SELECT'     => [new \QueryExpression('COALESCE(SUM(`severity` + 1), 0) AS points')],
+           'SELECT'     => [new \Glpi\DBAL\QueryExpression('COALESCE(SUM(`severity` + 1), 0) AS points')],
            'FROM'       => 'glpi_plugin_assetsign_damagemarkers',
            'LEFT JOIN'  => [
                'glpi_plugin_assetsign_assetsigns'      => ['FKEY' => ['glpi_plugin_assetsign_damagemarkers' => 'plugin_assetsign_assetsigns_id', 'glpi_plugin_assetsign_assetsigns' => 'id']],
@@ -1177,7 +1180,7 @@ class PassportEvent extends CommonDBTM
 
        $filledCounts = [];
        foreach ($DB->request([
-           'SELECT'  => ['plugin_assetsign_assetsigns_id', new \QueryExpression('COUNT(*) AS filled')],
+           'SELECT'  => ['plugin_assetsign_assetsigns_id', new \Glpi\DBAL\QueryExpression('COUNT(*) AS filled')],
            'FROM'    => 'glpi_plugin_assetsign_checklistvalues',
            'WHERE'   => ['plugin_assetsign_assetsigns_id' => array_values(array_unique($assetsignIds))],
            'GROUPBY' => 'plugin_assetsign_assetsigns_id',

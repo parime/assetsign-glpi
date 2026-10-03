@@ -47,7 +47,7 @@ Le même mécanisme fonctionne aussi en sens inverse : quand un matériel est **
 
 ## Installation
 
-**Prérequis** : GLPI 11.0.8+ (recommandé — corrige plusieurs failles critiques du cœur GLPI lui-même), PHP 8.3+, MariaDB/MySQL, un serveur SMTP configuré dans GLPI. Composer n'est nécessaire que pour développer sur le plugin — **pas pour l'installer** : `vendor/` (Dompdf et ses dépendances, ~14 Mo, production uniquement) est commité directement dans ce dépôt, un simple `git clone` ou une release ZIP suffit sur le serveur cible.
+**Prérequis** : GLPI 11.0.8+ (recommandé — corrige plusieurs failles critiques du cœur GLPI lui-même) **ou GLPI 12** (même paquet), PHP 8.3+, MariaDB/MySQL, un serveur SMTP configuré dans GLPI. Composer n'est nécessaire que pour développer sur le plugin — **pas pour l'installer** : `vendor/` (Dompdf et ses dépendances, ~14 Mo, production uniquement) est commité directement dans ce dépôt, un simple `git clone` ou une release ZIP suffit sur le serveur cible.
 
 **1. Récupérer le code** dans `plugins/` de votre GLPI, sous le nom **`assetsign`** (GLPI en déduit la clé du plugin) :
 
