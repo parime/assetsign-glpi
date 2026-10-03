@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-03 21:59+0000\n"
+"POT-Creation-Date: 2026-10-03 22:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: templates/sign_page.html.twig front/sign.php:174
+#: templates/sign_page.html.twig front/sign.php:181
 msgid "Signature d'attribution de matériel"
 msgstr ""
 
@@ -56,6 +56,18 @@ msgstr ""
 msgid ""
 "Votre signature, en tant que responsable hiérarchique, est requise pour "
 "finaliser cette attribution."
+msgstr ""
+
+#: templates/sign_page.html.twig
+msgid "Signature sur place : ce document doit être relu puis signé par"
+msgstr ""
+
+#: templates/sign_page.html.twig
+msgid "en présence de"
+msgstr ""
+
+#: templates/sign_page.html.twig
+msgid "Le document signé mentionnera ce technicien comme témoin."
 msgstr ""
 
 #: templates/sign_page.html.twig
@@ -201,7 +213,7 @@ msgid "Merci de choisir un compte utilisateur."
 msgstr ""
 
 #: templates/sign_page.html.twig
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:303
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:322
 msgid "Le motif de la délégation est obligatoire."
 msgstr ""
 
@@ -359,7 +371,7 @@ msgstr ""
 msgid "Statut"
 msgstr ""
 
-#: templates/movement_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:748
+#: templates/movement_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:752
 #: src/GlpiPlugin/Assetsign/Movement.php:176
 msgid "Signé"
 msgstr ""
@@ -448,8 +460,18 @@ msgid "Télécharger (non signé)"
 msgstr ""
 
 #: templates/assetsign_form.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:489
+#: src/GlpiPlugin/Assetsign/Assetsign.php:493
 msgid "Relancer maintenant"
+msgstr ""
+
+#: templates/assetsign_form.html.twig
+msgid ""
+"Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet "
+"écran, en votre présence."
+msgstr ""
+
+#: templates/assetsign_form.html.twig
+msgid "Faire signer sur place"
 msgstr ""
 
 #: templates/assetsign_form.html.twig
@@ -457,7 +479,7 @@ msgid "Annuler cette demande de signature ?"
 msgstr ""
 
 #: templates/assetsign_form.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:491
+#: src/GlpiPlugin/Assetsign/Assetsign.php:495
 msgid "Annuler la demande"
 msgstr ""
 
@@ -513,6 +535,10 @@ msgstr ""
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:96
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:128
 msgid "Responsable hiérarchique"
+msgstr ""
+
+#: templates/assetsign_form.html.twig
+msgid "Recueillie sur place, en présence de"
 msgstr ""
 
 #: templates/assetsign_form.html.twig
@@ -917,6 +943,19 @@ msgid ""
 "signature, avec un lien vers la page « Mes documents à signer » — "
 "indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
 "jamais le lien de signature."
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Autoriser la signature sur place (en présence d'un technicien)"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid ""
+"Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI — pour les "
+"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la "
+"signature a été recueillie en présence de ce technicien, qui atteste ainsi "
+"de l'identité du signataire."
 msgstr ""
 
 #: templates/config_form.html.twig
@@ -1875,7 +1914,7 @@ msgstr ""
 msgid "Assigner"
 msgstr ""
 
-#: hook.php:115 src/GlpiPlugin/Assetsign/Config.php:113
+#: hook.php:115 src/GlpiPlugin/Assetsign/Config.php:117
 msgid "Assetsign & signature"
 msgstr ""
 
@@ -1907,11 +1946,11 @@ msgstr ""
 msgid "Signature manquante."
 msgstr ""
 
-#: front/sign.php:171
+#: front/sign.php:178
 msgid "Contre-signature d'attribution de matériel"
 msgstr ""
 
-#: front/sign.php:173
+#: front/sign.php:180
 msgid "Signature de restitution de matériel"
 msgstr ""
 
@@ -2128,104 +2167,104 @@ msgstr ""
 msgid "Bénéficiaire externe"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:500
+#: src/GlpiPlugin/Assetsign/Assetsign.php:504
 msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:504
+#: src/GlpiPlugin/Assetsign/Assetsign.php:508
 msgid ""
 "Annuler les demandes de signature sélectionnées ? Le lien envoyé au "
 "bénéficiaire deviendra invalide."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:573
-#: src/GlpiPlugin/Assetsign/Assetsign.php:582
+#: src/GlpiPlugin/Assetsign/Assetsign.php:577
+#: src/GlpiPlugin/Assetsign/Assetsign.php:586
 msgid "Attributions"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:697
+#: src/GlpiPlugin/Assetsign/Assetsign.php:701
 #: src/GlpiPlugin/Assetsign/Movement.php:300
 #: src/GlpiPlugin/Assetsign/Maintenance.php:305
 msgid "Choisissez d'abord un type de matériel ci-dessus."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:744
+#: src/GlpiPlugin/Assetsign/Assetsign.php:748
 msgid "Brouillon"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:745
+#: src/GlpiPlugin/Assetsign/Assetsign.php:749
 msgid "En attente"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:746
+#: src/GlpiPlugin/Assetsign/Assetsign.php:750
 msgid "Envoyé"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:747
+#: src/GlpiPlugin/Assetsign/Assetsign.php:751
 msgid "Consulté"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:749
+#: src/GlpiPlugin/Assetsign/Assetsign.php:753
 msgid "Expiré"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:750
+#: src/GlpiPlugin/Assetsign/Assetsign.php:754
 #: src/GlpiPlugin/Assetsign/Movement.php:74
 msgid "Annulé"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:751
+#: src/GlpiPlugin/Assetsign/Assetsign.php:755
 msgid "Remis (bénéficiaire externe, sans signature)"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:752
+#: src/GlpiPlugin/Assetsign/Assetsign.php:756
 msgid "Signé par le bénéficiaire, en attente du responsable"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:926
+#: src/GlpiPlugin/Assetsign/Assetsign.php:930
 msgid "don"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:926
+#: src/GlpiPlugin/Assetsign/Assetsign.php:930
 msgid "vente"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:926
+#: src/GlpiPlugin/Assetsign/Assetsign.php:930
 msgid "destruction"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:932
+#: src/GlpiPlugin/Assetsign/Assetsign.php:936
 #, php-format
 msgid ""
 "Ce matériel n'a pas d'utilisateur assigné : <a href=\"%s\">créez maintenant "
 "la fiche de %s</a> (bénéficiaire interne ou externe)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:954
+#: src/GlpiPlugin/Assetsign/Assetsign.php:958
 msgid ""
 "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut "
 "donc pas générer de fiche d'attribution ou de restitution. Assignez un "
 "utilisateur sur la fiche du matériel si une signature est attendue."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1156
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1160
 msgid "Ce type de fiche ne peut pas être créé manuellement."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1165
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1169
 msgid "Le nom du bénéficiaire externe est obligatoire."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1169
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1173
 msgid "Le bénéficiaire (utilisateur GLPI) est obligatoire."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1173
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1177
 #, php-format
 msgid "Type de matériel invalide : %s"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1188
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1192
 #: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:26
 #: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:25
 #: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:25
@@ -2233,133 +2272,142 @@ msgstr ""
 msgid "Matériel introuvable."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1210
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1214
 msgid "Échec de la création de la fiche."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1298
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1302
 #, php-format
 msgid ""
 "État mis à jour automatiquement (%s) suite à la création d'une fiche par le "
 "plugin Assetsign & signature."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1337
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1341
 msgid "Annulée automatiquement (matériel réaffecté avant signature)"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1357
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1361
 msgid ""
 "Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà "
 "annulée)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1401
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1405
 msgid ""
 "Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1406
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1410
 msgid ""
 "La délégation n'est possible que pour un bénéficiaire interne (compte GLPI)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1409
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1413
 msgid "Le compte délégué doit être différent du bénéficiaire d'origine."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1418
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1422
 msgid "La délégation de signature est désactivée pour cette entité."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1423
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1427
 msgid "Compte utilisateur délégué introuvable."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1426
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1430
 msgid "Le compte délégué est désactivé ou supprimé."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1435
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1439
 msgid "Le compte délégué n'a pas accès à l'entité de ce dossier."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1450
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1454
 #, php-format
 msgid "Signature déléguée à %s (motif : %s)"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1481
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1485
 msgid "Cette demande n'est pas déléguée."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1484
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1488
 msgid ""
 "Cette délégation ne peut plus être révoquée (déjà signée, expirée ou "
 "annulée)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1498
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1502
 msgid "Délégation de signature révoquée"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1989
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1995
-#: src/GlpiPlugin/Assetsign/Assetsign.php:2007
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1772
+msgid "Vous n'avez pas le droit de faire signer cette fiche."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1775
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:374
+msgid "La signature sur place n'est pas possible pour cette fiche."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:2046
+#: src/GlpiPlugin/Assetsign/Assetsign.php:2052
+#: src/GlpiPlugin/Assetsign/Assetsign.php:2064
 #: src/GlpiPlugin/Assetsign/Movement.php:402
 #: src/GlpiPlugin/Assetsign/Movement.php:408
 #: src/GlpiPlugin/Assetsign/Movement.php:420
 msgid "Échec de l'envoi du document."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:2419
+#: src/GlpiPlugin/Assetsign/Assetsign.php:2476
 msgid "Envoie les relances de signature dues"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:2420
+#: src/GlpiPlugin/Assetsign/Assetsign.php:2477
 msgid "Marque comme expirées les attributions hors délai"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:2421
+#: src/GlpiPlugin/Assetsign/Assetsign.php:2478
 msgid "Alerte le technicien des attributions sur le point d'expirer"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:2435
+#: src/GlpiPlugin/Assetsign/Assetsign.php:2492
 msgid "Cette attribution ne peut plus être relancée (déjà signée ou expirée)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:108
+#: src/GlpiPlugin/Assetsign/Config.php:112
 msgid "AssetSign — Signature électronique"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:180
+#: src/GlpiPlugin/Assetsign/Config.php:184
 msgid "Signature intégrée (canvas)"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:232
-#: src/GlpiPlugin/Assetsign/Config.php:257
+#: src/GlpiPlugin/Assetsign/Config.php:236
+#: src/GlpiPlugin/Assetsign/Config.php:261
 msgid "Échec de l'envoi du logo."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:238
+#: src/GlpiPlugin/Assetsign/Config.php:242
 msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:284
+#: src/GlpiPlugin/Assetsign/Config.php:288
 msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:298
+#: src/GlpiPlugin/Assetsign/Config.php:302
 msgid "E-mail de test — Assetsign & signature"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:299
+#: src/GlpiPlugin/Assetsign/Config.php:303
 msgid ""
 "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & "
 "signature fonctionne."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:302
+#: src/GlpiPlugin/Assetsign/Config.php:306
 msgid "Le serveur de messagerie a refusé l'envoi."
 msgstr ""
 
@@ -2484,12 +2532,12 @@ msgstr ""
 msgid "Faible"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PendingSignatures.php:109
+#: src/GlpiPlugin/Assetsign/PendingSignatures.php:107
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:46
 msgid "Attribution introuvable."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PendingSignatures.php:114
+#: src/GlpiPlugin/Assetsign/PendingSignatures.php:112
 msgid "Ce document n'attend pas votre signature."
 msgstr ""
 
@@ -2562,29 +2610,34 @@ msgstr ""
 msgid "Valeur résiduelle manuelle enregistrée."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:226
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:240
 msgid "La signature du bénéficiaire est introuvable pour cette fiche."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:282
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:296
 msgid "La délégation n'est pas disponible pour le rôle de contre-signataire."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:293
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:301
+msgid "La délégation n'est pas disponible pour une signature sur place."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:312
 msgid ""
 "Seul le bénéficiaire d'origine peut déléguer la signature depuis cette page."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:298
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:317
 msgid "La délégation n'est pas activée pour cette entité."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:329
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:361
 msgid "Vous devez être connecté pour accéder à ce document."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:334
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:341
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:371
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:381
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:388
 msgid "Ce document ne correspond pas à votre compte utilisateur."
 msgstr ""
 
@@ -2646,26 +2699,26 @@ msgid ""
 "Un point non rattaché à aucun mouvement n'apparaît jamais sur aucune fiche."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:103
+#: src/GlpiPlugin/Assetsign/Token.php:109
 msgid "Lien de signature inconnu."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:113
+#: src/GlpiPlugin/Assetsign/Token.php:119
 msgid "Ce document a déjà été traité."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:116
+#: src/GlpiPlugin/Assetsign/Token.php:122
 msgid "Ce lien de signature n'est plus valide."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:121
+#: src/GlpiPlugin/Assetsign/Token.php:127
 msgid "Ce lien de signature a expiré."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:150
+#: src/GlpiPlugin/Assetsign/Token.php:156
 msgid "Trop de tentatives, lien désactivé par sécurité."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:174
+#: src/GlpiPlugin/Assetsign/Token.php:180
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr ""

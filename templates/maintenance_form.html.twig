@@ -24,7 +24,7 @@
       <table class="table table-striped">
         <tr>
           <th>{{ __('Signataire', 'assetsign') }}</th>
-          <td>{{ signature_proof.signer_name|default('') }} ({{ signature_proof.signer_email|default('') }})</td>
+          <td>{{ signature_proof.signer_name|default('') }}{% if signature_proof.signer_email|default('') is not empty %} ({{ signature_proof.signer_email }}){% endif %}</td>
         </tr>
         <tr>
           <th>{{ __('Adresse IP', 'assetsign') }}</th>

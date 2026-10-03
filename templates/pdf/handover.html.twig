@@ -120,8 +120,16 @@
         <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">
-            Signataire : {{ signer_name|default(beneficiary_name) }} ({{ signer_email|default(user.email) }})
+            {# E-mail entre parentheses seulement s'il existe : sinon "()" vide pour tout signataire
+               sans adresse e-mail - cas courant depuis les issues #150/#152. #}
+            {% set signer_mail = signer_email|default(user.email|default('')) %}
+            Signataire : {{ signer_name|default(beneficiary_name) }}{% if signer_mail is not empty %} ({{ signer_mail }}){% endif %}
         </p>
+        {% if witness_name|default('') is not empty %}
+        {# Signature sur place (issue #152) : recueillie sur l'ecran d'un technicien, qui atteste
+           de l'identite du signataire. Texte fixe en francais, comme le reste du PDF archive. #}
+        <p class="proof">Signature recueillie sur place, en présence de : {{ witness_name }}</p>
+        {% endif %}
         {% if delegated_users_id %}
         {# Delegation de signature (issue #115) : delegated_users_id>0 sur une
            fiche SIGNEE est ici une preuve suffisante qu'il s'agissait bien
@@ -155,7 +163,7 @@
     <p>Contre-signé électroniquement le {{ cosigner.signed_at|date('d/m/Y à H:i') }}</p>
     <img src="{{ cosigner.signature_image }}" class="signature-img">
     <p class="proof">
-        Responsable hiérarchique : {{ cosigner.signer_name }} ({{ cosigner.signer_email }})
+        Responsable hiérarchique : {{ cosigner.signer_name }}{% if cosigner.signer_email is not empty %} ({{ cosigner.signer_email }}){% endif %}
     </p>
 </div>
 {% endif %}

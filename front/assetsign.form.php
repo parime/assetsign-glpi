@@ -35,6 +35,23 @@ if (isset($_POST['relance'])) {
     Html::back();
 }
 
+// Signature sur place (issue #152) : emet un jeton lie au technicien connecte et ouvre la page
+// de signature sur son ecran, qu'il remet a la personne qui signe. Redirection HORS du try :
+// seul l'echec de startInPersonSignature() doit ramener a la fiche avec un message.
+if (isset($_POST['sign_in_person'])) {
+    global $CFG_GLPI;
+
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    $inPersonToken = null;
+   try {
+       $inPersonToken = $assetsign->startInPersonSignature((int) Session::getLoginUserID());
+   } catch (\RuntimeException $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+       Html::back();
+   }
+    Html::redirect($CFG_GLPI['root_doc'] . '/plugins/assetsign/front/sign.php?t=' . urlencode($inPersonToken));
+}
+
 if (isset($_POST['cancel_request'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
    try {
