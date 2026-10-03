@@ -18,7 +18,9 @@ use RuntimeException;
  */
 class Token extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
     /** Au-dela de ce nombre de tentatives d'acces, le jeton est desactive par securite. */
    private const MAX_ATTEMPTS = 20;
@@ -50,7 +52,7 @@ class Token extends CommonDBTM
        $DB->insert(self::getTable(), [
            'plugin_assetsign_assetsigns_id' => $assetsign->getID(),
            'token_hash'               => self::hash($raw),
-           'date_expiration'          => new \QueryExpression('DATE_ADD(NOW(), INTERVAL ' . (int) $validityDays . ' DAY)'),
+           'date_expiration'          => new \Glpi\DBAL\QueryExpression('DATE_ADD(NOW(), INTERVAL ' . (int) $validityDays . ' DAY)'),
            'is_valid'                 => 1,
            'ip_created'               => $_SERVER['REMOTE_ADDR'] ?? null,
            // Signatures multiples (issue #143) : un jeton "responsable" et un
@@ -179,7 +181,7 @@ class Token extends CommonDBTM
        global $DB;
        $DB->delete(self::getTable(), [
            'is_valid' => 0,
-           new \QueryExpression('date_creation < DATE_SUB(NOW(), INTERVAL ' . self::CLEANUP_RETENTION_DAYS . ' DAY)'),
+           new \Glpi\DBAL\QueryExpression('date_creation < DATE_SUB(NOW(), INTERVAL ' . self::CLEANUP_RETENTION_DAYS . ' DAY)'),
        ]);
        $task->addVolume($DB->affectedRows());
        return 1;

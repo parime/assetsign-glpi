@@ -7,6 +7,12 @@ parameters:
         - setup.php
     bootstrapFiles:
         - .phpstan-bootstrap.php
+    # Traits de compatibilite (cf. src/GlpiPlugin/Assetsign/Compat/) : charges par un
+    # require dynamique que PHPStan ne suit pas. L'analyse tourne contre un vrai coeur
+    # GLPI 11, donc seule la variante 11 est decouverte (la variante 12 redeclarerait
+    # les memes symboles).
+    scanDirectories:
+        - compat/glpi11
     ignoreErrors:
         -
             # Les methodes de hook GLPI (getTabNameForItem, displayTabContentForItem,
@@ -27,10 +33,15 @@ parameters:
             # GLPI_VERSION est un vrai define() du coeur GLPI, resolu ici par le bootstrap au tres
             # reel autoload de l'instance qui tourne pendant l'analyse (11.0.9 dans ce conteneur) -
             # PHPStan la traite donc comme une constante litterale FIGEE et juge la comparaison a
-            # PLUGIN_ASSETSIGN_MAX_GLPI ('11.9.99') toujours fausse. Faux positif garanti : sur une
-            # vraie installation GLPI 12+, exactement le cas que cette ligne existe pour intercepter,
-            # GLPI_VERSION vaudrait autre chose et la comparaison serait vraie - confirme en direct
-            # contre un conteneur GLPI 12.0.0-rc2 reel (installation refusee proprement grace a
-            # cette ligne, plutot que le plantage fatal qu'elle corrige).
+            # PLUGIN_ASSETSIGN_MAX_GLPI ('12.99.99') toujours fausse. Faux positif garanti : sur une
+            # vraie installation d'une future version majeure non verifiee, exactement le cas que
+            # cette ligne existe pour intercepter, GLPI_VERSION vaudrait autre chose et la
+            # comparaison serait vraie.
             identifier: if.alwaysFalse
             path: setup.php
+        -
+            # Meme faux positif que ci-dessus : GLPI_VERSION figee a 11.0.9 pendant l'analyse, la
+            # detection de GLPI 12 (Compat\GlpiVersion::isAtLeast12()) parait donc toujours fausse
+            # - elle est pourtant vraie sur une vraie instance GLPI 12 (verifie en direct).
+            identifier: booleanAnd.rightAlwaysFalse
+            path: src/GlpiPlugin/Assetsign/Compat/GlpiVersion.php

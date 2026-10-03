@@ -15,7 +15,9 @@ use Migration;
  */
 class VenteDetails extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function createForAssetsign(int $assetsigns_id, float $price, string $saleDate): void {
        (new self())->add([

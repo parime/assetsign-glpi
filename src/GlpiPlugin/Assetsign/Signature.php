@@ -28,7 +28,9 @@ use Migration;
  */
 class Signature extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function recordProofForAssetsign(Assetsign $assetsign, array $proof): int {
        return self::insertProof(['plugin_assetsign_assetsigns_id' => $assetsign->getID()], $proof);

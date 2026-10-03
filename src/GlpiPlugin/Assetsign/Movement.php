@@ -43,7 +43,9 @@ use Session;
  */
 class Movement extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public const STATUS_PLANNED    = 0;
    public const STATUS_IN_TRANSIT = 1;

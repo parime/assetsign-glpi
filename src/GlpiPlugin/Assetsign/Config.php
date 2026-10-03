@@ -13,7 +13,9 @@ use State;
  */
 class Config extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_CONFIG;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
    private const DEFAULTS = [
         'id'                                  => 0,
@@ -315,10 +317,10 @@ class Config extends CommonDBTM
      * meme mecanisme que RSSFeed::getRSSFeed() du cœur GLPI, `$GLPI_CACHE`) :
      * l'API GitHub non authentifiee est limitee a 60 requetes/heure par IP,
      * largement insuffisant si appelee a chaque affichage de la page.
-     * Toolbox::getURLContent() (pas un appel HTTP direct) : reutilise la
-     * gestion de proxy/timeout/erreurs deja etablie par le cœur GLPI pour ce
-     * type d'appel (meme fonction que Toolbox::checkNewVersionAvailable(),
-     * qui fait exactement ceci pour GLPI lui-meme).
+     * Client HTTP du cœur GLPI (pas un appel HTTP direct), via Compat\Http
+     * (Toolbox::getURLContent() en GLPI 11, Glpi\Toolbox\HttpClient en
+     * GLPI 12) : reutilise la gestion de proxy/timeout/erreurs deja etablie
+     * par le cœur GLPI pour ce type d'appel.
      * @return string|null Numero de version (sans le "v" du tag), ou null si
      *         l'appel a echoue (pas de connexion, API GitHub indisponible...).
      */
@@ -332,7 +334,7 @@ class Config extends CommonDBTM
       }
 
        $error = '';
-       $json = \Toolbox::getURLContent('https://api.github.com/repos/parime/assetsign-glpi/releases/latest', $error);
+       $json = Compat\Http::getContent('https://api.github.com/repos/parime/assetsign-glpi/releases/latest', $error);
        $version = null;
       if (!empty($json)) {
           $data = json_decode($json, true);

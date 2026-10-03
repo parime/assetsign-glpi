@@ -18,7 +18,8 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
 
 define('PLUGIN_ASSETSIGN_VERSION', '2.7.1');
 define('PLUGIN_ASSETSIGN_MIN_GLPI', '11.0.0');
-define('PLUGIN_ASSETSIGN_MAX_GLPI', '11.9.99');
+// GLPI 11 ET 12 depuis un seul code source (cf. src/GlpiPlugin/Assetsign/Compat/).
+define('PLUGIN_ASSETSIGN_MAX_GLPI', '12.99.99');
 define('PLUGIN_ASSETSIGN_MIN_PHP', '8.3.0');
 
 // Types d'actifs geres par defaut (surchargeable via la configuration)
@@ -47,9 +48,10 @@ function plugin_init_assetsign(): void {
     // Tout ce qui suit référence de vraies classes du plugin (WorkflowTypeRegistry ci-dessous,
     // Assetsign::class/Maintenance::class/Movement::class dans le hook MENU_TOADD plus bas...) —
     // sans ce garde-fou, cette fonction plante en erreur fatale PHP sur une version de GLPI
-    // incompatible (confirmé en direct contre un conteneur GLPI 12.0.0-rc2 réel :
-    // "Type of GlpiPlugin\Assetsign\Assetsign::$rightname must be string, as in class CommonGLPI" —
-    // GLPI 12 a typé cette propriété alors que ce plugin ne le fait pas).
+    // incompatible (cas réel rencontré avec GLPI 12.0.0-rc2 avant la couche Compat/ :
+    // "Type of GlpiPlugin\Assetsign\Assetsign::$rightname must be string, as in class CommonGLPI").
+    // GLPI 11 et 12 sont désormais supportés ; ce garde-fou protège d'une future version majeure
+    // non encore vérifiée.
     //
     // Comparaison de version explicite, PAS `Plugin::isPluginActive('assetsign')` : cette fonction
     // est aussi appelée (et son contenu genuinement necessaire) PENDANT `plugin:install` lui-meme,

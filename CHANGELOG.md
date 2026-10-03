@@ -11,6 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Compatibilité GLPI 12** (en plus de GLPI 11, depuis un seul et même paquet). Trois
+  incompatibilités réelles corrigées, identifiées en faisant tourner la suite complète sur un vrai
+  GLPI 12.0.0-rc2 :
+  - GLPI 12 type `CommonGLPI::$rightname` (`string`), GLPI 11 non — et PHP impose à une
+    sous-classe de reprendre exactement le type du parent, donc aucune déclaration unique ne
+    fonctionne sur les deux. Les 17 classes concernées utilisent désormais un trait
+    (`Compat\HasRightname`) dont la variante adaptée (`compat/glpi11` ou `compat/glpi12`) est
+    chargée selon la version installée ; chaque classe fournit sa valeur via la constante
+    `RIGHTNAME`.
+  - La classe globale `QueryExpression` n'existe plus en GLPI 12 → `Glpi\DBAL\QueryExpression`
+    (déjà présente en GLPI 11).
+  - `Toolbox::getURLContent()` n'existe plus en GLPI 12 → `Compat\Http`, qui utilise le nouveau
+    client HTTP de GLPI 12 ou l'ancien en GLPI 11 (vérification de version GitHub).
+
+  Résultat : 358/358 tests au vert sur GLPI 11.0.9 **et** sur GLPI 12.0.0-rc2, installation /
+  activation / désinstallation réelles vérifiées sur les deux. Nouveau job CI `test-glpi12` pour
+  que la compatibilité GLPI 12 ne puisse plus régresser silencieusement. Le garde-fou de version
+  de `setup.php` reste en place (plafond relevé à 12.99.99) : il protège d'une future version
+  majeure non encore vérifiée.
+
 - **Signatures multiples (issue #143)** : une Attribution peut désormais exiger, en plus de la
   signature du bénéficiaire, la contre-signature de son responsable hiérarchique
   (`User::users_id_supervisor`, déjà renseigné par l'annuaire) — réglage par entité

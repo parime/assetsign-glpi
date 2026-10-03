@@ -21,7 +21,9 @@ use Migration;
  */
 class CreationFailure extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
     /**
      * Fenetre glissante prise en compte par countRecent() (carte de tableau de

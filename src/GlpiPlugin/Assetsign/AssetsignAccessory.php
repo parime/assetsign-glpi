@@ -11,7 +11,9 @@ use Migration;
  */
 class AssetsignAccessory extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function attach(int $assetsigns_id, int $accessories_id, int $quantity = 1, string $comment = ''): void {
        global $DB;

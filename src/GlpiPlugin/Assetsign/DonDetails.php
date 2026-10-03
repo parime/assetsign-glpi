@@ -17,7 +17,9 @@ use Migration;
  */
 class DonDetails extends CommonDBTM
 {
-   public static $rightname = Profile::RIGHT_ASSETSIGN;
+   use Compat\HasRightname;
+
+   public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function createForAssetsign(int $assetsigns_id, string $organizationName): void {
        (new self())->add([

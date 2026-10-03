@@ -224,7 +224,7 @@ jobs:
       - name: Vérifie le standard de codage officiel GLPI
         # phpcs (pas phpcbf) : echoue la CI plutot que de corriger en silence,
         # jusqu'ici seulement lance manuellement en local (cf. TROUBLESHOOTING.md).
-        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && vendor/bin/phpcs --standard=vendor/glpi-project/coding-standard/GlpiStandard/ruleset.xml src front hook.php setup.php"
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && vendor/bin/phpcs --standard=vendor/glpi-project/coding-standard/GlpiStandard/ruleset.xml src front hook.php setup.php compat"
 
       - name: Audit de sécurité des dépendances Composer
         # --no-dev : le vendor/ livre en production ne contient QUE les
@@ -312,6 +312,85 @@ jobs:
         # limite, cf. le meme constat sur phpstan (phpstan.neon.dist ne fixe
         # pas non plus de memoire, --memory-limit=512M necessaire en local).
         run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php -d extension=pcov.so -d memory_limit=512M vendor/bin/phpunit --coverage-text"
+
+      - name: Logs GLPI (en cas d'échec)
+        if: failure()
+        run: docker logs glpi --tail 200
+
+  # Meme plugin, meme suite PHPUnit, sur GLPI 12 (cf. src/GlpiPlugin/Assetsign/Compat/) : sans ce
+  # job, la compatibilite 12 pourrait regresser silencieusement (la CI principale ci-dessus ne
+  # tourne que sur GLPI 11). Volontairement limite a l'installation + aux tests : les analyses
+  # (Trivy, audits, PHPStan, phpcs) ne dependent pas de la version de GLPI et tournent deja
+  # ci-dessus. Job separe plutot qu'une matrice sur `test` : une matrice renommerait le check
+  # requis par la protection de branche.
+  test-glpi12:
+    runs-on: ubuntu-latest
+    env:
+      GLPI12_IMAGE: glpi/glpi:12.0.0-rc2
+    steps:
+      - name: Récupère le code du plugin
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
+
+      - name: Démarre MariaDB
+        run: |
+          docker network create assetsign-ci
+          docker run -d --name mariadb --network assetsign-ci \
+            -e MARIADB_ROOT_PASSWORD=glpi_password \
+            -e MARIADB_DATABASE=glpidb \
+            -e MARIADB_USER=glpi_user \
+            -e MARIADB_PASSWORD=glpi_password \
+            mariadb:11
+          for i in $(seq 1 30); do
+            docker exec mariadb mariadb-admin ping -h 127.0.0.1 -u root -pglpi_password --silent && break
+            sleep 2
+          done
+
+      - name: Démarre GLPI 12 et installe sa base
+        run: |
+          docker run -d --name glpi --network assetsign-ci -e TIMEZONE=Europe/Paris "$GLPI12_IMAGE"
+          for i in $(seq 1 12); do
+            docker exec glpi php bin/console database:install --db-host=mariadb --db-name=glpidb \
+              --db-user=glpi_user --db-password=glpi_password --no-interaction && exit 0
+            echo "database:install pas encore pret (tentative $i/12), nouvel essai dans 5s..."
+            sleep 5
+          done
+          exit 1
+
+      - name: Copie le plugin dans le conteneur GLPI
+        run: |
+          docker exec glpi mkdir -p /var/www/glpi/plugins/assetsign
+          docker cp ./. glpi:/var/www/glpi/plugins/assetsign
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/assetsign
+
+      - name: Installe et active le plugin
+        # AVANT les dependances de dev (contrairement au job GLPI 11) : celles-ci embarquent leur
+        # propre symfony/console, incompatible avec celui de GLPI 12 - la console GLPI planterait
+        # (collision d'autoload constatee en local). Le vendor/ commite (production seule) n'a pas
+        # ce probleme.
+        run: |
+          docker exec glpi php bin/console plugin:install assetsign --username=glpi --no-interaction
+          docker exec glpi php bin/console plugin:activate assetsign --no-interaction
+
+      - name: Installe les dépendances de dev du plugin (PHPUnit)
+        # Meme procedure que le job GLPI 11 (cf. ses commentaires).
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          docker exec glpi sh -c '
+            export COMPOSER_HOME=/tmp/composer-home
+            mkdir -p "$COMPOSER_HOME"
+            cd /tmp
+            php -r "copy(\"https://getcomposer.org/installer\", \"composer-setup.php\");"
+            php composer-setup.php --install-dir=/tmp --filename=composer.phar
+          '
+          docker exec -e COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GH_TOKEN\"}}" glpi sh -c '
+            export COMPOSER_HOME=/tmp/composer-home
+            cd /var/www/glpi/plugins/assetsign
+            php /tmp/composer.phar install --no-interaction --prefer-dist
+          '
+
+      - name: Lance PHPUnit
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php -d memory_limit=512M vendor/bin/phpunit"
 
       - name: Logs GLPI (en cas d'échec)
         if: failure()
