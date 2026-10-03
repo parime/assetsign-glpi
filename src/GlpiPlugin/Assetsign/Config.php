@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use CommonGLPI;
 use Migration;
 use State;
@@ -11,10 +10,8 @@ use State;
  * Configuration du plugin, une ligne par entite qui souhaite surcharger
  * les reglages par defaut (herites sinon de l'entite racine, id=0).
  */
-class Config extends CommonDBTM
+class Config extends Compat\Base\ConfigBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
    private const DEFAULTS = [

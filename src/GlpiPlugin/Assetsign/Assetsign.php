@@ -17,10 +17,8 @@ use Session;
  * Objet central du plugin : une ligne = une instance de workflow de remise
  * (assetsign initiale, restitution ou echange) pour un couple (materiel, utilisateur).
  */
-class Assetsign extends CommonDBTM
+class Assetsign extends Compat\Base\AssetsignBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
     /**

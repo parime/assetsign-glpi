@@ -41,10 +41,8 @@ use Session;
  * jamais une réécriture des producteurs existants (principe déjà établi par
  * l'ADR, section 1).
  */
-class Movement extends CommonDBTM
+class Movement extends Compat\Base\MovementBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public const STATUS_PLANNED    = 0;

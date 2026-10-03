@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
@@ -13,10 +12,8 @@ use Migration;
  * Assetsign elle-meme, aucun besoin de les dupliquer.
  * Pas de front dedie, utilisee par Assetsign::createManual() et HandoverPdfBuilder.
  */
-class VenteDetails extends CommonDBTM
+class VenteDetails extends Compat\Base\VenteDetailsBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function createForAssetsign(int $assetsigns_id, float $price, string $saleDate): void {

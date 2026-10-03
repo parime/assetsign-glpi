@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
@@ -19,10 +18,8 @@ use Migration;
  * manuelle reste un vrai choix, pas un dégradé).
  * Pas de front dédié : Api\ResidualValueFormController (front/residualvalue.form.php).
  */
-class ResidualValue extends CommonDBTM
+class ResidualValue extends Compat\Base\ResidualValueBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function getForItem(string $itemtype, int $items_id): ?self {

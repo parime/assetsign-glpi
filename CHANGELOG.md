@@ -16,10 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   GLPI 12.0.0-rc2 :
   - GLPI 12 type `CommonGLPI::$rightname` (`string`), GLPI 11 non — et PHP impose à une
     sous-classe de reprendre exactement le type du parent, donc aucune déclaration unique ne
-    fonctionne sur les deux. Les 17 classes concernées utilisent désormais un trait
-    (`Compat\HasRightname`) dont la variante adaptée (`compat/glpi11` ou `compat/glpi12`) est
-    chargée selon la version installée ; chaque classe fournit sa valeur via la constante
-    `RIGHTNAME`.
+    fonctionne sur les deux. Les 17 classes concernées héritent désormais d'une classe
+    intermédiaire (`Compat\Base\…Base`) déclarée selon la version installée (propriété typée en 12,
+    non typée en 11) ; chaque classe fournit sa valeur via la constante `RIGHTNAME`.
+    Une classe et non un trait : sur PHP 8.2 à 8.4, un trait ne peut pas
+    redéclarer une propriété héritée avec une autre valeur (erreur fatale, ou en PHP 8.2 valeur
+    partagée en silence avec la classe de GLPI). Nouveau job CI `php-compat` qui charge chaque
+    classe concernée sur le vrai cœur GLPI, sous PHP 8.2 à 8.5 × GLPI 11 et PHP 8.3 à 8.5 × GLPI 12.
   - La classe globale `QueryExpression` n'existe plus en GLPI 12 → `Glpi\DBAL\QueryExpression`
     (déjà présente en GLPI 11).
   - `Toolbox::getURLContent()` n'existe plus en GLPI 12 → `Compat\Http`, qui utilise le nouveau

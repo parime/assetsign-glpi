@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
@@ -19,10 +18,8 @@ use Migration;
  * e-mail, a dessein (demande explicite) — un echec de CE mecanisme est
  * justement le moment ou compter sur un e-mail serait le moins fiable.
  */
-class CreationFailure extends CommonDBTM
+class CreationFailure extends Compat\Base\CreationFailureBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
     /**

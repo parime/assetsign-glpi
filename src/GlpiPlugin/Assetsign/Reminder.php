@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
@@ -11,10 +10,8 @@ use Migration;
  * assetsign_form.html.twig) — le compteur faisant foi pour la logique metier
  * (limite max_reminders) est Assetsign.reminder_count, pas ce journal.
  */
-class Reminder extends CommonDBTM
+class Reminder extends Compat\Base\ReminderBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function log(Assetsign $assetsign): void {

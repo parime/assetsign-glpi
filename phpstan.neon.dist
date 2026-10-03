@@ -7,12 +7,13 @@ parameters:
         - setup.php
     bootstrapFiles:
         - .phpstan-bootstrap.php
-    # Traits de compatibilite (cf. src/GlpiPlugin/Assetsign/Compat/) : charges par un
-    # require dynamique que PHPStan ne suit pas. L'analyse tourne contre un vrai coeur
-    # GLPI 11, donc seule la variante 11 est decouverte (la variante 12 redeclarerait
-    # les memes symboles).
-    scanDirectories:
-        - compat/glpi11
+    # Classes parentes de compatibilite : leur branche GLPI 12 (proprietes typees) n'est jamais
+    # declaree face au coeur GLPI 11 qui sert a l'analyse, et PHPStan refuse d'ignorer l'erreur
+    # "should not have a native type" qu'il y voit. Toujours scannees (les classes du plugin en
+    # heritent), seulement plus analysees.
+    excludePaths:
+        analyse:
+            - src/GlpiPlugin/Assetsign/Compat/Base/*
     ignoreErrors:
         -
             # Les methodes de hook GLPI (getTabNameForItem, displayTabContentForItem,
