@@ -2743,3 +2743,102 @@ msgstr "Gegenzeichnung erforderlich"
 
 msgid "Responsable hiérarchique (contre-signataire)"
 msgstr "Vorgesetzter (Gegenzeichner)"
+
+msgid ""
+"Votre signature, en tant que responsable hiérarchique, est requise pour "
+"finaliser cette attribution."
+msgstr ""
+"Als Vorgesetzte(r) ist Ihre Unterschrift erforderlich, um diese Zuweisung "
+"abzuschließen."
+
+msgid ""
+"Remise, restitution ou autre document de matériel : il attend votre signature"
+" pour être finalisé."
+msgstr ""
+"Übergabe, Rückgabe oder anderes Gerätedokument: Es wartet auf Ihre "
+"Unterschrift, um abgeschlossen zu werden."
+
+msgid "Voir mes documents à signer"
+msgstr "Meine zu unterschreibenden Dokumente anzeigen"
+
+msgid "Signaler les documents à signer sur la page d'accueil de GLPI"
+msgstr "Zu unterschreibende Dokumente auf der GLPI-Startseite anzeigen"
+
+msgid ""
+"Un bandeau prévient l'utilisateur connecté qu'un document attend sa "
+"signature, avec un lien vers la page « Mes documents à signer » — "
+"indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
+"jamais le lien de signature."
+msgstr ""
+"Ein Banner weist den angemeldeten Benutzer darauf hin, dass ein Dokument auf "
+"seine Unterschrift wartet, mit einem Link zur Seite „Meine zu "
+"unterschreibenden Dokumente“ — unverzichtbar für Benutzer ohne E-Mail-"
+"Adresse, die den Unterschriftslink nie erhalten."
+
+msgid ""
+"Exige, en plus de la signature du bénéficiaire, celle de son responsable "
+"hiérarchique (renseigné dans sa fiche utilisateur) pour une Attribution. Le "
+"bénéficiaire signe d'abord ; le document lui est ensuite transmis au "
+"responsable pour contre-signature avant d'être considéré comme définitivement"
+" signé. Sans responsable renseigné pour le bénéficiaire, l'attribution reste "
+"mono-signataire, comme aujourd'hui."
+msgstr ""
+"Verlangt bei einer Zuweisung zusätzlich zur Unterschrift des Empfängers die "
+"seines Vorgesetzten (in seinem Benutzerdatensatz hinterlegt). Der Empfänger "
+"unterschreibt zuerst; das Dokument wird dann dem Vorgesetzten zur "
+"Gegenzeichnung übermittelt, bevor es als endgültig unterschrieben gilt. Ist "
+"für den Empfänger kein Vorgesetzter hinterlegt, bleibt die Zuweisung wie "
+"bisher bei einer einzigen Unterschrift."
+
+msgid ""
+"Limité aux Attributions (pas aux restitutions, dons, ventes, destructions, "
+"maintenances ou mouvements)."
+msgstr ""
+"Auf Zuweisungen beschränkt (nicht für Rückgaben, Spenden, Verkäufe, "
+"Vernichtungen, Wartungen oder Bewegungen)."
+
+msgid "Aucun document à signer"
+msgstr "Keine Dokumente zu unterschreiben"
+
+msgid ""
+"Quand un document (remise, restitution, don...) attendra votre signature, il "
+"apparaîtra ici."
+msgstr ""
+"Sobald ein Dokument (Übergabe, Rückgabe, Spende...) auf Ihre Unterschrift "
+"wartet, erscheint es hier."
+
+msgid ""
+"Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le "
+"document puis le signer."
+msgstr ""
+"Diese Dokumente warten auf Ihre Unterschrift. Klicken Sie auf "
+"„Unterschreiben“, um das Dokument zu lesen und dann zu unterschreiben."
+
+msgid "Document"
+msgstr "Dokument"
+
+msgid "Contre-signature (responsable)"
+msgstr "Gegenzeichnung (Vorgesetzte/r)"
+
+msgid "Bénéficiaire : %s"
+msgstr "Empfänger: %s"
+
+msgid "Pour le compte de %s"
+msgstr "Im Auftrag von %s"
+
+msgid "N° de série : %s"
+msgstr "Seriennummer: %s"
+
+msgid "Signer"
+msgstr "Unterschreiben"
+
+msgid "Mes documents à signer"
+msgstr "Meine zu unterschreibenden Dokumente"
+
+msgid "Ce document n'attend pas votre signature."
+msgstr "Dieses Dokument wartet nicht auf Ihre Unterschrift."
+
+msgid "Vous avez %d document à signer"
+msgid_plural "Vous avez %d documents à signer"
+msgstr[0] "Sie haben %d Dokument zu unterschreiben"
+msgstr[1] "Sie haben %d Dokumente zu unterschreiben"

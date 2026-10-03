@@ -1,0 +1,73 @@
+{# "Mes documents a signer" (issue #150), cf. front/mysignatures.php #}
+<div class="container-lg my-3 assetsign-my-signatures">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="ti ti-signature me-2"></i>{{ title }}
+        {% if rows|length > 0 %}
+          <span class="badge bg-orange text-orange-fg ms-2">{{ rows|length }}</span>
+        {% endif %}
+      </h3>
+    </div>
+
+    {% if rows is empty %}
+      <div class="card-body">
+        <div class="empty">
+          <div class="empty-icon"><i class="ti ti-circle-check text-success fs-1"></i></div>
+          <p class="empty-title">{{ __('Aucun document à signer', 'assetsign') }}</p>
+          <p class="empty-subtitle text-muted">{{ __('Quand un document (remise, restitution, don...) attendra votre signature, il apparaîtra ici.', 'assetsign') }}</p>
+        </div>
+      </div>
+    {% else %}
+      <div class="card-body pb-0">
+        <p class="text-muted">{{ __('Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le document puis le signer.', 'assetsign') }}</p>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>{{ __('Document', 'assetsign') }}</th>
+              <th>{{ __('Matériel', 'assetsign') }}</th>
+              <th>{{ __('Envoyé le', 'assetsign') }}</th>
+              <th>{{ __('Technicien', 'assetsign') }}</th>
+              <th class="w-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+              <tr>
+                <td>
+                  <div class="fw-bold">{{ row.type }}</div>
+                  {% if row.is_cosigner %}
+                    <span class="badge bg-purple-lt"><i class="ti ti-users me-1"></i>{{ __('Contre-signature (responsable)', 'assetsign') }}</span>
+                    <div class="text-muted small">{{ __('Bénéficiaire : %s', 'assetsign')|format(row.beneficiary) }}</div>
+                  {% elseif row.is_delegate %}
+                    <span class="badge bg-azure-lt"><i class="ti ti-arrow-forward-up me-1"></i>{{ __('Signature déléguée', 'assetsign') }}</span>
+                    <div class="text-muted small">{{ __('Pour le compte de %s', 'assetsign')|format(row.beneficiary) }}</div>
+                  {% endif %}
+                </td>
+                <td>
+                  {{ row.item }}
+                  {% if row.serial is not empty %}
+                    <div class="text-muted small">{{ __('N° de série : %s', 'assetsign')|format(row.serial) }}</div>
+                  {% endif %}
+                </td>
+                <td>{{ row.date_sent ? row.date_sent|formatted_datetime : '' }}</td>
+                <td>{{ row.technician }}</td>
+                <td>
+                  <form method="post" action="{{ action }}" class="m-0">
+                    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="id" value="{{ row.id }}">
+                    <button type="submit" name="sign" value="1" class="btn btn-primary">
+                      <i class="ti ti-writing-sign me-1"></i>{{ __('Signer', 'assetsign') }}
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>

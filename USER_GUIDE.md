@@ -12,7 +12,7 @@ Ce guide suppose le plugin déjà installé et configuré — voir [INSTALLATION
 
 **Le technicien** n'a rien de spécial à faire : il continue d'affecter le matériel dans GLPI comme d'habitude. Le plugin se charge du reste. Il peut consulter à tout moment l'historique des remises (menu Outils > Assetsigns) et relancer manuellement un bénéficiaire qui n'a pas encore signé.
 
-**Le bénéficiaire** reçoit un e-mail, clique sur le lien, se connecte à GLPI s'il ne l'est pas déjà, relit le document et signe à l'écran. Une fois signé, il retrouve le PDF signé dans l'onglet Documents de son profil.
+**Le bénéficiaire** reçoit un e-mail, clique sur le lien, se connecte à GLPI s'il ne l'est pas déjà, relit le document et signe à l'écran. Une fois signé, il retrouve le PDF signé dans l'onglet Documents de son profil. Sans même ouvrir l'e-mail (ou s'il n'a pas d'adresse e-mail), un bandeau « Vous avez N documents à signer » l'attend sur la page d'accueil de GLPI dès sa connexion, avec un lien vers la page **Mes documents à signer**.
 
 ### Aperçu
 
@@ -185,6 +185,9 @@ Chaque carte renvoie vers la liste filtrée correspondante en un clic, et respec
 **Un compte GLPI est-il obligatoire pour signer ?**
 Oui pour un bénéficiaire interne (workflow Remise/Restitution/Don/Vente habituel). Pour Don et Vente uniquement, un bénéficiaire externe (nom/contact en texte libre, sans compte GLPI) peut être choisi lors de la création manuelle — dans ce cas, aucune signature électronique n'est demandée : le PDF généré fait directement foi.
 
+**Et si l'utilisateur n'a pas d'adresse e-mail dans GLPI ?**
+Il est quand même prévenu. Dès qu'un document attend sa signature, un bandeau « Vous avez N documents à signer » s'affiche sur sa page d'accueil GLPI (interface standard comme simplifiée), avec un lien vers la page **Mes documents à signer** : il y voit chaque document en attente et clique sur « Signer » pour l'ouvrir et le signer, exactement comme depuis le lien de l'e-mail. En interface simplifiée, la page est aussi accessible depuis le menu Plugins. Le délégué d'une signature et le responsable qui doit contre-signer y voient aussi les documents qui les concernent. Le bandeau peut être désactivé par entité (Configuration > AssetSign, onglet Général).
+
 **Que se passe-t-il si le bénéficiaire ne signe jamais ?**
 Le plugin relance automatiquement jusqu'à la limite configurée, puis marque la demande comme expirée une fois le délai de validité du lien dépassé. Le technicien peut aussi relancer manuellement à tout moment avant l'expiration.
 
@@ -218,7 +221,7 @@ This guide assumes the plugin is already installed and configured — see [INSTA
 
 **The technician** has nothing special to do: they keep assigning equipment in GLPI as usual. The plugin takes care of the rest. They can check the handover history at any time (menu Tools > Assetsigns) and manually send a reminder to a recipient who hasn't signed yet.
 
-**The recipient** gets an e-mail, clicks the link, logs in to GLPI if not already, reviews the document and signs on screen. Once signed, they find the signed PDF in the Documents tab of their profile.
+**The recipient** gets an e-mail, clicks the link, logs in to GLPI if not already, reviews the document and signs on screen. Once signed, they find the signed PDF in the Documents tab of their profile. Even without opening the e-mail (or without any e-mail address), a "You have N documents to sign" banner awaits them on the GLPI home page as soon as they log in, with a link to the **My documents to sign** page.
 
 ### Screenshots
 
@@ -388,6 +391,9 @@ Each card links to the matching filtered list in one click, and respects the cur
 
 **Is a GLPI account required to sign?**
 Yes, for an internal recipient (the usual Handover/Return/Donation/Sale workflow). For Donation and Sale only, an external recipient (free-text name/contact, no GLPI account) can be chosen during manual creation — in that case, no electronic signature is requested: the generated PDF serves directly as proof.
+
+**What if the user has no e-mail address in GLPI?**
+They are still notified. As soon as a document is waiting for their signature, a "You have N documents to sign" banner is shown on their GLPI home page (standard and simplified interface alike), with a link to the **My documents to sign** page: they see every pending document there and click "Sign" to open and sign it, exactly as from the e-mail link. In the simplified interface, the page is also reachable from the Plugins menu. A signature delegate and the manager who must countersign also see the documents that concern them there. The banner can be turned off per entity (Configuration > AssetSign, General tab).
 
 **What happens if the recipient never signs?**
 The plugin sends automatic reminders up to the configured limit, then marks the request as expired once the link's validity period is exceeded. The technician can also send a manual reminder at any time before expiration.

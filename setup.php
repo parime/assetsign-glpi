@@ -183,6 +183,16 @@ function plugin_init_assetsign(): void {
     // --- Widgets de tableau de bord --------------------------------------------------
     $PLUGIN_HOOKS[Hooks::DASHBOARD_CARDS]['assetsign'] = 'plugin_assetsign_dashboard_cards';
 
+    // --- "Mes documents a signer" (issue #150) -----------------------------------------
+    // Bandeau sur la page d'accueil quand un document attend la signature de l'utilisateur
+    // connecte : DISPLAY_CENTRAL est appele a la fois par l'accueil de l'interface standard
+    // (Central::showGlobalDashboard()) et par celui de l'interface simplifiee
+    // (templates/pages/helpdesk/index.html.twig), en GLPI 11 comme en 12. Plus une entree de
+    // menu en interface simplifiee (Plugins > nom du plugin), pour y revenir sans bandeau.
+    $PLUGIN_HOOKS[Hooks::DISPLAY_CENTRAL]['assetsign'] = 'plugin_assetsign_display_central';
+    $PLUGIN_HOOKS[Hooks::HELPDESK_MENU_ENTRY]['assetsign'] = '/front/mysignatures.php';
+    $PLUGIN_HOOKS[Hooks::HELPDESK_MENU_ENTRY_ICON]['assetsign'] = 'ti ti-signature';
+
     // --- Intitulés (Configuration > Intitulés) ----------------------------------------
     // Gabarits de assetsign est une liste deroulante classique : au lieu de l'ajouter au
     // menu Administration, on l'enregistre ici pour qu'elle apparaisse dans la page

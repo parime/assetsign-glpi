@@ -2693,3 +2693,99 @@ msgstr "Countersignature required"
 
 msgid "Responsable hiérarchique (contre-signataire)"
 msgstr "Line manager (countersigner)"
+
+msgid ""
+"Votre signature, en tant que responsable hiérarchique, est requise pour "
+"finaliser cette attribution."
+msgstr ""
+"As line manager, your signature is required to finalise this attribution."
+
+msgid ""
+"Remise, restitution ou autre document de matériel : il attend votre signature"
+" pour être finalisé."
+msgstr ""
+"Handover, return or other equipment document: it is waiting for your "
+"signature to be finalised."
+
+msgid "Voir mes documents à signer"
+msgstr "See my documents to sign"
+
+msgid "Signaler les documents à signer sur la page d'accueil de GLPI"
+msgstr "Show documents to sign on the GLPI home page"
+
+msgid ""
+"Un bandeau prévient l'utilisateur connecté qu'un document attend sa "
+"signature, avec un lien vers la page « Mes documents à signer » — "
+"indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
+"jamais le lien de signature."
+msgstr ""
+"A banner tells the logged-in user that a document is waiting for their "
+"signature, with a link to the \"My documents to sign\" page — essential for "
+"users without an email address, who never receive the signing link."
+
+msgid ""
+"Exige, en plus de la signature du bénéficiaire, celle de son responsable "
+"hiérarchique (renseigné dans sa fiche utilisateur) pour une Attribution. Le "
+"bénéficiaire signe d'abord ; le document lui est ensuite transmis au "
+"responsable pour contre-signature avant d'être considéré comme définitivement"
+" signé. Sans responsable renseigné pour le bénéficiaire, l'attribution reste "
+"mono-signataire, comme aujourd'hui."
+msgstr ""
+"Requires, in addition to the beneficiary's signature, that of their line "
+"manager (set in their user record) for an Attribution. The beneficiary signs "
+"first; the document is then sent to the manager for countersignature before "
+"being considered fully signed. If no manager is set for the beneficiary, the "
+"attribution remains single-signature, as today."
+
+msgid ""
+"Limité aux Attributions (pas aux restitutions, dons, ventes, destructions, "
+"maintenances ou mouvements)."
+msgstr ""
+"Limited to Attributions (not returns, donations, sales, destructions, "
+"maintenance or movements)."
+
+msgid "Aucun document à signer"
+msgstr "No documents to sign"
+
+msgid ""
+"Quand un document (remise, restitution, don...) attendra votre signature, il "
+"apparaîtra ici."
+msgstr ""
+"When a document (handover, return, donation...) is waiting for your "
+"signature, it will appear here."
+
+msgid ""
+"Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le "
+"document puis le signer."
+msgstr ""
+"These documents are waiting for your signature. Click \"Sign\" to read the "
+"document and then sign it."
+
+msgid "Document"
+msgstr "Document"
+
+msgid "Contre-signature (responsable)"
+msgstr "Countersignature (manager)"
+
+msgid "Bénéficiaire : %s"
+msgstr "Beneficiary: %s"
+
+msgid "Pour le compte de %s"
+msgstr "On behalf of %s"
+
+msgid "N° de série : %s"
+msgstr "Serial number: %s"
+
+msgid "Signer"
+msgstr "Sign"
+
+msgid "Mes documents à signer"
+msgstr "My documents to sign"
+
+msgid "Ce document n'attend pas votre signature."
+msgstr "This document is not waiting for your signature."
+
+msgid "Vous avez %d document à signer"
+msgid_plural "Vous avez %d documents à signer"
+msgstr[0] "You have %d document to sign"
+msgstr[1] "You have %d documents to sign"

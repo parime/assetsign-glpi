@@ -160,6 +160,13 @@
           </div>
 
           <div class="mb-3 form-check">
+            <input type="hidden" name="enable_pending_signatures_banner" value="0">
+            <input type="checkbox" name="enable_pending_signatures_banner" value="1" class="form-check-input" id="enable_pending_signatures_banner" {{ config.enable_pending_signatures_banner|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_pending_signatures_banner">{{ __('Signaler les documents à signer sur la page d\'accueil de GLPI', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Un bandeau prévient l\'utilisateur connecté qu\'un document attend sa signature, avec un lien vers la page « Mes documents à signer » — indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent jamais le lien de signature.', 'assetsign') }}</div>
+          </div>
+
+          <div class="mb-3 form-check">
             <input type="hidden" name="signature_required" value="0">
             <input type="checkbox" name="signature_required" value="1" class="form-check-input" id="signature_required" {{ config.signature_required|default(1) ? 'checked' : '' }}>
             <label class="form-check-label" for="signature_required">{{ __('Signature obligatoire', 'assetsign') }}</label>

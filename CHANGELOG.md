@@ -11,6 +11,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Documents à signer sans adresse e-mail** (issue #150) : jusqu'ici, un utilisateur n'apprenait
+  qu'un document attendait sa signature que par l'e-mail contenant le lien — un utilisateur sans
+  adresse e-mail n'en était jamais informé. Désormais :
+  - un bandeau « Vous avez N documents à signer » s'affiche sur la page d'accueil de GLPI,
+    interface standard comme simplifiée (`Hooks::DISPLAY_CENTRAL`), uniquement quand un document
+    attend l'utilisateur connecté ;
+  - une page **Mes documents à signer** (`front/mysignatures.php`) les liste, avec un bouton
+    « Signer » qui ouvre la page de signature habituelle ; aussi accessible depuis le menu
+    Plugins de l'interface simplifiée ;
+  - qui voit quoi : le bénéficiaire, ou son délégué si la signature a été déléguée, et le
+    responsable à l'étape de contre-signature — mêmes règles que la page de signature, qui reste
+    le contrôle final ;
+  - le lien de l'e-mail ne pouvant pas être réaffiché (seul son hash est stocké), le bouton
+    « Signer » émet un nouveau jeton, valable jusqu'à l'échéance de la fiche (pas un nouveau délai
+    complet) ; le lien de l'e-mail, s'il existe, reste valable ;
+  - réglage par entité « Signaler les documents à signer sur la page d'accueil de GLPI »
+    (onglet Général), **actif par défaut** ;
+  - traductions dans les 5 langues, y compris 3 chaînes de la contre-signature (#143) qui n'avaient
+    jamais été traduites.
+
+  Vérifié de bout en bout sur GLPI 11.0.9 et 12.0.0-rc2 avec un vrai compte Self-Service sans
+  e-mail : bandeau à la connexion → page → « Signer » → signature soumise → fiche « Signée » →
+  bandeau disparu ; bandeau aussi présent sur le tableau de bord de l'interface standard.
+
 - **Compatibilité GLPI 12** (en plus de GLPI 11, depuis un seul et même paquet). Trois
   incompatibilités réelles corrigées, identifiées en faisant tourner la suite complète sur un vrai
   GLPI 12.0.0-rc2 :
