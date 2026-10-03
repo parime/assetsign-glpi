@@ -2710,3 +2710,102 @@ msgstr "Contre-signature requise"
 
 msgid "Responsable hiérarchique (contre-signataire)"
 msgstr "Responsable hiérarchique (contre-signataire)"
+
+msgid ""
+"Votre signature, en tant que responsable hiérarchique, est requise pour "
+"finaliser cette attribution."
+msgstr ""
+"Votre signature, en tant que responsable hiérarchique, est requise pour "
+"finaliser cette attribution."
+
+msgid ""
+"Remise, restitution ou autre document de matériel : il attend votre signature"
+" pour être finalisé."
+msgstr ""
+"Remise, restitution ou autre document de matériel : il attend votre signature"
+" pour être finalisé."
+
+msgid "Voir mes documents à signer"
+msgstr "Voir mes documents à signer"
+
+msgid "Signaler les documents à signer sur la page d'accueil de GLPI"
+msgstr "Signaler les documents à signer sur la page d'accueil de GLPI"
+
+msgid ""
+"Un bandeau prévient l'utilisateur connecté qu'un document attend sa "
+"signature, avec un lien vers la page « Mes documents à signer » — "
+"indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
+"jamais le lien de signature."
+msgstr ""
+"Un bandeau prévient l'utilisateur connecté qu'un document attend sa "
+"signature, avec un lien vers la page « Mes documents à signer » — "
+"indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
+"jamais le lien de signature."
+
+msgid ""
+"Exige, en plus de la signature du bénéficiaire, celle de son responsable "
+"hiérarchique (renseigné dans sa fiche utilisateur) pour une Attribution. Le "
+"bénéficiaire signe d'abord ; le document lui est ensuite transmis au "
+"responsable pour contre-signature avant d'être considéré comme définitivement"
+" signé. Sans responsable renseigné pour le bénéficiaire, l'attribution reste "
+"mono-signataire, comme aujourd'hui."
+msgstr ""
+"Exige, en plus de la signature du bénéficiaire, celle de son responsable "
+"hiérarchique (renseigné dans sa fiche utilisateur) pour une Attribution. Le "
+"bénéficiaire signe d'abord ; le document lui est ensuite transmis au "
+"responsable pour contre-signature avant d'être considéré comme définitivement"
+" signé. Sans responsable renseigné pour le bénéficiaire, l'attribution reste "
+"mono-signataire, comme aujourd'hui."
+
+msgid ""
+"Limité aux Attributions (pas aux restitutions, dons, ventes, destructions, "
+"maintenances ou mouvements)."
+msgstr ""
+"Limité aux Attributions (pas aux restitutions, dons, ventes, destructions, "
+"maintenances ou mouvements)."
+
+msgid "Aucun document à signer"
+msgstr "Aucun document à signer"
+
+msgid ""
+"Quand un document (remise, restitution, don...) attendra votre signature, il "
+"apparaîtra ici."
+msgstr ""
+"Quand un document (remise, restitution, don...) attendra votre signature, il "
+"apparaîtra ici."
+
+msgid ""
+"Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le "
+"document puis le signer."
+msgstr ""
+"Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le "
+"document puis le signer."
+
+msgid "Document"
+msgstr "Document"
+
+msgid "Contre-signature (responsable)"
+msgstr "Contre-signature (responsable)"
+
+msgid "Bénéficiaire : %s"
+msgstr "Bénéficiaire : %s"
+
+msgid "Pour le compte de %s"
+msgstr "Pour le compte de %s"
+
+msgid "N° de série : %s"
+msgstr "N° de série : %s"
+
+msgid "Signer"
+msgstr "Signer"
+
+msgid "Mes documents à signer"
+msgstr "Mes documents à signer"
+
+msgid "Ce document n'attend pas votre signature."
+msgstr "Ce document n'attend pas votre signature."
+
+msgid "Vous avez %d document à signer"
+msgid_plural "Vous avez %d documents à signer"
+msgstr[0] "Vous avez %d document à signer"
+msgstr[1] "Vous avez %d documents à signer"

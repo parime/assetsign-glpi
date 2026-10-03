@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 20:08+0000\n"
+"POT-Creation-Date: 2026-10-03 21:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,12 +24,12 @@ msgstr ""
 
 #: templates/sign_page.html.twig templates/movement_form.html.twig
 #: templates/qr_label.html.twig templates/assetsign_form.html.twig
-#: templates/movement_create.html.twig templates/maintenance_create.html.twig
-#: templates/maintenance_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:241
-#: src/GlpiPlugin/Assetsign/Maintenance.php:86
+#: templates/my_signatures.html.twig templates/movement_create.html.twig
+#: templates/maintenance_create.html.twig templates/maintenance_form.html.twig
+#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:241
 #: src/GlpiPlugin/Assetsign/Movement.php:121
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:229
+#: src/GlpiPlugin/Assetsign/Maintenance.php:86
 msgid "Matériel"
 msgstr ""
 
@@ -211,8 +211,9 @@ msgid ""
 "lien par e-mail."
 msgstr ""
 
-#: templates/movement_form.html.twig src/GlpiPlugin/Assetsign/Movement.php:56
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:60
+#: templates/movement_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:62
+#: src/GlpiPlugin/Assetsign/Movement.php:56
 msgid "Mouvement"
 msgid_plural "Mouvements"
 msgstr[0] ""
@@ -376,9 +377,26 @@ msgstr ""
 msgid "Créer le mouvement"
 msgstr ""
 
+#: templates/pending_signatures_banner.html.twig
+#, php-format
+msgid "Vous avez %d document à signer"
+msgid_plural "Vous avez %d documents à signer"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/pending_signatures_banner.html.twig
+msgid ""
+"Remise, restitution ou autre document de matériel : il attend votre "
+"signature pour être finalisé."
+msgstr ""
+
+#: templates/pending_signatures_banner.html.twig
+msgid "Voir mes documents à signer"
+msgstr ""
+
 #: templates/assetsign_form.html.twig templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:57
 #: src/GlpiPlugin/Assetsign/Assetsign.php:123
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:55
 #: src/GlpiPlugin/Assetsign/Workflow/HandoverType.php:21
 msgid "Attribution"
 msgid_plural "Attributions"
@@ -389,7 +407,7 @@ msgstr[1] ""
 msgid "Externe"
 msgstr ""
 
-#: templates/assetsign_form.html.twig
+#: templates/assetsign_form.html.twig templates/my_signatures.html.twig
 msgid "Envoyé le"
 msgstr ""
 
@@ -704,31 +722,31 @@ msgid "Général"
 msgstr ""
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:56
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:58
 #: src/GlpiPlugin/Assetsign/Workflow/ReturnType.php:16
 msgid "Restitution"
 msgstr ""
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:57
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:59
 #: src/GlpiPlugin/Assetsign/Workflow/DonType.php:23
 msgid "Don"
 msgstr ""
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:58
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:60
 #: src/GlpiPlugin/Assetsign/Workflow/VenteType.php:23
 msgid "Vente"
 msgstr ""
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:61
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:63
 #: src/GlpiPlugin/Assetsign/Workflow/DestructionType.php:25
 msgid "Destruction"
 msgstr ""
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:782
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:784
 msgid "Réforme"
 msgstr ""
 
@@ -736,13 +754,15 @@ msgstr ""
 msgid "Compléments"
 msgstr ""
 
-#: templates/config_form.html.twig src/GlpiPlugin/Assetsign/Maintenance.php:120
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:59
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:61
+#: src/GlpiPlugin/Assetsign/Maintenance.php:120
 msgid "Maintenance"
 msgstr ""
 
-#: templates/config_form.html.twig src/GlpiPlugin/Assetsign/Movement.php:210
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:651
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:653
+#: src/GlpiPlugin/Assetsign/Movement.php:210
 msgid "Mouvements"
 msgstr ""
 
@@ -755,7 +775,7 @@ msgid "Contre-signature"
 msgstr ""
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:177
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:179
 msgid "Passeport matériel"
 msgstr ""
 
@@ -885,6 +905,18 @@ msgid ""
 "ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le "
 "bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop "
 "tard."
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Signaler les documents à signer sur la page d'accueil de GLPI"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid ""
+"Un bandeau prévient l'utilisateur connecté qu'un document attend sa "
+"signature, avec un lien vers la page « Mes documents à signer » — "
+"indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
+"jamais le lien de signature."
 msgstr ""
 
 #: templates/config_form.html.twig
@@ -1430,6 +1462,60 @@ msgstr ""
 msgid "Gérer tous les gabarits de ce type"
 msgstr ""
 
+#: templates/my_signatures.html.twig
+msgid "Aucun document à signer"
+msgstr ""
+
+#: templates/my_signatures.html.twig
+msgid ""
+"Quand un document (remise, restitution, don...) attendra votre signature, il "
+"apparaîtra ici."
+msgstr ""
+
+#: templates/my_signatures.html.twig
+msgid ""
+"Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le "
+"document puis le signer."
+msgstr ""
+
+#: templates/my_signatures.html.twig
+msgid "Document"
+msgstr ""
+
+#: templates/my_signatures.html.twig
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:111
+#: src/GlpiPlugin/Assetsign/Maintenance.php:87
+msgid "Technicien"
+msgstr ""
+
+#: templates/my_signatures.html.twig
+msgid "Contre-signature (responsable)"
+msgstr ""
+
+#: templates/my_signatures.html.twig
+#, php-format
+msgid "Bénéficiaire : %s"
+msgstr ""
+
+#: templates/my_signatures.html.twig
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:68
+msgid "Signature déléguée"
+msgstr ""
+
+#: templates/my_signatures.html.twig
+#, php-format
+msgid "Pour le compte de %s"
+msgstr ""
+
+#: templates/my_signatures.html.twig
+#, php-format
+msgid "N° de série : %s"
+msgstr ""
+
+#: templates/my_signatures.html.twig
+msgid "Signer"
+msgstr ""
+
 #: templates/maintenance_tab.html.twig
 msgid "Aucune fiche de maintenance enregistrée pour ce matériel."
 msgstr ""
@@ -1458,8 +1544,8 @@ msgstr ""
 
 #: templates/movement_create.html.twig templates/maintenance_create.html.twig
 #: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:234
-#: src/GlpiPlugin/Assetsign/Maintenance.php:85
 #: src/GlpiPlugin/Assetsign/Movement.php:114
+#: src/GlpiPlugin/Assetsign/Maintenance.php:85
 msgid "Type de matériel"
 msgstr ""
 
@@ -1492,17 +1578,17 @@ msgid "Entité"
 msgstr ""
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:779
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:781
 msgid "Achat"
 msgstr ""
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:812
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:814
 msgid "Fin de garantie"
 msgstr ""
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:620
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:622
 msgid "Âge"
 msgstr ""
 
@@ -1789,28 +1875,32 @@ msgstr ""
 msgid "Assigner"
 msgstr ""
 
-#: front/assign_user_asset.php:33
-msgid "Matériel assigné."
+#: hook.php:115 src/GlpiPlugin/Assetsign/Config.php:113
+msgid "Assetsign & signature"
 msgstr ""
 
-#: front/config.php:40
-msgid "Configuration enregistrée."
+#: hook.php:121
+msgid "Attributions en attente de signature"
 msgstr ""
 
-#: front/config.php:52
-msgid "E-mail de test envoyé."
+#: hook.php:128
+msgid "Attributions signées"
+msgstr ""
+
+#: hook.php:135
+msgid "Attributions expirées"
+msgstr ""
+
+#: hook.php:142 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
+msgid "Échecs de création (30 derniers jours)"
+msgstr ""
+
+#: front/mysignatures.php:35
+msgid "Mes documents à signer"
 msgstr ""
 
 #: front/damagemarker.php:14 front/sign.php:55
 msgid "Cette fiche ne peut plus être modifiée."
-msgstr ""
-
-#: front/maintenance.form.php:11
-msgid "Fiche de maintenance créée."
-msgstr ""
-
-#: front/movement.form.php:14
-msgid "Mouvement créé."
 msgstr ""
 
 #: front/sign.php:112
@@ -1825,28 +1915,38 @@ msgstr ""
 msgid "Signature de restitution de matériel"
 msgstr ""
 
-#: hook.php:113 src/GlpiPlugin/Assetsign/Config.php:109
-msgid "Assetsign & signature"
+#: front/assign_user_asset.php:33
+msgid "Matériel assigné."
 msgstr ""
 
-#: hook.php:119
-msgid "Attributions en attente de signature"
+#: front/config.php:40
+msgid "Configuration enregistrée."
 msgstr ""
 
-#: hook.php:126
-msgid "Attributions signées"
+#: front/config.php:52
+msgid "E-mail de test envoyé."
 msgstr ""
 
-#: hook.php:133
-msgid "Attributions expirées"
+#: front/maintenance.form.php:11
+msgid "Fiche de maintenance créée."
 msgstr ""
 
-#: hook.php:140 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
-msgid "Échecs de création (30 derniers jours)"
+#: front/movement.form.php:14
+msgid "Mouvement créé."
 msgstr ""
 
-#: setup.php:254
+#: setup.php:266
 msgid "Aucune verification de configuration bloquante."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Kit.php:128
+msgid "Accessoires attendus dans ce kit"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Kit.php:155
+msgid ""
+"Ces accessoires seront automatiquement vérifiés à la restitution si ce kit "
+"est assigné à une remise."
 msgstr ""
 
 #: src/GlpiPlugin/Assetsign/Accessory.php:17
@@ -1855,125 +1955,156 @@ msgid_plural "Accessoires d'attribution"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:44
-msgid "Fiche créée."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:50
-msgid "Relance envoyée."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:56
-msgid "Demande annulée."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:67
-msgid "Signature déléguée."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:73
-msgid "Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:21
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:20
-#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:31
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:20
-msgid "Type de matériel invalide."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:26
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:25
-#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:41
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:25
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1188
-msgid "Matériel introuvable."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:35
-msgid "L'empreinte de fabrication ne peut pas être négative."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:41
-msgid "Source invalide."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:44
-msgid "Niveau de confiance invalide."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:50
-msgid "Empreinte environnementale effacée."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:51
-msgid "Empreinte environnementale enregistrée."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:36
-msgid "Utilisateur introuvable."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:44
-msgid "Aucun nouvel événement trouvé dans l'historique."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:48
-#, php-format
-msgid "%d événement retrouvé dans l'historique."
-msgid_plural "%d événements retrouvés dans l'historique."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:47
+msgid "Événement du passeport matériel"
+msgid_plural "Événements du passeport matériel"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:46
-msgid "Étiquette QR code désactivée pour cette entité."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:176
+msgid "Passeport utilisateur"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:34
-msgid "La valeur résiduelle ne peut pas être négative."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:406
+msgid "depuis l'achat"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:40
-msgid "Valeur résiduelle repassée en calcul automatique."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:406
+msgid "depuis l'entrée dans GLPI"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:41
-msgid "Valeur résiduelle manuelle enregistrée."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:632
+msgid "Incidents"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:46
-msgid "Attribution introuvable."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:649
+msgid "État physique"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:226
-msgid "La signature du bénéficiaire est introuvable pour cette fiche."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:732
+msgid "Prévoir un remplacement"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:282
-msgid "La délégation n'est pas disponible pour le rôle de contre-signataire."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:733
+#, php-format
+msgid "score de santé faible : %d/100"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:293
-msgid ""
-"Seul le bénéficiaire d'origine peut déléguer la signature depuis cette page."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:745
+msgid "Réévaluer l'usage"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:298
-msgid "La délégation n'est pas activée pour cette entité."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:746
+#, php-format
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:329
-msgid "Vous devez être connecté pour accéder à ce document."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:779
+msgid "Commande"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:334
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:341
-msgid "Ce document ne correspond pas à votre compte utilisateur."
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:780
+msgid "Livraison"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:782
+msgid "Mise en service"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:783
+msgid "Début de garantie"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:803
+#, php-format
+msgid "Prix d'achat : %s %s"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:862
+msgid "Ticket"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1012
+msgid "Reconstitué automatiquement depuis l'historique GLPI."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1413
+msgid "Utilisateur retiré"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1442
+#, php-format
+msgid "%d jour"
+msgid_plural "%d jours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1447
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1457
+#, php-format
+msgid "%d mois"
+msgid_plural "%d mois"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1452
+#, php-format
+msgid "%d an"
+msgid_plural "%d ans"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:25
+msgid "Point de contrôle de maintenance"
+msgid_plural "Points de contrôle de maintenance"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:41
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:53
+msgid "Case à cocher"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:42
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:54
+msgid "Texte libre"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:43
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:55
+msgid "Menu déroulant"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:63
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:86
+msgid "Type de saisie"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:68
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:91
+msgid "Options du menu déroulant (une par ligne)"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:87
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:115
+msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/DamageMarker.php:43
+msgid "Vue arrière"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/DamageMarker.php:44
+msgid "Vue de face"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/DamageMarker.php:45
+msgid "Dessous"
 msgstr ""
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:266
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:228
-#: src/GlpiPlugin/Assetsign/Template.php:51
+#: src/GlpiPlugin/Assetsign/Template.php:50
 msgid "Type d'attribution"
 msgstr ""
 
@@ -2013,8 +2144,8 @@ msgid "Attributions"
 msgstr ""
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:697
-#: src/GlpiPlugin/Assetsign/Maintenance.php:305
 #: src/GlpiPlugin/Assetsign/Movement.php:300
+#: src/GlpiPlugin/Assetsign/Maintenance.php:305
 msgid "Choisissez d'abord un type de matériel ci-dessus."
 msgstr ""
 
@@ -2092,6 +2223,14 @@ msgstr ""
 #: src/GlpiPlugin/Assetsign/Assetsign.php:1173
 #, php-format
 msgid "Type de matériel invalide : %s"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1188
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:26
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:25
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:25
+#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:41
+msgid "Matériel introuvable."
 msgstr ""
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:1210
@@ -2189,146 +2328,40 @@ msgstr ""
 msgid "Cette attribution ne peut plus être relancée (déjà signée ou expirée)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:36
-msgid "Point de contrôle qualité"
-msgid_plural "Points de contrôle qualité"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:53
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:41
-msgid "Case à cocher"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:54
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:42
-msgid "Texte libre"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:55
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:43
-msgid "Menu déroulant"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:86
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:63
-msgid "Type de saisie"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:91
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:68
-msgid "Options du menu déroulant (une par ligne)"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:96
-msgid "S'applique aux mouvements"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:115
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:87
-msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:131
-msgid ""
-"Un point non rattaché à aucun mouvement n'apparaît jamais sur aucune fiche."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Config.php:104
+#: src/GlpiPlugin/Assetsign/Config.php:108
 msgid "AssetSign — Signature électronique"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:176
+#: src/GlpiPlugin/Assetsign/Config.php:180
 msgid "Signature intégrée (canvas)"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:228
-#: src/GlpiPlugin/Assetsign/Config.php:253
+#: src/GlpiPlugin/Assetsign/Config.php:232
+#: src/GlpiPlugin/Assetsign/Config.php:257
 msgid "Échec de l'envoi du logo."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:234
+#: src/GlpiPlugin/Assetsign/Config.php:238
 msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:280
+#: src/GlpiPlugin/Assetsign/Config.php:284
 msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:294
+#: src/GlpiPlugin/Assetsign/Config.php:298
 msgid "E-mail de test — Assetsign & signature"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:295
+#: src/GlpiPlugin/Assetsign/Config.php:299
 msgid ""
 "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & "
 "signature fonctionne."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Config.php:298
+#: src/GlpiPlugin/Assetsign/Config.php:302
 msgid "Le serveur de messagerie a refusé l'envoi."
 msgstr ""
-
-#: src/GlpiPlugin/Assetsign/DamageMarker.php:44
-msgid "Vue arrière"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/DamageMarker.php:45
-msgid "Vue de face"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/DamageMarker.php:46
-msgid "Dessous"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:64
-msgid "Constructeur"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:65
-msgid "API externe dédiée"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:66
-msgid "Saisie manuelle"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:75
-msgid "Élevé"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:76
-msgid "Moyen"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:77
-msgid "Faible"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Kit.php:128
-msgid "Accessoires attendus dans ce kit"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Kit.php:155
-msgid ""
-"Ces accessoires seront automatiquement vérifiés à la restitution si ce kit "
-"est assigné à une remise."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Maintenance.php:87
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:111
-msgid "Technicien"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/Maintenance.php:107
-msgid "Télécharger"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:25
-msgid "Point de contrôle de maintenance"
-msgid_plural "Points de contrôle de maintenance"
-msgstr[0] ""
-msgstr[1] ""
 
 #: src/GlpiPlugin/Assetsign/Movement.php:71
 msgid "Prévu"
@@ -2381,10 +2414,6 @@ msgstr ""
 msgid "Document sur le point d'expirer"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:68
-msgid "Signature déléguée"
-msgstr ""
-
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:72
 msgid "Contre-signature requise"
 msgstr ""
@@ -2421,107 +2450,51 @@ msgstr ""
 msgid "Responsable hiérarchique (contre-signataire)"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:45
-msgid "Événement du passeport matériel"
-msgid_plural "Événements du passeport matériel"
+#: src/GlpiPlugin/Assetsign/Template.php:31
+msgid "Gabarit d'attribution"
+msgid_plural "Gabarits d'attribution"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:174
-msgid "Passeport utilisateur"
+#: src/GlpiPlugin/Assetsign/Template.php:51
+msgid "Par défaut"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:404
-msgid "depuis l'achat"
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:63
+msgid "Constructeur"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:404
-msgid "depuis l'entrée dans GLPI"
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:64
+msgid "API externe dédiée"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:630
-msgid "Incidents"
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:65
+msgid "Saisie manuelle"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:647
-msgid "État physique"
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:74
+msgid "Élevé"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:730
-msgid "Prévoir un remplacement"
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:75
+msgid "Moyen"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:731
-#, php-format
-msgid "score de santé faible : %d/100"
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php:76
+msgid "Faible"
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:743
-msgid "Réévaluer l'usage"
+#: src/GlpiPlugin/Assetsign/PendingSignatures.php:109
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:46
+msgid "Attribution introuvable."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:744
-#, php-format
-msgid "valeur résiduelle faible : %d %% du prix d'achat"
+#: src/GlpiPlugin/Assetsign/PendingSignatures.php:114
+msgid "Ce document n'attend pas votre signature."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:777
-msgid "Commande"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:778
-msgid "Livraison"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:780
-msgid "Mise en service"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:781
-msgid "Début de garantie"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:801
-#, php-format
-msgid "Prix d'achat : %s %s"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:860
-msgid "Ticket"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1010
-msgid "Reconstitué automatiquement depuis l'historique GLPI."
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1411
-msgid "Utilisateur retiré"
-msgstr ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1440
-#, php-format
-msgid "%d jour"
-msgid_plural "%d jours"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1445
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1455
-#, php-format
-msgid "%d mois"
-msgid_plural "%d mois"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1450
-#, php-format
-msgid "%d an"
-msgid_plural "%d ans"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/GlpiPlugin/Assetsign/Pdf/HandoverPdfBuilder.php:223
 #: src/GlpiPlugin/Assetsign/Pdf/PdfRenderingHelpers.php:145
+#: src/GlpiPlugin/Assetsign/Pdf/HandoverPdfBuilder.php:223
 msgid "Exemple : petite rayure sur le capot, sans gravité."
 msgstr ""
 
@@ -2550,36 +2523,149 @@ msgstr ""
 msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Template.php:32
-msgid "Gabarit d'attribution"
-msgid_plural "Gabarits d'attribution"
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:21
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:20
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:20
+#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:31
+msgid "Type de matériel invalide."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:35
+msgid "L'empreinte de fabrication ne peut pas être négative."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:41
+msgid "Source invalide."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:44
+msgid "Niveau de confiance invalide."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:50
+msgid "Empreinte environnementale effacée."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php:51
+msgid "Empreinte environnementale enregistrée."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:34
+msgid "La valeur résiduelle ne peut pas être négative."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:40
+msgid "Valeur résiduelle repassée en calcul automatique."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:41
+msgid "Valeur résiduelle manuelle enregistrée."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:226
+msgid "La signature du bénéficiaire est introuvable pour cette fiche."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:282
+msgid "La délégation n'est pas disponible pour le rôle de contre-signataire."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:293
+msgid ""
+"Seul le bénéficiaire d'origine peut déléguer la signature depuis cette page."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:298
+msgid "La délégation n'est pas activée pour cette entité."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:329
+msgid "Vous devez être connecté pour accéder à ce document."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:334
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:341
+msgid "Ce document ne correspond pas à votre compte utilisateur."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:44
+msgid "Fiche créée."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:50
+msgid "Relance envoyée."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:56
+msgid "Demande annulée."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:67
+msgid "Signature déléguée."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:73
+msgid "Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:36
+msgid "Utilisateur introuvable."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:44
+msgid "Aucun nouvel événement trouvé dans l'historique."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:48
+#, php-format
+msgid "%d événement retrouvé dans l'historique."
+msgid_plural "%d événements retrouvés dans l'historique."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/GlpiPlugin/Assetsign/Template.php:52
-msgid "Par défaut"
+#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:46
+msgid "Étiquette QR code désactivée pour cette entité."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:104
+#: src/GlpiPlugin/Assetsign/Maintenance.php:107
+msgid "Télécharger"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:36
+msgid "Point de contrôle qualité"
+msgid_plural "Points de contrôle qualité"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:96
+msgid "S'applique aux mouvements"
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:131
+msgid ""
+"Un point non rattaché à aucun mouvement n'apparaît jamais sur aucune fiche."
+msgstr ""
+
+#: src/GlpiPlugin/Assetsign/Token.php:103
 msgid "Lien de signature inconnu."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:114
+#: src/GlpiPlugin/Assetsign/Token.php:113
 msgid "Ce document a déjà été traité."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:117
+#: src/GlpiPlugin/Assetsign/Token.php:116
 msgid "Ce lien de signature n'est plus valide."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:122
+#: src/GlpiPlugin/Assetsign/Token.php:121
 msgid "Ce lien de signature a expiré."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:151
+#: src/GlpiPlugin/Assetsign/Token.php:150
 msgid "Trop de tentatives, lien désactivé par sécurité."
 msgstr ""
 
-#: src/GlpiPlugin/Assetsign/Token.php:175
+#: src/GlpiPlugin/Assetsign/Token.php:174
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr ""

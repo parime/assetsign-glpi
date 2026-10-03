@@ -6,6 +6,7 @@
  * dans src/GlpiPlugin/Assetsign/ qui portent la vraie logique metier.
  */
 
+use Glpi\Application\View\TemplateRenderer;
 use Glpi\Cache\CacheManager;
 use GlpiPlugin\Assetsign\Accessory;
 use GlpiPlugin\Assetsign\Assetsign;
@@ -24,6 +25,7 @@ use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Movement;
 use GlpiPlugin\Assetsign\NotificationTargetAssetsign;
 use GlpiPlugin\Assetsign\PassportEvent;
+use GlpiPlugin\Assetsign\PendingSignatures;
 use GlpiPlugin\Assetsign\Profile;
 use GlpiPlugin\Assetsign\Reminder;
 use GlpiPlugin\Assetsign\ResidualValue;
@@ -142,6 +144,37 @@ function plugin_assetsign_dashboard_cards(?array $cards = null): array {
             'filters'    => [],
         ],
     ];
+}
+
+/**
+ * Hooks::DISPLAY_CENTRAL callback (setup.php) : bandeau "documents a signer" sur la page
+ * d'accueil, interface standard ET simplifiee (issue #150) - seul moyen pour un utilisateur
+ * sans adresse e-mail d'apprendre qu'un document l'attend. Rien n'est affiche s'il n'y a rien a
+ * signer ou si le reglage est desactive pour l'entite active.
+ *
+ * Appele a l'interieur d'un <table> par le coeur (Central::showGlobalDashboard(),
+ * templates/pages/helpdesk/index.html.twig), d'ou la ligne <tr><td>. Comme les callbacks
+ * item_add plus haut, une erreur du plugin ne doit jamais casser la page d'accueil de GLPI.
+ */
+function plugin_assetsign_display_central(): void {
+    global $CFG_GLPI;
+
+   try {
+       $count = PendingSignatures::countForUser((int) Session::getLoginUserID());
+      if ($count === 0) {
+          return;
+      }
+      if (!Config::getForEntity((int) Session::getActiveEntity())->fields['enable_pending_signatures_banner']) {
+          return;
+      }
+
+       echo '<tr><td>' . TemplateRenderer::getInstance()->render('@assetsign/pending_signatures_banner.html.twig', [
+           'count' => $count,
+           'url'   => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/mysignatures.php',
+       ]) . '</td></tr>';
+   } catch (\Throwable $e) {
+       \Toolbox::logInFile('assetsign', sprintf("Bandeau des documents a signer : %s\n", $e->getMessage()), true);
+   }
 }
 
 // ----------------------------------------------------------------------------------

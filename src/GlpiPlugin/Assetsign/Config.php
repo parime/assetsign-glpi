@@ -97,6 +97,11 @@ class Config extends Compat\Base\ConfigBase
         // (TYPE_HANDOVER) uniquement. Desactive par defaut, meme convention
         // "enable_*" opt-in que le reste de ce bloc.
         'enable_co_signature'                 => 0,
+        // Bandeau "documents a signer" sur la page d'accueil (issue #150) : ACTIF
+        // par defaut, contrairement aux modules opt-in ci-dessus - c'est le seul
+        // moyen pour un utilisateur sans adresse e-mail d'apprendre qu'un
+        // document l'attend, et il ne s'affiche que si c'est le cas.
+        'enable_pending_signatures_banner'    => 1,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -601,6 +606,7 @@ class Config extends Compat\Base\ConfigBase
            'enable_environmental_passport' => (int) ($input['enable_environmental_passport'] ?? 0),
            'enable_reuse_benefit' => (int) ($input['enable_reuse_benefit'] ?? 0),
            'enable_co_signature' => (int) ($input['enable_co_signature'] ?? 0),
+           'enable_pending_signatures_banner' => (int) ($input['enable_pending_signatures_banner'] ?? 0),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -761,6 +767,7 @@ class Config extends Compat\Base\ConfigBase
                 `enable_environmental_passport` tinyint NOT NULL DEFAULT 0,
                 `enable_reuse_benefit` tinyint NOT NULL DEFAULT 0,
                 `enable_co_signature` tinyint NOT NULL DEFAULT 0,
+                `enable_pending_signatures_banner` tinyint NOT NULL DEFAULT 1,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -927,6 +934,13 @@ class Config extends Compat\Base\ConfigBase
              // Assetsign::launchWorkflow()) : jamais de blocage pour donnee
              // organisationnelle manquante.
              $migration->addField($table, 'enable_co_signature', 'bool', ['value' => 0, 'after' => 'enable_reuse_benefit']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_pending_signatures_banner')) {
+             // Bandeau "documents a signer" (issue #150) : actif par defaut, y
+             // compris pour les entites deja configurees - cf. son commentaire
+             // dans DEFAULTS ci-dessus.
+             $migration->addField($table, 'enable_pending_signatures_banner', 'bool', ['value' => 1, 'after' => 'enable_co_signature']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'show_qr_code')) {

@@ -1,0 +1,11 @@
+{# Bandeau "documents a signer" de la page d'accueil (issue #150), cf. plugin_assetsign_display_central() #}
+<div class="alert alert-warning alert-important d-flex align-items-center flex-wrap gap-2 my-2 assetsign-pending-banner" role="alert">
+  <i class="ti ti-signature fs-2 me-1"></i>
+  <div class="flex-fill">
+    <strong>{{ _n('Vous avez %d document à signer', 'Vous avez %d documents à signer', count, 'assetsign')|format(count) }}</strong>
+    <div>{{ __('Remise, restitution ou autre document de matériel : il attend votre signature pour être finalisé.', 'assetsign') }}</div>
+  </div>
+  <a href="{{ url }}" class="btn btn-light">
+    <i class="ti ti-arrow-right me-1"></i>{{ __('Voir mes documents à signer', 'assetsign') }}
+  </a>
+</div>

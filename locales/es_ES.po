@@ -2711,3 +2711,102 @@ msgstr "Contrafirma requerida"
 
 msgid "Responsable hiérarchique (contre-signataire)"
 msgstr "Responsable jerárquico (contrafirmante)"
+
+msgid ""
+"Votre signature, en tant que responsable hiérarchique, est requise pour "
+"finaliser cette attribution."
+msgstr ""
+"Como responsable jerárquico, se requiere su firma para finalizar esta "
+"asignación."
+
+msgid ""
+"Remise, restitution ou autre document de matériel : il attend votre signature"
+" pour être finalisé."
+msgstr ""
+"Entrega, devolución u otro documento de material: espera su firma para "
+"finalizarse."
+
+msgid "Voir mes documents à signer"
+msgstr "Ver mis documentos por firmar"
+
+msgid "Signaler les documents à signer sur la page d'accueil de GLPI"
+msgstr "Indicar los documentos por firmar en la página de inicio de GLPI"
+
+msgid ""
+"Un bandeau prévient l'utilisateur connecté qu'un document attend sa "
+"signature, avec un lien vers la page « Mes documents à signer » — "
+"indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
+"jamais le lien de signature."
+msgstr ""
+"Un aviso informa al usuario conectado de que un documento espera su firma, "
+"con un enlace a la página «Mis documentos por firmar»: imprescindible para "
+"los usuarios sin dirección de correo electrónico, que nunca reciben el enlace"
+" de firma."
+
+msgid ""
+"Exige, en plus de la signature du bénéficiaire, celle de son responsable "
+"hiérarchique (renseigné dans sa fiche utilisateur) pour une Attribution. Le "
+"bénéficiaire signe d'abord ; le document lui est ensuite transmis au "
+"responsable pour contre-signature avant d'être considéré comme définitivement"
+" signé. Sans responsable renseigné pour le bénéficiaire, l'attribution reste "
+"mono-signataire, comme aujourd'hui."
+msgstr ""
+"Exige, además de la firma del beneficiario, la de su responsable jerárquico "
+"(indicado en su ficha de usuario) para una Asignación. El beneficiario firma "
+"primero; el documento se envía después al responsable para su refrendo antes "
+"de considerarse definitivamente firmado. Si el beneficiario no tiene "
+"responsable indicado, la asignación sigue con una sola firma, como hasta "
+"ahora."
+
+msgid ""
+"Limité aux Attributions (pas aux restitutions, dons, ventes, destructions, "
+"maintenances ou mouvements)."
+msgstr ""
+"Limitado a las Asignaciones (no a devoluciones, donaciones, ventas, "
+"destrucciones, mantenimientos ni movimientos)."
+
+msgid "Aucun document à signer"
+msgstr "Ningún documento por firmar"
+
+msgid ""
+"Quand un document (remise, restitution, don...) attendra votre signature, il "
+"apparaîtra ici."
+msgstr ""
+"Cuando un documento (entrega, devolución, donación...) espere su firma, "
+"aparecerá aquí."
+
+msgid ""
+"Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le "
+"document puis le signer."
+msgstr ""
+"Estos documentos esperan su firma. Haga clic en «Firmar» para leer el "
+"documento y después firmarlo."
+
+msgid "Document"
+msgstr "Documento"
+
+msgid "Contre-signature (responsable)"
+msgstr "Refrendo (responsable)"
+
+msgid "Bénéficiaire : %s"
+msgstr "Beneficiario: %s"
+
+msgid "Pour le compte de %s"
+msgstr "En nombre de %s"
+
+msgid "N° de série : %s"
+msgstr "N.º de serie: %s"
+
+msgid "Signer"
+msgstr "Firmar"
+
+msgid "Mes documents à signer"
+msgstr "Mis documentos por firmar"
+
+msgid "Ce document n'attend pas votre signature."
+msgstr "Este documento no espera su firma."
+
+msgid "Vous avez %d document à signer"
+msgid_plural "Vous avez %d documents à signer"
+msgstr[0] "Tiene %d documento por firmar"
+msgstr[1] "Tiene %d documentos por firmar"
