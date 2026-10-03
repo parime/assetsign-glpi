@@ -130,7 +130,11 @@ try {
     // Auto-delegation (issue #115) : formulaire affiche uniquement au beneficiaire
     // D'ORIGINE connecte (pas au delegue lui-meme), et seulement si la fiche est
     // encore modifiable ET le reglage self-service actif pour l'entite.
+    // Jamais sur une page ouverte sur place (issue #152) : la session est celle du
+    // technicien temoin, pas du beneficiaire (refuse aussi cote serveur, cf.
+    // SignController::delegateSelfService()).
     $canDelegateSelf = !$data['is_delegate_signer']
+        && $data['in_person_witness'] === null
         && $assetsign->isStillEditable()
         && (bool) $config->fields['enable_self_service_delegation'];
 
@@ -161,6 +165,9 @@ try {
         // deja signe par le beneficiaire, cf. sign_page.html.twig.
         'is_cosigner'            => $data['is_cosigner'],
         'cosigner'               => $data['cosigner'],
+        // Signature sur place (issue #152) : bandeau "en presence de", cf. sign_page.html.twig.
+        'in_person_witness'      => $data['in_person_witness'],
+        'in_person_signer'       => $data['in_person_signer'],
         // Volontairement DIFFERENT de Assetsign::getPdfHeadings() (fixe en francais,
         // car c'est le contenu d'un PDF archive, cf. commentaire sur
         // getCanonicalTypeLabel()) : cette page-ci est une interface consultee en

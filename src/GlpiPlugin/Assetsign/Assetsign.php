@@ -378,6 +378,10 @@ class Assetsign extends Compat\Base\AssetsignBase
            'can_remind'   => !$this->isNewID($ID)
                && in_array((int) $this->fields['status'], self::STATUSES_AWAITING_SIGNATURE, true)
                && \Session::haveRight(self::$rightname, UPDATE),
+           // Signature sur place (issue #152), cf. canSignInPerson()/startInPersonSignature().
+           'can_sign_in_person' => !$this->isNewID($ID)
+               && \Session::haveRight(self::$rightname, UPDATE)
+               && $this->canSignInPerson(),
            'accessories'          => $this->isNewID($ID) ? [] : $this->getAccessories(),
            'can_edit_accessories' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
            // Le champ Observations est desactivable globalement (Config::enable_observations) :
@@ -1719,6 +1723,59 @@ class Assetsign extends Compat\Base\AssetsignBase
          }
       }
        return $this->getBeneficiary();
+   }
+
+    /**
+     * Signataire ATTENDU a l'etape beneficiaire : le delegue si la signature a ete deleguee,
+     * sinon le beneficiaire. Contrairement a getActualSigner(), ne depend pas de la session :
+     * pour une signature sur place (issue #152), la session est celle du technicien temoin,
+     * jamais celle du signataire.
+     */
+   public function getExpectedSigner(): array {
+      if ((int) ($this->fields['delegated_users_id'] ?? 0) > 0) {
+          $delegate = $this->getDelegate();
+         if ($delegate !== null) {
+             return $delegate;
+         }
+      }
+       return $this->getBeneficiary();
+   }
+
+    /**
+     * Signature sur place (issue #152) possible pour cette fiche : reglage actif pour son entite,
+     * fiche en attente de la signature du beneficiaire (pas de la contre-signature, hors
+     * perimetre) et beneficiaire interne (un beneficiaire externe ne signe jamais, cf.
+     * BENEFICIARY_EXTERNAL). Le droit du technicien est verifie a part (can(UPDATE)).
+     */
+   public function canSignInPerson(): bool {
+      if (!empty($this->fields['is_deleted'])
+          || !in_array((int) $this->fields['status'], [self::STATUS_SENT, self::STATUS_VIEWED], true)
+          || (int) ($this->fields['beneficiary_type'] ?? self::BENEFICIARY_INTERNAL) !== self::BENEFICIARY_INTERNAL
+      ) {
+          return false;
+      }
+
+       return (bool) Config::getForEntity((int) $this->fields['entities_id'])->fields['enable_in_person_signature'];
+   }
+
+    /**
+     * Emet un jeton de signature sur place lie au technicien $witnessUsersId (seul ce compte
+     * pourra l'ouvrir, cf. SignController) et le renvoie (brut), a ouvrir dans front/sign.php
+     * sur l'ecran du technicien. Valable 24 h - le temps de la rencontre, pas le delai de la
+     * fiche - et sans invalider le lien deja envoye par e-mail.
+     *
+     * @throws \RuntimeException si la fiche ne permet pas la signature sur place ou si le
+     *                           technicien n'a pas le droit de la modifier
+     */
+   public function startInPersonSignature(int $witnessUsersId): string {
+      if ($witnessUsersId <= 0 || !$this->can($this->getID(), UPDATE)) {
+          throw new \RuntimeException(__('Vous n\'avez pas le droit de faire signer cette fiche.', 'assetsign'));
+      }
+      if (!$this->canSignInPerson()) {
+          throw new \RuntimeException(__('La signature sur place n\'est pas possible pour cette fiche.', 'assetsign'));
+      }
+
+       return Token::createForAssetsign($this, 1, witnessUsersId: $witnessUsersId);
    }
 
    public function getTargetItem(): array {

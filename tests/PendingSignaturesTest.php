@@ -188,7 +188,11 @@ class PendingSignaturesTest extends AssetsignTestCase
     {
         require_once dirname(__DIR__) . '/hook.php';
 
+        global $DB;
         $entityId = $this->createTestEntity(0, 'PHPUnit Pending Banner');
+        // Configuration propre a l'entite, valeurs par defaut de la colonne (bandeau actif) :
+        // independante de ce qu'une entite parente a pu desactiver.
+        $DB->insert('glpi_plugin_assetsign_configs', ['entities_id' => $entityId]);
         $user = $this->createTestUser('Lea', 'Terrain');
         $_SESSION['glpiactive_entity'] = $entityId;
 

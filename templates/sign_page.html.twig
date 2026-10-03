@@ -49,6 +49,19 @@
          il se retrouve sur cette page alors qu'il n'est pas le beneficiaire. #}
       <p class="cosigner-banner">{{ __('Ce document a déjà été signé par', 'assetsign') }} <strong>{{ beneficiary_name }}</strong> {{ __('le', 'assetsign') }} {{ assetsign.date_mod|date('d/m/Y à H:i') }}. {{ __('Votre signature, en tant que responsable hiérarchique, est requise pour finaliser cette attribution.', 'assetsign') }}</p>
     {% endif %}
+    {% if in_person_witness|default(null) %}
+      {# Signature sur place (issue #152) : page ouverte sur l'ecran du technicien, qui la
+         remet a la personne qui signe - nomme qui doit signer et qui en est temoin. #}
+      {% set in_person_signer_name = (in_person_signer.firstname ~ ' ' ~ in_person_signer.realname)|trim %}
+      {% if in_person_signer_name is empty %}{% set in_person_signer_name = in_person_signer.name %}{% endif %}
+      {% set witness_display = (in_person_witness.firstname ~ ' ' ~ in_person_witness.realname)|trim %}
+      {% if witness_display is empty %}{% set witness_display = in_person_witness.name %}{% endif %}
+      <p class="cosigner-banner">
+        {{ __('Signature sur place : ce document doit être relu puis signé par', 'assetsign') }} <strong>{{ in_person_signer_name }}</strong>,
+        {{ __('en présence de', 'assetsign') }} <strong>{{ witness_display }}</strong>.
+        {{ __('Le document signé mentionnera ce technicien comme témoin.', 'assetsign') }}
+      </p>
+    {% endif %}
     {% endif %}
   </header>
 

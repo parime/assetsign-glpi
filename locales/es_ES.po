@@ -2810,3 +2810,49 @@ msgid "Vous avez %d document à signer"
 msgid_plural "Vous avez %d documents à signer"
 msgstr[0] "Tiene %d documento por firmar"
 msgstr[1] "Tiene %d documentos por firmar"
+
+msgid "Signature sur place : ce document doit être relu puis signé par"
+msgstr "Firma presencial: este documento debe ser leído y después firmado por"
+
+msgid "en présence de"
+msgstr "en presencia de"
+
+msgid "Le document signé mentionnera ce technicien comme témoin."
+msgstr "El documento firmado mencionará a este técnico como testigo."
+
+msgid ""
+"Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet "
+"écran, en votre présence."
+msgstr ""
+"Para una persona que no puede conectarse a GLPI: firma en esta pantalla, en "
+"su presencia."
+
+msgid "Faire signer sur place"
+msgstr "Firmar en presencia"
+
+msgid "Recueillie sur place, en présence de"
+msgstr "Recogida en presencia de"
+
+msgid "Autoriser la signature sur place (en présence d'un technicien)"
+msgstr "Permitir la firma presencial (en presencia de un técnico)"
+
+msgid ""
+"Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI — pour les "
+"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
+" a été recueillie en présence de ce technicien, qui atteste ainsi de "
+"l'identité du signataire."
+msgstr ""
+"Añade un botón «Firmar en presencia» a la ficha: el beneficiario firma en la "
+"pantalla del técnico sin tener que conectarse a GLPI, para las personas que "
+"no tienen acceso a GLPI. El PDF firmado indica que la firma se recogió en "
+"presencia de este técnico, que da así fe de la identidad del firmante."
+
+msgid "Vous n'avez pas le droit de faire signer cette fiche."
+msgstr "No tiene permiso para hacer firmar esta ficha."
+
+msgid "La signature sur place n'est pas possible pour cette fiche."
+msgstr "La firma presencial no es posible para esta ficha."
+
+msgid "La délégation n'est pas disponible pour une signature sur place."
+msgstr "La delegación no está disponible para una firma presencial."

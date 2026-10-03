@@ -2809,3 +2809,50 @@ msgid "Vous avez %d document à signer"
 msgid_plural "Vous avez %d documents à signer"
 msgstr[0] "Vous avez %d document à signer"
 msgstr[1] "Vous avez %d documents à signer"
+
+msgid "Signature sur place : ce document doit être relu puis signé par"
+msgstr "Signature sur place : ce document doit être relu puis signé par"
+
+msgid "en présence de"
+msgstr "en présence de"
+
+msgid "Le document signé mentionnera ce technicien comme témoin."
+msgstr "Le document signé mentionnera ce technicien comme témoin."
+
+msgid ""
+"Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet "
+"écran, en votre présence."
+msgstr ""
+"Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet "
+"écran, en votre présence."
+
+msgid "Faire signer sur place"
+msgstr "Faire signer sur place"
+
+msgid "Recueillie sur place, en présence de"
+msgstr "Recueillie sur place, en présence de"
+
+msgid "Autoriser la signature sur place (en présence d'un technicien)"
+msgstr "Autoriser la signature sur place (en présence d'un technicien)"
+
+msgid ""
+"Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI — pour les "
+"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
+" a été recueillie en présence de ce technicien, qui atteste ainsi de "
+"l'identité du signataire."
+msgstr ""
+"Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI — pour les "
+"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
+" a été recueillie en présence de ce technicien, qui atteste ainsi de "
+"l'identité du signataire."
+
+msgid "Vous n'avez pas le droit de faire signer cette fiche."
+msgstr "Vous n'avez pas le droit de faire signer cette fiche."
+
+msgid "La signature sur place n'est pas possible pour cette fiche."
+msgstr "La signature sur place n'est pas possible pour cette fiche."
+
+msgid "La délégation n'est pas disponible pour une signature sur place."
+msgstr "La délégation n'est pas disponible pour une signature sur place."

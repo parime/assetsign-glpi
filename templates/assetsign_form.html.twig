@@ -16,7 +16,7 @@
         <td>
           {% set beneficiary_name = (beneficiary.firstname|default('') ~ ' ' ~ beneficiary.realname|default(''))|trim %}
           {{ beneficiary_name is empty ? beneficiary.name|default('') : beneficiary_name }}
-          ({{ beneficiary.email|default('') }})
+          {% if beneficiary.email|default('') is not empty %}({{ beneficiary.email }}){% endif %}
           {% if item.fields.beneficiary_type == 1 %}
             <span class="badge bg-secondary">{{ __('Externe', 'assetsign') }}</span>
           {% endif %}
@@ -65,6 +65,17 @@
           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
           <input type="hidden" name="id" value="{{ item.fields.id }}">
           <button type="submit" name="relance" class="btn btn-primary">{{ __('Relancer maintenant', 'assetsign') }}</button>
+        </form>
+      {% endif %}
+      {% if can_sign_in_person %}
+        {# Signature sur place (issue #152) : ouvre la page de signature sur cet ecran, a remettre
+           a la personne qui signe (beneficiaire ou son delegue). #}
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <button type="submit" name="sign_in_person" class="btn btn-outline-primary" title="{{ __('Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet écran, en votre présence.', 'assetsign') }}">
+            <i class="ti ti-device-tablet me-1"></i>{{ __('Faire signer sur place', 'assetsign') }}
+          </button>
         </form>
       {% endif %}
       {% if can_edit_accessories %}
@@ -145,8 +156,15 @@
         <table class="table table-striped">
           <tr>
             <th>{{ __('Signataire', 'assetsign') }}</th>
-            <td>{{ proof.signer_name|default('') }} ({{ proof.signer_email|default('') }})</td>
+            <td>{{ proof.signer_name|default('') }}{% if proof.signer_email|default('') is not empty %} ({{ proof.signer_email }}){% endif %}</td>
           </tr>
+          {% if proof.witness_name|default('') is not empty %}
+          {# Signature sur place (issue #152) : technicien temoin. #}
+          <tr>
+            <th>{{ __('Recueillie sur place, en présence de', 'assetsign') }}</th>
+            <td><i class="ti ti-device-tablet me-1"></i>{{ proof.witness_name }}</td>
+          </tr>
+          {% endif %}
           <tr>
             <th>{{ __('Adresse IP', 'assetsign') }}</th>
             <td>{{ proof.ip_address|default('') }}</td>

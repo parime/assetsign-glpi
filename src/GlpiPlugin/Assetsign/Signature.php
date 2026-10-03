@@ -51,6 +51,9 @@ class Signature extends Compat\Base\SignatureBase
            'user_agent'    => $proof['user_agent'] ?? null,
            'document_hash' => $proof['document_hash'] ?? null,
            'signed_at'     => $proof['signed_at'] ?? date('Y-m-d H:i:s'),
+           // Signature sur place (issue #152) : technicien en presence duquel la signature a ete
+           // recueillie, vide pour une signature faite par le signataire depuis sa propre session.
+           'witness_name'  => $proof['witness_name'] ?? null,
            'date_creation' => date('Y-m-d H:i:s'),
        ]) ? $DB->insertId() : 0;
    }
@@ -121,6 +124,7 @@ class Signature extends Compat\Base\SignatureBase
                 `user_agent` varchar(512) DEFAULT NULL,
                 `document_hash` char(64) DEFAULT NULL,
                 `signed_at` timestamp NULL DEFAULT NULL,
+                `witness_name` varchar(255) DEFAULT NULL,
                 `date_creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`),
                 KEY `plugin_assetsign_assetsigns_id` (`plugin_assetsign_assetsigns_id`),
@@ -173,6 +177,12 @@ class Signature extends Compat\Base\SignatureBase
              $DB->doQuery("ALTER TABLE `$table` ADD COLUMN `plugin_assetsign_movements_id` int unsigned DEFAULT NULL AFTER `plugin_assetsign_maintenances_id`");
              $DB->doQuery("ALTER TABLE `$table` ADD KEY `plugin_assetsign_movements_id` (`plugin_assetsign_movements_id`)");
              $DB->doQuery("ALTER TABLE `$table` ADD CONSTRAINT `fk_signature_movement` FOREIGN KEY (`plugin_assetsign_movements_id`) REFERENCES `glpi_plugin_assetsign_movements` (`id`) ON DELETE CASCADE");
+         }
+
+         // Signature sur place (issue #152) : technicien temoin, cf. insertProof().
+         if (!$DB->fieldExists($table, 'witness_name')) {
+             $migration->addField($table, 'witness_name', 'string', ['after' => 'signed_at', 'null' => true]);
+             $migration->migrationOneTable($table);
          }
       }
    }

@@ -2789,3 +2789,50 @@ msgid "Vous avez %d document à signer"
 msgid_plural "Vous avez %d documents à signer"
 msgstr[0] "You have %d document to sign"
 msgstr[1] "You have %d documents to sign"
+
+msgid "Signature sur place : ce document doit être relu puis signé par"
+msgstr "On-site signature: this document must be read and then signed by"
+
+msgid "en présence de"
+msgstr "in the presence of"
+
+msgid "Le document signé mentionnera ce technicien comme témoin."
+msgstr "The signed document will name this technician as a witness."
+
+msgid ""
+"Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet "
+"écran, en votre présence."
+msgstr ""
+"For someone who cannot log in to GLPI: they sign on this screen, in your "
+"presence."
+
+msgid "Faire signer sur place"
+msgstr "Have it signed on site"
+
+msgid "Recueillie sur place, en présence de"
+msgstr "Collected on site, in the presence of"
+
+msgid "Autoriser la signature sur place (en présence d'un technicien)"
+msgstr "Allow on-site signature (in the presence of a technician)"
+
+msgid ""
+"Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI — pour les "
+"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
+" a été recueillie en présence de ce technicien, qui atteste ainsi de "
+"l'identité du signataire."
+msgstr ""
+"Adds a \"Have it signed on site\" button to the record: the beneficiary signs"
+" on the technician's screen without having to log in to GLPI — for people who"
+" have no access to GLPI. The signed PDF states that the signature was "
+"collected in the presence of this technician, who thereby vouches for the "
+"signer's identity."
+
+msgid "Vous n'avez pas le droit de faire signer cette fiche."
+msgstr "You are not allowed to have this record signed."
+
+msgid "La signature sur place n'est pas possible pour cette fiche."
+msgstr "On-site signature is not possible for this record."
+
+msgid "La délégation n'est pas disponible pour une signature sur place."
+msgstr "Delegation is not available for an on-site signature."

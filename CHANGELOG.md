@@ -11,6 +11,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Signature sur place, en présence d'un technicien** (issue #152) : pour un bénéficiaire qui
+  ne peut pas se connecter à GLPI (pas de mot de passe, pas de poste) — la page de signature
+  exige une session GLPI, un simple lien ou QR code ne l'aurait donc pas aidé. Sur la fiche, le
+  bouton « Faire signer sur place » ouvre la page de signature habituelle sur l'écran du
+  technicien ; le bénéficiaire (ou son délégué) relit et signe :
+  - le jeton émis est lié au technicien (`witness_users_id`) : lui seul peut l'ouvrir, valable
+    24 h, sans invalider le lien envoyé par e-mail ; refusé dès que le réglage est désactivé ou
+    que la fiche n'attend plus la signature du bénéficiaire ;
+  - le PDF signé et la preuve (`glpi_plugin_assetsign_signatures.witness_name`) mentionnent
+    « Signature recueillie sur place, en présence de » ce technicien, visible aussi dans la
+    preuve affichée sur la fiche ;
+  - pas d'auto-délégation depuis une page ouverte sur place ; contre-signature du responsable
+    hors périmètre (il se connecte lui-même) ;
+  - réglage par entité « Autoriser la signature sur place », **désactivé par défaut** (change le
+    modèle de sécurité : identité attestée par le technicien plutôt que prouvée par la connexion
+    du signataire).
+
 - **Documents à signer sans adresse e-mail** (issue #150) : jusqu'ici, un utilisateur n'apprenait
   qu'un document attendait sa signature que par l'e-mail contenant le lien — un utilisateur sans
   adresse e-mail n'en était jamais informé. Désormais :
@@ -84,6 +101,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   existante n'a encore faites pour ce nouvel indicateur.
 
 ### Fixed
+
+- **Parenthèses vides « () » après le nom du signataire** sur le PDF signé et sur les fiches
+  Assetsign/Maintenance/Mouvement quand le signataire n'a pas d'adresse e-mail — cas désormais
+  courant avec #150/#152. L'e-mail n'est plus affiché que s'il existe.
 
 - **La délégation d'auto-signature (page reçue par e-mail par le bénéficiaire lui-même) était
   totalement non fonctionnelle** : `sign_page.html.twig` est une page volontairement autonome, sans

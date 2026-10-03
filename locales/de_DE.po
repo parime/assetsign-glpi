@@ -2842,3 +2842,53 @@ msgid "Vous avez %d document à signer"
 msgid_plural "Vous avez %d documents à signer"
 msgstr[0] "Sie haben %d Dokument zu unterschreiben"
 msgstr[1] "Sie haben %d Dokumente zu unterschreiben"
+
+msgid "Signature sur place : ce document doit être relu puis signé par"
+msgstr ""
+"Unterschrift vor Ort: Dieses Dokument muss gelesen und anschließend "
+"unterschrieben werden von"
+
+msgid "en présence de"
+msgstr "in Anwesenheit von"
+
+msgid "Le document signé mentionnera ce technicien comme témoin."
+msgstr "Das unterschriebene Dokument nennt diesen Techniker als Zeugen."
+
+msgid ""
+"Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet "
+"écran, en votre présence."
+msgstr ""
+"Für eine Person, die sich nicht bei GLPI anmelden kann: Sie unterschreibt auf"
+" diesem Bildschirm in Ihrer Anwesenheit."
+
+msgid "Faire signer sur place"
+msgstr "Vor Ort unterschreiben lassen"
+
+msgid "Recueillie sur place, en présence de"
+msgstr "Vor Ort eingeholt, in Anwesenheit von"
+
+msgid "Autoriser la signature sur place (en présence d'un technicien)"
+msgstr "Unterschrift vor Ort erlauben (in Anwesenheit eines Technikers)"
+
+msgid ""
+"Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI — pour les "
+"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
+" a été recueillie en présence de ce technicien, qui atteste ainsi de "
+"l'identité du signataire."
+msgstr ""
+"Fügt dem Datensatz eine Schaltfläche „Vor Ort unterschreiben lassen“ hinzu: "
+"Der Empfänger unterschreibt auf dem Bildschirm des Technikers, ohne sich bei "
+"GLPI anmelden zu müssen — für Personen ohne Zugang zu GLPI. Das "
+"unterschriebene PDF vermerkt, dass die Unterschrift in Anwesenheit dieses "
+"Technikers eingeholt wurde, der damit die Identität des Unterzeichners "
+"bestätigt."
+
+msgid "Vous n'avez pas le droit de faire signer cette fiche."
+msgstr "Sie sind nicht berechtigt, diesen Datensatz unterschreiben zu lassen."
+
+msgid "La signature sur place n'est pas possible pour cette fiche."
+msgstr "Eine Unterschrift vor Ort ist für diesen Datensatz nicht möglich."
+
+msgid "La délégation n'est pas disponible pour une signature sur place."
+msgstr "Die Delegierung ist bei einer Unterschrift vor Ort nicht verfügbar."

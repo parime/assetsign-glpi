@@ -167,6 +167,13 @@
           </div>
 
           <div class="mb-3 form-check">
+            <input type="hidden" name="enable_in_person_signature" value="0">
+            <input type="checkbox" name="enable_in_person_signature" value="1" class="form-check-input" id="enable_in_person_signature" {{ config.enable_in_person_signature|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="enable_in_person_signature">{{ __('Autoriser la signature sur place (en présence d\'un technicien)', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire signe sur l\'écran du technicien, sans avoir à se connecter à GLPI — pour les personnes qui n\'ont pas d\'accès à GLPI. Le PDF signé indique que la signature a été recueillie en présence de ce technicien, qui atteste ainsi de l\'identité du signataire.', 'assetsign') }}</div>
+          </div>
+
+          <div class="mb-3 form-check">
             <input type="hidden" name="signature_required" value="0">
             <input type="checkbox" name="signature_required" value="1" class="form-check-input" id="signature_required" {{ config.signature_required|default(1) ? 'checked' : '' }}>
             <label class="form-check-label" for="signature_required">{{ __('Signature obligatoire', 'assetsign') }}</label>

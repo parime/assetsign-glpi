@@ -2819,3 +2819,50 @@ msgid "Vous avez %d document à signer"
 msgid_plural "Vous avez %d documents à signer"
 msgstr[0] "Ha %d documento da firmare"
 msgstr[1] "Ha %d documenti da firmare"
+
+msgid "Signature sur place : ce document doit être relu puis signé par"
+msgstr "Firma sul posto: questo documento deve essere letto e poi firmato da"
+
+msgid "en présence de"
+msgstr "in presenza di"
+
+msgid "Le document signé mentionnera ce technicien comme témoin."
+msgstr "Il documento firmato indicherà questo tecnico come testimone."
+
+msgid ""
+"Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet "
+"écran, en votre présence."
+msgstr ""
+"Per una persona che non può accedere a GLPI: firma su questo schermo, in sua "
+"presenza."
+
+msgid "Faire signer sur place"
+msgstr "Far firmare sul posto"
+
+msgid "Recueillie sur place, en présence de"
+msgstr "Raccolta sul posto, in presenza di"
+
+msgid "Autoriser la signature sur place (en présence d'un technicien)"
+msgstr "Consentire la firma sul posto (in presenza di un tecnico)"
+
+msgid ""
+"Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI — pour les "
+"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
+" a été recueillie en présence de ce technicien, qui atteste ainsi de "
+"l'identité du signataire."
+msgstr ""
+"Aggiunge un pulsante «Far firmare sul posto» alla scheda: il beneficiario "
+"firma sullo schermo del tecnico, senza dover accedere a GLPI — per le persone"
+" che non hanno accesso a GLPI. Il PDF firmato indica che la firma è stata "
+"raccolta in presenza di questo tecnico, che attesta così l'identità del "
+"firmatario."
+
+msgid "Vous n'avez pas le droit de faire signer cette fiche."
+msgstr "Non ha il diritto di far firmare questa scheda."
+
+msgid "La signature sur place n'est pas possible pour cette fiche."
+msgstr "La firma sul posto non è possibile per questa scheda."
+
+msgid "La délégation n'est pas disponible pour une signature sur place."
+msgstr "La delega non è disponibile per una firma sul posto."

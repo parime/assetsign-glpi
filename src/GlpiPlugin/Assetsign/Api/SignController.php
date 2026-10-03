@@ -90,6 +90,7 @@ final class SignController
        [$assetsign, $token] = $this->loadAndAuthorize($rawToken);
 
        $isCosigner = (bool) $token->fields['for_cosigner'];
+       $witness = self::getWitness($token);
 
       if (!$isCosigner && (int) $assetsign->fields['status'] === Assetsign::STATUS_SENT) {
           $assetsign->markViewed();
@@ -117,6 +118,7 @@ final class SignController
            // d'auto-delegation reserve au beneficiaire d'origine, cf.
            // front/sign.php).
            'is_delegate_signer' => !$isCosigner
+               && $witness === null
                && (int) ($assetsign->fields['delegated_users_id'] ?? 0) > 0
                && (int) ($assetsign->fields['delegated_users_id'] ?? 0) === (int) Session::getLoginUserID(),
            // Signatures multiples (issue #143) : distingue, cote page de
@@ -127,6 +129,11 @@ final class SignController
            // assertCurrentUserIsAuthorizedSigner() ci-dessous).
            'is_cosigner' => $isCosigner,
            'cosigner'    => $assetsign->getCosigner(),
+           // Signature sur place (issue #152) : technicien en presence duquel le beneficiaire
+           // signe sur l'ecran de ce technicien (null pour une signature depuis sa propre
+           // session) - bandeau dedie et signataire attendu nomme, cf. sign_page.html.twig.
+           'in_person_witness' => $witness,
+           'in_person_signer'  => $witness !== null ? $assetsign->getExpectedSigner() : null,
        ];
    }
 
@@ -154,7 +161,7 @@ final class SignController
       if ($token->fields['for_cosigner']) {
           $this->submitCosignature($assetsign, $signatureImagePng, $meta);
       } else {
-          $newCosignerToken = $this->submitBeneficiarySignature($assetsign, $signatureImagePng, $meta);
+          $newCosignerToken = $this->submitBeneficiarySignature($assetsign, $signatureImagePng, $meta, self::getWitness($token));
       }
 
        $token->markUsed();
@@ -169,14 +176,20 @@ final class SignController
      * responsable (markAwaitingCosignature()) au lieu d'etre consideree
      * signee (markSigned()), et le jeton frais du responsable est retourne.
      */
-   private function submitBeneficiarySignature(Assetsign $assetsign, string $signatureImagePng, array $meta): ?string {
-       $stamper = new SignatureStamper();
-       $result = $stamper->apply($assetsign, $signatureImagePng);
-
+   private function submitBeneficiarySignature(Assetsign $assetsign, string $signatureImagePng, array $meta, ?array $witness = null): ?string {
        // getActualSigner() (pas getBeneficiary()) : reflete QUI a reellement
        // signe (delegue ou beneficiaire d'origine), cf. son docblock — sans
        // quoi la preuve de signature mentirait des qu'un delegue signe.
-       $signer = $assetsign->getActualSigner();
+       // Signature sur place (issue #152) : la session est celle du technicien
+       // temoin, le signataire est donc le signataire ATTENDU (getExpectedSigner()).
+       $signer = $witness !== null ? $assetsign->getExpectedSigner() : $assetsign->getActualSigner();
+       $witnessName = $witness !== null
+           ? trim(\formatUserName(0, $witness['name'] ?? '', $witness['realname'] ?? '', $witness['firstname'] ?? ''))
+           : null;
+
+       $stamper = new SignatureStamper();
+       $result = $stamper->apply($assetsign, $signatureImagePng, $signer, $witnessName);
+
        $proof = [
            'signer_name'   => trim(\formatUserName(0, $signer['name'] ?? '', $signer['realname'] ?? '', $signer['firstname'] ?? '')),
            'signer_email'  => $signer['email'] ?? '',
@@ -184,6 +197,7 @@ final class SignController
            'user_agent'    => $meta['user_agent'] ?? '',
            'document_hash' => $result['hash'],
            'signed_at'     => $result['signed_at'],
+           'witness_name'  => $witnessName,
        ];
 
        $cosignerId = (int) ($assetsign->fields['cosigner_users_id'] ?? 0);
@@ -281,6 +295,11 @@ final class SignController
       if ($token->fields['for_cosigner']) {
           throw new \RuntimeException(__('La délégation n\'est pas disponible pour le rôle de contre-signataire.', 'assetsign'));
       }
+      // Signature sur place (issue #152) : la session est celle du technicien, pas du
+      // beneficiaire - deleguer depuis cet ecran n'aurait aucun sens.
+      if (self::getWitness($token) !== null) {
+          throw new \RuntimeException(__('La délégation n\'est pas disponible pour une signature sur place.', 'assetsign'));
+      }
 
       // Seul le beneficiaire D'ORIGINE peut s'auto-deleguer depuis cette page
       // (cf. commentaire de front/sign.php) : assertCurrentUserIsAuthorizedSigner()
@@ -307,6 +326,19 @@ final class SignController
    }
 
     /**
+     * Technicien temoin d'un jeton de signature sur place (issue #152), ou null pour un jeton
+     * ordinaire.
+     */
+   private static function getWitness(Token $token): ?array {
+       $witnessId = (int) ($token->fields['witness_users_id'] ?? 0);
+       $user = new \User();
+      if ($witnessId <= 0 || !$user->getFromDB($witnessId)) {
+          return null;
+      }
+       return $user->fields;
+   }
+
+    /**
      * Accepte le beneficiaire d'origine (users_id) OU, si une delegation est
      * active, le compte delegue (delegated_users_id) — cf.
      * Assetsign::delegateSignatureTo() (issue #115) — OU, si le jeton porte
@@ -327,6 +359,21 @@ final class SignController
           // Ne devrait pas arriver (Firewall::STRATEGY_AUTHENTICATED impose deja
           // une session) ; filet de securite si jamais l'appel se fait autrement.
           throw new \RuntimeException(__('Vous devez être connecté pour accéder à ce document.', 'assetsign'));
+      }
+
+      // Signature sur place (issue #152) : jeton emis par un technicien pour faire signer le
+      // beneficiaire sur SON ecran - seul ce technicien peut l'ouvrir (meme le beneficiaire,
+      // qui a son propre lien, ne le peut pas), et seulement tant que la fiche le permet
+      // encore (reglage d'entite toujours actif, fiche toujours en attente du beneficiaire).
+       $witnessId = (int) ($token->fields['witness_users_id'] ?? 0);
+      if ($witnessId > 0) {
+         if ($currentUserId !== $witnessId) {
+             throw new \RuntimeException(__('Ce document ne correspond pas à votre compte utilisateur.', 'assetsign'));
+         }
+         if (!$assetsign->canSignInPerson()) {
+             throw new \RuntimeException(__('La signature sur place n\'est pas possible pour cette fiche.', 'assetsign'));
+         }
+          return;
       }
 
       if ($token->fields['for_cosigner']) {

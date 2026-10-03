@@ -19,20 +19,27 @@ final class SignatureStamper
     /**
      * @return array{path:string,hash:string,signed_at:string} chemin du PDF final (dans GLPI_TMP_DIR), son empreinte SHA-256 et l'horodatage de signature
      */
-   public function apply(\GlpiPlugin\Assetsign\Assetsign $assetsign, string $signaturePngDataUrl): array {
+    /**
+     * $signer : identite du signataire si l'appelant la connait deja (signature sur place,
+     * issue #152, ou la session est celle du technicien) ; a defaut, getActualSigner().
+     * $witnessName : technicien en presence duquel la signature a ete recueillie, mentionne
+     * sur le PDF (null pour une signature depuis la propre session du signataire).
+     */
+   public function apply(\GlpiPlugin\Assetsign\Assetsign $assetsign, string $signaturePngDataUrl, ?array $signer = null, ?string $witnessName = null): array {
        $signedAt = date('Y-m-d H:i:s');
 
        // getActualSigner() (pas le beneficiaire d'origine systematiquement) :
        // reflete qui a REELLEMENT signe (cf. son docblock, issue #115) — sans
        // quoi la ligne "Signataire" du PDF final resterait fausse des qu'un
        // delegue signe a la place du beneficiaire d'origine.
-       $signer = $assetsign->getActualSigner();
+       $signer ??= $assetsign->getActualSigner();
 
        $html = $this->builder->renderHtml($assetsign, [
            'signature_image' => $signaturePngDataUrl,
            'signed_at'       => $signedAt,
            'signer_name'     => trim(\formatUserName(0, $signer['name'] ?? '', $signer['realname'] ?? '', $signer['firstname'] ?? '')),
            'signer_email'    => $signer['email'] ?? '',
+           'witness_name'    => $witnessName,
        ]);
 
        $protect = (bool) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['protect_pdf'];

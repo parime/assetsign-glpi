@@ -102,6 +102,10 @@ class Config extends Compat\Base\ConfigBase
         // moyen pour un utilisateur sans adresse e-mail d'apprendre qu'un
         // document l'attend, et il ne s'affiche que si c'est le cas.
         'enable_pending_signatures_banner'    => 1,
+        // Signature sur place, en presence d'un technicien (issue #152) : DESACTIVEE
+        // par defaut - change le modele de securite (l'identite du signataire est
+        // attestee par le technicien temoin, plus prouvee par sa propre connexion).
+        'enable_in_person_signature'          => 0,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -607,6 +611,7 @@ class Config extends Compat\Base\ConfigBase
            'enable_reuse_benefit' => (int) ($input['enable_reuse_benefit'] ?? 0),
            'enable_co_signature' => (int) ($input['enable_co_signature'] ?? 0),
            'enable_pending_signatures_banner' => (int) ($input['enable_pending_signatures_banner'] ?? 0),
+           'enable_in_person_signature' => (int) ($input['enable_in_person_signature'] ?? 0),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -768,6 +773,7 @@ class Config extends Compat\Base\ConfigBase
                 `enable_reuse_benefit` tinyint NOT NULL DEFAULT 0,
                 `enable_co_signature` tinyint NOT NULL DEFAULT 0,
                 `enable_pending_signatures_banner` tinyint NOT NULL DEFAULT 1,
+                `enable_in_person_signature` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -941,6 +947,11 @@ class Config extends Compat\Base\ConfigBase
              // compris pour les entites deja configurees - cf. son commentaire
              // dans DEFAULTS ci-dessus.
              $migration->addField($table, 'enable_pending_signatures_banner', 'bool', ['value' => 1, 'after' => 'enable_co_signature']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'enable_in_person_signature')) {
+             // Signature sur place (issue #152) : opt-in, cf. son commentaire dans DEFAULTS.
+             $migration->addField($table, 'enable_in_person_signature', 'bool', ['value' => 0, 'after' => 'enable_pending_signatures_banner']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'show_qr_code')) {

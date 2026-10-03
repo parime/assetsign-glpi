@@ -30,7 +30,12 @@ class Token extends Compat\Base\TokenBase
      */
    public const CLEANUP_RETENTION_DAYS = 90;
 
-   public static function createForAssetsign(Assetsign $assetsign, int $validityDays, bool $forCosigner = false): string {
+    /**
+     * $witnessUsersId > 0 : jeton de signature SUR PLACE (issue #152), emis par ce technicien
+     * pour faire signer le beneficiaire sur son propre ecran - seul ce compte peut l'ouvrir
+     * (cf. SignController::assertCurrentUserIsAuthorizedSigner()).
+     */
+   public static function createForAssetsign(Assetsign $assetsign, int $validityDays, bool $forCosigner = false, int $witnessUsersId = 0): string {
        global $DB;
 
        $raw = self::generateRaw();
@@ -59,6 +64,7 @@ class Token extends Compat\Base\TokenBase
            // l'identite de la session, qui determine le role du signataire
            // courant (cf. SignController::assertCurrentUserIsAuthorizedSigner()).
            'for_cosigner'             => $forCosigner ? 1 : 0,
+           'witness_users_id'         => $witnessUsersId,
        ]);
 
        return $raw;
@@ -220,6 +226,7 @@ class Token extends Compat\Base\TokenBase
                 `ip_created` varchar(46) DEFAULT NULL,
                 `ip_used` varchar(46) DEFAULT NULL,
                 `for_cosigner` tinyint NOT NULL DEFAULT 0,
+                `witness_users_id` int unsigned NOT NULL DEFAULT 0,
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `token_hash` (`token_hash`),
                 KEY `plugin_assetsign_assetsigns_id` (`plugin_assetsign_assetsigns_id`),
@@ -236,6 +243,11 @@ class Token extends Compat\Base\TokenBase
           // une clause DEFAULT — meme piege deja documente ailleurs dans ce
           // plugin (cf. Config::install()).
           $migration->addField($table, 'for_cosigner', 'bool', ['value' => 0]);
+          $migration->migrationOneTable($table);
+      }
+      if (!$DB->fieldExists($table, 'witness_users_id')) {
+          // Signature sur place (issue #152) : technicien temoin, cf. createForAssetsign().
+          $migration->addField($table, 'witness_users_id', 'fkey', ['after' => 'for_cosigner']);
           $migration->migrationOneTable($table);
       }
    }

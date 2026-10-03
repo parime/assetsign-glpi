@@ -185,6 +185,9 @@ Chaque carte renvoie vers la liste filtrée correspondante en un clic, et respec
 **Un compte GLPI est-il obligatoire pour signer ?**
 Oui pour un bénéficiaire interne (workflow Remise/Restitution/Don/Vente habituel). Pour Don et Vente uniquement, un bénéficiaire externe (nom/contact en texte libre, sans compte GLPI) peut être choisi lors de la création manuelle — dans ce cas, aucune signature électronique n'est demandée : le PDF généré fait directement foi.
 
+**Et si le bénéficiaire ne peut pas se connecter à GLPI (pas de mot de passe, pas de poste) ?**
+Faites-le signer sur place, si votre administrateur a activé « Autoriser la signature sur place » (Configuration > AssetSign, onglet Général, désactivé par défaut). Sur la fiche Assetsign, le bouton **Faire signer sur place** ouvre la page de signature sur votre écran (tablette, PC du guichet) : remettez-le au bénéficiaire, qui relit le document et signe. Le PDF signé indique « Signature recueillie sur place, en présence de » votre nom : vous attestez ainsi de son identité. Si la signature a été déléguée, c'est le délégué qui signe.
+
 **Et si l'utilisateur n'a pas d'adresse e-mail dans GLPI ?**
 Il est quand même prévenu. Dès qu'un document attend sa signature, un bandeau « Vous avez N documents à signer » s'affiche sur sa page d'accueil GLPI (interface standard comme simplifiée), avec un lien vers la page **Mes documents à signer** : il y voit chaque document en attente et clique sur « Signer » pour l'ouvrir et le signer, exactement comme depuis le lien de l'e-mail. En interface simplifiée, la page est aussi accessible depuis le menu Plugins. Le délégué d'une signature et le responsable qui doit contre-signer y voient aussi les documents qui les concernent. Le bandeau peut être désactivé par entité (Configuration > AssetSign, onglet Général).
 
@@ -391,6 +394,9 @@ Each card links to the matching filtered list in one click, and respects the cur
 
 **Is a GLPI account required to sign?**
 Yes, for an internal recipient (the usual Handover/Return/Donation/Sale workflow). For Donation and Sale only, an external recipient (free-text name/contact, no GLPI account) can be chosen during manual creation — in that case, no electronic signature is requested: the generated PDF serves directly as proof.
+
+**What if the recipient cannot log in to GLPI (no password, no workstation)?**
+Have them sign on site, if your administrator has enabled "Allow on-site signature" (Configuration > AssetSign, General tab, off by default). On the Assetsign record, the **Have it signed on site** button opens the signature page on your screen (tablet, front-desk PC): hand it to the recipient, who reads the document and signs. The signed PDF states "Signature collected on site, in the presence of" your name: you thereby vouch for their identity. If the signature was delegated, the delegate signs.
 
 **What if the user has no e-mail address in GLPI?**
 They are still notified. As soon as a document is waiting for their signature, a "You have N documents to sign" banner is shown on their GLPI home page (standard and simplified interface alike), with a link to the **My documents to sign** page: they see every pending document there and click "Sign" to open and sign it, exactly as from the e-mail link. In the simplified interface, the page is also reachable from the Plugins menu. A signature delegate and the manager who must countersign also see the documents that concern them there. The banner can be turned off per entity (Configuration > AssetSign, General tab).
