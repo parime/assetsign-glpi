@@ -26,10 +26,8 @@ use Session;
  * MEME formulaire de creation, en une seule requete (pas de jeton, pas
  * d'e-mail, pas de page separee - decision actee avec l'utilisateur).
  */
-class Maintenance extends CommonDBTM
+class Maintenance extends Compat\Base\MaintenanceBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_MAINTENANCE;
 
    public static function getTypeName($nb = 0): string {

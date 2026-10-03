@@ -27,8 +27,8 @@ assetsign/
 │   ├── VenteDetails.php, DamageMarker.php             # données spécifiques Vente / état des lieux visuel
 │   ├── PassportEvent.php                                # Passeport matériel : agrege Assetsign/Maintenance en lecture seule
 │   ├── Api/SignController.php                          # logique partagée par front/sign.php
-│   └── Compat/                                          # compatibilité GLPI 11 et 12 (version, client HTTP, traits)
-├── compat/glpi11/, compat/glpi12/  # variantes des traits de Compat/ (propriétés typées en 12 seulement), chargées selon la version
+│   └── Compat/                                          # compatibilité GLPI 11 et 12 (version, client HTTP)
+│       └── Base/                                        # une classe parente par classe : propriétés typées en 12, non typées en 11
 ├── front/                  # contrôleurs (assetsign, template, config, sign public, maintenance, damagemarker AJAX)
 ├── templates/               # gabarits Twig (admin + PDF + page de signature)
 ├── public/                  # ressources statiques (obligatoire depuis GLPI 11, cf. TROUBLESHOOTING.md)

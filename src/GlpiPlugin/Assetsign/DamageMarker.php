@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
@@ -29,10 +28,8 @@ use Migration;
  *   par createMarkersForMaintenance() ; jamais modifiables ensuite (affichage
  *   lecture seule uniquement, pas de PDF - Maintenance n'en genere aucun).
  */
-class DamageMarker extends CommonDBTM
+class DamageMarker extends Compat\Base\DamageMarkerBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public const SEVERITY_MINOR = 0;

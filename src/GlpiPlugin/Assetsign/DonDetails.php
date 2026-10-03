@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
@@ -15,10 +14,8 @@ use Migration;
  * Pas de front dedie, utilisee par Assetsign::createManual()/updateDonDetails()
  * et HandoverPdfBuilder.
  */
-class DonDetails extends CommonDBTM
+class DonDetails extends Compat\Base\DonDetailsBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function createForAssetsign(int $assetsigns_id, string $organizationName): void {

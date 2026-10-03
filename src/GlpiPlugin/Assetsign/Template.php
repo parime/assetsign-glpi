@@ -2,17 +2,14 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
  * Gabarit de contrat / charte, editable dans Configuration > Assetsign > Gabarits.
  * Le contenu est du HTML brut insere tel quel dans le PDF (balise Twig |raw).
  */
-class Template extends CommonDBTM
+class Template extends Compat\Base\TemplateBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_TEMPLATE;
 
     /**

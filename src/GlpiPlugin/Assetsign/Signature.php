@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
@@ -26,10 +25,8 @@ use Migration;
  *   Movement::create() quand la signature est activee pour l'entite
  *   (Config::enable_movement_signature).
  */
-class Signature extends CommonDBTM
+class Signature extends Compat\Base\SignatureBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function recordProofForAssetsign(Assetsign $assetsign, array $proof): int {

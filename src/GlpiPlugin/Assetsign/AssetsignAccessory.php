@@ -2,17 +2,14 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
  * Jonction assetsign <-> accessoires remis (chargeur, sacoche, ecran...).
  * Utilisee par la fiche Assetsign (front/assetsign.form.php), pas de front dedie.
  */
-class AssetsignAccessory extends CommonDBTM
+class AssetsignAccessory extends Compat\Base\AssetsignAccessoryBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public static function attach(int $assetsigns_id, int $accessories_id, int $quantity = 1, string $comment = ''): void {

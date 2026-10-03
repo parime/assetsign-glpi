@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 
 /**
@@ -39,10 +38,8 @@ use Migration;
  * Pas de front dédié : Api\EnvironmentalDataFormController
  * (front/environmentaldata.form.php).
  */
-class EnvironmentalData extends CommonDBTM
+class EnvironmentalData extends Compat\Base\EnvironmentalDataBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
    public const SOURCE_MANUFACTURER = 'manufacturer';

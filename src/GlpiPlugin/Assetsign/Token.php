@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign;
 
-use CommonDBTM;
 use Migration;
 use RuntimeException;
 
@@ -16,10 +15,8 @@ use RuntimeException;
  * (l'ancien est invalide dans le meme mouvement) — c'est plus sûr et plus simple
  * que de conserver le jeton en clair.
  */
-class Token extends CommonDBTM
+class Token extends Compat\Base\TokenBase
 {
-   use Compat\HasRightname;
-
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
     /** Au-dela de ce nombre de tentatives d'acces, le jeton est desactive par securite. */

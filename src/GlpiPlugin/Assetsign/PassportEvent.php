@@ -15,7 +15,7 @@ use Migration;
  * qu'agreger, jamais dupliquer, via recordForAssetsign()/recordForMaintenance() appelees
  * depuis ces classes au moment ou l'evenement a reellement lieu.
  */
-class PassportEvent extends CommonDBTM
+class PassportEvent extends Compat\Base\PassportEventBase
 {
    public const TYPE_ATTRIBUTION = 0;
    public const TYPE_RETURN      = 1;
@@ -30,7 +30,6 @@ class PassportEvent extends CommonDBTM
     // TYPE_DON/TYPE_VENTE ci-dessus, cf. recordForAssetsign().
    public const TYPE_DESTRUCTION = 6;
 
-   use Compat\HasRightname;
 
 
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
