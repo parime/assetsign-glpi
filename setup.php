@@ -16,7 +16,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_ASSETSIGN_VERSION', '2.7.1');
+define('PLUGIN_ASSETSIGN_VERSION', '2.8.0');
 define('PLUGIN_ASSETSIGN_MIN_GLPI', '11.0.0');
 // GLPI 11 ET 12 depuis un seul code source (cf. src/GlpiPlugin/Assetsign/Compat/).
 define('PLUGIN_ASSETSIGN_MAX_GLPI', '12.99.99');
