@@ -1,0 +1,62 @@
+[
+  {
+    "page": "Home",
+    "source": "README.md",
+    "title": "Accueil",
+    "section": "Documentation (FR)"
+  },
+  {
+    "page": "Installation",
+    "source": "INSTALLATION.md",
+    "title": "Installation",
+    "section": "Documentation (FR)"
+  },
+  {
+    "page": "Guide-utilisateur",
+    "source": "USER_GUIDE.md",
+    "title": "Guide d'utilisation (FR/EN)",
+    "section": "Documentation (FR)"
+  },
+  {
+    "page": "Depannage",
+    "source": "TROUBLESHOOTING.md",
+    "title": "Dépannage",
+    "section": "Documentation (FR)"
+  },
+  {
+    "page": "Home-en",
+    "source": "README.en.md",
+    "title": "Home",
+    "section": "Documentation (EN)"
+  },
+  {
+    "page": "Architecture",
+    "source": "ARCHITECTURE.md",
+    "title": "Architecture",
+    "section": "Projet"
+  },
+  {
+    "page": "Feuille-de-route",
+    "source": "ROADMAP.md",
+    "title": "Feuille de route",
+    "section": "Projet"
+  },
+  {
+    "page": "Historique-des-versions",
+    "source": "CHANGELOG.md",
+    "title": "Historique des versions",
+    "section": "Projet"
+  },
+  {
+    "page": "Securite",
+    "source": "SECURITY.md",
+    "title": "Sécurité",
+    "section": "Projet"
+  },
+  {
+    "page": "Contribuer",
+    "source": "CONTRIBUTING.md",
+    "title": "Contribuer",
+    "section": "Projet"
+  }
+]
