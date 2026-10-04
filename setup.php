@@ -85,7 +85,8 @@ function plugin_init_assetsign(): void {
 
     $itemHooks = array_fill_keys($manageableItemtypes, 'plugin_assetsign_item_assignment');
     $PLUGIN_HOOKS[Hooks::ITEM_ADD]['assetsign']    = $itemHooks;
-    $PLUGIN_HOOKS[Hooks::ITEM_UPDATE]['assetsign'] = $itemHooks;
+    // Issue #157 : la desactivation d'un compte peut preparer son depart (Departure::onUserUpdate()).
+    $PLUGIN_HOOKS[Hooks::ITEM_UPDATE]['assetsign'] = $itemHooks + ['User' => 'plugin_assetsign_user_update'];
 
     $purgeHooks = array_fill_keys($manageableItemtypes, 'plugin_assetsign_item_pre_purge');
     $PLUGIN_HOOKS[Hooks::PRE_ITEM_PURGE]['assetsign'] = $purgeHooks;
@@ -135,6 +136,8 @@ function plugin_init_assetsign(): void {
         'addtabon' => ['Entity'],
     ]);
     Plugin::registerClass(\GlpiPlugin\Assetsign\Template::class);
+    // Issue #157 : dossiers de depart, porteurs de leurs propres notifications.
+    Plugin::registerClass(\GlpiPlugin\Assetsign\Departure::class);
     // Accessory/MaintenanceChecklistItem sont des CommonDropdown standards :
     // aucun attribut de registerClass requis, leur comportement de liste
     // deroulante vient de leur classe parente.
@@ -220,7 +223,7 @@ function plugin_init_assetsign(): void {
     // (pas le format documente ['types'=>[...],'icon'=>'...']) — piege deja
     // rencontre et documente dans TROUBLESHOOTING.md.
     $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign'] = [
-        'tools' => [\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Maintenance::class, \GlpiPlugin\Assetsign\Movement::class],
+        'tools' => [\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Maintenance::class, \GlpiPlugin\Assetsign\Movement::class, \GlpiPlugin\Assetsign\Departure::class],
     ];
 
     if (Plugin::isPluginActive('assetsign')) {

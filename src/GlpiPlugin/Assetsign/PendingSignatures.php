@@ -60,7 +60,32 @@ final class PendingSignatures
           return 0;
       }
 
-       return countElementsInTable(Assetsign::getTable(), self::criteria($usersId));
+       return countElementsInTable(Assetsign::getTable(), self::criteria($usersId))
+           + count(self::openDeparturesForUser($usersId));
+   }
+
+    /**
+     * Issue #157 : dossiers de depart ouverts qui attendent la signature de $usersId.
+     *
+     * @return list<Departure>
+     */
+   public static function openDeparturesForUser(int $usersId): array {
+       global $DB;
+
+      if ($usersId <= 0) {
+          return [];
+      }
+       $departures = [];
+      foreach ($DB->request([
+          'FROM'  => Departure::getTable(),
+          'WHERE' => ['users_id' => $usersId, 'status' => DepartureLogic::STATUS_OPEN],
+          'ORDER' => 'date_creation ASC',
+      ]) as $row) {
+          $departure = new Departure();
+          $departure->fields = $row;
+          $departures[] = $departure;
+      }
+       return $departures;
    }
 
     /**
@@ -144,6 +169,9 @@ final class PendingSignatures
    private static function criteria(int $usersId): array {
        return [
            'is_deleted' => 0,
+           // Issue #157 : les fiches d'un dossier de depart se signent ensemble, depuis le
+           // dossier (une seule ligne, cf. openDeparturesForUser()), jamais une a une.
+           'plugin_assetsign_departures_id' => 0,
            'OR'         => [
                [
                    'status' => self::STATUSES_SIGNER,

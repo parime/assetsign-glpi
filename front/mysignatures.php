@@ -58,6 +58,23 @@ foreach (PendingSignatures::forUser($usersId) as $pending) {
     ];
 }
 
+// Issue #157 : un dossier de depart = une seule ligne, signee depuis la page du dossier.
+foreach (PendingSignatures::openDeparturesForUser($usersId) as $departure) {
+    $lines = $departure->getItemLines();
+    $rows[] = [
+        'id'            => 0,
+        'type'          => __('Restitution de départ', 'assetsign'),
+        'item'          => sprintf(_n('%d matériel', '%d matériels', count($lines), 'assetsign'), count($lines)),
+        'serial'        => implode(', ', array_column($lines, 'name')),
+        'date_sent'     => $departure->fields['date_creation'],
+        'technician'    => getUserName((int) $departure->fields['users_id_tech']),
+        'is_cosigner'   => false,
+        'is_delegate'   => false,
+        'beneficiary'   => '',
+        'departure_url' => $departure->getSignUrl(),
+    ];
+}
+
 TemplateRenderer::getInstance()->display('@assetsign/my_signatures.html.twig', [
     'title'      => $title,
     'rows'       => $rows,

@@ -1,0 +1,55 @@
+{# Issue #157 : PDF récapitulatif de la restitution groupée d'un départ. Textes fixes, jamais
+   traduits via __() : document archivé, même règle que handover.html.twig (cf.
+   WorkflowTypeInterface::getCanonicalLabel()). Chaque matériel garde en plus sa propre fiche de
+   restitution signée, dont l'empreinte SHA-256 est rappelée ici. #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Restitution de départ — {{ user_name }}</title>
+{% include '@assetsign/pdf/_pdf_style.html.twig' %}
+</head>
+<body>
+
+{% if company_name %}
+<div class="header-logo"><div class="company-name">{{ company_name }}</div></div>
+{% endif %}
+
+<h1>Restitution du matériel — départ</h1>
+<p class="meta">Signée le {{ signed_at }}</p>
+
+<h2>Personne qui part</h2>
+<table class="info-table">
+    <tr><th>Nom</th><td>{{ user_name }}</td></tr>
+    <tr><th>Date de départ</th><td>{{ departure_date ?: '—' }}</td></tr>
+</table>
+
+<h2>Matériel restitué</h2>
+<table class="info-table">
+    <tr><th>Type</th><th>Matériel</th><th>N° de série</th><th>N° d'inventaire</th><th>Fiche n°</th></tr>
+    {% for line in lines %}
+    <tr>
+        <td>{{ line.type_label }}</td>
+        <td>{{ line.name }}</td>
+        <td>{{ line.serial }}</td>
+        <td>{{ line.otherserial }}</td>
+        <td>{{ line.assetsign_id }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p style="font-size: 8px;">Chaque matériel dispose de sa propre fiche de restitution signée (PDF joint à la fiche).
+Empreintes SHA-256 de ces PDF :
+{% for line in lines %}<br>Fiche n°{{ line.assetsign_id }} : {{ hashes[line.assetsign_id]|default('—') }}{% endfor %}</p>
+
+<h2>Signature</h2>
+<p>Je confirme restituer l'ensemble du matériel listé ci-dessus.</p>
+<img src="{{ signature_image }}" alt="" style="max-height: 120px; border: 1px solid #ccc;">
+<table class="info-table">
+    <tr><th>Signataire</th><td>{{ user_name }}</td></tr>
+    <tr><th>Date et heure</th><td>{{ signed_at }}</td></tr>
+    {% if witness_name %}<tr><th>Recueillie en présence de</th><td>{{ witness_name }}</td></tr>{% endif %}
+    {% if ip_address %}<tr><th>Adresse IP</th><td>{{ ip_address }}</td></tr>{% endif %}
+</table>
+
+</body>
+</html>

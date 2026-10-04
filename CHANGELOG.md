@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Départ d'un salarié : restitution groupée de tout son matériel** (issue #157) — « dossier groupé » :
+  - action « Préparer le départ » dans l'onglet Assetsign du compte utilisateur : une fiche de
+    restitution ordinaire par matériel affecté (preuve, PDF, passeport, état du matériel inchangés),
+    regroupées dans un départ (`glpi_plugin_assetsign_departures`) ; une seule invitation, une seule
+    signature (page du départ, ou sur place sur l'écran du technicien), un PDF récapitulatif ;
+  - les fiches d'un départ n'envoient ni lien ni e-mail ni relance individuels ; relances au niveau du
+    départ (même calendrier, jamais deux relances rapprochées) ; une désaffectation pendant le départ ne
+    crée pas de restitution individuelle en plus ;
+  - pas de doublon : un seul départ ouvert par personne, restitution déjà en attente rattachée, matériel
+    déjà rendu non redemandé ;
+  - déclencheurs automatiques facultatifs, désactivés par défaut (onglet Restitution) : désactivation du
+    compte, date de fin du compte à J-X (action automatique quotidienne `assetsignDepartures`) ;
+  - « Mes documents à signer » : un départ = une ligne ; suivi dans Outils > Départs ;
+  - notifications « Départ : restitution du matériel à signer / relance / restitution signée » en 5 langues.
+
 ---
 
 ## [2.8.0] - 2026-10-04

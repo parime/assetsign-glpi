@@ -713,6 +713,11 @@ class Assetsign extends Compat\Base\AssetsignBase
           $itemDropdownHtml = ob_get_clean();
       }
 
+       // Issue #157 : depart de la personne — restitution groupee de tout son materiel.
+      if ($canAssign) {
+          self::showDepartureCard($users_id);
+      }
+
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/assetsign_tab.html.twig', [
            'assetsigns'                => $rows,
            'statuses'               => self::getStatuses(),
@@ -725,6 +730,39 @@ class Assetsign extends Compat\Base\AssetsignBase
            'item_dropdown_html'     => $itemDropdownHtml,
            'csrf_token'             => \Session::getNewCSRFToken(),
        ]);
+   }
+
+    /**
+     * Issue #157 : carte « Départ » de l'onglet Assetsign d'un utilisateur — lien vers son
+     * dossier de depart ouvert, sinon bouton « Préparer le départ ».
+     */
+   private static function showDepartureCard(int $users_id): void {
+       global $CFG_GLPI;
+
+       $formUrl = $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/departure.form.php';
+       $open = Departure::findOpenFor($users_id);
+
+       echo '<div class="card mb-3"><div class="card-body d-flex align-items-center gap-3">';
+       echo '<i class="ti ti-door-exit fs-2 text-muted"></i><div class="flex-grow-1">';
+       echo '<strong>' . __('Départ de la personne', 'assetsign') . '</strong><div class="text-muted small">';
+      if ($open !== null) {
+          echo htmlescape(sprintf(
+              __('Départ en cours : %d matériel(s) à restituer.', 'assetsign'),
+              count($open->getChildren())
+          ));
+          echo '</div></div>';
+          echo '<a class="btn btn-outline-primary" href="' . htmlescape($formUrl . '?id=' . $open->getID()) . '">'
+              . '<i class="ti ti-eye me-1"></i>' . __('Voir le départ', 'assetsign') . '</a>';
+      } else {
+          echo __('Une seule fiche de restitution groupée pour tout le matériel affecté, signée en une fois.', 'assetsign');
+          echo '</div></div>';
+          echo '<form method="post" action="' . htmlescape($formUrl) . '" class="m-0">';
+          echo '<input type="hidden" name="_glpi_csrf_token" value="' . htmlescape(Session::getNewCSRFToken()) . '">';
+          echo '<input type="hidden" name="users_id" value="' . $users_id . '">';
+          echo '<button type="submit" name="prepare" value="1" class="btn btn-primary">'
+              . '<i class="ti ti-door-exit me-1"></i>' . __('Préparer le départ', 'assetsign') . '</button></form>';
+      }
+       echo '</div></div>';
    }
 
     /**
@@ -1059,6 +1097,14 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
    private static function createAssetsign(CommonDBTM $item, int $type, int $users_id): void {
+      // Issue #157 : la desaffectation du materiel d'une personne qui part (geste
+      // habituel du technicien au moment du depart) ne doit ni annuler la fiche du
+      // dossier de depart (cancelPendingAssetsignsFor() ci-dessous) ni envoyer une
+      // restitution individuelle en plus : le dossier couvre deja ce materiel.
+      if ($type === self::TYPE_RETURN && self::isInOpenDeparture($item)) {
+          return;
+      }
+
        $config = Config::getForEntity((int) $item->fields['entities_id']);
        $template = Template::getDefaultFor($type, (int) $item->fields['entities_id']);
 
@@ -1091,6 +1137,68 @@ class Assetsign extends Compat\Base\AssetsignBase
 
        $assetsign->getFromDB($id);
        $assetsign->launchWorkflow($config);
+   }
+
+    /**
+     * Issue #157 : fiche de restitution creee pour un dossier de depart — meme
+     * creation que createAssetsign() (kit reporte, modele de l'entite, passeport,
+     * PDF), mais en mode groupe : ni lien ni e-mail individuels (cf.
+     * launchWorkflow()), signature depuis la page du dossier.
+     */
+   public static function createForDeparture(CommonDBTM $item, int $users_id, int $departures_id): ?self {
+       $template = Template::getDefaultFor(self::TYPE_RETURN, (int) $item->fields['entities_id']);
+
+       $assetsign = new self();
+       $id = $assetsign->add([
+           'entities_id'                    => $item->fields['entities_id'],
+           'itemtype'                       => $item->getType(),
+           'items_id'                       => $item->getID(),
+           'users_id'                       => $users_id,
+           'users_id_tech'                  => Session::getLoginUserID() ?: 0,
+           'plugin_assetsign_templates_id'  => $template ? $template->getID() : 0,
+           'plugin_assetsign_kits_id'       => self::resolveKitForAutomaticCreation($item, self::TYPE_RETURN),
+           'plugin_assetsign_departures_id' => $departures_id,
+           'type'                           => self::TYPE_RETURN,
+           'status'                         => self::STATUS_PENDING,
+       ]);
+      if (!$id) {
+          CreationFailure::record(
+              $item->getType(),
+              $item->getID(),
+              (int) $item->fields['entities_id'],
+              self::TYPE_RETURN,
+              'Echec de l\'insertion en base (dossier de depart #' . $departures_id . ').'
+          );
+          return null;
+      }
+
+       $assetsign->getFromDB($id);
+       $assetsign->launchWorkflow(null, true);
+       return $assetsign;
+   }
+
+    /**
+     * Vrai si une restitution de ce materiel en attente appartient a un dossier
+     * de depart encore ouvert (issue #157).
+     */
+   public static function isInOpenDeparture(CommonDBTM $item): bool {
+       global $DB;
+
+       return $DB->request([
+           'COUNT'      => 'cpt',
+           'FROM'       => self::getTable() . ' AS a',
+           'INNER JOIN' => [
+               Departure::getTable() . ' AS d' => ['FKEY' => ['a' => 'plugin_assetsign_departures_id', 'd' => 'id']],
+           ],
+           'WHERE'      => [
+               'a.itemtype'   => $item->getType(),
+               'a.items_id'   => $item->getID(),
+               'a.type'       => self::TYPE_RETURN,
+               'a.is_deleted' => 0,
+               'a.status'     => [self::STATUS_DRAFT, self::STATUS_PENDING, ...self::STATUSES_AWAITING_SIGNATURE],
+               'd.status'     => DepartureLogic::STATUS_OPEN,
+           ],
+       ])->current()['cpt'] > 0;
    }
 
     /**
@@ -1514,7 +1622,7 @@ class Assetsign extends Compat\Base\AssetsignBase
     /**
      * Genere le PDF, cree le jeton de signature, envoie la notification initiale.
      */
-   public function launchWorkflow(?Config $config = null): void {
+   public function launchWorkflow(?Config $config = null, bool $grouped = false): void {
        $config ??= Config::getForEntity((int) $this->fields['entities_id']);
 
        // Point de passage commun a toutes les voies de creation (automatique par
@@ -1574,6 +1682,18 @@ class Assetsign extends Compat\Base\AssetsignBase
        // cf. Provider\ProviderFactory).
        // Le jeton brut n'est jamais stocke : il transite en propriete volatile le temps
        // de construire l'e-mail de notification dans la meme requete (cf. Token::validate()).
+      // Issue #157 : fiche d'un dossier de depart — signee depuis la page du dossier
+      // (Departure::sign()), donc ni lien de signature ni e-mail individuels : une
+      // seule invitation pour tout le materiel, envoyee par le dossier lui-meme.
+      if ($grouped) {
+          $this->update([
+              'id'        => $this->getID(),
+              'status'    => self::STATUS_SENT,
+              'date_sent' => date('Y-m-d H:i:s'),
+          ]);
+          return;
+      }
+
        $provider = Provider\ProviderFactory::for($config);
        $provider->createRequest($this, GLPI_DOC_DIR . '/' . $document->fields['filepath']);
 
@@ -2345,7 +2465,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
    }
 
-   public function markSigned(string $signedPdfPath, array $proof): void {
+   public function markSigned(string $signedPdfPath, array $proof, bool $notify = true): void {
        // "[signée]" volontairement non traduit : cf. le commentaire de
        // getCanonicalTypeLabel() — traduire ici ferait dependre la langue du
        // nom de fichier de la session du beneficiaire qui signe, incoherent
@@ -2362,7 +2482,9 @@ class Assetsign extends Compat\Base\AssetsignBase
        ]);
 
        Token::invalidateForAssetsign($this->getID());
-       NotificationEvent::raiseEvent('signed', $this);
+      if ($notify) {
+          NotificationEvent::raiseEvent('signed', $this);
+      }
    }
 
     /**
@@ -2528,7 +2650,8 @@ class Assetsign extends Compat\Base\AssetsignBase
 
        $rows = $DB->request([
            'FROM'  => self::getTable(),
-           'WHERE' => ['status' => self::STATUSES_AWAITING_SIGNATURE, 'is_deleted' => 0],
+           // Issue #157 : fiches d'un dossier de depart relancees par le dossier (Departure::runReminders()).
+           'WHERE' => ['status' => self::STATUSES_AWAITING_SIGNATURE, 'is_deleted' => 0, 'plugin_assetsign_departures_id' => 0],
        ]);
 
        $count = 0;
@@ -2594,6 +2717,8 @@ class Assetsign extends Compat\Base\AssetsignBase
            'WHERE' => [
                'status'     => self::STATUSES_AWAITING_SIGNATURE,
                'is_deleted' => 0,
+               // Issue #157 : un dossier de depart reste ouvert jusqu'a sa signature ou son annulation.
+               'plugin_assetsign_departures_id' => 0,
            ],
        ]);
 
@@ -2647,6 +2772,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                'status'               => self::STATUSES_AWAITING_SIGNATURE,
                'is_deleted'           => 0,
                'expiry_warning_sent'  => 0,
+               'plugin_assetsign_departures_id' => 0,
            ],
        ]);
 
@@ -2756,6 +2882,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                 `external_beneficiary_contact` varchar(255) DEFAULT NULL,
                 `plugin_assetsign_templates_id` int unsigned NOT NULL DEFAULT 0,
                 `plugin_assetsign_kits_id` int unsigned NOT NULL DEFAULT 0,
+                `plugin_assetsign_departures_id` int unsigned NOT NULL DEFAULT 0,
                 `type` tinyint NOT NULL DEFAULT 0,
                 `status` tinyint NOT NULL DEFAULT 0,
                 `document_id_unsigned` int unsigned NOT NULL DEFAULT 0,
@@ -2786,6 +2913,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                 KEY `type` (`type`),
                 KEY `plugin_assetsign_templates_id` (`plugin_assetsign_templates_id`),
                 KEY `plugin_assetsign_kits_id` (`plugin_assetsign_kits_id`),
+                KEY `plugin_assetsign_departures_id` (`plugin_assetsign_departures_id`),
                 KEY `is_deleted` (`is_deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
           $DB->doQuery($query);
@@ -2842,6 +2970,14 @@ class Assetsign extends Compat\Base\AssetsignBase
              $migration->addField($table, 'plugin_assetsign_kits_id', 'integer', ['value' => 0, 'after' => 'plugin_assetsign_templates_id']);
              $migration->migrationOneTable($table);
              $migration->addKey($table, 'plugin_assetsign_kits_id');
+         }
+         if (!$DB->fieldExists($table, 'plugin_assetsign_departures_id')) {
+             // Issue #157 : fiche de restitution rattachee a un dossier de depart
+             // (Departure), 0 = fiche individuelle. Pas de cle etrangere, meme
+             // choix que plugin_assetsign_kits_id ci-dessus.
+             $migration->addField($table, 'plugin_assetsign_departures_id', 'fkey', ['after' => 'plugin_assetsign_kits_id']);
+             $migration->migrationOneTable($table);
+             $migration->addKey($table, 'plugin_assetsign_departures_id');
          }
          if (!$DB->fieldExists($table, 'delegated_users_id')) {
              // Delegation de signature (issue #115) : 'users_id' (le

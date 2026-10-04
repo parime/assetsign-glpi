@@ -1,0 +1,50 @@
+{# Issue #157 : suivi des départs (restitution groupée). #}
+<div class="container-lg my-3">
+  <div class="card">
+    <div class="card-header d-flex align-items-center">
+      <h3 class="card-title mb-0"><i class="ti ti-door-exit me-2"></i>{{ show_all ? __('Tous les départs', 'assetsign') : __('Départs en cours', 'assetsign') }}</h3>
+      <a href="{{ self_url }}{{ show_all ? '' : '?all=1' }}" class="ms-auto small">{{ show_all ? __('Voir seulement les départs en cours', 'assetsign') : __('Voir tous les départs', 'assetsign') }}</a>
+    </div>
+    <div class="card-body pb-0">
+      <p class="text-muted">{{ __('Pour préparer un départ, ouvrez la fiche de l\'utilisateur, onglet Assetsign, puis « Préparer le départ » : une seule fiche de restitution groupée est envoyée pour tout son matériel.', 'assetsign') }}</p>
+    </div>
+    {% if rows is empty %}
+      <div class="card-body"><div class="empty"><p class="empty-title">{{ __('Aucun départ en cours', 'assetsign') }}</p></div></div>
+    {% else %}
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>{{ __('Personne qui part', 'assetsign') }}</th>
+              <th>{{ __('Date de départ', 'assetsign') }}</th>
+              <th>{{ __('Déclencheur', 'assetsign') }}</th>
+              <th>{{ __('Matériels signés', 'assetsign') }}</th>
+              <th>{{ __('Relances', 'assetsign') }}</th>
+              <th>{{ __('Statut') }}</th>
+              <th>{{ __('Créé le', 'assetsign') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+              {% set status_class = {0: 'bg-blue-lt', 1: 'bg-green-lt', 2: 'bg-secondary-lt'}[row.status]|default('bg-secondary-lt') %}
+              <tr>
+                <td><a href="{{ form_url ~ row.id }}">{{ row.user }}</a></td>
+                <td>{{ row.date_departure ? row.date_departure|formatted_date : '—' }}</td>
+                <td>{{ row.trigger }}</td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="progress" style="width: 80px; height: 6px;"><div class="progress-bar bg-green" style="width: {{ row.total > 0 ? (100 * row.signed / row.total)|round : 0 }}%"></div></div>
+                    <span>{{ row.signed }} / {{ row.total }}</span>
+                  </div>
+                </td>
+                <td>{{ row.reminders }}</td>
+                <td><span class="badge {{ status_class }}">{{ row.status_label }}</span></td>
+                <td>{{ row.date_creation|formatted_datetime }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>
