@@ -496,15 +496,14 @@ class Departure extends Compat\Base\DepartureBase
          $sinceLast = $row['date_last_reminder'] !== null
             ? (int) floor((time() - (int) strtotime((string) $row['date_last_reminder'])) / 86400)
             : null;
-         if (
-            !DepartureLogic::reminderDue(
-                $days,
-                $sinceLast,
-                (int) $row['reminder_count'],
-                $config->getReminderDelays(),
-                (int) $config->fields['max_reminders']
-            )
-         ) {
+         $due = DepartureLogic::reminderDue(
+            $days,
+            $sinceLast,
+            (int) $row['reminder_count'],
+            $config->getReminderDelays(),
+            (int) $config->fields['max_reminders']
+         );
+         if (!$due) {
             continue;
          }
          $departure = new self();
