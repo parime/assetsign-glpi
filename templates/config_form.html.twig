@@ -243,6 +243,25 @@
               </div>
             {% endfor %}
           {% endif %}
+
+          {# Issue #157 : depart d'un salarie, restitution groupee de tout son materiel. #}
+          <h4 class="mt-4"><i class="ti ti-door-exit me-1"></i>{{ __('Départ d\'un salarié', 'assetsign') }}</h4>
+          <p class="text-muted">{{ __('Une seule fiche de restitution groupée pour tout le matériel affecté à la personne qui part, signée en une fois. L\'action « Préparer le départ » est toujours disponible dans l\'onglet Assetsign de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs.', 'assetsign') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="departure_on_deactivation" value="0">
+            <input type="checkbox" name="departure_on_deactivation" value="1" class="form-check-input" id="departure_on_deactivation" {{ config.departure_on_deactivation|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="departure_on_deactivation">{{ __('Préparer le départ quand le compte GLPI est désactivé', 'assetsign') }}</label>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="departure_on_end_date" value="0">
+            <input type="checkbox" name="departure_on_end_date" value="1" class="form-check-input" id="departure_on_end_date" {{ config.departure_on_end_date|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="departure_on_end_date">{{ __('Préparer le départ à l\'approche de la date de fin du compte', 'assetsign') }}</label>
+          </div>
+          <div class="mb-3" style="max-width: 320px;">
+            <label class="form-label" for="departure_end_date_days">{{ __('Nombre de jours avant la date de fin', 'assetsign') }}</label>
+            <input type="number" min="0" max="90" name="departure_end_date_days" id="departure_end_date_days" class="form-control" value="{{ config.departure_end_date_days|default(7) }}">
+            <div class="form-text">{{ __('Vérifié chaque jour par l\'action automatique « assetsignDepartures », qui envoie aussi les relances des départs non signés.', 'assetsign') }}</div>
+          </div>
         </div>
 
         {# ---------------------------------------------------------------- Don #}

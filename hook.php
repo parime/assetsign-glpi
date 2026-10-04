@@ -16,6 +16,7 @@ use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\CreationFailure;
 use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\Dashboard\CardProvider;
+use GlpiPlugin\Assetsign\Departure;
 use GlpiPlugin\Assetsign\DestructionDetails;
 use GlpiPlugin\Assetsign\DonDetails;
 use GlpiPlugin\Assetsign\EnvironmentalData;
@@ -24,6 +25,7 @@ use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Movement;
 use GlpiPlugin\Assetsign\NotificationTargetAssetsign;
+use GlpiPlugin\Assetsign\NotificationTargetDeparture;
 use GlpiPlugin\Assetsign\PassportEvent;
 use GlpiPlugin\Assetsign\PendingSignatures;
 use GlpiPlugin\Assetsign\Profile;
@@ -47,6 +49,26 @@ use GlpiPlugin\Assetsign\VenteDetails;
  * reaffecte un simple ordinateur se prendrait une erreur 500 sur SA sauvegarde
  * a cause d'un probleme qui ne concerne que le plugin).
  */
+/**
+ * Issue #157 : desactivation d'un compte utilisateur -> dossier de depart (si active dans la
+ * configuration, cf. Departure::onUserUpdate()). Jamais bloquant pour la mise a jour du compte.
+ */
+function plugin_assetsign_user_update(CommonDBTM $item): void {
+   if (!$item instanceof User) {
+      return;
+   }
+   try {
+       Departure::onUserUpdate($item);
+   } catch (\Throwable $e) {
+       \Toolbox::logInFile('assetsign', sprintf(
+           "Echec de la preparation du depart pour l'utilisateur #%d : %s\n%s",
+           $item->getID(),
+           $e->getMessage(),
+           $e->getTraceAsString()
+       ));
+   }
+}
+
 function plugin_assetsign_item_assignment(CommonDBTM $item): void {
    try {
        Assetsign::handleItemAssignment($item);
@@ -237,6 +259,9 @@ function plugin_assetsign_install(): bool {
     // plus bas pour DamageMarker/Maintenance.
     ChecklistItem::install($migration);
     Assetsign::install($migration);
+    // Issue #157 : dossiers de depart (restitution groupee), apres Assetsign::install()
+    // qui ajoute la colonne de rattachement plugin_assetsign_departures_id.
+    Departure::install($migration);
     AssetsignAccessory::install($migration);
     VenteDetails::install($migration);
     // Meme motif 1-vers-1 que VenteDetails ci-dessus (issue #78, "fin de vie
@@ -275,6 +300,7 @@ function plugin_assetsign_install(): bool {
     $migration->executeMigration();
 
     NotificationTargetAssetsign::install();
+    NotificationTargetDeparture::install();
 
     CronTask::register(
         Assetsign::class,
@@ -300,6 +326,15 @@ function plugin_assetsign_install(): bool {
         DAY_TIMESTAMP,
         [
             'comment' => 'Alerte le technicien des attributions sur le point d\'expirer (avant que ce soit trop tard pour agir)',
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
+    CronTask::register(
+        Departure::class,
+        'assetsignDepartures',
+        DAY_TIMESTAMP,
+        [
+            'comment' => 'Prepare les departs a date de fin de compte (si active) et relance les departs non signes',
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
@@ -354,6 +389,7 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_damagemarkers',
         'glpi_plugin_assetsign_checklistvalues',
         'glpi_plugin_assetsign_assetsigns',
+        'glpi_plugin_assetsign_departures',
         'glpi_plugin_assetsign_checklistitems',
         'glpi_plugin_assetsign_maintenancechecklistvalues',
         'glpi_plugin_assetsign_maintenances',
@@ -370,6 +406,7 @@ function plugin_assetsign_uninstall(): bool {
 
     Profile::uninstall();
     NotificationTargetAssetsign::uninstall();
+    NotificationTargetDeparture::uninstall();
 
     // Retire toutes les taches planifiees enregistrees par ce plugin
     CronTask::Unregister('assetsign');

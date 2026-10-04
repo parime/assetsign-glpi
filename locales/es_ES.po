@@ -2856,3 +2856,172 @@ msgstr "La firma presencial no es posible para esta ficha."
 
 msgid "La délégation n'est pas disponible pour une signature sur place."
 msgstr "La delegación no está disponible para una firma presencial."
+
+msgid "Manuel"
+msgstr "Manual"
+
+msgid "Désactivation du compte"
+msgstr "Desactivación de la cuenta"
+
+msgid "Date de fin du compte"
+msgstr "Fecha de fin de la cuenta"
+
+msgid "Ce départ n'attend plus de signature."
+msgstr "Esta salida ya no espera ninguna firma."
+
+#, php-format
+msgid "Restitution de départ - %s"
+msgstr "Devolución por salida - %s"
+
+#, php-format
+msgid "Départ préparé : %d matériel(s) à restituer, l'utilisateur est invité à signer."
+msgstr "Salida preparada: %d elemento(s) que devolver, se ha invitado al usuario a firmar."
+
+msgid "Prépare les départs à date de fin de compte et relance les départs non signés"
+msgstr "Prepara las salidas en la fecha de fin de cuenta y recuerda las salidas no firmadas"
+
+msgid "Départ : restitution du matériel à signer"
+msgstr "Salida: devolución de material por firmar"
+
+msgid "Départ : relance de signature"
+msgstr "Salida: recordatorio de firma"
+
+msgid "Départ : restitution signée"
+msgstr "Salida: devolución firmada"
+
+msgid "Personne qui part"
+msgstr "Persona que se va"
+
+msgid "Technicien ayant préparé le départ"
+msgstr "Técnico que preparó la salida"
+
+msgid "Nombre de matériels"
+msgstr "Número de elementos"
+
+msgid "Déclencheur"
+msgstr "Disparador"
+
+msgid "N° de série"
+msgstr "N.º de serie"
+
+msgid "Matériel à restituer"
+msgstr "Material que devolver"
+
+msgid "Départ de la personne"
+msgstr "Salida de la persona"
+
+#, php-format
+msgid "Départ en cours : %d matériel(s) à restituer."
+msgstr "Salida en curso: %d elemento(s) que devolver."
+
+msgid "Voir le départ"
+msgstr "Ver la salida"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté, signée en une fois."
+msgstr "Una única ficha de devolución agrupada para todo el material asignado, firmada de una vez."
+
+msgid "Préparer le départ"
+msgstr "Preparar la salida"
+
+msgid "Aucun matériel géré par assetsign n'est affecté à cette personne : rien à restituer."
+msgstr "Esta persona no tiene asignado ningún material gestionado por assetsign: nada que devolver."
+
+msgid "Merci de cocher la case de confirmation avant de signer."
+msgstr "Marque la casilla de confirmación antes de firmar."
+
+msgid "Vous n'êtes pas autorisé à signer ce départ."
+msgstr "No está autorizado a firmar esta salida."
+
+msgid "Restitution signée. Merci !"
+msgstr "Devolución firmada. ¡Gracias!"
+
+msgid "Départ annulé, ses fiches en attente aussi."
+msgstr "Salida anulada, junto con sus fichas pendientes."
+
+msgid "Restitution de départ"
+msgstr "Devolución por salida"
+
+#, php-format
+msgid "Départ de %s"
+msgstr "Salida de %s"
+
+msgid "Tous les départs"
+msgstr "Todas las salidas"
+
+msgid "Préparé par"
+msgstr "Preparado por"
+
+msgid "Matériels signés"
+msgstr "Elementos firmados"
+
+msgid "N° d'inventaire"
+msgstr "N.º de inventario"
+
+#, php-format
+msgid "Restitution signée le %s."
+msgstr "Devolución firmada el %s."
+
+msgid "PDF récapitulatif"
+msgstr "PDF de resumen"
+
+msgid "Signer la restitution"
+msgstr "Firmar la devolución"
+
+#, php-format
+msgid "Signature sur place : %s signe sur votre écran. Le PDF indiquera que la signature a été recueillie en votre présence."
+msgstr "Firma presencial: %s firma en su pantalla. El PDF indicará que la firma se recogió en su presencia."
+
+msgid "Je confirme restituer l'ensemble du matériel listé ci-dessus."
+msgstr "Confirmo que devuelvo todo el material indicado arriba."
+
+msgid "Annuler ce départ et ses fiches en attente ?"
+msgstr "¿Anular esta salida y sus fichas pendientes?"
+
+msgid "Annuler le départ"
+msgstr "Anular la salida"
+
+#, php-format
+msgid "%d relance(s) envoyée(s)"
+msgstr "%d recordatorio(s) enviado(s)"
+
+msgid "Départs en cours"
+msgstr "Salidas en curso"
+
+msgid "Voir seulement les départs en cours"
+msgstr "Ver solo las salidas en curso"
+
+msgid "Voir tous les départs"
+msgstr "Ver todas las salidas"
+
+msgid "Pour préparer un départ, ouvrez la fiche de l'utilisateur, onglet Assetsign, puis « Préparer le départ » : une seule fiche de restitution groupée est envoyée pour tout son matériel."
+msgstr "Para preparar una salida, abra la ficha del usuario, pestaña Assetsign, y luego «Preparar la salida»: se envía una única ficha de devolución agrupada para todo su material."
+
+msgid "Aucun départ en cours"
+msgstr "Ninguna salida en curso"
+
+msgid "Relances"
+msgstr "Recordatorios"
+
+msgid "Départ d'un salarié"
+msgstr "Salida de un empleado"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté à la personne qui part, signée en une fois. L'action « Préparer le départ » est toujours disponible dans l'onglet Assetsign de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "Una única ficha de devolución agrupada para todo el material asignado a la persona que se va, firmada de una vez. La acción «Preparar la salida» siempre está disponible en la pestaña Assetsign de la ficha del usuario; los disparadores automáticos siguientes son opcionales."
+
+msgid "Préparer le départ quand le compte GLPI est désactivé"
+msgstr "Preparar la salida cuando se desactiva la cuenta GLPI"
+
+msgid "Préparer le départ à l'approche de la date de fin du compte"
+msgstr "Preparar la salida al acercarse la fecha de fin de la cuenta"
+
+msgid "Nombre de jours avant la date de fin"
+msgstr "Número de días antes de la fecha de fin"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignDepartures », qui envoie aussi les relances des départs non signés."
+msgstr "Comprobado cada día por la acción automática «assetsignDepartures», que también envía los recordatorios de las salidas no firmadas."
+
+#, php-format
+msgid "%d matériel"
+msgid_plural "%d matériels"
+msgstr[0] "%d elemento"
+msgstr[1] "%d elementos"

@@ -2836,3 +2836,172 @@ msgstr "On-site signature is not possible for this record."
 
 msgid "La délégation n'est pas disponible pour une signature sur place."
 msgstr "Delegation is not available for an on-site signature."
+
+msgid "Manuel"
+msgstr "Manual"
+
+msgid "Désactivation du compte"
+msgstr "Account deactivation"
+
+msgid "Date de fin du compte"
+msgstr "Account end date"
+
+msgid "Ce départ n'attend plus de signature."
+msgstr "This departure is no longer awaiting a signature."
+
+#, php-format
+msgid "Restitution de départ - %s"
+msgstr "Departure return - %s"
+
+#, php-format
+msgid "Départ préparé : %d matériel(s) à restituer, l'utilisateur est invité à signer."
+msgstr "Departure prepared: %d item(s) to return, the user has been asked to sign."
+
+msgid "Prépare les départs à date de fin de compte et relance les départs non signés"
+msgstr "Prepares departures when the account end date approaches and sends reminders for unsigned departures"
+
+msgid "Départ : restitution du matériel à signer"
+msgstr "Departure: equipment return to sign"
+
+msgid "Départ : relance de signature"
+msgstr "Departure: signature reminder"
+
+msgid "Départ : restitution signée"
+msgstr "Departure: return signed"
+
+msgid "Personne qui part"
+msgstr "Person leaving"
+
+msgid "Technicien ayant préparé le départ"
+msgstr "Technician who prepared the departure"
+
+msgid "Nombre de matériels"
+msgstr "Number of items"
+
+msgid "Déclencheur"
+msgstr "Trigger"
+
+msgid "N° de série"
+msgstr "Serial number"
+
+msgid "Matériel à restituer"
+msgstr "Equipment to return"
+
+msgid "Départ de la personne"
+msgstr "Person's departure"
+
+#, php-format
+msgid "Départ en cours : %d matériel(s) à restituer."
+msgstr "Departure in progress: %d item(s) to return."
+
+msgid "Voir le départ"
+msgstr "View the departure"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté, signée en une fois."
+msgstr "A single grouped return form for all assigned equipment, signed once."
+
+msgid "Préparer le départ"
+msgstr "Prepare the departure"
+
+msgid "Aucun matériel géré par assetsign n'est affecté à cette personne : rien à restituer."
+msgstr "No equipment managed by assetsign is assigned to this person: nothing to return."
+
+msgid "Merci de cocher la case de confirmation avant de signer."
+msgstr "Please tick the confirmation box before signing."
+
+msgid "Vous n'êtes pas autorisé à signer ce départ."
+msgstr "You are not allowed to sign this departure."
+
+msgid "Restitution signée. Merci !"
+msgstr "Return signed. Thank you!"
+
+msgid "Départ annulé, ses fiches en attente aussi."
+msgstr "Departure cancelled, along with its pending forms."
+
+msgid "Restitution de départ"
+msgstr "Departure return"
+
+#, php-format
+msgid "Départ de %s"
+msgstr "Departure of %s"
+
+msgid "Tous les départs"
+msgstr "All departures"
+
+msgid "Préparé par"
+msgstr "Prepared by"
+
+msgid "Matériels signés"
+msgstr "Items signed"
+
+msgid "N° d'inventaire"
+msgstr "Inventory number"
+
+#, php-format
+msgid "Restitution signée le %s."
+msgstr "Return signed on %s."
+
+msgid "PDF récapitulatif"
+msgstr "Summary PDF"
+
+msgid "Signer la restitution"
+msgstr "Sign the return"
+
+#, php-format
+msgid "Signature sur place : %s signe sur votre écran. Le PDF indiquera que la signature a été recueillie en votre présence."
+msgstr "In-person signature: %s signs on your screen. The PDF will state that the signature was collected in your presence."
+
+msgid "Je confirme restituer l'ensemble du matériel listé ci-dessus."
+msgstr "I confirm that I am returning all the equipment listed above."
+
+msgid "Annuler ce départ et ses fiches en attente ?"
+msgstr "Cancel this departure and its pending forms?"
+
+msgid "Annuler le départ"
+msgstr "Cancel the departure"
+
+#, php-format
+msgid "%d relance(s) envoyée(s)"
+msgstr "%d reminder(s) sent"
+
+msgid "Départs en cours"
+msgstr "Departures in progress"
+
+msgid "Voir seulement les départs en cours"
+msgstr "Show only departures in progress"
+
+msgid "Voir tous les départs"
+msgstr "Show all departures"
+
+msgid "Pour préparer un départ, ouvrez la fiche de l'utilisateur, onglet Assetsign, puis « Préparer le départ » : une seule fiche de restitution groupée est envoyée pour tout son matériel."
+msgstr "To prepare a departure, open the user's record, Assetsign tab, then \"Prepare the departure\": a single grouped return form is sent for all their equipment."
+
+msgid "Aucun départ en cours"
+msgstr "No departure in progress"
+
+msgid "Relances"
+msgstr "Reminders"
+
+msgid "Départ d'un salarié"
+msgstr "Employee departure"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté à la personne qui part, signée en une fois. L'action « Préparer le départ » est toujours disponible dans l'onglet Assetsign de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "A single grouped return form for all equipment assigned to the person leaving, signed once. The \"Prepare the departure\" action is always available in the Assetsign tab of the user record; the automatic triggers below are optional."
+
+msgid "Préparer le départ quand le compte GLPI est désactivé"
+msgstr "Prepare the departure when the GLPI account is deactivated"
+
+msgid "Préparer le départ à l'approche de la date de fin du compte"
+msgstr "Prepare the departure as the account end date approaches"
+
+msgid "Nombre de jours avant la date de fin"
+msgstr "Number of days before the end date"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignDepartures », qui envoie aussi les relances des départs non signés."
+msgstr "Checked every day by the \"assetsignDepartures\" automatic action, which also sends reminders for unsigned departures."
+
+#, php-format
+msgid "%d matériel"
+msgid_plural "%d matériels"
+msgstr[0] "%d item"
+msgstr[1] "%d items"

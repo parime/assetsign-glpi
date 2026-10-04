@@ -48,13 +48,18 @@
                 </td>
                 <td>
                   {{ row.item }}
-                  {% if row.serial is not empty %}
+                  {% if row.departure_url is defined %}
+                    <div class="text-muted small">{{ row.serial }}</div>
+                  {% elseif row.serial is not empty %}
                     <div class="text-muted small">{{ __('N° de série : %s', 'assetsign')|format(row.serial) }}</div>
                   {% endif %}
                 </td>
                 <td>{{ row.date_sent ? row.date_sent|formatted_datetime : '' }}</td>
                 <td>{{ row.technician }}</td>
                 <td>
+                  {% if row.departure_url is defined %}
+                    <a href="{{ row.departure_url }}" class="btn btn-primary"><i class="ti ti-writing-sign me-1"></i>{{ __('Signer', 'assetsign') }}</a>
+                  {% else %}
                   <form method="post" action="{{ action }}" class="m-0">
                     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
                     <input type="hidden" name="id" value="{{ row.id }}">
@@ -62,6 +67,7 @@
                       <i class="ti ti-writing-sign me-1"></i>{{ __('Signer', 'assetsign') }}
                     </button>
                   </form>
+                  {% endif %}
                 </td>
               </tr>
             {% endfor %}

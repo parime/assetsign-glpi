@@ -2892,3 +2892,172 @@ msgstr "Eine Unterschrift vor Ort ist für diesen Datensatz nicht möglich."
 
 msgid "La délégation n'est pas disponible pour une signature sur place."
 msgstr "Die Delegierung ist bei einer Unterschrift vor Ort nicht verfügbar."
+
+msgid "Manuel"
+msgstr "Manuell"
+
+msgid "Désactivation du compte"
+msgstr "Deaktivierung des Kontos"
+
+msgid "Date de fin du compte"
+msgstr "Enddatum des Kontos"
+
+msgid "Ce départ n'attend plus de signature."
+msgstr "Dieser Austritt wartet nicht mehr auf eine Unterschrift."
+
+#, php-format
+msgid "Restitution de départ - %s"
+msgstr "Rückgabe beim Austritt - %s"
+
+#, php-format
+msgid "Départ préparé : %d matériel(s) à restituer, l'utilisateur est invité à signer."
+msgstr "Austritt vorbereitet: %d Gerät(e) zurückzugeben, der Benutzer wurde zur Unterschrift aufgefordert."
+
+msgid "Prépare les départs à date de fin de compte et relance les départs non signés"
+msgstr "Bereitet Austritte zum Kontoenddatum vor und erinnert an nicht unterschriebene Austritte"
+
+msgid "Départ : restitution du matériel à signer"
+msgstr "Austritt: Geräterückgabe zu unterschreiben"
+
+msgid "Départ : relance de signature"
+msgstr "Austritt: Erinnerung zur Unterschrift"
+
+msgid "Départ : restitution signée"
+msgstr "Austritt: Rückgabe unterschrieben"
+
+msgid "Personne qui part"
+msgstr "Ausscheidende Person"
+
+msgid "Technicien ayant préparé le départ"
+msgstr "Techniker, der den Austritt vorbereitet hat"
+
+msgid "Nombre de matériels"
+msgstr "Anzahl der Geräte"
+
+msgid "Déclencheur"
+msgstr "Auslöser"
+
+msgid "N° de série"
+msgstr "Seriennummer"
+
+msgid "Matériel à restituer"
+msgstr "Zurückzugebende Geräte"
+
+msgid "Départ de la personne"
+msgstr "Austritt der Person"
+
+#, php-format
+msgid "Départ en cours : %d matériel(s) à restituer."
+msgstr "Laufender Austritt: %d Gerät(e) zurückzugeben."
+
+msgid "Voir le départ"
+msgstr "Austritt ansehen"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté, signée en une fois."
+msgstr "Ein einziges gruppiertes Rückgabeformular für alle zugewiesenen Geräte, einmal unterschrieben."
+
+msgid "Préparer le départ"
+msgstr "Austritt vorbereiten"
+
+msgid "Aucun matériel géré par assetsign n'est affecté à cette personne : rien à restituer."
+msgstr "Dieser Person ist kein von assetsign verwaltetes Gerät zugewiesen: nichts zurückzugeben."
+
+msgid "Merci de cocher la case de confirmation avant de signer."
+msgstr "Bitte aktivieren Sie vor dem Unterschreiben das Bestätigungskästchen."
+
+msgid "Vous n'êtes pas autorisé à signer ce départ."
+msgstr "Sie dürfen diesen Austritt nicht unterschreiben."
+
+msgid "Restitution signée. Merci !"
+msgstr "Rückgabe unterschrieben. Vielen Dank!"
+
+msgid "Départ annulé, ses fiches en attente aussi."
+msgstr "Austritt storniert, ebenso seine ausstehenden Formulare."
+
+msgid "Restitution de départ"
+msgstr "Rückgabe beim Austritt"
+
+#, php-format
+msgid "Départ de %s"
+msgstr "Austritt von %s"
+
+msgid "Tous les départs"
+msgstr "Alle Austritte"
+
+msgid "Préparé par"
+msgstr "Vorbereitet von"
+
+msgid "Matériels signés"
+msgstr "Unterschriebene Geräte"
+
+msgid "N° d'inventaire"
+msgstr "Inventarnummer"
+
+#, php-format
+msgid "Restitution signée le %s."
+msgstr "Rückgabe unterschrieben am %s."
+
+msgid "PDF récapitulatif"
+msgstr "Zusammenfassungs-PDF"
+
+msgid "Signer la restitution"
+msgstr "Rückgabe unterschreiben"
+
+#, php-format
+msgid "Signature sur place : %s signe sur votre écran. Le PDF indiquera que la signature a été recueillie en votre présence."
+msgstr "Unterschrift vor Ort: %s unterschreibt auf Ihrem Bildschirm. Das PDF vermerkt, dass die Unterschrift in Ihrer Anwesenheit eingeholt wurde."
+
+msgid "Je confirme restituer l'ensemble du matériel listé ci-dessus."
+msgstr "Ich bestätige die Rückgabe aller oben aufgeführten Geräte."
+
+msgid "Annuler ce départ et ses fiches en attente ?"
+msgstr "Diesen Austritt und seine ausstehenden Formulare stornieren?"
+
+msgid "Annuler le départ"
+msgstr "Austritt stornieren"
+
+#, php-format
+msgid "%d relance(s) envoyée(s)"
+msgstr "%d Erinnerung(en) gesendet"
+
+msgid "Départs en cours"
+msgstr "Laufende Austritte"
+
+msgid "Voir seulement les départs en cours"
+msgstr "Nur laufende Austritte anzeigen"
+
+msgid "Voir tous les départs"
+msgstr "Alle Austritte anzeigen"
+
+msgid "Pour préparer un départ, ouvrez la fiche de l'utilisateur, onglet Assetsign, puis « Préparer le départ » : une seule fiche de restitution groupée est envoyée pour tout son matériel."
+msgstr "Um einen Austritt vorzubereiten, öffnen Sie den Benutzer, Registerkarte Assetsign, dann „Austritt vorbereiten“: Ein einziges gruppiertes Rückgabeformular wird für alle Geräte gesendet."
+
+msgid "Aucun départ en cours"
+msgstr "Kein laufender Austritt"
+
+msgid "Relances"
+msgstr "Erinnerungen"
+
+msgid "Départ d'un salarié"
+msgstr "Austritt eines Mitarbeiters"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté à la personne qui part, signée en une fois. L'action « Préparer le départ » est toujours disponible dans l'onglet Assetsign de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "Ein einziges gruppiertes Rückgabeformular für alle Geräte der ausscheidenden Person, einmal unterschrieben. Die Aktion „Austritt vorbereiten“ ist immer auf der Registerkarte Assetsign des Benutzers verfügbar; die automatischen Auslöser unten sind optional."
+
+msgid "Préparer le départ quand le compte GLPI est désactivé"
+msgstr "Austritt vorbereiten, wenn das GLPI-Konto deaktiviert wird"
+
+msgid "Préparer le départ à l'approche de la date de fin du compte"
+msgstr "Austritt vor dem Enddatum des Kontos vorbereiten"
+
+msgid "Nombre de jours avant la date de fin"
+msgstr "Anzahl Tage vor dem Enddatum"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignDepartures », qui envoie aussi les relances des départs non signés."
+msgstr "Täglich von der automatischen Aktion „assetsignDepartures“ geprüft, die auch an nicht unterschriebene Austritte erinnert."
+
+#, php-format
+msgid "%d matériel"
+msgid_plural "%d matériels"
+msgstr[0] "%d Gerät"
+msgstr[1] "%d Geräte"

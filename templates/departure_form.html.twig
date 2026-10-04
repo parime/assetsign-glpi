@@ -1,0 +1,116 @@
+{# Issue #157 : dossier de départ — restitution groupée de tout le matériel, signée en une fois. #}
+<div class="container-lg my-3">
+  <div class="card mb-3">
+    <div class="card-header d-flex align-items-center gap-2">
+      <h3 class="card-title mb-0"><i class="ti ti-door-exit me-2"></i>{{ __('Départ de %s', 'assetsign')|format(user_name) }}</h3>
+      {% set status_class = {0: 'bg-blue-lt', 1: 'bg-green-lt', 2: 'bg-secondary-lt'}[departure.status]|default('bg-secondary-lt') %}
+      <span class="badge {{ status_class }} ms-2">{{ status_label }}</span>
+      {% if can_manage %}<a href="{{ list_url }}" class="ms-auto small">{{ __('Tous les départs', 'assetsign') }}</a>{% endif %}
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3"><div class="text-muted small">{{ __('Date de départ', 'assetsign') }}</div>{{ departure.date_departure ? departure.date_departure|formatted_date : '—' }}</div>
+        <div class="col-md-3"><div class="text-muted small">{{ __('Déclencheur', 'assetsign') }}</div>{{ trigger_label }}</div>
+        <div class="col-md-3"><div class="text-muted small">{{ __('Préparé par', 'assetsign') }}</div>{{ tech_name ?: '—' }}</div>
+        <div class="col-md-3"><div class="text-muted small">{{ __('Matériels signés', 'assetsign') }}</div>{{ signed_count }} / {{ lines|length }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header"><h3 class="card-title">{{ __('Matériel à restituer', 'assetsign') }}</h3></div>
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <thead>
+          <tr>
+            <th>{{ __('Type de matériel', 'assetsign') }}</th>
+            <th>{{ __('Matériel', 'assetsign') }}</th>
+            <th>{{ __('N° de série', 'assetsign') }}</th>
+            <th>{{ __('N° d\'inventaire', 'assetsign') }}</th>
+            <th>{{ __('Statut') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for line in lines %}
+            <tr>
+              <td>{{ line.type_label }}</td>
+              <td>
+                {% if show_item_links %}<a href="{{ assetsign_url ~ line.assetsign_id }}">{{ line.name }}</a>{% else %}{{ line.name }}{% endif %}
+              </td>
+              <td>{{ line.serial }}</td>
+              <td>{{ line.otherserial }}</td>
+              <td><span class="badge {{ line.status == 4 ? 'bg-green-lt' : (line.status == 7 ? 'bg-secondary-lt' : 'bg-yellow-lt') }}">{{ line.status_label }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% if summary_url %}
+    <div class="alert alert-success d-flex align-items-center gap-2">
+      <i class="ti ti-circle-check"></i>
+      <span>{{ __('Restitution signée le %s.', 'assetsign')|format(departure.date_signed|formatted_datetime) }}</span>
+      <a href="{{ summary_url }}" class="btn btn-sm btn-outline-success ms-auto"><i class="ti ti-file-type-pdf me-1"></i>{{ __('PDF récapitulatif', 'assetsign') }}</a>
+    </div>
+  {% endif %}
+
+  {% if is_open and (is_leaving_user or can_sign_in_person) %}
+    <div class="card mb-3 border-primary">
+      <div class="card-header"><h3 class="card-title"><i class="ti ti-writing-sign me-2"></i>{{ __('Signer la restitution', 'assetsign') }}</h3></div>
+      <div class="card-body">
+        {% if not is_leaving_user %}
+          <div class="alert alert-info">{{ __('Signature sur place : %s signe sur votre écran. Le PDF indiquera que la signature a été recueillie en votre présence.', 'assetsign')|format(user_name) }}</div>
+        {% endif %}
+        <form method="post" action="{{ action }}" id="departure-sign-form">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ departure.id }}">
+          <input type="hidden" name="signature" id="departure-signature">
+          <label class="form-check mb-2">
+            <input type="checkbox" name="consent" value="1" class="form-check-input" id="departure-consent">
+            <span class="form-check-label">{{ __('Je confirme restituer l\'ensemble du matériel listé ci-dessus.', 'assetsign') }}</span>
+          </label>
+          <p class="mb-1">{{ __('Signez ci-dessous à la souris, au doigt ou au stylet :', 'assetsign') }}</p>
+          <canvas id="departure-signature-pad" style="border: 1px dashed #999; border-radius: 6px; width: 100%; height: 180px; touch-action: none; background: #fff;"></canvas>
+          <div class="d-flex gap-2 mt-2">
+            <button type="button" class="btn btn-outline-secondary" id="departure-clear">{{ __('Effacer', 'assetsign') }}</button>
+            <button type="submit" name="sign" value="1" class="btn btn-primary" id="departure-submit" disabled><i class="ti ti-check me-1"></i>{{ __('Valider ma signature', 'assetsign') }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+    <script>
+      (function () {
+        var canvas = document.getElementById('departure-signature-pad');
+        var consent = document.getElementById('departure-consent');
+        var submit = document.getElementById('departure-submit');
+        var resize = function () {
+          var ratio = Math.max(window.devicePixelRatio || 1, 1);
+          canvas.width = canvas.offsetWidth * ratio;
+          canvas.height = canvas.offsetHeight * ratio;
+          canvas.getContext('2d').scale(ratio, ratio);
+        };
+        resize();
+        var pad = new SignaturePad(canvas, { backgroundColor: 'rgb(255,255,255)' });
+        var refresh = function () { submit.disabled = pad.isEmpty() || !consent.checked; };
+        pad.addEventListener('endStroke', refresh);
+        consent.addEventListener('change', refresh);
+        document.getElementById('departure-clear').addEventListener('click', function () { pad.clear(); refresh(); });
+        document.getElementById('departure-sign-form').addEventListener('submit', function () {
+          document.getElementById('departure-signature').value = pad.toDataURL('image/png');
+        });
+      })();
+    </script>
+  {% endif %}
+
+  {% if is_open and can_manage %}
+    <form method="post" action="{{ action }}" class="d-flex gap-2">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="id" value="{{ departure.id }}">
+      <button type="submit" name="remind" value="1" class="btn btn-outline-primary"><i class="ti ti-bell-ringing me-1"></i>{{ __('Relancer maintenant', 'assetsign') }}</button>
+      <button type="submit" name="cancel" value="1" class="btn btn-outline-danger" onclick="return confirm({{ __('Annuler ce départ et ses fiches en attente ?', 'assetsign')|json_encode }});"><i class="ti ti-x me-1"></i>{{ __('Annuler le départ', 'assetsign') }}</button>
+      {% if departure.reminder_count > 0 %}<span class="text-muted small align-self-center">{{ __('%d relance(s) envoyée(s)', 'assetsign')|format(departure.reminder_count) }}</span>{% endif %}
+    </form>
+  {% endif %}
+</div>

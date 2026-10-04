@@ -106,6 +106,12 @@ class Config extends Compat\Base\ConfigBase
         // par defaut - change le modele de securite (l'identite du signataire est
         // attestee par le technicien temoin, plus prouvee par sa propre connexion).
         'enable_in_person_signature'          => 0,
+        // Depart d'un salarie (issue #157) : declencheurs automatiques du dossier de
+        // restitution groupee, DESACTIVES par defaut (l'action manuelle « Preparer le
+        // depart » reste toujours disponible). Delai en jours avant la date de fin du compte.
+        'departure_on_deactivation'           => 0,
+        'departure_on_end_date'               => 0,
+        'departure_end_date_days'             => 7,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -612,6 +618,9 @@ class Config extends Compat\Base\ConfigBase
            'enable_co_signature' => (int) ($input['enable_co_signature'] ?? 0),
            'enable_pending_signatures_banner' => (int) ($input['enable_pending_signatures_banner'] ?? 0),
            'enable_in_person_signature' => (int) ($input['enable_in_person_signature'] ?? 0),
+           'departure_on_deactivation' => (int) ($input['departure_on_deactivation'] ?? 0),
+           'departure_on_end_date' => (int) ($input['departure_on_end_date'] ?? 0),
+           'departure_end_date_days' => max(0, min(90, (int) ($input['departure_end_date_days'] ?? 7))),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -774,6 +783,9 @@ class Config extends Compat\Base\ConfigBase
                 `enable_co_signature` tinyint NOT NULL DEFAULT 0,
                 `enable_pending_signatures_banner` tinyint NOT NULL DEFAULT 1,
                 `enable_in_person_signature` tinyint NOT NULL DEFAULT 0,
+                `departure_on_deactivation` tinyint NOT NULL DEFAULT 0,
+                `departure_on_end_date` tinyint NOT NULL DEFAULT 0,
+                `departure_end_date_days` int unsigned NOT NULL DEFAULT 7,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -952,6 +964,13 @@ class Config extends Compat\Base\ConfigBase
          if (!$DB->fieldExists($table, 'enable_in_person_signature')) {
              // Signature sur place (issue #152) : opt-in, cf. son commentaire dans DEFAULTS.
              $migration->addField($table, 'enable_in_person_signature', 'bool', ['value' => 0, 'after' => 'enable_pending_signatures_banner']);
+             $migration->migrationOneTable($table);
+         }
+         if (!$DB->fieldExists($table, 'departure_on_deactivation')) {
+             // Depart d'un salarie (issue #157) : opt-in, cf. DEFAULTS.
+             $migration->addField($table, 'departure_on_deactivation', 'bool', ['value' => 0, 'after' => 'enable_in_person_signature']);
+             $migration->addField($table, 'departure_on_end_date', 'bool', ['value' => 0, 'after' => 'departure_on_deactivation']);
+             $migration->addField($table, 'departure_end_date_days', 'integer', ['value' => 7, 'after' => 'departure_on_end_date']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'show_qr_code')) {

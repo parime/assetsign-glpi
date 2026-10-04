@@ -2866,3 +2866,172 @@ msgstr "La firma sul posto non è possibile per questa scheda."
 
 msgid "La délégation n'est pas disponible pour une signature sur place."
 msgstr "La delega non è disponibile per una firma sul posto."
+
+msgid "Manuel"
+msgstr "Manuale"
+
+msgid "Désactivation du compte"
+msgstr "Disattivazione dell'account"
+
+msgid "Date de fin du compte"
+msgstr "Data di fine dell'account"
+
+msgid "Ce départ n'attend plus de signature."
+msgstr "Questa partenza non è più in attesa di firma."
+
+#, php-format
+msgid "Restitution de départ - %s"
+msgstr "Restituzione per partenza - %s"
+
+#, php-format
+msgid "Départ préparé : %d matériel(s) à restituer, l'utilisateur est invité à signer."
+msgstr "Partenza preparata: %d elemento/i da restituire, l'utente è stato invitato a firmare."
+
+msgid "Prépare les départs à date de fin de compte et relance les départs non signés"
+msgstr "Prepara le partenze alla data di fine account e sollecita le partenze non firmate"
+
+msgid "Départ : restitution du matériel à signer"
+msgstr "Partenza: restituzione dell'attrezzatura da firmare"
+
+msgid "Départ : relance de signature"
+msgstr "Partenza: promemoria di firma"
+
+msgid "Départ : restitution signée"
+msgstr "Partenza: restituzione firmata"
+
+msgid "Personne qui part"
+msgstr "Persona in partenza"
+
+msgid "Technicien ayant préparé le départ"
+msgstr "Tecnico che ha preparato la partenza"
+
+msgid "Nombre de matériels"
+msgstr "Numero di elementi"
+
+msgid "Déclencheur"
+msgstr "Attivatore"
+
+msgid "N° de série"
+msgstr "Numero di serie"
+
+msgid "Matériel à restituer"
+msgstr "Attrezzatura da restituire"
+
+msgid "Départ de la personne"
+msgstr "Partenza della persona"
+
+#, php-format
+msgid "Départ en cours : %d matériel(s) à restituer."
+msgstr "Partenza in corso: %d elemento/i da restituire."
+
+msgid "Voir le départ"
+msgstr "Vedere la partenza"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté, signée en une fois."
+msgstr "Un'unica scheda di restituzione raggruppata per tutta l'attrezzatura assegnata, firmata una sola volta."
+
+msgid "Préparer le départ"
+msgstr "Preparare la partenza"
+
+msgid "Aucun matériel géré par assetsign n'est affecté à cette personne : rien à restituer."
+msgstr "A questa persona non è assegnata alcuna attrezzatura gestita da assetsign: niente da restituire."
+
+msgid "Merci de cocher la case de confirmation avant de signer."
+msgstr "Selezionare la casella di conferma prima di firmare."
+
+msgid "Vous n'êtes pas autorisé à signer ce départ."
+msgstr "Non è autorizzato a firmare questa partenza."
+
+msgid "Restitution signée. Merci !"
+msgstr "Restituzione firmata. Grazie!"
+
+msgid "Départ annulé, ses fiches en attente aussi."
+msgstr "Partenza annullata, insieme alle sue schede in attesa."
+
+msgid "Restitution de départ"
+msgstr "Restituzione per partenza"
+
+#, php-format
+msgid "Départ de %s"
+msgstr "Partenza di %s"
+
+msgid "Tous les départs"
+msgstr "Tutte le partenze"
+
+msgid "Préparé par"
+msgstr "Preparato da"
+
+msgid "Matériels signés"
+msgstr "Elementi firmati"
+
+msgid "N° d'inventaire"
+msgstr "Numero di inventario"
+
+#, php-format
+msgid "Restitution signée le %s."
+msgstr "Restituzione firmata il %s."
+
+msgid "PDF récapitulatif"
+msgstr "PDF riepilogativo"
+
+msgid "Signer la restitution"
+msgstr "Firmare la restituzione"
+
+#, php-format
+msgid "Signature sur place : %s signe sur votre écran. Le PDF indiquera que la signature a été recueillie en votre présence."
+msgstr "Firma in presenza: %s firma sul suo schermo. Il PDF indicherà che la firma è stata raccolta in sua presenza."
+
+msgid "Je confirme restituer l'ensemble du matériel listé ci-dessus."
+msgstr "Confermo di restituire tutta l'attrezzatura elencata sopra."
+
+msgid "Annuler ce départ et ses fiches en attente ?"
+msgstr "Annullare questa partenza e le sue schede in attesa?"
+
+msgid "Annuler le départ"
+msgstr "Annullare la partenza"
+
+#, php-format
+msgid "%d relance(s) envoyée(s)"
+msgstr "%d promemoria inviato/i"
+
+msgid "Départs en cours"
+msgstr "Partenze in corso"
+
+msgid "Voir seulement les départs en cours"
+msgstr "Mostra solo le partenze in corso"
+
+msgid "Voir tous les départs"
+msgstr "Mostra tutte le partenze"
+
+msgid "Pour préparer un départ, ouvrez la fiche de l'utilisateur, onglet Assetsign, puis « Préparer le départ » : une seule fiche de restitution groupée est envoyée pour tout son matériel."
+msgstr "Per preparare una partenza, apra la scheda dell'utente, scheda Assetsign, poi «Preparare la partenza»: viene inviata un'unica scheda di restituzione raggruppata per tutta la sua attrezzatura."
+
+msgid "Aucun départ en cours"
+msgstr "Nessuna partenza in corso"
+
+msgid "Relances"
+msgstr "Promemoria"
+
+msgid "Départ d'un salarié"
+msgstr "Partenza di un dipendente"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté à la personne qui part, signée en une fois. L'action « Préparer le départ » est toujours disponible dans l'onglet Assetsign de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "Un'unica scheda di restituzione raggruppata per tutta l'attrezzatura assegnata alla persona in partenza, firmata una sola volta. L'azione «Preparare la partenza» è sempre disponibile nella scheda Assetsign dell'utente; gli attivatori automatici qui sotto sono facoltativi."
+
+msgid "Préparer le départ quand le compte GLPI est désactivé"
+msgstr "Preparare la partenza quando l'account GLPI viene disattivato"
+
+msgid "Préparer le départ à l'approche de la date de fin du compte"
+msgstr "Preparare la partenza all'avvicinarsi della data di fine dell'account"
+
+msgid "Nombre de jours avant la date de fin"
+msgstr "Numero di giorni prima della data di fine"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignDepartures », qui envoie aussi les relances des départs non signés."
+msgstr "Verificato ogni giorno dall'azione automatica «assetsignDepartures», che invia anche i promemoria delle partenze non firmate."
+
+#, php-format
+msgid "%d matériel"
+msgid_plural "%d matériels"
+msgstr[0] "%d elemento"
+msgstr[1] "%d elementi"
