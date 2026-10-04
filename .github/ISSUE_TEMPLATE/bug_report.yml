@@ -13,7 +13,7 @@ body:
     attributes:
       label: "Version du plugin · Plugin version"
       description: "Configuration > Plugins, ou tag Git installé · Configuration > Plugins, or installed Git tag"
-      placeholder: "v2.7.1"
+      placeholder: "v2.8.0"
     validations:
       required: true
 
