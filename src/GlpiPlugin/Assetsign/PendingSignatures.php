@@ -61,7 +61,40 @@ final class PendingSignatures
       }
 
        return countElementsInTable(Assetsign::getTable(), self::criteria($usersId))
-           + count(self::openDeparturesForUser($usersId));
+           + count(self::openDeparturesForUser($usersId))
+           + count(self::pendingAttestationsForUser($usersId));
+   }
+
+    /**
+     * Issue #158 : attestations de detention en attente de reponse, dans une campagne ouverte.
+     *
+     * @return list<Attestation>
+     */
+   public static function pendingAttestationsForUser(int $usersId): array {
+       global $DB;
+
+      if ($usersId <= 0) {
+          return [];
+      }
+       $attestations = [];
+      foreach ($DB->request([
+          'SELECT'     => [Attestation::getTable() . '.*'],
+          'FROM'       => Attestation::getTable(),
+          'INNER JOIN' => [
+              Campaign::getTable() => ['FKEY' => [Campaign::getTable() => 'id', Attestation::getTable() => 'plugin_assetsign_campaigns_id']],
+          ],
+          'WHERE'      => [
+              Attestation::getTable() . '.users_id' => $usersId,
+              Attestation::getTable() . '.status'   => CampaignLogic::ATTESTATION_PENDING,
+              Campaign::getTable() . '.status'      => CampaignLogic::CAMPAIGN_OPEN,
+          ],
+          'ORDER'      => Attestation::getTable() . '.date_creation ASC',
+      ]) as $row) {
+          $attestation = new Attestation();
+          $attestation->fields = $row;
+          $attestations[] = $attestation;
+      }
+       return $attestations;
    }
 
     /**

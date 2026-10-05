@@ -138,6 +138,9 @@ function plugin_init_assetsign(): void {
     Plugin::registerClass(\GlpiPlugin\Assetsign\Template::class);
     // Issue #157 : dossiers de depart, porteurs de leurs propres notifications.
     Plugin::registerClass(\GlpiPlugin\Assetsign\Departure::class);
+    // Issue #158 : campagnes d'attestation et attestations (porteuses de leurs notifications).
+    Plugin::registerClass(\GlpiPlugin\Assetsign\Campaign::class);
+    Plugin::registerClass(\GlpiPlugin\Assetsign\Attestation::class);
     // Accessory/MaintenanceChecklistItem sont des CommonDropdown standards :
     // aucun attribut de registerClass requis, leur comportement de liste
     // deroulante vient de leur classe parente.
@@ -223,7 +226,7 @@ function plugin_init_assetsign(): void {
     // (pas le format documente ['types'=>[...],'icon'=>'...']) — piege deja
     // rencontre et documente dans TROUBLESHOOTING.md.
     $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign'] = [
-        'tools' => [\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Maintenance::class, \GlpiPlugin\Assetsign\Movement::class, \GlpiPlugin\Assetsign\Departure::class],
+        'tools' => [\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Maintenance::class, \GlpiPlugin\Assetsign\Movement::class, \GlpiPlugin\Assetsign\Departure::class, \GlpiPlugin\Assetsign\Campaign::class],
     ];
 
     if (Plugin::isPluginActive('assetsign')) {

@@ -1,0 +1,109 @@
+{# Issue #158 : création et suivi d'une campagne d'attestation de détention. #}
+<div class="container-lg my-3">
+  {% if campaign is null %}
+    <div class="card">
+      <div class="card-header"><h3 class="card-title"><i class="ti ti-clipboard-check me-2"></i>{{ __('Nouvelle campagne d\'attestation de détention', 'assetsign') }}</h3></div>
+      <div class="card-body">
+        <p class="text-muted">{{ __('Chaque personne du périmètre qui détient au moins un matériel géré reçoit sa liste (figée à la date du lancement) à confirmer en signant, ou sur laquelle signaler un écart. Les personnes sans e-mail la retrouvent dans « Mes documents à signer ».', 'assetsign') }}</p>
+        <form method="post" action="{{ action }}">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="entities_id" value="{{ entity_id }}">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="campaign-name">{{ __('Nom de la campagne', 'assetsign') }}</label>
+              <input type="text" class="form-control" name="name" id="campaign-name" placeholder="{{ __('Attestation de détention %s', 'assetsign')|format('now'|date('Y')) }}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="campaign-deadline">{{ __('Date limite', 'assetsign') }}</label>
+              <input type="date" class="form-control" name="date_deadline" id="campaign-deadline" value="{{ default_deadline }}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">{{ __('Entité', 'assetsign') }}</label>
+              <div class="form-control-plaintext">{{ entity_name }}</div>
+              <label class="form-check">
+                <input type="checkbox" class="form-check-input" name="is_recursive" value="1" checked>
+                <span class="form-check-label">{{ __('Inclure les sous-entités', 'assetsign') }}</span>
+              </label>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">{{ __('Groupe (facultatif)', 'assetsign') }}</label>
+              {{ group_dropdown|raw }}
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">{{ __('Profil (facultatif)', 'assetsign') }}</label>
+              {{ profile_dropdown|raw }}
+            </div>
+          </div>
+          <button type="submit" name="launch" value="1" class="btn btn-primary mt-3"><i class="ti ti-send me-1"></i>{{ __('Lancer la campagne', 'assetsign') }}</button>
+          <a href="{{ list_url }}" class="btn btn-link mt-3">{{ __('Retour aux campagnes', 'assetsign') }}</a>
+        </form>
+      </div>
+    </div>
+  {% else %}
+    <div class="card mb-3">
+      <div class="card-header d-flex align-items-center gap-2">
+        <h3 class="card-title mb-0"><i class="ti ti-clipboard-check me-2"></i>{{ campaign.name }}</h3>
+        <span class="badge {{ is_open ? 'bg-blue-lt' : 'bg-secondary-lt' }}">{{ is_open ? __('Ouverte', 'assetsign') : __('Clôturée', 'assetsign') }}</span>
+        {% if is_open and is_past_deadline %}<span class="badge bg-red-lt">{{ __('Date limite dépassée', 'assetsign') }}</span>{% endif %}
+        <a href="{{ list_url }}" class="ms-auto small">{{ __('Toutes les campagnes', 'assetsign') }}</a>
+      </div>
+      <div class="card-body">
+        <div class="row text-center">
+          <div class="col"><div class="h1 mb-0">{{ stats.response_rate }} %</div><div class="text-muted small">{{ __('Taux de réponse', 'assetsign') }}</div></div>
+          <div class="col"><div class="h1 mb-0 text-green">{{ stats.confirmed }}</div><div class="text-muted small">{{ __('Confirmées', 'assetsign') }}</div></div>
+          <div class="col"><div class="h1 mb-0 text-orange">{{ stats.discrepancy }}</div><div class="text-muted small">{{ __('Écarts signalés', 'assetsign') }}</div></div>
+          <div class="col"><div class="h1 mb-0 text-muted">{{ stats.pending }}</div><div class="text-muted small">{{ __('Sans réponse', 'assetsign') }}</div></div>
+        </div>
+        <div class="text-muted small mt-2">{{ __('Date limite', 'assetsign') }} : {{ campaign.date_deadline ? campaign.date_deadline|formatted_date : '—' }}</div>
+      </div>
+      <div class="card-footer d-flex flex-wrap gap-2">
+        <a href="{{ action }}?id={{ campaign.id }}&export=csv" class="btn btn-outline-secondary btn-sm"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('Export CSV', 'assetsign') }}</a>
+        <a href="{{ action }}?id={{ campaign.id }}&export=pdf" class="btn btn-outline-secondary btn-sm"><i class="ti ti-file-type-pdf me-1"></i>{{ __('Export PDF', 'assetsign') }}</a>
+        {% if is_open and can_manage %}
+          <form method="post" action="{{ action }}" class="d-flex gap-2 ms-auto">
+            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="id" value="{{ campaign.id }}">
+            <button type="submit" name="remind" value="1" class="btn btn-outline-primary btn-sm"{{ stats.pending == 0 ? ' disabled' : '' }}><i class="ti ti-bell-ringing me-1"></i>{{ __('Relancer les non-répondants', 'assetsign') }}</button>
+            <button type="submit" name="close" value="1" class="btn btn-outline-danger btn-sm" onclick="return confirm({{ __('Clôturer la campagne ? Les personnes sans réponse ne pourront plus attester.', 'assetsign')|json_encode }});"><i class="ti ti-lock me-1"></i>{{ __('Clôturer', 'assetsign') }}</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>{{ __('Personne', 'assetsign') }}</th>
+              <th>{{ __('Matériels', 'assetsign') }}</th>
+              <th>{{ __('Statut') }}</th>
+              <th>{{ __('Date de réponse', 'assetsign') }}</th>
+              <th>{{ __('Écart', 'assetsign') }}</th>
+              <th>{{ __('Relances', 'assetsign') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for line in lines %}
+              {% set status_class = {0: 'bg-secondary-lt', 1: 'bg-green-lt', 2: 'bg-orange-lt'}[line.status]|default('bg-secondary-lt') %}
+              <tr>
+                <td><a href="{{ attestation_url ~ line.id }}">{{ line.user }}</a></td>
+                <td>{{ line.items }}</td>
+                <td><span class="badge {{ status_class }}">{{ status_labels[line.status] }}</span></td>
+                <td>{{ line.date_answered ? line.date_answered|formatted_datetime : '—' }}</td>
+                <td>
+                  {% for gap in line.gaps %}<div class="small">{{ gap_labels[gap] }}</div>{% endfor %}
+                  {% if line.comment %}<div class="small text-muted">« {{ line.comment }} »</div>{% endif %}
+                  {% if line.tickets_id > 0 %}<a href="{{ ticket_url ~ line.tickets_id }}" class="small"><i class="ti ti-ticket me-1"></i>{{ __('Ticket n°%d', 'assetsign')|format(line.tickets_id) }}</a>{% endif %}
+                </td>
+                <td>{{ line.reminders }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="6" class="text-muted">{{ __('Aucune personne du périmètre ne détient de matériel géré.', 'assetsign') }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+</div>

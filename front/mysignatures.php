@@ -75,6 +75,24 @@ foreach (PendingSignatures::openDeparturesForUser($usersId) as $departure) {
     ];
 }
 
+// Issue #158 : attestations annuelles de detention en attente.
+foreach (PendingSignatures::pendingAttestationsForUser($usersId) as $attestation) {
+    $items = $attestation->getItems();
+    $campaign = $attestation->getCampaign();
+    $rows[] = [
+        'id'            => 0,
+        'type'          => _n('Attestation de détention', 'Attestations de détention', 1, 'assetsign'),
+        'item'          => sprintf(_n('%d matériel', '%d matériels', count($items), 'assetsign'), count($items)),
+        'serial'        => implode(', ', array_column($items, 'name')),
+        'date_sent'     => $attestation->fields['date_creation'],
+        'technician'    => $campaign !== null ? getUserName((int) $campaign->fields['users_id']) : '',
+        'is_cosigner'   => false,
+        'is_delegate'   => false,
+        'beneficiary'   => '',
+        'departure_url' => $attestation->getUrl(),
+    ];
+}
+
 TemplateRenderer::getInstance()->display('@assetsign/my_signatures.html.twig', [
     'title'      => $title,
     'rows'       => $rows,

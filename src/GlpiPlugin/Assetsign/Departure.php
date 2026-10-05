@@ -130,32 +130,10 @@ class Departure extends Compat\Base\DepartureBase
     * @return list<CommonDBTM>
     */
    private static function findAssignedItems(int $usersId, int $entitiesId): array {
-      global $DB;
-
-      $items = [];
-      foreach (Config::getForEntity($entitiesId)->getManagedItemtypes() as $itemtype) {
-         if (!is_subclass_of($itemtype, CommonDBTM::class)) {
-            continue;
-         }
-         $table = $itemtype::getTable();
-         if (!$DB->fieldExists($table, 'users_id')) {
-            continue;
-         }
-         $where = ['users_id' => $usersId];
-         foreach (['is_deleted', 'is_template'] as $flag) {
-            if ($DB->fieldExists($table, $flag)) {
-               $where[$flag] = 0;
-            }
-         }
-         foreach ($DB->request(['SELECT' => ['id'], 'FROM' => $table, 'WHERE' => $where]) as $row) {
-            $item = new $itemtype();
-            if ($item->getFromDB((int) $row['id']) && !self::alreadyReturnedBy($item, $usersId)) {
-               $items[] = $item;
-            }
-         }
-      }
-
-      return $items;
+      return array_values(array_filter(
+         AssignedItems::find($usersId, $entitiesId),
+         static fn (CommonDBTM $item): bool => !self::alreadyReturnedBy($item, $usersId)
+      ));
    }
 
    /**

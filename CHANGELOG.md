@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Attestation annuelle de détention du matériel (campagne de signature)** (issue #158) :
+  - Outils > Campagnes d'attestation : périmètre (entité, sous-entités, groupe, profil), date limite ;
+    une attestation par personne détenant du matériel géré, liste figée au lancement ;
+  - réponse depuis GLPI (lien e-mail ou « Mes documents à signer ») : confirmer et signer (PDF signé,
+    empreinte SHA-256), ou signaler un écart (manquant / en trop / inconnu + commentaire) qui ouvre un
+    ticket au nom de la personne, rattaché au matériel, et prévient l'auteur de la campagne ;
+  - relances automatiques jusqu'à la date limite (`assetsignCampaigns`), relance manuelle, clôture ;
+  - suivi (taux de réponse, écarts, non-répondants), export CSV et PDF ;
+  - notifications en 5 langues, traductions FR/EN/DE/ES/IT, tests.
 - **Départ d'un salarié : restitution groupée de tout son matériel** (issue #157) — « dossier groupé » :
   - action « Préparer le départ » dans l'onglet Assetsign du compte utilisateur : une fiche de
     restitution ordinaire par matériel affecté (preuve, PDF, passeport, état du matériel inchangés),

@@ -1,0 +1,37 @@
+{# Issue #158 : PDF d'attestation de détention signée. Textes fixes, jamais traduits via __()
+   (document archivé, même règle que handover.html.twig). #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Attestation de détention — {{ user_name }}</title>
+{% include '@assetsign/pdf/_pdf_style.html.twig' %}
+</head>
+<body>
+
+{% if company_name %}
+<div class="header-logo"><div class="company-name">{{ company_name }}</div></div>
+{% endif %}
+
+<h1>Attestation de détention de matériel</h1>
+<p class="meta">{{ campaign_name }} — signée le {{ signed_at }}</p>
+
+<p>Je soussigné(e) <strong>{{ user_name }}</strong> atteste détenir l'ensemble du matériel listé ci-dessous, et seulement celui-ci.</p>
+
+<table class="info-table">
+    <tr><th>Type</th><th>Matériel</th><th>N° de série</th><th>N° d'inventaire</th></tr>
+    {% for item in items %}
+    <tr><td>{{ item.type_label }}</td><td>{{ item.name }}</td><td>{{ item.serial }}</td><td>{{ item.otherserial }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>Signature</h2>
+<img src="{{ signature_image }}" alt="" style="max-height: 110px; border: 1px solid #ccc;">
+<table class="info-table">
+    <tr><th>Signataire</th><td>{{ user_name }}</td></tr>
+    <tr><th>Date et heure</th><td>{{ signed_at }}</td></tr>
+    {% if ip_address %}<tr><th>Adresse IP</th><td>{{ ip_address }}</td></tr>{% endif %}
+</table>
+
+</body>
+</html>

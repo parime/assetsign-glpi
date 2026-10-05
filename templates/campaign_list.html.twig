@@ -1,0 +1,47 @@
+{# Issue #158 : campagnes d'attestation de détention. #}
+<div class="container-lg my-3">
+  <div class="card">
+    <div class="card-header d-flex align-items-center">
+      <h3 class="card-title mb-0"><i class="ti ti-clipboard-check me-2"></i>{{ __('Campagnes d\'attestation de détention', 'assetsign') }}</h3>
+      {% if can_create %}
+        <a href="{{ form_url }}" class="btn btn-primary ms-auto"><i class="ti ti-plus me-1"></i>{{ __('Nouvelle campagne', 'assetsign') }}</a>
+      {% endif %}
+    </div>
+    <div class="card-body pb-0">
+      <p class="text-muted">{{ __('Inventaire contradictoire : chaque personne confirme en signant la liste du matériel qu\'elle détient, ou signale un écart. Preuve attendue en audit (ISO 27001 A.5.9, inventaire des actifs).', 'assetsign') }}</p>
+    </div>
+    {% if rows is empty %}
+      <div class="card-body"><div class="empty"><p class="empty-title">{{ __('Aucune campagne pour l\'instant', 'assetsign') }}</p></div></div>
+    {% else %}
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>{{ __('Campagne', 'assetsign') }}</th>
+              <th>{{ __('Date limite', 'assetsign') }}</th>
+              <th>{{ __('Taux de réponse', 'assetsign') }}</th>
+              <th>{{ __('Écarts', 'assetsign') }}</th>
+              <th>{{ __('Statut') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+              <tr>
+                <td><a href="{{ form_url }}?id={{ row.id }}">{{ row.name }}</a><div class="text-muted small">{{ row.date_creation|formatted_datetime }}</div></td>
+                <td>{{ row.date_deadline ? row.date_deadline|formatted_date : '—' }}</td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="progress" style="width: 80px; height: 6px;"><div class="progress-bar bg-green" style="width: {{ row.stats.response_rate }}%"></div></div>
+                    <span>{{ row.stats.response_rate }} % ({{ row.stats.responded }} / {{ row.stats.total }})</span>
+                  </div>
+                </td>
+                <td>{% if row.stats.discrepancy > 0 %}<span class="badge bg-orange-lt">{{ row.stats.discrepancy }}</span>{% else %}0{% endif %}</td>
+                <td><span class="badge {{ row.is_open ? 'bg-blue-lt' : 'bg-secondary-lt' }}">{{ row.is_open ? __('Ouverte', 'assetsign') : __('Clôturée', 'assetsign') }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>

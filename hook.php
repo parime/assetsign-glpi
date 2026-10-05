@@ -11,6 +11,8 @@ use Glpi\Cache\CacheManager;
 use GlpiPlugin\Assetsign\Accessory;
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\AssetsignAccessory;
+use GlpiPlugin\Assetsign\Attestation;
+use GlpiPlugin\Assetsign\Campaign;
 use GlpiPlugin\Assetsign\ChecklistItem;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\CreationFailure;
@@ -25,6 +27,7 @@ use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Movement;
 use GlpiPlugin\Assetsign\NotificationTargetAssetsign;
+use GlpiPlugin\Assetsign\NotificationTargetAttestation;
 use GlpiPlugin\Assetsign\NotificationTargetDeparture;
 use GlpiPlugin\Assetsign\PassportEvent;
 use GlpiPlugin\Assetsign\PendingSignatures;
@@ -262,6 +265,9 @@ function plugin_assetsign_install(): bool {
     // Issue #157 : dossiers de depart (restitution groupee), apres Assetsign::install()
     // qui ajoute la colonne de rattachement plugin_assetsign_departures_id.
     Departure::install($migration);
+    // Issue #158 : campagnes d'attestation annuelle de detention.
+    Campaign::install($migration);
+    Attestation::install($migration);
     AssetsignAccessory::install($migration);
     VenteDetails::install($migration);
     // Meme motif 1-vers-1 que VenteDetails ci-dessus (issue #78, "fin de vie
@@ -301,6 +307,7 @@ function plugin_assetsign_install(): bool {
 
     NotificationTargetAssetsign::install();
     NotificationTargetDeparture::install();
+    NotificationTargetAttestation::install();
 
     CronTask::register(
         Assetsign::class,
@@ -335,6 +342,15 @@ function plugin_assetsign_install(): bool {
         DAY_TIMESTAMP,
         [
             'comment' => 'Prepare les departs a date de fin de compte (si active) et relance les departs non signes',
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
+    CronTask::register(
+        Campaign::class,
+        'assetsignCampaigns',
+        DAY_TIMESTAMP,
+        [
+            'comment' => 'Relance les attestations de detention en attente jusqu\'a la date limite de leur campagne',
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
@@ -390,6 +406,8 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_checklistvalues',
         'glpi_plugin_assetsign_assetsigns',
         'glpi_plugin_assetsign_departures',
+        'glpi_plugin_assetsign_attestations',
+        'glpi_plugin_assetsign_campaigns',
         'glpi_plugin_assetsign_checklistitems',
         'glpi_plugin_assetsign_maintenancechecklistvalues',
         'glpi_plugin_assetsign_maintenances',
@@ -407,6 +425,7 @@ function plugin_assetsign_uninstall(): bool {
     Profile::uninstall();
     NotificationTargetAssetsign::uninstall();
     NotificationTargetDeparture::uninstall();
+    NotificationTargetAttestation::uninstall();
 
     // Retire toutes les taches planifiees enregistrees par ce plugin
     CronTask::Unregister('assetsign');

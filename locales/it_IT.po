@@ -3035,3 +3035,227 @@ msgid "%d matériel"
 msgid_plural "%d matériels"
 msgstr[0] "%d elemento"
 msgstr[1] "%d elementi"
+
+#, php-format
+msgid "Attestation de détention %s"
+msgstr "Attestazione di detenzione %s"
+
+msgid "Relance les attestations de détention en attente jusqu'à la date limite de leur campagne"
+msgstr "Sollecita le attestazioni di detenzione in attesa fino alla scadenza della loro campagna"
+
+msgid "Confirmée"
+msgstr "Confermata"
+
+msgid "Écart signalé"
+msgstr "Discrepanza segnalata"
+
+msgid "Je n'ai plus un matériel de la liste"
+msgstr "Non ho più un elemento dell'elenco"
+
+msgid "Je détiens un matériel absent de la liste"
+msgstr "Detengo un elemento assente dall'elenco"
+
+msgid "Je ne reconnais pas un matériel de la liste"
+msgstr "Non riconosco un elemento dell'elenco"
+
+msgid "Cette attestation n'attend plus de réponse."
+msgstr "Questa attestazione non è più in attesa di risposta."
+
+msgid "Décrivez l'écart constaté : quel matériel, et ce qui ne correspond pas."
+msgstr "Descriva la discrepanza: quale elemento e cosa non corrisponde."
+
+#, php-format
+msgid "Écart d'inventaire signalé lors de la campagne « %s »."
+msgstr "Discrepanza di inventario segnalata durante la campagna «%s»."
+
+msgid "Matériel listé :"
+msgstr "Attrezzatura elencata:"
+
+#, php-format
+msgid "Écart d'inventaire : %s"
+msgstr "Discrepanza di inventario: %s"
+
+#, php-format
+msgid "Attestation de détention - %s"
+msgstr "Attestazione di detenzione - %s"
+
+msgid "Attestation de détention à signer"
+msgstr "Attestazione di detenzione da firmare"
+
+msgid "Attestation de détention : relance"
+msgstr "Attestazione di detenzione: promemoria"
+
+msgid "Attestation de détention : écart signalé"
+msgstr "Attestazione di detenzione: discrepanza segnalata"
+
+msgid "Personne qui atteste"
+msgstr "Persona che attesta"
+
+msgid "Auteur de la campagne"
+msgstr "Autore della campagna"
+
+msgid "Campagne"
+msgstr "Campagna"
+
+msgid "Date limite"
+msgstr "Scadenza"
+
+msgid "Matériel détenu"
+msgstr "Attrezzatura detenuta"
+
+msgid "La campagne n'a pas pu être créée."
+msgstr "Impossibile creare la campagna."
+
+#, php-format
+msgid "Campagne lancée : %d personne(s) invitée(s) à attester leur matériel."
+msgstr "Campagna avviata: %d persona/e invitata/e ad attestare la propria attrezzatura."
+
+#, php-format
+msgid "%d relance(s) envoyée(s)."
+msgstr "%d promemoria inviato/i."
+
+msgid "Campagne clôturée : les attestations ne peuvent plus être modifiées."
+msgstr "Campagna chiusa: le attestazioni non possono più essere modificate."
+
+msgid "Personne"
+msgstr "Persona"
+
+msgid "Matériels"
+msgstr "Elementi"
+
+msgid "Date de réponse"
+msgstr "Data di risposta"
+
+msgid "Écart"
+msgstr "Discrepanza"
+
+msgid "Attestation signée. Merci !"
+msgstr "Attestazione firmata. Grazie!"
+
+msgid "Écart signalé : un ticket a été ouvert, le gestionnaire du parc va vous recontacter."
+msgstr "Discrepanza segnalata: è stato aperto un ticket e il gestore del parco la ricontatterà."
+
+msgid "Campagnes d'attestation de détention"
+msgstr "Campagne di attestazione di detenzione"
+
+msgid "Nouvelle campagne"
+msgstr "Nuova campagna"
+
+msgid "Inventaire contradictoire : chaque personne confirme en signant la liste du matériel qu'elle détient, ou signale un écart. Preuve attendue en audit (ISO 27001 A.5.9, inventaire des actifs)."
+msgstr "Inventario in contraddittorio: ogni persona conferma firmando l'elenco dell'attrezzatura che detiene, o segnala una discrepanza. Prova attesa in audit (ISO 27001 A.5.9, inventario degli asset)."
+
+msgid "Aucune campagne pour l'instant"
+msgstr "Nessuna campagna per ora"
+
+msgid "Taux de réponse"
+msgstr "Tasso di risposta"
+
+msgid "Écarts"
+msgstr "Discrepanze"
+
+msgid "Ouverte"
+msgstr "Aperta"
+
+msgid "Clôturée"
+msgstr "Chiusa"
+
+msgid "Nouvelle campagne d'attestation de détention"
+msgstr "Nuova campagna di attestazione di detenzione"
+
+msgid "Chaque personne du périmètre qui détient au moins un matériel géré reçoit sa liste (figée à la date du lancement) à confirmer en signant, ou sur laquelle signaler un écart. Les personnes sans e-mail la retrouvent dans « Mes documents à signer »."
+msgstr "Ogni persona del perimetro che detiene almeno un elemento gestito riceve il proprio elenco (fissato alla data di avvio) da confermare firmando, o su cui segnalare una discrepanza. Le persone senza e-mail lo trovano in «I miei documenti da firmare»."
+
+msgid "Nom de la campagne"
+msgstr "Nome della campagna"
+
+msgid "Inclure les sous-entités"
+msgstr "Includere le sotto-entità"
+
+msgid "Groupe (facultatif)"
+msgstr "Gruppo (facoltativo)"
+
+msgid "Profil (facultatif)"
+msgstr "Profilo (facoltativo)"
+
+msgid "Lancer la campagne"
+msgstr "Avviare la campagna"
+
+msgid "Retour aux campagnes"
+msgstr "Torna alle campagne"
+
+msgid "Date limite dépassée"
+msgstr "Scadenza superata"
+
+msgid "Toutes les campagnes"
+msgstr "Tutte le campagne"
+
+msgid "Confirmées"
+msgstr "Confermate"
+
+msgid "Écarts signalés"
+msgstr "Discrepanze segnalate"
+
+msgid "Sans réponse"
+msgstr "Senza risposta"
+
+msgid "Export CSV"
+msgstr "Esporta CSV"
+
+msgid "Export PDF"
+msgstr "Esporta PDF"
+
+msgid "Relancer les non-répondants"
+msgstr "Sollecitare chi non ha risposto"
+
+msgid "Clôturer la campagne ? Les personnes sans réponse ne pourront plus attester."
+msgstr "Chiudere la campagna? Chi non ha risposto non potrà più attestare."
+
+msgid "Clôturer"
+msgstr "Chiudere"
+
+#, php-format
+msgid "Ticket n°%d"
+msgstr "Ticket n. %d"
+
+msgid "Aucune personne du périmètre ne détient de matériel géré."
+msgstr "Nessuna persona del perimetro detiene attrezzatura gestita."
+
+#, php-format
+msgid "Attestation de détention de %s"
+msgstr "Attestazione di detenzione di %s"
+
+#, php-format
+msgid "à rendre avant le %s"
+msgstr "da consegnare entro il %s"
+
+#, php-format
+msgid "Attestation signée le %s."
+msgstr "Attestazione firmata il %s."
+
+msgid "La liste est exacte : je confirme et je signe"
+msgstr "L'elenco è corretto: confermo e firmo"
+
+msgid "J'atteste détenir l'ensemble du matériel listé ci-dessus, et seulement celui-ci."
+msgstr "Attesto di detenere tutta l'attrezzatura elencata sopra, e solo quella."
+
+msgid "La liste n'est pas exacte : je signale un écart"
+msgstr "L'elenco non è corretto: segnalo una discrepanza"
+
+msgid "Précisez (quel matériel, ce qui ne correspond pas)"
+msgstr "Precisare (quale elemento, cosa non corrisponde)"
+
+msgid "Signaler l'écart"
+msgstr "Segnalare la discrepanza"
+
+msgid "Un ticket est ouvert à votre nom et le gestionnaire du parc est prévenu."
+msgstr "Viene aperto un ticket a suo nome e il gestore del parco viene avvisato."
+
+msgid "Campagne d'attestation"
+msgid_plural "Campagnes d'attestation"
+msgstr[0] "Campagna di attestazione"
+msgstr[1] "Campagne di attestazione"
+
+msgid "Attestation de détention"
+msgid_plural "Attestations de détention"
+msgstr[0] "Attestazione di detenzione"
+msgstr[1] "Attestazioni di detenzione"
