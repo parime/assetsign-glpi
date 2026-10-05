@@ -3259,3 +3259,84 @@ msgid "Attestation de détention"
 msgid_plural "Attestations de détention"
 msgstr[0] "Attestazione di detenzione"
 msgstr[1] "Attestazioni di detenzione"
+
+msgid "Tableau de bord RSE"
+msgstr "Cruscotto RSI"
+
+#, php-format
+msgid "kg CO2-eq de fabrication (%d %% du parc renseigné)"
+msgstr "kg CO2-eq di fabbricazione (%d %% del parco compilato)"
+
+#, php-format
+msgid "kg CO2-eq évités par le réemploi (%d matériel(s) prolongé(s))"
+msgstr "kg CO2-eq evitati grazie al riutilizzo (%d elemento/i prolungato/i)"
+
+msgid "Taux de seconde vie en pourcentage (dons et ventes, 12 mois)"
+msgstr "Tasso di seconda vita in percentuale (donazioni e vendite, 12 mesi)"
+
+msgid "RSE : empreinte de fabrication du parc"
+msgstr "RSI: impronta di fabbricazione del parco"
+
+msgid "RSE : impact évité par le réemploi"
+msgstr "RSI: impatto evitato grazie al riutilizzo"
+
+msgid "RSE : taux de seconde vie"
+msgstr "RSI: tasso di seconda vita"
+
+msgid "Tableau de bord RSE du parc"
+msgstr "Cruscotto RSI del parco"
+
+msgid "Calculé sur les entités actives, à partir des seules données saisies dans GLPI (passeport environnemental, informations financières, fiches de fin de vie) : aucune moyenne ni estimation n'est ajoutée. Une donnée manquante fait baisser la couverture affichée sous chaque indicateur."
+msgstr "Calcolato sulle entità attive, solo a partire dai dati inseriti in GLPI (passaporto ambientale, informazioni finanziarie, schede di fine vita): non viene aggiunta alcuna media né stima. Un dato mancante riduce la copertura mostrata sotto ogni indicatore."
+
+msgid "Le passeport environnemental est désactivé : l'empreinte de fabrication ne peut pas être saisie sur les matériels."
+msgstr "Il passaporto ambientale è disattivato: l'impronta di fabbricazione non può essere inserita sugli elementi."
+
+msgid "Le bénéfice du réemploi n'est pas affiché sur les passeports matériels."
+msgstr "Il beneficio del riutilizzo non è mostrato nei passaporti dell'attrezzatura."
+
+msgid "Configuration"
+msgstr "Configurazione"
+
+#, php-format
+msgid "%1$d / %2$d matériels renseignés (%3$d %%)"
+msgstr "%1$d / %2$d elementi compilati (%3$d %%)"
+
+msgid "Impact évité par le réemploi"
+msgstr "Impatto evitato grazie al riutilizzo"
+
+#, php-format
+msgid "%d matériel(s) utilisé(s) au-delà de leur durée d'amortissement"
+msgstr "%d elemento/i utilizzato/i oltre il periodo di ammortamento"
+
+msgid "Âge moyen du parc en service"
+msgstr "Età media del parco in servizio"
+
+msgid "ans"
+msgstr "anni"
+
+msgid "Durée de vie réelle des matériels réformés"
+msgstr "Durata di vita reale degli elementi dismessi"
+
+msgid "Seconde vie en fin de vie"
+msgstr "Seconda vita a fine vita"
+
+#, php-format
+msgid "Dons et ventes parmi les fins de vie des %d derniers mois"
+msgstr "Donazioni e vendite tra i fine vita degli ultimi %d mesi"
+
+#, php-format
+msgid "Filières de fin de vie (%d derniers mois)"
+msgstr "Canali di fine vita (ultimi %d mesi)"
+
+msgid "Dons"
+msgstr "Donazioni"
+
+msgid "Ventes"
+msgstr "Vendite"
+
+msgid "Destructions"
+msgstr "Distruzioni"
+
+msgid "Aucune fiche de don, vente ou destruction finalisée sur la période."
+msgstr "Nessuna scheda di donazione, vendita o distruzione finalizzata nel periodo."

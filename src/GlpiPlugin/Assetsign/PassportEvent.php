@@ -550,23 +550,15 @@ class PassportEvent extends Compat\Base\PassportEventBase
       if ($environmental === null || $environmental->fields['carbon_footprint_manufacturing'] === null) {
           return null;
       }
-       $footprint = (float) $environmental->fields['carbon_footprint_manufacturing'];
-
-       $isStillInService = empty($infocom->fields['decommission_date']);
-       $endTimestamp = $isStillInService ? time() : strtotime($infocom->fields['decommission_date']);
-       $actualYears = max(0.0, ($endTimestamp - strtotime($infocom->fields['use_date'])) / (DAY_TIMESTAMP * 365.25));
-
-       $extraYears = $actualYears - $plannedYears;
-      if ($extraYears <= 0) {
-          return null; // Pas encore prolonge au-dela de la duree prevue : rien a valoriser pour l'instant.
-      }
-
-       return [
-           'avoided_impact'       => round($footprint * ($extraYears / $plannedYears), 2),
-           'planned_years'        => $plannedYears,
-           'actual_years'         => round($actualYears, 1),
-           'is_still_in_service'  => $isStillInService,
-       ];
+       // Formule partagee avec le tableau de bord RSE (issue #142) : CsrLogic::avoidedImpact().
+       // null tant que le materiel n'a pas depasse sa duree prevue : rien a valoriser.
+       return CsrLogic::avoidedImpact(
+           (float) $environmental->fields['carbon_footprint_manufacturing'],
+           $plannedYears,
+           (string) $infocom->fields['use_date'],
+           $infocom->fields['decommission_date'] ?: null,
+           time()
+       );
    }
 
     /**

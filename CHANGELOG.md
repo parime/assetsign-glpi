@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Tableau de bord RSE** (issue #142) : page Outils > Tableau de bord RSE et trois cartes pour le
+  tableau de bord GLPI natif — empreinte de fabrication du parc et couverture, impact évité par le
+  réemploi, âge moyen et durée de vie réelle, filières de fin de vie sur 12 mois et taux de seconde
+  vie. Données réelles uniquement ; formule de l'impact évité mutualisée avec le passeport
+  (`CsrLogic::avoidedImpact()`).
 - **Attestation annuelle de détention du matériel (campagne de signature)** (issue #158) :
   - Outils > Campagnes d'attestation : périmètre (entité, sous-entités, groupe, profil), date limite ;
     une attestation par personne détenant du matériel géré, liste figée au lancement ;

@@ -226,7 +226,7 @@ function plugin_init_assetsign(): void {
     // (pas le format documente ['types'=>[...],'icon'=>'...']) — piege deja
     // rencontre et documente dans TROUBLESHOOTING.md.
     $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign'] = [
-        'tools' => [\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Maintenance::class, \GlpiPlugin\Assetsign\Movement::class, \GlpiPlugin\Assetsign\Departure::class, \GlpiPlugin\Assetsign\Campaign::class],
+        'tools' => [\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Maintenance::class, \GlpiPlugin\Assetsign\Movement::class, \GlpiPlugin\Assetsign\Departure::class, \GlpiPlugin\Assetsign\Campaign::class, \GlpiPlugin\Assetsign\CsrDashboard::class],
     ];
 
     if (Plugin::isPluginActive('assetsign')) {

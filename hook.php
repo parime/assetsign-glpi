@@ -18,6 +18,7 @@ use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\CreationFailure;
 use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\Dashboard\CardProvider;
+use GlpiPlugin\Assetsign\Dashboard\CsrIndicators;
 use GlpiPlugin\Assetsign\Departure;
 use GlpiPlugin\Assetsign\DestructionDetails;
 use GlpiPlugin\Assetsign\DonDetails;
@@ -166,6 +167,28 @@ function plugin_assetsign_dashboard_cards(?array $cards = null): array {
             'group'      => $group,
             'label'      => __('Échecs de création (30 derniers jours)', 'assetsign'),
             'provider'   => CardProvider::class . '::failures',
+            'filters'    => [],
+        ],
+        // Issue #142 : indicateurs RSE (detail sur front/csr.php).
+        'assetsign_csr_carbon' => [
+            'widgettype' => ['bigNumber'],
+            'group'      => $group,
+            'label'      => __('RSE : empreinte de fabrication du parc', 'assetsign'),
+            'provider'   => CsrIndicators::class . '::carbonCard',
+            'filters'    => [],
+        ],
+        'assetsign_csr_avoided' => [
+            'widgettype' => ['bigNumber'],
+            'group'      => $group,
+            'label'      => __('RSE : impact évité par le réemploi', 'assetsign'),
+            'provider'   => CsrIndicators::class . '::avoidedCard',
+            'filters'    => [],
+        ],
+        'assetsign_csr_second_life' => [
+            'widgettype' => ['bigNumber'],
+            'group'      => $group,
+            'label'      => __('RSE : taux de seconde vie', 'assetsign'),
+            'provider'   => CsrIndicators::class . '::secondLifeCard',
             'filters'    => [],
         ],
     ];
