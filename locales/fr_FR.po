@@ -3025,3 +3025,227 @@ msgid "%d matériel"
 msgid_plural "%d matériels"
 msgstr[0] "%d matériel"
 msgstr[1] "%d matériels"
+
+#, php-format
+msgid "Attestation de détention %s"
+msgstr "Attestation de détention %s"
+
+msgid "Relance les attestations de détention en attente jusqu'à la date limite de leur campagne"
+msgstr "Relance les attestations de détention en attente jusqu'à la date limite de leur campagne"
+
+msgid "Confirmée"
+msgstr "Confirmée"
+
+msgid "Écart signalé"
+msgstr "Écart signalé"
+
+msgid "Je n'ai plus un matériel de la liste"
+msgstr "Je n'ai plus un matériel de la liste"
+
+msgid "Je détiens un matériel absent de la liste"
+msgstr "Je détiens un matériel absent de la liste"
+
+msgid "Je ne reconnais pas un matériel de la liste"
+msgstr "Je ne reconnais pas un matériel de la liste"
+
+msgid "Cette attestation n'attend plus de réponse."
+msgstr "Cette attestation n'attend plus de réponse."
+
+msgid "Décrivez l'écart constaté : quel matériel, et ce qui ne correspond pas."
+msgstr "Décrivez l'écart constaté : quel matériel, et ce qui ne correspond pas."
+
+#, php-format
+msgid "Écart d'inventaire signalé lors de la campagne « %s »."
+msgstr "Écart d'inventaire signalé lors de la campagne « %s »."
+
+msgid "Matériel listé :"
+msgstr "Matériel listé :"
+
+#, php-format
+msgid "Écart d'inventaire : %s"
+msgstr "Écart d'inventaire : %s"
+
+#, php-format
+msgid "Attestation de détention - %s"
+msgstr "Attestation de détention - %s"
+
+msgid "Attestation de détention à signer"
+msgstr "Attestation de détention à signer"
+
+msgid "Attestation de détention : relance"
+msgstr "Attestation de détention : relance"
+
+msgid "Attestation de détention : écart signalé"
+msgstr "Attestation de détention : écart signalé"
+
+msgid "Personne qui atteste"
+msgstr "Personne qui atteste"
+
+msgid "Auteur de la campagne"
+msgstr "Auteur de la campagne"
+
+msgid "Campagne"
+msgstr "Campagne"
+
+msgid "Date limite"
+msgstr "Date limite"
+
+msgid "Matériel détenu"
+msgstr "Matériel détenu"
+
+msgid "La campagne n'a pas pu être créée."
+msgstr "La campagne n'a pas pu être créée."
+
+#, php-format
+msgid "Campagne lancée : %d personne(s) invitée(s) à attester leur matériel."
+msgstr "Campagne lancée : %d personne(s) invitée(s) à attester leur matériel."
+
+#, php-format
+msgid "%d relance(s) envoyée(s)."
+msgstr "%d relance(s) envoyée(s)."
+
+msgid "Campagne clôturée : les attestations ne peuvent plus être modifiées."
+msgstr "Campagne clôturée : les attestations ne peuvent plus être modifiées."
+
+msgid "Personne"
+msgstr "Personne"
+
+msgid "Matériels"
+msgstr "Matériels"
+
+msgid "Date de réponse"
+msgstr "Date de réponse"
+
+msgid "Écart"
+msgstr "Écart"
+
+msgid "Attestation signée. Merci !"
+msgstr "Attestation signée. Merci !"
+
+msgid "Écart signalé : un ticket a été ouvert, le gestionnaire du parc va vous recontacter."
+msgstr "Écart signalé : un ticket a été ouvert, le gestionnaire du parc va vous recontacter."
+
+msgid "Campagnes d'attestation de détention"
+msgstr "Campagnes d'attestation de détention"
+
+msgid "Nouvelle campagne"
+msgstr "Nouvelle campagne"
+
+msgid "Inventaire contradictoire : chaque personne confirme en signant la liste du matériel qu'elle détient, ou signale un écart. Preuve attendue en audit (ISO 27001 A.5.9, inventaire des actifs)."
+msgstr "Inventaire contradictoire : chaque personne confirme en signant la liste du matériel qu'elle détient, ou signale un écart. Preuve attendue en audit (ISO 27001 A.5.9, inventaire des actifs)."
+
+msgid "Aucune campagne pour l'instant"
+msgstr "Aucune campagne pour l'instant"
+
+msgid "Taux de réponse"
+msgstr "Taux de réponse"
+
+msgid "Écarts"
+msgstr "Écarts"
+
+msgid "Ouverte"
+msgstr "Ouverte"
+
+msgid "Clôturée"
+msgstr "Clôturée"
+
+msgid "Nouvelle campagne d'attestation de détention"
+msgstr "Nouvelle campagne d'attestation de détention"
+
+msgid "Chaque personne du périmètre qui détient au moins un matériel géré reçoit sa liste (figée à la date du lancement) à confirmer en signant, ou sur laquelle signaler un écart. Les personnes sans e-mail la retrouvent dans « Mes documents à signer »."
+msgstr "Chaque personne du périmètre qui détient au moins un matériel géré reçoit sa liste (figée à la date du lancement) à confirmer en signant, ou sur laquelle signaler un écart. Les personnes sans e-mail la retrouvent dans « Mes documents à signer »."
+
+msgid "Nom de la campagne"
+msgstr "Nom de la campagne"
+
+msgid "Inclure les sous-entités"
+msgstr "Inclure les sous-entités"
+
+msgid "Groupe (facultatif)"
+msgstr "Groupe (facultatif)"
+
+msgid "Profil (facultatif)"
+msgstr "Profil (facultatif)"
+
+msgid "Lancer la campagne"
+msgstr "Lancer la campagne"
+
+msgid "Retour aux campagnes"
+msgstr "Retour aux campagnes"
+
+msgid "Date limite dépassée"
+msgstr "Date limite dépassée"
+
+msgid "Toutes les campagnes"
+msgstr "Toutes les campagnes"
+
+msgid "Confirmées"
+msgstr "Confirmées"
+
+msgid "Écarts signalés"
+msgstr "Écarts signalés"
+
+msgid "Sans réponse"
+msgstr "Sans réponse"
+
+msgid "Export CSV"
+msgstr "Export CSV"
+
+msgid "Export PDF"
+msgstr "Export PDF"
+
+msgid "Relancer les non-répondants"
+msgstr "Relancer les non-répondants"
+
+msgid "Clôturer la campagne ? Les personnes sans réponse ne pourront plus attester."
+msgstr "Clôturer la campagne ? Les personnes sans réponse ne pourront plus attester."
+
+msgid "Clôturer"
+msgstr "Clôturer"
+
+#, php-format
+msgid "Ticket n°%d"
+msgstr "Ticket n°%d"
+
+msgid "Aucune personne du périmètre ne détient de matériel géré."
+msgstr "Aucune personne du périmètre ne détient de matériel géré."
+
+#, php-format
+msgid "Attestation de détention de %s"
+msgstr "Attestation de détention de %s"
+
+#, php-format
+msgid "à rendre avant le %s"
+msgstr "à rendre avant le %s"
+
+#, php-format
+msgid "Attestation signée le %s."
+msgstr "Attestation signée le %s."
+
+msgid "La liste est exacte : je confirme et je signe"
+msgstr "La liste est exacte : je confirme et je signe"
+
+msgid "J'atteste détenir l'ensemble du matériel listé ci-dessus, et seulement celui-ci."
+msgstr "J'atteste détenir l'ensemble du matériel listé ci-dessus, et seulement celui-ci."
+
+msgid "La liste n'est pas exacte : je signale un écart"
+msgstr "La liste n'est pas exacte : je signale un écart"
+
+msgid "Précisez (quel matériel, ce qui ne correspond pas)"
+msgstr "Précisez (quel matériel, ce qui ne correspond pas)"
+
+msgid "Signaler l'écart"
+msgstr "Signaler l'écart"
+
+msgid "Un ticket est ouvert à votre nom et le gestionnaire du parc est prévenu."
+msgstr "Un ticket est ouvert à votre nom et le gestionnaire du parc est prévenu."
+
+msgid "Campagne d'attestation"
+msgid_plural "Campagnes d'attestation"
+msgstr[0] "Campagne d'attestation"
+msgstr[1] "Campagnes d'attestation"
+
+msgid "Attestation de détention"
+msgid_plural "Attestations de détention"
+msgstr[0] "Attestation de détention"
+msgstr[1] "Attestations de détention"

@@ -1,0 +1,111 @@
+{# Issue #158 : réponse d'une personne à son attestation de détention. #}
+<div class="container-lg my-3">
+  <div class="card mb-3">
+    <div class="card-header d-flex align-items-center gap-2">
+      <h3 class="card-title mb-0"><i class="ti ti-clipboard-check me-2"></i>{{ __('Attestation de détention de %s', 'assetsign')|format(user_name) }}</h3>
+      {% set status_class = {0: 'bg-secondary-lt', 1: 'bg-green-lt', 2: 'bg-orange-lt'}[attestation.status]|default('bg-secondary-lt') %}
+      <span class="badge {{ status_class }}">{{ status_label }}</span>
+    </div>
+    <div class="card-body">
+      <div class="text-muted">{{ campaign_name }}{% if deadline %} — {{ __('à rendre avant le %s', 'assetsign')|format(deadline|formatted_date) }}{% endif %}</div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <thead>
+          <tr>
+            <th>{{ __('Type de matériel', 'assetsign') }}</th>
+            <th>{{ __('Matériel', 'assetsign') }}</th>
+            <th>{{ __('N° de série', 'assetsign') }}</th>
+            <th>{{ __('N° d\'inventaire', 'assetsign') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr><td>{{ item.type_label }}</td><td>{{ item.name }}</td><td>{{ item.serial }}</td><td>{{ item.otherserial }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% if pdf_url %}
+    <div class="alert alert-success d-flex align-items-center gap-2">
+      <i class="ti ti-circle-check"></i>
+      <span>{{ __('Attestation signée le %s.', 'assetsign')|format(attestation.date_answered|formatted_datetime) }}</span>
+      <a href="{{ pdf_url }}" class="btn btn-sm btn-outline-success ms-auto"><i class="ti ti-file-type-pdf me-1"></i>PDF</a>
+    </div>
+  {% endif %}
+  {% if attestation.status == 2 %}
+    <div class="alert alert-warning">
+      <div><strong>{{ __('Écart signalé', 'assetsign') }}</strong></div>
+      {% for gap in gaps %}<div>{{ gap_labels[gap] }}</div>{% endfor %}
+      <div class="mt-1">« {{ attestation.comment }} »</div>
+      {% if ticket_url %}<a href="{{ ticket_url }}"><i class="ti ti-ticket me-1"></i>{{ __('Ticket n°%d', 'assetsign')|format(attestation.tickets_id) }}</a>{% endif %}
+    </div>
+  {% endif %}
+
+  {% if can_answer %}
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="card border-primary h-100">
+          <div class="card-header"><h3 class="card-title"><i class="ti ti-writing-sign me-2"></i>{{ __('La liste est exacte : je confirme et je signe', 'assetsign') }}</h3></div>
+          <div class="card-body">
+            <form method="post" action="{{ action }}" id="attestation-sign-form">
+              <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="id" value="{{ attestation.id }}">
+              <input type="hidden" name="signature" id="attestation-signature">
+              <label class="form-check mb-2">
+                <input type="checkbox" name="consent" value="1" class="form-check-input" id="attestation-consent">
+                <span class="form-check-label">{{ __('J\'atteste détenir l\'ensemble du matériel listé ci-dessus, et seulement celui-ci.', 'assetsign') }}</span>
+              </label>
+              <p class="mb-1">{{ __('Signez ci-dessous à la souris, au doigt ou au stylet :', 'assetsign') }}</p>
+              <canvas id="attestation-signature-pad" style="border: 1px dashed #999; border-radius: 6px; width: 100%; height: 160px; touch-action: none; background: #fff;"></canvas>
+              <div class="d-flex gap-2 mt-2">
+                <button type="button" class="btn btn-outline-secondary" id="attestation-clear">{{ __('Effacer', 'assetsign') }}</button>
+                <button type="submit" name="confirm" value="1" class="btn btn-primary" id="attestation-submit" disabled><i class="ti ti-check me-1"></i>{{ __('Valider ma signature', 'assetsign') }}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="card border-warning h-100">
+          <div class="card-header"><h3 class="card-title"><i class="ti ti-alert-triangle me-2"></i>{{ __('La liste n\'est pas exacte : je signale un écart', 'assetsign') }}</h3></div>
+          <div class="card-body">
+            <form method="post" action="{{ action }}">
+              <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="id" value="{{ attestation.id }}">
+              {% for key, label in gap_labels %}
+                <label class="form-check"><input type="checkbox" class="form-check-input" name="gaps[]" value="{{ key }}"><span class="form-check-label">{{ label }}</span></label>
+              {% endfor %}
+              <label class="form-label mt-2" for="attestation-comment">{{ __('Précisez (quel matériel, ce qui ne correspond pas)', 'assetsign') }}</label>
+              <textarea class="form-control" name="comment" id="attestation-comment" rows="3" required></textarea>
+              <button type="submit" name="report" value="1" class="btn btn-warning mt-2"><i class="ti ti-send me-1"></i>{{ __('Signaler l\'écart', 'assetsign') }}</button>
+              <div class="form-hint">{{ __('Un ticket est ouvert à votre nom et le gestionnaire du parc est prévenu.', 'assetsign') }}</div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+    <script>
+      (function () {
+        var canvas = document.getElementById('attestation-signature-pad');
+        var consent = document.getElementById('attestation-consent');
+        var submit = document.getElementById('attestation-submit');
+        var ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext('2d').scale(ratio, ratio);
+        var pad = new SignaturePad(canvas, { backgroundColor: 'rgb(255,255,255)' });
+        var refresh = function () { submit.disabled = pad.isEmpty() || !consent.checked; };
+        pad.addEventListener('endStroke', refresh);
+        consent.addEventListener('change', refresh);
+        document.getElementById('attestation-clear').addEventListener('click', function () { pad.clear(); refresh(); });
+        document.getElementById('attestation-sign-form').addEventListener('submit', function () {
+          document.getElementById('attestation-signature').value = pad.toDataURL('image/png');
+        });
+      })();
+    </script>
+  {% endif %}
+</div>

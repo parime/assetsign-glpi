@@ -3061,3 +3061,227 @@ msgid "%d matériel"
 msgid_plural "%d matériels"
 msgstr[0] "%d Gerät"
 msgstr[1] "%d Geräte"
+
+#, php-format
+msgid "Attestation de détention %s"
+msgstr "Besitzbestätigung %s"
+
+msgid "Relance les attestations de détention en attente jusqu'à la date limite de leur campagne"
+msgstr "Erinnert an ausstehende Besitzbestätigungen bis zur Frist ihrer Kampagne"
+
+msgid "Confirmée"
+msgstr "Bestätigt"
+
+msgid "Écart signalé"
+msgstr "Abweichung gemeldet"
+
+msgid "Je n'ai plus un matériel de la liste"
+msgstr "Ich habe ein Gerät der Liste nicht mehr"
+
+msgid "Je détiens un matériel absent de la liste"
+msgstr "Ich besitze ein Gerät, das nicht in der Liste steht"
+
+msgid "Je ne reconnais pas un matériel de la liste"
+msgstr "Ich erkenne ein Gerät der Liste nicht"
+
+msgid "Cette attestation n'attend plus de réponse."
+msgstr "Diese Bestätigung wartet nicht mehr auf eine Antwort."
+
+msgid "Décrivez l'écart constaté : quel matériel, et ce qui ne correspond pas."
+msgstr "Beschreiben Sie die Abweichung: welches Gerät und was nicht stimmt."
+
+#, php-format
+msgid "Écart d'inventaire signalé lors de la campagne « %s »."
+msgstr "Inventarabweichung gemeldet in der Kampagne „%s“."
+
+msgid "Matériel listé :"
+msgstr "Aufgeführte Geräte:"
+
+#, php-format
+msgid "Écart d'inventaire : %s"
+msgstr "Inventarabweichung: %s"
+
+#, php-format
+msgid "Attestation de détention - %s"
+msgstr "Besitzbestätigung - %s"
+
+msgid "Attestation de détention à signer"
+msgstr "Besitzbestätigung zu unterschreiben"
+
+msgid "Attestation de détention : relance"
+msgstr "Besitzbestätigung: Erinnerung"
+
+msgid "Attestation de détention : écart signalé"
+msgstr "Besitzbestätigung: Abweichung gemeldet"
+
+msgid "Personne qui atteste"
+msgstr "Bestätigende Person"
+
+msgid "Auteur de la campagne"
+msgstr "Urheber der Kampagne"
+
+msgid "Campagne"
+msgstr "Kampagne"
+
+msgid "Date limite"
+msgstr "Frist"
+
+msgid "Matériel détenu"
+msgstr "Besessene Geräte"
+
+msgid "La campagne n'a pas pu être créée."
+msgstr "Die Kampagne konnte nicht erstellt werden."
+
+#, php-format
+msgid "Campagne lancée : %d personne(s) invitée(s) à attester leur matériel."
+msgstr "Kampagne gestartet: %d Person(en) zur Bestätigung ihrer Geräte eingeladen."
+
+#, php-format
+msgid "%d relance(s) envoyée(s)."
+msgstr "%d Erinnerung(en) gesendet."
+
+msgid "Campagne clôturée : les attestations ne peuvent plus être modifiées."
+msgstr "Kampagne abgeschlossen: Bestätigungen können nicht mehr geändert werden."
+
+msgid "Personne"
+msgstr "Person"
+
+msgid "Matériels"
+msgstr "Geräte"
+
+msgid "Date de réponse"
+msgstr "Antwortdatum"
+
+msgid "Écart"
+msgstr "Abweichung"
+
+msgid "Attestation signée. Merci !"
+msgstr "Bestätigung unterschrieben. Vielen Dank!"
+
+msgid "Écart signalé : un ticket a été ouvert, le gestionnaire du parc va vous recontacter."
+msgstr "Abweichung gemeldet: Ein Ticket wurde eröffnet, der Geräteverwalter meldet sich bei Ihnen."
+
+msgid "Campagnes d'attestation de détention"
+msgstr "Kampagnen zur Besitzbestätigung"
+
+msgid "Nouvelle campagne"
+msgstr "Neue Kampagne"
+
+msgid "Inventaire contradictoire : chaque personne confirme en signant la liste du matériel qu'elle détient, ou signale un écart. Preuve attendue en audit (ISO 27001 A.5.9, inventaire des actifs)."
+msgstr "Kontradiktorische Inventur: Jede Person bestätigt mit Unterschrift die Liste ihrer Geräte oder meldet eine Abweichung. In Audits erwarteter Nachweis (ISO 27001 A.5.9, Inventar der Werte)."
+
+msgid "Aucune campagne pour l'instant"
+msgstr "Noch keine Kampagne"
+
+msgid "Taux de réponse"
+msgstr "Antwortquote"
+
+msgid "Écarts"
+msgstr "Abweichungen"
+
+msgid "Ouverte"
+msgstr "Offen"
+
+msgid "Clôturée"
+msgstr "Abgeschlossen"
+
+msgid "Nouvelle campagne d'attestation de détention"
+msgstr "Neue Kampagne zur Besitzbestätigung"
+
+msgid "Chaque personne du périmètre qui détient au moins un matériel géré reçoit sa liste (figée à la date du lancement) à confirmer en signant, ou sur laquelle signaler un écart. Les personnes sans e-mail la retrouvent dans « Mes documents à signer »."
+msgstr "Jede Person im Umfang mit mindestens einem verwalteten Gerät erhält ihre Liste (zum Startdatum eingefroren) zur Bestätigung mit Unterschrift oder zur Meldung einer Abweichung. Personen ohne E-Mail finden sie unter „Meine zu unterschreibenden Dokumente“."
+
+msgid "Nom de la campagne"
+msgstr "Name der Kampagne"
+
+msgid "Inclure les sous-entités"
+msgstr "Untereinheiten einbeziehen"
+
+msgid "Groupe (facultatif)"
+msgstr "Gruppe (optional)"
+
+msgid "Profil (facultatif)"
+msgstr "Profil (optional)"
+
+msgid "Lancer la campagne"
+msgstr "Kampagne starten"
+
+msgid "Retour aux campagnes"
+msgstr "Zurück zu den Kampagnen"
+
+msgid "Date limite dépassée"
+msgstr "Frist überschritten"
+
+msgid "Toutes les campagnes"
+msgstr "Alle Kampagnen"
+
+msgid "Confirmées"
+msgstr "Bestätigt"
+
+msgid "Écarts signalés"
+msgstr "Gemeldete Abweichungen"
+
+msgid "Sans réponse"
+msgstr "Ohne Antwort"
+
+msgid "Export CSV"
+msgstr "CSV-Export"
+
+msgid "Export PDF"
+msgstr "PDF-Export"
+
+msgid "Relancer les non-répondants"
+msgstr "An Nicht-Antwortende erinnern"
+
+msgid "Clôturer la campagne ? Les personnes sans réponse ne pourront plus attester."
+msgstr "Kampagne abschließen? Personen ohne Antwort können nicht mehr bestätigen."
+
+msgid "Clôturer"
+msgstr "Abschließen"
+
+#, php-format
+msgid "Ticket n°%d"
+msgstr "Ticket Nr. %d"
+
+msgid "Aucune personne du périmètre ne détient de matériel géré."
+msgstr "Niemand im Umfang besitzt verwaltete Geräte."
+
+#, php-format
+msgid "Attestation de détention de %s"
+msgstr "Besitzbestätigung von %s"
+
+#, php-format
+msgid "à rendre avant le %s"
+msgstr "fällig bis %s"
+
+#, php-format
+msgid "Attestation signée le %s."
+msgstr "Bestätigung unterschrieben am %s."
+
+msgid "La liste est exacte : je confirme et je signe"
+msgstr "Die Liste stimmt: Ich bestätige und unterschreibe"
+
+msgid "J'atteste détenir l'ensemble du matériel listé ci-dessus, et seulement celui-ci."
+msgstr "Ich bestätige, alle oben aufgeführten Geräte und nur diese zu besitzen."
+
+msgid "La liste n'est pas exacte : je signale un écart"
+msgstr "Die Liste stimmt nicht: Ich melde eine Abweichung"
+
+msgid "Précisez (quel matériel, ce qui ne correspond pas)"
+msgstr "Bitte präzisieren (welches Gerät, was nicht stimmt)"
+
+msgid "Signaler l'écart"
+msgstr "Abweichung melden"
+
+msgid "Un ticket est ouvert à votre nom et le gestionnaire du parc est prévenu."
+msgstr "Ein Ticket wird in Ihrem Namen eröffnet und der Geräteverwalter benachrichtigt."
+
+msgid "Campagne d'attestation"
+msgid_plural "Campagnes d'attestation"
+msgstr[0] "Bestätigungskampagne"
+msgstr[1] "Bestätigungskampagnen"
+
+msgid "Attestation de détention"
+msgid_plural "Attestations de détention"
+msgstr[0] "Besitzbestätigung"
+msgstr[1] "Besitzbestätigungen"

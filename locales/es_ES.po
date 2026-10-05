@@ -3025,3 +3025,227 @@ msgid "%d matériel"
 msgid_plural "%d matériels"
 msgstr[0] "%d elemento"
 msgstr[1] "%d elementos"
+
+#, php-format
+msgid "Attestation de détention %s"
+msgstr "Certificación de tenencia %s"
+
+msgid "Relance les attestations de détention en attente jusqu'à la date limite de leur campagne"
+msgstr "Recuerda las certificaciones de tenencia pendientes hasta la fecha límite de su campaña"
+
+msgid "Confirmée"
+msgstr "Confirmada"
+
+msgid "Écart signalé"
+msgstr "Discrepancia indicada"
+
+msgid "Je n'ai plus un matériel de la liste"
+msgstr "Ya no tengo un elemento de la lista"
+
+msgid "Je détiens un matériel absent de la liste"
+msgstr "Tengo un elemento que no está en la lista"
+
+msgid "Je ne reconnais pas un matériel de la liste"
+msgstr "No reconozco un elemento de la lista"
+
+msgid "Cette attestation n'attend plus de réponse."
+msgstr "Esta certificación ya no espera respuesta."
+
+msgid "Décrivez l'écart constaté : quel matériel, et ce qui ne correspond pas."
+msgstr "Describa la discrepancia: qué elemento y qué no coincide."
+
+#, php-format
+msgid "Écart d'inventaire signalé lors de la campagne « %s »."
+msgstr "Discrepancia de inventario indicada durante la campaña «%s»."
+
+msgid "Matériel listé :"
+msgstr "Material listado:"
+
+#, php-format
+msgid "Écart d'inventaire : %s"
+msgstr "Discrepancia de inventario: %s"
+
+#, php-format
+msgid "Attestation de détention - %s"
+msgstr "Certificación de tenencia - %s"
+
+msgid "Attestation de détention à signer"
+msgstr "Certificación de tenencia por firmar"
+
+msgid "Attestation de détention : relance"
+msgstr "Certificación de tenencia: recordatorio"
+
+msgid "Attestation de détention : écart signalé"
+msgstr "Certificación de tenencia: discrepancia indicada"
+
+msgid "Personne qui atteste"
+msgstr "Persona que certifica"
+
+msgid "Auteur de la campagne"
+msgstr "Autor de la campaña"
+
+msgid "Campagne"
+msgstr "Campaña"
+
+msgid "Date limite"
+msgstr "Fecha límite"
+
+msgid "Matériel détenu"
+msgstr "Material en posesión"
+
+msgid "La campagne n'a pas pu être créée."
+msgstr "No se pudo crear la campaña."
+
+#, php-format
+msgid "Campagne lancée : %d personne(s) invitée(s) à attester leur matériel."
+msgstr "Campaña lanzada: %d persona(s) invitada(s) a certificar su material."
+
+#, php-format
+msgid "%d relance(s) envoyée(s)."
+msgstr "%d recordatorio(s) enviado(s)."
+
+msgid "Campagne clôturée : les attestations ne peuvent plus être modifiées."
+msgstr "Campaña cerrada: las certificaciones ya no se pueden modificar."
+
+msgid "Personne"
+msgstr "Persona"
+
+msgid "Matériels"
+msgstr "Elementos"
+
+msgid "Date de réponse"
+msgstr "Fecha de respuesta"
+
+msgid "Écart"
+msgstr "Discrepancia"
+
+msgid "Attestation signée. Merci !"
+msgstr "Certificación firmada. ¡Gracias!"
+
+msgid "Écart signalé : un ticket a été ouvert, le gestionnaire du parc va vous recontacter."
+msgstr "Discrepancia indicada: se ha abierto un ticket y el gestor del parque se pondrá en contacto con usted."
+
+msgid "Campagnes d'attestation de détention"
+msgstr "Campañas de certificación de tenencia"
+
+msgid "Nouvelle campagne"
+msgstr "Nueva campaña"
+
+msgid "Inventaire contradictoire : chaque personne confirme en signant la liste du matériel qu'elle détient, ou signale un écart. Preuve attendue en audit (ISO 27001 A.5.9, inventaire des actifs)."
+msgstr "Inventario contradictorio: cada persona confirma firmando la lista del material que posee, o indica una discrepancia. Prueba esperada en auditoría (ISO 27001 A.5.9, inventario de activos)."
+
+msgid "Aucune campagne pour l'instant"
+msgstr "Ninguna campaña por ahora"
+
+msgid "Taux de réponse"
+msgstr "Tasa de respuesta"
+
+msgid "Écarts"
+msgstr "Discrepancias"
+
+msgid "Ouverte"
+msgstr "Abierta"
+
+msgid "Clôturée"
+msgstr "Cerrada"
+
+msgid "Nouvelle campagne d'attestation de détention"
+msgstr "Nueva campaña de certificación de tenencia"
+
+msgid "Chaque personne du périmètre qui détient au moins un matériel géré reçoit sa liste (figée à la date du lancement) à confirmer en signant, ou sur laquelle signaler un écart. Les personnes sans e-mail la retrouvent dans « Mes documents à signer »."
+msgstr "Cada persona del ámbito que posee al menos un elemento gestionado recibe su lista (congelada en la fecha de lanzamiento) para confirmarla firmando o indicar una discrepancia. Las personas sin correo la encuentran en «Mis documentos por firmar»."
+
+msgid "Nom de la campagne"
+msgstr "Nombre de la campaña"
+
+msgid "Inclure les sous-entités"
+msgstr "Incluir las subentidades"
+
+msgid "Groupe (facultatif)"
+msgstr "Grupo (opcional)"
+
+msgid "Profil (facultatif)"
+msgstr "Perfil (opcional)"
+
+msgid "Lancer la campagne"
+msgstr "Lanzar la campaña"
+
+msgid "Retour aux campagnes"
+msgstr "Volver a las campañas"
+
+msgid "Date limite dépassée"
+msgstr "Fecha límite superada"
+
+msgid "Toutes les campagnes"
+msgstr "Todas las campañas"
+
+msgid "Confirmées"
+msgstr "Confirmadas"
+
+msgid "Écarts signalés"
+msgstr "Discrepancias indicadas"
+
+msgid "Sans réponse"
+msgstr "Sin respuesta"
+
+msgid "Export CSV"
+msgstr "Exportar CSV"
+
+msgid "Export PDF"
+msgstr "Exportar PDF"
+
+msgid "Relancer les non-répondants"
+msgstr "Recordar a quienes no han respondido"
+
+msgid "Clôturer la campagne ? Les personnes sans réponse ne pourront plus attester."
+msgstr "¿Cerrar la campaña? Las personas sin respuesta ya no podrán certificar."
+
+msgid "Clôturer"
+msgstr "Cerrar"
+
+#, php-format
+msgid "Ticket n°%d"
+msgstr "Ticket n.º %d"
+
+msgid "Aucune personne du périmètre ne détient de matériel géré."
+msgstr "Nadie del ámbito posee material gestionado."
+
+#, php-format
+msgid "Attestation de détention de %s"
+msgstr "Certificación de tenencia de %s"
+
+#, php-format
+msgid "à rendre avant le %s"
+msgstr "a entregar antes del %s"
+
+#, php-format
+msgid "Attestation signée le %s."
+msgstr "Certificación firmada el %s."
+
+msgid "La liste est exacte : je confirme et je signe"
+msgstr "La lista es correcta: confirmo y firmo"
+
+msgid "J'atteste détenir l'ensemble du matériel listé ci-dessus, et seulement celui-ci."
+msgstr "Certifico que poseo todo el material indicado arriba, y solo ese material."
+
+msgid "La liste n'est pas exacte : je signale un écart"
+msgstr "La lista no es correcta: indico una discrepancia"
+
+msgid "Précisez (quel matériel, ce qui ne correspond pas)"
+msgstr "Precise (qué elemento, qué no coincide)"
+
+msgid "Signaler l'écart"
+msgstr "Indicar la discrepancia"
+
+msgid "Un ticket est ouvert à votre nom et le gestionnaire du parc est prévenu."
+msgstr "Se abre un ticket a su nombre y se avisa al gestor del parque."
+
+msgid "Campagne d'attestation"
+msgid_plural "Campagnes d'attestation"
+msgstr[0] "Campaña de certificación"
+msgstr[1] "Campañas de certificación"
+
+msgid "Attestation de détention"
+msgid_plural "Attestations de détention"
+msgstr[0] "Certificación de tenencia"
+msgstr[1] "Certificaciones de tenencia"

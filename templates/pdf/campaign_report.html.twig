@@ -1,0 +1,44 @@
+{# Issue #158 : rapport PDF d'une campagne d'attestation, preuve d'audit (A.5.9). Textes fixes
+   (document archivé) ; les libellés de statut et d'écart viennent du contrôleur. #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Campagne d'attestation — {{ campaign.name }}</title>
+{% include '@assetsign/pdf/_pdf_style.html.twig' %}
+</head>
+<body>
+
+{% if company_name %}
+<div class="header-logo"><div class="company-name">{{ company_name }}</div></div>
+{% endif %}
+
+<h1>Campagne d'attestation de détention</h1>
+<p class="meta">{{ campaign.name }} — rapport généré le {{ generated_at }}</p>
+
+<table class="info-table">
+    <tr><th>Lancée le</th><td>{{ campaign.date_creation|date('d/m/Y') }}</td></tr>
+    <tr><th>Date limite</th><td>{{ campaign.date_deadline ? campaign.date_deadline|date('d/m/Y') : '—' }}</td></tr>
+    <tr><th>Personnes concernées</th><td>{{ stats.total }}</td></tr>
+    <tr><th>Attestations confirmées</th><td>{{ stats.confirmed }}</td></tr>
+    <tr><th>Écarts signalés</th><td>{{ stats.discrepancy }}</td></tr>
+    <tr><th>Sans réponse</th><td>{{ stats.pending }}</td></tr>
+    <tr><th>Taux de réponse</th><td>{{ stats.response_rate }} %</td></tr>
+</table>
+
+<h2>Détail</h2>
+<table class="info-table">
+    <tr><th>Personne</th><th>Matériels</th><th>Statut</th><th>Réponse</th><th>Écart</th></tr>
+    {% for line in lines %}
+    <tr>
+        <td>{{ line.user }}</td>
+        <td>{{ line.items }}</td>
+        <td>{{ status_labels[line.status] }}</td>
+        <td>{{ line.date_answered ? line.date_answered|date('d/m/Y H:i') : '—' }}</td>
+        <td>{% for gap in line.gaps %}{{ gap_labels[gap] }}<br>{% endfor %}{{ line.comment }}{% if line.tickets_id > 0 %} (ticket n°{{ line.tickets_id }}){% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
