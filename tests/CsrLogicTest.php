@@ -36,7 +36,7 @@ final class CsrLogicTest extends TestCase
        $this->assertSame(50, $summary['footprint_coverage']);
        $this->assertSame(300.0, $summary['footprint_total']);
        $this->assertSame(1, $summary['extended_items'], 'seul le premier dépasse sa durée prévue');
-       $this->assertEqualsWithDelta(3.0, $summary['average_age_years'], 0.1, 'moyenne de 4 et 2 ans, matériel sans date ignoré');
+       $this->assertEqualsWithDelta(3.5, $summary['average_age_years'], 0.1, 'moyenne de 5 et 2 ans, matériel sans date ignoré');
        $this->assertEqualsWithDelta(6.0, $summary['average_lifetime_years'], 0.1);
        $this->assertSame(50, $summary['second_life_rate']);
    }
