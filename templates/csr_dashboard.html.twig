@@ -1,0 +1,64 @@
+{# Issue #142 : tableau de bord RSE — uniquement des données réellement saisies, avec leur couverture. #}
+<div class="container-lg my-3">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h3 class="card-title mb-1"><i class="ti ti-leaf me-2 text-green"></i>{{ __('Tableau de bord RSE du parc', 'assetsign') }}</h3>
+      <p class="text-muted mb-0">{{ __('Calculé sur les entités actives, à partir des seules données saisies dans GLPI (passeport environnemental, informations financières, fiches de fin de vie) : aucune moyenne ni estimation n\'est ajoutée. Une donnée manquante fait baisser la couverture affichée sous chaque indicateur.', 'assetsign') }}</p>
+      {% if not environmental_on or not reuse_benefit_on %}
+        <div class="alert alert-info mt-3 mb-0">
+          <i class="ti ti-info-circle me-1"></i>
+          {% if not environmental_on %}{{ __('Le passeport environnemental est désactivé : l\'empreinte de fabrication ne peut pas être saisie sur les matériels.', 'assetsign') }}{% endif %}
+          {% if not reuse_benefit_on %}{{ __('Le bénéfice du réemploi n\'est pas affiché sur les passeports matériels.', 'assetsign') }}{% endif %}
+          {% if can_configure %}<a href="{{ config_url }}">{{ __('Configuration', 'assetsign') }}</a>{% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row row-cards mb-3">
+    <div class="col-md-3">
+      <div class="card card-sm h-100"><div class="card-body">
+        <div class="text-muted small"><i class="ti ti-building-factory me-1"></i>{{ __('Empreinte de fabrication', 'assetsign') }}</div>
+        <div class="h1 mb-0">{{ summary.footprint_total|number_format(0, ',', ' ') }} <span class="fs-5">kg CO2-eq</span></div>
+        <div class="progress progress-sm mt-2"><div class="progress-bar bg-green" style="width: {{ summary.footprint_coverage }}%"></div></div>
+        <div class="text-muted small">{{ __('%1$d / %2$d matériels renseignés (%3$d %%)', 'assetsign')|format(summary.with_footprint, summary.total_items, summary.footprint_coverage) }}</div>
+      </div></div>
+    </div>
+    <div class="col-md-3">
+      <div class="card card-sm h-100"><div class="card-body">
+        <div class="text-muted small"><i class="ti ti-recycle me-1"></i>{{ __('Impact évité par le réemploi', 'assetsign') }}</div>
+        <div class="h1 mb-0">{{ summary.avoided_total|number_format(0, ',', ' ') }} <span class="fs-5">kg CO2-eq</span></div>
+        <div class="text-muted small">{{ __('%d matériel(s) utilisé(s) au-delà de leur durée d\'amortissement', 'assetsign')|format(summary.extended_items) }}</div>
+      </div></div>
+    </div>
+    <div class="col-md-3">
+      <div class="card card-sm h-100"><div class="card-body">
+        <div class="text-muted small"><i class="ti ti-clock me-1"></i>{{ __('Âge moyen du parc en service', 'assetsign') }}</div>
+        <div class="h1 mb-0">{{ summary.average_age_years is null ? '—' : summary.average_age_years|number_format(1, ',', ' ') ~ ' ' ~ __('ans', 'assetsign') }}</div>
+        <div class="text-muted small">{{ __('Durée de vie réelle des matériels réformés', 'assetsign') }} : {{ summary.average_lifetime_years is null ? '—' : summary.average_lifetime_years|number_format(1, ',', ' ') ~ ' ' ~ __('ans', 'assetsign') }}</div>
+      </div></div>
+    </div>
+    <div class="col-md-3">
+      <div class="card card-sm h-100"><div class="card-body">
+        <div class="text-muted small"><i class="ti ti-heart-handshake me-1"></i>{{ __('Seconde vie en fin de vie', 'assetsign') }}</div>
+        <div class="h1 mb-0">{{ summary.second_life_rate is null ? '—' : summary.second_life_rate ~ ' %' }}</div>
+        <div class="text-muted small">{{ __('Dons et ventes parmi les fins de vie des %d derniers mois', 'assetsign')|format(months) }}</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3 class="card-title">{{ __('Filières de fin de vie (%d derniers mois)', 'assetsign')|format(months) }}</h3></div>
+    <div class="card-body">
+      {% set eol_total = summary.end_of_life.don + summary.end_of_life.vente + summary.end_of_life.destruction %}
+      {% for key, meta in {'don': [__('Dons', 'assetsign'), 'bg-green'], 'vente': [__('Ventes', 'assetsign'), 'bg-blue'], 'destruction': [__('Destructions', 'assetsign'), 'bg-orange']} %}
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <div style="width: 120px;">{{ meta[0] }}</div>
+          <div class="progress flex-grow-1" style="height: 10px;"><div class="progress-bar {{ meta[1] }}" style="width: {{ eol_total > 0 ? (100 * summary.end_of_life[key] / eol_total)|round : 0 }}%"></div></div>
+          <div style="width: 40px;" class="text-end">{{ summary.end_of_life[key] }}</div>
+        </div>
+      {% endfor %}
+      {% if eol_total == 0 %}<p class="text-muted mb-0">{{ __('Aucune fiche de don, vente ou destruction finalisée sur la période.', 'assetsign') }}</p>{% endif %}
+    </div>
+  </div>
+</div>

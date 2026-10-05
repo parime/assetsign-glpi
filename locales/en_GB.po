@@ -3229,3 +3229,84 @@ msgid "Attestation de détention"
 msgid_plural "Attestations de détention"
 msgstr[0] "Holding attestation"
 msgstr[1] "Holding attestations"
+
+msgid "Tableau de bord RSE"
+msgstr "CSR dashboard"
+
+#, php-format
+msgid "kg CO2-eq de fabrication (%d %% du parc renseigné)"
+msgstr "kg CO2-eq from manufacturing (%d %% of the fleet filled in)"
+
+#, php-format
+msgid "kg CO2-eq évités par le réemploi (%d matériel(s) prolongé(s))"
+msgstr "kg CO2-eq avoided through reuse (%d item(s) kept longer)"
+
+msgid "Taux de seconde vie en pourcentage (dons et ventes, 12 mois)"
+msgstr "Second-life rate as a percentage (donations and sales, 12 months)"
+
+msgid "RSE : empreinte de fabrication du parc"
+msgstr "CSR: manufacturing footprint of the fleet"
+
+msgid "RSE : impact évité par le réemploi"
+msgstr "CSR: impact avoided through reuse"
+
+msgid "RSE : taux de seconde vie"
+msgstr "CSR: second-life rate"
+
+msgid "Tableau de bord RSE du parc"
+msgstr "Fleet CSR dashboard"
+
+msgid "Calculé sur les entités actives, à partir des seules données saisies dans GLPI (passeport environnemental, informations financières, fiches de fin de vie) : aucune moyenne ni estimation n'est ajoutée. Une donnée manquante fait baisser la couverture affichée sous chaque indicateur."
+msgstr "Calculated on the active entities, using only data entered in GLPI (environmental passport, financial information, end-of-life forms): no average or estimate is added. Missing data lowers the coverage shown under each indicator."
+
+msgid "Le passeport environnemental est désactivé : l'empreinte de fabrication ne peut pas être saisie sur les matériels."
+msgstr "The environmental passport is disabled: the manufacturing footprint cannot be entered on items."
+
+msgid "Le bénéfice du réemploi n'est pas affiché sur les passeports matériels."
+msgstr "The reuse benefit is not shown on equipment passports."
+
+msgid "Configuration"
+msgstr "Configuration"
+
+#, php-format
+msgid "%1$d / %2$d matériels renseignés (%3$d %%)"
+msgstr "%1$d / %2$d items filled in (%3$d %%)"
+
+msgid "Impact évité par le réemploi"
+msgstr "Impact avoided through reuse"
+
+#, php-format
+msgid "%d matériel(s) utilisé(s) au-delà de leur durée d'amortissement"
+msgstr "%d item(s) used beyond their depreciation period"
+
+msgid "Âge moyen du parc en service"
+msgstr "Average age of the fleet in service"
+
+msgid "ans"
+msgstr "years"
+
+msgid "Durée de vie réelle des matériels réformés"
+msgstr "Actual lifetime of decommissioned items"
+
+msgid "Seconde vie en fin de vie"
+msgstr "Second life at end of life"
+
+#, php-format
+msgid "Dons et ventes parmi les fins de vie des %d derniers mois"
+msgstr "Donations and sales among end-of-life cases in the last %d months"
+
+#, php-format
+msgid "Filières de fin de vie (%d derniers mois)"
+msgstr "End-of-life channels (last %d months)"
+
+msgid "Dons"
+msgstr "Donations"
+
+msgid "Ventes"
+msgstr "Sales"
+
+msgid "Destructions"
+msgstr "Destructions"
+
+msgid "Aucune fiche de don, vente ou destruction finalisée sur la période."
+msgstr "No donation, sale or destruction form completed over the period."
