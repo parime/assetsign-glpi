@@ -20,7 +20,11 @@ define('PLUGIN_ASSETSIGN_VERSION', '2.8.0');
 define('PLUGIN_ASSETSIGN_MIN_GLPI', '11.0.0');
 // GLPI 11 ET 12 depuis un seul code source (cf. src/GlpiPlugin/Assetsign/Compat/).
 define('PLUGIN_ASSETSIGN_MAX_GLPI', '12.99.99');
-define('PLUGIN_ASSETSIGN_MIN_PHP', '8.3.0');
+// PHP 8.2 (et non plus 8.3) depuis le 10 octobre 2026 : rien dans le code ni dans ses dependances
+// n'exige 8.3 (verifie : lint integral sous PHP 8.2, chargement des classes en CI, suite de tests
+// sous PHP 8.2 via la CI officielle GLPI), et GLPI 11 fonctionne des PHP 8.2 - meme minimum que les
+// plugins jumeaux grcmanager et Configuration-glpi-auto.
+define('PLUGIN_ASSETSIGN_MIN_PHP', '8.2.0');
 
 // Types d'actifs geres par defaut (surchargeable via la configuration)
 const PLUGIN_ASSETSIGN_DEFAULT_ITEMTYPES = ['Computer', 'Monitor', 'Peripheral', 'Phone'];
