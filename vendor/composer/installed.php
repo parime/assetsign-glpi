@@ -38,13 +38,10 @@
             'dev_requirement' => false,
         ),
         'masterminds/html5' => array(
-            'pretty_version' => '2.10.1',
-            'version' => '2.10.1.0',
-            'reference' => 'fd5018f6815fff903946d0564977b44ce8010e29',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../masterminds/html5',
-            'aliases' => array(),
             'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
         ),
         'parime/assetsign-glpi' => array(
             'pretty_version' => '1.0.0+no-version-set',
@@ -64,14 +61,17 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'thecodingmachine/safe' => array(
-            'pretty_version' => 'v3.4.0',
-            'version' => '3.4.0.0',
-            'reference' => '705683a25bacf0d4860c7dea4d7947bfd09eea19',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../thecodingmachine/safe',
-            'aliases' => array(),
+        'symfony/polyfill-mbstring' => array(
             'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
+        'thecodingmachine/safe' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
         ),
     ),
 );
