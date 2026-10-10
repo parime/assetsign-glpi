@@ -49,7 +49,7 @@ The same mechanism also works in reverse: when equipment is **returned** (unassi
 
 ## Installation
 
-**Requirements**: GLPI 11.0.8+ (recommended — fixes several critical vulnerabilities in GLPI core itself) **or GLPI 12** (same package), PHP 8.3+, MariaDB/MySQL, an SMTP server configured in GLPI. Composer is only needed to develop the plugin — **not to install it**: `vendor/` (Dompdf and its dependencies, ~14 MB, production only) is committed directly in this repository, a plain `git clone` or a release ZIP is enough on the target server.
+**Requirements**: GLPI 11.0.8+ (recommended — fixes several critical vulnerabilities in GLPI core itself) **or GLPI 12** (same package), PHP 8.2+ (8.3+ with GLPI 12), MariaDB/MySQL, an SMTP server configured in GLPI. Composer is only needed to develop the plugin — **not to install it**: `vendor/` (Dompdf and its dependencies, ~14 MB, production only) is committed directly in this repository, a plain `git clone` or a release ZIP is enough on the target server.
 
 **1. Get the code** into GLPI's `plugins/` folder, named **`assetsign`** (GLPI derives the plugin key from that folder name):
 

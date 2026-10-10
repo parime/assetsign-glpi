@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **PHP 8.2 minimum** (au lieu de 8.3), comme GLPI 11 et les plugins jumeaux : rien dans le code ni
+  dans ses dépendances n'exigeait 8.3. Vérifié par un lint intégral sous PHP 8.2 et par la CI
+  officielle GLPI (installation + tests sous PHP 8.2/MySQL 8.0 et PHP 8.5/MariaDB 10.6), ajoutée à
+  la CI. `vendor/` régénéré : contrôle de plateforme Composer à 8.2 et carte des classes à jour.
+
 ### Added
 
 - **Tableau de bord RSE** (issue #142) : page Outils > Tableau de bord RSE et trois cartes pour le

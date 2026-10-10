@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'parime/assetsign-glpi',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '18cd0eb85bcf45fbb67468399362542b7d6201f7',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'glpi-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -47,9 +47,9 @@
             'dev_requirement' => false,
         ),
         'parime/assetsign-glpi' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '18cd0eb85bcf45fbb67468399362542b7d6201f7',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'glpi-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

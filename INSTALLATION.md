@@ -4,7 +4,7 @@
 
 - GLPI 11.0.x — **11.0.8 ou plus récent recommandé** (corrige plusieurs failles de sécurité critiques du cœur GLPI lui-même : RCE, injection SQL, contournement MFA — sans lien avec ce plugin, mais applicable à toute instance GLPI 11).
 - **ou** GLPI 12.x — même paquet, aucune manipulation particulière (installation et suite de tests vérifiées en CI sur GLPI 12.0.0-rc3 ; GLPI 12 n'étant pas encore publié en version finale, une re-vérification sera faite sur la 12.0.0 finale).
-- PHP 8.3+ (testé avec PHP 8.5)
+- PHP 8.2+ (testé en CI avec PHP 8.2 et PHP 8.5 ; GLPI 12 exige PHP 8.3+)
 - MariaDB / MySQL
 - Un serveur SMTP configuré dans GLPI (pour l'envoi des e-mails de remise et de relance)
 - Composer **uniquement si vous développez sur le plugin** (pour relancer les tests, mettre à jour Dompdf...) — **pas nécessaire pour l'installer**, voir ci-dessous.
