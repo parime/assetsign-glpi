@@ -437,6 +437,7 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_maintenancechecklistitems',
         'glpi_plugin_assetsign_accessories',
         'glpi_plugin_assetsign_kits',
+        'glpi_plugin_assetsign_residualvalues',
         'glpi_plugin_assetsign_environmentaldatas',
         'glpi_plugin_assetsign_templates',
         'glpi_plugin_assetsign_configs',

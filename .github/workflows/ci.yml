@@ -38,6 +38,30 @@ env:
   GLPI_IMAGE: glpi/glpi:11.0.11
 
 jobs:
+  # CI officielle GLPI (glpi-project/plugin-ci-workflows, meme mecanisme que le plugin jumeau
+  # Configuration-glpi-auto) : installation et suite de tests du plugin sur la derniere GLPI 11.0.x,
+  # sous PHP 8.2/MySQL 8.0 et PHP 8.5/MariaDB 10.6. Les jobs `test`/`test-glpi12` ci-dessous ne
+  # tournent que sous le PHP de l'image glpi/glpi (8.5) : c'est ce job qui prouve le minimum PHP 8.2
+  # declare dans setup.php (abaisse de 8.3 a 8.2 le 10 octobre 2026).
+  generate-ci-matrix:
+    name: "Generate CI matrix"
+    uses: "glpi-project/plugin-ci-workflows/.github/workflows/generate-ci-matrix.yml@v1"
+    with:
+      glpi-version: "11.0.x"
+
+  glpi-official-ci:
+    name: "GLPI ${{ matrix.glpi-version }} - php:${{ matrix.php-version }} - ${{ matrix.db-image }}"
+    needs: "generate-ci-matrix"
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.generate-ci-matrix.outputs.matrix) }}
+    uses: "glpi-project/plugin-ci-workflows/.github/workflows/continuous-integration.yml@v1"
+    with:
+      plugin-key: "assetsign"
+      glpi-version: "${{ matrix.glpi-version }}"
+      php-version: "${{ matrix.php-version }}"
+      db-image: "${{ matrix.db-image }}"
+
   test:
     runs-on: ubuntu-latest
     steps:

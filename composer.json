@@ -9,8 +9,13 @@
         }
     ],
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.2",
         "dompdf/dompdf": "^3.0"
+    },
+    "replace": {
+        "masterminds/html5": "*",
+        "symfony/polyfill-mbstring": "*",
+        "thecodingmachine/safe": "*"
     },
     "require-dev": {
         "glpi-project/coding-standard": "^0.9.0",
