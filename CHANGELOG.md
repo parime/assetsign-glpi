@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Traduction anglaise** : « Attribution » devient *Handover* (32 libellés). En anglais,
+  *attribution* désigne la mention d'un auteur, pas la remise de matériel à une personne.
 - **PHP 8.2 minimum** (au lieu de 8.3), comme GLPI 11 et les plugins jumeaux : rien dans le code ni
   dans ses dépendances n'exigeait 8.3. Vérifié par un lint intégral sous PHP 8.2 et par la CI
   officielle GLPI (installation + tests sous PHP 8.2/MySQL 8.0 et PHP 8.5/MariaDB 10.6), ajoutée à

@@ -11,7 +11,7 @@ msgstr ""
 
 #: templates/sign_page.html.twig front/sign.php:130
 msgid "Signature d'attribution de matériel"
-msgstr "Equipment attribution signature"
+msgstr "Equipment handover signature"
 
 #: templates/sign_page.html.twig templates/movement_form.html.twig
 #: templates/qr_label.html.twig templates/assetsign_form.html.twig
@@ -317,8 +317,8 @@ msgstr "Create the movement"
 #: src/GlpiPlugin/Assetsign/Workflow/HandoverType.php:21
 msgid "Attribution"
 msgid_plural "Attributions"
-msgstr[0] "Attribution"
-msgstr[1] "Attributions"
+msgstr[0] "Handover"
+msgstr[1] "Handovers"
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
 msgid "Externe"
@@ -515,7 +515,7 @@ msgstr "Template name"
 
 #: templates/template_form.html.twig
 msgid "Type d'attribution concerné"
-msgstr "Attribution type"
+msgstr "Handover type"
 
 #: templates/template_form.html.twig templates/config_form.html.twig
 msgid "Inclure les conditions générales dans le PDF"
@@ -773,7 +773,7 @@ msgid ""
 "bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop "
 "tard."
 msgstr ""
-"The technician who triggered the attribution receives an email when this "
+"The technician who triggered the handover receives an email when this "
 "many days remain before the link expires, so they can reach out to the "
 "beneficiary another way (call, in person) before it's too late."
 
@@ -849,7 +849,7 @@ msgid ""
 "Ajoute un bouton « Créer une fiche de don » sur l'onglet Attribution de "
 "chaque matériel géré par le plugin."
 msgstr ""
-"Adds a \"Create donation form\" button on the Attribution tab of each asset "
+"Adds a \"Create donation form\" button on the Handover tab of each asset "
 "managed by the plugin."
 
 #: templates/config_form.html.twig
@@ -861,7 +861,7 @@ msgid ""
 "Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur "
 "l'onglet Attribution de chaque matériel géré par le plugin."
 msgstr ""
-"Adds a \"Create sale form\" button (with price and date) on the Attribution "
+"Adds a \"Create sale form\" button (with price and date) on the Handover "
 "tab of each asset managed by the plugin."
 
 #: templates/config_form.html.twig
@@ -890,7 +890,7 @@ msgid ""
 "certificat) sur l'onglet Attribution de chaque matériel géré par le plugin."
 msgstr ""
 "Adds a “Create a destruction form” button (with provider and certificate) on "
-"the Attribution tab of every asset managed by the plugin."
+"the Handover tab of every asset managed by the plugin."
 
 #: templates/config_form.html.twig
 msgid ""
@@ -907,7 +907,7 @@ msgid ""
 "Infocom) quand le matériel passe dans l'un des États ci-dessous, au lieu de "
 "la saisir à la main."
 msgstr ""
-"No Attribution form is created here: this setting only writes the "
+"No Handover form is created here: this setting only writes the "
 "decommission date automatically (GLPI's native \"Decommission date\" field "
 "on the Financial and administrative information tab) when the equipment "
 "moves to one of the statuses below, instead of entering it by hand."
@@ -938,7 +938,7 @@ msgid ""
 "d'attribution (ex: état constaté du matériel) et apparaît sur le PDF tant "
 "que la fiche n'est pas encore signée."
 msgstr ""
-"If enabled, a free-text field becomes available on each attribution form "
+"If enabled, a free-text field becomes available on each handover form "
 "(e.g. observed condition of the equipment) and appears on the PDF as long as "
 "the form is not yet signed."
 
@@ -1012,7 +1012,7 @@ msgid ""
 msgstr ""
 "The maintenance form is a subsystem separate from signed forms (no "
 "beneficiary, no token, no e-mail): it always generates a PDF (same layout as "
-"attribution/donation/sale forms, with the logo), and can additionally have "
+"handover/donation/sale forms, with the logo), and can additionally have "
 "the technician sign directly on the creation form if the option below is "
 "enabled. Access is managed through its dedicated right (Administration > "
 "Profiles)."
@@ -1198,7 +1198,7 @@ msgid ""
 "onglet du matériel concerné."
 msgstr ""
 "The Equipment Passport aggregates, read-only, the events from the "
-"Attribution/Return/Donation/Sale/Maintenance tabs above, on a new tab of the "
+"Handover/Return/Donation/Sale/Maintenance tabs above, on a new tab of the "
 "equipment concerned."
 
 #: templates/config_form.html.twig
@@ -1226,7 +1226,7 @@ msgid ""
 msgstr ""
 "Past this delay, the beneficiary's name and email are removed from the "
 "Equipment Passport's events (the event and its date remain visible). Never "
-"affects the attribution/return forms themselves."
+"affects the handover/return forms themselves."
 
 #: templates/config_form.html.twig
 msgid "Types d'événement affichés dans la frise"
@@ -1429,7 +1429,7 @@ msgstr "today"
 
 #: templates/passport_tab.html.twig
 msgid "Aucune attribution enregistrée pour le moment."
-msgstr "No attribution recorded yet."
+msgstr "No handover recorded yet."
 
 #: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
 msgid "Historique"
@@ -1514,7 +1514,7 @@ msgstr "equipment deleted"
 
 #: templates/assetsign_tab.html.twig
 msgid "Aucune attribution enregistrée pour ce matériel."
-msgstr "No attribution recorded for this asset."
+msgstr "No handover recorded for this asset."
 
 #: templates/assetsign_tab.html.twig
 msgid "Créée le"
@@ -1582,7 +1582,7 @@ msgid ""
 "L'affectation déclenche automatiquement la création d'une attribution, comme "
 "depuis la fiche du matériel."
 msgstr ""
-"Assigning it automatically creates an attribution, just like from the "
+"Assigning it automatically creates a handover, just like from the "
 "asset's own page."
 
 #: templates/assetsign_tab.html.twig
@@ -1595,15 +1595,15 @@ msgstr "Handover & signature"
 
 #: hook.php:117
 msgid "Attributions en attente de signature"
-msgstr "Attributions pending signature"
+msgstr "Handovers pending signature"
 
 #: hook.php:124
 msgid "Attributions signées"
-msgstr "Signed attributions"
+msgstr "Signed handovers"
 
 #: hook.php:131
 msgid "Attributions expirées"
-msgstr "Expired attributions"
+msgstr "Expired handovers"
 
 #: hook.php:138 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
 msgid "Échecs de création (30 derniers jours)"
@@ -1660,8 +1660,8 @@ msgstr ""
 #: src/GlpiPlugin/Assetsign/Accessory.php:17
 msgid "Accessoire d'attribution"
 msgid_plural "Accessoires d'attribution"
-msgstr[0] "Attribution accessory"
-msgstr[1] "Attribution accessories"
+msgstr[0] "Handover accessory"
+msgstr[1] "Handover accessories"
 
 #: src/GlpiPlugin/Assetsign/PassportEvent.php:45
 msgid "Événement du passeport matériel"
@@ -1796,7 +1796,7 @@ msgstr "Bottom"
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:157
 #: src/GlpiPlugin/Assetsign/Template.php:51
 msgid "Type d'attribution"
-msgstr "Attribution type"
+msgstr "Handover type"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:258
 msgid "Date d'envoi"
@@ -1820,7 +1820,7 @@ msgstr "External beneficiary"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:444
 msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
-msgstr "Send a signature reminder to the selected attributions?"
+msgstr "Send a signature reminder to the selected handovers?"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:448
 msgid ""
@@ -1833,7 +1833,7 @@ msgstr ""
 #: src/GlpiPlugin/Assetsign/Assetsign.php:514
 #: src/GlpiPlugin/Assetsign/Assetsign.php:523
 msgid "Attributions"
-msgstr "Attributions"
+msgstr "Handovers"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:634
 #: src/GlpiPlugin/Assetsign/Movement.php:294
@@ -1898,7 +1898,7 @@ msgid ""
 "utilisateur sur la fiche du matériel si une signature est attendue."
 msgstr ""
 "This asset has no user assigned: this status change therefore cannot "
-"generate an attribution or return sheet. Assign a user on the asset's record "
+"generate a handover or return sheet. Assign a user on the asset's record "
 "if a signature is expected."
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:1057
@@ -1965,16 +1965,16 @@ msgstr "Sends due signature reminders"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:1900
 msgid "Marque comme expirées les attributions hors délai"
-msgstr "Marks attributions past their deadline as expired"
+msgstr "Marks handovers past their deadline as expired"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:1901
 msgid "Alerte le technicien des attributions sur le point d'expirer"
-msgstr "Warns the technician about attributions about to expire"
+msgstr "Warns the technician about handovers about to expire"
 
 #: src/GlpiPlugin/Assetsign/Assetsign.php:1915
 msgid "Cette attribution ne peut plus être relancée (déjà signée ou expirée)."
 msgstr ""
-"This attribution can no longer be reminded (already signed or expired)."
+"This handover can no longer be reminded (already signed or expired)."
 
 #: src/GlpiPlugin/Assetsign/Config.php:79
 msgid "AssetSign — Signature électronique"
@@ -2048,7 +2048,7 @@ msgstr "Signature of movement #%d"
 
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:50
 msgid "Nouvelle attribution de matériel"
-msgstr "New equipment attribution"
+msgstr "New equipment handover"
 
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:51
 msgid "Relance de signature"
@@ -2090,8 +2090,8 @@ msgstr "Signature deadline"
 #: src/GlpiPlugin/Assetsign/Template.php:32
 msgid "Gabarit d'attribution"
 msgid_plural "Gabarits d'attribution"
-msgstr[0] "Attribution template"
-msgstr[1] "Attribution templates"
+msgstr[0] "Handover template"
+msgstr[1] "Handover templates"
 
 #: src/GlpiPlugin/Assetsign/Template.php:52
 msgid "Par défaut"
@@ -2149,7 +2149,7 @@ msgstr "Manual residual value saved."
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:54
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:80
 msgid "Attribution introuvable."
-msgstr "Attribution not found."
+msgstr "Handover not found."
 
 #: src/GlpiPlugin/Assetsign/Api/SignController.php:113
 msgid "Vous devez être connecté pour accéder à ce document."
@@ -2698,7 +2698,7 @@ msgid ""
 "Votre signature, en tant que responsable hiérarchique, est requise pour "
 "finaliser cette attribution."
 msgstr ""
-"As line manager, your signature is required to finalise this attribution."
+"As line manager, your signature is required to finalise this handover."
 
 msgid ""
 "Remise, restitution ou autre document de matériel : il attend votre signature"
@@ -2732,16 +2732,16 @@ msgid ""
 "mono-signataire, comme aujourd'hui."
 msgstr ""
 "Requires, in addition to the beneficiary's signature, that of their line "
-"manager (set in their user record) for an Attribution. The beneficiary signs "
+"manager (set in their user record) for an Handover. The beneficiary signs "
 "first; the document is then sent to the manager for countersignature before "
 "being considered fully signed. If no manager is set for the beneficiary, the "
-"attribution remains single-signature, as today."
+"handover remains single-signature, as today."
 
 msgid ""
 "Limité aux Attributions (pas aux restitutions, dons, ventes, destructions, "
 "maintenances ou mouvements)."
 msgstr ""
-"Limited to Attributions (not returns, donations, sales, destructions, "
+"Limited to Handovers (not returns, donations, sales, destructions, "
 "maintenance or movements)."
 
 msgid "Aucun document à signer"
