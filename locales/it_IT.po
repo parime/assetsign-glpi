@@ -3528,3 +3528,22 @@ msgstr "Un movimento si crea dalla scheda Movimenti dell'attrezzatura interessat
 
 msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
 msgstr "Una partenza si prepara dalla scheda della persona, scheda Assegnazioni (pulsante «Partenza della persona»)."
+
+msgid "Attribuer aussi dans GLPI le matériel remis avec"
+msgstr "Assegnare anche in GLPI l'attrezzatura consegnata insieme"
+
+msgid "Si activé, chaque écran, périphérique, téléphone… ajouté à une feuille d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut ci-dessous) : à l'envoi de la feuille, ou dès l'ajout si elle est déjà envoyée. Un élément déjà attribué au bénéficiaire n'est pas modifié."
+msgstr "Se attivato, ogni monitor, periferica, telefono… aggiunto a una scheda di assegnazione viene assegnato al beneficiario in GLPI (campo Utente e stato qui sotto): all'invio della scheda, o subito all'aggiunta se è già stata inviata. Un elemento già assegnato al beneficiario non viene modificato."
+
+msgid "Statut à donner au matériel remis avec"
+msgstr "Stato da dare all'attrezzatura consegnata insieme"
+
+msgid "Le même que le matériel principal"
+msgstr "Lo stesso dell'attrezzatura principale"
+
+msgid "Ne pas changer le statut"
+msgstr "Non cambiare lo stato"
+
+#, php-format
+msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
+msgstr "All'invio, gli elementi selezionati vengono assegnati anche a %s in GLPI."

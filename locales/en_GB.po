@@ -3498,3 +3498,22 @@ msgstr "A movement is created from the Movements tab of the equipment concerned.
 
 msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
 msgstr "A departure is prepared from the person's record, Assignments tab (“Person's departure” button)."
+
+msgid "Attribuer aussi dans GLPI le matériel remis avec"
+msgstr "Also assign the equipment handed over with it in GLPI"
+
+msgid "Si activé, chaque écran, périphérique, téléphone… ajouté à une feuille d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut ci-dessous) : à l'envoi de la feuille, ou dès l'ajout si elle est déjà envoyée. Un élément déjà attribué au bénéficiaire n'est pas modifié."
+msgstr "If enabled, each monitor, device, phone… added to an assignment form is assigned to the recipient in GLPI (User field and state below): when the form is sent, or as soon as it is added if the form has already been sent. An item already assigned to the recipient is not modified."
+
+msgid "Statut à donner au matériel remis avec"
+msgstr "State to give to the equipment handed over with it"
+
+msgid "Le même que le matériel principal"
+msgstr "Same as the main equipment"
+
+msgid "Ne pas changer le statut"
+msgstr "Do not change the state"
+
+#, php-format
+msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
+msgstr "When sent, the ticked items are also assigned to %s in GLPI."
