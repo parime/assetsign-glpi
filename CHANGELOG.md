@@ -22,6 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Mise à jour depuis la 2.8.0** : une migration ajoutait des colonnes « après » une colonne créée
+  plus loin dans la même mise à jour — l'installation neuve passait, mais la mise à jour d'une
+  installation existante échouait (« Unknown column 'stock_states' »). Les nouvelles migrations ne
+  dépendent plus de l'ordre des colonnes, et la CI GLPI 12 installe désormais la dernière version
+  publiée avant d'appliquer le code par-dessus.
 - La personne qui signe ne voit plus le message technique « Document copié avec succès ».
 - Les messages techniques de GLPI (« Création du répertoire », « Document copié avec succès »)
   ne s'affichent plus à l'envoi immédiat d'une feuille (attribution ou restitution).

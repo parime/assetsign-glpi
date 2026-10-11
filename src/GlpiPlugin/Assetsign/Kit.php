@@ -277,7 +277,7 @@ class Kit extends CommonDropdown
       }
        // Issue #181 : elements du parc attendus, par type.
       if (!$DB->fieldExists($table, 'item_lines')) {
-          $migration->addField($table, 'item_lines', 'text', ['after' => 'accessories_id']);
+          $migration->addField($table, 'item_lines', 'text', []);
           $migration->migrationOneTable($table);
       }
    }

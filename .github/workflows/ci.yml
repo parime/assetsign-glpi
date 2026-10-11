@@ -354,6 +354,8 @@ jobs:
     steps:
       - name: Récupère le code du plugin
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
+        with:
+          fetch-depth: 0 # etiquettes necessaires au test de mise a jour ci-dessous
 
       - name: Démarre MariaDB
         run: |
@@ -380,6 +382,20 @@ jobs:
           done
           exit 1
 
+      - name: Installe la dernière version publiée (test de mise à jour)
+        # Le code de la PR est ensuite installe PAR-DESSUS (--force) : verifie les migrations depuis la
+        # derniere version publiee. Une installation neuve ne le fait pas - une migration dependant
+        # d'une colonne creee plus loin (cf. AFTER `stock_states`) passait la CI mais aurait casse la
+        # mise a jour de chaque installation existante.
+        run: |
+          tag=$(git tag --sort=-v:refname | head -1)
+          echo "Derniere version publiee : $tag"
+          docker exec glpi mkdir -p /var/www/glpi/plugins/assetsign
+          git archive "$tag" | docker exec -i glpi tar x -C /var/www/glpi/plugins/assetsign
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/assetsign
+          docker exec glpi php bin/console plugin:install assetsign --username=glpi --no-interaction
+          docker exec glpi php bin/console plugin:activate assetsign --no-interaction
+
       - name: Copie le plugin dans le conteneur GLPI
         run: |
           docker exec glpi mkdir -p /var/www/glpi/plugins/assetsign
@@ -392,7 +408,7 @@ jobs:
         # (collision d'autoload constatee en local). Le vendor/ commite (production seule) n'a pas
         # ce probleme.
         run: |
-          docker exec glpi php bin/console plugin:install assetsign --username=glpi --no-interaction
+          docker exec glpi php bin/console plugin:install assetsign --username=glpi --force --no-interaction
           docker exec glpi php bin/console plugin:activate assetsign --no-interaction
 
       - name: Installe les dépendances de dev du plugin (PHPUnit)

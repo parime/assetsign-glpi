@@ -368,8 +368,8 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
       }
        // Issue #178 : etat de chaque element au retour.
       if (!$DB->fieldExists($table, 'return_state')) {
-          $migration->addField($table, 'return_state', 'integer', ['value' => 0, 'after' => 'is_automatic']);
-          $migration->addField($table, 'return_comment', 'string', ['value' => '', 'after' => 'return_state']);
+          $migration->addField($table, 'return_state', 'integer', ['value' => 0]);
+          $migration->addField($table, 'return_comment', 'string', ['value' => '']);
           $migration->migrationOneTable($table);
       }
    }

@@ -908,19 +908,19 @@ class Config extends Compat\Base\ConfigBase
          }
          // Issue #178 : controle du retour du materiel remis avec.
          if (!$DB->fieldExists($table, 'return_returned_state')) {
-             $migration->addField($table, 'return_returned_state', 'integer', ['value' => 0, 'after' => 'stock_states']);
-             $migration->addField($table, 'return_damaged_state', 'integer', ['value' => 0, 'after' => 'return_returned_state']);
-             $migration->addField($table, 'return_missing_ticket', 'bool', ['value' => 1, 'after' => 'return_damaged_state']);
+             $migration->addField($table, 'return_returned_state', 'integer', ['value' => 0]);
+             $migration->addField($table, 'return_damaged_state', 'integer', ['value' => 0]);
+             $migration->addField($table, 'return_missing_ticket', 'bool', ['value' => 1]);
              $migration->migrationOneTable($table);
          }
          // Issue #180 : statuts consideres comme « en stock ».
          if (!$DB->fieldExists($table, 'stock_states')) {
-             $migration->addField($table, 'stock_states', 'text', ['after' => 'handover_states']);
+             $migration->addField($table, 'stock_states', 'text', []);
              $migration->migrationOneTable($table);
          }
          // Issue #179 : rappel des feuilles restees en brouillon.
          if (!$DB->fieldExists($table, 'draft_reminder_days')) {
-             $migration->addField($table, 'draft_reminder_days', 'integer', ['value' => 3, 'after' => 'expiry_warning_days']);
+             $migration->addField($table, 'draft_reminder_days', 'integer', ['value' => 3]);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'expiry_warning_days')) {
@@ -933,23 +933,23 @@ class Config extends Compat\Base\ConfigBase
          }
          // Issue #166 : peripheriques connectes ajoutes d'office aux fiches creees automatiquement.
          if (!$DB->fieldExists($table, 'auto_attach_connected_items')) {
-             $migration->addField($table, 'auto_attach_connected_items', 'bool', ['value' => 0, 'after' => 'enable_observations']);
+             $migration->addField($table, 'auto_attach_connected_items', 'bool', ['value' => 0]);
              $migration->migrationOneTable($table);
          }
          // Issue #170 : fenetre de confirmation avant l'envoi de la feuille d'attribution.
          if (!$DB->fieldExists($table, 'confirm_before_sending')) {
-             $migration->addField($table, 'confirm_before_sending', 'bool', ['value' => 1, 'after' => 'auto_attach_connected_items']);
+             $migration->addField($table, 'confirm_before_sending', 'bool', ['value' => 1]);
              $migration->migrationOneTable($table);
          }
          // Issue #163 : changements d'utilisateur faits par l'inventaire automatique.
          if (!$DB->fieldExists($table, 'ignore_inventory_changes')) {
-             $migration->addField($table, 'ignore_inventory_changes', 'bool', ['value' => 0, 'after' => 'confirm_before_sending']);
+             $migration->addField($table, 'ignore_inventory_changes', 'bool', ['value' => 0]);
              $migration->migrationOneTable($table);
          }
          // Issue #174 : le materiel remis avec est aussi attribue dans GLPI au beneficiaire.
          if (!$DB->fieldExists($table, 'assign_handed_items')) {
-             $migration->addField($table, 'assign_handed_items', 'bool', ['value' => 1, 'after' => 'ignore_inventory_changes']);
-             $migration->addField($table, 'handed_items_state', 'integer', ['value' => -1, 'after' => 'assign_handed_items']);
+             $migration->addField($table, 'assign_handed_items', 'bool', ['value' => 1]);
+             $migration->addField($table, 'handed_items_state', 'integer', ['value' => -1]);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'enable_don')) {
