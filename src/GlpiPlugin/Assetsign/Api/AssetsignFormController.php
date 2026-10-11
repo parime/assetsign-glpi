@@ -140,6 +140,14 @@ final class AssetsignFormController
        return implode(' ', $parts);
    }
 
+   public function linkTicket(Assetsign $assetsign, array $post): string {
+       $assetsign->linkTicket((int) ($post['tickets_id'] ?? 0));
+
+       return (int) ($post['tickets_id'] ?? 0) > 0
+           ? __('Feuille rattachée au ticket.', 'assetsign')
+           : __('Feuille détachée du ticket.', 'assetsign');
+   }
+
    public function discardDraft(Assetsign $assetsign): string {
        $assetsign->cancelRequest();
 

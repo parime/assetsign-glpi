@@ -1,0 +1,63 @@
+{# Issue #183 : onglet « Remise de materiel » d'un ticket (cf. Assetsign::showForTicket()) #}
+<div class="card">
+  <div class="card-body">
+    {% if sheets|length %}
+      <table class="table table-sm table-vcenter">
+        <thead>
+          <tr>
+            <th>{{ __('Matériel', 'assetsign') }}</th>
+            <th>{{ __('Bénéficiaire', 'assetsign') }}</th>
+            <th>{{ __('Statut', 'assetsign') }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in sheets %}
+            <tr>
+              <td>{{ s.item }}</td>
+              <td>{{ s.beneficiary }}</td>
+              <td>{% if s.is_draft %}<span class="badge bg-orange-lt">{{ s.status }}</span>{% else %}{{ s.status }}{% endif %}</td>
+              <td class="text-end"><a href="{{ sheet_url }}?id={{ s.id }}">{{ s.is_draft ? __('Compléter et envoyer', 'assetsign') : __('Voir', 'assetsign') }}</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-muted">{{ __('Aucune feuille de remise rattachée à ce ticket.', 'assetsign') }}</p>
+    {% endif %}
+
+    {% if can_create %}
+      <h4 class="mt-3"><i class="ti ti-package-export me-1"></i>{{ __('Remettre du matériel au demandeur', 'assetsign') }}</h4>
+      {% if available|length %}
+        <form method="post" action="{{ form_url }}" class="row g-2 align-items-end">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="tickets_id" value="{{ ticket.fields.id }}">
+          <div class="col-auto">
+            <label class="form-label">{{ __('Bénéficiaire', 'assetsign') }}</label>
+            <select name="users_id" class="form-select">
+              {% for id, name in requesters %}<option value="{{ id }}">{{ name }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="col-auto">
+            <label class="form-label">{{ __('Matériel disponible', 'assetsign') }}</label>
+            <select name="available_item" class="form-select" style="min-width: 320px;">
+              {% for group, rows in available %}
+                <optgroup label="{{ group }}">
+                  {% for r in rows %}
+                    <option value="{{ r.value }}">{{ r.name|default('#' ~ r.items_id) }}{% if r.serial %} — {{ __('N° de série', 'assetsign') }} {{ r.serial }}{% endif %}</option>
+                  {% endfor %}
+                </optgroup>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-auto">
+            <button type="submit" name="handover" class="btn btn-primary"><i class="ti ti-arrow-right me-1"></i>{{ __('Préparer la feuille', 'assetsign') }}</button>
+          </div>
+        </form>
+        <p class="form-text mt-2">{{ __('Le matériel est attribué au bénéficiaire dans GLPI et lié au ticket ; la feuille est préparée en brouillon : vous la complétez (écran, accessoires…) puis l\'envoyez. À la signature, un suivi avec le document signé est ajouté au ticket.', 'assetsign') }}</p>
+      {% else %}
+        <p class="text-muted">{{ __('Aucun matériel disponible (sans utilisateur ou « en stock ») dans les types qui déclenchent une feuille.', 'assetsign') }}</p>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

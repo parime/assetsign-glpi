@@ -433,6 +433,12 @@
             <input type="checkbox" name="return_missing_ticket" value="1" class="form-check-input" id="return_missing_ticket" {{ config.return_missing_ticket|default(1) ? 'checked' : '' }}>
             <label class="form-check-label" for="return_missing_ticket">{{ __('Ouvrir un ticket pour un élément manquant au retour', 'assetsign') }}</label>
           </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="resolve_ticket_on_signature" value="0">
+            <input type="checkbox" name="resolve_ticket_on_signature" value="1" class="form-check-input" id="resolve_ticket_on_signature" {{ config.resolve_ticket_on_signature|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="resolve_ticket_on_signature"><i class="ti ti-ticket me-1"></i>{{ __('Résoudre le ticket lié quand la feuille est signée', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu.', 'assetsign') }}</div>
+          </div>
           {# Issue #174 : le materiel remis avec est aussi attribue dans GLPI #}
           <div class="mb-3 form-check">
             <input type="hidden" name="assign_handed_items" value="0">

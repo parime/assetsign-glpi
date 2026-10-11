@@ -3720,3 +3720,67 @@ msgstr "Kit ändern"
 
 msgid "Appliquer ce kit"
 msgstr "Dieses Kit anwenden"
+
+msgid "Remise de matériel"
+msgstr "Geräteübergabe"
+
+msgid "Ce type de matériel ne déclenche pas de feuille d'attribution (Configuration > Général)."
+msgstr "Dieser Gerätetyp löst kein Zuweisungsformular aus (Konfiguration > Allgemein)."
+
+msgid "Le bénéficiaire doit être un demandeur du ticket."
+msgstr "Der Empfänger muss ein Anforderer des Tickets sein."
+
+msgid "Ce matériel est déjà attribué à cette personne."
+msgstr "Dieses Gerät ist dieser Person bereits zugewiesen."
+
+msgid "La feuille n'a pas pu être créée : vérifiez que l'attribution déclenche une feuille pour cette entité (Configuration > Général)."
+msgstr "Das Formular konnte nicht erstellt werden: Prüfen Sie, ob die Zuweisung für diese Einheit ein Formular auslöst (Konfiguration > Allgemein)."
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket."
+msgstr "Formular Nr. %1$d (%2$s) für %3$s „%4$s“ wurde unterschrieben. Das unterschriebene Dokument ist dem Ticket beigefügt."
+
+msgid "Le ticket n'a pas pu être résolu automatiquement après la signature (un champ obligatoire du ticket n'est sans doute pas renseigné, comme la catégorie) : résolvez-le manuellement."
+msgstr "Das Ticket konnte nach der Unterschrift nicht automatisch gelöst werden (vermutlich ist ein Pflichtfeld des Tickets leer, z. B. die Kategorie): Lösen Sie es manuell."
+
+msgid "Feuille rattachée au ticket."
+msgstr "Formular mit dem Ticket verknüpft."
+
+msgid "Feuille détachée du ticket."
+msgstr "Formular vom Ticket gelöst."
+
+msgid "Feuille préparée en brouillon et rattachée au ticket : complétez-la puis envoyez-la."
+msgstr "Formular als Entwurf vorbereitet und mit dem Ticket verknüpft: Ergänzen und dann senden."
+
+msgid "Compléter et envoyer"
+msgstr "Ergänzen und senden"
+
+msgid "Aucune feuille de remise rattachée à ce ticket."
+msgstr "Kein Übergabeformular mit diesem Ticket verknüpft."
+
+msgid "Remettre du matériel au demandeur"
+msgstr "Gerät an den Anforderer übergeben"
+
+msgid "Préparer la feuille"
+msgstr "Formular vorbereiten"
+
+msgid "Le matériel est attribué au bénéficiaire dans GLPI et lié au ticket ; la feuille est préparée en brouillon : vous la complétez (écran, accessoires…) puis l'envoyez. À la signature, un suivi avec le document signé est ajouté au ticket."
+msgstr "Das Gerät wird in GLPI dem Empfänger zugewiesen und mit dem Ticket verknüpft; das Formular wird als Entwurf vorbereitet: Sie ergänzen es (Monitor, Zubehör…) und senden es. Bei der Unterschrift wird dem Ticket eine Folgemeldung mit dem unterschriebenen Dokument hinzugefügt."
+
+msgid "Aucun matériel disponible (sans utilisateur ou « en stock ») dans les types qui déclenchent une feuille."
+msgstr "Keine verfügbaren Geräte (ohne Benutzer oder „auf Lager“) unter den Typen, die ein Formular auslösen."
+
+msgid "Ticket lié :"
+msgstr "Verknüpftes Ticket:"
+
+msgid "Rattacher à un ticket ouvert du bénéficiaire"
+msgstr "Mit einem offenen Ticket des Empfängers verknüpfen"
+
+msgid "Rattacher"
+msgstr "Verknüpfen"
+
+msgid "Résoudre le ticket lié quand la feuille est signée"
+msgstr "Verknüpftes Ticket lösen, wenn das Formular unterschrieben ist"
+
+msgid "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."
+msgstr "Ein aus einem Ticket vorbereitetes Formular (Registerkarte „Geräteübergabe“) fügt dem Ticket immer eine Folgemeldung mit dem unterschriebenen Dokument hinzu; ist dieses Kästchen aktiviert, wird das Ticket auch gelöst."

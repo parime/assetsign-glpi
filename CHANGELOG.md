@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- La personne qui signe ne voit plus le message technique « Document copié avec succès ».
 - Les messages techniques de GLPI (« Création du répertoire », « Document copié avec succès »)
   ne s'affichent plus à l'envoi immédiat d'une feuille (attribution ou restitution).
 - **GLPI 12** : les pages qui affichent « élément introuvable » ou « accès refusé » (fiche,
@@ -49,6 +50,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Lien avec les tickets** (issue #183) : onglet « Remise de matériel » sur les tickets — on remet
+  un matériel disponible à un demandeur : attribution dans GLPI, matériel lié au ticket, feuille
+  préparée en brouillon et rattachée au ticket. Une feuille peut aussi être rattachée à un ticket
+  ouvert du bénéficiaire. À la signature : suivi avec le document signé joint au ticket et, si
+  réglé (par défaut), ticket résolu ; sinon une note privée explique pourquoi.
 - **Kits avec des types d'éléments GLPI** (issue #181) : un kit peut attendre des éléments
   inventoriés par type (ex. « Pack télétravail » = 1 écran + 2 périphériques). Sur la fiche et
   dans la fenêtre d'attribution, chaque ligne indique « pourvu / attendu » et propose le matériel

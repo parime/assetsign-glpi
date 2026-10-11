@@ -139,6 +139,17 @@ if (isset($_POST['discard_draft'])) {
     Html::back();
 }
 
+// Issue #183 : rattacher la feuille a un ticket du beneficiaire.
+if (isset($_POST['link_ticket'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       Session::addMessageAfterRedirect($controller->linkTicket($assetsign, $_POST));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
+}
+
 // Issue #178 : controle du retour du materiel remis avec.
 if (isset($_POST['save_return_check'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);

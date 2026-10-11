@@ -44,6 +44,27 @@
       </div>
     {% endif %}
 
+    {# Issue #183 : ticket a l'origine de la remise #}
+    {% if linked_ticket|default(null) %}
+      <p class="mb-2"><i class="ti ti-ticket me-1"></i>{{ __('Ticket lié :', 'assetsign') }}
+        <a href="{{ 'Ticket'|itemtype_form_path(linked_ticket.id) }}">{{ linked_ticket.label }}</a>
+      </p>
+    {% elseif can_edit_accessories and open_tickets|default({})|length %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end mb-3">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-auto">
+          <label class="form-label"><i class="ti ti-ticket me-1"></i>{{ __('Rattacher à un ticket ouvert du bénéficiaire', 'assetsign') }}</label>
+          <select name="tickets_id" class="form-select form-select-sm">
+            {% for id, label in open_tickets %}<option value="{{ id }}">{{ label }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="col-auto">
+          <button type="submit" name="link_ticket" class="btn btn-sm btn-outline-secondary">{{ __('Rattacher', 'assetsign') }}</button>
+        </div>
+      </form>
+    {% endif %}
+
     <table class="table table-striped">
       <tr>
         <th>{{ __('Statut', 'assetsign') }}</th>
