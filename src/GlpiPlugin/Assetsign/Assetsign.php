@@ -1868,6 +1868,8 @@ class Assetsign extends Compat\Base\AssetsignBase
        PassportEvent::recordForAssetsign($this);
        // Issue #174 : le materiel remis avec est attribue dans GLPI au beneficiaire des l'envoi.
        $this->assignHandedItemsInGlpi($config);
+       // Issue #182 : et il apparait dans son propre passeport (« remis avec ... »).
+       PassportEvent::recordHandedItems($this);
 
        // Messages techniques du coeur a la creation du PDF (« Creation du repertoire », « Document
        // copie avec succes ») : ecartes, comme dans regenerateUnsignedPdf().
@@ -2493,6 +2495,8 @@ class Assetsign extends Compat\Base\AssetsignBase
          } else if ($state === AssetsignItem::RETURN_MISSING) {
              $summary['missing']++;
          }
+          // Issue #182 : evenement « Restitution » dans le passeport de l'element.
+          PassportEvent::recordReturnedItem($this, ['return_state' => $state, 'return_comment' => $comment] + $row);
          if ($state === AssetsignItem::RETURN_MISSING && (int) $config->fields['return_missing_ticket'] === 1) {
              $summary['tickets'] += (int) ($this->openMissingItemTicket($row, $comment) > 0);
          }

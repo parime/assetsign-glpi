@@ -3686,3 +3686,19 @@ msgid "%d ticket ouvert pour un élément manquant."
 msgid_plural "%d tickets ouverts pour des éléments manquants."
 msgstr[0] "%d Ticket für ein fehlendes Element eröffnet."
 msgstr[1] "%d Tickets für fehlende Elemente eröffnet."
+
+#, php-format
+msgid "Remis avec %1$s « %2$s »"
+msgstr "Übergeben mit %1$s „%2$s“"
+
+#, php-format
+msgid "Rendu avec %s"
+msgstr "Zurückgegeben mit %s"
+
+#, php-format
+msgid "Rendu abîmé avec %s"
+msgstr "Beschädigt zurückgegeben mit %s"
+
+#, php-format
+msgid "Manquant à la restitution de %s"
+msgstr "Fehlt bei der Rückgabe von %s"

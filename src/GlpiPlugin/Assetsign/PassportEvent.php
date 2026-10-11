@@ -110,6 +110,130 @@ class PassportEvent extends Compat\Base\PassportEventBase
    }
 
     /**
+     * Issue #182 : passeport de l'element remis avec un materiel - evenement « Attribution » dans le
+     * passeport de chaque element du parc de la feuille (« Remis avec Ordinateur PC-123 »), une
+     * seule fois par feuille et par element. Appelee a l'envoi (Assetsign::launchWorkflow()).
+     */
+   public static function recordHandedItems(Assetsign $assetsign): int {
+      if ((int) $assetsign->fields['type'] !== Assetsign::TYPE_HANDOVER) {
+          return 0;
+      }
+       $count = 0;
+      foreach (AssetsignItem::getForAssetsign($assetsign->getID()) as $row) {
+          $count += (int) self::upsertHandedItemEvent($assetsign, $row, self::TYPE_ATTRIBUTION, sprintf(
+              __('Remis avec %1$s « %2$s »', 'assetsign'),
+              Assetsign::getCanonicalItemtypeLabel((string) $assetsign->fields['itemtype']),
+              (string) ($assetsign->getTargetItem()['name'] ?? '')
+          ));
+      }
+       return $count;
+   }
+
+    /**
+     * Issue #182 : evenement « Restitution » dans le passeport de l'element, selon son etat au
+     * retour (Assetsign::saveReturnCheck()) ; mis a jour si l'etat change ensuite.
+     */
+   public static function recordReturnedItem(Assetsign $assetsign, array $row): bool {
+       $state = (int) $row['return_state'];
+      if ($state === AssetsignItem::RETURN_PENDING) {
+          return false;
+      }
+       $main = sprintf(
+           '%s « %s »',
+           Assetsign::getCanonicalItemtypeLabel((string) $assetsign->fields['itemtype']),
+           (string) ($assetsign->getTargetItem()['name'] ?? '')
+       );
+       $comment = match ($state) {
+           AssetsignItem::RETURN_RETURNED => sprintf(__('Rendu avec %s', 'assetsign'), $main),
+           AssetsignItem::RETURN_DAMAGED  => sprintf(__('Rendu abîmé avec %s', 'assetsign'), $main),
+           default                        => sprintf(__('Manquant à la restitution de %s', 'assetsign'), $main),
+       };
+      if (trim((string) ($row['return_comment'] ?? '')) !== '') {
+          $comment .= ' — ' . trim((string) $row['return_comment']);
+      }
+       return self::upsertHandedItemEvent($assetsign, $row, self::TYPE_RETURN, $comment);
+   }
+
+    /**
+     * Issue #182 : rattrape, pour un element, les evenements des feuilles deja envoyees ou signees
+     * qui le listent (feuilles anterieures a cette fonctionnalite).
+     */
+   public static function backfillHandedItems(string $itemtype, int $items_id): int {
+       global $DB;
+
+       $count = 0;
+      foreach ($DB->request([
+          'SELECT'     => [AssetsignItem::getTable() . '.*'],
+          'FROM'       => AssetsignItem::getTable(),
+          'INNER JOIN' => [Assetsign::getTable() => ['FKEY' => [AssetsignItem::getTable() => 'plugin_assetsign_assetsigns_id', Assetsign::getTable() => 'id']]],
+          'WHERE'      => [
+              AssetsignItem::getTable() . '.itemtype' => $itemtype,
+              AssetsignItem::getTable() . '.items_id' => $items_id,
+              Assetsign::getTable() . '.status'       => [...Assetsign::STATUSES_AWAITING_SIGNATURE, Assetsign::STATUS_SIGNED, Assetsign::STATUS_COMPLETED_NO_SIGNATURE],
+          ],
+      ]) as $row) {
+          $sheet = new Assetsign();
+         if (!$sheet->getFromDB((int) $row['plugin_assetsign_assetsigns_id'])) {
+             continue;
+         }
+         if ((int) $sheet->fields['type'] === Assetsign::TYPE_HANDOVER) {
+             $count += self::recordHandedItems($sheet) > 0 ? 1 : 0;
+         } else if ((int) $sheet->fields['type'] === Assetsign::TYPE_RETURN) {
+             $count += (int) self::recordReturnedItem($sheet, $row);
+         }
+      }
+       return $count;
+   }
+
+    /** Evenement d'un element remis avec le materiel principal d'une feuille (pas ce materiel lui-meme). */
+   private static function isHandedItemEvent(array $row, CommonDBTM $item): bool {
+       static $mainBySheet = [];
+       $sheetId = (int) $row['source_items_id'];
+      if (!array_key_exists($sheetId, $mainBySheet)) {
+          $sheet = new Assetsign();
+          $mainBySheet[$sheetId] = $sheet->getFromDB($sheetId) ? $sheet->fields['itemtype'] . ':' . $sheet->fields['items_id'] : '';
+      }
+       return $mainBySheet[$sheetId] !== $item->getType() . ':' . $item->getID();
+   }
+
+    /** Cree (ou met a jour le commentaire de) l'evenement d'un element pour cette feuille. */
+   private static function upsertHandedItemEvent(Assetsign $assetsign, array $row, int $eventType, string $comment): bool {
+       global $DB;
+
+       $entitiesId = (int) $assetsign->fields['entities_id'];
+      if (!Config::getForEntity($entitiesId)->fields['enable_passport']) {
+          return false;
+      }
+       $where = [
+           'itemtype'        => (string) $row['itemtype'],
+           'items_id'        => (int) $row['items_id'],
+           'event_type'      => $eventType,
+           'source_itemtype' => Assetsign::class,
+           'source_items_id' => $assetsign->getID(),
+       ];
+       $existing = $DB->request(['SELECT' => ['id', 'comment'], 'FROM' => self::getTable(), 'WHERE' => $where, 'LIMIT' => 1])->current();
+       if ($existing) {
+          if ((string) $existing['comment'] !== $comment) {
+             $DB->update(self::getTable(), ['comment' => $comment], ['id' => (int) $existing['id']]);
+          }
+          return false;
+       }
+
+       $beneficiary = $assetsign->getBeneficiary();
+       $isExternal = (int) ($assetsign->fields['beneficiary_type'] ?? Assetsign::BENEFICIARY_INTERNAL) === Assetsign::BENEFICIARY_EXTERNAL;
+       return (bool) (new self())->add($where + [
+           'entities_id'          => $entitiesId,
+           'date'                 => $eventType === self::TYPE_RETURN ? date('Y-m-d H:i:s') : ($assetsign->fields['date_sent'] ?: $assetsign->fields['date_creation'] ?: date('Y-m-d H:i:s')),
+           'users_id'             => $isExternal ? 0 : (int) $assetsign->fields['users_id'],
+           'snapshot_name'        => trim(\formatUserName(0, $beneficiary['name'] ?? '', $beneficiary['realname'] ?? '', $beneficiary['firstname'] ?? '')),
+           'snapshot_email'       => (string) ($beneficiary['email'] ?? ''),
+           'snapshot_is_external' => $isExternal ? 1 : 0,
+           'snapshot_entity_name' => \Dropdown::getDropdownName('glpi_entities', $entitiesId),
+           'comment'              => $comment,
+       ]);
+   }
+
+    /**
      * Enregistre l'evenement correspondant a une fiche de maintenance — appelee depuis
      * Maintenance::createWithChecklist(), une fois la fiche reellement creee. Pas de
      * snapshot utilisateur ici : une maintenance ne change pas le detenteur du materiel,
@@ -213,6 +337,8 @@ class PassportEvent extends Compat\Base\PassportEventBase
        global $DB, $CFG_GLPI;
 
        self::backfillFromLogs($item->getType(), $item->getID());
+       // Issue #182 : evenements « remis avec » / « rendu avec » des feuilles anterieures.
+       self::backfillHandedItems($item->getType(), (int) $item->getID());
 
        $config = Config::getForEntity((int) $item->fields['entities_id']);
        $visibleTypes = $config->getPassportVisibleTypes();
@@ -241,6 +367,14 @@ class PassportEvent extends Compat\Base\PassportEventBase
        self::attachChecklistSummaries($rows);
        self::attachKitSummaries($rows);
        self::attachMovementSummaries($rows);
+       // Issue #182 : controles qualite et kit d'une feuille concernent son materiel principal ; sur
+       // le passeport d'un element remis AVEC ce materiel, ils induiraient en erreur.
+      foreach ($rows as &$row) {
+         if (($row['source_itemtype'] ?? null) === Assetsign::class && self::isHandedItemEvent($row, $item)) {
+             unset($row['checklist_summary'], $row['kit_summary']);
+         }
+      }
+       unset($row);
 
        // getLivesForItem() sur les evenements REELS uniquement : les pseudo-evenements
        // Infocom ci-dessous n'ont pas de event_type/users_id, jamais mélangés à la

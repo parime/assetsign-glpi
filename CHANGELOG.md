@@ -49,6 +49,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Passeport de l'élément remis avec** (issue #182) : un écran, un casque… remis avec un poste a
+  sa propre trace dans le passeport matériel — « Attribution : remis avec Ordinateur PC-123 » à
+  l'envoi, « Restitution : rendu / rendu abîmé / manquant » au contrôle du retour (mis à jour si
+  l'état change), lien vers la feuille ; rétro-remplissage depuis les feuilles existantes. Les
+  contrôles qualité et le kit du poste ne sont pas affichés sur ces événements.
 - **Restitution qui reprend la remise** (issue #178) : la feuille de restitution reprend les éléments
   du parc remis avec le poste (dernière attribution envoyée ou signée, repérée avant son éventuelle
   annulation). Contrôle du retour élément par élément — Rendu / Manquant / Abîmé, commentaire —
