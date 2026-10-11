@@ -198,6 +198,7 @@ if (isset($_POST['update_destruction_details'])) {
 if (isset($_POST['update_kit'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
     $controller->updateKit($assetsign, $_POST);
+    $controller->reopenConfirmationIfAsked($assetsign, $_POST);
     Html::back();
 }
 

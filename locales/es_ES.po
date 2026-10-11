@@ -3666,3 +3666,21 @@ msgstr "Devuelto dañado con %s"
 #, php-format
 msgid "Manquant à la restitution de %s"
 msgstr "Falta en la devolución de %s"
+
+msgid "Éléments du parc attendus dans ce kit"
+msgstr "Elementos del inventario esperados en este kit"
+
+msgid "Nombre d'éléments inventoriés de chaque type attendus (0 = aucun). À l'attribution, on choisit l'écran, le dock, le casque… réels ; ils sont ensuite contrôlés un par un à la restitution."
+msgstr "Número de elementos inventariados de cada tipo esperados (0 = ninguno). En la asignación se eligen la pantalla, la base, los auriculares… reales; luego se comprueban uno a uno en la devolución."
+
+msgid "Ajouter au kit"
+msgstr "Añadir al kit"
+
+msgid "Aucun élément de ce type disponible : cherchez dans tout le parc ci-dessous."
+msgstr "No hay ningún elemento de este tipo disponible: busque en todo el inventario abajo."
+
+msgid "Changer le kit"
+msgstr "Cambiar el kit"
+
+msgid "Appliquer ce kit"
+msgstr "Aplicar este kit"

@@ -55,6 +55,22 @@
           {% endif %}
         </form>
 
+        {# Issue #181 : kit de la feuille, lignes « type GLPI » a pourvoir, choix du kit #}
+        <hr class="my-3">
+        <h4 class="mb-2"><i class="ti ti-package me-1"></i>{{ __('Kit d\'accessoires', 'assetsign') }}{% if kit %} : {{ kit.fields.name }}{% endif %}</h4>
+        {{ include('@assetsign/_kit_item_lines.html.twig', {'can_edit': true, 'reopen': true}) }}
+        <form method="post" action="{{ form_action }}" class="row g-2 align-items-end mb-1">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <input type="hidden" name="reopen_confirmation" value="1">
+          <div class="col-auto">
+            {% do call('GlpiPlugin\\Assetsign\\Kit::dropdown', [{'name': 'plugin_assetsign_kits_id', 'value': item.fields.plugin_assetsign_kits_id, 'display_emptychoice': true}]) %}
+          </div>
+          <div class="col-auto">
+            <button type="submit" name="update_kit" class="btn btn-sm btn-secondary">{{ kit ? __('Changer le kit', 'assetsign') : __('Appliquer ce kit', 'assetsign') }}</button>
+          </div>
+        </form>
+
         <hr class="my-3">
         <h4 class="mb-2"><i class="ti ti-plus me-1"></i>{{ __('Ajouter un écran, un périphérique, un téléphone…', 'assetsign') }}</h4>
         <form method="post" action="{{ form_action }}" class="row g-2 align-items-end mb-3">
