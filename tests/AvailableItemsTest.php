@@ -78,6 +78,41 @@ final class AvailableItemsTest extends AssetsignTestCase
         $this->assertNotContains('Monitor:' . $elsewhere, $offered, 'deja sur une autre feuille en attente');
     }
 
+    /** Cree et active un type d'actif personnalise, renvoie le nom de sa classe. */
+    private function customAssetType(string $systemName): string
+    {
+        global $CFG_GLPI;
+        $definition = new \Glpi\Asset\AssetDefinition();
+        $definition->getFromDB((int) $definition->add([
+            'system_name' => $systemName, 'label' => $systemName, 'is_active' => 1,
+            'capacities' => [], 'profiles' => [],
+        ]));
+        $manager = \Glpi\Asset\AssetDefinitionManager::getInstance();
+        $manager->registerDefinition($definition);
+        $manager->bootstrapDefinition($definition);
+        $class = $definition->getAssetClassName();
+        if (!in_array($class, $CFG_GLPI['asset_types'], true)) {
+            $CFG_GLPI['asset_types'][] = $class;
+        }
+        return $class;
+    }
+
+    public function testCustomAssetTypesAreNotMixedUp(): void
+    {
+        $headsets = $this->customAssetType('Phpunitheadset' . mt_rand(1000, 9999));
+        $docks = $this->customAssetType('Phpunitdock' . mt_rand(1000, 9999));
+        $headset = (int) (new $headsets())->add(['name' => 'PHPUNIT-CASQUE', 'entities_id' => 0]);
+        $dock = (int) (new $docks())->add(['name' => 'PHPUNIT-HUB', 'entities_id' => 0]);
+        $sheet = $this->sheet($this->createTestComputer(0, 'PHPUNIT-PC'));
+
+        $offered = $this->offered($sheet);
+
+        $this->assertContains($headsets . ':' . $headset, $offered);
+        $this->assertContains($docks . ':' . $dock, $offered);
+        $this->assertNotContains($headsets . ':' . $dock, $offered, 'un hub n\'est pas un casque');
+        $this->assertNotContains($docks . ':' . $headset, $offered, 'un casque n\'est pas un hub');
+    }
+
     public function testChoosingAnAvailableItemAddsIt(): void
     {
         $sheet = $this->sheet($this->createTestComputer(0, 'PHPUNIT-PC'));

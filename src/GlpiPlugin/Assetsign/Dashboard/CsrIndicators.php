@@ -38,7 +38,10 @@ final class CsrIndicators
              continue;
          }
           $table = $itemtype::getTable();
-          $where = $DB->fieldExists($table, 'entities_id') ? getEntitiesRestrictCriteria($table, '', '', $DB->fieldExists($table, 'is_recursive')) : [];
+          $where = array_merge(
+              $DB->fieldExists($table, 'entities_id') ? getEntitiesRestrictCriteria($table, '', '', $DB->fieldExists($table, 'is_recursive')) : [],
+              $itemtype::getSystemSQLCriteria($table)
+          );
          foreach (['is_deleted', 'is_template'] as $flag) {
             if ($DB->fieldExists($table, $flag)) {
                $where[$table . '.' . $flag] = 0;

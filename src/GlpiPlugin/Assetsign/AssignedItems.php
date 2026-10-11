@@ -26,7 +26,8 @@ final class AssignedItems
          if (!$DB->fieldExists($table, 'users_id')) {
              continue;
          }
-          $where = ['users_id' => $usersId];
+          // Actifs personnalises : une seule table pour toutes les definitions, filtrer sur la sienne.
+          $where = array_merge(['users_id' => $usersId], $itemtype::getSystemSQLCriteria());
          foreach (['is_deleted', 'is_template'] as $flag) {
             if ($DB->fieldExists($table, $flag)) {
                $where[$flag] = 0;

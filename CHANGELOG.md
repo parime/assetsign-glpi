@@ -22,6 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Actifs personnalisés mélangés** : dans « Ajouter un élément du parc > Matériel disponible »,
+  chaque type d'actif personnalisé (casque, hub…) listait les actifs de tous les autres types, car
+  GLPI les range tous dans la même table. Même correction pour la liste du matériel détenu (départ
+  d'un salarié, attestation annuelle) et pour les indicateurs RSE, qui comptaient ces actifs
+  plusieurs fois.
 - **Mise à jour depuis la 2.8.0** : une migration ajoutait des colonnes « après » une colonne créée
   plus loin dans la même mise à jour — l'installation neuve passait, mais la mise à jour d'une
   installation existante échouait (« Unknown column 'stock_states' »). Les nouvelles migrations ne
