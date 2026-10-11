@@ -20,6 +20,10 @@ if (isset($_POST['create'])) {
 $id = (int) ($_GET['id'] ?? 0);
 $maintenance = new Maintenance();
 
+if ($id <= 0 && $_POST === []) {
+    \GlpiPlugin\Assetsign\Assetsign::redirectToListWithHint(Maintenance::class, __('Une fiche de maintenance se crée depuis l\'onglet Maintenance du matériel concerné.', 'assetsign'));
+}
+
 if (!$maintenance->getFromDB($id) || !$maintenance->can($id, READ)) {
     Html::displayNotFoundError();
 }

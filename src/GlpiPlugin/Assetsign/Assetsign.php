@@ -154,7 +154,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * qui lit exactement menu[sector]['content'][item]['options'][option].
      */
    public static function getMenuContent(): array {
-       $menu = parent::getMenuContent();
+       $menu = self::withoutAddLink(parent::getMenuContent());
       if (!$menu) {
           return [];
       }
@@ -1300,6 +1300,31 @@ class Assetsign extends Compat\Base\AssetsignBase
        AssetsignItem::refreshSnapshots($this->getID());
        $builder = new Pdf\HandoverPdfBuilder();
        return $builder->renderPdf($builder->renderHtml($this));
+   }
+
+    /**
+     * Attributions, maintenances, mouvements et departs naissent toujours d'un materiel ou d'un
+     * utilisateur, jamais d'un formulaire vide : le bouton « Ajouter » que GLPI ajoute d'office au
+     * menu (droit CREATE) menait a une page « element introuvable ». Retire de ces menus.
+     *
+     * @param array<string, mixed>|false $menu false quand l'utilisateur ne voit pas ce menu
+     * @return array<string, mixed>
+     */
+   public static function withoutAddLink(array|false $menu): array {
+      if (!is_array($menu)) {
+          return [];
+      }
+       unset($menu['links']['add']);
+       return $menu;
+   }
+
+    /**
+     * Arrivee sur le formulaire sans numero de fiche (ancien lien, favori) : retour a la liste avec
+     * l'endroit ou la creer, au lieu d'une page « element introuvable ».
+     */
+   public static function redirectToListWithHint(string $itemtype, string $hint): never {
+       Session::addMessageAfterRedirect($hint, false, INFO);
+       \Html::redirect($itemtype::getSearchURL());
    }
 
     /** Contenu de la fenetre de confirmation (issue #170), insere par plugin_assetsign_post_item_form(). */

@@ -3506,3 +3506,15 @@ msgstr "Modificar la ficha"
 
 msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
 msgstr "El material entregado con él, los accesorios, las observaciones, el kit y el estado se completan más abajo en esta página. No se envía nada hasta que haga clic en «Enviar para firma»."
+
+msgid "Une feuille se crée depuis le matériel : en lui attribuant un utilisateur, ou depuis son onglet Attributions (don, vente, destruction)."
+msgstr "Una ficha se crea desde el material: asignándole un usuario, o desde su pestaña Asignaciones (donación, venta, destrucción)."
+
+msgid "Une fiche de maintenance se crée depuis l'onglet Maintenance du matériel concerné."
+msgstr "Una ficha de mantenimiento se crea desde la pestaña Mantenimiento del material correspondiente."
+
+msgid "Un mouvement se crée depuis l'onglet Mouvements du matériel concerné."
+msgstr "Un movimiento se crea desde la pestaña Movimientos del material correspondiente."
+
+msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
+msgstr "Una salida se prepara desde la ficha de la persona, pestaña Asignaciones (botón «Salida de la persona»)."

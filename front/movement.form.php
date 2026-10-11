@@ -23,6 +23,10 @@ if (isset($_POST['create'])) {
 $id = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
 $movement = new Movement();
 
+if ($id <= 0 && $_POST === []) {
+    \GlpiPlugin\Assetsign\Assetsign::redirectToListWithHint(Movement::class, __('Un mouvement se crée depuis l\'onglet Mouvements du matériel concerné.', 'assetsign'));
+}
+
 if (!$movement->getFromDB($id) || !$movement->can($id, READ)) {
     Html::displayNotFoundError();
 }

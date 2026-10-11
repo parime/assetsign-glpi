@@ -21,6 +21,10 @@ if (isset($_POST['create_manual'])) {
 $id = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
 $assetsign = new Assetsign();
 
+if ($id <= 0 && $_POST === []) {
+    Assetsign::redirectToListWithHint(Assetsign::class, __('Une feuille se crée depuis le matériel : en lui attribuant un utilisateur, ou depuis son onglet Attributions (don, vente, destruction).', 'assetsign'));
+}
+
 if (!$assetsign->getFromDB($id) || !$assetsign->can($id, READ)) {
     Html::displayNotFoundError();
 }

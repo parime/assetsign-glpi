@@ -42,6 +42,9 @@ if (isset($_POST['prepare'])) {
 
 $departure = new Departure();
 $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
+if ($id <= 0 && $_POST === []) {
+   \GlpiPlugin\Assetsign\Assetsign::redirectToListWithHint(Departure::class, __('Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »).', 'assetsign'));
+}
 if ($id <= 0 || !$departure->getFromDB($id)) {
    Html::displayNotFoundError();
 }

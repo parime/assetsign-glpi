@@ -3542,3 +3542,15 @@ msgstr "Formular bearbeiten"
 
 msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
 msgstr "Mit übergebene Geräte, Zubehör, Bemerkungen, Kit und Zustandsbericht werden weiter unten auf dieser Seite ergänzt. Nichts wird gesendet, bevor Sie auf „Zur Unterschrift senden“ klicken."
+
+msgid "Une feuille se crée depuis le matériel : en lui attribuant un utilisateur, ou depuis son onglet Attributions (don, vente, destruction)."
+msgstr "Ein Formular wird vom Gerät aus erstellt: indem ihm ein Benutzer zugewiesen wird, oder über seine Registerkarte Zuweisungen (Spende, Verkauf, Vernichtung)."
+
+msgid "Une fiche de maintenance se crée depuis l'onglet Maintenance du matériel concerné."
+msgstr "Ein Wartungsformular wird über die Registerkarte Wartung des betreffenden Geräts erstellt."
+
+msgid "Un mouvement se crée depuis l'onglet Mouvements du matériel concerné."
+msgstr "Eine Bewegung wird über die Registerkarte Bewegungen des betreffenden Geräts erstellt."
+
+msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
+msgstr "Ein Austritt wird über den Datensatz der Person vorbereitet, Registerkarte Zuweisungen (Schaltfläche „Austritt der Person“)."

@@ -3486,3 +3486,15 @@ msgstr "Edit the form"
 
 msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
 msgstr "Equipment handed over with it, accessories, observations, kit and condition report are completed further down this page. Nothing is sent until you click “Send for signature”."
+
+msgid "Une feuille se crée depuis le matériel : en lui attribuant un utilisateur, ou depuis son onglet Attributions (don, vente, destruction)."
+msgstr "A form is created from the equipment: by assigning a user to it, or from its Assignments tab (donation, sale, destruction)."
+
+msgid "Une fiche de maintenance se crée depuis l'onglet Maintenance du matériel concerné."
+msgstr "A maintenance form is created from the Maintenance tab of the equipment concerned."
+
+msgid "Un mouvement se crée depuis l'onglet Mouvements du matériel concerné."
+msgstr "A movement is created from the Movements tab of the equipment concerned."
+
+msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
+msgstr "A departure is prepared from the person's record, Assignments tab (“Person's departure” button)."
