@@ -3621,3 +3621,68 @@ msgstr "Als „auf Lager“ geltende Status"
 
 msgid "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."
 msgstr "Geräte ohne Benutzer oder mit einem dieser Status werden beim Hinzufügen eines Elements zu einem Formular zuerst vorgeschlagen."
+
+msgid "À contrôler"
+msgstr "Zu prüfen"
+
+msgid "Rendu"
+msgstr "Zurückgegeben"
+
+msgid "Manquant"
+msgstr "Fehlt"
+
+msgid "Abîmé"
+msgstr "Beschädigt"
+
+msgid "Le contrôle du retour n'est plus modifiable sur cette feuille."
+msgstr "Die Rückgabeprüfung kann auf diesem Formular nicht mehr geändert werden."
+
+#, php-format
+msgid "%1$s « %2$s » n'a pas été rendu avec %3$s par %4$s (feuille de restitution n° %5$d)."
+msgstr "%1$s „%2$s“ wurde von %4$s nicht mit %3$s zurückgegeben (Rückgabeformular Nr. %5$d)."
+
+#, php-format
+msgid "Matériel non rendu : %s"
+msgstr "Nicht zurückgegebenes Gerät: %s"
+
+msgid "Contrôle du retour enregistré."
+msgstr "Rückgabeprüfung gespeichert."
+
+msgid "Contrôle du retour"
+msgstr "Rückgabeprüfung"
+
+msgid "Indiquez pour chaque élément s'il est rendu, manquant ou abîmé : l'état figure sur le document, et GLPI est mis à jour à l'enregistrement (élément rendu ou abîmé : plus d'utilisateur et statut configuré ; élément manquant : ticket si l'option est active)."
+msgstr "Geben Sie für jedes Element an, ob es zurückgegeben, fehlend oder beschädigt ist: Der Zustand erscheint im Dokument, und GLPI wird beim Speichern aktualisiert (zurückgegebenes oder beschädigtes Element: kein Benutzer mehr und konfigurierter Status; fehlendes Element: Ticket, wenn die Option aktiv ist)."
+
+msgid "Élément"
+msgstr "Element"
+
+msgid "État au retour"
+msgstr "Zustand bei Rückgabe"
+
+msgid "Enregistrer le contrôle du retour"
+msgstr "Rückgabeprüfung speichern"
+
+msgid "Statut d'un élément rendu"
+msgstr "Status eines zurückgegebenen Elements"
+
+msgid "Statut d'un élément rendu abîmé"
+msgstr "Status eines beschädigt zurückgegebenen Elements"
+
+msgid "À la restitution, le matériel remis avec le poste est repris sur la feuille : un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI et prend le statut choisi ci-dessus."
+msgstr "Bei der Rückgabe werden die mit dem Rechner übergebenen Geräte auf das Formular übernommen: Ein zurückgegebenes oder beschädigtes Element hat in GLPI keinen Benutzer mehr und erhält den oben gewählten Status."
+
+msgid "Ouvrir un ticket pour un élément manquant au retour"
+msgstr "Ein Ticket für ein bei der Rückgabe fehlendes Element öffnen"
+
+#, php-format
+msgid "%d élément remis en stock dans GLPI."
+msgid_plural "%d éléments remis en stock dans GLPI."
+msgstr[0] "%d Element in GLPI wieder auf Lager gesetzt."
+msgstr[1] "%d Elemente in GLPI wieder auf Lager gesetzt."
+
+#, php-format
+msgid "%d ticket ouvert pour un élément manquant."
+msgid_plural "%d tickets ouverts pour des éléments manquants."
+msgstr[0] "%d Ticket für ein fehlendes Element eröffnet."
+msgstr[1] "%d Tickets für fehlende Elemente eröffnet."

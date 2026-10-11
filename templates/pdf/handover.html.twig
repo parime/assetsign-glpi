@@ -58,9 +58,12 @@
 {% endif %}
 
 {% if inventoried_items|default([])|length %}
-<h2>Matériel inventorié remis avec</h2>
+{# Issue #178 : sur une restitution, etat de chaque element au retour #}
+{% set is_return_pdf = (assetsign.type|default(0)) == 1 %}
+{% set return_labels = {0: 'À contrôler', 1: 'Rendu', 2: 'Manquant', 3: 'Abîmé'} %}
+<h2>{{ is_return_pdf ? 'Matériel rendu avec' : 'Matériel inventorié remis avec' }}</h2>
 <table class="data-table">
-    <tr><th>Type</th><th>Désignation</th><th>Marque / modèle</th><th>N° de série</th><th>N° d'inventaire</th></tr>
+    <tr><th>Type</th><th>Désignation</th><th>Marque / modèle</th><th>N° de série</th><th>N° d'inventaire</th>{% if is_return_pdf %}<th>État au retour</th>{% endif %}</tr>
     {% for i in inventoried_items %}
     <tr>
         <td>{{ i.type_label }}</td>
@@ -68,6 +71,7 @@
         <td>{{ [i.manufacturer, i.model]|filter(v => v)|join(' ')|default('-') }}</td>
         <td>{{ i.serial|default('-') }}</td>
         <td>{{ i.otherserial|default('-') }}</td>
+        {% if is_return_pdf %}<td>{{ return_labels[i.return_state|default(0)] }}{% if i.return_comment|default('') %} — {{ i.return_comment }}{% endif %}</td>{% endif %}
     </tr>
     {% endfor %}
 </table>

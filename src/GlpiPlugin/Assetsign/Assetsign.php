@@ -391,6 +391,9 @@ class Assetsign extends Compat\Base\AssetsignBase
            'inventoried_items'    => $this->isNewID($ID) ? [] : $this->getInventoriedItems(),
            'suggested_items'      => $this->isNewID($ID) || !$this->isStillEditable() ? [] : $this->getSuggestedConnectedItems(),
            'inventoried_itemtypes' => AssetsignItem::getAllowedItemtypes(),
+           // Issue #178 : controle du retour (feuilles de restitution).
+           'is_return'            => (int) ($this->fields['type'] ?? -1) === self::TYPE_RETURN,
+           'return_states'        => AssetsignItem::getReturnStates(),
            // Issue #180 : materiel disponible propose en premier.
            'available_items'      => $this->isNewID($ID) || !$this->isStillEditable() ? [] : AssetsignItem::getAvailableItems($this),
            // Issue #163 : brouillon modifiable avant l'envoi (beneficiaire, modele, apercu).
@@ -1143,6 +1146,10 @@ class Assetsign extends Compat\Base\AssetsignBase
        $config = Config::getForEntity((int) $item->fields['entities_id']);
        $template = Template::getDefaultFor($type, (int) $item->fields['entities_id']);
 
+       // Issue #178 : derniere attribution envoyee ou signee, reperee AVANT l'annulation ci-dessous
+       // (une restitution peut survenir avant la signature de la remise : le materiel a ete remis).
+       $handoverId = $type === self::TYPE_RETURN ? self::findLastHandoverId($item) : null;
+
        self::cancelPendingAssetsignsFor($item);
 
        // Issue #170 : attribution faite par un technicien depuis la fiche du materiel -> brouillon,
@@ -1181,6 +1188,8 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        $assetsign->getFromDB($id);
+       // Issue #178 : la restitution reprend le materiel remis avec ce poste.
+       $assetsign->copyHandedItemsFromLastHandover($handoverId);
       if ($asDraft) {
          if ($type === self::TYPE_HANDOVER) {
              // Elements connectes au poste pre-coches (decochables avant l'envoi).
@@ -1397,6 +1406,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        $assetsign->getFromDB($id);
+       $assetsign->copyHandedItemsFromLastHandover();
        $assetsign->attachConnectedItemsIfConfigured();
        $assetsign->launchWorkflow(null, true);
        return $assetsign;
@@ -1859,6 +1869,9 @@ class Assetsign extends Compat\Base\AssetsignBase
        // Issue #174 : le materiel remis avec est attribue dans GLPI au beneficiaire des l'envoi.
        $this->assignHandedItemsInGlpi($config);
 
+       // Messages techniques du coeur a la creation du PDF (« Creation du repertoire », « Document
+       // copie avec succes ») : ecartes, comme dans regenerateUnsignedPdf().
+       $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
        $builder = new Pdf\HandoverPdfBuilder();
        $document = $builder->build($this);
 
@@ -1866,6 +1879,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'id'                   => $this->getID(),
            'document_id_unsigned' => $document->getID(),
        ]);
+       $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
 
       if ((int) $this->fields['beneficiary_type'] === self::BENEFICIARY_EXTERNAL) {
           // Beneficiaire externe (cf. BENEFICIARY_EXTERNAL) : pas de compte
@@ -2390,6 +2404,156 @@ class Assetsign extends Compat\Base\AssetsignBase
          }
       }
        return false;
+   }
+
+    /**
+     * Issue #178 : une restitution reprend les elements du parc de la derniere attribution de ce
+     * materiel qui a ete envoyee ou signee (pas un brouillon ni une feuille annulee).
+     *
+     * @return int nombre d'elements repris
+     */
+   public function copyHandedItemsFromLastHandover(?int $handoverId = null): int {
+      if ((int) $this->fields['type'] !== self::TYPE_RETURN) {
+          return 0;
+      }
+      if ($handoverId === null) {
+          $mainType = (string) $this->fields['itemtype'];
+         if (class_exists($mainType)) {
+             $main = new $mainType();
+            if ($main->getFromDB((int) $this->fields['items_id'])) {
+                $handoverId = self::findLastHandoverId($main);
+            }
+         }
+      }
+      if ($handoverId === null) {
+          return 0;
+      }
+       $copied = 0;
+      foreach (AssetsignItem::getForAssetsign($handoverId) as $row) {
+         if (AssetsignItem::attach($this, (string) $row['itemtype'], (int) $row['items_id']) === null) {
+             $copied++;
+         }
+      }
+       return $copied;
+   }
+
+    /** Derniere attribution de ce materiel envoyee ou signee (ni brouillon ni annulee). */
+   private static function findLastHandoverId(CommonDBTM $item): ?int {
+       global $DB;
+
+       $last = $DB->request([
+           'SELECT' => ['id'],
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+               'itemtype'   => $item->getType(),
+               'items_id'   => $item->getID(),
+               'type'       => self::TYPE_HANDOVER,
+               'status'     => [...self::STATUSES_AWAITING_SIGNATURE, self::STATUS_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE],
+               'is_deleted' => 0,
+           ],
+           'ORDER'  => 'id DESC',
+           'LIMIT'  => 1,
+       ])->current();
+       return $last ? (int) $last['id'] : null;
+   }
+
+    /**
+     * Issue #178 : enregistre le controle du retour (etat et commentaire par element) puis met GLPI a
+     * jour pour les elements dont l'etat change : rendu -> plus d'utilisateur, statut
+     * Config::return_returned_state ; abime -> plus d'utilisateur, statut Config::return_damaged_state ;
+     * manquant -> l'element reste a la personne, ticket si Config::return_missing_ticket.
+     *
+     * @param array<int|string, mixed> $states   id de ligne => etat (AssetsignItem::RETURN_*)
+     * @param array<int|string, mixed> $comments id de ligne => commentaire
+     * @return array{returned: int, missing: int, damaged: int, tickets: int}
+     */
+   public function saveReturnCheck(array $states, array $comments = []): array {
+       global $DB;
+
+      if ((int) $this->fields['type'] !== self::TYPE_RETURN || !$this->isStillEditable()) {
+          throw new \RuntimeException(__('Le contrôle du retour n\'est plus modifiable sur cette feuille.', 'assetsign'));
+      }
+       $config = Config::getForEntity((int) $this->fields['entities_id']);
+       $summary = ['returned' => 0, 'missing' => 0, 'damaged' => 0, 'tickets' => 0];
+      foreach (AssetsignItem::getForAssetsign($this->getID()) as $row) {
+          $id = (int) $row['id'];
+          $state = (int) ($states[$id] ?? $row['return_state']);
+         if (!array_key_exists($state, AssetsignItem::getReturnStates())) {
+             continue;
+         }
+          $comment = mb_substr(trim((string) ($comments[$id] ?? $row['return_comment'])), 0, 255);
+          $DB->update(AssetsignItem::getTable(), ['return_state' => $state, 'return_comment' => $comment], ['id' => $id]);
+         if ($state === (int) $row['return_state']) {
+             continue; // deja applique lors d'un enregistrement precedent
+         }
+         if ($state === AssetsignItem::RETURN_RETURNED) {
+             $summary['returned'] += (int) $this->releaseReturnedItem($row, (int) $config->fields['return_returned_state']);
+         } else if ($state === AssetsignItem::RETURN_DAMAGED) {
+             $summary['damaged'] += (int) $this->releaseReturnedItem($row, (int) $config->fields['return_damaged_state']);
+         } else if ($state === AssetsignItem::RETURN_MISSING) {
+             $summary['missing']++;
+         }
+         if ($state === AssetsignItem::RETURN_MISSING && (int) $config->fields['return_missing_ticket'] === 1) {
+             $summary['tickets'] += (int) ($this->openMissingItemTicket($row, $comment) > 0);
+         }
+      }
+       $this->regenerateUnsignedPdf();
+       return $summary;
+   }
+
+    /** Element rendu ou abime : plus d'utilisateur dans GLPI, et statut donne s'il est configure. */
+   private function releaseReturnedItem(array $row, int $state): bool {
+       $itemtype = (string) $row['itemtype'];
+      if (!in_array($itemtype, AssetsignItem::getAllowedItemtypes(), true)) {
+          return false;
+      }
+       $item = new $itemtype();
+      if (!$item->getFromDB((int) $row['items_id'])) {
+          return false;
+      }
+       $input = [];
+      if ($item->isField('users_id') && (int) $item->fields['users_id'] !== 0) {
+          $input['users_id'] = 0;
+      }
+      if ($state > 0 && $item->isField('states_id') && (int) $item->fields['states_id'] !== $state) {
+          $input['states_id'] = $state;
+      }
+      if ($input === []) {
+          return true;
+      }
+       // Meme marqueur que l'attribution (issue #174) : pas de feuille de restitution separee.
+       return (bool) $item->update(['id' => (int) $row['items_id'], '_assetsign_handed_item' => true] + $input);
+   }
+
+    /** Element manquant : ticket lie a l'element, pour le suivi par l'equipe. */
+   private function openMissingItemTicket(array $row, string $comment): int {
+       $beneficiary = $this->getBeneficiary();
+       $name = trim(\formatUserName(0, $beneficiary['name'] ?? '', $beneficiary['realname'] ?? '', $beneficiary['firstname'] ?? ''));
+       $main = $this->getTargetItem();
+       $content = sprintf(
+           __('%1$s « %2$s » n\'a pas été rendu avec %3$s par %4$s (feuille de restitution n° %5$d).', 'assetsign'),
+           $row['type_label'],
+           $row['name'],
+           $main['name'] ?? '',
+           $name,
+           $this->getID()
+       );
+      if ($comment !== '') {
+          $content .= "\n" . $comment;
+      }
+       $ticket = new \Ticket();
+       $tickets_id = (int) $ticket->add([
+           'name'              => sprintf(__('Matériel non rendu : %s', 'assetsign'), $row['name']),
+           'content'           => $content,
+           'entities_id'       => (int) $this->fields['entities_id'],
+           'type'              => \Ticket::DEMAND_TYPE,
+           '_users_id_requester' => (int) (Session::getLoginUserID() ?: 0),
+           '_users_id_observer'  => (int) $this->fields['users_id'],
+       ]);
+      if ($tickets_id > 0) {
+          (new \Item_Ticket())->add(['tickets_id' => $tickets_id, 'itemtype' => $row['itemtype'], 'items_id' => (int) $row['items_id']]);
+      }
+       return $tickets_id;
    }
 
     /** Retire un objet du parc de la fiche (id de la ligne) et regenere le PDF non signe. */

@@ -3565,3 +3565,68 @@ msgstr "States considered “in stock”"
 
 msgid "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."
 msgstr "Equipment without a user, or in one of these states, is offered first when adding an item to a form."
+
+msgid "À contrôler"
+msgstr "To check"
+
+msgid "Rendu"
+msgstr "Returned"
+
+msgid "Manquant"
+msgstr "Missing"
+
+msgid "Abîmé"
+msgstr "Damaged"
+
+msgid "Le contrôle du retour n'est plus modifiable sur cette feuille."
+msgstr "The return check can no longer be changed on this form."
+
+#, php-format
+msgid "%1$s « %2$s » n'a pas été rendu avec %3$s par %4$s (feuille de restitution n° %5$d)."
+msgstr "%1$s “%2$s” was not returned with %3$s by %4$s (return form no. %5$d)."
+
+#, php-format
+msgid "Matériel non rendu : %s"
+msgstr "Equipment not returned: %s"
+
+msgid "Contrôle du retour enregistré."
+msgstr "Return check saved."
+
+msgid "Contrôle du retour"
+msgstr "Return check"
+
+msgid "Indiquez pour chaque élément s'il est rendu, manquant ou abîmé : l'état figure sur le document, et GLPI est mis à jour à l'enregistrement (élément rendu ou abîmé : plus d'utilisateur et statut configuré ; élément manquant : ticket si l'option est active)."
+msgstr "For each item, indicate whether it is returned, missing or damaged: the state appears on the document, and GLPI is updated on saving (returned or damaged item: no more user and configured state; missing item: ticket if the option is enabled)."
+
+msgid "Élément"
+msgstr "Item"
+
+msgid "État au retour"
+msgstr "State on return"
+
+msgid "Enregistrer le contrôle du retour"
+msgstr "Save the return check"
+
+msgid "Statut d'un élément rendu"
+msgstr "State of a returned item"
+
+msgid "Statut d'un élément rendu abîmé"
+msgstr "State of an item returned damaged"
+
+msgid "À la restitution, le matériel remis avec le poste est repris sur la feuille : un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI et prend le statut choisi ci-dessus."
+msgstr "On return, the equipment handed over with the computer is taken back on the form: a returned or damaged item no longer has a user in GLPI and gets the state chosen above."
+
+msgid "Ouvrir un ticket pour un élément manquant au retour"
+msgstr "Open a ticket for an item missing on return"
+
+#, php-format
+msgid "%d élément remis en stock dans GLPI."
+msgid_plural "%d éléments remis en stock dans GLPI."
+msgstr[0] "%d item put back in stock in GLPI."
+msgstr[1] "%d items put back in stock in GLPI."
+
+#, php-format
+msgid "%d ticket ouvert pour un élément manquant."
+msgid_plural "%d tickets ouverts pour des éléments manquants."
+msgstr[0] "%d ticket opened for a missing item."
+msgstr[1] "%d tickets opened for missing items."

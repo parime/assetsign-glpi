@@ -406,6 +406,33 @@
               {% endfor %}
             </div>
           {% endif %}
+          {# Issue #178 : controle du retour du materiel remis avec #}
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label" for="return_returned_state"><i class="ti ti-arrow-back-up me-1"></i>{{ __('Statut d\'un élément rendu', 'assetsign') }}</label>
+              <select name="return_returned_state" id="return_returned_state" class="form-select">
+                <option value="0">{{ __('Ne pas changer le statut', 'assetsign') }}</option>
+                {% for id, name in all_states|default({}) %}
+                  <option value="{{ id }}" {{ config.return_returned_state|default(0) == id ? 'selected' : '' }}>{{ name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="return_damaged_state"><i class="ti ti-alert-triangle me-1"></i>{{ __('Statut d\'un élément rendu abîmé', 'assetsign') }}</label>
+              <select name="return_damaged_state" id="return_damaged_state" class="form-select">
+                <option value="0">{{ __('Ne pas changer le statut', 'assetsign') }}</option>
+                {% for id, name in all_states|default({}) %}
+                  <option value="{{ id }}" {{ config.return_damaged_state|default(0) == id ? 'selected' : '' }}>{{ name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12 form-text mt-1">{{ __('À la restitution, le matériel remis avec le poste est repris sur la feuille : un élément rendu ou abîmé n\'a plus d\'utilisateur dans GLPI et prend le statut choisi ci-dessus.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="return_missing_ticket" value="0">
+            <input type="checkbox" name="return_missing_ticket" value="1" class="form-check-input" id="return_missing_ticket" {{ config.return_missing_ticket|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="return_missing_ticket">{{ __('Ouvrir un ticket pour un élément manquant au retour', 'assetsign') }}</label>
+          </div>
           {# Issue #174 : le materiel remis avec est aussi attribue dans GLPI #}
           <div class="mb-3 form-check">
             <input type="hidden" name="assign_handed_items" value="0">

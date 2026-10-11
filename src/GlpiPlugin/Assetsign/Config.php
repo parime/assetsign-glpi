@@ -91,6 +91,9 @@ class Config extends Compat\Base\ConfigBase
         'managed_itemtypes'                   => '["Computer","Monitor","Peripheral","Phone"]',
         'handover_states'                     => '[]',
         'stock_states'                        => '[]',
+        'return_returned_state'               => 0,
+        'return_damaged_state'                => 0,
+        'return_missing_ticket'               => 1,
         'return_states'                       => '[]',
         'donation_states'                     => '[]',
         'vente_states'                        => '[]',
@@ -627,6 +630,9 @@ class Config extends Compat\Base\ConfigBase
            'managed_itemtypes'    => json_encode($managedItemtypes),
            'handover_states'      => json_encode(array_map('intval', $input['handover_states'] ?? [])),
            'stock_states'         => json_encode(array_map('intval', $input['stock_states'] ?? [])),
+           'return_returned_state' => max(0, (int) ($input['return_returned_state'] ?? 0)),
+           'return_damaged_state'  => max(0, (int) ($input['return_damaged_state'] ?? 0)),
+           'return_missing_ticket' => (int) ($input['return_missing_ticket'] ?? 0),
            'return_states'        => json_encode(array_map('intval', $input['return_states'] ?? [])),
            'donation_states'      => json_encode(array_map('intval', $input['donation_states'] ?? [])),
            'vente_states'         => json_encode(array_map('intval', $input['vente_states'] ?? [])),
@@ -815,6 +821,9 @@ class Config extends Compat\Base\ConfigBase
                 `managed_itemtypes` text,
                 `handover_states` text,
                 `stock_states` text,
+                `return_returned_state` int unsigned NOT NULL DEFAULT 0,
+                `return_damaged_state` int unsigned NOT NULL DEFAULT 0,
+                `return_missing_ticket` tinyint NOT NULL DEFAULT 1,
                 `return_states` text,
                 `donation_states` text,
                 `vente_states` text,
@@ -887,6 +896,13 @@ class Config extends Compat\Base\ConfigBase
              // DEFAULT, ce qui rendrait la colonne NULL par defaut (constate en
              // conditions reelles : WHERE champ => 0 n'egale jamais NULL en SQL).
              $migration->addField($table, 'logo_force_children', 'bool', ['value' => 0, 'after' => 'logo_documents_id']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #178 : controle du retour du materiel remis avec.
+         if (!$DB->fieldExists($table, 'return_returned_state')) {
+             $migration->addField($table, 'return_returned_state', 'integer', ['value' => 0, 'after' => 'stock_states']);
+             $migration->addField($table, 'return_damaged_state', 'integer', ['value' => 0, 'after' => 'return_returned_state']);
+             $migration->addField($table, 'return_missing_ticket', 'bool', ['value' => 1, 'after' => 'return_damaged_state']);
              $migration->migrationOneTable($table);
          }
          // Issue #180 : statuts consideres comme « en stock ».

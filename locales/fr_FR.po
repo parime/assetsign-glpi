@@ -3585,3 +3585,68 @@ msgstr "Statuts considérés comme « en stock »"
 
 msgid "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."
 msgstr "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."
+
+msgid "À contrôler"
+msgstr "À contrôler"
+
+msgid "Rendu"
+msgstr "Rendu"
+
+msgid "Manquant"
+msgstr "Manquant"
+
+msgid "Abîmé"
+msgstr "Abîmé"
+
+msgid "Le contrôle du retour n'est plus modifiable sur cette feuille."
+msgstr "Le contrôle du retour n'est plus modifiable sur cette feuille."
+
+#, php-format
+msgid "%1$s « %2$s » n'a pas été rendu avec %3$s par %4$s (feuille de restitution n° %5$d)."
+msgstr "%1$s « %2$s » n'a pas été rendu avec %3$s par %4$s (feuille de restitution n° %5$d)."
+
+#, php-format
+msgid "Matériel non rendu : %s"
+msgstr "Matériel non rendu : %s"
+
+msgid "Contrôle du retour enregistré."
+msgstr "Contrôle du retour enregistré."
+
+msgid "Contrôle du retour"
+msgstr "Contrôle du retour"
+
+msgid "Indiquez pour chaque élément s'il est rendu, manquant ou abîmé : l'état figure sur le document, et GLPI est mis à jour à l'enregistrement (élément rendu ou abîmé : plus d'utilisateur et statut configuré ; élément manquant : ticket si l'option est active)."
+msgstr "Indiquez pour chaque élément s'il est rendu, manquant ou abîmé : l'état figure sur le document, et GLPI est mis à jour à l'enregistrement (élément rendu ou abîmé : plus d'utilisateur et statut configuré ; élément manquant : ticket si l'option est active)."
+
+msgid "Élément"
+msgstr "Élément"
+
+msgid "État au retour"
+msgstr "État au retour"
+
+msgid "Enregistrer le contrôle du retour"
+msgstr "Enregistrer le contrôle du retour"
+
+msgid "Statut d'un élément rendu"
+msgstr "Statut d'un élément rendu"
+
+msgid "Statut d'un élément rendu abîmé"
+msgstr "Statut d'un élément rendu abîmé"
+
+msgid "À la restitution, le matériel remis avec le poste est repris sur la feuille : un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI et prend le statut choisi ci-dessus."
+msgstr "À la restitution, le matériel remis avec le poste est repris sur la feuille : un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI et prend le statut choisi ci-dessus."
+
+msgid "Ouvrir un ticket pour un élément manquant au retour"
+msgstr "Ouvrir un ticket pour un élément manquant au retour"
+
+#, php-format
+msgid "%d élément remis en stock dans GLPI."
+msgid_plural "%d éléments remis en stock dans GLPI."
+msgstr[0] "%d élément remis en stock dans GLPI."
+msgstr[1] "%d éléments remis en stock dans GLPI."
+
+#, php-format
+msgid "%d ticket ouvert pour un élément manquant."
+msgid_plural "%d tickets ouverts pour des éléments manquants."
+msgstr[0] "%d ticket ouvert pour un élément manquant."
+msgstr[1] "%d tickets ouverts pour des éléments manquants."
