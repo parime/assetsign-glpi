@@ -657,6 +657,8 @@ class Assetsign extends Compat\Base\AssetsignBase
            'show_item_column' => false,
            'csrf_token'    => \Session::getNewCSRFToken(),
            'prefill_type'  => $prefillType,
+           // Issue #170 : bouton d'envoi des brouillons d'attribution.
+           'can_send_drafts' => Session::haveRight(self::$rightname, UPDATE),
        ]);
    }
 
@@ -1117,6 +1119,10 @@ class Assetsign extends Compat\Base\AssetsignBase
 
        self::cancelPendingAssetsignsFor($item);
 
+       // Issue #170 : attribution faite par un technicien depuis la fiche du materiel -> brouillon,
+       // confirme (et complete) dans une fenetre avant tout envoi. Sinon, envoi immediat.
+       $askConfirmation = $type === self::TYPE_HANDOVER && self::shouldAskConfirmation($config);
+
        $assetsign = new self();
        $id = $assetsign->add([
            'entities_id'                 => $item->fields['entities_id'],
@@ -1127,7 +1133,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'plugin_assetsign_templates_id'  => $template ? $template->getID() : 0,
            'plugin_assetsign_kits_id'    => self::resolveKitForAutomaticCreation($item, $type),
            'type'                        => $type,
-           'status'                      => self::STATUS_PENDING,
+           'status'                      => $askConfirmation ? self::STATUS_DRAFT : self::STATUS_PENDING,
        ]);
 
       if (!$id) {
@@ -1143,8 +1149,105 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        $assetsign->getFromDB($id);
+      if ($askConfirmation) {
+          // Elements connectes au poste pre-coches dans la fenetre (decochables avant l'envoi).
+          $assetsign->attachConnectedItems(true, false);
+          self::queueConfirmation($assetsign->getID());
+          return;
+      }
        $assetsign->attachConnectedItemsIfConfigured();
        $assetsign->launchWorkflow($config);
+   }
+
+    /**
+     * Issue #170 : la fenetre de confirmation n'a de sens que si un technicien attend, devant la fiche
+     * du materiel, le retour de son enregistrement (formulaire *.form.php ou bouton « Assigner » de
+     * l'onglet). Inventaire automatique, actions massives, ligne de commande, taches planifiees : envoi
+     * immediat comme avant, pour ne jamais bloquer une remise.
+     */
+   private static function shouldAskConfirmation(Config $config): bool {
+      if ((int) ($config->fields['confirm_before_sending'] ?? 1) !== 1 || \isCommandLine() || !Session::getLoginUserID()) {
+          return false;
+      }
+       $path = (string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
+       return str_ends_with($path, '.form.php') || str_ends_with($path, '/assign_user_asset.php');
+   }
+
+   private static function queueConfirmation(int $assetsigns_id): void {
+       $_SESSION['plugin_assetsign_confirm'][$assetsigns_id] = true;
+   }
+
+    /**
+     * Brouillon en attente de confirmation pour ce materiel, retire de la file : la fenetre ne
+     * s'affiche qu'une fois (le brouillon reste ensuite envoyable depuis l'onglet du materiel).
+     */
+   public static function popQueuedConfirmationFor(CommonDBTM $item): ?self {
+      foreach (array_keys($_SESSION['plugin_assetsign_confirm'] ?? []) as $id) {
+          $assetsign = new self();
+         if (!$assetsign->getFromDB((int) $id) || (int) $assetsign->fields['status'] !== self::STATUS_DRAFT) {
+             unset($_SESSION['plugin_assetsign_confirm'][$id]);
+             continue;
+         }
+         if ($assetsign->fields['itemtype'] === $item->getType() && (int) $assetsign->fields['items_id'] === $item->getID()) {
+             unset($_SESSION['plugin_assetsign_confirm'][$id]);
+             return $assetsign;
+         }
+      }
+       return null;
+   }
+
+    /** Rouvre la fenetre au prochain affichage du materiel (apres un ajout fait depuis la fenetre). */
+   public function reopenConfirmation(): void {
+      if ((int) $this->fields['status'] === self::STATUS_DRAFT) {
+          self::queueConfirmation($this->getID());
+      }
+   }
+
+    /**
+     * Issue #170 : envoi d'un brouillon (fenetre de confirmation ou bouton de l'onglet) — ne garde que
+     * les elements du parc encore coches ($keptItemIds = null : tout garder), puis lance le workflow
+     * habituel (PDF, passeport, lien et e-mail de signature).
+     *
+     * @param list<int>|null $keptItemIds ids des lignes AssetsignItem a conserver
+     */
+   public function sendDraft(?array $keptItemIds = null): void {
+      if ((int) $this->fields['status'] !== self::STATUS_DRAFT) {
+          throw new \RuntimeException(__('Cette feuille a déjà été envoyée.', 'assetsign'));
+      }
+      if ($keptItemIds !== null) {
+         foreach (AssetsignItem::getForAssetsign($this->getID()) as $row) {
+            if (!in_array((int) $row['id'], $keptItemIds, true)) {
+                AssetsignItem::detach($this->getID(), (int) $row['id']);
+            }
+         }
+      }
+       unset($_SESSION['plugin_assetsign_confirm'][$this->getID()]);
+       $this->update(['id' => $this->getID(), 'status' => self::STATUS_PENDING]);
+       $this->getFromDB($this->getID());
+       AssetsignItem::refreshSnapshots($this->getID());
+       // Messages techniques du coeur (« Création du répertoire », « Document copié ») ecartes :
+       // seul le message de confirmation de l'envoi doit s'afficher (cf. regenerateUnsignedPdf()).
+       $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
+       $this->launchWorkflow();
+       $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
+   }
+
+    /** Contenu de la fenetre de confirmation (issue #170), insere par plugin_assetsign_post_item_form(). */
+   public function renderConfirmationModal(): string {
+       $beneficiary = $this->getBeneficiary();
+       ob_start();
+       TemplateRenderer::getInstance()->display('@assetsign/confirm_modal.html.twig', [
+           'item'                  => $this,
+           'beneficiary_name'      => trim(\formatUserName(0, $beneficiary['name'] ?? '', $beneficiary['realname'] ?? '', $beneficiary['firstname'] ?? '')),
+           'target_item'           => $this->getTargetItem(),
+           'target_type'           => self::getCanonicalItemtypeLabel((string) $this->fields['itemtype']),
+           'inventoried_items'     => $this->getInventoriedItems(),
+           'suggested_items'       => $this->getSuggestedConnectedItems(),
+           'accessories'           => $this->getAccessories(),
+           'inventoried_itemtypes' => AssetsignItem::getAllowedItemtypes(),
+           'csrf_token'            => Session::getNewCSRFToken(),
+       ]);
+       return (string) ob_get_clean();
    }
 
     /**

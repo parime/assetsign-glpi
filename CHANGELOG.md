@@ -32,6 +32,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Fenêtre de confirmation à l'attribution** (issue #170) : attribuer un matériel depuis sa fiche
+  ne déclenche plus l'envoi immédiat ; la feuille est préparée en brouillon et une fenêtre propose
+  les éléments connectés au poste (pré-cochés), l'ajout d'écrans, périphériques, téléphones… ou
+  d'accessoires du catalogue, puis « Envoyer pour signature », « Plus tard » (brouillon envoyable
+  depuis l'onglet du matériel ou la fiche) ou « Ne pas faire signer ». Réglage par entité, activé
+  par défaut ; inventaire automatique, actions massives et tâches planifiées envoient comme avant.
 - **Matériel inventorié remis avec le poste** (issue #166) : sur une fiche, ajout d'éléments déjà
   inventoriés dans GLPI (écran, station d'accueil, téléphone, actif personnalisé…) ; le PDF reprend
   type, nom, marque/modèle, n° de série et n° d'inventaire, relus jusqu'à la signature puis figés.

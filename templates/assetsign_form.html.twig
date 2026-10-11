@@ -2,6 +2,20 @@
   <div class="card-body">
     <h2>{{ _n('Attribution', 'Attributions', 1, 'assetsign') }} #{{ item.fields.id }} — {{ types[item.fields.type] }}</h2>
 
+    {# Issue #170 : brouillon pas encore envoye (attribution confirmee plus tard) #}
+    {% if item.fields.status == 0 and can_edit_accessories %}
+      <div class="alert alert-warning d-flex align-items-center gap-2">
+        <i class="ti ti-mail-pause"></i>
+        <div class="flex-fill">{{ __('Brouillon : cette feuille n\'a pas encore été envoyée au bénéficiaire. Complétez-la si besoin, puis envoyez-la.', 'assetsign') }}</div>
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <button type="submit" name="send_draft" class="btn btn-primary btn-sm"><i class="ti ti-send me-1"></i>{{ __('Envoyer pour signature', 'assetsign') }}</button>
+          <button type="submit" name="discard_draft" class="btn btn-outline-danger btn-sm">{{ __('Ne pas faire signer', 'assetsign') }}</button>
+        </form>
+      </div>
+    {% endif %}
+
     <table class="table table-striped">
       <tr>
         <th>{{ __('Statut', 'assetsign') }}</th>

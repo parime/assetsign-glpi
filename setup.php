@@ -94,6 +94,8 @@ function plugin_init_assetsign(): void {
 
     $purgeHooks = array_fill_keys($manageableItemtypes, 'plugin_assetsign_item_pre_purge');
     $PLUGIN_HOOKS[Hooks::PRE_ITEM_PURGE]['assetsign'] = $purgeHooks;
+    // Issue #170 : fenetre de confirmation de la feuille d'attribution, sur la fiche du materiel.
+    $PLUGIN_HOOKS[Hooks::POST_ITEM_FORM]['assetsign'] = 'plugin_assetsign_post_item_form';
 
     $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['assetsign'] = true;
 

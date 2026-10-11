@@ -25,9 +25,14 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
    public const ERROR_ALREADY_LISTED = 'already_listed';
    public const ERROR_ON_OTHER_SHEET = 'on_other_sheet';
 
+   /** Materiel physique natif que l'on remet a une personne (pas de licence, certificat, local...). */
+   private const PHYSICAL_ITEMTYPES = ['Computer', 'Monitor', 'Peripheral', 'Phone', 'Printer', 'NetworkEquipment'];
+
     /**
-     * Types proposables comme accessoires : les types d'actifs natifs de GLPI ($CFG_GLPI['asset_types'],
-     * actifs personnalises compris), limites aux classes reellement chargeables.
+     * Types proposables comme accessoires : le materiel physique natif de GLPI et les actifs
+     * personnalises (Glpi\Asset\Asset), parmi les types d'actifs actifs ($CFG_GLPI['asset_types']).
+     * Licences, certificats, applicatifs, locaux, actifs non geres... sont exclus : on ne les remet
+     * pas en main propre.
      *
      * @return list<class-string<CommonDBTM>>
      */
@@ -36,7 +41,10 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
 
        $types = [];
       foreach ((array) ($CFG_GLPI['asset_types'] ?? []) as $itemtype) {
-         if (is_string($itemtype) && class_exists($itemtype) && is_a($itemtype, CommonDBTM::class, true)) {
+         if (!is_string($itemtype) || !class_exists($itemtype) || !is_a($itemtype, CommonDBTM::class, true)) {
+             continue;
+         }
+         if (in_array($itemtype, self::PHYSICAL_ITEMTYPES, true) || is_a($itemtype, \Glpi\Asset\Asset::class, true)) {
              $types[] = $itemtype;
          }
       }

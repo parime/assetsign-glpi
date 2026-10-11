@@ -362,6 +362,12 @@
             <div class="form-text">{{ __('Si activé, un champ de texte libre devient disponible sur chaque fiche d\'attribution (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n\'est pas encore signée.', 'assetsign') }}</div>
           </div>
           <div class="mb-3 form-check">
+            <input type="hidden" name="confirm_before_sending" value="0">
+            <input type="checkbox" name="confirm_before_sending" value="1" class="form-check-input" id="confirm_before_sending" {{ config.confirm_before_sending|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="confirm_before_sending"><i class="ti ti-message-question me-1"></i>{{ __('Demander confirmation avant d\'envoyer la feuille d\'attribution', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Si activé, attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l\'envoyer maintenant, plus tard ou pas du tout. Les attributions faites sans technicien devant l\'écran (inventaire automatique, actions massives) sont envoyées directement.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3 form-check">
             <input type="hidden" name="auto_attach_connected_items" value="0">
             <input type="checkbox" name="auto_attach_connected_items" value="1" class="form-check-input" id="auto_attach_connected_items" {{ config.auto_attach_connected_items|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="auto_attach_connected_items"><i class="ti ti-plug-connected me-1"></i>{{ __('Ajouter d\'office le matériel connecté au document', 'assetsign') }}</label>

@@ -3380,3 +3380,58 @@ msgid "%d élément connecté ajouté."
 msgid_plural "%d éléments connectés ajoutés."
 msgstr[0] "%d connected item added."
 msgstr[1] "%d connected items added."
+
+msgid "Aucune feuille ne sera envoyée pour cette attribution."
+msgstr "No form will be sent for this assignment."
+
+msgid "Aucune feuille ne sera envoyée pour cette attribution. Continuer ?"
+msgstr "No form will be sent for this assignment. Continue?"
+
+msgid "Brouillon : cette feuille n'a pas encore été envoyée au bénéficiaire. Complétez-la si besoin, puis envoyez-la."
+msgstr "Draft: this form has not been sent to the recipient yet. Complete it if needed, then send it."
+
+msgid "Cette feuille a déjà été envoyée."
+msgstr "This form has already been sent."
+
+msgid "Demander confirmation avant d'envoyer la feuille d'attribution"
+msgstr "Ask for confirmation before sending the assignment form"
+
+msgid "Envoyer pour signature"
+msgstr "Send for signature"
+
+msgid "Feuille d'attribution envoyée pour signature."
+msgstr "Assignment form sent for signature."
+
+msgid "Feuille d'attribution à envoyer"
+msgstr "Assignment form to send"
+
+msgid "Ne pas faire signer"
+msgstr "Do not request a signature"
+
+msgid "Si activé, attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout. Les attributions faites sans technicien devant l'écran (inventaire automatique, actions massives) sont envoyées directement."
+msgstr "If enabled, assigning equipment from its form opens a window to complete the form (monitors, devices, phones…) and choose to send it now, later or not at all. Assignments made without a technician at the screen (automatic inventory, mass actions) are sent directly."
+
+#, php-format
+msgid "%1$s « %2$s » vient d'être attribué à %3$s."
+msgstr "%1$s “%2$s” has just been assigned to %3$s."
+
+msgid "Accessoire non inventorié (catalogue)"
+msgstr "Non-inventoried accessory (catalogue)"
+
+msgid "Ajouter un écran, un périphérique, un téléphone…"
+msgstr "Add a monitor, a device, a phone…"
+
+msgid "Décochez un élément pour le retirer de la feuille."
+msgstr "Untick an item to remove it from the form."
+
+msgid "Plus tard"
+msgstr "Later"
+
+msgid "Remis avec le matériel"
+msgstr "Handed over with the equipment"
+
+msgid "Vérifiez ce qui est remis avec, puis envoyez la feuille pour signature."
+msgstr "Check what is handed over with it, then send the form for signature."
+
+msgid "Élément déjà inventorié dans GLPI"
+msgstr "Item already inventoried in GLPI"
