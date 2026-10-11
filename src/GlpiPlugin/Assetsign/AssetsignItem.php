@@ -255,9 +255,9 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
                  'name'     => (string) ($row['name'] ?? ''),
                  'serial'   => (string) ($row['serial'] ?? ''),
              ];
-            if (++$count >= $limit) {
+             if (++$count >= $limit) {
                 break 2;
-            }
+             }
          }
       }
        return $groups;
