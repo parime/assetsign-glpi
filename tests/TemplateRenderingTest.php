@@ -103,6 +103,18 @@ class TemplateRenderingTest extends AssetsignTestCase
            'signature_proofs'          => [],
            'cosigner'                  => null,
            'cosigner_pending'          => false,
+           // Contexte complet de Assetsign::showForm() : la CI officielle GLPI rend les gabarits
+           // avec strict_variables, une cle absente y est une erreur.
+           'checklist_items'           => [],
+           'checklist_values'          => [],
+           'checklist_results'         => [],
+           'can_edit_checklist'        => false,
+           'can_sign_in_person'        => false,
+           'delegate'                  => null,
+           'kit'                       => null,
+           'kit_completeness'          => null,
+           'type_handover'             => Assetsign::TYPE_HANDOVER,
+           'type_return'               => Assetsign::TYPE_RETURN,
            'csrf_token'                => 'phpunit-test-token',
            // Force le rendu du formulaire de delegation (bloc contenant
            // {% do call('User::dropdown', ..., {'right': 'all'}) %}) — voir
