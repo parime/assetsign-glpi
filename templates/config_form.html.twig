@@ -158,6 +158,12 @@
             <input type="number" name="expiry_warning_days" class="form-control" value="{{ config.expiry_warning_days|default(3) }}" min="0">
             <div class="form-text">{{ __('Le technicien à l\'origine de l\'attribution reçoit un e-mail quand il reste ce nombre de jours avant l\'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu\'il ne soit trop tard.', 'assetsign') }}</div>
           </div>
+          {# Issue #179 #}
+          <div class="mb-3">
+            <label class="form-label">{{ __('Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)', 'assetsign') }}</label>
+            <input type="number" name="draft_reminder_days" class="form-control" value="{{ config.draft_reminder_days|default(3) }}" min="0">
+            <div class="form-text">{{ __('Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d\'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu\'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d\'accueil.', 'assetsign') }}</div>
+          </div>
 
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_pending_signatures_banner" value="0">

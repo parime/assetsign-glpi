@@ -3537,3 +3537,36 @@ msgstr "Ne pas changer le statut"
 #, php-format
 msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
 msgstr "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
+
+msgid "Rappelle au technicien les feuilles restées en brouillon"
+msgstr "Rappelle au technicien les feuilles restées en brouillon"
+
+msgid "Feuille restée en brouillon"
+msgstr "Feuille restée en brouillon"
+
+msgid "Lien vers la fiche"
+msgstr "Lien vers la fiche"
+
+msgid "Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)"
+msgstr "Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)"
+
+msgid "Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d'accueil."
+msgstr "Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d'accueil."
+
+msgid "Voir toutes les feuilles à envoyer"
+msgstr "Voir toutes les feuilles à envoyer"
+
+msgid "Ces feuilles sont prêtes mais n'ont pas été envoyées : le bénéficiaire ne les a pas reçues."
+msgstr "Ces feuilles sont prêtes mais n'ont pas été envoyées : le bénéficiaire ne les a pas reçues."
+
+msgid "Préparée automatiquement, sans technicien"
+msgstr "Préparée automatiquement, sans technicien"
+
+msgid "Automatique"
+msgstr "Automatique"
+
+#, php-format
+msgid "%d feuille à envoyer"
+msgid_plural "%d feuilles à envoyer"
+msgstr[0] "%d feuille à envoyer"
+msgstr[1] "%d feuilles à envoyer"

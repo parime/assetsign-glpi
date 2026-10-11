@@ -201,6 +201,39 @@ final class DefaultNotificationContent
                        . '<p>Si consiglia di contattare il beneficiario in altro modo (chiamata, visita di persona) prima della scadenza del link.</p>',
                ],
            ],
+           'draft_pending' => [
+               'name'  => 'Attribution : feuille restée en brouillon',
+               'fr_FR' => [
+                   'subject' => 'Feuille pas encore envoyée (##assetsign.type##) : ##assetsign.item.name##',
+                   'html'    => '<p>La feuille (##assetsign.type##) pour <strong>##assetsign.item.name##</strong> '
+                       . '(##assetsign.user.name##) est toujours en brouillon : le bénéficiaire ne l\'a pas reçue.</p>'
+                       . '<p><a href="##assetsign.url##">Ouvrir la feuille</a> pour la compléter et l\'envoyer, ou indiquer qu\'elle ne sera pas signée.</p>',
+               ],
+               'en_GB' => [
+                   'subject' => '##assetsign.type## form not sent yet: ##assetsign.item.name##',
+                   'html'    => '<p>The ##assetsign.type## form for <strong>##assetsign.item.name##</strong> '
+                       . '(##assetsign.user.name##) is still a draft: the recipient has not received it.</p>'
+                       . '<p><a href="##assetsign.url##">Open the form</a> to complete and send it, or mark it as not to be signed.</p>',
+               ],
+               'es_ES' => [
+                   'subject' => 'Ficha de ##assetsign.type## aún no enviada: ##assetsign.item.name##',
+                   'html'    => '<p>La ficha de ##assetsign.type## para <strong>##assetsign.item.name##</strong> '
+                       . '(##assetsign.user.name##) sigue en borrador: el beneficiario no la ha recibido.</p>'
+                       . '<p><a href="##assetsign.url##">Abrir la ficha</a> para completarla y enviarla, o indicar que no se firmará.</p>',
+               ],
+               'de_DE' => [
+                   'subject' => '##assetsign.type##-Formular noch nicht gesendet: ##assetsign.item.name##',
+                   'html'    => '<p>Das ##assetsign.type##-Formular für <strong>##assetsign.item.name##</strong> '
+                       . '(##assetsign.user.name##) ist noch ein Entwurf: Der Empfänger hat es nicht erhalten.</p>'
+                       . '<p><a href="##assetsign.url##">Formular öffnen</a>, um es zu ergänzen und zu senden oder anzugeben, dass es nicht unterschrieben wird.</p>',
+               ],
+               'it_IT' => [
+                   'subject' => 'Scheda di ##assetsign.type## non ancora inviata: ##assetsign.item.name##',
+                   'html'    => '<p>La scheda di ##assetsign.type## per <strong>##assetsign.item.name##</strong> '
+                       . '(##assetsign.user.name##) è ancora in bozza: il beneficiario non l\'ha ricevuta.</p>'
+                       . '<p><a href="##assetsign.url##">Apri la scheda</a> per completarla e inviarla, o indicare che non sarà firmata.</p>',
+               ],
+           ],
            'delegated' => [
                'name'  => 'Attribution : signature déléguée',
                'fr_FR' => [

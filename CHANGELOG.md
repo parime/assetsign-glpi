@@ -47,6 +47,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Feuilles restées en brouillon** (issue #179) : encadré « Feuilles à envoyer » sur la page
+  d'accueil (ses brouillons et ceux préparés sans technicien, avec envoi en un clic et lien vers la
+  liste complète) et rappel par e-mail au technicien après N jours (réglage, 3 par défaut, 0 =
+  désactivé), puis chaque semaine tant que la feuille reste en brouillon (tâche planifiée
+  `assetsignDraftReminder`, notification « Feuille restée en brouillon »).
 - **Matériel remis avec attribué aussi dans GLPI** (issue #174) : un écran, casque, téléphone… ajouté
   à une feuille d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut :
   celui du matériel principal, un statut choisi, ou inchangé), à l'envoi de la feuille ou dès l'ajout

@@ -70,6 +70,8 @@ class NotificationTargetAssetsign extends NotificationTarget
            // signer, la fiche attend desormais la contre-signature du
            // responsable hierarchique.
            'cosignature_requested' => __('Contre-signature requise', 'assetsign'),
+           // Issue #179 : feuille restee en brouillon (rappel au technicien).
+           'draft_pending' => __('Feuille restée en brouillon', 'assetsign'),
        ];
    }
 
@@ -94,7 +96,7 @@ class NotificationTargetAssetsign extends NotificationTarget
        // justement de signer, c'est le responsable qui doit etre notifie.
       if ($awaitingCosignature && $event === 'reminder') {
           $this->addTarget(self::TARGET_COSIGNER, __('Responsable hiérarchique', 'assetsign'));
-      } else if (!in_array($event, ['expiring_soon', 'delegated', 'cosignature_requested'], true)) {
+      } else if (!in_array($event, ['expiring_soon', 'delegated', 'cosignature_requested', 'draft_pending'], true)) {
           $this->addTarget(self::TARGET_BENEFICIARY, __('Bénéficiaire', 'assetsign'));
       }
 
@@ -107,7 +109,7 @@ class NotificationTargetAssetsign extends NotificationTarget
        // runExpiryWarnings()) : sans cette alerte anticipee, le technicien n'apprend
        // qu'un document est reste sans suite qu'une fois le lien deja invalide, trop
        // tard pour relancer le beneficiaire autrement (appel, passage sur place).
-      if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
+      if (in_array($event, ['signed', 'expired', 'expiring_soon', 'draft_pending'], true)) {
           $this->addTarget(self::TARGET_TECHNICIAN, __('Technicien', 'assetsign'));
       }
 
@@ -196,6 +198,9 @@ class NotificationTargetAssetsign extends NotificationTarget
 
        $this->data['##assetsign.sign_url##'] = $assetsign->getSignUrl();
        $this->data['##assetsign.deadline##'] = $assetsign->getExpiryDate() ?? '';
+       // Issue #179 : lien vers la fiche (pour le technicien).
+       global $CFG_GLPI;
+       $this->data['##assetsign.url##'] = rtrim((string) ($CFG_GLPI['url_base'] ?? ''), '/') . '/plugins/assetsign/front/assetsign.form.php?id=' . $assetsign->getID();
 
        // Delegation de signature (issue #115) : vide si aucune delegation
        // active, non seulement pour l'evenement "delegated" — un gabarit
@@ -230,6 +235,7 @@ class NotificationTargetAssetsign extends NotificationTarget
            'assetsign.user.name' => __('Bénéficiaire', 'assetsign'),
            'assetsign.sign_url'  => __('Lien de signature', 'assetsign'),
            'assetsign.deadline'  => __('Date limite de signature', 'assetsign'),
+           'assetsign.url'       => __('Lien vers la fiche', 'assetsign'),
            'assetsign.delegate.name'      => __('Signataire délégué', 'assetsign'),
            'assetsign.delegation.reason'  => __('Motif de la délégation', 'assetsign'),
            'assetsign.cosigner.name'      => __('Responsable hiérarchique (contre-signataire)', 'assetsign'),
@@ -280,7 +286,7 @@ class NotificationTargetAssetsign extends NotificationTarget
                 self::addMissingTranslation(self::getTemplateIdForEvent($event), $language, $def[$language]);
             }
 
-            if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
+            if (in_array($event, ['signed', 'expired', 'expiring_soon', 'draft_pending'], true)) {
                 self::migrateTechnicianTarget((int) $existing->getID());
             }
             continue;
@@ -326,7 +332,7 @@ class NotificationTargetAssetsign extends NotificationTarget
               'notificationtemplates_id' => $templates_id,
           ]);
 
-         if (!in_array($event, ['expiring_soon', 'delegated', 'cosignature_requested'], true)) {
+         if (!in_array($event, ['expiring_soon', 'delegated', 'cosignature_requested', 'draft_pending'], true)) {
             (new NotificationTarget())->add([
               'notifications_id' => $notifications_id,
               'type'             => Notification::USER_TYPE,
@@ -334,7 +340,7 @@ class NotificationTargetAssetsign extends NotificationTarget
             ]);
          }
 
-         if (in_array($event, ['signed', 'expired', 'expiring_soon'], true)) {
+         if (in_array($event, ['signed', 'expired', 'expiring_soon', 'draft_pending'], true)) {
             (new NotificationTarget())->add([
                 'notifications_id' => $notifications_id,
                 'type'             => Notification::USER_TYPE,
