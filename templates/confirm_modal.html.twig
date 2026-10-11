@@ -88,6 +88,7 @@
                 onclick="return confirm('{{ __('Aucune feuille ne sera envoyée pour cette attribution. Continuer ?', 'assetsign')|e('js') }}');">
           {{ __('Ne pas faire signer', 'assetsign') }}
         </button>
+        <a class="btn btn-outline-secondary" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}"><i class="ti ti-pencil me-1"></i>{{ __('Modifier la feuille', 'assetsign') }}</a>
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ __('Plus tard', 'assetsign') }}</button>
         <button type="submit" form="assetsign-confirm-form" name="send_draft" class="btn btn-primary">
           <i class="ti ti-send me-1"></i>{{ __('Envoyer pour signature', 'assetsign') }}

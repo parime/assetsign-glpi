@@ -14,6 +14,34 @@
           <button type="submit" name="discard_draft" class="btn btn-outline-danger btn-sm">{{ __('Ne pas faire signer', 'assetsign') }}</button>
         </form>
       </div>
+
+      {# Issue #163 : modifier la feuille avant l'envoi #}
+      <div class="card mb-3">
+        <div class="card-header"><h3 class="card-title"><i class="ti ti-pencil me-1"></i>{{ __('Préparer la feuille avant l\'envoi', 'assetsign') }}</h3></div>
+        <div class="card-body">
+          <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-3 align-items-end">
+            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="id" value="{{ item.fields.id }}">
+            {% if item.fields.beneficiary_type|default(0) == 0 %}
+              <div class="col-auto">
+                <label class="form-label">{{ __('Bénéficiaire', 'assetsign') }}</label>
+                {% do call('User::dropdown', [{'name': 'users_id', 'value': item.fields.users_id, 'right': 'all', 'entity': item.fields.entities_id, 'entity_sons': true, 'display_emptychoice': false}]) %}
+              </div>
+            {% endif %}
+            <div class="col-auto">
+              <label class="form-label">{{ __('Modèle de document', 'assetsign') }}</label>
+              {% do call('Dropdown::show', ['GlpiPlugin\\Assetsign\\Template', {'name': 'plugin_assetsign_templates_id', 'value': item.fields.plugin_assetsign_templates_id, 'condition': draft_template_condition|default({}), 'entity': item.fields.entities_id, 'entity_sons': true}]) %}
+            </div>
+            <div class="col-auto">
+              <button type="submit" name="update_draft" class="btn btn-secondary">{{ __('Enregistrer', 'assetsign') }}</button>
+            </div>
+            <div class="col-auto">
+              <a class="btn btn-outline-primary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&preview_draft=1"><i class="ti ti-eye me-1"></i>{{ __('Aperçu du document', 'assetsign') }}</a>
+            </div>
+          </form>
+          <p class="form-text mb-0 mt-2">{{ __('Le matériel remis avec, les accessoires, les observations, le kit et l\'état des lieux se complètent plus bas sur cette page. Rien n\'est envoyé tant que vous n\'avez pas cliqué sur « Envoyer pour signature ».', 'assetsign') }}</p>
+        </div>
+      </div>
     {% endif %}
 
     <table class="table table-striped">

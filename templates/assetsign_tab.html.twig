@@ -23,8 +23,8 @@
             <td>{{ r.date_signed|default('-') }}</td>
             <td>
               <a href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ r.id }}">{{ __('Voir', 'assetsign') }}</a>
-              {# Issue #170 : brouillon d'attribution pas encore envoye #}
-              {% if r.status == 0 and r.type == 0 and can_send_drafts|default(false) %}
+              {# Issues #170 et #163 : brouillon pas encore envoye (tous types de fiche) #}
+              {% if r.status == 0 and can_send_drafts|default(false) %}
                 <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline ms-2">
                   <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
                   <input type="hidden" name="id" value="{{ r.id }}">

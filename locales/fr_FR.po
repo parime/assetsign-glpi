@@ -3455,3 +3455,54 @@ msgstr "Vérifiez ce qui est remis avec, puis envoyez la feuille pour signature.
 
 msgid "Élément déjà inventorié dans GLPI"
 msgstr "Élément déjà inventorié dans GLPI"
+
+msgid "Feuille préparée en brouillon : rien n'a été envoyé. Envoyez-la depuis l'onglet Attributions du matériel quand vous le souhaitez."
+msgstr "Feuille préparée en brouillon : rien n'a été envoyé. Envoyez-la depuis l'onglet Attributions du matériel quand vous le souhaitez."
+
+msgid "Envoi des feuilles déclenchées automatiquement"
+msgstr "Envoi des feuilles déclenchées automatiquement"
+
+msgid "Demander confirmation à l'attribution (recommandé)"
+msgstr "Demander confirmation à l'attribution (recommandé)"
+
+msgid "Manuel : préparer en brouillon, envoi par bouton"
+msgstr "Manuel : préparer en brouillon, envoi par bouton"
+
+msgid "Immédiat : envoyer sans rien demander"
+msgstr "Immédiat : envoyer sans rien demander"
+
+msgid "Confirmation : attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout ; sans technicien devant l'écran (inventaire automatique, actions massives), elle part directement."
+msgstr "Confirmation : attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout ; sans technicien devant l'écran (inventaire automatique, actions massives), elle part directement."
+
+msgid "Manuel : aucune feuille ne part toute seule ; elles attendent en brouillon, avec un bouton « Envoyer pour signature » dans l'onglet Attributions du matériel."
+msgstr "Manuel : aucune feuille ne part toute seule ; elles attendent en brouillon, avec un bouton « Envoyer pour signature » dans l'onglet Attributions du matériel."
+
+msgid "Ignorer les changements faits par l'inventaire automatique"
+msgstr "Ignorer les changements faits par l'inventaire automatique"
+
+msgid "Si activé, quand l'inventaire automatique vide ou change le champ Utilisateur d'un matériel (agent qui ne remonte plus l'utilisateur, mouvement interne…), aucune feuille n'est créée ni envoyée. Seules les attributions faites par une personne déclenchent une feuille."
+msgstr "Si activé, quand l'inventaire automatique vide ou change le champ Utilisateur d'un matériel (agent qui ne remonte plus l'utilisateur, mouvement interne…), aucune feuille n'est créée ni envoyée. Seules les attributions faites par une personne déclenchent une feuille."
+
+msgid "Bénéficiaire introuvable ou inactif."
+msgstr "Bénéficiaire introuvable ou inactif."
+
+msgid "Ce modèle de document ne correspond pas à ce type de fiche."
+msgstr "Ce modèle de document ne correspond pas à ce type de fiche."
+
+msgid "Feuille modifiée."
+msgstr "Feuille modifiée."
+
+msgid "Préparer la feuille avant l'envoi"
+msgstr "Préparer la feuille avant l'envoi"
+
+msgid "Modèle de document"
+msgstr "Modèle de document"
+
+msgid "Aperçu du document"
+msgstr "Aperçu du document"
+
+msgid "Modifier la feuille"
+msgstr "Modifier la feuille"
+
+msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
+msgstr "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."

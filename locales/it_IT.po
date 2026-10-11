@@ -3465,3 +3465,54 @@ msgstr "Verifica cosa viene consegnato insieme, poi invia la scheda per la firma
 
 msgid "Élément déjà inventorié dans GLPI"
 msgstr "Elemento già inventariato in GLPI"
+
+msgid "Feuille préparée en brouillon : rien n'a été envoyé. Envoyez-la depuis l'onglet Attributions du matériel quand vous le souhaitez."
+msgstr "Scheda preparata come bozza: non è stato inviato nulla. Inviala dalla scheda Assegnazioni dell'attrezzatura quando vuoi."
+
+msgid "Envoi des feuilles déclenchées automatiquement"
+msgstr "Invio delle schede attivate automaticamente"
+
+msgid "Demander confirmation à l'attribution (recommandé)"
+msgstr "Chiedere conferma all'assegnazione (consigliato)"
+
+msgid "Manuel : préparer en brouillon, envoi par bouton"
+msgstr "Manuale: preparare come bozza, invio con un pulsante"
+
+msgid "Immédiat : envoyer sans rien demander"
+msgstr "Immediato: inviare senza chiedere"
+
+msgid "Confirmation : attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout ; sans technicien devant l'écran (inventaire automatique, actions massives), elle part directement."
+msgstr "Conferma: assegnare un'attrezzatura dalla sua scheda apre una finestra per completare la scheda (monitor, periferiche, telefoni…) e scegliere di inviarla ora, più tardi o per niente; senza un tecnico davanti allo schermo (inventario automatico, azioni di massa), viene inviata direttamente."
+
+msgid "Manuel : aucune feuille ne part toute seule ; elles attendent en brouillon, avec un bouton « Envoyer pour signature » dans l'onglet Attributions du matériel."
+msgstr "Manuale: nessuna scheda parte da sola; restano in bozza, con un pulsante «Invia per la firma» nella scheda Assegnazioni dell'attrezzatura."
+
+msgid "Ignorer les changements faits par l'inventaire automatique"
+msgstr "Ignorare le modifiche fatte dall'inventario automatico"
+
+msgid "Si activé, quand l'inventaire automatique vide ou change le champ Utilisateur d'un matériel (agent qui ne remonte plus l'utilisateur, mouvement interne…), aucune feuille n'est créée ni envoyée. Seules les attributions faites par une personne déclenchent une feuille."
+msgstr "Se attivato, quando l'inventario automatico svuota o cambia il campo Utente di un'attrezzatura (agente che non riporta più l'utente, spostamento interno…), nessuna scheda viene creata né inviata. Solo le assegnazioni fatte da una persona attivano una scheda."
+
+msgid "Bénéficiaire introuvable ou inactif."
+msgstr "Beneficiario non trovato o inattivo."
+
+msgid "Ce modèle de document ne correspond pas à ce type de fiche."
+msgstr "Questo modello di documento non corrisponde a questo tipo di scheda."
+
+msgid "Feuille modifiée."
+msgstr "Scheda modificata."
+
+msgid "Préparer la feuille avant l'envoi"
+msgstr "Preparare la scheda prima dell'invio"
+
+msgid "Modèle de document"
+msgstr "Modello di documento"
+
+msgid "Aperçu du document"
+msgstr "Anteprima del documento"
+
+msgid "Modifier la feuille"
+msgstr "Modifica la scheda"
+
+msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
+msgstr "L'attrezzatura consegnata insieme, gli accessori, le osservazioni, il kit e lo stato si completano più in basso in questa pagina. Non viene inviato nulla finché non fai clic su «Invia per la firma»."

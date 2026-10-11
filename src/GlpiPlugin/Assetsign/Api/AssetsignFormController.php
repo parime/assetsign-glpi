@@ -112,6 +112,15 @@ final class AssetsignFormController
        return __('Feuille d\'attribution envoyée pour signature.', 'assetsign');
    }
 
+   public function updateDraft(Assetsign $assetsign, array $post): string {
+       $assetsign->updateDraft(
+           (int) ($post['users_id'] ?? 0),
+           (int) ($post['plugin_assetsign_templates_id'] ?? 0)
+       );
+
+       return __('Feuille modifiée.', 'assetsign');
+   }
+
    public function discardDraft(Assetsign $assetsign): string {
        $assetsign->cancelRequest();
 
