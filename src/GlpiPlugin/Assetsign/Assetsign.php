@@ -3871,13 +3871,13 @@ class Assetsign extends Compat\Base\AssetsignBase
          }
          // Issue #183 : ticket a l'origine de la remise (demande de materiel).
          if (!$DB->fieldExists($table, 'tickets_id')) {
-             $migration->addField($table, 'tickets_id', 'integer', ['value' => 0, 'after' => 'items_id']);
+             $migration->addField($table, 'tickets_id', 'integer', ['value' => 0]);
              $migration->addKey($table, 'tickets_id');
              $migration->migrationOneTable($table);
          }
          // Issue #179 : date du dernier rappel envoye pour un brouillon.
          if (!$DB->fieldExists($table, 'draft_reminder_sent_at')) {
-             $migration->addField($table, 'draft_reminder_sent_at', 'timestamp', ['null' => true, 'after' => 'expiry_warning_sent']);
+             $migration->addField($table, 'draft_reminder_sent_at', 'timestamp', ['null' => true]);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'observations')) {
