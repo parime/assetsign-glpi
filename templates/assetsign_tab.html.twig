@@ -167,7 +167,7 @@
           toggleTypeFields();
           toggleBeneficiaryFields();
 
-          {% if prefill_type is not null %}
+          {% if prefill_type|default(null) is not null %}
             // Arrivee via le lien "creez maintenant la fiche" (cf.
             // Assetsign::handleStateBasedTrigger()) : simule le clic sur le bon
             // bouton de type plutot que de laisser le technicien le rechercher.

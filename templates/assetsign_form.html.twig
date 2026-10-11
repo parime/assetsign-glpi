@@ -67,7 +67,7 @@
           <button type="submit" name="relance" class="btn btn-primary">{{ __('Relancer maintenant', 'assetsign') }}</button>
         </form>
       {% endif %}
-      {% if can_sign_in_person %}
+      {% if can_sign_in_person|default(false) %}
         {# Signature sur place (issue #152) : ouvre la page de signature sur cet ecran, a remettre
            a la personne qui signe (beneficiaire ou son delegue). #}
         <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">

@@ -17,7 +17,7 @@
 <div style="position:fixed;top:45%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:64px;font-weight:bold;color:rgba(200,30,30,{{ (watermark_opacity|default(25)) / 100 }});pointer-events:none;z-index:9999;white-space:nowrap;">{{ watermark_text }}</div>
 {% endif %}
 
-{% set beneficiary_name = (user.firstname ~ ' ' ~ user.realname)|trim %}
+{% set beneficiary_name = (user.firstname|default('') ~ ' ' ~ user.realname|default(''))|trim %}
 {% if beneficiary_name is empty %}{% set beneficiary_name = user.name %}{% endif %}
 
 {% if logo_data_uri or company_name %}
@@ -30,16 +30,16 @@
 <h1>{{ page_title }}</h1>
 <p class="meta">Établie le {{ assetsign.date_creation|date('d/m/Y') }} — Référence assetsign n°{{ assetsign.id }}</p>
 
-<h2>Bénéficiaire{% if beneficiary_is_external %} (externe, sans compte GLPI){% endif %}</h2>
+<h2>Bénéficiaire{% if beneficiary_is_external|default(false) %} (externe, sans compte GLPI){% endif %}</h2>
 <table class="info-table">
     <tr><th>Nom</th><td>{{ beneficiary_name }}</td></tr>
-    <tr><th>{{ beneficiary_is_external ? 'Contact' : 'E-mail' }}</th><td>{{ user.email }}</td></tr>
+    <tr><th>{{ beneficiary_is_external|default(false) ? 'Contact' : 'E-mail' }}</th><td>{{ user.email|default('') }}</td></tr>
 </table>
 
 <h2>{{ material_heading }}</h2>
 <table class="info-table">
     <tr><th>Type</th><td>{{ itemtype }}</td></tr>
-    <tr><th>Nom GLPI</th><td>{{ item.name }}</td></tr>
+    <tr><th>Nom GLPI</th><td>{{ item.name|default('') }}</td></tr>
     {% if item.manufacturer_name is defined and item.manufacturer_name %}
     <tr><th>Marque</th><td>{{ item.manufacturer_name }}</td></tr>
     {% endif %}
@@ -132,7 +132,7 @@
 {% endif %}
 
 <div class="signature-zone">
-    {% if signature_image %}
+    {% if signature_image|default(false) %}
         <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">
@@ -157,7 +157,7 @@
             Signature déléguée par {{ delegated_by_name|default(beneficiary_name) }} le {{ delegation_date|date('d/m/Y') }}{% if delegation_reason %} — motif : {{ delegation_reason }}{% endif %}
         </p>
         {% endif %}
-    {% elseif beneficiary_is_external %}
+    {% elseif beneficiary_is_external|default(false) %}
         {# Beneficiaire externe : aucune signature electronique possible (pas
            de compte GLPI pour se connecter), le document genere EST le
            document final des sa creation — pas de ligne de signature vide qui

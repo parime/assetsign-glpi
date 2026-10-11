@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - La désinstallation supprime aussi la table `glpi_plugin_assetsign_residualvalues` (valeurs
   résiduelles saisies à la main), qui restait en base.
+- Gabarits Twig : plus d'erreur « Variable … does not exist » quand GLPI est en mode
+  développement/débogage (variables strictes) ; valeurs par défaut explicites sur les PDF de remise,
+  de maintenance, la page de signature, la fiche et le passeport.
 - Bootstrap PHPUnit : l'environnement GLPI est lu depuis `GLPI_ENVIRONMENT_TYPE` (comme
   `bin/console`) au lieu d'être forcé à `production`, pour tourner aussi dans la CI officielle GLPI.
 
