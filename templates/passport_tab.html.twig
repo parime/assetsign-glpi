@@ -239,7 +239,7 @@
             <strong>{{ event.type_label }}</strong>
             {% if event.snapshot_name %}
               — {{ event.snapshot_name }}
-              {% if event.snapshot_is_external %}<span class="badge bg-secondary-lt">{{ __('externe', 'assetsign') }}</span>{% endif %}
+              {% if event.snapshot_is_external|default(false) %}<span class="badge bg-secondary-lt">{{ __('externe', 'assetsign') }}</span>{% endif %}
             {% elseif event.is_anonymized %}
               — <span class="text-muted">{{ __('bénéficiaire anonymisé', 'assetsign') }}</span>
             {% endif %}

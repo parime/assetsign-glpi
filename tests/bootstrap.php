@@ -42,7 +42,9 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
     require __DIR__ . '/../vendor/autoload.php';
 }
 
-$kernel = new \Glpi\Kernel\Kernel('production');
+// Environnement lu depuis GLPI_ENVIRONMENT_TYPE (production par defaut), comme bin/console : la CI
+// officielle GLPI installe la base dans l'environnement de son image, pas forcement 'production'.
+$kernel = new \Glpi\Kernel\Kernel();
 // Une simple variable locale ici ne devient jamais une vraie globale PHP (ce bootstrap est inclus
 // depuis l'intérieur d'une méthode, pas exécuté au premier niveau d'un script) — du code historique
 // de GLPI (ex. les chemins dépendant de isAPI()/getMainRequest(), atteints depuis des hooks

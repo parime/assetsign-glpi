@@ -8,7 +8,7 @@
 </head>
 <body>
 
-{% set technician_name = (technician.firstname ~ ' ' ~ technician.realname)|trim %}
+{% set technician_name = (technician.firstname|default('') ~ ' ' ~ technician.realname|default(''))|trim %}
 {% if technician_name is empty %}{% set technician_name = technician.name|default('-') %}{% endif %}
 
 {% if logo_data_uri or company_name %}
@@ -63,7 +63,7 @@
 
 {% if signature_required %}
 <div class="signature-zone">
-    {% if signature_image %}
+    {% if signature_image|default(false) %}
         <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">

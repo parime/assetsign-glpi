@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **PHP 8.2 minimum** (au lieu de 8.3), comme GLPI 11 et les plugins jumeaux : rien dans le code ni
+  dans ses dépendances n'exigeait 8.3. Vérifié par un lint intégral sous PHP 8.2 et par la CI
+  officielle GLPI (installation + tests sous PHP 8.2/MySQL 8.0 et PHP 8.5/MariaDB 10.6), ajoutée à
+  la CI. `vendor/` régénéré : contrôle de plateforme Composer à 8.2 et carte des classes à jour.
+- `masterminds/html5` et `symfony/polyfill-mbstring` ne sont plus embarqués dans `vendor/`
+  (déclarés `replace` dans `composer.json`) : le cœur GLPI les fournit déjà et son autoloader passe
+  avant celui du plugin, nos copies n'étaient jamais chargées. `sabberworm/php-css-parser` passe en
+  9.5.0, qui ne dépend plus de `thecodingmachine/safe` (également fourni par le cœur).
+
+### Fixed
+
+- Les messages techniques de GLPI (« Document copié avec succès », « Fichier … supprimé ») ne
+  s'affichent plus quand une modification de la fiche régénère le PDF non signé.
+- La désinstallation supprime aussi la table `glpi_plugin_assetsign_residualvalues` (valeurs
+  résiduelles saisies à la main), qui restait en base.
+- Gabarits Twig : plus d'erreur « Variable … does not exist » quand GLPI est en mode
+  développement/débogage (variables strictes) ; valeurs par défaut explicites sur les PDF de remise,
+  de maintenance, la page de signature, la fiche et le passeport.
+- Bootstrap PHPUnit : l'environnement GLPI est lu depuis `GLPI_ENVIRONMENT_TYPE` (comme
+  `bin/console`) au lieu d'être forcé à `production`, pour tourner aussi dans la CI officielle GLPI.
+
 ### Added
 
 - **Matériel inventorié remis avec le poste** (issue #166) : sur une fiche, ajout d'éléments déjà
@@ -47,11 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - notifications « Départ : restitution du matériel à signer / relance / restitution signée » en 5 langues.
 
 ---
-
-### Fixed
-
-- Les messages techniques de GLPI (« Document copié avec succès », « Fichier … supprimé ») ne
-  s'affichent plus quand une modification de la fiche régénère le PDF non signé.
 
 ## [2.8.0] - 2026-10-04
 
