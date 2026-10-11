@@ -3580,3 +3580,18 @@ msgid "%d feuille à envoyer"
 msgid_plural "%d feuilles à envoyer"
 msgstr[0] "%d scheda da inviare"
 msgstr[1] "%d schede da inviare"
+
+msgid "Matériel disponible"
+msgstr "Attrezzatura disponibile"
+
+msgid "Sans utilisateur ou au statut « en stock », pas déjà sur une autre feuille en attente."
+msgstr "Senza utente o con stato «in magazzino», non già su un'altra scheda in attesa."
+
+msgid "Chercher dans tout le parc"
+msgstr "Cerca in tutto l'inventario"
+
+msgid "Statuts considérés comme « en stock »"
+msgstr "Stati considerati «in magazzino»"
+
+msgid "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."
+msgstr "L'attrezzatura senza utente, o in uno di questi stati, viene proposta per prima quando si aggiunge un elemento a una scheda."

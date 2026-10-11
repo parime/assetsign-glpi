@@ -90,6 +90,7 @@ class Config extends Compat\Base\ConfigBase
         'sign_on_return'                      => 0,
         'managed_itemtypes'                   => '["Computer","Monitor","Peripheral","Phone"]',
         'handover_states'                     => '[]',
+        'stock_states'                        => '[]',
         'return_states'                       => '[]',
         'donation_states'                     => '[]',
         'vente_states'                        => '[]',
@@ -210,6 +211,7 @@ class Config extends Compat\Base\ConfigBase
            'managed'         => $config->getManagedItemtypes(),
            'all_states'      => self::getAllStates(),
            'handover_states' => $config->getHandoverStates(),
+           'stock_states'    => $config->getStockStates(),
            'return_states'   => $config->getReturnStates(),
            'donation_states' => $config->getDonationStates(),
            'vente_states'    => $config->getVenteStates(),
@@ -624,6 +626,7 @@ class Config extends Compat\Base\ConfigBase
            'sign_on_return'       => (int) ($input['sign_on_return'] ?? 0),
            'managed_itemtypes'    => json_encode($managedItemtypes),
            'handover_states'      => json_encode(array_map('intval', $input['handover_states'] ?? [])),
+           'stock_states'         => json_encode(array_map('intval', $input['stock_states'] ?? [])),
            'return_states'        => json_encode(array_map('intval', $input['return_states'] ?? [])),
            'donation_states'      => json_encode(array_map('intval', $input['donation_states'] ?? [])),
            'vente_states'         => json_encode(array_map('intval', $input['vente_states'] ?? [])),
@@ -674,6 +677,12 @@ class Config extends Compat\Base\ConfigBase
    }
 
     /** États GLPI (glpi_states) qui, une fois atteints, déclenchent une assetsign. */
+    /** Issue #180 : statuts consideres comme « en stock » pour proposer le materiel disponible. */
+   public function getStockStates(): array {
+       $decoded = json_decode($this->fields['stock_states'] ?? '', true);
+       return is_array($decoded) ? array_map('intval', $decoded) : [];
+   }
+
    public function getHandoverStates(): array {
        $decoded = json_decode($this->fields['handover_states'] ?? '', true);
        return is_array($decoded) ? array_map('intval', $decoded) : [];
@@ -805,6 +814,7 @@ class Config extends Compat\Base\ConfigBase
                 `sign_on_return` tinyint NOT NULL DEFAULT 0,
                 `managed_itemtypes` text,
                 `handover_states` text,
+                `stock_states` text,
                 `return_states` text,
                 `donation_states` text,
                 `vente_states` text,
@@ -877,6 +887,11 @@ class Config extends Compat\Base\ConfigBase
              // DEFAULT, ce qui rendrait la colonne NULL par defaut (constate en
              // conditions reelles : WHERE champ => 0 n'egale jamais NULL en SQL).
              $migration->addField($table, 'logo_force_children', 'bool', ['value' => 0, 'after' => 'logo_documents_id']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #180 : statuts consideres comme « en stock ».
+         if (!$DB->fieldExists($table, 'stock_states')) {
+             $migration->addField($table, 'stock_states', 'text', ['after' => 'handover_states']);
              $migration->migrationOneTable($table);
          }
          // Issue #179 : rappel des feuilles restees en brouillon.

@@ -3570,3 +3570,18 @@ msgid "%d feuille à envoyer"
 msgid_plural "%d feuilles à envoyer"
 msgstr[0] "%d feuille à envoyer"
 msgstr[1] "%d feuilles à envoyer"
+
+msgid "Matériel disponible"
+msgstr "Matériel disponible"
+
+msgid "Sans utilisateur ou au statut « en stock », pas déjà sur une autre feuille en attente."
+msgstr "Sans utilisateur ou au statut « en stock », pas déjà sur une autre feuille en attente."
+
+msgid "Chercher dans tout le parc"
+msgstr "Chercher dans tout le parc"
+
+msgid "Statuts considérés comme « en stock »"
+msgstr "Statuts considérés comme « en stock »"
+
+msgid "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."
+msgstr "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."

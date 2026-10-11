@@ -184,6 +184,85 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
        return $state > 0 ? $state : null;
    }
 
+    /**
+     * Issue #180 : materiel disponible a proposer en premier - sans utilisateur, ou dans un statut
+     * « en stock » (Config::stock_states), visible dans les entites actives, ni corbeille ni gabarit,
+     * pas deja sur cette feuille ni sur une autre feuille en attente.
+     *
+     * @return array<string, list<array{value: string, itemtype: string, items_id: int, name: string, serial: string}>>
+     *         lignes regroupees par libelle de type
+     */
+   public static function getAvailableItems(Assetsign $assetsign, int $limit = 200): array {
+       global $DB;
+
+       $stockStates = Config::getForEntity((int) $assetsign->fields['entities_id'])->getStockStates();
+       $listed = [];
+      foreach (self::getForAssetsign($assetsign->getID()) as $row) {
+          $listed[$row['itemtype'] . ':' . $row['items_id']] = true;
+      }
+       $pending = [];
+      foreach ($DB->request([
+          'SELECT'     => [self::getTable() . '.itemtype', self::getTable() . '.items_id'],
+          'FROM'       => self::getTable(),
+          'INNER JOIN' => [Assetsign::getTable() => ['FKEY' => [self::getTable() => 'plugin_assetsign_assetsigns_id', Assetsign::getTable() => 'id']]],
+          'WHERE'      => [Assetsign::getTable() . '.status' => Assetsign::STATUSES_STILL_EDITABLE],
+      ]) as $row) {
+          $pending[$row['itemtype'] . ':' . $row['items_id']] = true;
+      }
+
+       $groups = [];
+       $count = 0;
+       // Le type du materiel principal (ex. Ordinateur) en dernier : on cherche surtout des ecrans,
+       // peripheriques, telephones a remettre avec lui.
+       $itemtypes = self::getAllowedItemtypes();
+       usort($itemtypes, static fn (string $a, string $b): int => ($a === $assetsign->fields['itemtype']) <=> ($b === $assetsign->fields['itemtype']));
+      foreach ($itemtypes as $itemtype) {
+          $item = new $itemtype();
+          $table = $itemtype::getTable();
+         if (!$item->isField('users_id')) {
+             continue;
+         }
+          $available = ["$table.users_id" => 0];
+         if ($stockStates !== [] && $item->isField('states_id')) {
+             $available = ['OR' => [["$table.users_id" => 0], ["$table.states_id" => $stockStates]]];
+         }
+          $where = [$available] + getEntitiesRestrictCriteria($table, '', '', $item->maybeRecursive());
+         if ($item->isField('is_deleted')) {
+             $where["$table.is_deleted"] = 0;
+         }
+         if ($item->isField('is_template')) {
+             $where["$table.is_template"] = 0;
+         }
+         if ($itemtype === $assetsign->fields['itemtype']) {
+             $where['NOT'] = ["$table.id" => (int) $assetsign->fields['items_id']];
+         }
+          $label = Assetsign::getCanonicalItemtypeLabel($itemtype);
+         foreach ($DB->request([
+             'SELECT' => ["$table.id", "$table.name"] + ($item->isField('serial') ? ["$table.serial"] : []),
+             'FROM'   => $table,
+             'WHERE'  => $where,
+             'ORDER'  => "$table.name",
+             'LIMIT'  => $limit,
+         ]) as $row) {
+             $key = $itemtype . ':' . $row['id'];
+            if (isset($listed[$key]) || isset($pending[$key])) {
+                continue;
+            }
+             $groups[$label][] = [
+                 'value'    => $key,
+                 'itemtype' => $itemtype,
+                 'items_id' => (int) $row['id'],
+                 'name'     => (string) ($row['name'] ?? ''),
+                 'serial'   => (string) ($row['serial'] ?? ''),
+             ];
+             if (++$count >= $limit) {
+                break 2;
+             }
+         }
+      }
+       return $groups;
+   }
+
    public static function detach(int $assetsigns_id, int $id): void {
        global $DB;
        $DB->delete(self::getTable(), ['id' => $id, 'plugin_assetsign_assetsigns_id' => $assetsigns_id]);

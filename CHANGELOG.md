@@ -47,6 +47,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Matériel disponible proposé en premier** (issue #180) : pour ajouter un élément à une feuille
+  (fiche et fenêtre d'attribution), liste « Matériel disponible » regroupée par type — sans
+  utilisateur ou dans un statut « en stock » (nouveau réglage), pas déjà sur une autre feuille en
+  attente ; la recherche dans tout le parc reste possible.
 - **Feuilles restées en brouillon** (issue #179) : encadré « Feuilles à envoyer » sur la page
   d'accueil (ses brouillons et ceux préparés sans technicien, avec envoi en un clic et lien vers la
   liste complète) et rappel par e-mail au technicien après N jours (réglage, 3 par défaut, 0 =

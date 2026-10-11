@@ -568,10 +568,8 @@
       <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
-        <div class="col-auto">
-          <label class="form-label">{{ __('Ajouter un élément du parc', 'assetsign') }}</label>
-          {% do call('Dropdown::showSelectItemFromItemtypes', [{'itemtype_name': 'inventoried_itemtype', 'items_id_name': 'inventoried_items_id', 'itemtypes': inventoried_itemtypes|default([]), 'entity_restrict': -1}]) %}
-        </div>
+        <div class="col-12"><label class="form-label mb-0">{{ __('Ajouter un élément du parc', 'assetsign') }}</label></div>
+        {{ include('@assetsign/_available_item_picker.html.twig') }}
         <div class="col-auto">
           <button type="submit" name="add_inventoried_item" class="btn btn-secondary">{{ __('Ajouter', 'assetsign') }}</button>
         </div>
