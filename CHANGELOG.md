@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Les messages techniques de GLPI (« Document copié avec succès », « Fichier … supprimé ») ne
+  s'affichent plus quand une modification de la fiche régénère le PDF non signé.
 - La désinstallation supprime aussi la table `glpi_plugin_assetsign_residualvalues` (valeurs
   résiduelles saisies à la main), qui restait en base.
 - Gabarits Twig : plus d'erreur « Variable … does not exist » quand GLPI est en mode
@@ -68,11 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - notifications « Départ : restitution du matériel à signer / relance / restitution signée » en 5 langues.
 
 ---
-
-### Fixed
-
-- Les messages techniques de GLPI (« Document copié avec succès », « Fichier … supprimé ») ne
-  s'affichent plus quand une modification de la fiche régénère le PDF non signé.
 
 ## [2.8.0] - 2026-10-04
 
