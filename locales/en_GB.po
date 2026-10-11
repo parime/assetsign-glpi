@@ -3630,3 +3630,19 @@ msgid "%d ticket ouvert pour un élément manquant."
 msgid_plural "%d tickets ouverts pour des éléments manquants."
 msgstr[0] "%d ticket opened for a missing item."
 msgstr[1] "%d tickets opened for missing items."
+
+#, php-format
+msgid "Remis avec %1$s « %2$s »"
+msgstr "Handed over with %1$s “%2$s”"
+
+#, php-format
+msgid "Rendu avec %s"
+msgstr "Returned with %s"
+
+#, php-format
+msgid "Rendu abîmé avec %s"
+msgstr "Returned damaged with %s"
+
+#, php-format
+msgid "Manquant à la restitution de %s"
+msgstr "Missing on the return of %s"
