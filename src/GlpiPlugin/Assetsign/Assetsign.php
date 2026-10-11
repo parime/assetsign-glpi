@@ -849,6 +849,20 @@ class Assetsign extends Compat\Base\AssetsignBase
           return;
       }
 
+       // Issue #174 : element attribue au beneficiaire parce qu'il est remis avec un autre materiel
+       // (deja sur la feuille de ce materiel) : pas de feuille separee.
+      if (!empty($item->input['_assetsign_handed_item'])) {
+          return;
+      }
+
+       // Element connecte a un poste (onglet Connexions) qui recoit le meme utilisateur que ce poste :
+       // c'est la recopie automatique de GLPI (Computer::post_updateItem(), option « mise a jour des
+       // elements connectes »). Il est couvert par la feuille du poste (ou il est propose comme
+       // element connecte) : pas de feuille separee, ni d'e-mail en plus.
+      if (self::followsItsConnectedAsset($item)) {
+          return;
+      }
+
        // Issue #163 : l'inventaire automatique peut vider puis remettre le champ Utilisateur (agent qui
        // ne remonte plus l'utilisateur, mouvement interne...) ; sur demande, ces changements ne
        // declenchent aucune feuille. GLPI marque ces mises a jour par '_auto' (MainAsset::handleInput()).
@@ -1341,6 +1355,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'accessories'           => $this->getAccessories(),
            'inventoried_itemtypes' => AssetsignItem::getAllowedItemtypes(),
            'csrf_token'            => Session::getNewCSRFToken(),
+           'assign_in_glpi'        => (int) (Config::getForEntity((int) $this->fields['entities_id'])->fields['assign_handed_items'] ?? 1) === 1,
        ]);
        return (string) ob_get_clean();
    }
@@ -1838,6 +1853,8 @@ class Assetsign extends Compat\Base\AssetsignBase
        // de ces voies. Volontairement AVANT la construction du PDF : un echec de
        // rendu PDF ne doit pas empecher l'evenement d'exister.
        PassportEvent::recordForAssetsign($this);
+       // Issue #174 : le materiel remis avec est attribue dans GLPI au beneficiaire des l'envoi.
+       $this->assignHandedItemsInGlpi($config);
 
        $builder = new Pdf\HandoverPdfBuilder();
        $document = $builder->build($this);
@@ -2306,6 +2323,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       if ($error !== null) {
           return self::getInventoriedItemErrorMessage($error);
       }
+       $this->assignHandedItemsInGlpi();
        $this->regenerateUnsignedPdf();
        return null;
    }
@@ -2317,6 +2335,58 @@ class Assetsign extends Compat\Base\AssetsignBase
            AssetsignItem::ERROR_ON_OTHER_SHEET => __('Cet élément figure déjà sur une autre fiche en attente de signature.', 'assetsign'),
            default                             => __('Élément introuvable ou non visible avec vos droits.', 'assetsign'),
        };
+   }
+
+    /**
+     * Issue #174 : attribue dans GLPI, au beneficiaire, chaque element du parc remis avec le materiel
+     * (feuilles d'attribution envoyees uniquement : un brouillon peut encore changer).
+     *
+     * @return int nombre d'elements modifies
+     */
+   public function assignHandedItemsInGlpi(?Config $config = null): int {
+       $config ??= Config::getForEntity((int) $this->fields['entities_id']);
+      if ((int) $this->fields['type'] !== self::TYPE_HANDOVER
+          || (int) $this->fields['status'] === self::STATUS_DRAFT
+          || (int) ($this->fields['beneficiary_type'] ?? self::BENEFICIARY_INTERNAL) !== self::BENEFICIARY_INTERNAL
+          || (int) ($config->fields['assign_handed_items'] ?? 1) !== 1) {
+          return 0;
+      }
+       $changed = 0;
+      foreach (AssetsignItem::getForAssetsign($this->getID()) as $row) {
+         if (AssetsignItem::assignToBeneficiary($this, (string) $row['itemtype'], (int) $row['items_id'], $config)) {
+             $changed++;
+         }
+      }
+       return $changed;
+   }
+
+    /** Element connecte dont le poste porte deja le meme utilisateur (cf. handleItemAssignment()). */
+   private static function followsItsConnectedAsset(CommonDBTM $item): bool {
+       global $DB;
+
+      if (!$item->isField('users_id') || !$DB->tableExists('glpi_assets_assets_peripheralassets')) {
+          return false;
+      }
+       $users_id = (int) ($item->fields['users_id'] ?? 0);
+      foreach ($DB->request([
+          'SELECT' => ['itemtype_asset', 'items_id_asset'],
+          'FROM'   => 'glpi_assets_assets_peripheralassets',
+          'WHERE'  => [
+              'itemtype_peripheral' => $item->getType(),
+              'items_id_peripheral' => $item->getID(),
+              'is_deleted'          => 0,
+          ],
+      ]) as $link) {
+          $assetType = (string) $link['itemtype_asset'];
+         if (!class_exists($assetType)) {
+             continue;
+         }
+          $asset = new $assetType();
+         if ($asset->getFromDB((int) $link['items_id_asset']) && (int) ($asset->fields['users_id'] ?? -1) === $users_id) {
+             return true;
+         }
+      }
+       return false;
    }
 
     /** Retire un objet du parc de la fiche (id de la ligne) et regenere le PDF non signe. */
@@ -2379,6 +2449,7 @@ class Assetsign extends Compat\Base\AssetsignBase
          }
       }
       if ($added > 0 && $regenerate) {
+          $this->assignHandedItemsInGlpi();
           $this->regenerateUnsignedPdf();
       }
        return $added;

@@ -40,7 +40,10 @@
                 </label>
               {% endfor %}
             </div>
-            <p class="form-text mt-n2">{{ __('Décochez un élément pour le retirer de la feuille.', 'assetsign') }}</p>
+            <p class="form-text mt-n2">
+              {{ __('Décochez un élément pour le retirer de la feuille.', 'assetsign') }}
+              {% if assign_in_glpi|default(false) %}{{ __('À l\'envoi, les éléments cochés sont aussi attribués à %s dans GLPI.', 'assetsign')|format(beneficiary_name) }}{% endif %}
+            </p>
           {% else %}
             <p class="text-muted">{{ __('Aucun matériel inventorié ajouté pour le moment.', 'assetsign') }}</p>
           {% endif %}

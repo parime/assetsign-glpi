@@ -131,6 +131,59 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
        return null;
    }
 
+    /**
+     * Issue #174 : attribue dans GLPI l'element remis avec au beneficiaire de la feuille (champ
+     * Utilisateur, et statut selon Config::handed_items_state). Sans effet si l'element lui est deja
+     * attribue avec le bon statut. Le marqueur '_assetsign_handed_item' empeche que cette mise a jour
+     * declenche une feuille separee pour l'element (cf. Assetsign::handleItemAssignment()).
+     *
+     * @return bool true si l'element a ete modifie
+     */
+   public static function assignToBeneficiary(Assetsign $assetsign, string $itemtype, int $items_id, Config $config): bool {
+       $users_id = (int) $assetsign->fields['users_id'];
+      if ($users_id <= 0 || !in_array($itemtype, self::getAllowedItemtypes(), true)) {
+          return false;
+      }
+       $item = new $itemtype();
+      if (!$item->getFromDB($items_id) || !$item->isField('users_id')) {
+          return false;
+      }
+
+       $input = [];
+      if ((int) $item->fields['users_id'] !== $users_id) {
+          $input['users_id'] = $users_id;
+      }
+       $state = self::resolveHandedState($assetsign, $config);
+      if ($state !== null && $item->isField('states_id') && (int) $item->fields['states_id'] !== $state) {
+          $input['states_id'] = $state;
+      }
+      if ($input === []) {
+          return false;
+      }
+       return (bool) $item->update(['id' => $items_id, '_assetsign_handed_item' => true] + $input);
+   }
+
+    /** Statut a appliquer (null : ne pas changer). */
+   private static function resolveHandedState(Assetsign $assetsign, Config $config): ?int {
+       $setting = (int) ($config->fields['handed_items_state'] ?? Config::HANDED_STATE_SAME_AS_MAIN);
+      if ($setting === Config::HANDED_STATE_UNCHANGED) {
+          return null;
+      }
+      if ($setting > 0) {
+          return $setting;
+      }
+       $mainType = (string) $assetsign->fields['itemtype'];
+      if (!class_exists($mainType)) {
+          return null;
+      }
+       $main = new $mainType();
+      if (!$main->getFromDB((int) $assetsign->fields['items_id']) || !$main->isField('states_id')) {
+          return null;
+      }
+       $state = (int) $main->fields['states_id'];
+       return $state > 0 ? $state : null;
+   }
+
    public static function detach(int $assetsigns_id, int $id): void {
        global $DB;
        $DB->delete(self::getTable(), ['id' => $id, 'plugin_assetsign_assetsigns_id' => $assetsigns_id]);

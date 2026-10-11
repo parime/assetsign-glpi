@@ -3554,3 +3554,22 @@ msgstr "Eine Bewegung wird über die Registerkarte Bewegungen des betreffenden G
 
 msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
 msgstr "Ein Austritt wird über den Datensatz der Person vorbereitet, Registerkarte Zuweisungen (Schaltfläche „Austritt der Person“)."
+
+msgid "Attribuer aussi dans GLPI le matériel remis avec"
+msgstr "Mit übergebene Geräte auch in GLPI zuweisen"
+
+msgid "Si activé, chaque écran, périphérique, téléphone… ajouté à une feuille d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut ci-dessous) : à l'envoi de la feuille, ou dès l'ajout si elle est déjà envoyée. Un élément déjà attribué au bénéficiaire n'est pas modifié."
+msgstr "Wenn aktiviert, wird jeder Monitor, jedes Peripheriegerät, Telefon… auf einem Zuweisungsformular dem Empfänger in GLPI zugewiesen (Feld Benutzer und Status unten): beim Senden des Formulars oder sofort beim Hinzufügen, wenn es bereits gesendet wurde. Ein bereits dem Empfänger zugewiesenes Element wird nicht geändert."
+
+msgid "Statut à donner au matériel remis avec"
+msgstr "Status für mit übergebene Geräte"
+
+msgid "Le même que le matériel principal"
+msgstr "Wie das Hauptgerät"
+
+msgid "Ne pas changer le statut"
+msgstr "Status nicht ändern"
+
+#, php-format
+msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
+msgstr "Beim Senden werden die markierten Elemente in GLPI auch %s zugewiesen."

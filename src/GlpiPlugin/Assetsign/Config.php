@@ -22,6 +22,10 @@ class Config extends Compat\Base\ConfigBase
    public const SENDING_CONFIRM   = 1; // fenetre si un technicien est devant la fiche, sinon immediat
    public const SENDING_MANUAL    = 2; // toujours en brouillon, envoi par bouton
 
+   /* Issue #174 : statut donne au materiel remis avec (handed_items_state). */
+   public const HANDED_STATE_SAME_AS_MAIN = -1; // meme statut que le materiel principal
+   public const HANDED_STATE_UNCHANGED    = 0;  // ne pas changer le statut
+
    private const DEFAULTS = [
         'id'                                  => 0,
         'entities_id'                         => 0,
@@ -59,6 +63,8 @@ class Config extends Compat\Base\ConfigBase
         'auto_attach_connected_items'         => 0,
         'confirm_before_sending'              => 1,
         'ignore_inventory_changes'            => 0,
+        'assign_handed_items'                 => 1,
+        'handed_items_state'                  => -1,
         'enable_don'                          => 0,
         'enable_vente'                        => 0,
         'enable_destruction'                  => 0,
@@ -589,6 +595,8 @@ class Config extends Compat\Base\ConfigBase
                ? (int) $input['confirm_before_sending']
                : self::SENDING_CONFIRM,
            'ignore_inventory_changes' => (int) ($input['ignore_inventory_changes'] ?? 0),
+           'assign_handed_items'      => (int) ($input['assign_handed_items'] ?? 0),
+           'handed_items_state'       => max(self::HANDED_STATE_SAME_AS_MAIN, (int) ($input['handed_items_state'] ?? self::HANDED_STATE_SAME_AS_MAIN)),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
            'enable_destruction'   => (int) ($input['enable_destruction'] ?? 0),
@@ -773,6 +781,8 @@ class Config extends Compat\Base\ConfigBase
                 `auto_attach_connected_items` tinyint NOT NULL DEFAULT 0,
                 `confirm_before_sending` tinyint NOT NULL DEFAULT 1,
                 `ignore_inventory_changes` tinyint NOT NULL DEFAULT 0,
+                `assign_handed_items` tinyint NOT NULL DEFAULT 1,
+                `handed_items_state` int NOT NULL DEFAULT -1,
                 `enable_don` tinyint NOT NULL DEFAULT 0,
                 `enable_vente` tinyint NOT NULL DEFAULT 0,
                 `enable_destruction` tinyint NOT NULL DEFAULT 0,
@@ -887,6 +897,12 @@ class Config extends Compat\Base\ConfigBase
          // Issue #163 : changements d'utilisateur faits par l'inventaire automatique.
          if (!$DB->fieldExists($table, 'ignore_inventory_changes')) {
              $migration->addField($table, 'ignore_inventory_changes', 'bool', ['value' => 0, 'after' => 'confirm_before_sending']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #174 : le materiel remis avec est aussi attribue dans GLPI au beneficiaire.
+         if (!$DB->fieldExists($table, 'assign_handed_items')) {
+             $migration->addField($table, 'assign_handed_items', 'bool', ['value' => 1, 'after' => 'ignore_inventory_changes']);
+             $migration->addField($table, 'handed_items_state', 'integer', ['value' => -1, 'after' => 'assign_handed_items']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'enable_don')) {

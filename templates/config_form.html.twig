@@ -387,6 +387,24 @@
             <label class="form-check-label" for="auto_attach_connected_items"><i class="ti ti-plug-connected me-1"></i>{{ __('Ajouter d\'office le matériel connecté au document', 'assetsign') }}</label>
             <div class="form-text">{{ __('Si activé, les écrans, périphériques et téléphones connectés au matériel dans GLPI (onglet Connexions) sont ajoutés automatiquement aux fiches créées par une affectation, avec leur n° de série et leur modèle. Sinon, ils sont seulement proposés sur la fiche.', 'assetsign') }}</div>
           </div>
+          {# Issue #174 : le materiel remis avec est aussi attribue dans GLPI #}
+          <div class="mb-3 form-check">
+            <input type="hidden" name="assign_handed_items" value="0">
+            <input type="checkbox" name="assign_handed_items" value="1" class="form-check-input" id="assign_handed_items" {{ config.assign_handed_items|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="assign_handed_items"><i class="ti ti-user-check me-1"></i>{{ __('Attribuer aussi dans GLPI le matériel remis avec', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Si activé, chaque écran, périphérique, téléphone… ajouté à une feuille d\'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut ci-dessous) : à l\'envoi de la feuille, ou dès l\'ajout si elle est déjà envoyée. Un élément déjà attribué au bénéficiaire n\'est pas modifié.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="handed_items_state">{{ __('Statut à donner au matériel remis avec', 'assetsign') }}</label>
+            {% set handed_state = config.handed_items_state|default(-1) %}
+            <select name="handed_items_state" id="handed_items_state" class="form-select" style="max-width: 480px;">
+              <option value="-1" {{ handed_state == -1 ? 'selected' : '' }}>{{ __('Le même que le matériel principal', 'assetsign') }}</option>
+              <option value="0" {{ handed_state == 0 ? 'selected' : '' }}>{{ __('Ne pas changer le statut', 'assetsign') }}</option>
+              {% for id, name in all_states|default({}) %}
+                <option value="{{ id }}" {{ handed_state == id ? 'selected' : '' }}>{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_damage_annotation" value="0">
             <input type="checkbox" name="enable_damage_annotation" value="1" class="form-check-input" id="enable_damage_annotation" {{ config.enable_damage_annotation|default(0) ? 'checked' : '' }}>

@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   à une page « L'élément demandé est introuvable » : ces fiches naissent d'un matériel ou d'une
   personne. Bouton retiré ; une page ouverte sans numéro de fiche renvoie à la liste en expliquant
   où la créer.
+- Attribuer un poste dont GLPI recopie l'utilisateur vers les éléments connectés (option d'entité
+  « mise à jour automatique de l'utilisateur ») créait une feuille séparée — et, en envoi immédiat, un
+  e-mail — pour chaque écran ou périphérique connecté. Ces éléments sont couverts par la feuille du
+  poste, où ils sont proposés comme éléments connectés.
 - Les messages techniques de GLPI (« Document copié avec succès », « Fichier … supprimé ») ne
   s'affichent plus quand une modification de la fiche régénère le PDF non signé.
 - La désinstallation supprime aussi la table `glpi_plugin_assetsign_residualvalues` (valeurs
@@ -36,6 +40,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Matériel remis avec attribué aussi dans GLPI** (issue #174) : un écran, casque, téléphone… ajouté
+  à une feuille d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut :
+  celui du matériel principal, un statut choisi, ou inchangé), à l'envoi de la feuille ou dès l'ajout
+  si elle est déjà partie, sans créer de feuille séparée pour l'élément. Réglage par entité, activé par
+  défaut.
 - **Envoi manuel des feuilles et inventaire automatique** (issue #163) : nouveau mode d'envoi
   « Manuel » (aucune feuille ne part seule : brouillon et bouton « Envoyer pour signature », y compris
   pour les restitutions) à côté de « Confirmation » (défaut) et « Immédiat » ; option « Ignorer les

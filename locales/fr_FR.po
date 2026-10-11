@@ -3518,3 +3518,22 @@ msgstr "Un mouvement se crée depuis l'onglet Mouvements du matériel concerné.
 
 msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
 msgstr "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
+
+msgid "Attribuer aussi dans GLPI le matériel remis avec"
+msgstr "Attribuer aussi dans GLPI le matériel remis avec"
+
+msgid "Si activé, chaque écran, périphérique, téléphone… ajouté à une feuille d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut ci-dessous) : à l'envoi de la feuille, ou dès l'ajout si elle est déjà envoyée. Un élément déjà attribué au bénéficiaire n'est pas modifié."
+msgstr "Si activé, chaque écran, périphérique, téléphone… ajouté à une feuille d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut ci-dessous) : à l'envoi de la feuille, ou dès l'ajout si elle est déjà envoyée. Un élément déjà attribué au bénéficiaire n'est pas modifié."
+
+msgid "Statut à donner au matériel remis avec"
+msgstr "Statut à donner au matériel remis avec"
+
+msgid "Le même que le matériel principal"
+msgstr "Le même que le matériel principal"
+
+msgid "Ne pas changer le statut"
+msgstr "Ne pas changer le statut"
+
+#, php-format
+msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
+msgstr "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."

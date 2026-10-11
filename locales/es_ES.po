@@ -3518,3 +3518,22 @@ msgstr "Un movimiento se crea desde la pestaña Movimientos del material corresp
 
 msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
 msgstr "Una salida se prepara desde la ficha de la persona, pestaña Asignaciones (botón «Salida de la persona»)."
+
+msgid "Attribuer aussi dans GLPI le matériel remis avec"
+msgstr "Asignar también en GLPI el material entregado con él"
+
+msgid "Si activé, chaque écran, périphérique, téléphone… ajouté à une feuille d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut ci-dessous) : à l'envoi de la feuille, ou dès l'ajout si elle est déjà envoyée. Un élément déjà attribué au bénéficiaire n'est pas modifié."
+msgstr "Si se activa, cada pantalla, periférico, teléfono… añadido a una ficha de asignación se asigna al beneficiario en GLPI (campo Usuario y estado abajo): al enviar la ficha, o en cuanto se añade si ya se ha enviado. Un elemento ya asignado al beneficiario no se modifica."
+
+msgid "Statut à donner au matériel remis avec"
+msgstr "Estado que se dará al material entregado con él"
+
+msgid "Le même que le matériel principal"
+msgstr "El mismo que el material principal"
+
+msgid "Ne pas changer le statut"
+msgstr "No cambiar el estado"
+
+#, php-format
+msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
+msgstr "Al enviar, los elementos marcados también se asignan a %s en GLPI."
