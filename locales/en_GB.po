@@ -3550,3 +3550,18 @@ msgid "%d feuille à envoyer"
 msgid_plural "%d feuilles à envoyer"
 msgstr[0] "%d form to send"
 msgstr[1] "%d forms to send"
+
+msgid "Matériel disponible"
+msgstr "Available equipment"
+
+msgid "Sans utilisateur ou au statut « en stock », pas déjà sur une autre feuille en attente."
+msgstr "Without a user or in an “in stock” state, not already on another pending form."
+
+msgid "Chercher dans tout le parc"
+msgstr "Search the whole inventory"
+
+msgid "Statuts considérés comme « en stock »"
+msgstr "States considered “in stock”"
+
+msgid "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."
+msgstr "Equipment without a user, or in one of these states, is offered first when adding an item to a form."

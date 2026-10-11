@@ -1,0 +1,25 @@
+{# Issue #180 : ajout d'un element du parc - materiel disponible d'abord (sans utilisateur ou « en stock »),
+   recherche dans tout le parc ensuite. Inclus dans la fiche et dans la fenetre d'attribution. #}
+{% set available = available_items|default({}) %}
+{% if available|length %}
+  <div class="col-12 col-lg-auto">
+    <label class="form-label"><i class="ti ti-package me-1"></i>{{ __('Matériel disponible', 'assetsign') }}</label>
+    <select name="available_item" class="form-select" style="min-width: 320px;">
+      <option value="">-----</option>
+      {% for group, rows in available %}
+        <optgroup label="{{ group }}">
+          {% for r in rows %}
+            <option value="{{ r.value }}">{{ r.name|default('#' ~ r.items_id) }}{% if r.serial %} — {{ __('N° de série', 'assetsign') }} {{ r.serial }}{% endif %}</option>
+          {% endfor %}
+        </optgroup>
+      {% endfor %}
+    </select>
+    <div class="form-text">{{ __('Sans utilisateur ou au statut « en stock », pas déjà sur une autre feuille en attente.', 'assetsign') }}</div>
+  </div>
+{% endif %}
+<div class="col-12">
+  <details{{ available|length ? '' : ' open' }}>
+    <summary class="text-muted small mb-1">{{ __('Chercher dans tout le parc', 'assetsign') }}</summary>
+    {% do call('Dropdown::showSelectItemFromItemtypes', [{'itemtype_name': 'inventoried_itemtype', 'items_id_name': 'inventoried_items_id', 'itemtypes': inventoried_itemtypes|default([]), 'entity_restrict': -1}]) %}
+  </details>
+</div>

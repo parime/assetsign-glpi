@@ -91,10 +91,15 @@ final class AssetsignFormController
      * @return array{0: string, 1: bool} message a afficher et indicateur d'erreur
      */
    public function addInventoriedItem(Assetsign $assetsign, array $post): array {
-       $error = $assetsign->addInventoriedItem(
-           (string) ($post['inventoried_itemtype'] ?? ''),
-           (int) ($post['inventoried_items_id'] ?? 0)
-       );
+       // Issue #180 : un choix dans « Materiel disponible » (« Itemtype:id ») prime sur la recherche
+       // dans tout le parc.
+       $itemtype = (string) ($post['inventoried_itemtype'] ?? '');
+       $items_id = (int) ($post['inventoried_items_id'] ?? 0);
+      if (!empty($post['available_item']) && str_contains((string) $post['available_item'], ':')) {
+          [$itemtype, $id] = explode(':', (string) $post['available_item'], 2);
+          $items_id = (int) $id;
+      }
+       $error = $assetsign->addInventoriedItem($itemtype, $items_id);
 
        return $error === null ? [__('Élément ajouté : il apparaît sur le document.', 'assetsign'), false] : [$error, true];
    }

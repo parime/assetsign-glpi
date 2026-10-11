@@ -393,6 +393,19 @@
             <label class="form-check-label" for="auto_attach_connected_items"><i class="ti ti-plug-connected me-1"></i>{{ __('Ajouter d\'office le matériel connecté au document', 'assetsign') }}</label>
             <div class="form-text">{{ __('Si activé, les écrans, périphériques et téléphones connectés au matériel dans GLPI (onglet Connexions) sont ajoutés automatiquement aux fiches créées par une affectation, avec leur n° de série et leur modèle. Sinon, ils sont seulement proposés sur la fiche.', 'assetsign') }}</div>
           </div>
+          {# Issue #180 : statuts consideres comme « en stock » #}
+          {% if all_states|default({})|length %}
+            <div class="mb-3">
+              <label class="form-label"><i class="ti ti-package me-1"></i>{{ __('Statuts considérés comme « en stock »', 'assetsign') }}</label>
+              <div class="form-text mt-0 mb-1">{{ __('Le matériel sans utilisateur, ou dans l\'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille.', 'assetsign') }}</div>
+              {% for id, name in all_states %}
+                <div class="form-check form-check-inline">
+                  <input type="checkbox" name="stock_states[]" value="{{ id }}" class="form-check-input" id="stock_state_{{ id }}" {{ id in stock_states|default([]) ? 'checked' : '' }}>
+                  <label class="form-check-label" for="stock_state_{{ id }}">{{ name }}</label>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
           {# Issue #174 : le materiel remis avec est aussi attribue dans GLPI #}
           <div class="mb-3 form-check">
             <input type="hidden" name="assign_handed_items" value="0">

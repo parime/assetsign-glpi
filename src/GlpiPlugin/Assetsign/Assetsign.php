@@ -391,6 +391,8 @@ class Assetsign extends Compat\Base\AssetsignBase
            'inventoried_items'    => $this->isNewID($ID) ? [] : $this->getInventoriedItems(),
            'suggested_items'      => $this->isNewID($ID) || !$this->isStillEditable() ? [] : $this->getSuggestedConnectedItems(),
            'inventoried_itemtypes' => AssetsignItem::getAllowedItemtypes(),
+           // Issue #180 : materiel disponible propose en premier.
+           'available_items'      => $this->isNewID($ID) || !$this->isStillEditable() ? [] : AssetsignItem::getAvailableItems($this),
            // Issue #163 : brouillon modifiable avant l'envoi (beneficiaire, modele, apercu).
            'is_draft'             => !$this->isNewID($ID) && (int) $this->fields['status'] === self::STATUS_DRAFT,
            'draft_template_condition' => ['type' => (int) ($this->fields['type'] ?? 0), 'is_active' => 1],
@@ -1354,6 +1356,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'suggested_items'       => $this->getSuggestedConnectedItems(),
            'accessories'           => $this->getAccessories(),
            'inventoried_itemtypes' => AssetsignItem::getAllowedItemtypes(),
+           'available_items'       => AssetsignItem::getAvailableItems($this),
            'csrf_token'            => Session::getNewCSRFToken(),
            'assign_in_glpi'        => (int) (Config::getForEntity((int) $this->fields['entities_id'])->fields['assign_handed_items'] ?? 1) === 1,
        ]);
