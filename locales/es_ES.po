@@ -3537,3 +3537,36 @@ msgstr "No cambiar el estado"
 #, php-format
 msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
 msgstr "Al enviar, los elementos marcados también se asignan a %s en GLPI."
+
+msgid "Rappelle au technicien les feuilles restées en brouillon"
+msgstr "Recuerda al técnico las fichas que siguen en borrador"
+
+msgid "Feuille restée en brouillon"
+msgstr "Ficha que sigue en borrador"
+
+msgid "Lien vers la fiche"
+msgstr "Enlace a la ficha"
+
+msgid "Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)"
+msgstr "Recordar al técnico una ficha que sigue en borrador tras (días, 0 = desactivado)"
+
+msgid "Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d'accueil."
+msgstr "Una ficha preparada pero nunca enviada (botón «Más tarde», modo de envío manual) se recuerda al técnico por correo y luego cada semana mientras siga en borrador. Los borradores también aparecen en la página de inicio."
+
+msgid "Voir toutes les feuilles à envoyer"
+msgstr "Ver todas las fichas por enviar"
+
+msgid "Ces feuilles sont prêtes mais n'ont pas été envoyées : le bénéficiaire ne les a pas reçues."
+msgstr "Estas fichas están listas pero no se han enviado: el beneficiario no las ha recibido."
+
+msgid "Préparée automatiquement, sans technicien"
+msgstr "Preparada automáticamente, sin técnico"
+
+msgid "Automatique"
+msgstr "Automática"
+
+#, php-format
+msgid "%d feuille à envoyer"
+msgid_plural "%d feuilles à envoyer"
+msgstr[0] "%d ficha por enviar"
+msgstr[1] "%d fichas por enviar"

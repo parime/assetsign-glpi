@@ -3547,3 +3547,36 @@ msgstr "Non cambiare lo stato"
 #, php-format
 msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
 msgstr "All'invio, gli elementi selezionati vengono assegnati anche a %s in GLPI."
+
+msgid "Rappelle au technicien les feuilles restées en brouillon"
+msgstr "Ricorda al tecnico le schede rimaste in bozza"
+
+msgid "Feuille restée en brouillon"
+msgstr "Scheda rimasta in bozza"
+
+msgid "Lien vers la fiche"
+msgstr "Link alla scheda"
+
+msgid "Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)"
+msgstr "Ricordare al tecnico una scheda rimasta in bozza dopo (giorni, 0 = disattivato)"
+
+msgid "Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d'accueil."
+msgstr "Una scheda preparata ma mai inviata (pulsante «Più tardi», modalità di invio manuale) viene ricordata al tecnico per e-mail, poi ogni settimana finché resta in bozza. Le bozze compaiono anche nella pagina iniziale."
+
+msgid "Voir toutes les feuilles à envoyer"
+msgstr "Vedi tutte le schede da inviare"
+
+msgid "Ces feuilles sont prêtes mais n'ont pas été envoyées : le bénéficiaire ne les a pas reçues."
+msgstr "Queste schede sono pronte ma non sono state inviate: il beneficiario non le ha ricevute."
+
+msgid "Préparée automatiquement, sans technicien"
+msgstr "Preparata automaticamente, senza tecnico"
+
+msgid "Automatique"
+msgstr "Automatica"
+
+#, php-format
+msgid "%d feuille à envoyer"
+msgid_plural "%d feuilles à envoyer"
+msgstr[0] "%d scheda da inviare"
+msgstr[1] "%d schede da inviare"

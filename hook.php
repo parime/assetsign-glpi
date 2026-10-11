@@ -226,6 +226,23 @@ function plugin_assetsign_dashboard_cards(?array $cards = null): array {
 function plugin_assetsign_display_central(): void {
     global $CFG_GLPI;
 
+    // Issue #179 : feuilles restees en brouillon, a envoyer (independant du bandeau ci-dessous).
+   try {
+       $drafts = Assetsign::getDraftsToSend((int) Session::getLoginUserID());
+      if ($drafts !== []) {
+          echo '<tr><td>' . TemplateRenderer::getInstance()->render('@assetsign/drafts_to_send.html.twig', [
+              'drafts'     => $drafts,
+              'total'      => Assetsign::countDraftsToSend((int) Session::getLoginUserID()),
+              // Liste des feuilles filtree sur le statut Brouillon (option de recherche 5 = statut).
+              'list_url'   => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.php?criteria[0][field]=5&criteria[0][searchtype]=equals&criteria[0][value]=' . Assetsign::STATUS_DRAFT,
+              'form_url'   => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.form.php',
+              'csrf_token' => Session::getNewCSRFToken(),
+          ]) . '</td></tr>';
+      }
+   } catch (\Throwable $e) {
+       \Toolbox::logInFile('assetsign', sprintf("Feuilles a envoyer : %s\n", $e->getMessage()), true);
+   }
+
    try {
        $count = PendingSignatures::countForUser((int) Session::getLoginUserID());
       if ($count === 0) {
@@ -377,6 +394,16 @@ function plugin_assetsign_install(): bool {
         DAY_TIMESTAMP,
         [
             'comment' => 'Alerte le technicien des attributions sur le point d\'expirer (avant que ce soit trop tard pour agir)',
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
+    // Issue #179 : rappel au technicien des feuilles restees en brouillon.
+    CronTask::register(
+        Assetsign::class,
+        'assetsignDraftReminder',
+        DAY_TIMESTAMP,
+        [
+            'comment' => 'Rappelle au technicien les feuilles restees en brouillon',
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );

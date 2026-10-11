@@ -3014,6 +3014,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'assetsignReminders'     => ['description' => __('Envoie les relances de signature dues', 'assetsign')],
            'assetsignExpire'        => ['description' => __('Marque comme expirées les attributions hors délai', 'assetsign')],
            'assetsignExpiryWarning' => ['description' => __('Alerte le technicien des attributions sur le point d\'expirer', 'assetsign')],
+           'assetsignDraftReminder' => ['description' => __('Rappelle au technicien les feuilles restées en brouillon', 'assetsign')],
            default               => [],
        };
    }
@@ -3265,6 +3266,108 @@ class Assetsign extends Compat\Base\AssetsignBase
        return $count > 0 ? 1 : 0;
    }
 
+   public static function cronAssetsignDraftReminder(CronTask $task): int {
+       $count = self::runDraftReminders();
+       $task->addVolume($count);
+       return $count > 0 ? 1 : 0;
+   }
+
+    /** Delai entre deux rappels pour un meme brouillon (issue #179). */
+   public const DRAFT_REMINDER_REPEAT_DAYS = 7;
+
+    /**
+     * Issue #179 : rappelle par e-mail au technicien (users_id_tech) une feuille restee en brouillon
+     * depuis Config::draft_reminder_days jours (0 = desactive), au plus une fois par semaine.
+     */
+   public static function runDraftReminders(): int {
+       global $DB;
+
+       $count = 0;
+       $configByEntity = [];
+      foreach ($DB->request([
+          'FROM'  => self::getTable(),
+          'WHERE' => [
+              'status'        => self::STATUS_DRAFT,
+              'is_deleted'    => 0,
+              'users_id_tech' => ['>', 0],
+          ],
+      ]) as $row) {
+          $entityId = (int) $row['entities_id'];
+          $config = $configByEntity[$entityId] ??= Config::getForEntity($entityId);
+          $days = (int) ($config->fields['draft_reminder_days'] ?? 3);
+         if ($days <= 0 || self::daysSince((string) $row['date_creation']) < $days) {
+             continue;
+         }
+         if (!empty($row['draft_reminder_sent_at']) && self::daysSince((string) $row['draft_reminder_sent_at']) < self::DRAFT_REMINDER_REPEAT_DAYS) {
+             continue;
+         }
+          $assetsign = new self();
+          $assetsign->fields = $row;
+          $DB->update(self::getTable(), ['draft_reminder_sent_at' => date('Y-m-d H:i:s')], ['id' => (int) $row['id']]);
+          NotificationEvent::raiseEvent('draft_pending', $assetsign);
+          $count++;
+      }
+       return $count;
+   }
+
+    /** Nombre total de brouillons a envoyer (le titre de l'encadre, au-dela des lignes affichees). */
+   public static function countDraftsToSend(int $users_id): int {
+       global $DB;
+
+      if ($users_id <= 0 || !Session::haveRight(self::$rightname, UPDATE)) {
+          return 0;
+      }
+       return (int) $DB->request([
+           'COUNT' => 'c',
+           'FROM'  => self::getTable(),
+           'WHERE' => self::draftsToSendCriteria($users_id),
+       ])->current()['c'];
+   }
+
+    /** @return array<string, mixed> */
+   private static function draftsToSendCriteria(int $users_id): array {
+       return [
+           'status'        => self::STATUS_DRAFT,
+           'is_deleted'    => 0,
+           'users_id_tech' => [$users_id, 0],
+       ] + getEntitiesRestrictCriteria(self::getTable(), '', '', true);
+   }
+
+    /**
+     * Issue #179 : brouillons a envoyer visibles par l'utilisateur sur la page d'accueil - les siens,
+     * et ceux crees sans technicien (inventaire automatique, tache planifiee) dans ses entites.
+     *
+     * @return list<array<string, mixed>>
+     */
+   public static function getDraftsToSend(int $users_id, int $limit = 10): array {
+       global $DB;
+
+      if ($users_id <= 0 || !Session::haveRight(self::$rightname, UPDATE)) {
+          return [];
+      }
+       $drafts = [];
+      foreach ($DB->request([
+          'FROM'  => self::getTable(),
+          'WHERE' => self::draftsToSendCriteria($users_id),
+          'ORDER' => 'date_creation DESC',
+          'LIMIT' => $limit,
+      ]) as $row) {
+          $sheet = new self();
+          $sheet->fields = $row;
+          $item = $sheet->getTargetItem();
+          $beneficiary = $sheet->getBeneficiary();
+          $drafts[] = [
+              'id'          => (int) $row['id'],
+              'type'        => self::getTypes()[(int) $row['type']] ?? '',
+              'item'        => (string) ($item['name'] ?? ''),
+              'beneficiary' => formatUserName(0, $beneficiary['name'] ?? '', $beneficiary['realname'] ?? '', $beneficiary['firstname'] ?? ''),
+              'date'        => (string) $row['date_creation'],
+              'mine'        => (int) $row['users_id_tech'] === $users_id,
+          ];
+      }
+       return $drafts;
+   }
+
    public static function cronAssetsignExpire(CronTask $task): int {
        $count = self::runExpiration();
        $task->addVolume($count);
@@ -3312,6 +3415,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                 `date_signed` timestamp NULL DEFAULT NULL,
                 `date_expired` timestamp NULL DEFAULT NULL,
                 `expiry_warning_sent` tinyint NOT NULL DEFAULT 0,
+                `draft_reminder_sent_at` timestamp NULL DEFAULT NULL,
                 `observations` text,
                 `beneficiary_comment` text,
                 `is_deleted` tinyint NOT NULL DEFAULT 0,
@@ -3339,6 +3443,11 @@ class Assetsign extends Compat\Base\AssetsignBase
              // Migration::fieldFormat() fait que 'value' produise reellement une
              // clause DEFAULT — cf. le commentaire equivalent dans Config::install().
              $migration->addField($table, 'expiry_warning_sent', 'bool', ['value' => 0, 'after' => 'date_expired']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #179 : date du dernier rappel envoye pour un brouillon.
+         if (!$DB->fieldExists($table, 'draft_reminder_sent_at')) {
+             $migration->addField($table, 'draft_reminder_sent_at', 'timestamp', ['null' => true, 'after' => 'expiry_warning_sent']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'observations')) {

@@ -3517,3 +3517,36 @@ msgstr "Do not change the state"
 #, php-format
 msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
 msgstr "When sent, the ticked items are also assigned to %s in GLPI."
+
+msgid "Rappelle au technicien les feuilles restées en brouillon"
+msgstr "Reminds the technician of forms left as drafts"
+
+msgid "Feuille restée en brouillon"
+msgstr "Form left as a draft"
+
+msgid "Lien vers la fiche"
+msgstr "Link to the form"
+
+msgid "Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)"
+msgstr "Remind the technician of a form left as a draft after (days, 0 = disabled)"
+
+msgid "Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d'accueil."
+msgstr "A form prepared but never sent (“Later” button, manual sending mode) is reminded to the technician by email, then every week while it remains a draft. Drafts also appear on the home page."
+
+msgid "Voir toutes les feuilles à envoyer"
+msgstr "See all forms to send"
+
+msgid "Ces feuilles sont prêtes mais n'ont pas été envoyées : le bénéficiaire ne les a pas reçues."
+msgstr "These forms are ready but have not been sent: the recipient has not received them."
+
+msgid "Préparée automatiquement, sans technicien"
+msgstr "Prepared automatically, without a technician"
+
+msgid "Automatique"
+msgstr "Automatic"
+
+#, php-format
+msgid "%d feuille à envoyer"
+msgid_plural "%d feuilles à envoyer"
+msgstr[0] "%d form to send"
+msgstr[1] "%d forms to send"

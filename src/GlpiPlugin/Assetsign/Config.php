@@ -58,6 +58,7 @@ class Config extends Compat\Base\ConfigBase
         'max_reminders'                       => 0,
         'link_validity_days'                  => 30,
         'expiry_warning_days'                  => 3,
+        'draft_reminder_days'                 => 3,
         'signature_required'                  => 1,
         'enable_observations'                 => 0,
         'auto_attach_connected_items'         => 0,
@@ -571,6 +572,7 @@ class Config extends Compat\Base\ConfigBase
            'max_reminders'        => (int) ($input['max_reminders'] ?? 0),
            'link_validity_days'   => (int) ($input['link_validity_days'] ?? 30),
            'expiry_warning_days'  => (int) ($input['expiry_warning_days'] ?? 3),
+           'draft_reminder_days'  => max(0, (int) ($input['draft_reminder_days'] ?? 3)),
            'company_name'         => trim($input['company_name'] ?? ''),
            'protect_pdf'          => (int) ($input['protect_pdf'] ?? 0),
            'enable_passport'      => (int) ($input['enable_passport'] ?? 0),
@@ -776,6 +778,7 @@ class Config extends Compat\Base\ConfigBase
                 `max_reminders` int unsigned NOT NULL DEFAULT 0,
                 `link_validity_days` int unsigned NOT NULL DEFAULT 30,
                 `expiry_warning_days` int unsigned NOT NULL DEFAULT 3,
+                `draft_reminder_days` int unsigned NOT NULL DEFAULT 3,
                 `signature_required` tinyint NOT NULL DEFAULT 1,
                 `enable_observations` tinyint NOT NULL DEFAULT 0,
                 `auto_attach_connected_items` tinyint NOT NULL DEFAULT 0,
@@ -874,6 +877,11 @@ class Config extends Compat\Base\ConfigBase
              // DEFAULT, ce qui rendrait la colonne NULL par defaut (constate en
              // conditions reelles : WHERE champ => 0 n'egale jamais NULL en SQL).
              $migration->addField($table, 'logo_force_children', 'bool', ['value' => 0, 'after' => 'logo_documents_id']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #179 : rappel des feuilles restees en brouillon.
+         if (!$DB->fieldExists($table, 'draft_reminder_days')) {
+             $migration->addField($table, 'draft_reminder_days', 'integer', ['value' => 3, 'after' => 'expiry_warning_days']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'expiry_warning_days')) {

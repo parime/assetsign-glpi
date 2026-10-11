@@ -3573,3 +3573,36 @@ msgstr "Status nicht ändern"
 #, php-format
 msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
 msgstr "Beim Senden werden die markierten Elemente in GLPI auch %s zugewiesen."
+
+msgid "Rappelle au technicien les feuilles restées en brouillon"
+msgstr "Erinnert den Techniker an Formulare, die als Entwurf geblieben sind"
+
+msgid "Feuille restée en brouillon"
+msgstr "Als Entwurf gebliebenes Formular"
+
+msgid "Lien vers la fiche"
+msgstr "Link zum Formular"
+
+msgid "Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)"
+msgstr "Den Techniker an ein als Entwurf gebliebenes Formular erinnern nach (Tage, 0 = deaktiviert)"
+
+msgid "Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d'accueil."
+msgstr "Ein vorbereitetes, aber nie gesendetes Formular (Schaltfläche „Später“, manueller Versandmodus) wird dem Techniker per E-Mail in Erinnerung gerufen, danach jede Woche, solange es ein Entwurf bleibt. Entwürfe erscheinen auch auf der Startseite."
+
+msgid "Voir toutes les feuilles à envoyer"
+msgstr "Alle zu sendenden Formulare anzeigen"
+
+msgid "Ces feuilles sont prêtes mais n'ont pas été envoyées : le bénéficiaire ne les a pas reçues."
+msgstr "Diese Formulare sind bereit, wurden aber nicht gesendet: Der Empfänger hat sie nicht erhalten."
+
+msgid "Préparée automatiquement, sans technicien"
+msgstr "Automatisch vorbereitet, ohne Techniker"
+
+msgid "Automatique"
+msgstr "Automatisch"
+
+#, php-format
+msgid "%d feuille à envoyer"
+msgid_plural "%d feuilles à envoyer"
+msgstr[0] "%d zu sendendes Formular"
+msgstr[1] "%d zu sendende Formulare"

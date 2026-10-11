@@ -1,0 +1,44 @@
+{# Issue #179 : feuilles restees en brouillon, sur la page d'accueil (cf. plugin_assetsign_display_central()) #}
+<div class="card my-2 assetsign-drafts-to-send">
+  <div class="card-header d-flex align-items-center">
+    <h3 class="card-title"><i class="ti ti-mail-pause me-1"></i>{{ _n('%d feuille à envoyer', '%d feuilles à envoyer', total, 'assetsign')|format(total) }}</h3>
+    {% if total > drafts|length %}
+      <a class="ms-auto" href="{{ list_url }}">{{ __('Voir toutes les feuilles à envoyer', 'assetsign') }} <i class="ti ti-arrow-right"></i></a>
+    {% endif %}
+  </div>
+  <div class="card-body p-0">
+    <p class="text-muted small px-3 pt-2 mb-1">{{ __('Ces feuilles sont prêtes mais n\'ont pas été envoyées : le bénéficiaire ne les a pas reçues.', 'assetsign') }}</p>
+    <table class="table table-sm table-vcenter mb-0">
+      <thead>
+        <tr>
+          <th>{{ __('Matériel', 'assetsign') }}</th>
+          <th>{{ __('Bénéficiaire', 'assetsign') }}</th>
+          <th>{{ __('Type', 'assetsign') }}</th>
+          <th>{{ __('Créée le', 'assetsign') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in drafts %}
+          <tr>
+            <td>
+              {{ d.item|default('-') }}
+              {% if not d.mine %}<span class="badge bg-secondary-lt ms-1" title="{{ __('Préparée automatiquement, sans technicien', 'assetsign') }}"><i class="ti ti-robot"></i> {{ __('Automatique', 'assetsign') }}</span>{% endif %}
+            </td>
+            <td>{{ d.beneficiary|default('-') }}</td>
+            <td>{{ d.type }}</td>
+            <td>{{ d.date }}</td>
+            <td class="text-end text-nowrap">
+              <a class="btn btn-sm btn-outline-secondary" href="{{ form_url }}?id={{ d.id }}"><i class="ti ti-pencil me-1"></i>{{ __('Modifier la feuille', 'assetsign') }}</a>
+              <form method="post" action="{{ form_url }}" class="d-inline">
+                <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="id" value="{{ d.id }}">
+                <button type="submit" name="send_draft" class="btn btn-sm btn-primary"><i class="ti ti-send me-1"></i>{{ __('Envoyer pour signature', 'assetsign') }}</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
