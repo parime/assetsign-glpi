@@ -3516,3 +3516,15 @@ msgstr "Modifica la scheda"
 
 msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
 msgstr "L'attrezzatura consegnata insieme, gli accessori, le osservazioni, il kit e lo stato si completano più in basso in questa pagina. Non viene inviato nulla finché non fai clic su «Invia per la firma»."
+
+msgid "Une feuille se crée depuis le matériel : en lui attribuant un utilisateur, ou depuis son onglet Attributions (don, vente, destruction)."
+msgstr "Una scheda si crea dall'attrezzatura: assegnandole un utente, o dalla sua scheda Assegnazioni (donazione, vendita, distruzione)."
+
+msgid "Une fiche de maintenance se crée depuis l'onglet Maintenance du matériel concerné."
+msgstr "Una scheda di manutenzione si crea dalla scheda Manutenzione dell'attrezzatura interessata."
+
+msgid "Un mouvement se crée depuis l'onglet Mouvements du matériel concerné."
+msgstr "Un movimento si crea dalla scheda Movimenti dell'attrezzatura interessata."
+
+msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
+msgstr "Una partenza si prepara dalla scheda della persona, scheda Assegnazioni (pulsante «Partenza della persona»)."

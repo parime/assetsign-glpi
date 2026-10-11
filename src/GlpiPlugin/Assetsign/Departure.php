@@ -521,4 +521,9 @@ class Departure extends Compat\Base\DepartureBase
            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
       }
    }
+
+    /** Pas de bouton « Ajouter » : cf. Assetsign::withoutAddLink(). */
+   public static function getMenuContent(): array {
+       return Assetsign::withoutAddLink(parent::getMenuContent());
+   }
 }

@@ -51,7 +51,7 @@ class Maintenance extends Compat\Base\MaintenanceBase
      * meme raison que Assetsign::getMenuContent() pour Template/Accessory.
      */
    public static function getMenuContent(): array {
-       $menu = parent::getMenuContent();
+       $menu = Assetsign::withoutAddLink(parent::getMenuContent());
       if (!$menu) {
           return [];
       }

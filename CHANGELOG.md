@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Le bouton « Ajouter » des menus Attributions, Fiches de maintenance, Mouvements et Départs menait
+  à une page « L'élément demandé est introuvable » : ces fiches naissent d'un matériel ou d'une
+  personne. Bouton retiré ; une page ouverte sans numéro de fiche renvoie à la liste en expliquant
+  où la créer.
 - Les messages techniques de GLPI (« Document copié avec succès », « Fichier … supprimé ») ne
   s'affichent plus quand une modification de la fiche régénère le PDF non signé.
 - La désinstallation supprime aussi la table `glpi_plugin_assetsign_residualvalues` (valeurs
