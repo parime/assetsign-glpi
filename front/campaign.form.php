@@ -40,7 +40,7 @@ if (isset($_POST['launch'])) {
 $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
 $campaign = new Campaign();
 if ($id > 0 && !$campaign->getFromDB($id)) {
-   Html::displayNotFoundError();
+   throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
 if ($id > 0 && (isset($_POST['remind']) || isset($_POST['close']))) {

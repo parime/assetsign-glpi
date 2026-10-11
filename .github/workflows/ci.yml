@@ -415,6 +415,8 @@ jobs:
 
       - name: Lance PHPUnit
         run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php -d memory_limit=512M vendor/bin/phpunit"
+      - name: PHPStan contre les sources de GLPI 12 (méthodes du cœur supprimées)
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php vendor/bin/phpstan analyse -c phpstan.glpi12.neon --no-progress --memory-limit=2G"
 
       - name: Logs GLPI (en cas d'échec)
         if: failure()

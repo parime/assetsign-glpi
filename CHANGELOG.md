@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **GLPI 12** : les pages qui affichent « élément introuvable » ou « accès refusé » (fiche,
+  attestation, campagne, départ, maintenance, mouvement, aperçu, étiquette QR, configuration)
+  provoquaient une erreur 500 sur GLPI 12, qui a supprimé `Html::displayNotFoundError()` et
+  `Html::displayRightError()` ; remplacées par les exceptions HTTP de GLPI (présentes depuis 11.0.0).
+  La CI analyse désormais aussi le plugin avec PHPStan contre les sources de GLPI 12.
 - Le bouton « Ajouter » des menus Attributions, Fiches de maintenance, Mouvements et Départs menait
   à une page « L'élément demandé est introuvable » : ces fiches naissent d'un matériel ou d'une
   personne. Bouton retiré ; une page ouverte sans numéro de fiche renvoie à la liste en expliquant

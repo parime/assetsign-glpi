@@ -9,7 +9,7 @@ use GlpiPlugin\Assetsign\Template;
 // la page de gabarit (droit Template) : l'un ou l'autre suffit, ce n'est que
 // de la prévisualisation en lecture seule, rien n'est jamais enregistré ici.
 if (!Session::haveRight(Config::$rightname, READ) && !Session::haveRight(Template::$rightname, READ)) {
-    Html::displayNotFoundError();
+    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
 header('Content-Type: text/html; charset=UTF-8');

@@ -10,7 +10,7 @@ if (isset($_POST['create'])) {
        (new MaintenanceFormController())->createWithChecklist($_POST);
        Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'assetsign'));
    } catch (\InvalidArgumentException $e) {
-       Html::displayNotFoundError();
+       throw new \Glpi\Exception\Http\NotFoundHttpException();
    } catch (\Throwable $e) {
        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
    }
@@ -25,7 +25,7 @@ if ($id <= 0 && $_POST === []) {
 }
 
 if (!$maintenance->getFromDB($id) || !$maintenance->can($id, READ)) {
-    Html::displayNotFoundError();
+    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
 Html::header(Maintenance::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Maintenance::class);

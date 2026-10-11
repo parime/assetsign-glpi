@@ -10,7 +10,7 @@ use GlpiPlugin\Assetsign\QrCode;
  * Logique de front/qrlabel.php (étiquette QR code imprimable du Passeport
  * matériel, cf. ROADMAP.md V3, issue #82) — même motivation que
  * Api\PassportBackfillController : rendre ce dispatch testable en PHPUnit,
- * sans passer par le vrai front/*.php qui appelle Html::displayNotFoundError()/
+ * sans passer par le vrai front/*.php qui appelle throw new \Glpi\Exception\Http\NotFoundHttpException()/
  * exit() (cf. TROUBLESHOOTING.md).
  */
 final class QrLabelController
