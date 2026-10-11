@@ -455,7 +455,7 @@
     {# Issue #166 : objets du parc GLPI remis avec le materiel, n° de serie et modele repris sur le PDF #}
     <h3 class="mt-4"><i class="ti ti-devices me-1"></i>{{ __('Matériel inventorié remis avec', 'assetsign') }}</h3>
     <p class="text-muted small">{{ __('Écrans, stations d\'accueil, téléphones… déjà inventoriés dans GLPI : leur modèle, leur n° de série et leur n° d\'inventaire sont repris sur le document, sans ressaisie.', 'assetsign') }}</p>
-    {% if inventoried_items|length %}
+    {% if inventoried_items|default([])|length %}
       <table class="table table-sm">
         <thead>
           <tr>
@@ -501,7 +501,7 @@
       <p class="text-muted">{{ __('Aucun matériel inventorié ajouté pour le moment.', 'assetsign') }}</p>
     {% endif %}
 
-    {% if can_edit_accessories and suggested_items|length %}
+    {% if can_edit_accessories and suggested_items|default([])|length %}
       <div class="alert alert-info">
         <div class="d-flex align-items-start">
           <i class="ti ti-plug-connected me-2 mt-1"></i>
@@ -528,7 +528,7 @@
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
           <label class="form-label">{{ __('Ajouter un élément du parc', 'assetsign') }}</label>
-          {% do call('Dropdown::showSelectItemFromItemtypes', [{'itemtype_name': 'inventoried_itemtype', 'items_id_name': 'inventoried_items_id', 'itemtypes': inventoried_itemtypes, 'entity_restrict': -1}]) %}
+          {% do call('Dropdown::showSelectItemFromItemtypes', [{'itemtype_name': 'inventoried_itemtype', 'items_id_name': 'inventoried_items_id', 'itemtypes': inventoried_itemtypes|default([]), 'entity_restrict': -1}]) %}
         </div>
         <div class="col-auto">
           <button type="submit" name="add_inventoried_item" class="btn btn-secondary">{{ __('Ajouter', 'assetsign') }}</button>
