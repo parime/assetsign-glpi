@@ -124,7 +124,7 @@
 <p class="legal-text" style="white-space: pre-line;">{{ observations }}</p>
 {% endif %}
 
-{% if beneficiary_comment %}
+{% if beneficiary_comment|default('') %}
 <h2>Remarque du bénéficiaire</h2>
 {# Pas de |raw : saisi librement par le beneficiaire lui-meme depuis la page
    de signature, echappement automatique de Twig applique normalement. #}

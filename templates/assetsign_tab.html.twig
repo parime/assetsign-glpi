@@ -181,7 +181,7 @@
       </script>
     {% endif %}
 
-    {% if can_assign_asset %}
+    {% if can_assign_asset|default(false) %}
       <hr>
       <h3>{{ __('Assigner un matériel à cet utilisateur', 'assetsign') }}</h3>
       <p class="text-muted small">{{ __('L\'affectation déclenche automatiquement la création d\'une attribution, comme depuis la fiche du matériel.', 'assetsign') }}</p>

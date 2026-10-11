@@ -87,7 +87,7 @@
       {% endif %}
     </div>
 
-    {% if delegate %}
+    {% if delegate|default(null) %}
       <div class="alert alert-warning mt-4">
         <i class="ti ti-user-share"></i>
         {% set delegate_name = (delegate.firstname|default('') ~ ' ' ~ delegate.realname|default(''))|trim %}
@@ -96,7 +96,7 @@
         {% if item.fields.delegation_reason is defined and item.fields.delegation_reason %}
           — {{ __('motif', 'assetsign') }} : {{ item.fields.delegation_reason }}
         {% endif %}
-        {% if can_delegate %}
+        {% if can_delegate|default(false) %}
           <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">
             <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
             <input type="hidden" name="id" value="{{ item.fields.id }}">
@@ -106,7 +106,7 @@
       </div>
     {% endif %}
 
-    {% if delegation_enabled and can_delegate %}
+    {% if delegation_enabled|default(false) and can_delegate|default(false) %}
       <h3 class="mt-4">{{ __('Déléguer la signature', 'assetsign') }}</h3>
       <p class="text-muted small">{{ __('Désigne un autre compte GLPI pour signer à la place du bénéficiaire d\'origine (absence prolongée, congés, départ...). Le lien de signature envoyé au bénéficiaire d\'origine devient invalide dès la délégation.', 'assetsign') }}</p>
       <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
