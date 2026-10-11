@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Matériel inventorié remis avec le poste** (issue #166) : sur une fiche, ajout d'éléments déjà
+  inventoriés dans GLPI (écran, station d'accueil, téléphone, actif personnalisé…) ; le PDF reprend
+  type, nom, marque/modèle, n° de série et n° d'inventaire, relus jusqu'à la signature puis figés.
+  Les éléments connectés au poste (onglet Connexions de GLPI) sont proposés en un clic, ou ajoutés
+  d'office aux fiches créées par une affectation (nouveau réglage « Ajouter d'office le matériel
+  connecté au document »). Un élément ne peut figurer que sur une fiche en attente à la fois ; un
+  badge signale un élément affecté à une autre personne que le bénéficiaire.
+
 - **Tableau de bord RSE** (issue #142) : page Outils > Tableau de bord RSE et trois cartes pour le
   tableau de bord GLPI natif — empreinte de fabrication du parc et couverture, impact évité par le
   réemploi, âge moyen et durée de vie réelle, filières de fin de vie sur 12 mois et taux de seconde
@@ -39,6 +47,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - notifications « Départ : restitution du matériel à signer / relance / restitution signée » en 5 langues.
 
 ---
+
+### Fixed
+
+- Les messages techniques de GLPI (« Document copié avec succès », « Fichier … supprimé ») ne
+  s'affichent plus quand une modification de la fiche régénère le PDF non signé.
 
 ## [2.8.0] - 2026-10-04
 

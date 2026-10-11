@@ -3366,3 +3366,73 @@ msgstr "Vernichtungen"
 
 msgid "Aucune fiche de don, vente ou destruction finalisée sur la période."
 msgstr "Kein Spenden-, Verkaufs- oder Vernichtungsformular im Zeitraum abgeschlossen."
+
+#, php-format
+msgid "Affecté à %s"
+msgstr "Zugewiesen an %s"
+
+msgid "Ajouter d'office le matériel connecté au document"
+msgstr "Angeschlossene Geräte automatisch zum Dokument hinzufügen"
+
+msgid "Ajouter les éléments connectés"
+msgstr "Angeschlossene Elemente hinzufügen"
+
+msgid "Ajouter un élément du parc"
+msgstr "Ein Inventarelement hinzufügen"
+
+msgid "Ajouté automatiquement : connecté au matériel dans GLPI"
+msgstr "Automatisch hinzugefügt: in GLPI mit dem Gerät verbunden"
+
+msgid "Aucun matériel inventorié ajouté pour le moment."
+msgstr "Noch keine inventarisierten Geräte hinzugefügt."
+
+msgid "C'est déjà le matériel principal de cette fiche."
+msgstr "Dies ist bereits das Hauptgerät dieses Formulars."
+
+msgid "Cet élément figure déjà sur cette fiche."
+msgstr "Dieses Element ist bereits auf diesem Formular."
+
+msgid "Cet élément figure déjà sur une autre fiche en attente de signature."
+msgstr "Dieses Element ist bereits auf einem anderen Formular, das auf Unterschrift wartet."
+
+msgid "Cette fiche est déjà signée : sa liste de matériel ne peut plus changer."
+msgstr "Dieses Formular ist bereits unterschrieben: Seine Geräteliste kann nicht mehr geändert werden."
+
+msgid "Connecté à ce matériel dans GLPI"
+msgstr "In GLPI mit diesem Gerät verbunden"
+
+msgid "Connecté"
+msgstr "Verbunden"
+
+msgid "Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire."
+msgstr "In GLPI ist dieses Element einer anderen Person als dem Empfänger zugewiesen."
+
+msgid "Marque / modèle"
+msgstr "Hersteller / Modell"
+
+msgid "Matériel inventorié remis avec"
+msgstr "Mit übergebene inventarisierte Geräte"
+
+msgid "Nom"
+msgstr "Name"
+
+msgid "Si activé, les écrans, périphériques et téléphones connectés au matériel dans GLPI (onglet Connexions) sont ajoutés automatiquement aux fiches créées par une affectation, avec leur n° de série et leur modèle. Sinon, ils sont seulement proposés sur la fiche."
+msgstr "Wenn aktiviert, werden die in GLPI mit dem Gerät verbundenen Monitore, Peripheriegeräte und Telefone (Registerkarte Verbindungen) automatisch mit Seriennummer und Modell zu den durch eine Zuweisung erstellten Formularen hinzugefügt. Andernfalls werden sie auf dem Formular nur vorgeschlagen."
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Écrans, stations d'accueil, téléphones… déjà inventoriés dans GLPI : leur modèle, leur n° de série et leur n° d'inventaire sont repris sur le document, sans ressaisie."
+msgstr "Monitore, Dockingstationen, Telefone… bereits in GLPI inventarisiert: Modell, Seriennummer und Inventarnummer werden ohne erneute Eingabe in das Dokument übernommen."
+
+msgid "Élément ajouté : il apparaît sur le document."
+msgstr "Element hinzugefügt: Es erscheint im Dokument."
+
+msgid "Élément introuvable ou non visible avec vos droits."
+msgstr "Element nicht gefunden oder mit Ihren Rechten nicht sichtbar."
+
+#, php-format
+msgid "%d élément connecté ajouté."
+msgid_plural "%d éléments connectés ajoutés."
+msgstr[0] "%d verbundenes Element hinzugefügt."
+msgstr[1] "%d verbundene Elemente hinzugefügt."

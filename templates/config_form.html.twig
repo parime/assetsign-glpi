@@ -362,6 +362,12 @@
             <div class="form-text">{{ __('Si activé, un champ de texte libre devient disponible sur chaque fiche d\'attribution (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n\'est pas encore signée.', 'assetsign') }}</div>
           </div>
           <div class="mb-3 form-check">
+            <input type="hidden" name="auto_attach_connected_items" value="0">
+            <input type="checkbox" name="auto_attach_connected_items" value="1" class="form-check-input" id="auto_attach_connected_items" {{ config.auto_attach_connected_items|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="auto_attach_connected_items"><i class="ti ti-plug-connected me-1"></i>{{ __('Ajouter d\'office le matériel connecté au document', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Si activé, les écrans, périphériques et téléphones connectés au matériel dans GLPI (onglet Connexions) sont ajoutés automatiquement aux fiches créées par une affectation, avec leur n° de série et leur modèle. Sinon, ils sont seulement proposés sur la fiche.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3 form-check">
             <input type="hidden" name="enable_damage_annotation" value="0">
             <input type="checkbox" name="enable_damage_annotation" value="1" class="form-check-input" id="enable_damage_annotation" {{ config.enable_damage_annotation|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_damage_annotation">{{ __('État des lieux visuel (annotation de dommages)', 'assetsign') }}</label>

@@ -48,6 +48,7 @@ class Config extends Compat\Base\ConfigBase
         'expiry_warning_days'                  => 3,
         'signature_required'                  => 1,
         'enable_observations'                 => 0,
+        'auto_attach_connected_items'         => 0,
         'enable_don'                          => 0,
         'enable_vente'                        => 0,
         'enable_destruction'                  => 0,
@@ -573,6 +574,7 @@ class Config extends Compat\Base\ConfigBase
            'health_score_critical_color' => self::sanitizeHealthColor($input['health_score_critical_color'] ?? self::DEFAULTS['health_score_critical_color']),
            'signature_required'   => (int) ($input['signature_required'] ?? 0),
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
+           'auto_attach_connected_items' => (int) ($input['auto_attach_connected_items'] ?? 0),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
            'enable_destruction'   => (int) ($input['enable_destruction'] ?? 0),
@@ -750,6 +752,7 @@ class Config extends Compat\Base\ConfigBase
                 `expiry_warning_days` int unsigned NOT NULL DEFAULT 3,
                 `signature_required` tinyint NOT NULL DEFAULT 1,
                 `enable_observations` tinyint NOT NULL DEFAULT 0,
+                `auto_attach_connected_items` tinyint NOT NULL DEFAULT 0,
                 `enable_don` tinyint NOT NULL DEFAULT 0,
                 `enable_vente` tinyint NOT NULL DEFAULT 0,
                 `enable_destruction` tinyint NOT NULL DEFAULT 0,
@@ -849,6 +852,11 @@ class Config extends Compat\Base\ConfigBase
          }
          if (!$DB->fieldExists($table, 'enable_observations')) {
              $migration->addField($table, 'enable_observations', 'bool', ['value' => 0, 'after' => 'signature_required']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #166 : peripheriques connectes ajoutes d'office aux fiches creees automatiquement.
+         if (!$DB->fieldExists($table, 'auto_attach_connected_items')) {
+             $migration->addField($table, 'auto_attach_connected_items', 'bool', ['value' => 0, 'after' => 'enable_observations']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'enable_don')) {

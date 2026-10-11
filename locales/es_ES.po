@@ -3330,3 +3330,73 @@ msgstr "Destrucciones"
 
 msgid "Aucune fiche de don, vente ou destruction finalisée sur la période."
 msgstr "Ninguna ficha de donación, venta o destrucción finalizada en el periodo."
+
+#, php-format
+msgid "Affecté à %s"
+msgstr "Asignado a %s"
+
+msgid "Ajouter d'office le matériel connecté au document"
+msgstr "Añadir automáticamente al documento el material conectado"
+
+msgid "Ajouter les éléments connectés"
+msgstr "Añadir los elementos conectados"
+
+msgid "Ajouter un élément du parc"
+msgstr "Añadir un elemento del inventario"
+
+msgid "Ajouté automatiquement : connecté au matériel dans GLPI"
+msgstr "Añadido automáticamente: conectado al material en GLPI"
+
+msgid "Aucun matériel inventorié ajouté pour le moment."
+msgstr "Todavía no se ha añadido material inventariado."
+
+msgid "C'est déjà le matériel principal de cette fiche."
+msgstr "Ya es el material principal de esta ficha."
+
+msgid "Cet élément figure déjà sur cette fiche."
+msgstr "Este elemento ya figura en esta ficha."
+
+msgid "Cet élément figure déjà sur une autre fiche en attente de signature."
+msgstr "Este elemento ya figura en otra ficha pendiente de firma."
+
+msgid "Cette fiche est déjà signée : sa liste de matériel ne peut plus changer."
+msgstr "Esta ficha ya está firmada: su lista de material ya no puede cambiar."
+
+msgid "Connecté à ce matériel dans GLPI"
+msgstr "Conectado a este material en GLPI"
+
+msgid "Connecté"
+msgstr "Conectado"
+
+msgid "Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire."
+msgstr "En GLPI, este elemento está asignado a una persona distinta del beneficiario."
+
+msgid "Marque / modèle"
+msgstr "Marca / modelo"
+
+msgid "Matériel inventorié remis avec"
+msgstr "Material inventariado entregado con él"
+
+msgid "Nom"
+msgstr "Nombre"
+
+msgid "Si activé, les écrans, périphériques et téléphones connectés au matériel dans GLPI (onglet Connexions) sont ajoutés automatiquement aux fiches créées par une affectation, avec leur n° de série et leur modèle. Sinon, ils sont seulement proposés sur la fiche."
+msgstr "Si se activa, las pantallas, periféricos y teléfonos conectados al material en GLPI (pestaña Conexiones) se añaden automáticamente a las fichas creadas por una asignación, con su n.º de serie y su modelo. Si no, solo se proponen en la ficha."
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Écrans, stations d'accueil, téléphones… déjà inventoriés dans GLPI : leur modèle, leur n° de série et leur n° d'inventaire sont repris sur le document, sans ressaisie."
+msgstr "Pantallas, bases de conexión, teléfonos… ya inventariados en GLPI: su modelo, su n.º de serie y su n.º de inventario se recogen en el documento, sin volver a escribirlos."
+
+msgid "Élément ajouté : il apparaît sur le document."
+msgstr "Elemento añadido: aparece en el documento."
+
+msgid "Élément introuvable ou non visible avec vos droits."
+msgstr "Elemento no encontrado o no visible con sus permisos."
+
+#, php-format
+msgid "%d élément connecté ajouté."
+msgid_plural "%d éléments connectés ajoutés."
+msgstr[0] "%d elemento conectado añadido."
+msgstr[1] "%d elementos conectados añadidos."

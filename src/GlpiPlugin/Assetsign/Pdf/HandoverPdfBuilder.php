@@ -6,6 +6,7 @@ use Document;
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\RichText\RichText;
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\AssetsignItem;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\DestructionDetails;
@@ -74,6 +75,7 @@ final class HandoverPdfBuilder
            'item'                => $item,
            'itemtype'            => Assetsign::getCanonicalItemtypeLabel($assetsign->fields['itemtype']),
            'accessories'         => $assetsign->getAccessories(),
+           'inventoried_items'   => AssetsignItem::getForAssetsign($assetsign->getID()),
            // RichText::getSafeHtml() (pas seulement htmlspecialchars, qui casserait
            // la mise en forme voulue du gabarit) : ce contenu est affiche via
            // {{ contract|raw }}/{{ charter|raw }} dans le twig PDF, et provient
@@ -210,6 +212,7 @@ final class HandoverPdfBuilder
            'item'                => ['name' => 'PC-EXEMPLE-001', 'serial' => 'SN-EXEMPLE-042', 'otherserial' => 'INV-1234', 'manufacturer_name' => 'Dell', 'model_name' => 'Latitude 5440'],
            'itemtype'            => Assetsign::getCanonicalItemtypeLabel('Computer'),
            'accessories'         => [],
+           'inventoried_items'   => [['type_label' => 'Écran', 'name' => 'ECRAN-EXEMPLE-007', 'manufacturer' => 'Dell', 'model' => 'P2422H', 'serial' => 'SN-ECR-0815', 'otherserial' => 'INV-5678']],
            // RichText::getSafeHtml() : cf. renderHtml() ci-dessus - ce chemin est
            // meme plus expose, puisque le contenu vient ici directement du
            // POST de live-preview.js (front/preview.php), affiche en HTML brut

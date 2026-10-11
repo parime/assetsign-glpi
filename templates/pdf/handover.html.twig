@@ -57,6 +57,22 @@
 </ul>
 {% endif %}
 
+{% if inventoried_items|default([])|length %}
+<h2>Matériel inventorié remis avec</h2>
+<table class="data-table">
+    <tr><th>Type</th><th>Désignation</th><th>Marque / modèle</th><th>N° de série</th><th>N° d'inventaire</th></tr>
+    {% for i in inventoried_items %}
+    <tr>
+        <td>{{ i.type_label }}</td>
+        <td>{{ i.name|default('-') }}</td>
+        <td>{{ [i.manufacturer, i.model]|filter(v => v)|join(' ')|default('-') }}</td>
+        <td>{{ i.serial|default('-') }}</td>
+        <td>{{ i.otherserial|default('-') }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
 {% if vente_price is not null %}
 <h2>Détails de la vente</h2>
 <table class="info-table">

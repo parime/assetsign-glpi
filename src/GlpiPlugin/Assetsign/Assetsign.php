@@ -117,7 +117,9 @@ class Assetsign extends Compat\Base\AssetsignBase
      * regeneration...) : tout ce qui precede une vraie signature. Une fois
      * SIGNED/EXPIRED/CANCELLED, le PDF ne doit plus bouger (preuve figee).
      */
-   private const STATUSES_STILL_EDITABLE = [self::STATUS_DRAFT, self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED];
+   // Publique depuis l'issue #166 : AssetsignItem s'en sert pour refuser un accessoire deja
+   // present sur une autre fiche en attente.
+   public const STATUSES_STILL_EDITABLE = [self::STATUS_DRAFT, self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED];
 
    public static function getTypeName($nb = 0): string {
        return _n('Attribution', 'Attributions', $nb, 'assetsign');
@@ -384,6 +386,11 @@ class Assetsign extends Compat\Base\AssetsignBase
                && $this->canSignInPerson(),
            'accessories'          => $this->isNewID($ID) ? [] : $this->getAccessories(),
            'can_edit_accessories' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
+           // Issue #166 : objets du parc remis avec le materiel, et peripheriques connectes pas encore
+           // ajoutes (proposes tant que la fiche est modifiable).
+           'inventoried_items'    => $this->isNewID($ID) ? [] : $this->getInventoriedItems(),
+           'suggested_items'      => $this->isNewID($ID) || !$this->isStillEditable() ? [] : $this->getSuggestedConnectedItems(),
+           'inventoried_itemtypes' => AssetsignItem::getAllowedItemtypes(),
            // Le champ Observations est desactivable globalement (Config::enable_observations) :
            // une entite qui n'en a pas l'usage ne voit meme pas la section.
            'observations_enabled' => !$this->isNewID($ID)
@@ -1136,6 +1143,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        $assetsign->getFromDB($id);
+       $assetsign->attachConnectedItemsIfConfigured();
        $assetsign->launchWorkflow($config);
    }
 
@@ -1173,6 +1181,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        $assetsign->getFromDB($id);
+       $assetsign->attachConnectedItemsIfConfigured();
        $assetsign->launchWorkflow(null, true);
        return $assetsign;
    }
@@ -2059,6 +2068,134 @@ class Assetsign extends Compat\Base\AssetsignBase
        $this->regenerateUnsignedPdf();
    }
 
+    /**
+     * Issue #166 : objets du parc GLPI remis avec le materiel principal (instantanes figes, cf.
+     * AssetsignItem), avec en plus l'utilisateur GLPI actuel de chaque objet pour signaler un
+     * accessoire deja affecte a quelqu'un d'autre que le beneficiaire.
+     *
+     * @return list<array<string, mixed>>
+     */
+   public function getInventoriedItems(): array {
+       $rows = AssetsignItem::getForAssetsign($this->getID());
+      foreach ($rows as &$row) {
+          $item = new $row['itemtype']();
+          $holder = $item->getFromDB((int) $row['items_id']) ? (int) ($item->fields['users_id'] ?? 0) : 0;
+          $row['assigned_to_other'] = $holder > 0 && $holder !== (int) $this->fields['users_id']
+              ? \getUserName($holder)
+              : '';
+      }
+       return $rows;
+   }
+
+    /**
+     * Ajoute un objet du parc a la fiche (droit de lecture GLPI natif sur l'objet exige) et regenere
+     * le PDF non signe.
+     *
+     * @return string|null null si ajoute, sinon un message d'erreur traduit
+     */
+   public function addInventoriedItem(string $itemtype, int $items_id): ?string {
+      if (!$this->isStillEditable()) {
+          return __('Cette fiche est déjà signée : sa liste de matériel ne peut plus changer.', 'assetsign');
+      }
+      if (in_array($itemtype, AssetsignItem::getAllowedItemtypes(), true)) {
+          $item = new $itemtype();
+         if (!$item->getFromDB($items_id) || !$item->canViewItem()) {
+             return __('Élément introuvable ou non visible avec vos droits.', 'assetsign');
+         }
+      }
+
+       $error = AssetsignItem::attach($this, $itemtype, $items_id);
+      if ($error !== null) {
+          return self::getInventoriedItemErrorMessage($error);
+      }
+       $this->regenerateUnsignedPdf();
+       return null;
+   }
+
+   public static function getInventoriedItemErrorMessage(string $error): string {
+       return match ($error) {
+           AssetsignItem::ERROR_MAIN_ITEM      => __('C\'est déjà le matériel principal de cette fiche.', 'assetsign'),
+           AssetsignItem::ERROR_ALREADY_LISTED => __('Cet élément figure déjà sur cette fiche.', 'assetsign'),
+           AssetsignItem::ERROR_ON_OTHER_SHEET => __('Cet élément figure déjà sur une autre fiche en attente de signature.', 'assetsign'),
+           default                             => __('Élément introuvable ou non visible avec vos droits.', 'assetsign'),
+       };
+   }
+
+    /** Retire un objet du parc de la fiche (id de la ligne) et regenere le PDF non signe. */
+   public function removeInventoriedItem(int $assetsignitems_id): void {
+      if (!$this->isStillEditable()) {
+          return;
+      }
+       AssetsignItem::detach($this->getID(), $assetsignitems_id);
+       $this->regenerateUnsignedPdf();
+   }
+
+    /**
+     * Peripheriques connectes nativement au materiel (onglet « Connexions » de GLPI) qui ne figurent
+     * pas encore sur cette fiche ni sur une autre fiche en attente.
+     *
+     * @return list<array{itemtype: string, items_id: int, name: string, type_label: string, serial: string}>
+     */
+   public function getSuggestedConnectedItems(): array {
+       $itemtype = (string) $this->fields['itemtype'];
+      if (!class_exists($itemtype)) {
+          return [];
+      }
+       $main = new $itemtype();
+      if (!$main->getFromDB((int) $this->fields['items_id'])) {
+          return [];
+      }
+
+       $listed = [];
+      foreach (AssetsignItem::getForAssetsign($this->getID()) as $row) {
+          $listed[$row['itemtype'] . '#' . $row['items_id']] = true;
+      }
+
+       $suggestions = [];
+      foreach (AssetsignItem::getConnectedItems($main) as $connected) {
+         if (isset($listed[$connected['itemtype'] . '#' . $connected['items_id']])
+             || AssetsignItem::getPendingSheetIdFor($connected['itemtype'], $connected['items_id'], $this->getID()) !== null) {
+             continue;
+         }
+          $snapshot = AssetsignItem::snapshot($connected['itemtype'], $connected['items_id']);
+         if ($snapshot !== null) {
+             $suggestions[] = $connected + $snapshot;
+         }
+      }
+       return $suggestions;
+   }
+
+    /**
+     * Ajoute tous les peripheriques connectes proposes (bouton de la fiche) et regenere le PDF.
+     *
+     * @return int nombre d'elements ajoutes
+     */
+   public function attachConnectedItems(bool $automatic = false, bool $regenerate = true): int {
+      if (!$this->isStillEditable()) {
+          return 0;
+      }
+       $added = 0;
+      foreach ($this->getSuggestedConnectedItems() as $suggestion) {
+         if (AssetsignItem::attach($this, $suggestion['itemtype'], $suggestion['items_id'], $automatic) === null) {
+             $added++;
+         }
+      }
+      if ($added > 0 && $regenerate) {
+          $this->regenerateUnsignedPdf();
+      }
+       return $added;
+   }
+
+    /**
+     * Fiches creees automatiquement : ajout d'office des peripheriques connectes si l'entite l'a
+     * active (Config::auto_attach_connected_items), avant la generation du premier PDF.
+     */
+   private function attachConnectedItemsIfConfigured(): void {
+      if ((int) (Config::getForEntity((int) $this->fields['entities_id'])->fields['auto_attach_connected_items'] ?? 0) === 1) {
+          $this->attachConnectedItems(true, false);
+      }
+   }
+
     /** Retire un accessoire de cette remise et regenere le PDF non signe. */
    public function removeAccessory(int $accessories_id): void {
       if (!$this->isStillEditable()) {
@@ -2345,6 +2482,14 @@ class Assetsign extends Compat\Base\AssetsignBase
 
        $oldDocumentId = (int) $this->fields['document_id_unsigned'];
 
+       // Issue #166 : n° de serie/modele relus dans GLPI tant que la fiche n'est pas signee.
+       AssetsignItem::refreshSnapshots($this->getID());
+
+       // Le remplacement du PDF ajoute des messages techniques du coeur GLPI (« Document copié avec
+       // succès », « Fichier PDF/xx/... supprimé ») qui noieraient le message utile de l'action :
+       // meme motif que Departure/Attestation, on restaure les messages d'avant.
+       $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
+
        $builder = new Pdf\HandoverPdfBuilder();
        $document = $builder->build($this);
 
@@ -2359,6 +2504,8 @@ class Assetsign extends Compat\Base\AssetsignBase
             $old->delete(['id' => $oldDocumentId], true);
          }
       }
+
+       $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
    }
 
    public function getTemplate(): ?Template {

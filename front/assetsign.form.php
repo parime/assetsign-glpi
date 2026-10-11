@@ -94,6 +94,26 @@ if (isset($_POST['remove_accessory'])) {
     Html::back();
 }
 
+// Issue #166 : objets du parc GLPI remis avec le materiel.
+if (isset($_POST['add_inventoried_item'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    [$message, $isError] = $controller->addInventoriedItem($assetsign, $_POST);
+    Session::addMessageAfterRedirect($message, false, $isError ? ERROR : INFO);
+    Html::back();
+}
+
+if (isset($_POST['add_connected_items'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    Session::addMessageAfterRedirect($controller->addConnectedItems($assetsign));
+    Html::back();
+}
+
+if (isset($_POST['remove_inventoried_item'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    $controller->removeInventoriedItem($assetsign, $_POST);
+    Html::back();
+}
+
 if (isset($_POST['update_observations'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
     $controller->updateObservations($assetsign, $_POST);
