@@ -1,0 +1,98 @@
+{# Issue #170 : fenetre de confirmation de la feuille d'attribution (brouillon), affichee sur la fiche
+   du materiel juste apres son attribution. Inseree a la fin du <body> par plugin_assetsign_post_item_form(). #}
+{% set form_action = config('root_doc') ~ '/plugins/assetsign/front/assetsign.form.php' %}
+<div class="modal fade" id="assetsign-confirm-modal" tabindex="-1" aria-labelledby="assetsign-confirm-title" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assetsign-confirm-title"><i class="ti ti-signature me-2"></i>{{ __('Feuille d\'attribution à envoyer', 'assetsign') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('Plus tard', 'assetsign') }}"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          {{ __('%1$s « %2$s » vient d\'être attribué à %3$s.', 'assetsign')|format(target_type, target_item.name|default('#' ~ item.fields.items_id), beneficiary_name) }}
+          {{ __('Vérifiez ce qui est remis avec, puis envoyez la feuille pour signature.', 'assetsign') }}
+        </p>
+
+        <form method="post" action="{{ form_action }}" id="assetsign-confirm-form">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <input type="hidden" name="from_confirmation" value="1">
+          <h4 class="mb-2"><i class="ti ti-devices me-1"></i>{{ __('Remis avec le matériel', 'assetsign') }}</h4>
+          {% if inventoried_items|length %}
+            <div class="list-group mb-3">
+              {% for i in inventoried_items %}
+                <label class="list-group-item d-flex align-items-center gap-2">
+                  <input class="form-check-input m-0" type="checkbox" name="keep_items[]" value="{{ i.id }}" checked>
+                  <span class="flex-fill">
+                    <strong>{{ i.type_label }}</strong> — {{ i.name|default('#' ~ i.items_id) }}
+                    <span class="text-muted small">
+                      {{ [i.manufacturer, i.model]|filter(v => v)|join(' ') }}
+                      {% if i.serial %} · {{ __('N° de série', 'assetsign') }} {{ i.serial }}{% endif %}
+                    </span>
+                  </span>
+                  {% if i.is_automatic %}
+                    <span class="badge bg-blue-lt"><i class="ti ti-plug-connected"></i> {{ __('Connecté', 'assetsign') }}</span>
+                  {% endif %}
+                  {% if i.assigned_to_other %}
+                    <span class="badge bg-orange-lt" title="{{ __('Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire.', 'assetsign') }}"><i class="ti ti-alert-triangle"></i> {{ __('Affecté à %s', 'assetsign')|format(i.assigned_to_other) }}</span>
+                  {% endif %}
+                </label>
+              {% endfor %}
+            </div>
+            <p class="form-text mt-n2">{{ __('Décochez un élément pour le retirer de la feuille.', 'assetsign') }}</p>
+          {% else %}
+            <p class="text-muted">{{ __('Aucun matériel inventorié ajouté pour le moment.', 'assetsign') }}</p>
+          {% endif %}
+          {% if accessories|length %}
+            <p class="mb-1"><strong>{{ __('Accessoires remis', 'assetsign') }}</strong></p>
+            <ul class="mb-3">
+              {% for a in accessories %}<li>{{ a.name }} × {{ a.quantity }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+        </form>
+
+        <hr class="my-3">
+        <h4 class="mb-2"><i class="ti ti-plus me-1"></i>{{ __('Ajouter un écran, un périphérique, un téléphone…', 'assetsign') }}</h4>
+        <form method="post" action="{{ form_action }}" class="row g-2 align-items-end mb-3">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <input type="hidden" name="reopen_confirmation" value="1">
+          <div class="col-auto">
+            <label class="form-label">{{ __('Élément déjà inventorié dans GLPI', 'assetsign') }}</label>
+            {% do call('Dropdown::showSelectItemFromItemtypes', [{'itemtype_name': 'inventoried_itemtype', 'items_id_name': 'inventoried_items_id', 'itemtypes': inventoried_itemtypes, 'entity_restrict': -1}]) %}
+          </div>
+          <div class="col-auto">
+            <button type="submit" name="add_inventoried_item" class="btn btn-secondary">{{ __('Ajouter', 'assetsign') }}</button>
+          </div>
+        </form>
+        <form method="post" action="{{ form_action }}" class="row g-2 align-items-end">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <input type="hidden" name="reopen_confirmation" value="1">
+          <div class="col-auto">
+            <label class="form-label">{{ __('Accessoire non inventorié (catalogue)', 'assetsign') }}</label>
+            {% do call('GlpiPlugin\\Assetsign\\Accessory::dropdown', [{'name': 'plugin_assetsign_accessories_id'}]) %}
+          </div>
+          <div class="col-auto">
+            <label class="form-label">{{ __('Quantité', 'assetsign') }}</label>
+            <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 90px;">
+          </div>
+          <div class="col-auto">
+            <button type="submit" name="add_accessory" class="btn btn-secondary">{{ __('Ajouter', 'assetsign') }}</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" form="assetsign-confirm-form" name="discard_draft" class="btn btn-outline-danger me-auto"
+                onclick="return confirm('{{ __('Aucune feuille ne sera envoyée pour cette attribution. Continuer ?', 'assetsign')|e('js') }}');">
+          {{ __('Ne pas faire signer', 'assetsign') }}
+        </button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ __('Plus tard', 'assetsign') }}</button>
+        <button type="submit" form="assetsign-confirm-form" name="send_draft" class="btn btn-primary">
+          <i class="ti ti-send me-1"></i>{{ __('Envoyer pour signature', 'assetsign') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3400,3 +3400,58 @@ msgid "%d élément connecté ajouté."
 msgid_plural "%d éléments connectés ajoutés."
 msgstr[0] "%d élément connecté ajouté."
 msgstr[1] "%d éléments connectés ajoutés."
+
+msgid "Aucune feuille ne sera envoyée pour cette attribution."
+msgstr "Aucune feuille ne sera envoyée pour cette attribution."
+
+msgid "Aucune feuille ne sera envoyée pour cette attribution. Continuer ?"
+msgstr "Aucune feuille ne sera envoyée pour cette attribution. Continuer ?"
+
+msgid "Brouillon : cette feuille n'a pas encore été envoyée au bénéficiaire. Complétez-la si besoin, puis envoyez-la."
+msgstr "Brouillon : cette feuille n'a pas encore été envoyée au bénéficiaire. Complétez-la si besoin, puis envoyez-la."
+
+msgid "Cette feuille a déjà été envoyée."
+msgstr "Cette feuille a déjà été envoyée."
+
+msgid "Demander confirmation avant d'envoyer la feuille d'attribution"
+msgstr "Demander confirmation avant d'envoyer la feuille d'attribution"
+
+msgid "Envoyer pour signature"
+msgstr "Envoyer pour signature"
+
+msgid "Feuille d'attribution envoyée pour signature."
+msgstr "Feuille d'attribution envoyée pour signature."
+
+msgid "Feuille d'attribution à envoyer"
+msgstr "Feuille d'attribution à envoyer"
+
+msgid "Ne pas faire signer"
+msgstr "Ne pas faire signer"
+
+msgid "Si activé, attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout. Les attributions faites sans technicien devant l'écran (inventaire automatique, actions massives) sont envoyées directement."
+msgstr "Si activé, attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout. Les attributions faites sans technicien devant l'écran (inventaire automatique, actions massives) sont envoyées directement."
+
+#, php-format
+msgid "%1$s « %2$s » vient d'être attribué à %3$s."
+msgstr "%1$s « %2$s » vient d'être attribué à %3$s."
+
+msgid "Accessoire non inventorié (catalogue)"
+msgstr "Accessoire non inventorié (catalogue)"
+
+msgid "Ajouter un écran, un périphérique, un téléphone…"
+msgstr "Ajouter un écran, un périphérique, un téléphone…"
+
+msgid "Décochez un élément pour le retirer de la feuille."
+msgstr "Décochez un élément pour le retirer de la feuille."
+
+msgid "Plus tard"
+msgstr "Plus tard"
+
+msgid "Remis avec le matériel"
+msgstr "Remis avec le matériel"
+
+msgid "Vérifiez ce qui est remis avec, puis envoyez la feuille pour signature."
+msgstr "Vérifiez ce qui est remis avec, puis envoyez la feuille pour signature."
+
+msgid "Élément déjà inventorié dans GLPI"
+msgstr "Élément déjà inventorié dans GLPI"

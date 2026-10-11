@@ -104,6 +104,24 @@ function plugin_assetsign_item_assignment(CommonDBTM $item): void {
    }
 }
 
+/**
+ * Issue #170 : sur la fiche du materiel qui vient d'etre attribue, ouvre la fenetre de confirmation
+ * de la feuille d'attribution (brouillon). Le hook est appele a l'interieur du <form> du materiel :
+ * la fenetre (qui contient ses propres formulaires) est donc inseree a la fin du <body> par JS.
+ */
+function plugin_assetsign_post_item_form(array $params): void {
+    $item = $params['item'] ?? null;
+   if (!$item instanceof CommonDBTM || $item->isNewItem() || !Session::haveRight(Assetsign::$rightname, UPDATE)) {
+       return;
+   }
+    $draft = Assetsign::popQueuedConfirmationFor($item);
+   if ($draft === null) {
+       return;
+   }
+    echo '<script>$(function () { $("body").append(' . json_encode($draft->renderConfirmationModal())
+        . '); bootstrap.Modal.getOrCreateInstance(document.getElementById("assetsign-confirm-modal")).show(); });</script>';
+}
+
 function plugin_assetsign_item_pre_purge(CommonDBTM $item): void {
    try {
        Assetsign::archiveForPurgedItem($item);

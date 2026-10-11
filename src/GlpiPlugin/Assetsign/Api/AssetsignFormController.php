@@ -99,6 +99,32 @@ final class AssetsignFormController
        return $error === null ? [__('Élément ajouté : il apparaît sur le document.', 'assetsign'), false] : [$error, true];
    }
 
+    /**
+     * Issue #170 : envoie le brouillon ; depuis la fenetre, seules les lignes encore cochees
+     * (keep_items[]) sont conservees.
+     */
+   public function sendDraft(Assetsign $assetsign, array $post): string {
+       $kept = isset($post['from_confirmation'])
+           ? array_map('intval', (array) ($post['keep_items'] ?? []))
+           : null;
+       $assetsign->sendDraft($kept);
+
+       return __('Feuille d\'attribution envoyée pour signature.', 'assetsign');
+   }
+
+   public function discardDraft(Assetsign $assetsign): string {
+       $assetsign->cancelRequest();
+
+       return __('Aucune feuille ne sera envoyée pour cette attribution.', 'assetsign');
+   }
+
+   public function reopenConfirmationIfAsked(Assetsign $assetsign, array $post): void {
+      if (!empty($post['reopen_confirmation'])) {
+          $assetsign->getFromDB($assetsign->getID());
+          $assetsign->reopenConfirmation();
+      }
+   }
+
    public function addConnectedItems(Assetsign $assetsign): string {
        $added = $assetsign->attachConnectedItems();
 

@@ -85,6 +85,7 @@ if (isset($_POST['revoke_delegation'])) {
 if (isset($_POST['add_accessory'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
     $controller->addAccessory($assetsign, $_POST);
+    $controller->reopenConfirmationIfAsked($assetsign, $_POST);
     Html::back();
 }
 
@@ -94,11 +95,33 @@ if (isset($_POST['remove_accessory'])) {
     Html::back();
 }
 
+// Issue #170 : envoi ou abandon d'un brouillon (fenetre de confirmation, onglet du materiel, fiche).
+if (isset($_POST['send_draft'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       Session::addMessageAfterRedirect($controller->sendDraft($assetsign, $_POST));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
+}
+
+if (isset($_POST['discard_draft'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       Session::addMessageAfterRedirect($controller->discardDraft($assetsign));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
+}
+
 // Issue #166 : objets du parc GLPI remis avec le materiel.
 if (isset($_POST['add_inventoried_item'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
     [$message, $isError] = $controller->addInventoriedItem($assetsign, $_POST);
     Session::addMessageAfterRedirect($message, false, $isError ? ERROR : INFO);
+    $controller->reopenConfirmationIfAsked($assetsign, $_POST);
     Html::back();
 }
 

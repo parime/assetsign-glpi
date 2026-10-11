@@ -49,6 +49,7 @@ class Config extends Compat\Base\ConfigBase
         'signature_required'                  => 1,
         'enable_observations'                 => 0,
         'auto_attach_connected_items'         => 0,
+        'confirm_before_sending'              => 1,
         'enable_don'                          => 0,
         'enable_vente'                        => 0,
         'enable_destruction'                  => 0,
@@ -575,6 +576,7 @@ class Config extends Compat\Base\ConfigBase
            'signature_required'   => (int) ($input['signature_required'] ?? 0),
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
            'auto_attach_connected_items' => (int) ($input['auto_attach_connected_items'] ?? 0),
+           'confirm_before_sending' => (int) ($input['confirm_before_sending'] ?? 0),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
            'enable_destruction'   => (int) ($input['enable_destruction'] ?? 0),
@@ -753,6 +755,7 @@ class Config extends Compat\Base\ConfigBase
                 `signature_required` tinyint NOT NULL DEFAULT 1,
                 `enable_observations` tinyint NOT NULL DEFAULT 0,
                 `auto_attach_connected_items` tinyint NOT NULL DEFAULT 0,
+                `confirm_before_sending` tinyint NOT NULL DEFAULT 1,
                 `enable_don` tinyint NOT NULL DEFAULT 0,
                 `enable_vente` tinyint NOT NULL DEFAULT 0,
                 `enable_destruction` tinyint NOT NULL DEFAULT 0,
@@ -857,6 +860,11 @@ class Config extends Compat\Base\ConfigBase
          // Issue #166 : peripheriques connectes ajoutes d'office aux fiches creees automatiquement.
          if (!$DB->fieldExists($table, 'auto_attach_connected_items')) {
              $migration->addField($table, 'auto_attach_connected_items', 'bool', ['value' => 0, 'after' => 'enable_observations']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #170 : fenetre de confirmation avant l'envoi de la feuille d'attribution.
+         if (!$DB->fieldExists($table, 'confirm_before_sending')) {
+             $migration->addField($table, 'confirm_before_sending', 'bool', ['value' => 1, 'after' => 'auto_attach_connected_items']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'enable_don')) {

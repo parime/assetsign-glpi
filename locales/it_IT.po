@@ -3410,3 +3410,58 @@ msgid "%d élément connecté ajouté."
 msgid_plural "%d éléments connectés ajoutés."
 msgstr[0] "%d elemento collegato aggiunto."
 msgstr[1] "%d elementi collegati aggiunti."
+
+msgid "Aucune feuille ne sera envoyée pour cette attribution."
+msgstr "Nessuna scheda verrà inviata per questa assegnazione."
+
+msgid "Aucune feuille ne sera envoyée pour cette attribution. Continuer ?"
+msgstr "Nessuna scheda verrà inviata per questa assegnazione. Continuare?"
+
+msgid "Brouillon : cette feuille n'a pas encore été envoyée au bénéficiaire. Complétez-la si besoin, puis envoyez-la."
+msgstr "Bozza: questa scheda non è ancora stata inviata al beneficiario. Completala se necessario, poi inviala."
+
+msgid "Cette feuille a déjà été envoyée."
+msgstr "Questa scheda è già stata inviata."
+
+msgid "Demander confirmation avant d'envoyer la feuille d'attribution"
+msgstr "Chiedere conferma prima di inviare la scheda di assegnazione"
+
+msgid "Envoyer pour signature"
+msgstr "Invia per la firma"
+
+msgid "Feuille d'attribution envoyée pour signature."
+msgstr "Scheda di assegnazione inviata per la firma."
+
+msgid "Feuille d'attribution à envoyer"
+msgstr "Scheda di assegnazione da inviare"
+
+msgid "Ne pas faire signer"
+msgstr "Non richiedere la firma"
+
+msgid "Si activé, attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout. Les attributions faites sans technicien devant l'écran (inventaire automatique, actions massives) sont envoyées directement."
+msgstr "Se attivato, assegnare un'attrezzatura dalla sua scheda apre una finestra per completare la scheda (monitor, periferiche, telefoni…) e scegliere di inviarla ora, più tardi o per niente. Le assegnazioni fatte senza un tecnico davanti allo schermo (inventario automatico, azioni di massa) vengono inviate direttamente."
+
+#, php-format
+msgid "%1$s « %2$s » vient d'être attribué à %3$s."
+msgstr "%1$s «%2$s» è stato appena assegnato a %3$s."
+
+msgid "Accessoire non inventorié (catalogue)"
+msgstr "Accessorio non inventariato (catalogo)"
+
+msgid "Ajouter un écran, un périphérique, un téléphone…"
+msgstr "Aggiungi un monitor, una periferica, un telefono…"
+
+msgid "Décochez un élément pour le retirer de la feuille."
+msgstr "Deseleziona un elemento per rimuoverlo dalla scheda."
+
+msgid "Plus tard"
+msgstr "Più tardi"
+
+msgid "Remis avec le matériel"
+msgstr "Consegnato con l'attrezzatura"
+
+msgid "Vérifiez ce qui est remis avec, puis envoyez la feuille pour signature."
+msgstr "Verifica cosa viene consegnato insieme, poi invia la scheda per la firma."
+
+msgid "Élément déjà inventorié dans GLPI"
+msgstr "Elemento già inventariato in GLPI"
