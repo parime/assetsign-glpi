@@ -1,0 +1,39 @@
+{# Issue #181 : lignes « type d'element GLPI » du kit de la feuille - pourvues ou a pourvoir avec le
+   materiel disponible de ce type. Variables : kit_item_lines, can_edit (bool), reopen (bool), item, csrf_token. #}
+{% if kit_item_lines|default([])|length %}
+  <div class="list-group mb-2">
+    {% for line in kit_item_lines %}
+      {% set complete = line.provided >= line.expected %}
+      <div class="list-group-item">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <span class="badge {{ complete ? 'bg-green-lt' : 'bg-orange-lt' }}">
+            <i class="ti {{ complete ? 'ti-circle-check' : 'ti-hourglass' }}"></i> {{ line.provided }}/{{ line.expected }}
+          </span>
+          <strong>{{ line.label }}</strong>
+          {% if line.names|length %}<span class="text-muted small">{{ line.names|join(', ') }}</span>{% endif %}
+        </div>
+        {% if not complete and can_edit|default(false) %}
+          {% if line.available|length %}
+            <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end mt-1">
+              <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="id" value="{{ item.fields.id }}">
+              {% if reopen|default(false) %}<input type="hidden" name="reopen_confirmation" value="1">{% endif %}
+              <div class="col-auto">
+                <select name="available_item" class="form-select form-select-sm" style="min-width: 280px;" aria-label="{{ line.label }}">
+                  {% for r in line.available %}
+                    <option value="{{ r.value }}">{{ r.name|default('#' ~ r.items_id) }}{% if r.serial %} — {{ __('N° de série', 'assetsign') }} {{ r.serial }}{% endif %}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-auto">
+                <button type="submit" name="add_inventoried_item" class="btn btn-sm btn-secondary"><i class="ti ti-plus me-1"></i>{{ __('Ajouter au kit', 'assetsign') }}</button>
+              </div>
+            </form>
+          {% else %}
+            <div class="text-muted small mt-1">{{ __('Aucun élément de ce type disponible : cherchez dans tout le parc ci-dessous.', 'assetsign') }}</div>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

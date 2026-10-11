@@ -49,6 +49,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Kits avec des types d'éléments GLPI** (issue #181) : un kit peut attendre des éléments
+  inventoriés par type (ex. « Pack télétravail » = 1 écran + 2 périphériques). Sur la fiche et
+  dans la fenêtre d'attribution, chaque ligne indique « pourvu / attendu » et propose le matériel
+  disponible de ce type ; le kit se choisit aussi depuis la fenêtre. À la restitution, les objets
+  précis sont contrôlés un par un (#178).
 - **Passeport de l'élément remis avec** (issue #182) : un écran, un casque… remis avec un poste a
   sa propre trace dans le passeport matériel — « Attribution : remis avec Ordinateur PC-123 » à
   l'envoi, « Restitution : rendu / rendu abîmé / manquant » au contrôle du retour (mis à jour si

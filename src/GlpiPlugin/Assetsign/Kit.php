@@ -38,6 +38,27 @@ class Kit extends CommonDropdown
        return ['tools', Assetsign::class, self::class];
    }
 
+    /**
+     * Issue #181 : elements du parc GLPI attendus dans ce kit, par type (ex. ['Monitor' => 1,
+     * 'Peripheral' => 2]) - les objets reels sont choisis a l'attribution.
+     *
+     * @return array<string, int>
+     */
+   public function getExpectedItemLines(): array {
+       $decoded = json_decode((string) ($this->fields['item_lines'] ?? ''), true);
+      if (!is_array($decoded)) {
+          return [];
+      }
+       $allowed = AssetsignItem::getAllowedItemtypes();
+       $lines = [];
+      foreach ($decoded as $itemtype => $quantity) {
+         if (in_array($itemtype, $allowed, true) && (int) $quantity > 0) {
+             $lines[(string) $itemtype] = (int) $quantity;
+         }
+      }
+       return $lines;
+   }
+
     /** @return int[] Identifiants Accessory attendus dans ce kit. */
    public function getExpectedAccessoryIds(): array {
        return self::decodeAccessoryIds((string) ($this->fields['accessories_id'] ?? ''));
@@ -128,10 +149,30 @@ class Kit extends CommonDropdown
                'label' => __('Accessoires attendus dans ce kit', 'assetsign'),
                'type'  => 'assetsign_kit_accessories',
            ],
+           // Issue #181 : elements du parc GLPI attendus, par type.
+           [
+               'name'  => 'item_lines',
+               'label' => __('Éléments du parc attendus dans ce kit', 'assetsign'),
+               'type'  => 'assetsign_kit_item_lines',
+           ],
        ];
    }
 
    public function displaySpecificTypeField($ID, $field = [], array $options = []) {
+      if (($field['type'] ?? '') === 'assetsign_kit_item_lines') {
+          $lines = $this->isNewItem() ? [] : $this->getExpectedItemLines();
+          echo '<div class="row g-2">';
+         foreach (AssetsignItem::getAllowedItemtypes() as $itemtype) {
+             echo '<div class="col-sm-6 col-lg-4"><div class="input-group input-group-sm">'
+                 . '<span class="input-group-text" style="min-width: 150px;">' . htmlspecialchars(Assetsign::getCanonicalItemtypeLabel($itemtype)) . '</span>'
+                 . '<input type="number" min="0" max="20" class="form-control" name="item_lines[' . htmlspecialchars($itemtype) . ']" value="' . (int) ($lines[$itemtype] ?? 0) . '">'
+                 . '</div></div>';
+         }
+          echo '</div><p class="text-muted mt-1">'
+              . __('Nombre d\'éléments inventoriés de chaque type attendus (0 = aucun). À l\'attribution, on choisit l\'écran, le dock, le casque… réels ; ils sont ensuite contrôlés un par un à la restitution.', 'assetsign')
+              . '</p>';
+          return;
+      }
       if (($field['type'] ?? '') !== 'assetsign_kit_accessories') {
           return;
       }
@@ -172,6 +213,15 @@ class Kit extends CommonDropdown
    }
 
    private function encodeAccessoryIds(array|false $input): array|false {
+      if ($input !== false && array_key_exists('item_lines', $input) && is_array($input['item_lines'])) {
+          $lines = [];
+         foreach ($input['item_lines'] as $itemtype => $quantity) {
+            if ((int) $quantity > 0) {
+                $lines[(string) $itemtype] = min(20, (int) $quantity);
+            }
+         }
+          $input['item_lines'] = json_encode($lines);
+      }
       if ($input === false || !array_key_exists('accessories_id', $input)) {
           return $input;
       }
@@ -193,6 +243,7 @@ class Kit extends CommonDropdown
                 `comment` text,
                 `is_active` tinyint NOT NULL DEFAULT 1,
                 `accessories_id` text,
+                `item_lines` text,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -223,6 +274,11 @@ class Kit extends CommonDropdown
                'date_creation'  => date('Y-m-d H:i:s'),
              ]);
          }
+      }
+       // Issue #181 : elements du parc attendus, par type.
+      if (!$DB->fieldExists($table, 'item_lines')) {
+          $migration->addField($table, 'item_lines', 'text', ['after' => 'accessories_id']);
+          $migration->migrationOneTable($table);
       }
    }
 }

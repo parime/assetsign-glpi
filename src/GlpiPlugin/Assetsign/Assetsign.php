@@ -480,6 +480,8 @@ class Assetsign extends Compat\Base\AssetsignBase
            'type_return'      => self::TYPE_RETURN,
            'kit'              => $this->isNewID($ID) ? null : $this->getKit(),
            'kit_completeness' => $this->isNewID($ID) ? null : $this->getKitCompleteness(),
+           // Issue #181 : lignes « type d'element GLPI » du kit et objets reels choisis.
+           'kit_item_lines'   => $this->isNewID($ID) ? [] : $this->getKitItemLines(),
            'csrf_token'   => \Session::getNewCSRFToken(),
        ]);
 
@@ -1366,6 +1368,9 @@ class Assetsign extends Compat\Base\AssetsignBase
            'accessories'           => $this->getAccessories(),
            'inventoried_itemtypes' => AssetsignItem::getAllowedItemtypes(),
            'available_items'       => AssetsignItem::getAvailableItems($this),
+           // Issue #181 : kit de la feuille (lignes « type GLPI ») et choix du kit.
+           'kit'                   => $this->getKit(),
+           'kit_item_lines'        => $this->getKitItemLines(),
            'csrf_token'            => Session::getNewCSRFToken(),
            'assign_in_glpi'        => (int) (Config::getForEntity((int) $this->fields['entities_id'])->fields['assign_handed_items'] ?? 1) === 1,
        ]);
@@ -2558,6 +2563,47 @@ class Assetsign extends Compat\Base\AssetsignBase
           (new \Item_Ticket())->add(['tickets_id' => $tickets_id, 'itemtype' => $row['itemtype'], 'items_id' => (int) $row['items_id']]);
       }
        return $tickets_id;
+   }
+
+    /**
+     * Issue #181 : pour chaque type attendu par le kit de la feuille, quantite attendue, elements deja
+     * sur la feuille et materiel disponible de ce type pour pourvoir le reste.
+     *
+     * @return list<array{itemtype: string, label: string, expected: int, provided: int, names: list<string>, available: list<array<string, mixed>>}>
+     */
+   public function getKitItemLines(): array {
+       $kit = $this->getKit();
+      if ($kit === null) {
+          return [];
+      }
+       $expected = $kit->getExpectedItemLines();
+      if ($expected === []) {
+          return [];
+      }
+       $onSheet = [];
+      foreach (AssetsignItem::getForAssetsign($this->getID()) as $row) {
+          $onSheet[(string) $row['itemtype']][] = (string) $row['name'];
+      }
+       $available = [];
+      if ($this->isStillEditable()) {
+         foreach (AssetsignItem::getAvailableItems($this) as $rows) {
+            foreach ($rows as $row) {
+                $available[$row['itemtype']][] = $row;
+            }
+         }
+      }
+       $lines = [];
+      foreach ($expected as $itemtype => $quantity) {
+          $lines[] = [
+              'itemtype'  => $itemtype,
+              'label'     => self::getCanonicalItemtypeLabel($itemtype),
+              'expected'  => $quantity,
+              'provided'  => count($onSheet[$itemtype] ?? []),
+              'names'     => $onSheet[$itemtype] ?? [],
+              'available' => $available[$itemtype] ?? [],
+          ];
+      }
+       return $lines;
    }
 
     /** Retire un objet du parc de la fiche (id de la ligne) et regenere le PDF non signe. */

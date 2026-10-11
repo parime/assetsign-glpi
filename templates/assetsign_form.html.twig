@@ -422,6 +422,7 @@
           {% endif %}
         </div>
       {% endif %}
+      {{ include('@assetsign/_kit_item_lines.html.twig', {'can_edit': can_edit_accessories, 'reopen': false}) }}
       {% if can_edit_accessories %}
         <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">

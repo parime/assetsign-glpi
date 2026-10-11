@@ -3666,3 +3666,21 @@ msgstr "Rendu abîmé avec %s"
 #, php-format
 msgid "Manquant à la restitution de %s"
 msgstr "Manquant à la restitution de %s"
+
+msgid "Éléments du parc attendus dans ce kit"
+msgstr "Éléments du parc attendus dans ce kit"
+
+msgid "Nombre d'éléments inventoriés de chaque type attendus (0 = aucun). À l'attribution, on choisit l'écran, le dock, le casque… réels ; ils sont ensuite contrôlés un par un à la restitution."
+msgstr "Nombre d'éléments inventoriés de chaque type attendus (0 = aucun). À l'attribution, on choisit l'écran, le dock, le casque… réels ; ils sont ensuite contrôlés un par un à la restitution."
+
+msgid "Ajouter au kit"
+msgstr "Ajouter au kit"
+
+msgid "Aucun élément de ce type disponible : cherchez dans tout le parc ci-dessous."
+msgstr "Aucun élément de ce type disponible : cherchez dans tout le parc ci-dessous."
+
+msgid "Changer le kit"
+msgstr "Changer le kit"
+
+msgid "Appliquer ce kit"
+msgstr "Appliquer ce kit"
