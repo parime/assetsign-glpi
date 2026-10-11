@@ -23,16 +23,12 @@ try {
     // Logique extraite dans Api\QrLabelController (meme motivation que
     // Api\PassportBackfillController) : rendre le controle itemtype/droit/
     // reglage d'entite testable en PHPUnit, sans passer par ce script qui
-    // appelle Html::displayNotFoundError()/exit().
+    // leve une exception HTTP de GLPI.
     $data = (new QrLabelController())->resolve($itemtype, $items_id);
 } catch (\InvalidArgumentException $e) {
-    // displayNotFoundError() leve en realite une exception (NotFoundHttpException,
-    // interceptee plus haut par le noyau GLPI) : n'importe jamais ici. `exit`
-    // explicite quand meme, uniquement pour que PHPStan sache que $data est
-    // forcement defini a partir d'ici (il ne peut pas le deduire par simple
-    // reflexion d'une methode du coeur GLPI hors des chemins qu'il analyse).
-    Html::displayNotFoundError();
-    exit;
+    // Exception HTTP de GLPI (Html::displayNotFoundError() n'existe plus en GLPI 12),
+    // interceptee par le noyau qui affiche la page « element introuvable ».
+    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
 // Page volontairement SANS Html::header()/footer() (meme choix que front/preview.php) :

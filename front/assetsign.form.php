@@ -26,7 +26,7 @@ if ($id <= 0 && $_POST === []) {
 }
 
 if (!$assetsign->getFromDB($id) || !$assetsign->can($id, READ)) {
-    Html::displayNotFoundError();
+    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
 // Issue #163 : apercu du brouillon tel qu'il partira (PDF genere a la volee, rien n'est enregistre).

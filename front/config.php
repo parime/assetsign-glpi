@@ -16,7 +16,7 @@ if (isset($_POST['update'])) {
        // utilisateur avec le droit UPDATE dans SON entite pouvait modifier la
        // configuration (logo, gabarits par defaut, seuils...) de n'importe
        // quelle AUTRE entite du meme GLPI simplement en changeant entities_id.
-       // AccessDeniedHttpException (pas Html::displayRightError(), deprecated
+       // AccessDeniedHttpException (pas throw new \Glpi\Exception\Http\AccessDeniedHttpException(), deprecated
        // en 11.0) : meme convention que Session::checkRight() ci-dessus.
        throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
    }

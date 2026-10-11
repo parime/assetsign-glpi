@@ -6,7 +6,7 @@ use GlpiPlugin\Assetsign\Security\AssetAssignmentGuard;
 Session::checkRight(Assetsign::$rightname, UPDATE);
 
 if (!isset($_POST['assign'])) {
-    Html::displayNotFoundError();
+    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
 $itemtype = (string) ($_POST['itemtype'] ?? '');
@@ -18,7 +18,7 @@ $users_id = (int) ($_POST['users_id'] ?? 0);
 // meme garde-fou que Assetsign::createManual()/Maintenance::createWithChecklist().
 $item = (new AssetAssignmentGuard())->resolveAssignableItem($itemtype, $items_id);
 if ($item === null) {
-    Html::displayNotFoundError();
+    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
 // La mise a jour de users_id declenche automatiquement le hook natif

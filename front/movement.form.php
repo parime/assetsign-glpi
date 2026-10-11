@@ -13,7 +13,7 @@ if (isset($_POST['create'])) {
        (new MovementFormController())->create($_POST);
        Session::addMessageAfterRedirect(__('Mouvement créé.', 'assetsign'));
    } catch (\InvalidArgumentException $e) {
-       Html::displayNotFoundError();
+       throw new \Glpi\Exception\Http\NotFoundHttpException();
    } catch (\Throwable $e) {
        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
    }
@@ -28,7 +28,7 @@ if ($id <= 0 && $_POST === []) {
 }
 
 if (!$movement->getFromDB($id) || !$movement->can($id, READ)) {
-    Html::displayNotFoundError();
+    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
 if (isset($_POST['mark_in_transit'])) {

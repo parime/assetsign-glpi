@@ -46,11 +46,11 @@ if ($id <= 0 && $_POST === []) {
    \GlpiPlugin\Assetsign\Assetsign::redirectToListWithHint(Departure::class, __('Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »).', 'assetsign'));
 }
 if ($id <= 0 || !$departure->getFromDB($id)) {
-   Html::displayNotFoundError();
+   throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 $isLeavingUser = (int) $departure->fields['users_id'] === $usersId;
 if (!$isLeavingUser && !$canRead) {
-   Html::displayRightError();
+   throw new \Glpi\Exception\Http\AccessDeniedHttpException();
 }
 $config = Config::getForEntity((int) $departure->fields['entities_id']);
 $canSignInPerson = $canManage && !$isLeavingUser && !empty($config->fields['enable_in_person_signature']);
@@ -58,7 +58,7 @@ $canSignInPerson = $canManage && !$isLeavingUser && !empty($config->fields['enab
 if (isset($_GET['pdf'])) {
    $document = new Document();
    if (!$document->getFromDB((int) $departure->fields['document_id_summary'])) {
-      Html::displayNotFoundError();
+      throw new \Glpi\Exception\Http\NotFoundHttpException();
    }
    $path = GLPI_DOC_DIR . '/' . $document->fields['filepath'];
    header('Content-Type: application/pdf');

@@ -20,18 +20,18 @@ $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
 
 $attestation = new Attestation();
 if ($id <= 0 || !$attestation->getFromDB($id)) {
-    Html::displayNotFoundError();
+    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 $isHolder = (int) $attestation->fields['users_id'] === $usersId;
 $canRead = Session::haveRight(Profile::RIGHT_ASSETSIGN, READ);
 if (!$isHolder && !$canRead) {
-    Html::displayRightError();
+    throw new \Glpi\Exception\Http\AccessDeniedHttpException();
 }
 
 if (isset($_GET['pdf'])) {
     $document = new Document();
    if (!$document->getFromDB((int) $attestation->fields['documents_id'])) {
-       Html::displayNotFoundError();
+       throw new \Glpi\Exception\Http\NotFoundHttpException();
    }
     header('Content-Type: application/pdf');
     header('Content-Disposition: inline; filename="' . basename((string) $document->fields['filename']) . '"');
