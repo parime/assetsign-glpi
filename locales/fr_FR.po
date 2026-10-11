@@ -3684,3 +3684,67 @@ msgstr "Changer le kit"
 
 msgid "Appliquer ce kit"
 msgstr "Appliquer ce kit"
+
+msgid "Remise de matériel"
+msgstr "Remise de matériel"
+
+msgid "Ce type de matériel ne déclenche pas de feuille d'attribution (Configuration > Général)."
+msgstr "Ce type de matériel ne déclenche pas de feuille d'attribution (Configuration > Général)."
+
+msgid "Le bénéficiaire doit être un demandeur du ticket."
+msgstr "Le bénéficiaire doit être un demandeur du ticket."
+
+msgid "Ce matériel est déjà attribué à cette personne."
+msgstr "Ce matériel est déjà attribué à cette personne."
+
+msgid "La feuille n'a pas pu être créée : vérifiez que l'attribution déclenche une feuille pour cette entité (Configuration > Général)."
+msgstr "La feuille n'a pas pu être créée : vérifiez que l'attribution déclenche une feuille pour cette entité (Configuration > Général)."
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket."
+msgstr "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket."
+
+msgid "Le ticket n'a pas pu être résolu automatiquement après la signature (un champ obligatoire du ticket n'est sans doute pas renseigné, comme la catégorie) : résolvez-le manuellement."
+msgstr "Le ticket n'a pas pu être résolu automatiquement après la signature (un champ obligatoire du ticket n'est sans doute pas renseigné, comme la catégorie) : résolvez-le manuellement."
+
+msgid "Feuille rattachée au ticket."
+msgstr "Feuille rattachée au ticket."
+
+msgid "Feuille détachée du ticket."
+msgstr "Feuille détachée du ticket."
+
+msgid "Feuille préparée en brouillon et rattachée au ticket : complétez-la puis envoyez-la."
+msgstr "Feuille préparée en brouillon et rattachée au ticket : complétez-la puis envoyez-la."
+
+msgid "Compléter et envoyer"
+msgstr "Compléter et envoyer"
+
+msgid "Aucune feuille de remise rattachée à ce ticket."
+msgstr "Aucune feuille de remise rattachée à ce ticket."
+
+msgid "Remettre du matériel au demandeur"
+msgstr "Remettre du matériel au demandeur"
+
+msgid "Préparer la feuille"
+msgstr "Préparer la feuille"
+
+msgid "Le matériel est attribué au bénéficiaire dans GLPI et lié au ticket ; la feuille est préparée en brouillon : vous la complétez (écran, accessoires…) puis l'envoyez. À la signature, un suivi avec le document signé est ajouté au ticket."
+msgstr "Le matériel est attribué au bénéficiaire dans GLPI et lié au ticket ; la feuille est préparée en brouillon : vous la complétez (écran, accessoires…) puis l'envoyez. À la signature, un suivi avec le document signé est ajouté au ticket."
+
+msgid "Aucun matériel disponible (sans utilisateur ou « en stock ») dans les types qui déclenchent une feuille."
+msgstr "Aucun matériel disponible (sans utilisateur ou « en stock ») dans les types qui déclenchent une feuille."
+
+msgid "Ticket lié :"
+msgstr "Ticket lié :"
+
+msgid "Rattacher à un ticket ouvert du bénéficiaire"
+msgstr "Rattacher à un ticket ouvert du bénéficiaire"
+
+msgid "Rattacher"
+msgstr "Rattacher"
+
+msgid "Résoudre le ticket lié quand la feuille est signée"
+msgstr "Résoudre le ticket lié quand la feuille est signée"
+
+msgid "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."
+msgstr "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."

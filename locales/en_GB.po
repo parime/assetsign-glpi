@@ -3664,3 +3664,67 @@ msgstr "Change the kit"
 
 msgid "Appliquer ce kit"
 msgstr "Apply this kit"
+
+msgid "Remise de matériel"
+msgstr "Equipment handover"
+
+msgid "Ce type de matériel ne déclenche pas de feuille d'attribution (Configuration > Général)."
+msgstr "This type of equipment does not trigger an assignment form (Configuration > General)."
+
+msgid "Le bénéficiaire doit être un demandeur du ticket."
+msgstr "The recipient must be a requester of the ticket."
+
+msgid "Ce matériel est déjà attribué à cette personne."
+msgstr "This equipment is already assigned to this person."
+
+msgid "La feuille n'a pas pu être créée : vérifiez que l'attribution déclenche une feuille pour cette entité (Configuration > Général)."
+msgstr "The form could not be created: check that assignment triggers a form for this entity (Configuration > General)."
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket."
+msgstr "Form no. %1$d (%2$s) for %3$s “%4$s” has been signed. The signed document is attached to the ticket."
+
+msgid "Le ticket n'a pas pu être résolu automatiquement après la signature (un champ obligatoire du ticket n'est sans doute pas renseigné, comme la catégorie) : résolvez-le manuellement."
+msgstr "The ticket could not be solved automatically after the signature (a mandatory ticket field is probably empty, such as the category): solve it manually."
+
+msgid "Feuille rattachée au ticket."
+msgstr "Form linked to the ticket."
+
+msgid "Feuille détachée du ticket."
+msgstr "Form unlinked from the ticket."
+
+msgid "Feuille préparée en brouillon et rattachée au ticket : complétez-la puis envoyez-la."
+msgstr "Form prepared as a draft and linked to the ticket: complete it, then send it."
+
+msgid "Compléter et envoyer"
+msgstr "Complete and send"
+
+msgid "Aucune feuille de remise rattachée à ce ticket."
+msgstr "No handover form linked to this ticket."
+
+msgid "Remettre du matériel au demandeur"
+msgstr "Hand over equipment to the requester"
+
+msgid "Préparer la feuille"
+msgstr "Prepare the form"
+
+msgid "Le matériel est attribué au bénéficiaire dans GLPI et lié au ticket ; la feuille est préparée en brouillon : vous la complétez (écran, accessoires…) puis l'envoyez. À la signature, un suivi avec le document signé est ajouté au ticket."
+msgstr "The equipment is assigned to the recipient in GLPI and linked to the ticket; the form is prepared as a draft: you complete it (monitor, accessories…) and send it. On signature, a follow-up with the signed document is added to the ticket."
+
+msgid "Aucun matériel disponible (sans utilisateur ou « en stock ») dans les types qui déclenchent une feuille."
+msgstr "No available equipment (without a user or “in stock”) among the types that trigger a form."
+
+msgid "Ticket lié :"
+msgstr "Linked ticket:"
+
+msgid "Rattacher à un ticket ouvert du bénéficiaire"
+msgstr "Link to an open ticket of the recipient"
+
+msgid "Rattacher"
+msgstr "Link"
+
+msgid "Résoudre le ticket lié quand la feuille est signée"
+msgstr "Solve the linked ticket when the form is signed"
+
+msgid "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."
+msgstr "A form prepared from a ticket (“Equipment handover” tab) always adds a follow-up with the signed document to the ticket; if this box is ticked, the ticket is also solved."

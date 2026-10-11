@@ -94,6 +94,7 @@ class Config extends Compat\Base\ConfigBase
         'return_returned_state'               => 0,
         'return_damaged_state'                => 0,
         'return_missing_ticket'               => 1,
+        'resolve_ticket_on_signature'         => 1,
         'return_states'                       => '[]',
         'donation_states'                     => '[]',
         'vente_states'                        => '[]',
@@ -633,6 +634,7 @@ class Config extends Compat\Base\ConfigBase
            'return_returned_state' => max(0, (int) ($input['return_returned_state'] ?? 0)),
            'return_damaged_state'  => max(0, (int) ($input['return_damaged_state'] ?? 0)),
            'return_missing_ticket' => (int) ($input['return_missing_ticket'] ?? 0),
+           'resolve_ticket_on_signature' => (int) ($input['resolve_ticket_on_signature'] ?? 0),
            'return_states'        => json_encode(array_map('intval', $input['return_states'] ?? [])),
            'donation_states'      => json_encode(array_map('intval', $input['donation_states'] ?? [])),
            'vente_states'         => json_encode(array_map('intval', $input['vente_states'] ?? [])),
@@ -824,6 +826,7 @@ class Config extends Compat\Base\ConfigBase
                 `return_returned_state` int unsigned NOT NULL DEFAULT 0,
                 `return_damaged_state` int unsigned NOT NULL DEFAULT 0,
                 `return_missing_ticket` tinyint NOT NULL DEFAULT 1,
+                `resolve_ticket_on_signature` tinyint NOT NULL DEFAULT 1,
                 `return_states` text,
                 `donation_states` text,
                 `vente_states` text,
@@ -896,6 +899,11 @@ class Config extends Compat\Base\ConfigBase
              // DEFAULT, ce qui rendrait la colonne NULL par defaut (constate en
              // conditions reelles : WHERE champ => 0 n'egale jamais NULL en SQL).
              $migration->addField($table, 'logo_force_children', 'bool', ['value' => 0, 'after' => 'logo_documents_id']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #183 : ticket resolu a la signature de la feuille.
+         if (!$DB->fieldExists($table, 'resolve_ticket_on_signature')) {
+             $migration->addField($table, 'resolve_ticket_on_signature', 'bool', ['value' => 1]);
              $migration->migrationOneTable($table);
          }
          // Issue #178 : controle du retour du materiel remis avec.

@@ -3684,3 +3684,67 @@ msgstr "Cambiar el kit"
 
 msgid "Appliquer ce kit"
 msgstr "Aplicar este kit"
+
+msgid "Remise de matériel"
+msgstr "Entrega de material"
+
+msgid "Ce type de matériel ne déclenche pas de feuille d'attribution (Configuration > Général)."
+msgstr "Este tipo de material no activa ninguna ficha de asignación (Configuración > General)."
+
+msgid "Le bénéficiaire doit être un demandeur du ticket."
+msgstr "El beneficiario debe ser un solicitante del ticket."
+
+msgid "Ce matériel est déjà attribué à cette personne."
+msgstr "Este material ya está asignado a esta persona."
+
+msgid "La feuille n'a pas pu être créée : vérifiez que l'attribution déclenche une feuille pour cette entité (Configuration > Général)."
+msgstr "No se pudo crear la ficha: compruebe que la asignación activa una ficha para esta entidad (Configuración > General)."
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket."
+msgstr "La ficha n.º %1$d (%2$s) para %3$s «%4$s» ha sido firmada. El documento firmado se adjunta al ticket."
+
+msgid "Le ticket n'a pas pu être résolu automatiquement après la signature (un champ obligatoire du ticket n'est sans doute pas renseigné, comme la catégorie) : résolvez-le manuellement."
+msgstr "El ticket no se pudo resolver automáticamente tras la firma (probablemente falta un campo obligatorio del ticket, como la categoría): resuélvalo manualmente."
+
+msgid "Feuille rattachée au ticket."
+msgstr "Ficha vinculada al ticket."
+
+msgid "Feuille détachée du ticket."
+msgstr "Ficha desvinculada del ticket."
+
+msgid "Feuille préparée en brouillon et rattachée au ticket : complétez-la puis envoyez-la."
+msgstr "Ficha preparada como borrador y vinculada al ticket: complétela y envíela."
+
+msgid "Compléter et envoyer"
+msgstr "Completar y enviar"
+
+msgid "Aucune feuille de remise rattachée à ce ticket."
+msgstr "Ninguna ficha de entrega vinculada a este ticket."
+
+msgid "Remettre du matériel au demandeur"
+msgstr "Entregar material al solicitante"
+
+msgid "Préparer la feuille"
+msgstr "Preparar la ficha"
+
+msgid "Le matériel est attribué au bénéficiaire dans GLPI et lié au ticket ; la feuille est préparée en brouillon : vous la complétez (écran, accessoires…) puis l'envoyez. À la signature, un suivi avec le document signé est ajouté au ticket."
+msgstr "El material se asigna al beneficiario en GLPI y se vincula al ticket; la ficha se prepara como borrador: la completa (pantalla, accesorios…) y la envía. Al firmar, se añade al ticket un seguimiento con el documento firmado."
+
+msgid "Aucun matériel disponible (sans utilisateur ou « en stock ») dans les types qui déclenchent une feuille."
+msgstr "No hay material disponible (sin usuario o «en stock») entre los tipos que activan una ficha."
+
+msgid "Ticket lié :"
+msgstr "Ticket vinculado:"
+
+msgid "Rattacher à un ticket ouvert du bénéficiaire"
+msgstr "Vincular a un ticket abierto del beneficiario"
+
+msgid "Rattacher"
+msgstr "Vincular"
+
+msgid "Résoudre le ticket lié quand la feuille est signée"
+msgstr "Resolver el ticket vinculado cuando se firma la ficha"
+
+msgid "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."
+msgstr "Una ficha preparada desde un ticket (pestaña «Entrega de material») siempre añade al ticket un seguimiento con el documento firmado; si esta casilla está marcada, el ticket también se resuelve."

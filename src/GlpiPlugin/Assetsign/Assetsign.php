@@ -480,6 +480,9 @@ class Assetsign extends Compat\Base\AssetsignBase
            'type_return'      => self::TYPE_RETURN,
            'kit'              => $this->isNewID($ID) ? null : $this->getKit(),
            'kit_completeness' => $this->isNewID($ID) ? null : $this->getKitCompleteness(),
+           // Issue #183 : ticket rattache et tickets ouverts du beneficiaire.
+           'linked_ticket'    => $this->isNewID($ID) || (int) ($this->fields['tickets_id'] ?? 0) === 0 ? null : self::ticketLabel((int) $this->fields['tickets_id']),
+           'open_tickets'     => $this->isNewID($ID) || !$this->isStillEditable() ? [] : $this->getBeneficiaryOpenTickets(),
            // Issue #181 : lignes « type d'element GLPI » du kit et objets reels choisis.
            'kit_item_lines'   => $this->isNewID($ID) ? [] : $this->getKitItemLines(),
            'csrf_token'   => \Session::getNewCSRFToken(),
@@ -593,6 +596,10 @@ class Assetsign extends Compat\Base\AssetsignBase
           $count = countElementsInTable(self::getTable(), ['users_id' => $item->getID(), 'is_deleted' => 0]);
           return self::createTabEntry(__('Attributions', 'assetsign'), $count);
       }
+      if ($item->getType() === 'Ticket') {
+          $count = countElementsInTable(self::getTable(), ['tickets_id' => $item->getID(), 'is_deleted' => 0]);
+          return self::createTabEntry(__('Remise de matériel', 'assetsign'), $count);
+      }
       if (!in_array($item->getType(), Config::getAllManageableItemtypes(), true)) {
           return '';
       }
@@ -612,6 +619,10 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
       if ($item->getType() === 'User') {
           self::showForUser((int) $item->getID());
+          return true;
+      }
+      if ($item instanceof \Ticket) {
+          self::showForTicket($item);
           return true;
       }
        self::showForItem($item);
@@ -1160,9 +1171,13 @@ class Assetsign extends Compat\Base\AssetsignBase
        // jusqu'au clic sur « Envoyer pour signature ».
        $technicianWaiting = self::isTechnicianWaiting();
        $mode = $config->getSendingMode();
-       $asDraft = $mode === Config::SENDING_MANUAL
+       // Issue #183 : remise demandee depuis un ticket -> toujours un brouillon, que le technicien
+       // complete puis envoie depuis la fiche (il y est redirige).
+       $tickets_id = (int) ($item->input['_assetsign_tickets_id'] ?? 0);
+       $asDraft = $tickets_id > 0
+           || $mode === Config::SENDING_MANUAL
            || ($mode === Config::SENDING_CONFIRM && $type === self::TYPE_HANDOVER && $technicianWaiting);
-       $askConfirmation = $asDraft && $type === self::TYPE_HANDOVER && $technicianWaiting;
+       $askConfirmation = $tickets_id === 0 && $asDraft && $type === self::TYPE_HANDOVER && $technicianWaiting;
 
        $assetsign = new self();
        $id = $assetsign->add([
@@ -1175,6 +1190,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'plugin_assetsign_kits_id'    => self::resolveKitForAutomaticCreation($item, $type),
            'type'                        => $type,
            'status'                      => $asDraft ? self::STATUS_DRAFT : self::STATUS_PENDING,
+           'tickets_id'                  => $tickets_id,
        ]);
 
       if (!$id) {
@@ -1199,7 +1215,7 @@ class Assetsign extends Compat\Base\AssetsignBase
          }
          if ($askConfirmation) {
              self::queueConfirmation($assetsign->getID());
-         } else if ($technicianWaiting) {
+         } else if ($technicianWaiting && $tickets_id === 0) {
              Session::addMessageAfterRedirect(
                  __('Feuille préparée en brouillon : rien n\'a été envoyé. Envoyez-la depuis l\'onglet Attributions du matériel quand vous le souhaitez.', 'assetsign')
              );
@@ -2606,6 +2622,190 @@ class Assetsign extends Compat\Base\AssetsignBase
        return $lines;
    }
 
+    /**
+     * Issue #183 : onglet « Remise de materiel » d'un ticket - feuilles rattachees et remise d'un
+     * materiel disponible a un demandeur du ticket.
+     */
+   public static function showForTicket(\Ticket $ticket): void {
+       global $DB, $CFG_GLPI;
+
+       $sheets = [];
+      foreach ($DB->request([
+          'FROM'  => self::getTable(),
+          'WHERE' => ['tickets_id' => $ticket->getID(), 'is_deleted' => 0],
+          'ORDER' => 'id DESC',
+      ]) as $row) {
+          $sheet = new self();
+          $sheet->fields = $row;
+          $target = $sheet->getTargetItem();
+          $beneficiary = $sheet->getBeneficiary();
+          $sheets[] = [
+              'id'          => (int) $row['id'],
+              'status'      => self::getStatuses()[(int) $row['status']] ?? '',
+              'is_draft'    => (int) $row['status'] === self::STATUS_DRAFT,
+              'item'        => self::getCanonicalItemtypeLabel((string) $row['itemtype']) . ' « ' . ($target['name'] ?? '') . ' »',
+              'beneficiary' => \formatUserName(0, $beneficiary['name'] ?? '', $beneficiary['realname'] ?? '', $beneficiary['firstname'] ?? ''),
+          ];
+      }
+
+       $requesters = [];
+      foreach ($ticket->getUsers(\CommonITILActor::REQUESTER) as $actor) {
+         if ((int) $actor['users_id'] > 0) {
+             $requesters[(int) $actor['users_id']] = \getUserName((int) $actor['users_id']);
+         }
+      }
+
+       $config = Config::getForEntity((int) $ticket->fields['entities_id']);
+       $managed = $config->getManagedItemtypes();
+       $probe = new self();
+       $probe->fields = ['id' => 0, 'entities_id' => (int) $ticket->fields['entities_id'], 'itemtype' => '', 'items_id' => 0];
+       $available = [];
+      foreach (AssetsignItem::getAvailableItems($probe) as $label => $rows) {
+          $rows = array_values(array_filter($rows, static fn (array $r): bool => in_array($r['itemtype'], $managed, true)));
+         if ($rows !== []) {
+             $available[$label] = $rows;
+         }
+      }
+
+       TemplateRenderer::getInstance()->display('@assetsign/ticket_tab.html.twig', [
+           'ticket'      => $ticket,
+           'sheets'      => $sheets,
+           'requesters'  => $requesters,
+           'available'   => $available,
+           'can_create'  => Session::haveRight(self::$rightname, UPDATE) && $ticket->canUpdateItem() && $requesters !== [],
+           'form_url'    => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/ticket_handover.php',
+           'sheet_url'   => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.form.php',
+           'csrf_token'  => Session::getNewCSRFToken(),
+       ]);
+   }
+
+    /**
+     * Issue #183 : remet un materiel au demandeur d'un ticket - attribution GLPI (champ Utilisateur),
+     * qui cree la feuille en brouillon rattachee au ticket, et lien materiel <-> ticket.
+     *
+     * @return self la feuille creee
+     */
+   public static function createFromTicket(\Ticket $ticket, string $itemtype, int $items_id, int $users_id): self {
+       $config = Config::getForEntity((int) $ticket->fields['entities_id']);
+      if (!in_array($itemtype, $config->getManagedItemtypes(), true) || !class_exists($itemtype)) {
+          throw new \RuntimeException(__('Ce type de matériel ne déclenche pas de feuille d\'attribution (Configuration > Général).', 'assetsign'));
+      }
+       $requesters = array_map(static fn (array $a): int => (int) $a['users_id'], $ticket->getUsers(\CommonITILActor::REQUESTER));
+      if (!in_array($users_id, $requesters, true)) {
+          throw new \RuntimeException(__('Le bénéficiaire doit être un demandeur du ticket.', 'assetsign'));
+      }
+       $item = new $itemtype();
+      if (!$item->getFromDB($items_id) || !$item->canUpdateItem()) {
+          throw new \RuntimeException(__('Élément introuvable ou non visible avec vos droits.', 'assetsign'));
+      }
+      if ((int) ($item->fields['users_id'] ?? 0) === $users_id) {
+          throw new \RuntimeException(__('Ce matériel est déjà attribué à cette personne.', 'assetsign'));
+      }
+
+       $item->update(['id' => $items_id, 'users_id' => $users_id, '_assetsign_tickets_id' => $ticket->getID()]);
+
+       $sheet = new self();
+      if (!$sheet->getFromDBByCrit(['itemtype' => $itemtype, 'items_id' => $items_id, 'tickets_id' => $ticket->getID(), 'status' => self::STATUS_DRAFT])) {
+          throw new \RuntimeException(__('La feuille n\'a pas pu être créée : vérifiez que l\'attribution déclenche une feuille pour cette entité (Configuration > Général).', 'assetsign'));
+      }
+       // Materiel visible sur le ticket (onglet Elements), comme une liaison faite a la main.
+       $link = new \Item_Ticket();
+      if (!$link->getFromDBByCrit(['tickets_id' => $ticket->getID(), 'itemtype' => $itemtype, 'items_id' => $items_id])) {
+          $link->add(['tickets_id' => $ticket->getID(), 'itemtype' => $itemtype, 'items_id' => $items_id]);
+      }
+       return $sheet;
+   }
+
+    /** @return array{id: int, label: string}|null */
+   private static function ticketLabel(int $tickets_id): ?array {
+       $ticket = new \Ticket();
+      if (!$ticket->getFromDB($tickets_id)) {
+          return null;
+      }
+       return ['id' => $tickets_id, 'label' => sprintf('#%d — %s', $tickets_id, (string) $ticket->fields['name'])];
+   }
+
+    /** Issue #183 : rattache la feuille a un ticket ouvert dont le beneficiaire est demandeur. */
+   public function linkTicket(int $tickets_id): void {
+      if ($tickets_id === 0) {
+          $this->update(['id' => $this->getID(), 'tickets_id' => 0]);
+          return;
+      }
+       $ticket = new \Ticket();
+      if (!$ticket->getFromDB($tickets_id) || !in_array((int) $this->fields['users_id'], array_map(static fn (array $a): int => (int) $a['users_id'], $ticket->getUsers(\CommonITILActor::REQUESTER)), true)) {
+          throw new \RuntimeException(__('Le bénéficiaire doit être un demandeur du ticket.', 'assetsign'));
+      }
+       $this->update(['id' => $this->getID(), 'tickets_id' => $tickets_id]);
+   }
+
+    /** @return array<int, string> tickets ouverts dont le beneficiaire est demandeur (id => libelle) */
+   public function getBeneficiaryOpenTickets(): array {
+       global $DB;
+
+       $tickets = [];
+      if ((int) $this->fields['users_id'] <= 0) {
+          return $tickets;
+      }
+      foreach ($DB->request([
+          'SELECT'     => ['glpi_tickets.id', 'glpi_tickets.name'],
+          'FROM'       => 'glpi_tickets',
+          'INNER JOIN' => ['glpi_tickets_users' => ['FKEY' => ['glpi_tickets_users' => 'tickets_id', 'glpi_tickets' => 'id']]],
+          'WHERE'      => [
+              'glpi_tickets_users.users_id' => (int) $this->fields['users_id'],
+              'glpi_tickets_users.type'     => \CommonITILActor::REQUESTER,
+              'glpi_tickets.is_deleted'     => 0,
+              'glpi_tickets.status'         => \Ticket::getNotSolvedStatusArray(),
+          ],
+          'ORDER'      => 'glpi_tickets.id DESC',
+          'LIMIT'      => 30,
+      ]) as $row) {
+          $tickets[(int) $row['id']] = sprintf('#%d — %s', (int) $row['id'], (string) $row['name']);
+      }
+       return $tickets;
+   }
+
+    /**
+     * Issue #183 : a la signature, suivi dans le ticket rattache (document signe joint au ticket) et,
+     * si l'entite le demande, ticket resolu.
+     */
+   private function notifyLinkedTicket(int $documents_id): void {
+       $tickets_id = (int) ($this->fields['tickets_id'] ?? 0);
+      if ($tickets_id <= 0) {
+          return;
+      }
+       $ticket = new \Ticket();
+      if (!$ticket->getFromDB($tickets_id)) {
+          return;
+      }
+      if ($documents_id > 0) {
+          (new Document_Item())->add(['documents_id' => $documents_id, 'itemtype' => 'Ticket', 'items_id' => $tickets_id]);
+      }
+       $target = $this->getTargetItem();
+       $text = sprintf(
+           __('La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket.', 'assetsign'),
+           $this->getID(),
+           self::getTypes()[(int) $this->fields['type']] ?? '',
+           self::getCanonicalItemtypeLabel((string) $this->fields['itemtype']),
+           (string) ($target['name'] ?? '')
+       );
+       // La signature se fait dans la session du BENEFICIAIRE : les messages de GLPI lies au ticket
+       // (champs obligatoires du gabarit...) ne doivent pas lui etre affiches.
+       $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
+       (new \ITILFollowup())->add(['itemtype' => 'Ticket', 'items_id' => $tickets_id, 'content' => $text, 'is_private' => 0]);
+       $config = Config::getForEntity((int) $this->fields['entities_id']);
+      if ((int) ($config->fields['resolve_ticket_on_signature'] ?? 1) === 1 && in_array((int) $ticket->fields['status'], \Ticket::getNotSolvedStatusArray(), true)) {
+         if (!(new \ITILSolution())->add(['itemtype' => 'Ticket', 'items_id' => $tickets_id, 'content' => $text])) {
+             // Ex. champ obligatoire du gabarit de ticket non renseigne (categorie...) : le technicien
+             // le voit dans le ticket au lieu d'une resolution silencieusement absente.
+             (new \ITILFollowup())->add(['itemtype' => 'Ticket', 'items_id' => $tickets_id, 'is_private' => 1, 'content' => __(
+                 'Le ticket n\'a pas pu être résolu automatiquement après la signature (un champ obligatoire du ticket n\'est sans doute pas renseigné, comme la catégorie) : résolvez-le manuellement.',
+                 'assetsign'
+             )]);
+         }
+      }
+       $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
+   }
+
     /** Retire un objet du parc de la fiche (id de la ligne) et regenere le PDF non signe. */
    public function removeInventoriedItem(int $assetsignitems_id): void {
       if (!$this->isStillEditable()) {
@@ -3113,6 +3313,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'document_id_signed' => $document->getID(),
            'date_signed'        => date('Y-m-d H:i:s'),
        ]);
+       $this->notifyLinkedTicket((int) $document->getID());
 
        Token::invalidateForAssetsign($this->getID());
       if ($notify) {
@@ -3191,6 +3392,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'date_signed'                => date('Y-m-d H:i:s'),
            'cosigner_pending_signature' => '',
        ]);
+       $this->notifyLinkedTicket((int) $document->getID());
 
        Token::invalidateForAssetsign($this->getID());
        NotificationEvent::raiseEvent('signed', $this);
@@ -3199,6 +3401,9 @@ class Assetsign extends Compat\Base\AssetsignBase
    private function attachDocument(string $filePath, string $name): Document {
        // Document::moveDocument() lit le fichier source dans GLPI_TMP_DIR :
        // $filePath doit y avoir ete ecrit prealablement (cf. SignatureStamper::apply()).
+       // Messages techniques du coeur (« Document copie avec succes ») : la signature se fait dans la
+       // session du signataire, qui n'a pas a les voir.
+       $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
        $document = new Document();
        $documents_id = $document->add([
            'name'          => $name,
@@ -3219,6 +3424,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'items_id'     => $this->fields['users_id'],
        ]);
 
+       $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
        return $document;
    }
 
@@ -3633,6 +3839,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                 `date_expired` timestamp NULL DEFAULT NULL,
                 `expiry_warning_sent` tinyint NOT NULL DEFAULT 0,
                 `draft_reminder_sent_at` timestamp NULL DEFAULT NULL,
+                `tickets_id` int unsigned NOT NULL DEFAULT 0,
                 `observations` text,
                 `beneficiary_comment` text,
                 `is_deleted` tinyint NOT NULL DEFAULT 0,
@@ -3660,6 +3867,12 @@ class Assetsign extends Compat\Base\AssetsignBase
              // Migration::fieldFormat() fait que 'value' produise reellement une
              // clause DEFAULT — cf. le commentaire equivalent dans Config::install().
              $migration->addField($table, 'expiry_warning_sent', 'bool', ['value' => 0, 'after' => 'date_expired']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #183 : ticket a l'origine de la remise (demande de materiel).
+         if (!$DB->fieldExists($table, 'tickets_id')) {
+             $migration->addField($table, 'tickets_id', 'integer', ['value' => 0, 'after' => 'items_id']);
+             $migration->addKey($table, 'tickets_id');
              $migration->migrationOneTable($table);
          }
          // Issue #179 : date du dernier rappel envoye pour un brouillon.

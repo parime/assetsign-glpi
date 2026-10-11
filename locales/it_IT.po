@@ -3694,3 +3694,67 @@ msgstr "Cambia il kit"
 
 msgid "Appliquer ce kit"
 msgstr "Applica questo kit"
+
+msgid "Remise de matériel"
+msgstr "Consegna di attrezzatura"
+
+msgid "Ce type de matériel ne déclenche pas de feuille d'attribution (Configuration > Général)."
+msgstr "Questo tipo di attrezzatura non attiva una scheda di assegnazione (Configurazione > Generale)."
+
+msgid "Le bénéficiaire doit être un demandeur du ticket."
+msgstr "Il beneficiario deve essere un richiedente del ticket."
+
+msgid "Ce matériel est déjà attribué à cette personne."
+msgstr "Questa attrezzatura è già assegnata a questa persona."
+
+msgid "La feuille n'a pas pu être créée : vérifiez que l'attribution déclenche une feuille pour cette entité (Configuration > Général)."
+msgstr "Impossibile creare la scheda: verifica che l'assegnazione attivi una scheda per questa entità (Configurazione > Generale)."
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket."
+msgstr "La scheda n. %1$d (%2$s) per %3$s «%4$s» è stata firmata. Il documento firmato è allegato al ticket."
+
+msgid "Le ticket n'a pas pu être résolu automatiquement après la signature (un champ obligatoire du ticket n'est sans doute pas renseigné, comme la catégorie) : résolvez-le manuellement."
+msgstr "Il ticket non è stato risolto automaticamente dopo la firma (probabilmente manca un campo obbligatorio del ticket, come la categoria): risolvilo manualmente."
+
+msgid "Feuille rattachée au ticket."
+msgstr "Scheda collegata al ticket."
+
+msgid "Feuille détachée du ticket."
+msgstr "Scheda scollegata dal ticket."
+
+msgid "Feuille préparée en brouillon et rattachée au ticket : complétez-la puis envoyez-la."
+msgstr "Scheda preparata come bozza e collegata al ticket: completala, poi inviala."
+
+msgid "Compléter et envoyer"
+msgstr "Completa e invia"
+
+msgid "Aucune feuille de remise rattachée à ce ticket."
+msgstr "Nessuna scheda di consegna collegata a questo ticket."
+
+msgid "Remettre du matériel au demandeur"
+msgstr "Consegna attrezzatura al richiedente"
+
+msgid "Préparer la feuille"
+msgstr "Prepara la scheda"
+
+msgid "Le matériel est attribué au bénéficiaire dans GLPI et lié au ticket ; la feuille est préparée en brouillon : vous la complétez (écran, accessoires…) puis l'envoyez. À la signature, un suivi avec le document signé est ajouté au ticket."
+msgstr "L'attrezzatura viene assegnata al beneficiario in GLPI e collegata al ticket; la scheda è preparata come bozza: la completi (monitor, accessori…) e la invii. Alla firma, al ticket viene aggiunto un followup con il documento firmato."
+
+msgid "Aucun matériel disponible (sans utilisateur ou « en stock ») dans les types qui déclenchent une feuille."
+msgstr "Nessuna attrezzatura disponibile (senza utente o «in magazzino») tra i tipi che attivano una scheda."
+
+msgid "Ticket lié :"
+msgstr "Ticket collegato:"
+
+msgid "Rattacher à un ticket ouvert du bénéficiaire"
+msgstr "Collega a un ticket aperto del beneficiario"
+
+msgid "Rattacher"
+msgstr "Collega"
+
+msgid "Résoudre le ticket lié quand la feuille est signée"
+msgstr "Risolvi il ticket collegato quando la scheda è firmata"
+
+msgid "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."
+msgstr "Una scheda preparata da un ticket (scheda «Consegna di attrezzatura») aggiunge sempre al ticket un followup con il documento firmato; se questa casella è selezionata, il ticket viene anche risolto."

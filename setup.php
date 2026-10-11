@@ -136,7 +136,8 @@ function plugin_init_assetsign(): void {
     // plutot que par itemtype/items_id) - retrouver d'un coup d'œil tout ce
     // qu'une personne a recu, sans avoir a savoir sur quel materiel chercher.
     Plugin::registerClass(\GlpiPlugin\Assetsign\Assetsign::class, [
-        'addtabon' => array_merge($manageableItemtypes, ['User']),
+        // Issue #183 : onglet « Remise de materiel » sur les tickets.
+        'addtabon' => array_merge($manageableItemtypes, ['User', 'Ticket']),
     ]);
     Plugin::registerClass(\GlpiPlugin\Assetsign\Config::class, [
         'addtabon' => ['Entity'],
