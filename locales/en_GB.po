@@ -3310,3 +3310,73 @@ msgstr "Destructions"
 
 msgid "Aucune fiche de don, vente ou destruction finalisée sur la période."
 msgstr "No donation, sale or destruction form completed over the period."
+
+#, php-format
+msgid "Affecté à %s"
+msgstr "Assigned to %s"
+
+msgid "Ajouter d'office le matériel connecté au document"
+msgstr "Automatically add connected equipment to the document"
+
+msgid "Ajouter les éléments connectés"
+msgstr "Add the connected items"
+
+msgid "Ajouter un élément du parc"
+msgstr "Add an inventory item"
+
+msgid "Ajouté automatiquement : connecté au matériel dans GLPI"
+msgstr "Added automatically: connected to the equipment in GLPI"
+
+msgid "Aucun matériel inventorié ajouté pour le moment."
+msgstr "No inventoried equipment added yet."
+
+msgid "C'est déjà le matériel principal de cette fiche."
+msgstr "This is already the main equipment of this form."
+
+msgid "Cet élément figure déjà sur cette fiche."
+msgstr "This item is already on this form."
+
+msgid "Cet élément figure déjà sur une autre fiche en attente de signature."
+msgstr "This item is already on another form awaiting signature."
+
+msgid "Cette fiche est déjà signée : sa liste de matériel ne peut plus changer."
+msgstr "This form is already signed: its equipment list can no longer change."
+
+msgid "Connecté à ce matériel dans GLPI"
+msgstr "Connected to this equipment in GLPI"
+
+msgid "Connecté"
+msgstr "Connected"
+
+msgid "Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire."
+msgstr "In GLPI, this item is assigned to someone other than the recipient."
+
+msgid "Marque / modèle"
+msgstr "Make / model"
+
+msgid "Matériel inventorié remis avec"
+msgstr "Inventoried equipment handed over with it"
+
+msgid "Nom"
+msgstr "Name"
+
+msgid "Si activé, les écrans, périphériques et téléphones connectés au matériel dans GLPI (onglet Connexions) sont ajoutés automatiquement aux fiches créées par une affectation, avec leur n° de série et leur modèle. Sinon, ils sont seulement proposés sur la fiche."
+msgstr "If enabled, monitors, devices and phones connected to the equipment in GLPI (Connections tab) are added automatically to forms created by an assignment, with their serial number and model. Otherwise, they are only suggested on the form."
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Écrans, stations d'accueil, téléphones… déjà inventoriés dans GLPI : leur modèle, leur n° de série et leur n° d'inventaire sont repris sur le document, sans ressaisie."
+msgstr "Monitors, docking stations, phones… already inventoried in GLPI: their model, serial number and inventory number are copied onto the document, with no re-typing."
+
+msgid "Élément ajouté : il apparaît sur le document."
+msgstr "Item added: it appears on the document."
+
+msgid "Élément introuvable ou non visible avec vos droits."
+msgstr "Item not found or not visible with your rights."
+
+#, php-format
+msgid "%d élément connecté ajouté."
+msgid_plural "%d éléments connectés ajoutés."
+msgstr[0] "%d connected item added."
+msgstr[1] "%d connected items added."

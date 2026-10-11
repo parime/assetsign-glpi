@@ -451,5 +451,89 @@
         </div>
       </form>
     {% endif %}
+
+    {# Issue #166 : objets du parc GLPI remis avec le materiel, n° de serie et modele repris sur le PDF #}
+    <h3 class="mt-4"><i class="ti ti-devices me-1"></i>{{ __('Matériel inventorié remis avec', 'assetsign') }}</h3>
+    <p class="text-muted small">{{ __('Écrans, stations d\'accueil, téléphones… déjà inventoriés dans GLPI : leur modèle, leur n° de série et leur n° d\'inventaire sont repris sur le document, sans ressaisie.', 'assetsign') }}</p>
+    {% if inventoried_items|length %}
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>{{ __('Type', 'assetsign') }}</th>
+            <th>{{ __('Nom', 'assetsign') }}</th>
+            <th>{{ __('Marque / modèle', 'assetsign') }}</th>
+            <th>{{ __('N° de série', 'assetsign') }}</th>
+            <th>{{ __('N° d\'inventaire', 'assetsign') }}</th>
+            {% if can_edit_accessories %}<th></th>{% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in inventoried_items %}
+            <tr>
+              <td>{{ i.type_label }}</td>
+              <td>
+                <a href="{{ i.itemtype|itemtype_form_path(i.items_id) }}">{{ i.name|default('#' ~ i.items_id) }}</a>
+                {% if i.is_automatic %}
+                  <span class="badge bg-blue-lt ms-1" title="{{ __('Ajouté automatiquement : connecté au matériel dans GLPI', 'assetsign') }}"><i class="ti ti-plug-connected"></i> {{ __('Connecté', 'assetsign') }}</span>
+                {% endif %}
+                {% if i.assigned_to_other %}
+                  <span class="badge bg-orange-lt ms-1" title="{{ __('Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire.', 'assetsign') }}"><i class="ti ti-alert-triangle"></i> {{ __('Affecté à %s', 'assetsign')|format(i.assigned_to_other) }}</span>
+                {% endif %}
+              </td>
+              <td>{{ [i.manufacturer, i.model]|filter(v => v)|join(' ')|default('-') }}</td>
+              <td>{{ i.serial|default('-') }}</td>
+              <td>{{ i.otherserial|default('-') }}</td>
+              {% if can_edit_accessories %}
+                <td>
+                  <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">
+                    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="id" value="{{ item.fields.id }}">
+                    <input type="hidden" name="assetsignitems_id" value="{{ i.id }}">
+                    <button type="submit" name="remove_inventoried_item" class="btn btn-sm btn-outline-danger">{{ __('Retirer', 'assetsign') }}</button>
+                  </form>
+                </td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-muted">{{ __('Aucun matériel inventorié ajouté pour le moment.', 'assetsign') }}</p>
+    {% endif %}
+
+    {% if can_edit_accessories and suggested_items|length %}
+      <div class="alert alert-info">
+        <div class="d-flex align-items-start">
+          <i class="ti ti-plug-connected me-2 mt-1"></i>
+          <div class="flex-fill">
+            <strong>{{ __('Connecté à ce matériel dans GLPI', 'assetsign') }}</strong>
+            <ul class="mb-2">
+              {% for s in suggested_items %}
+                <li>{{ s.type_label }} — {{ s.name|default('#' ~ s.items_id) }}{% if s.serial %} ({{ __('N° de série', 'assetsign') }} {{ s.serial }}){% endif %}</li>
+              {% endfor %}
+            </ul>
+            <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">
+              <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="id" value="{{ item.fields.id }}">
+              <button type="submit" name="add_connected_items" class="btn btn-sm btn-primary"><i class="ti ti-plus me-1"></i>{{ __('Ajouter les éléments connectés', 'assetsign') }}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if can_edit_accessories %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="row g-2 align-items-end">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-auto">
+          <label class="form-label">{{ __('Ajouter un élément du parc', 'assetsign') }}</label>
+          {% do call('Dropdown::showSelectItemFromItemtypes', [{'itemtype_name': 'inventoried_itemtype', 'items_id_name': 'inventoried_items_id', 'itemtypes': inventoried_itemtypes, 'entity_restrict': -1}]) %}
+        </div>
+        <div class="col-auto">
+          <button type="submit" name="add_inventoried_item" class="btn btn-secondary">{{ __('Ajouter', 'assetsign') }}</button>
+        </div>
+      </form>
+    {% endif %}
   </div>
 </div>

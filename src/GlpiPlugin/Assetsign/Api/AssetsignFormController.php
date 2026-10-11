@@ -85,6 +85,30 @@ final class AssetsignFormController
        $assetsign->removeAccessory((int) ($post['plugin_assetsign_accessories_id'] ?? 0));
    }
 
+    /**
+     * Issue #166 : ajoute un objet du parc GLPI a la fiche.
+     *
+     * @return array{0: string, 1: bool} message a afficher et indicateur d'erreur
+     */
+   public function addInventoriedItem(Assetsign $assetsign, array $post): array {
+       $error = $assetsign->addInventoriedItem(
+           (string) ($post['inventoried_itemtype'] ?? ''),
+           (int) ($post['inventoried_items_id'] ?? 0)
+       );
+
+       return $error === null ? [__('Élément ajouté : il apparaît sur le document.', 'assetsign'), false] : [$error, true];
+   }
+
+   public function addConnectedItems(Assetsign $assetsign): string {
+       $added = $assetsign->attachConnectedItems();
+
+       return sprintf(_n('%d élément connecté ajouté.', '%d éléments connectés ajoutés.', $added, 'assetsign'), $added);
+   }
+
+   public function removeInventoriedItem(Assetsign $assetsign, array $post): void {
+       $assetsign->removeInventoriedItem((int) ($post['assetsignitems_id'] ?? 0));
+   }
+
    public function updateObservations(Assetsign $assetsign, array $post): void {
        $assetsign->updateObservations((string) ($post['observations'] ?? ''));
    }

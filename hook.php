@@ -11,6 +11,7 @@ use Glpi\Cache\CacheManager;
 use GlpiPlugin\Assetsign\Accessory;
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\AssetsignAccessory;
+use GlpiPlugin\Assetsign\AssetsignItem;
 use GlpiPlugin\Assetsign\Attestation;
 use GlpiPlugin\Assetsign\Campaign;
 use GlpiPlugin\Assetsign\ChecklistItem;
@@ -292,6 +293,8 @@ function plugin_assetsign_install(): bool {
     Campaign::install($migration);
     Attestation::install($migration);
     AssetsignAccessory::install($migration);
+    // Issue #166 : objets du parc GLPI remis avec le materiel (n° de serie, modele...).
+    AssetsignItem::install($migration);
     VenteDetails::install($migration);
     // Meme motif 1-vers-1 que VenteDetails ci-dessus (issue #78, "fin de vie
     // structuree") : Don et Destruction ont chacun leur propre table dediee.
@@ -422,6 +425,7 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_movements',
         'glpi_plugin_assetsign_tokens',
         'glpi_plugin_assetsign_assetsignaccessories',
+        'glpi_plugin_assetsign_assetsignitems',
         'glpi_plugin_assetsign_ventedetails',
         'glpi_plugin_assetsign_dondetails',
         'glpi_plugin_assetsign_destructiondetails',
