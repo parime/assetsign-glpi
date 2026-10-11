@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Les messages techniques de GLPI (« Création du répertoire », « Document copié avec succès »)
+  ne s'affichent plus à l'envoi immédiat d'une feuille (attribution ou restitution).
 - **GLPI 12** : les pages qui affichent « élément introuvable » ou « accès refusé » (fiche,
   attestation, campagne, départ, maintenance, mouvement, aperçu, étiquette QR, configuration)
   provoquaient une erreur 500 sur GLPI 12, qui a supprimé `Html::displayNotFoundError()` et
@@ -47,6 +49,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Restitution qui reprend la remise** (issue #178) : la feuille de restitution reprend les éléments
+  du parc remis avec le poste (dernière attribution envoyée ou signée, repérée avant son éventuelle
+  annulation). Contrôle du retour élément par élément — Rendu / Manquant / Abîmé, commentaire —
+  repris sur le PDF ; à l'enregistrement, un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI
+  et prend le statut configuré, un élément manquant reste à la personne et peut ouvrir un ticket lié.
 - **Matériel disponible proposé en premier** (issue #180) : pour ajouter un élément à une feuille
   (fiche et fenêtre d'attribution), liste « Matériel disponible » regroupée par type — sans
   utilisateur ou dans un statut « en stock » (nouveau réglage), pas déjà sur une autre feuille en

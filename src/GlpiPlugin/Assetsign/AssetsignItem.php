@@ -25,6 +25,12 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
    public const ERROR_ALREADY_LISTED = 'already_listed';
    public const ERROR_ON_OTHER_SHEET = 'on_other_sheet';
 
+   /* Issue #178 : etat de l'element au retour (feuilles de restitution). */
+   public const RETURN_PENDING  = 0;
+   public const RETURN_RETURNED = 1;
+   public const RETURN_MISSING  = 2;
+   public const RETURN_DAMAGED  = 3;
+
    /** Materiel physique natif que l'on remet a une personne (pas de licence, certificat, local...). */
    private const PHYSICAL_ITEMTYPES = ['Computer', 'Monitor', 'Peripheral', 'Phone', 'Printer', 'NetworkEquipment'];
 
@@ -263,6 +269,16 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
        return $groups;
    }
 
+   /** @return array<int, string> libelles des etats au retour */
+   public static function getReturnStates(): array {
+       return [
+           self::RETURN_PENDING  => __('À contrôler', 'assetsign'),
+           self::RETURN_RETURNED => __('Rendu', 'assetsign'),
+           self::RETURN_MISSING  => __('Manquant', 'assetsign'),
+           self::RETURN_DAMAGED  => __('Abîmé', 'assetsign'),
+       ];
+   }
+
    public static function detach(int $assetsigns_id, int $id): void {
        global $DB;
        $DB->delete(self::getTable(), ['id' => $id, 'plugin_assetsign_assetsigns_id' => $assetsigns_id]);
@@ -342,11 +358,19 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
                 `serial` varchar(255) NOT NULL DEFAULT '',
                 `otherserial` varchar(255) NOT NULL DEFAULT '',
                 `is_automatic` tinyint NOT NULL DEFAULT 0,
+                `return_state` tinyint NOT NULL DEFAULT 0,
+                `return_comment` varchar(255) NOT NULL DEFAULT '',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `unicity` (`plugin_assetsign_assetsigns_id`,`itemtype`,`items_id`),
                 KEY `item` (`itemtype`,`items_id`),
                 CONSTRAINT `fk_ai_assetsign` FOREIGN KEY (`plugin_assetsign_assetsigns_id`) REFERENCES `glpi_plugin_assetsign_assetsigns` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+      }
+       // Issue #178 : etat de chaque element au retour.
+      if (!$DB->fieldExists($table, 'return_state')) {
+          $migration->addField($table, 'return_state', 'integer', ['value' => 0, 'after' => 'is_automatic']);
+          $migration->addField($table, 'return_comment', 'string', ['value' => '', 'after' => 'return_state']);
+          $migration->migrationOneTable($table);
       }
    }
 }

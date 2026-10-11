@@ -543,6 +543,58 @@
       <p class="text-muted">{{ __('Aucun matériel inventorié ajouté pour le moment.', 'assetsign') }}</p>
     {% endif %}
 
+    {# Issue #178 : controle du retour, element par element (feuilles de restitution) #}
+    {% if is_return|default(false) and inventoried_items|default([])|length %}
+      {% set state_badges = {0: 'bg-secondary-lt', 1: 'bg-green-lt', 2: 'bg-red-lt', 3: 'bg-orange-lt'} %}
+      <div class="card mt-3 mb-3">
+        <div class="card-header"><h4 class="card-title"><i class="ti ti-checklist me-1"></i>{{ __('Contrôle du retour', 'assetsign') }}</h4></div>
+        <div class="card-body">
+          <p class="text-muted small">{{ __('Indiquez pour chaque élément s\'il est rendu, manquant ou abîmé : l\'état figure sur le document, et GLPI est mis à jour à l\'enregistrement (élément rendu ou abîmé : plus d\'utilisateur et statut configuré ; élément manquant : ticket si l\'option est active).', 'assetsign') }}</p>
+          <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
+            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="id" value="{{ item.fields.id }}">
+            <table class="table table-sm table-vcenter">
+              <thead>
+                <tr>
+                  <th>{{ __('Élément', 'assetsign') }}</th>
+                  <th>{{ __('État au retour', 'assetsign') }}</th>
+                  <th>{{ __('Commentaire', 'assetsign') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in inventoried_items %}
+                  <tr>
+                    <td>{{ i.type_label }} — {{ i.name|default('#' ~ i.items_id) }}{% if i.serial %} <span class="text-muted small">({{ i.serial }})</span>{% endif %}</td>
+                    <td>
+                      {% if can_edit_accessories %}
+                        <select name="return_state[{{ i.id }}]" class="form-select form-select-sm">
+                          {% for value, label in return_states|default({}) %}
+                            <option value="{{ value }}" {{ i.return_state|default(0) == value ? 'selected' : '' }}>{{ label }}</option>
+                          {% endfor %}
+                        </select>
+                      {% else %}
+                        <span class="badge {{ state_badges[i.return_state|default(0)] }}">{{ return_states[i.return_state|default(0)] }}</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if can_edit_accessories %}
+                        <input type="text" name="return_comment[{{ i.id }}]" class="form-control form-control-sm" value="{{ i.return_comment|default('') }}" maxlength="255">
+                      {% else %}
+                        {{ i.return_comment|default('') }}
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% if can_edit_accessories %}
+              <button type="submit" name="save_return_check" class="btn btn-primary btn-sm"><i class="ti ti-device-floppy me-1"></i>{{ __('Enregistrer le contrôle du retour', 'assetsign') }}</button>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    {% endif %}
+
     {% if can_edit_accessories and suggested_items|default([])|length %}
       <div class="alert alert-info">
         <div class="d-flex align-items-start">

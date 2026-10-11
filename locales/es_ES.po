@@ -3585,3 +3585,68 @@ msgstr "Estados considerados «en stock»"
 
 msgid "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."
 msgstr "El material sin usuario, o en uno de estos estados, se propone primero al añadir un elemento a una ficha."
+
+msgid "À contrôler"
+msgstr "Por comprobar"
+
+msgid "Rendu"
+msgstr "Devuelto"
+
+msgid "Manquant"
+msgstr "Falta"
+
+msgid "Abîmé"
+msgstr "Dañado"
+
+msgid "Le contrôle du retour n'est plus modifiable sur cette feuille."
+msgstr "El control de la devolución ya no se puede modificar en esta ficha."
+
+#, php-format
+msgid "%1$s « %2$s » n'a pas été rendu avec %3$s par %4$s (feuille de restitution n° %5$d)."
+msgstr "%1$s «%2$s» no fue devuelto con %3$s por %4$s (ficha de devolución n.º %5$d)."
+
+#, php-format
+msgid "Matériel non rendu : %s"
+msgstr "Material no devuelto: %s"
+
+msgid "Contrôle du retour enregistré."
+msgstr "Control de la devolución guardado."
+
+msgid "Contrôle du retour"
+msgstr "Control de la devolución"
+
+msgid "Indiquez pour chaque élément s'il est rendu, manquant ou abîmé : l'état figure sur le document, et GLPI est mis à jour à l'enregistrement (élément rendu ou abîmé : plus d'utilisateur et statut configuré ; élément manquant : ticket si l'option est active)."
+msgstr "Indique para cada elemento si está devuelto, falta o está dañado: el estado figura en el documento, y GLPI se actualiza al guardar (elemento devuelto o dañado: sin usuario y estado configurado; elemento que falta: ticket si la opción está activa)."
+
+msgid "Élément"
+msgstr "Elemento"
+
+msgid "État au retour"
+msgstr "Estado en la devolución"
+
+msgid "Enregistrer le contrôle du retour"
+msgstr "Guardar el control de la devolución"
+
+msgid "Statut d'un élément rendu"
+msgstr "Estado de un elemento devuelto"
+
+msgid "Statut d'un élément rendu abîmé"
+msgstr "Estado de un elemento devuelto dañado"
+
+msgid "À la restitution, le matériel remis avec le poste est repris sur la feuille : un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI et prend le statut choisi ci-dessus."
+msgstr "En la devolución, el material entregado con el equipo se recoge en la ficha: un elemento devuelto o dañado deja de tener usuario en GLPI y recibe el estado elegido arriba."
+
+msgid "Ouvrir un ticket pour un élément manquant au retour"
+msgstr "Abrir un ticket para un elemento que falta en la devolución"
+
+#, php-format
+msgid "%d élément remis en stock dans GLPI."
+msgid_plural "%d éléments remis en stock dans GLPI."
+msgstr[0] "%d elemento devuelto al stock en GLPI."
+msgstr[1] "%d elementos devueltos al stock en GLPI."
+
+#, php-format
+msgid "%d ticket ouvert pour un élément manquant."
+msgid_plural "%d tickets ouverts pour des éléments manquants."
+msgstr[0] "%d ticket abierto para un elemento que falta."
+msgstr[1] "%d tickets abiertos para elementos que faltan."

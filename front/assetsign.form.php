@@ -139,6 +139,17 @@ if (isset($_POST['discard_draft'])) {
     Html::back();
 }
 
+// Issue #178 : controle du retour du materiel remis avec.
+if (isset($_POST['save_return_check'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       Session::addMessageAfterRedirect($controller->saveReturnCheck($assetsign, $_POST));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
+}
+
 // Issue #166 : objets du parc GLPI remis avec le materiel.
 if (isset($_POST['add_inventoried_item'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);

@@ -126,6 +126,20 @@ final class AssetsignFormController
        return __('Feuille modifiée.', 'assetsign');
    }
 
+    /** Issue #178 : enregistre le controle du retour et resume ce qui a ete fait dans GLPI. */
+   public function saveReturnCheck(Assetsign $assetsign, array $post): string {
+       $summary = $assetsign->saveReturnCheck((array) ($post['return_state'] ?? []), (array) ($post['return_comment'] ?? []));
+
+       $parts = [__('Contrôle du retour enregistré.', 'assetsign')];
+      if ($summary['returned'] + $summary['damaged'] > 0) {
+          $parts[] = sprintf(_n('%d élément remis en stock dans GLPI.', '%d éléments remis en stock dans GLPI.', $summary['returned'] + $summary['damaged'], 'assetsign'), $summary['returned'] + $summary['damaged']);
+      }
+      if ($summary['tickets'] > 0) {
+          $parts[] = sprintf(_n('%d ticket ouvert pour un élément manquant.', '%d tickets ouverts pour des éléments manquants.', $summary['tickets'], 'assetsign'), $summary['tickets']);
+      }
+       return implode(' ', $parts);
+   }
+
    public function discardDraft(Assetsign $assetsign): string {
        $assetsign->cancelRequest();
 
