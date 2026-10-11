@@ -391,6 +391,9 @@ class Assetsign extends Compat\Base\AssetsignBase
            'inventoried_items'    => $this->isNewID($ID) ? [] : $this->getInventoriedItems(),
            'suggested_items'      => $this->isNewID($ID) || !$this->isStillEditable() ? [] : $this->getSuggestedConnectedItems(),
            'inventoried_itemtypes' => AssetsignItem::getAllowedItemtypes(),
+           // Issue #163 : brouillon modifiable avant l'envoi (beneficiaire, modele, apercu).
+           'is_draft'             => !$this->isNewID($ID) && (int) $this->fields['status'] === self::STATUS_DRAFT,
+           'draft_template_condition' => ['type' => (int) ($this->fields['type'] ?? 0), 'is_active' => 1],
            // Le champ Observations est desactivable globalement (Config::enable_observations) :
            // une entite qui n'en a pas l'usage ne voit meme pas la section.
            'observations_enabled' => !$this->isNewID($ID)
@@ -846,6 +849,13 @@ class Assetsign extends Compat\Base\AssetsignBase
           return;
       }
 
+       // Issue #163 : l'inventaire automatique peut vider puis remettre le champ Utilisateur (agent qui
+       // ne remonte plus l'utilisateur, mouvement interne...) ; sur demande, ces changements ne
+       // declenchent aucune feuille. GLPI marque ces mises a jour par '_auto' (MainAsset::handleInput()).
+      if ((int) ($config->fields['ignore_inventory_changes'] ?? 0) === 1 && !empty($item->input['_auto'])) {
+          return;
+      }
+
        // Le declenchement par affectation (users_id) est prioritaire : s'il a
        // agi, on n'evalue pas aussi le declenchement par Etat pour la meme
        // requete (evite de creer deux assetsigns si un technicien change les
@@ -1120,8 +1130,14 @@ class Assetsign extends Compat\Base\AssetsignBase
        self::cancelPendingAssetsignsFor($item);
 
        // Issue #170 : attribution faite par un technicien depuis la fiche du materiel -> brouillon,
-       // confirme (et complete) dans une fenetre avant tout envoi. Sinon, envoi immediat.
-       $askConfirmation = $type === self::TYPE_HANDOVER && self::shouldAskConfirmation($config);
+       // confirme (et complete) dans une fenetre avant tout envoi.
+       // Issue #163 : en mode manuel, toute feuille declenchee automatiquement reste en brouillon
+       // jusqu'au clic sur « Envoyer pour signature ».
+       $technicianWaiting = self::isTechnicianWaiting();
+       $mode = $config->getSendingMode();
+       $asDraft = $mode === Config::SENDING_MANUAL
+           || ($mode === Config::SENDING_CONFIRM && $type === self::TYPE_HANDOVER && $technicianWaiting);
+       $askConfirmation = $asDraft && $type === self::TYPE_HANDOVER && $technicianWaiting;
 
        $assetsign = new self();
        $id = $assetsign->add([
@@ -1133,7 +1149,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'plugin_assetsign_templates_id'  => $template ? $template->getID() : 0,
            'plugin_assetsign_kits_id'    => self::resolveKitForAutomaticCreation($item, $type),
            'type'                        => $type,
-           'status'                      => $askConfirmation ? self::STATUS_DRAFT : self::STATUS_PENDING,
+           'status'                      => $asDraft ? self::STATUS_DRAFT : self::STATUS_PENDING,
        ]);
 
       if (!$id) {
@@ -1149,10 +1165,18 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        $assetsign->getFromDB($id);
-      if ($askConfirmation) {
-          // Elements connectes au poste pre-coches dans la fenetre (decochables avant l'envoi).
-          $assetsign->attachConnectedItems(true, false);
-          self::queueConfirmation($assetsign->getID());
+      if ($asDraft) {
+         if ($type === self::TYPE_HANDOVER) {
+             // Elements connectes au poste pre-coches (decochables avant l'envoi).
+             $assetsign->attachConnectedItems(true, false);
+         }
+         if ($askConfirmation) {
+             self::queueConfirmation($assetsign->getID());
+         } else if ($technicianWaiting) {
+             Session::addMessageAfterRedirect(
+                 __('Feuille préparée en brouillon : rien n\'a été envoyé. Envoyez-la depuis l\'onglet Attributions du matériel quand vous le souhaitez.', 'assetsign')
+             );
+         }
           return;
       }
        $assetsign->attachConnectedItemsIfConfigured();
@@ -1165,8 +1189,8 @@ class Assetsign extends Compat\Base\AssetsignBase
      * l'onglet). Inventaire automatique, actions massives, ligne de commande, taches planifiees : envoi
      * immediat comme avant, pour ne jamais bloquer une remise.
      */
-   private static function shouldAskConfirmation(Config $config): bool {
-      if ((int) ($config->fields['confirm_before_sending'] ?? 1) !== 1 || \isCommandLine() || !Session::getLoginUserID()) {
+   private static function isTechnicianWaiting(): bool {
+      if (\isCommandLine() || !Session::getLoginUserID()) {
           return false;
       }
        $path = (string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
@@ -1230,6 +1254,52 @@ class Assetsign extends Compat\Base\AssetsignBase
        $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
        $this->launchWorkflow();
        $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
+   }
+
+    /**
+     * Issue #163 : avant l'envoi, le technicien peut encore changer le beneficiaire (fiche interne)
+     * et le modele de document (meme type de fiche, modele actif). Brouillon uniquement : une fois
+     * envoyee, la feuille est entre les mains du beneficiaire.
+     */
+   public function updateDraft(int $users_id, int $templates_id): void {
+      if ((int) $this->fields['status'] !== self::STATUS_DRAFT) {
+          throw new \RuntimeException(__('Cette feuille a déjà été envoyée.', 'assetsign'));
+      }
+       $input = ['id' => $this->getID()];
+
+      if ((int) ($this->fields['beneficiary_type'] ?? self::BENEFICIARY_INTERNAL) === self::BENEFICIARY_INTERNAL
+          && $users_id > 0 && $users_id !== (int) $this->fields['users_id']) {
+          $user = new \User();
+         if (!$user->getFromDB($users_id) || !(int) $user->fields['is_active'] || (int) $user->fields['is_deleted']) {
+             throw new \RuntimeException(__('Bénéficiaire introuvable ou inactif.', 'assetsign'));
+         }
+          $input['users_id'] = $users_id;
+      }
+
+      if ($templates_id !== (int) $this->fields['plugin_assetsign_templates_id']) {
+          $template = new Template();
+         if ($templates_id > 0 && (!$template->getFromDB($templates_id)
+             || (int) $template->fields['type'] !== (int) $this->fields['type']
+             || !(int) $template->fields['is_active'])) {
+             throw new \RuntimeException(__('Ce modèle de document ne correspond pas à ce type de fiche.', 'assetsign'));
+         }
+          $input['plugin_assetsign_templates_id'] = $templates_id;
+      }
+
+      if (count($input) > 1) {
+          $this->update($input);
+          $this->getFromDB($this->getID());
+         if ((int) $this->fields['document_id_unsigned'] > 0) {
+             $this->regenerateUnsignedPdf();
+         }
+      }
+   }
+
+    /** Issue #163 : apercu du document tel qu'il partira, genere a la volee (rien n'est enregistre). */
+   public function renderDraftPreviewPdf(): string {
+       AssetsignItem::refreshSnapshots($this->getID());
+       $builder = new Pdf\HandoverPdfBuilder();
+       return $builder->renderPdf($builder->renderHtml($this));
    }
 
     /** Contenu de la fenetre de confirmation (issue #170), insere par plugin_assetsign_post_item_form(). */

@@ -3455,3 +3455,54 @@ msgstr "Compruebe lo que se entrega con él y envíe la ficha para firma."
 
 msgid "Élément déjà inventorié dans GLPI"
 msgstr "Elemento ya inventariado en GLPI"
+
+msgid "Feuille préparée en brouillon : rien n'a été envoyé. Envoyez-la depuis l'onglet Attributions du matériel quand vous le souhaitez."
+msgstr "Ficha preparada como borrador: no se ha enviado nada. Envíela desde la pestaña Asignaciones del material cuando lo desee."
+
+msgid "Envoi des feuilles déclenchées automatiquement"
+msgstr "Envío de las fichas activadas automáticamente"
+
+msgid "Demander confirmation à l'attribution (recommandé)"
+msgstr "Pedir confirmación en la asignación (recomendado)"
+
+msgid "Manuel : préparer en brouillon, envoi par bouton"
+msgstr "Manual: preparar como borrador, envío con un botón"
+
+msgid "Immédiat : envoyer sans rien demander"
+msgstr "Inmediato: enviar sin preguntar"
+
+msgid "Confirmation : attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout ; sans technicien devant l'écran (inventaire automatique, actions massives), elle part directement."
+msgstr "Confirmación: asignar un material desde su ficha abre una ventana para completar la ficha (pantallas, periféricos, teléfonos…) y elegir enviarla ahora, más tarde o no enviarla; sin un técnico ante la pantalla (inventario automático, acciones masivas), se envía directamente."
+
+msgid "Manuel : aucune feuille ne part toute seule ; elles attendent en brouillon, avec un bouton « Envoyer pour signature » dans l'onglet Attributions du matériel."
+msgstr "Manual: ninguna ficha se envía sola; esperan como borrador, con un botón «Enviar para firma» en la pestaña Asignaciones del material."
+
+msgid "Ignorer les changements faits par l'inventaire automatique"
+msgstr "Ignorar los cambios realizados por el inventario automático"
+
+msgid "Si activé, quand l'inventaire automatique vide ou change le champ Utilisateur d'un matériel (agent qui ne remonte plus l'utilisateur, mouvement interne…), aucune feuille n'est créée ni envoyée. Seules les attributions faites par une personne déclenchent une feuille."
+msgstr "Si se activa, cuando el inventario automático vacía o cambia el campo Usuario de un material (agente que ya no informa del usuario, movimiento interno…), no se crea ni se envía ninguna ficha. Solo las asignaciones hechas por una persona activan una ficha."
+
+msgid "Bénéficiaire introuvable ou inactif."
+msgstr "Beneficiario no encontrado o inactivo."
+
+msgid "Ce modèle de document ne correspond pas à ce type de fiche."
+msgstr "Esta plantilla de documento no corresponde a este tipo de ficha."
+
+msgid "Feuille modifiée."
+msgstr "Ficha modificada."
+
+msgid "Préparer la feuille avant l'envoi"
+msgstr "Preparar la ficha antes del envío"
+
+msgid "Modèle de document"
+msgstr "Plantilla de documento"
+
+msgid "Aperçu du document"
+msgstr "Vista previa del documento"
+
+msgid "Modifier la feuille"
+msgstr "Modificar la ficha"
+
+msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
+msgstr "El material entregado con él, los accesorios, las observaciones, el kit y el estado se completan más abajo en esta página. No se envía nada hasta que haga clic en «Enviar para firma»."

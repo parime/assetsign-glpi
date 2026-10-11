@@ -25,6 +25,25 @@ if (!$assetsign->getFromDB($id) || !$assetsign->can($id, READ)) {
     Html::displayNotFoundError();
 }
 
+// Issue #163 : apercu du brouillon tel qu'il partira (PDF genere a la volee, rien n'est enregistre).
+if (isset($_GET['preview_draft'])) {
+    Session::checkRight(Assetsign::$rightname, READ);
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: inline; filename="apercu-feuille-' . $assetsign->getID() . '.pdf"');
+    echo $assetsign->renderDraftPreviewPdf();
+    return;
+}
+
+if (isset($_POST['update_draft'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       Session::addMessageAfterRedirect($controller->updateDraft($assetsign, $_POST));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
+}
+
 if (isset($_POST['relance'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
    try {

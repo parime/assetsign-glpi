@@ -3435,3 +3435,54 @@ msgstr "Check what is handed over with it, then send the form for signature."
 
 msgid "Élément déjà inventorié dans GLPI"
 msgstr "Item already inventoried in GLPI"
+
+msgid "Feuille préparée en brouillon : rien n'a été envoyé. Envoyez-la depuis l'onglet Attributions du matériel quand vous le souhaitez."
+msgstr "Form prepared as a draft: nothing has been sent. Send it from the equipment's Assignments tab whenever you wish."
+
+msgid "Envoi des feuilles déclenchées automatiquement"
+msgstr "Sending of automatically triggered forms"
+
+msgid "Demander confirmation à l'attribution (recommandé)"
+msgstr "Ask for confirmation on assignment (recommended)"
+
+msgid "Manuel : préparer en brouillon, envoi par bouton"
+msgstr "Manual: prepare as a draft, send with a button"
+
+msgid "Immédiat : envoyer sans rien demander"
+msgstr "Immediate: send without asking"
+
+msgid "Confirmation : attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout ; sans technicien devant l'écran (inventaire automatique, actions massives), elle part directement."
+msgstr "Confirmation: assigning equipment from its form opens a window to complete the form (monitors, devices, phones…) and choose to send it now, later or not at all; without a technician at the screen (automatic inventory, mass actions), it is sent directly."
+
+msgid "Manuel : aucune feuille ne part toute seule ; elles attendent en brouillon, avec un bouton « Envoyer pour signature » dans l'onglet Attributions du matériel."
+msgstr "Manual: no form is sent on its own; forms wait as drafts, with a “Send for signature” button in the equipment's Assignments tab."
+
+msgid "Ignorer les changements faits par l'inventaire automatique"
+msgstr "Ignore changes made by the automatic inventory"
+
+msgid "Si activé, quand l'inventaire automatique vide ou change le champ Utilisateur d'un matériel (agent qui ne remonte plus l'utilisateur, mouvement interne…), aucune feuille n'est créée ni envoyée. Seules les attributions faites par une personne déclenchent une feuille."
+msgstr "If enabled, when the automatic inventory clears or changes the User field of an item (agent no longer reporting the user, internal move…), no form is created or sent. Only assignments made by a person trigger a form."
+
+msgid "Bénéficiaire introuvable ou inactif."
+msgstr "Recipient not found or inactive."
+
+msgid "Ce modèle de document ne correspond pas à ce type de fiche."
+msgstr "This document template does not match this type of form."
+
+msgid "Feuille modifiée."
+msgstr "Form updated."
+
+msgid "Préparer la feuille avant l'envoi"
+msgstr "Prepare the form before sending"
+
+msgid "Modèle de document"
+msgstr "Document template"
+
+msgid "Aperçu du document"
+msgstr "Document preview"
+
+msgid "Modifier la feuille"
+msgstr "Edit the form"
+
+msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
+msgstr "Equipment handed over with it, accessories, observations, kit and condition report are completed further down this page. Nothing is sent until you click “Send for signature”."

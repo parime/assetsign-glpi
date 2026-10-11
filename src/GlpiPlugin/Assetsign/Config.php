@@ -14,6 +14,14 @@ class Config extends Compat\Base\ConfigBase
 {
    public const RIGHTNAME = Profile::RIGHT_CONFIG;
 
+   /*
+    * Issue #163 : envoi des feuilles declenchees automatiquement (colonne confirm_before_sending,
+    * creee booleenne par l'issue #170 puis etendue a 3 valeurs - 0 et 1 gardent leur sens).
+    */
+   public const SENDING_IMMEDIATE = 0; // envoi immediat (comportement historique)
+   public const SENDING_CONFIRM   = 1; // fenetre si un technicien est devant la fiche, sinon immediat
+   public const SENDING_MANUAL    = 2; // toujours en brouillon, envoi par bouton
+
    private const DEFAULTS = [
         'id'                                  => 0,
         'entities_id'                         => 0,
@@ -50,6 +58,7 @@ class Config extends Compat\Base\ConfigBase
         'enable_observations'                 => 0,
         'auto_attach_connected_items'         => 0,
         'confirm_before_sending'              => 1,
+        'ignore_inventory_changes'            => 0,
         'enable_don'                          => 0,
         'enable_vente'                        => 0,
         'enable_destruction'                  => 0,
@@ -576,7 +585,10 @@ class Config extends Compat\Base\ConfigBase
            'signature_required'   => (int) ($input['signature_required'] ?? 0),
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
            'auto_attach_connected_items' => (int) ($input['auto_attach_connected_items'] ?? 0),
-           'confirm_before_sending' => (int) ($input['confirm_before_sending'] ?? 0),
+           'confirm_before_sending' => in_array((int) ($input['confirm_before_sending'] ?? self::SENDING_CONFIRM), [self::SENDING_IMMEDIATE, self::SENDING_CONFIRM, self::SENDING_MANUAL], true)
+               ? (int) $input['confirm_before_sending']
+               : self::SENDING_CONFIRM,
+           'ignore_inventory_changes' => (int) ($input['ignore_inventory_changes'] ?? 0),
            'enable_don'           => (int) ($input['enable_don'] ?? 0),
            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
            'enable_destruction'   => (int) ($input['enable_destruction'] ?? 0),
@@ -636,6 +648,10 @@ class Config extends Compat\Base\ConfigBase
        }
 
        $config->add(['entities_id' => $entities_id, 'is_recursive' => 1] + $data);
+   }
+
+   public function getSendingMode(): int {
+       return (int) ($this->fields['confirm_before_sending'] ?? self::SENDING_CONFIRM);
    }
 
    public function getManagedItemtypes(): array {
@@ -756,6 +772,7 @@ class Config extends Compat\Base\ConfigBase
                 `enable_observations` tinyint NOT NULL DEFAULT 0,
                 `auto_attach_connected_items` tinyint NOT NULL DEFAULT 0,
                 `confirm_before_sending` tinyint NOT NULL DEFAULT 1,
+                `ignore_inventory_changes` tinyint NOT NULL DEFAULT 0,
                 `enable_don` tinyint NOT NULL DEFAULT 0,
                 `enable_vente` tinyint NOT NULL DEFAULT 0,
                 `enable_destruction` tinyint NOT NULL DEFAULT 0,
@@ -865,6 +882,11 @@ class Config extends Compat\Base\ConfigBase
          // Issue #170 : fenetre de confirmation avant l'envoi de la feuille d'attribution.
          if (!$DB->fieldExists($table, 'confirm_before_sending')) {
              $migration->addField($table, 'confirm_before_sending', 'bool', ['value' => 1, 'after' => 'auto_attach_connected_items']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #163 : changements d'utilisateur faits par l'inventaire automatique.
+         if (!$DB->fieldExists($table, 'ignore_inventory_changes')) {
+             $migration->addField($table, 'ignore_inventory_changes', 'bool', ['value' => 0, 'after' => 'confirm_before_sending']);
              $migration->migrationOneTable($table);
          }
          if (!$DB->fieldExists($table, 'enable_don')) {

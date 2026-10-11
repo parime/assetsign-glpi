@@ -3491,3 +3491,54 @@ msgstr "Prüfen Sie, was mit übergeben wird, und senden Sie dann das Formular z
 
 msgid "Élément déjà inventorié dans GLPI"
 msgstr "Bereits in GLPI inventarisiertes Element"
+
+msgid "Feuille préparée en brouillon : rien n'a été envoyé. Envoyez-la depuis l'onglet Attributions du matériel quand vous le souhaitez."
+msgstr "Formular als Entwurf vorbereitet: Es wurde nichts gesendet. Senden Sie es bei Bedarf über die Registerkarte Zuweisungen des Geräts."
+
+msgid "Envoi des feuilles déclenchées automatiquement"
+msgstr "Versand automatisch ausgelöster Formulare"
+
+msgid "Demander confirmation à l'attribution (recommandé)"
+msgstr "Bei der Zuweisung um Bestätigung bitten (empfohlen)"
+
+msgid "Manuel : préparer en brouillon, envoi par bouton"
+msgstr "Manuell: als Entwurf vorbereiten, Versand per Schaltfläche"
+
+msgid "Immédiat : envoyer sans rien demander"
+msgstr "Sofort: ohne Rückfrage senden"
+
+msgid "Confirmation : attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout ; sans technicien devant l'écran (inventaire automatique, actions massives), elle part directement."
+msgstr "Bestätigung: Die Zuweisung eines Geräts über sein Formular öffnet ein Fenster, um das Formular zu ergänzen (Monitore, Peripheriegeräte, Telefone…) und es jetzt, später oder gar nicht zu senden; ohne Techniker am Bildschirm (automatisches Inventar, Massenaktionen) wird es direkt gesendet."
+
+msgid "Manuel : aucune feuille ne part toute seule ; elles attendent en brouillon, avec un bouton « Envoyer pour signature » dans l'onglet Attributions du matériel."
+msgstr "Manuell: Kein Formular wird von selbst gesendet; die Formulare warten als Entwurf, mit einer Schaltfläche „Zur Unterschrift senden“ in der Registerkarte Zuweisungen des Geräts."
+
+msgid "Ignorer les changements faits par l'inventaire automatique"
+msgstr "Vom automatischen Inventar vorgenommene Änderungen ignorieren"
+
+msgid "Si activé, quand l'inventaire automatique vide ou change le champ Utilisateur d'un matériel (agent qui ne remonte plus l'utilisateur, mouvement interne…), aucune feuille n'est créée ni envoyée. Seules les attributions faites par une personne déclenchent une feuille."
+msgstr "Wenn aktiviert, wird kein Formular erstellt oder gesendet, wenn das automatische Inventar das Feld Benutzer eines Geräts leert oder ändert (Agent meldet den Benutzer nicht mehr, interner Umzug…). Nur von einer Person vorgenommene Zuweisungen lösen ein Formular aus."
+
+msgid "Bénéficiaire introuvable ou inactif."
+msgstr "Empfänger nicht gefunden oder inaktiv."
+
+msgid "Ce modèle de document ne correspond pas à ce type de fiche."
+msgstr "Diese Dokumentvorlage passt nicht zu diesem Formulartyp."
+
+msgid "Feuille modifiée."
+msgstr "Formular geändert."
+
+msgid "Préparer la feuille avant l'envoi"
+msgstr "Formular vor dem Senden vorbereiten"
+
+msgid "Modèle de document"
+msgstr "Dokumentvorlage"
+
+msgid "Aperçu du document"
+msgstr "Dokumentvorschau"
+
+msgid "Modifier la feuille"
+msgstr "Formular bearbeiten"
+
+msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
+msgstr "Mit übergebene Geräte, Zubehör, Bemerkungen, Kit und Zustandsbericht werden weiter unten auf dieser Seite ergänzt. Nichts wird gesendet, bevor Sie auf „Zur Unterschrift senden“ klicken."

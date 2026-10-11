@@ -32,6 +32,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Envoi manuel des feuilles et inventaire automatique** (issue #163) : nouveau mode d'envoi
+  « Manuel » (aucune feuille ne part seule : brouillon et bouton « Envoyer pour signature », y compris
+  pour les restitutions) à côté de « Confirmation » (défaut) et « Immédiat » ; option « Ignorer les
+  changements faits par l'inventaire automatique » pour qu'un agent qui ne remonte plus l'utilisateur
+  ne déclenche ni restitution ni nouvelle attribution.
+- **Modifier la feuille avant l'envoi** : sur un brouillon, changement du bénéficiaire et du modèle
+  de document, **aperçu du PDF** tel qu'il partira, et bouton « Modifier la feuille » dans la fenêtre
+  d'attribution.
 - **Fenêtre de confirmation à l'attribution** (issue #170) : attribuer un matériel depuis sa fiche
   ne déclenche plus l'envoi immédiat ; la feuille est préparée en brouillon et une fenêtre propose
   les éléments connectés au poste (pré-cochés), l'ajout d'écrans, périphériques, téléphones… ou

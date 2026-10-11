@@ -361,11 +361,25 @@
             <label class="form-check-label" for="enable_observations">{{ __('Champ « Observations » libre sur chaque fiche', 'assetsign') }}</label>
             <div class="form-text">{{ __('Si activé, un champ de texte libre devient disponible sur chaque fiche d\'attribution (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n\'est pas encore signée.', 'assetsign') }}</div>
           </div>
+          {# Issues #170 et #163 : envoi des feuilles declenchees automatiquement #}
+          {% set sending_mode = config.confirm_before_sending|default(1) %}
+          <div class="mb-3">
+            <label class="form-label" for="confirm_before_sending"><i class="ti ti-send me-1"></i>{{ __('Envoi des feuilles déclenchées automatiquement', 'assetsign') }}</label>
+            <select name="confirm_before_sending" id="confirm_before_sending" class="form-select" style="max-width: 640px;">
+              <option value="1" {{ sending_mode == 1 ? 'selected' : '' }}>{{ __('Demander confirmation à l\'attribution (recommandé)', 'assetsign') }}</option>
+              <option value="2" {{ sending_mode == 2 ? 'selected' : '' }}>{{ __('Manuel : préparer en brouillon, envoi par bouton', 'assetsign') }}</option>
+              <option value="0" {{ sending_mode == 0 ? 'selected' : '' }}>{{ __('Immédiat : envoyer sans rien demander', 'assetsign') }}</option>
+            </select>
+            <div class="form-text">
+              {{ __('Confirmation : attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l\'envoyer maintenant, plus tard ou pas du tout ; sans technicien devant l\'écran (inventaire automatique, actions massives), elle part directement.', 'assetsign') }}
+              {{ __('Manuel : aucune feuille ne part toute seule ; elles attendent en brouillon, avec un bouton « Envoyer pour signature » dans l\'onglet Attributions du matériel.', 'assetsign') }}
+            </div>
+          </div>
           <div class="mb-3 form-check">
-            <input type="hidden" name="confirm_before_sending" value="0">
-            <input type="checkbox" name="confirm_before_sending" value="1" class="form-check-input" id="confirm_before_sending" {{ config.confirm_before_sending|default(1) ? 'checked' : '' }}>
-            <label class="form-check-label" for="confirm_before_sending"><i class="ti ti-message-question me-1"></i>{{ __('Demander confirmation avant d\'envoyer la feuille d\'attribution', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Si activé, attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l\'envoyer maintenant, plus tard ou pas du tout. Les attributions faites sans technicien devant l\'écran (inventaire automatique, actions massives) sont envoyées directement.', 'assetsign') }}</div>
+            <input type="hidden" name="ignore_inventory_changes" value="0">
+            <input type="checkbox" name="ignore_inventory_changes" value="1" class="form-check-input" id="ignore_inventory_changes" {{ config.ignore_inventory_changes|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="ignore_inventory_changes"><i class="ti ti-robot me-1"></i>{{ __('Ignorer les changements faits par l\'inventaire automatique', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Si activé, quand l\'inventaire automatique vide ou change le champ Utilisateur d\'un matériel (agent qui ne remonte plus l\'utilisateur, mouvement interne…), aucune feuille n\'est créée ni envoyée. Seules les attributions faites par une personne déclenchent une feuille.', 'assetsign') }}</div>
           </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="auto_attach_connected_items" value="0">
