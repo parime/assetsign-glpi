@@ -232,7 +232,12 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
          if ($stockStates !== [] && $item->isField('states_id')) {
              $available = ['OR' => [["$table.users_id" => 0], ["$table.states_id" => $stockStates]]];
          }
-          $where = [$available] + getEntitiesRestrictCriteria($table, '', '', $item->maybeRecursive());
+          // Les actifs personnalises (Glpi\Asset\Asset) partagent tous la table glpi_assets_assets :
+          // sans ce critere, chaque type afficherait aussi les actifs des autres definitions.
+          $where = array_merge(
+              [$available] + getEntitiesRestrictCriteria($table, '', '', $item->maybeRecursive()),
+              $itemtype::getSystemSQLCriteria($table)
+          );
          if ($item->isField('is_deleted')) {
              $where["$table.is_deleted"] = 0;
          }
