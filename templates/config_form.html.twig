@@ -164,6 +164,18 @@
             <input type="number" name="draft_reminder_days" class="form-control" value="{{ config.draft_reminder_days|default(3) }}" min="0">
             <div class="form-text">{{ __('Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d\'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu\'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d\'accueil.', 'assetsign') }}</div>
           </div>
+          {# Issue #193 : pret temporaire #}
+          <div class="mb-3">
+            <label class="form-label"><i class="ti ti-clock-share me-1"></i>{{ __('Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)', 'assetsign') }}</label>
+            <input type="number" name="loan_reminder_days" class="form-control" value="{{ config.loan_reminder_days|default(3) }}" min="0" max="60">
+            <div class="form-text">{{ __('Une attribution avec une date de retour prévue est un prêt. Le bénéficiaire et le technicien reçoivent un e-mail ce nombre de jours avant l\'échéance.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="loan_overdue_ticket" value="0">
+            <input type="checkbox" name="loan_overdue_ticket" value="1" class="form-check-input" id="loan_overdue_ticket" {{ config.loan_overdue_ticket|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="loan_overdue_ticket"><i class="ti ti-ticket me-1"></i>{{ __('Ouvrir un ticket « Retour de prêt en retard » une fois l\'échéance passée', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Un ticket par prêt, lié au matériel, assigné au technicien. Le matériel n\'est jamais désaffecté ni changé de statut automatiquement : le retour passe par la restitution habituelle.', 'assetsign') }}</div>
+          </div>
 
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_pending_signatures_banner" value="0">

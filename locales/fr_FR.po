@@ -3794,3 +3794,111 @@ msgid "Jour du départ : %d matériel est encore affecté à la personne dans GL
 msgid_plural "Jour du départ : %d matériels sont encore affectés à la personne dans GLPI."
 msgstr[0] "Jour du départ : %d matériel est encore affecté à la personne dans GLPI."
 msgstr[1] "Jour du départ : %d matériels sont encore affectés à la personne dans GLPI."
+
+msgid "Seule une attribution peut être un prêt."
+msgstr "Seule une attribution peut être un prêt."
+
+msgid "Cette feuille est annulée ou expirée."
+msgstr "Cette feuille est annulée ou expirée."
+
+msgid "Date de retour invalide."
+msgstr "Date de retour invalide."
+
+msgid "La date de retour prévue ne peut pas être dans le passé."
+msgstr "La date de retour prévue ne peut pas être dans le passé."
+
+msgid "Rappelle les prêts arrivant à échéance et ouvre un ticket pour les retours en retard"
+msgstr "Rappelle les prêts arrivant à échéance et ouvre un ticket pour les retours en retard"
+
+#, php-format
+msgid "%1$s « %2$s » prêté à %3$s devait être rendu le %4$s. Le matériel est toujours affecté à cette personne."
+msgstr "%1$s « %2$s » prêté à %3$s devait être rendu le %4$s. Le matériel est toujours affecté à cette personne."
+
+msgid "Récupérez le matériel puis faites signer la restitution, ou prolongez le prêt depuis la feuille."
+msgstr "Récupérez le matériel puis faites signer la restitution, ou prolongez le prêt depuis la feuille."
+
+#, php-format
+msgid "Feuille de prêt n° %d"
+msgstr "Feuille de prêt n° %d"
+
+#, php-format
+msgid "Retour de prêt en retard : %1$s (%2$s)"
+msgstr "Retour de prêt en retard : %1$s (%2$s)"
+
+msgid "Prêts en cours"
+msgstr "Prêts en cours"
+
+msgid "Voir tous les prêts"
+msgstr "Voir tous les prêts"
+
+msgid "Emprunteur"
+msgstr "Emprunteur"
+
+msgid "Retour prévu"
+msgstr "Retour prévu"
+
+msgid "En retard"
+msgstr "En retard"
+
+#, php-format
+msgid "Ticket n° %d"
+msgstr "Ticket n° %d"
+
+msgid "Ouvrir la feuille"
+msgstr "Ouvrir la feuille"
+
+msgid "Prêt arrivant à échéance"
+msgstr "Prêt arrivant à échéance"
+
+msgid "Date de retour prévue (prêt)"
+msgstr "Date de retour prévue (prêt)"
+
+msgid "Retour prévu (prêt)"
+msgstr "Retour prévu (prêt)"
+
+msgid "Attribution définitive : aucune date de retour."
+msgstr "Attribution définitive : aucune date de retour."
+
+#, php-format
+msgid "Prêt : retour prévu le %s."
+msgstr "Prêt : retour prévu le %s."
+
+msgid "Prêt temporaire"
+msgstr "Prêt temporaire"
+
+#, php-format
+msgid "retour prévu le %s"
+msgstr "retour prévu le %s"
+
+msgid "Attribution définitive. Indiquez une date de retour pour en faire un prêt temporaire : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Attribution définitive. Indiquez une date de retour pour en faire un prêt temporaire : rappel avant l'échéance, puis ticket en cas de retard."
+
+msgid "Modifier"
+msgstr "Modifier"
+
+msgid "En faire un prêt"
+msgstr "En faire un prêt"
+
+msgid "Prêt temporaire : retour prévu le"
+msgstr "Prêt temporaire : retour prévu le"
+
+msgid "Laissez vide pour une attribution définitive. Avec une date, la feuille devient un prêt : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Laissez vide pour une attribution définitive. Avec une date, la feuille devient un prêt : rappel avant l'échéance, puis ticket en cas de retard."
+
+msgid "Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)"
+msgstr "Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)"
+
+msgid "Une attribution avec une date de retour prévue est un prêt. Le bénéficiaire et le technicien reçoivent un e-mail ce nombre de jours avant l'échéance."
+msgstr "Une attribution avec une date de retour prévue est un prêt. Le bénéficiaire et le technicien reçoivent un e-mail ce nombre de jours avant l'échéance."
+
+msgid "Ouvrir un ticket « Retour de prêt en retard » une fois l'échéance passée"
+msgstr "Ouvrir un ticket « Retour de prêt en retard » une fois l'échéance passée"
+
+msgid "Un ticket par prêt, lié au matériel, assigné au technicien. Le matériel n'est jamais désaffecté ni changé de statut automatiquement : le retour passe par la restitution habituelle."
+msgstr "Un ticket par prêt, lié au matériel, assigné au technicien. Le matériel n'est jamais désaffecté ni changé de statut automatiquement : le retour passe par la restitution habituelle."
+
+#, php-format
+msgid "%d en retard"
+msgid_plural "%d en retard"
+msgstr[0] "%d en retard"
+msgstr[1] "%d en retard"

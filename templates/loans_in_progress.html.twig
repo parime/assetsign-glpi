@@ -1,0 +1,42 @@
+{# Issue #193 : prets en cours sur la page d'accueil (cf. plugin_assetsign_display_central()) #}
+<div class="card my-2 assetsign-loans">
+  <div class="card-header d-flex align-items-center">
+    <h3 class="card-title"><i class="ti ti-clock-share me-1"></i>{{ __('Prêts en cours', 'assetsign') }}</h3>
+    {% if overdue_count > 0 %}
+      <span class="badge bg-red-lt ms-2"><i class="ti ti-alert-triangle"></i> {{ _n('%d en retard', '%d en retard', overdue_count, 'assetsign')|format(overdue_count) }}</span>
+    {% endif %}
+    <a class="ms-auto" href="{{ list_url }}">{{ __('Voir tous les prêts', 'assetsign') }} <i class="ti ti-arrow-right"></i></a>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-sm table-vcenter mb-0">
+      <thead>
+        <tr>
+          <th>{{ __('Matériel', 'assetsign') }}</th>
+          <th>{{ __('Emprunteur', 'assetsign') }}</th>
+          <th>{{ __('Retour prévu', 'assetsign') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for l in loans %}
+          <tr>
+            <td>{{ l.item|default('-') }}</td>
+            <td>{{ l.beneficiary|default('-') }}</td>
+            <td>
+              {{ l.loan_until|formatted_date }}
+              {% if l.overdue %}
+                <span class="badge bg-red-lt ms-1"><i class="ti ti-alert-triangle"></i> {{ __('En retard', 'assetsign') }}</span>
+              {% endif %}
+            </td>
+            <td class="text-end text-nowrap">
+              {% if l.tickets_id > 0 %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ 'Ticket'|itemtype_form_path(l.tickets_id) }}"><i class="ti ti-ticket me-1"></i>{{ __('Ticket n° %d', 'assetsign')|format(l.tickets_id) }}</a>
+              {% endif %}
+              <a class="btn btn-sm btn-outline-secondary" href="{{ form_url }}?id={{ l.id }}"><i class="ti ti-file-text me-1"></i>{{ __('Ouvrir la feuille', 'assetsign') }}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

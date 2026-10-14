@@ -206,6 +206,17 @@ if (isset($_POST['update_destruction_details'])) {
     Html::back();
 }
 
+// Issue #193 : pret temporaire (date de retour prevue, vide = attribution definitive).
+if (isset($_POST['update_loan'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       Session::addMessageAfterRedirect($controller->updateLoan($assetsign, $_POST));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
+}
+
 if (isset($_POST['update_kit'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
     $controller->updateKit($assetsign, $_POST);

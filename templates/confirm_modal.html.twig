@@ -53,6 +53,14 @@
               {% for a in accessories %}<li>{{ a.name }} × {{ a.quantity }}</li>{% endfor %}
             </ul>
           {% endif %}
+          {# Issue #193 : pret temporaire, date de retour reprise sur le document #}
+          {% if item.fields.type|default(0) == 0 %}
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+              <label class="form-label mb-0" for="assetsign-confirm-loan-until"><i class="ti ti-clock-share me-1"></i>{{ __('Prêt temporaire : retour prévu le', 'assetsign') }}</label>
+              <input type="date" name="loan_until" id="assetsign-confirm-loan-until" class="form-control form-control-sm" style="width: 160px;" value="{{ item.fields.loan_until|default('') }}" min="{{ 'now'|date('Y-m-d') }}">
+            </div>
+            <p class="form-text mt-0">{{ __('Laissez vide pour une attribution définitive. Avec une date, la feuille devient un prêt : rappel avant l\'échéance, puis ticket en cas de retard.', 'assetsign') }}</p>
+          {% endif %}
         </form>
 
         {# Issue #181 : kit de la feuille, lignes « type GLPI » a pourvoir, choix du kit #}

@@ -92,6 +92,8 @@ final class HandoverPdfBuilder
            'charter_url'         => $config->fields['charter_url'] ?: null,
            'enable_observations' => (bool) $config->fields['enable_observations'],
            'observations'        => $assetsign->fields['observations'] ?? '',
+           // Issue #193 : pret temporaire, date de retour prevue (format du document, comme 'date').
+           'loan_until'          => !empty($assetsign->fields['loan_until']) ? date('d/m/Y', strtotime((string) $assetsign->fields['loan_until'])) : null,
            'beneficiary_comment' => $assetsign->fields['beneficiary_comment'] ?? '',
            'vente_price'         => $venteDetails?->fields['price'] ?? null,
            'vente_sale_date'     => $venteDetails?->fields['sale_date']

@@ -99,6 +99,15 @@
 </table>
 {% endif %}
 
+{# Issue #193 : pret temporaire #}
+{% if loan_until|default(null) %}
+<h2>Prêt temporaire</h2>
+<table class="info-table">
+    <tr><th>Retour prévu au plus tard le</th><td><strong>{{ loan_until }}</strong></td></tr>
+</table>
+<p class="legal-text">Le matériel ci-dessus est prêté pour une durée limitée. Le bénéficiaire s'engage à le restituer au service informatique au plus tard à cette date, avec les accessoires remis.</p>
+{% endif %}
+
 {% include '@assetsign/pdf/_damage_views.html.twig' %}
 
 {% if include_content %}

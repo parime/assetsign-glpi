@@ -112,9 +112,24 @@ final class AssetsignFormController
        $kept = isset($post['from_confirmation'])
            ? array_map('intval', (array) ($post['keep_items'] ?? []))
            : null;
+       // Issue #193 : date de retour saisie dans la fenetre de confirmation, avant l'envoi pour
+       // qu'elle figure sur le document.
+      if (isset($post['loan_until'])) {
+          $assetsign->setLoanUntil((string) $post['loan_until']);
+      }
        $assetsign->sendDraft($kept);
 
        return __('Feuille d\'attribution envoyée pour signature.', 'assetsign');
+   }
+
+    /** Issue #193 : pose, change ou retire la date de retour prevue d'une attribution. */
+   public function updateLoan(Assetsign $assetsign, array $post): string {
+       $date = trim((string) ($post['loan_until'] ?? ''));
+       $assetsign->setLoanUntil($date);
+
+       return $date === ''
+           ? __('Attribution définitive : aucune date de retour.', 'assetsign')
+           : sprintf(__('Prêt : retour prévu le %s.', 'assetsign'), \Html::convDate($date));
    }
 
    public function updateDraft(Assetsign $assetsign, array $post): string {

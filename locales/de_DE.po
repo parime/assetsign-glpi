@@ -3830,3 +3830,111 @@ msgid "Jour du départ : %d matériel est encore affecté à la personne dans GL
 msgid_plural "Jour du départ : %d matériels sont encore affectés à la personne dans GLPI."
 msgstr[0] "Austrittstag: %d Gerät ist der Person in GLPI noch zugewiesen."
 msgstr[1] "Austrittstag: %d Geräte sind der Person in GLPI noch zugewiesen."
+
+msgid "Seule une attribution peut être un prêt."
+msgstr "Nur eine Übergabe kann eine Leihe sein."
+
+msgid "Cette feuille est annulée ou expirée."
+msgstr "Dieses Formular ist storniert oder abgelaufen."
+
+msgid "Date de retour invalide."
+msgstr "Ungültiges Rückgabedatum."
+
+msgid "La date de retour prévue ne peut pas être dans le passé."
+msgstr "Das geplante Rückgabedatum darf nicht in der Vergangenheit liegen."
+
+msgid "Rappelle les prêts arrivant à échéance et ouvre un ticket pour les retours en retard"
+msgstr "Erinnert an fällige Leihen und eröffnet ein Ticket bei verspäteter Rückgabe"
+
+#, php-format
+msgid "%1$s « %2$s » prêté à %3$s devait être rendu le %4$s. Le matériel est toujours affecté à cette personne."
+msgstr "%1$s „%2$s“, an %3$s verliehen, sollte am %4$s zurückgegeben werden. Das Gerät ist dieser Person weiterhin zugewiesen."
+
+msgid "Récupérez le matériel puis faites signer la restitution, ou prolongez le prêt depuis la feuille."
+msgstr "Nehmen Sie das Gerät zurück und lassen Sie die Rückgabe unterschreiben, oder verlängern Sie die Leihe im Formular."
+
+#, php-format
+msgid "Feuille de prêt n° %d"
+msgstr "Leihformular Nr. %d"
+
+#, php-format
+msgid "Retour de prêt en retard : %1$s (%2$s)"
+msgstr "Verspätete Leihrückgabe: %1$s (%2$s)"
+
+msgid "Prêts en cours"
+msgstr "Laufende Leihen"
+
+msgid "Voir tous les prêts"
+msgstr "Alle Leihen anzeigen"
+
+msgid "Emprunteur"
+msgstr "Entleiher"
+
+msgid "Retour prévu"
+msgstr "Geplante Rückgabe"
+
+msgid "En retard"
+msgstr "Überfällig"
+
+#, php-format
+msgid "Ticket n° %d"
+msgstr "Ticket Nr. %d"
+
+msgid "Ouvrir la feuille"
+msgstr "Formular öffnen"
+
+msgid "Prêt arrivant à échéance"
+msgstr "Leihe kurz vor Fälligkeit"
+
+msgid "Date de retour prévue (prêt)"
+msgstr "Geplantes Rückgabedatum (Leihe)"
+
+msgid "Retour prévu (prêt)"
+msgstr "Geplante Rückgabe (Leihe)"
+
+msgid "Attribution définitive : aucune date de retour."
+msgstr "Dauerhafte Übergabe: kein Rückgabedatum."
+
+#, php-format
+msgid "Prêt : retour prévu le %s."
+msgstr "Leihe: Rückgabe am %s geplant."
+
+msgid "Prêt temporaire"
+msgstr "Befristete Leihe"
+
+#, php-format
+msgid "retour prévu le %s"
+msgstr "Rückgabe am %s geplant"
+
+msgid "Attribution définitive. Indiquez une date de retour pour en faire un prêt temporaire : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Dauerhafte Übergabe. Geben Sie ein Rückgabedatum an, um daraus eine befristete Leihe zu machen: Erinnerung vor Fälligkeit, dann Ticket bei Verspätung."
+
+msgid "Modifier"
+msgstr "Ändern"
+
+msgid "En faire un prêt"
+msgstr "Als Leihe festlegen"
+
+msgid "Prêt temporaire : retour prévu le"
+msgstr "Befristete Leihe: Rückgabe am"
+
+msgid "Laissez vide pour une attribution définitive. Avec une date, la feuille devient un prêt : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Für eine dauerhafte Übergabe leer lassen. Mit Datum wird das Formular zur Leihe: Erinnerung vor Fälligkeit, dann Ticket bei Verspätung."
+
+msgid "Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)"
+msgstr "Befristete Leihe: an die Rückgabe erinnern (Tage vorher, 0 = deaktiviert)"
+
+msgid "Une attribution avec une date de retour prévue est un prêt. Le bénéficiaire et le technicien reçoivent un e-mail ce nombre de jours avant l'échéance."
+msgstr "Eine Übergabe mit geplantem Rückgabedatum ist eine Leihe. Empfänger und Techniker erhalten so viele Tage vor Fälligkeit eine E-Mail."
+
+msgid "Ouvrir un ticket « Retour de prêt en retard » une fois l'échéance passée"
+msgstr "Nach Fälligkeit ein Ticket „Verspätete Leihrückgabe“ eröffnen"
+
+msgid "Un ticket par prêt, lié au matériel, assigné au technicien. Le matériel n'est jamais désaffecté ni changé de statut automatiquement : le retour passe par la restitution habituelle."
+msgstr "Ein Ticket pro Leihe, mit dem Gerät verknüpft, dem Techniker zugewiesen. Das Gerät wird nie automatisch freigegeben oder im Status geändert: Die Rückgabe läuft über das übliche Rückgabeformular."
+
+#, php-format
+msgid "%d en retard"
+msgid_plural "%d en retard"
+msgstr[0] "%d überfällig"
+msgstr[1] "%d überfällig"

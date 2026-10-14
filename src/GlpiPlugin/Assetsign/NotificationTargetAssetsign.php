@@ -72,6 +72,8 @@ class NotificationTargetAssetsign extends NotificationTarget
            'cosignature_requested' => __('Contre-signature requise', 'assetsign'),
            // Issue #179 : feuille restee en brouillon (rappel au technicien).
            'draft_pending' => __('Feuille restée en brouillon', 'assetsign'),
+           // Issue #193 : pret temporaire arrivant a echeance.
+           'loan_due' => __('Prêt arrivant à échéance', 'assetsign'),
        ];
    }
 
@@ -109,7 +111,7 @@ class NotificationTargetAssetsign extends NotificationTarget
        // runExpiryWarnings()) : sans cette alerte anticipee, le technicien n'apprend
        // qu'un document est reste sans suite qu'une fois le lien deja invalide, trop
        // tard pour relancer le beneficiaire autrement (appel, passage sur place).
-      if (in_array($event, ['signed', 'expired', 'expiring_soon', 'draft_pending'], true)) {
+      if (in_array($event, ['signed', 'expired', 'expiring_soon', 'draft_pending', 'loan_due'], true)) {
           $this->addTarget(self::TARGET_TECHNICIAN, __('Technicien', 'assetsign'));
       }
 
@@ -201,6 +203,8 @@ class NotificationTargetAssetsign extends NotificationTarget
        // Issue #179 : lien vers la fiche (pour le technicien).
        global $CFG_GLPI;
        $this->data['##assetsign.url##'] = rtrim((string) ($CFG_GLPI['url_base'] ?? ''), '/') . '/plugins/assetsign/front/assetsign.form.php?id=' . $assetsign->getID();
+       // Issue #193 : date de retour prevue d'un pret, vide pour une attribution definitive.
+       $this->data['##assetsign.loan_until##'] = !empty($assetsign->fields['loan_until']) ? (string) \Html::convDate((string) $assetsign->fields['loan_until']) : '';
 
        // Delegation de signature (issue #115) : vide si aucune delegation
        // active, non seulement pour l'evenement "delegated" — un gabarit
@@ -236,6 +240,7 @@ class NotificationTargetAssetsign extends NotificationTarget
            'assetsign.sign_url'  => __('Lien de signature', 'assetsign'),
            'assetsign.deadline'  => __('Date limite de signature', 'assetsign'),
            'assetsign.url'       => __('Lien vers la fiche', 'assetsign'),
+           'assetsign.loan_until' => __('Date de retour prévue (prêt)', 'assetsign'),
            'assetsign.delegate.name'      => __('Signataire délégué', 'assetsign'),
            'assetsign.delegation.reason'  => __('Motif de la délégation', 'assetsign'),
            'assetsign.cosigner.name'      => __('Responsable hiérarchique (contre-signataire)', 'assetsign'),
@@ -286,7 +291,7 @@ class NotificationTargetAssetsign extends NotificationTarget
                 self::addMissingTranslation(self::getTemplateIdForEvent($event), $language, $def[$language]);
             }
 
-            if (in_array($event, ['signed', 'expired', 'expiring_soon', 'draft_pending'], true)) {
+            if (in_array($event, ['signed', 'expired', 'expiring_soon', 'draft_pending', 'loan_due'], true)) {
                 self::migrateTechnicianTarget((int) $existing->getID());
             }
             continue;
@@ -340,7 +345,7 @@ class NotificationTargetAssetsign extends NotificationTarget
             ]);
          }
 
-         if (in_array($event, ['signed', 'expired', 'expiring_soon', 'draft_pending'], true)) {
+         if (in_array($event, ['signed', 'expired', 'expiring_soon', 'draft_pending', 'loan_due'], true)) {
             (new NotificationTarget())->add([
                 'notifications_id' => $notifications_id,
                 'type'             => Notification::USER_TYPE,

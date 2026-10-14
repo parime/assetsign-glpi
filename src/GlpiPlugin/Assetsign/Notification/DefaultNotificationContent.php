@@ -234,6 +234,40 @@ final class DefaultNotificationContent
                        . '<p><a href="##assetsign.url##">Apri la scheda</a> per completarla e inviarla, o indicare che non sarà firmata.</p>',
                ],
            ],
+           // Issue #193 : pret temporaire arrivant a echeance (beneficiaire + technicien).
+           'loan_due' => [
+               'name'  => 'Attribution : prêt arrivant à échéance',
+               'fr_FR' => [
+                   'subject' => 'Prêt de matériel : retour prévu le ##assetsign.loan_until## (##assetsign.item.name##)',
+                   'html'    => '<p>Le matériel <strong>##assetsign.item.name##</strong> prêté à ##assetsign.user.name## doit être rendu le <strong>##assetsign.loan_until##</strong>.</p>'
+                       . '<p>Merci de le rapporter au service informatique à cette date, ou de le contacter si le prêt doit être prolongé.</p>'
+                       . '<p><a href="##assetsign.url##">Ouvrir la feuille de prêt</a> (accès réservé au service informatique)</p>',
+               ],
+               'en_GB' => [
+                   'subject' => 'Equipment loan: return due on ##assetsign.loan_until## (##assetsign.item.name##)',
+                   'html'    => '<p>The equipment <strong>##assetsign.item.name##</strong> lent to ##assetsign.user.name## must be returned on <strong>##assetsign.loan_until##</strong>.</p>'
+                       . '<p>Please bring it back to the IT department on that date, or contact them if the loan needs to be extended.</p>'
+                       . '<p><a href="##assetsign.url##">Open the loan form</a> (IT department only)</p>',
+               ],
+               'es_ES' => [
+                   'subject' => 'Préstamo de material: devolución prevista el ##assetsign.loan_until## (##assetsign.item.name##)',
+                   'html'    => '<p>El material <strong>##assetsign.item.name##</strong> prestado a ##assetsign.user.name## debe devolverse el <strong>##assetsign.loan_until##</strong>.</p>'
+                       . '<p>Devuélvalo al servicio informático en esa fecha o contacte con él si hay que prolongar el préstamo.</p>'
+                       . '<p><a href="##assetsign.url##">Abrir la ficha de préstamo</a> (solo servicio informático)</p>',
+               ],
+               'de_DE' => [
+                   'subject' => 'Geräteleihe: Rückgabe am ##assetsign.loan_until## fällig (##assetsign.item.name##)',
+                   'html'    => '<p>Das an ##assetsign.user.name## verliehene Gerät <strong>##assetsign.item.name##</strong> muss am <strong>##assetsign.loan_until##</strong> zurückgegeben werden.</p>'
+                       . '<p>Bitte bringen Sie es an diesem Tag zur IT-Abteilung zurück oder wenden Sie sich an sie, wenn die Leihe verlängert werden soll.</p>'
+                       . '<p><a href="##assetsign.url##">Leihformular öffnen</a> (nur IT-Abteilung)</p>',
+               ],
+               'it_IT' => [
+                   'subject' => 'Prestito di attrezzatura: restituzione prevista il ##assetsign.loan_until## (##assetsign.item.name##)',
+                   'html'    => '<p>L\'attrezzatura <strong>##assetsign.item.name##</strong> prestata a ##assetsign.user.name## deve essere restituita il <strong>##assetsign.loan_until##</strong>.</p>'
+                       . '<p>Riportala al servizio informatico in quella data o contattalo se il prestito deve essere prolungato.</p>'
+                       . '<p><a href="##assetsign.url##">Apri la scheda di prestito</a> (solo servizio informatico)</p>',
+               ],
+           ],
            'delegated' => [
                'name'  => 'Attribution : signature déléguée',
                'fr_FR' => [
