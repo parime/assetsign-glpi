@@ -3938,3 +3938,84 @@ msgid "%d en retard"
 msgid_plural "%d en retard"
 msgstr[0] "%d überfällig"
 msgstr[1] "%d überfällig"
+
+msgid "Panne"
+msgstr "Defekt"
+
+msgid "Casse"
+msgstr "Beschädigung"
+
+msgid "Perte"
+msgstr "Verlust"
+
+msgid "Vol"
+msgstr "Diebstahl"
+
+msgid "Choisissez le type de problème."
+msgstr "Wählen Sie die Art des Problems."
+
+msgid "Ce matériel ne vous est pas affecté."
+msgstr "Dieses Gerät ist Ihnen nicht zugewiesen."
+
+msgid "Votre profil ne permet pas de créer un ticket : contactez le service informatique."
+msgstr "Ihr Profil darf keine Tickets erstellen: Wenden Sie sich an die IT-Abteilung."
+
+#, php-format
+msgid "N° d'inventaire %s"
+msgstr "Inventarnr. %s"
+
+#, php-format
+msgid "%1$s signalé(e) sur %2$s."
+msgstr "%1$s gemeldet für %2$s."
+
+msgid "Perte ou vol : le service informatique vous indiquera les démarches (déclaration, blocage des accès, remplacement)."
+msgstr "Verlust oder Diebstahl: Die IT-Abteilung erklärt Ihnen das weitere Vorgehen (Meldung, Sperrung der Zugänge, Ersatz)."
+
+#, php-format
+msgid "%1$s : %2$s"
+msgstr "%1$s: %2$s"
+
+msgid "Le ticket n'a pas pu être créé : contactez le service informatique."
+msgstr "Das Ticket konnte nicht erstellt werden: Wenden Sie sich an die IT-Abteilung."
+
+#, php-format
+msgid "Votre signalement est enregistré (ticket n° %d). Le service informatique va vous recontacter."
+msgstr "Ihre Meldung wurde erfasst (Ticket Nr. %d). Die IT-Abteilung meldet sich bei Ihnen."
+
+msgid "Mon matériel et mes documents"
+msgstr "Meine Geräte und Dokumente"
+
+msgid "Mon matériel"
+msgstr "Meine Geräte"
+
+msgid "Aucun matériel ne vous est affecté"
+msgstr "Ihnen sind keine Geräte zugewiesen"
+
+msgid "Le matériel que le service informatique vous remet apparaîtra ici, avec les documents que vous avez signés."
+msgstr "Die Geräte, die Ihnen die IT-Abteilung übergibt, erscheinen hier – zusammen mit den von Ihnen unterschriebenen Dokumenten."
+
+msgid "Le matériel qui vous est confié et les documents que vous avez signés. Un problème (panne, casse, perte, vol) ? Signalez-le ici : le service informatique reçoit un ticket avec le matériel concerné."
+msgstr "Die Ihnen anvertrauten Geräte und die von Ihnen unterschriebenen Dokumente. Ein Problem (Defekt, Beschädigung, Verlust, Diebstahl)? Melden Sie es hier: Die IT-Abteilung erhält ein Ticket mit dem betroffenen Gerät."
+
+#, php-format
+msgid "N° d'inventaire : %s"
+msgstr "Inventarnr.: %s"
+
+#, php-format
+msgid "%1$s signée le %2$s"
+msgstr "%1$s unterschrieben am %2$s"
+
+msgid "Signaler un problème"
+msgstr "Problem melden"
+
+msgid "Quel est le problème ?"
+msgstr "Was ist das Problem?"
+
+msgid "Décrivez ce qui se passe (facultatif)"
+msgstr "Beschreiben Sie, was passiert (optional)"
+
+msgid "Ex. : l'écran ne s'allume plus depuis ce matin."
+msgstr "Z. B.: Der Bildschirm geht seit heute Morgen nicht mehr an."
+
+msgid "Envoyer le signalement"
+msgstr "Meldung senden"

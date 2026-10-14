@@ -3912,3 +3912,84 @@ msgid "%d en retard"
 msgid_plural "%d en retard"
 msgstr[0] "%d in ritardo"
 msgstr[1] "%d in ritardo"
+
+msgid "Panne"
+msgstr "Guasto"
+
+msgid "Casse"
+msgstr "Rottura"
+
+msgid "Perte"
+msgstr "Smarrimento"
+
+msgid "Vol"
+msgstr "Furto"
+
+msgid "Choisissez le type de problème."
+msgstr "Scegli il tipo di problema."
+
+msgid "Ce matériel ne vous est pas affecté."
+msgstr "Questa attrezzatura non ti è assegnata."
+
+msgid "Votre profil ne permet pas de créer un ticket : contactez le service informatique."
+msgstr "Il tuo profilo non può creare ticket: contatta il servizio informatico."
+
+#, php-format
+msgid "N° d'inventaire %s"
+msgstr "N. di inventario %s"
+
+#, php-format
+msgid "%1$s signalé(e) sur %2$s."
+msgstr "%1$s segnalato/a su %2$s."
+
+msgid "Perte ou vol : le service informatique vous indiquera les démarches (déclaration, blocage des accès, remplacement)."
+msgstr "Smarrimento o furto: il servizio informatico ti indicherà le procedure (denuncia, blocco degli accessi, sostituzione)."
+
+#, php-format
+msgid "%1$s : %2$s"
+msgstr "%1$s: %2$s"
+
+msgid "Le ticket n'a pas pu être créé : contactez le service informatique."
+msgstr "Impossibile creare il ticket: contatta il servizio informatico."
+
+#, php-format
+msgid "Votre signalement est enregistré (ticket n° %d). Le service informatique va vous recontacter."
+msgstr "La tua segnalazione è stata registrata (ticket n. %d). Il servizio informatico ti ricontatterà."
+
+msgid "Mon matériel et mes documents"
+msgstr "La mia attrezzatura e i miei documenti"
+
+msgid "Mon matériel"
+msgstr "La mia attrezzatura"
+
+msgid "Aucun matériel ne vous est affecté"
+msgstr "Nessuna attrezzatura ti è assegnata"
+
+msgid "Le matériel que le service informatique vous remet apparaîtra ici, avec les documents que vous avez signés."
+msgstr "L'attrezzatura che il servizio informatico ti consegna apparirà qui, con i documenti che hai firmato."
+
+msgid "Le matériel qui vous est confié et les documents que vous avez signés. Un problème (panne, casse, perte, vol) ? Signalez-le ici : le service informatique reçoit un ticket avec le matériel concerné."
+msgstr "L'attrezzatura che ti è affidata e i documenti che hai firmato. Un problema (guasto, rottura, smarrimento, furto)? Segnalalo qui: il servizio informatico riceve un ticket con l'attrezzatura interessata."
+
+#, php-format
+msgid "N° d'inventaire : %s"
+msgstr "N. di inventario: %s"
+
+#, php-format
+msgid "%1$s signée le %2$s"
+msgstr "%1$s firmata il %2$s"
+
+msgid "Signaler un problème"
+msgstr "Segnala un problema"
+
+msgid "Quel est le problème ?"
+msgstr "Qual è il problema?"
+
+msgid "Décrivez ce qui se passe (facultatif)"
+msgstr "Descrivi cosa succede (facoltativo)"
+
+msgid "Ex. : l'écran ne s'allume plus depuis ce matin."
+msgstr "Es.: lo schermo non si accende più da stamattina."
+
+msgid "Envoyer le signalement"
+msgstr "Invia la segnalazione"
