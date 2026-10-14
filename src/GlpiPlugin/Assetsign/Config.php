@@ -138,6 +138,10 @@ class Config extends Compat\Base\ConfigBase
         // Issue #195 : ticket « Recuperation du materiel » pour l'equipe a la preparation d'un
         // depart. Aucun statut ni affectation n'est change automatiquement.
         'departure_ticket'                    => 1,
+        // Issue #193 : pret temporaire - rappel X jours avant la date de retour prevue (0 = aucun)
+        // et ticket « Retour de pret en retard » une fois l'echeance passee.
+        'loan_reminder_days'                  => 3,
+        'loan_overdue_ticket'                 => 1,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -662,6 +666,8 @@ class Config extends Compat\Base\ConfigBase
            'departure_on_end_date' => (int) ($input['departure_on_end_date'] ?? 0),
            'departure_end_date_days' => max(0, min(90, (int) ($input['departure_end_date_days'] ?? 7))),
            'departure_ticket' => (int) ($input['departure_ticket'] ?? 0),
+           'loan_reminder_days' => max(0, min(60, (int) ($input['loan_reminder_days'] ?? 3))),
+           'loan_overdue_ticket' => (int) ($input['loan_overdue_ticket'] ?? 0),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -849,6 +855,8 @@ class Config extends Compat\Base\ConfigBase
                 `departure_on_end_date` tinyint NOT NULL DEFAULT 0,
                 `departure_end_date_days` int unsigned NOT NULL DEFAULT 7,
                 `departure_ticket` tinyint NOT NULL DEFAULT 1,
+                `loan_reminder_days` int unsigned NOT NULL DEFAULT 3,
+                `loan_overdue_ticket` tinyint NOT NULL DEFAULT 1,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -926,6 +934,12 @@ class Config extends Compat\Base\ConfigBase
          // Issue #195 : ticket de recuperation du materiel au depart.
          if (!$DB->fieldExists($table, 'departure_ticket')) {
              $migration->addField($table, 'departure_ticket', 'bool', ['value' => 1]);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #193 : pret temporaire (rappel avant echeance, ticket de retard).
+         if (!$DB->fieldExists($table, 'loan_reminder_days')) {
+             $migration->addField($table, 'loan_reminder_days', 'integer', ['value' => 3]);
+             $migration->addField($table, 'loan_overdue_ticket', 'bool', ['value' => 1]);
              $migration->migrationOneTable($table);
          }
          // Issue #179 : rappel des feuilles restees en brouillon.

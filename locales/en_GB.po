@@ -3774,3 +3774,111 @@ msgid "Jour du départ : %d matériel est encore affecté à la personne dans GL
 msgid_plural "Jour du départ : %d matériels sont encore affectés à la personne dans GLPI."
 msgstr[0] "Departure day: %d item is still assigned to the person in GLPI."
 msgstr[1] "Departure day: %d items are still assigned to the person in GLPI."
+
+msgid "Seule une attribution peut être un prêt."
+msgstr "Only a handover can be a loan."
+
+msgid "Cette feuille est annulée ou expirée."
+msgstr "This form is cancelled or expired."
+
+msgid "Date de retour invalide."
+msgstr "Invalid return date."
+
+msgid "La date de retour prévue ne peut pas être dans le passé."
+msgstr "The expected return date cannot be in the past."
+
+msgid "Rappelle les prêts arrivant à échéance et ouvre un ticket pour les retours en retard"
+msgstr "Reminds loans nearing their due date and opens a ticket for late returns"
+
+#, php-format
+msgid "%1$s « %2$s » prêté à %3$s devait être rendu le %4$s. Le matériel est toujours affecté à cette personne."
+msgstr "%1$s “%2$s” lent to %3$s was due back on %4$s. The equipment is still assigned to this person."
+
+msgid "Récupérez le matériel puis faites signer la restitution, ou prolongez le prêt depuis la feuille."
+msgstr "Recover the equipment and have the return signed, or extend the loan from the form."
+
+#, php-format
+msgid "Feuille de prêt n° %d"
+msgstr "Loan form no. %d"
+
+#, php-format
+msgid "Retour de prêt en retard : %1$s (%2$s)"
+msgstr "Late loan return: %1$s (%2$s)"
+
+msgid "Prêts en cours"
+msgstr "Ongoing loans"
+
+msgid "Voir tous les prêts"
+msgstr "View all loans"
+
+msgid "Emprunteur"
+msgstr "Borrower"
+
+msgid "Retour prévu"
+msgstr "Due back"
+
+msgid "En retard"
+msgstr "Overdue"
+
+#, php-format
+msgid "Ticket n° %d"
+msgstr "Ticket no. %d"
+
+msgid "Ouvrir la feuille"
+msgstr "Open the form"
+
+msgid "Prêt arrivant à échéance"
+msgstr "Loan nearing its due date"
+
+msgid "Date de retour prévue (prêt)"
+msgstr "Expected return date (loan)"
+
+msgid "Retour prévu (prêt)"
+msgstr "Due back (loan)"
+
+msgid "Attribution définitive : aucune date de retour."
+msgstr "Permanent handover: no return date."
+
+#, php-format
+msgid "Prêt : retour prévu le %s."
+msgstr "Loan: due back on %s."
+
+msgid "Prêt temporaire"
+msgstr "Temporary loan"
+
+#, php-format
+msgid "retour prévu le %s"
+msgstr "due back on %s"
+
+msgid "Attribution définitive. Indiquez une date de retour pour en faire un prêt temporaire : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Permanent handover. Enter a return date to make it a temporary loan: reminder before the due date, then a ticket if it is late."
+
+msgid "Modifier"
+msgstr "Change"
+
+msgid "En faire un prêt"
+msgstr "Make it a loan"
+
+msgid "Prêt temporaire : retour prévu le"
+msgstr "Temporary loan: due back on"
+
+msgid "Laissez vide pour une attribution définitive. Avec une date, la feuille devient un prêt : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Leave empty for a permanent handover. With a date, the form becomes a loan: reminder before the due date, then a ticket if it is late."
+
+msgid "Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)"
+msgstr "Temporary loan: remind of the due date (days before, 0 = disabled)"
+
+msgid "Une attribution avec une date de retour prévue est un prêt. Le bénéficiaire et le technicien reçoivent un e-mail ce nombre de jours avant l'échéance."
+msgstr "A handover with an expected return date is a loan. The recipient and the technician receive an e-mail this many days before the due date."
+
+msgid "Ouvrir un ticket « Retour de prêt en retard » une fois l'échéance passée"
+msgstr "Open a “Late loan return” ticket once the due date has passed"
+
+msgid "Un ticket par prêt, lié au matériel, assigné au technicien. Le matériel n'est jamais désaffecté ni changé de statut automatiquement : le retour passe par la restitution habituelle."
+msgstr "One ticket per loan, linked to the equipment, assigned to the technician. The equipment is never unassigned or changed status automatically: the return goes through the usual return form."
+
+#, php-format
+msgid "%d en retard"
+msgid_plural "%d en retard"
+msgstr[0] "%d overdue"
+msgstr[1] "%d overdue"

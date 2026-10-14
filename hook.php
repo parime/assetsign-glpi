@@ -25,6 +25,7 @@ use GlpiPlugin\Assetsign\DestructionDetails;
 use GlpiPlugin\Assetsign\DonDetails;
 use GlpiPlugin\Assetsign\EnvironmentalData;
 use GlpiPlugin\Assetsign\Kit;
+use GlpiPlugin\Assetsign\Loan;
 use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Movement;
@@ -243,6 +244,22 @@ function plugin_assetsign_display_central(): void {
        \Toolbox::logInFile('assetsign', sprintf("Feuilles a envoyer : %s\n", $e->getMessage()), true);
    }
 
+    // Issue #193 : prets en cours, echeance la plus proche en premier.
+   try {
+       $loans = Loan::getActiveLoans(200);
+      if ($loans !== []) {
+          echo '<tr><td>' . TemplateRenderer::getInstance()->render('@assetsign/loans_in_progress.html.twig', [
+              'loans'         => array_slice($loans, 0, 10),
+              'overdue_count' => count(array_filter($loans, static fn (array $l): bool => $l['overdue'])),
+              // Liste des feuilles avec une date de retour prevue (option de recherche 14), triee par echeance.
+              'list_url'      => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.php?criteria[0][field]=14&criteria[0][searchtype]=morethan&criteria[0][value]=2000-01-01&sort=14&order=ASC',
+              'form_url'      => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.form.php',
+          ]) . '</td></tr>';
+      }
+   } catch (\Throwable $e) {
+       \Toolbox::logInFile('assetsign', sprintf("Prets en cours : %s\n", $e->getMessage()), true);
+   }
+
    try {
        $count = PendingSignatures::countForUser((int) Session::getLoginUserID());
       if ($count === 0) {
@@ -394,6 +411,16 @@ function plugin_assetsign_install(): bool {
         DAY_TIMESTAMP,
         [
             'comment' => 'Alerte le technicien des attributions sur le point d\'expirer (avant que ce soit trop tard pour agir)',
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
+    // Issue #193 : prets temporaires (rappel avant echeance, ticket de retard).
+    CronTask::register(
+        Loan::class,
+        'assetsignLoans',
+        DAY_TIMESTAMP,
+        [
+            'comment' => 'Rappelle les prets arrivant a echeance et ouvre un ticket pour les retours en retard',
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );

@@ -44,6 +44,41 @@
       </div>
     {% endif %}
 
+    {# Issue #193 : pret temporaire - une date de retour prevue fait de l'attribution un pret #}
+    {% set loan_until = item.fields.loan_until|default(null) %}
+    {% if loan_until or can_edit_loan|default(false) %}
+      {% set loan_today = today|default('now'|date('Y-m-d')) %}
+      {% set loan_is_returned = loan_returned|default(false) %}
+      {% set loan_overdue = loan_until and loan_until < loan_today and not loan_is_returned %}
+      <div class="alert {{ loan_overdue ? 'alert-danger' : (loan_until ? 'alert-info' : 'alert-light') }} d-flex flex-wrap align-items-center gap-2">
+        <i class="ti ti-clock-share fs-2"></i>
+        <div class="flex-fill">
+          {% if loan_until %}
+            <strong>{{ __('Prêt temporaire', 'assetsign') }}</strong> — {{ __('retour prévu le %s', 'assetsign')|format(loan_until|formatted_date) }}
+            {% if loan_is_returned %}
+              <span class="badge bg-green-lt ms-1"><i class="ti ti-check"></i> {{ __('Rendu', 'assetsign') }}</span>
+            {% elseif loan_overdue %}
+              <span class="badge bg-red-lt ms-1"><i class="ti ti-alert-triangle"></i> {{ __('En retard', 'assetsign') }}</span>
+            {% endif %}
+            {% if item.fields.loan_tickets_id|default(0) > 0 %}
+              <a class="ms-2" href="{{ 'Ticket'|itemtype_form_path(item.fields.loan_tickets_id) }}"><i class="ti ti-ticket me-1"></i>{{ __('Ticket n° %d', 'assetsign')|format(item.fields.loan_tickets_id) }}</a>
+            {% endif %}
+          {% else %}
+            {{ __('Attribution définitive. Indiquez une date de retour pour en faire un prêt temporaire : rappel avant l\'échéance, puis ticket en cas de retard.', 'assetsign') }}
+          {% endif %}
+        </div>
+        {% if can_edit_loan|default(false) %}
+          <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-flex align-items-center gap-2">
+            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="id" value="{{ item.fields.id }}">
+            <label class="form-label mb-0 text-nowrap" for="assetsign-loan-until">{{ __('Retour prévu', 'assetsign') }}</label>
+            <input type="date" name="loan_until" id="assetsign-loan-until" class="form-control form-control-sm" value="{{ loan_until|default('') }}" min="{{ loan_today }}" style="width: 160px;">
+            <button type="submit" name="update_loan" class="btn btn-sm btn-secondary">{{ loan_until ? __('Modifier', 'assetsign') : __('En faire un prêt', 'assetsign') }}</button>
+          </form>
+        {% endif %}
+      </div>
+    {% endif %}
+
     {# Issue #183 : ticket a l'origine de la remise #}
     {% if linked_ticket|default(null) %}
       <p class="mb-2"><i class="ti ti-ticket me-1"></i>{{ __('Ticket lié :', 'assetsign') }}

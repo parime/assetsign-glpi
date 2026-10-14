@@ -3804,3 +3804,111 @@ msgid "Jour du départ : %d matériel est encore affecté à la personne dans GL
 msgid_plural "Jour du départ : %d matériels sont encore affectés à la personne dans GLPI."
 msgstr[0] "Giorno dell'uscita: %d attrezzatura è ancora assegnata alla persona in GLPI."
 msgstr[1] "Giorno dell'uscita: %d attrezzature sono ancora assegnate alla persona in GLPI."
+
+msgid "Seule une attribution peut être un prêt."
+msgstr "Solo un'assegnazione può essere un prestito."
+
+msgid "Cette feuille est annulée ou expirée."
+msgstr "Questa scheda è annullata o scaduta."
+
+msgid "Date de retour invalide."
+msgstr "Data di restituzione non valida."
+
+msgid "La date de retour prévue ne peut pas être dans le passé."
+msgstr "La data di restituzione prevista non può essere nel passato."
+
+msgid "Rappelle les prêts arrivant à échéance et ouvre un ticket pour les retours en retard"
+msgstr "Ricorda i prestiti in scadenza e apre un ticket per le restituzioni in ritardo"
+
+#, php-format
+msgid "%1$s « %2$s » prêté à %3$s devait être rendu le %4$s. Le matériel est toujours affecté à cette personne."
+msgstr "%1$s «%2$s» prestato a %3$s doveva essere restituito il %4$s. L'attrezzatura è ancora assegnata a questa persona."
+
+msgid "Récupérez le matériel puis faites signer la restitution, ou prolongez le prêt depuis la feuille."
+msgstr "Recupera l'attrezzatura e fai firmare la restituzione, oppure prolunga il prestito dalla scheda."
+
+#, php-format
+msgid "Feuille de prêt n° %d"
+msgstr "Scheda di prestito n. %d"
+
+#, php-format
+msgid "Retour de prêt en retard : %1$s (%2$s)"
+msgstr "Restituzione di prestito in ritardo: %1$s (%2$s)"
+
+msgid "Prêts en cours"
+msgstr "Prestiti in corso"
+
+msgid "Voir tous les prêts"
+msgstr "Vedi tutti i prestiti"
+
+msgid "Emprunteur"
+msgstr "Beneficiario del prestito"
+
+msgid "Retour prévu"
+msgstr "Restituzione prevista"
+
+msgid "En retard"
+msgstr "In ritardo"
+
+#, php-format
+msgid "Ticket n° %d"
+msgstr "Ticket n. %d"
+
+msgid "Ouvrir la feuille"
+msgstr "Apri la scheda"
+
+msgid "Prêt arrivant à échéance"
+msgstr "Prestito in scadenza"
+
+msgid "Date de retour prévue (prêt)"
+msgstr "Data di restituzione prevista (prestito)"
+
+msgid "Retour prévu (prêt)"
+msgstr "Restituzione prevista (prestito)"
+
+msgid "Attribution définitive : aucune date de retour."
+msgstr "Assegnazione definitiva: nessuna data di restituzione."
+
+#, php-format
+msgid "Prêt : retour prévu le %s."
+msgstr "Prestito: restituzione prevista il %s."
+
+msgid "Prêt temporaire"
+msgstr "Prestito temporaneo"
+
+#, php-format
+msgid "retour prévu le %s"
+msgstr "restituzione prevista il %s"
+
+msgid "Attribution définitive. Indiquez une date de retour pour en faire un prêt temporaire : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Assegnazione definitiva. Indica una data di restituzione per trasformarla in prestito temporaneo: promemoria prima della scadenza, poi ticket in caso di ritardo."
+
+msgid "Modifier"
+msgstr "Modifica"
+
+msgid "En faire un prêt"
+msgstr "Trasforma in prestito"
+
+msgid "Prêt temporaire : retour prévu le"
+msgstr "Prestito temporaneo: restituzione prevista il"
+
+msgid "Laissez vide pour une attribution définitive. Avec une date, la feuille devient un prêt : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Lascia vuoto per un'assegnazione definitiva. Con una data, la scheda diventa un prestito: promemoria prima della scadenza, poi ticket in caso di ritardo."
+
+msgid "Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)"
+msgstr "Prestito temporaneo: ricorda la restituzione prevista (giorni prima, 0 = disattivato)"
+
+msgid "Une attribution avec une date de retour prévue est un prêt. Le bénéficiaire et le technicien reçoivent un e-mail ce nombre de jours avant l'échéance."
+msgstr "Un'assegnazione con data di restituzione prevista è un prestito. Il beneficiario e il tecnico ricevono un'e-mail questo numero di giorni prima della scadenza."
+
+msgid "Ouvrir un ticket « Retour de prêt en retard » une fois l'échéance passée"
+msgstr "Aprire un ticket «Restituzione di prestito in ritardo» una volta superata la scadenza"
+
+msgid "Un ticket par prêt, lié au matériel, assigné au technicien. Le matériel n'est jamais désaffecté ni changé de statut automatiquement : le retour passe par la restitution habituelle."
+msgstr "Un ticket per prestito, collegato all'attrezzatura e assegnato al tecnico. L'attrezzatura non viene mai disassegnata né cambia stato automaticamente: la restituzione passa dalla consueta scheda di restituzione."
+
+#, php-format
+msgid "%d en retard"
+msgid_plural "%d en retard"
+msgstr[0] "%d in ritardo"
+msgstr[1] "%d in ritardo"

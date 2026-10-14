@@ -21,6 +21,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   n'ajoute pas de suivi à un ticket résolu ou clos (GLPI le rouvrirait). Un seul ticket par départ.
   L'écran du départ donne un lien vers le ticket. Option « Ouvrir un ticket “Récupération du
   matériel” » dans la configuration, onglet Départ (active par défaut).
+- **Prêt temporaire** (issue #193). Une attribution avec une **date de retour prévue** devient un
+  prêt :
+  - la date se saisit dans la fenêtre de confirmation, ou sur la feuille (encart « Prêt
+    temporaire »), y compris après signature pour prolonger un prêt ;
+  - le PDF indique « Retour prévu au plus tard le … » ;
+  - X jours avant l'échéance, le bénéficiaire et le technicien reçoivent un e-mail (nouvelle
+    notification « Prêt arrivant à échéance », balise `##assetsign.loan_until##`) ;
+  - une fois l'échéance passée sans retour, un ticket « Retour de prêt en retard » est ouvert, lié
+    au matériel et assigné au technicien (un seul par prêt) ;
+  - carte « Prêts en cours » sur la page d'accueil, avec les retards en rouge, et colonne
+    « Retour prévu (prêt) » dans la liste des feuilles.
+
+  Un prêt est considéré rendu dès que le matériel n'est plus affecté à l'emprunteur dans GLPI, ou
+  qu'une restitution a été signée. Rien n'est désaffecté ni changé de statut automatiquement.
+  Réglages dans la configuration : délai du rappel (3 jours par défaut) et ticket de retard (actif
+  par défaut). Tâche planifiée quotidienne « assetsignLoans ».
 
 ## [2.9.0] - 2026-10-11
 

@@ -336,6 +336,15 @@ class Assetsign extends Compat\Base\AssetsignBase
            'itemlink_type' => 'User',
        ];
 
+       // Issue #193 : pret temporaire, vide pour une attribution definitive.
+       $tab[] = [
+           'id'       => 14,
+           'table'    => self::getTable(),
+           'field'    => 'loan_until',
+           'name'     => __('Retour prévu (prêt)', 'assetsign'),
+           'datatype' => 'date',
+       ];
+
        return $tab;
    }
 
@@ -386,6 +395,13 @@ class Assetsign extends Compat\Base\AssetsignBase
                && $this->canSignInPerson(),
            'accessories'          => $this->isNewID($ID) ? [] : $this->getAccessories(),
            'can_edit_accessories' => !$this->isNewID($ID) && $this->isStillEditable() && \Session::haveRight(self::$rightname, UPDATE),
+           // Issue #193 : pret temporaire, modifiable meme apres signature (prolongation).
+           'can_edit_loan'        => !$this->isNewID($ID)
+               && (int) $this->fields['type'] === self::TYPE_HANDOVER
+               && !in_array((int) $this->fields['status'], [self::STATUS_CANCELLED, self::STATUS_EXPIRED], true)
+               && \Session::haveRight(self::$rightname, UPDATE),
+           'loan_returned'        => !$this->isNewID($ID) && !empty($this->fields['loan_until']) && Loan::isReturned($this->fields),
+           'today'                => date('Y-m-d'),
            // Issue #166 : objets du parc remis avec le materiel, et peripheriques connectes pas encore
            // ajoutes (proposes tant que la fiche est modifiable).
            'inventoried_items'    => $this->isNewID($ID) ? [] : $this->getInventoriedItems(),
@@ -1297,6 +1313,43 @@ class Assetsign extends Compat\Base\AssetsignBase
        $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
        $this->launchWorkflow();
        $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
+   }
+
+    /**
+     * Issue #193 : pret temporaire. Une date de retour prevue fait d'une attribution un pret ;
+     * vide = attribution definitive. Modifiable tant que la feuille n'est ni annulee ni expiree,
+     * y compris apres signature (prolonger un pret) : le PDF deja signe reste tel quel, seul le
+     * brouillon / la feuille en attente est regenere pour afficher l'echeance.
+     */
+   public function setLoanUntil(string $date): void {
+      if ((int) $this->fields['type'] !== self::TYPE_HANDOVER) {
+          throw new \RuntimeException(__('Seule une attribution peut être un prêt.', 'assetsign'));
+      }
+      if (in_array((int) $this->fields['status'], [self::STATUS_CANCELLED, self::STATUS_EXPIRED], true)) {
+          throw new \RuntimeException(__('Cette feuille est annulée ou expirée.', 'assetsign'));
+      }
+       $date = trim($date);
+      if ($date !== '') {
+          $parsed = \DateTime::createFromFormat('!Y-m-d', $date);
+         if ($parsed === false || $parsed->format('Y-m-d') !== $date) {
+             throw new \RuntimeException(__('Date de retour invalide.', 'assetsign'));
+         }
+         if ($date < date('Y-m-d')) {
+             throw new \RuntimeException(__('La date de retour prévue ne peut pas être dans le passé.', 'assetsign'));
+         }
+      }
+      if ($date === (string) ($this->fields['loan_until'] ?? '')) {
+          return;
+      }
+       // Nouvelle echeance : un nouveau rappel sera envoye avant elle.
+       global $DB;
+       $DB->update(self::getTable(), ['loan_until' => $date === '' ? null : $date, 'loan_reminder_sent_at' => null], ['id' => $this->getID()]);
+       $this->getFromDB($this->getID());
+      if ($this->isStillEditable() && (int) $this->fields['document_id_unsigned'] > 0) {
+          $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
+          $this->regenerateUnsignedPdf();
+          $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
+      }
    }
 
     /**
@@ -3840,6 +3893,9 @@ class Assetsign extends Compat\Base\AssetsignBase
                 `expiry_warning_sent` tinyint NOT NULL DEFAULT 0,
                 `draft_reminder_sent_at` timestamp NULL DEFAULT NULL,
                 `tickets_id` int unsigned NOT NULL DEFAULT 0,
+                `loan_until` date DEFAULT NULL,
+                `loan_reminder_sent_at` timestamp NULL DEFAULT NULL,
+                `loan_tickets_id` int unsigned NOT NULL DEFAULT 0,
                 `observations` text,
                 `beneficiary_comment` text,
                 `is_deleted` tinyint NOT NULL DEFAULT 0,
@@ -3855,6 +3911,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                 KEY `is_recursive` (`is_recursive`),
                 KEY `status` (`status`),
                 KEY `type` (`type`),
+                KEY `loan_until` (`loan_until`),
                 KEY `plugin_assetsign_templates_id` (`plugin_assetsign_templates_id`),
                 KEY `plugin_assetsign_kits_id` (`plugin_assetsign_kits_id`),
                 KEY `plugin_assetsign_departures_id` (`plugin_assetsign_departures_id`),
@@ -3873,6 +3930,14 @@ class Assetsign extends Compat\Base\AssetsignBase
          if (!$DB->fieldExists($table, 'tickets_id')) {
              $migration->addField($table, 'tickets_id', 'integer', ['value' => 0]);
              $migration->addKey($table, 'tickets_id');
+             $migration->migrationOneTable($table);
+         }
+         // Issue #193 : pret temporaire (date de retour prevue, rappel, ticket de retard).
+         if (!$DB->fieldExists($table, 'loan_until')) {
+             $migration->addField($table, 'loan_until', 'date', ['null' => true]);
+             $migration->addField($table, 'loan_reminder_sent_at', 'timestamp', ['null' => true]);
+             $migration->addField($table, 'loan_tickets_id', 'fkey');
+             $migration->addKey($table, 'loan_until');
              $migration->migrationOneTable($table);
          }
          // Issue #179 : date du dernier rappel envoye pour un brouillon.
