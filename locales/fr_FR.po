@@ -3902,3 +3902,84 @@ msgid "%d en retard"
 msgid_plural "%d en retard"
 msgstr[0] "%d en retard"
 msgstr[1] "%d en retard"
+
+msgid "Panne"
+msgstr "Panne"
+
+msgid "Casse"
+msgstr "Casse"
+
+msgid "Perte"
+msgstr "Perte"
+
+msgid "Vol"
+msgstr "Vol"
+
+msgid "Choisissez le type de problème."
+msgstr "Choisissez le type de problème."
+
+msgid "Ce matériel ne vous est pas affecté."
+msgstr "Ce matériel ne vous est pas affecté."
+
+msgid "Votre profil ne permet pas de créer un ticket : contactez le service informatique."
+msgstr "Votre profil ne permet pas de créer un ticket : contactez le service informatique."
+
+#, php-format
+msgid "N° d'inventaire %s"
+msgstr "N° d'inventaire %s"
+
+#, php-format
+msgid "%1$s signalé(e) sur %2$s."
+msgstr "%1$s signalé(e) sur %2$s."
+
+msgid "Perte ou vol : le service informatique vous indiquera les démarches (déclaration, blocage des accès, remplacement)."
+msgstr "Perte ou vol : le service informatique vous indiquera les démarches (déclaration, blocage des accès, remplacement)."
+
+#, php-format
+msgid "%1$s : %2$s"
+msgstr "%1$s : %2$s"
+
+msgid "Le ticket n'a pas pu être créé : contactez le service informatique."
+msgstr "Le ticket n'a pas pu être créé : contactez le service informatique."
+
+#, php-format
+msgid "Votre signalement est enregistré (ticket n° %d). Le service informatique va vous recontacter."
+msgstr "Votre signalement est enregistré (ticket n° %d). Le service informatique va vous recontacter."
+
+msgid "Mon matériel et mes documents"
+msgstr "Mon matériel et mes documents"
+
+msgid "Mon matériel"
+msgstr "Mon matériel"
+
+msgid "Aucun matériel ne vous est affecté"
+msgstr "Aucun matériel ne vous est affecté"
+
+msgid "Le matériel que le service informatique vous remet apparaîtra ici, avec les documents que vous avez signés."
+msgstr "Le matériel que le service informatique vous remet apparaîtra ici, avec les documents que vous avez signés."
+
+msgid "Le matériel qui vous est confié et les documents que vous avez signés. Un problème (panne, casse, perte, vol) ? Signalez-le ici : le service informatique reçoit un ticket avec le matériel concerné."
+msgstr "Le matériel qui vous est confié et les documents que vous avez signés. Un problème (panne, casse, perte, vol) ? Signalez-le ici : le service informatique reçoit un ticket avec le matériel concerné."
+
+#, php-format
+msgid "N° d'inventaire : %s"
+msgstr "N° d'inventaire : %s"
+
+#, php-format
+msgid "%1$s signée le %2$s"
+msgstr "%1$s signée le %2$s"
+
+msgid "Signaler un problème"
+msgstr "Signaler un problème"
+
+msgid "Quel est le problème ?"
+msgstr "Quel est le problème ?"
+
+msgid "Décrivez ce qui se passe (facultatif)"
+msgstr "Décrivez ce qui se passe (facultatif)"
+
+msgid "Ex. : l'écran ne s'allume plus depuis ce matin."
+msgstr "Ex. : l'écran ne s'allume plus depuis ce matin."
+
+msgid "Envoyer le signalement"
+msgstr "Envoyer le signalement"

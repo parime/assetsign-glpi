@@ -3882,3 +3882,84 @@ msgid "%d en retard"
 msgid_plural "%d en retard"
 msgstr[0] "%d overdue"
 msgstr[1] "%d overdue"
+
+msgid "Panne"
+msgstr "Breakdown"
+
+msgid "Casse"
+msgstr "Damage"
+
+msgid "Perte"
+msgstr "Loss"
+
+msgid "Vol"
+msgstr "Theft"
+
+msgid "Choisissez le type de problème."
+msgstr "Choose the type of problem."
+
+msgid "Ce matériel ne vous est pas affecté."
+msgstr "This equipment is not assigned to you."
+
+msgid "Votre profil ne permet pas de créer un ticket : contactez le service informatique."
+msgstr "Your profile cannot create tickets: contact the IT department."
+
+#, php-format
+msgid "N° d'inventaire %s"
+msgstr "Inventory no. %s"
+
+#, php-format
+msgid "%1$s signalé(e) sur %2$s."
+msgstr "%1$s reported on %2$s."
+
+msgid "Perte ou vol : le service informatique vous indiquera les démarches (déclaration, blocage des accès, remplacement)."
+msgstr "Loss or theft: the IT department will tell you what to do (report, blocking access, replacement)."
+
+#, php-format
+msgid "%1$s : %2$s"
+msgstr "%1$s: %2$s"
+
+msgid "Le ticket n'a pas pu être créé : contactez le service informatique."
+msgstr "The ticket could not be created: contact the IT department."
+
+#, php-format
+msgid "Votre signalement est enregistré (ticket n° %d). Le service informatique va vous recontacter."
+msgstr "Your report has been recorded (ticket no. %d). The IT department will get back to you."
+
+msgid "Mon matériel et mes documents"
+msgstr "My equipment and documents"
+
+msgid "Mon matériel"
+msgstr "My equipment"
+
+msgid "Aucun matériel ne vous est affecté"
+msgstr "No equipment is assigned to you"
+
+msgid "Le matériel que le service informatique vous remet apparaîtra ici, avec les documents que vous avez signés."
+msgstr "The equipment the IT department hands over to you will appear here, with the documents you signed."
+
+msgid "Le matériel qui vous est confié et les documents que vous avez signés. Un problème (panne, casse, perte, vol) ? Signalez-le ici : le service informatique reçoit un ticket avec le matériel concerné."
+msgstr "The equipment entrusted to you and the documents you signed. A problem (breakdown, damage, loss, theft)? Report it here: the IT department receives a ticket with the equipment concerned."
+
+#, php-format
+msgid "N° d'inventaire : %s"
+msgstr "Inventory no.: %s"
+
+#, php-format
+msgid "%1$s signée le %2$s"
+msgstr "%1$s signed on %2$s"
+
+msgid "Signaler un problème"
+msgstr "Report a problem"
+
+msgid "Quel est le problème ?"
+msgstr "What is the problem?"
+
+msgid "Décrivez ce qui se passe (facultatif)"
+msgstr "Describe what is happening (optional)"
+
+msgid "Ex. : l'écran ne s'allume plus depuis ce matin."
+msgstr "E.g.: the screen has not turned on since this morning."
+
+msgid "Envoyer le signalement"
+msgstr "Send the report"

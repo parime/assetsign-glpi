@@ -1,0 +1,72 @@
+{# Issue #194 : « Mon matériel » (portail self-service), cf. front/mysignatures.php et MyEquipment #}
+{% set problem_icons = {'breakdown': 'ti-tool', 'damage': 'ti-hammer', 'loss': 'ti-map-pin-off', 'theft': 'ti-shield-x'} %}
+{% set equipment = equipment|default([]) %}
+{% set problem_types = problem_types|default({}) %}
+{% set can_report = can_report|default(false) %}
+<div class="card mt-3 assetsign-my-equipment">
+  <div class="card-header">
+    <h3 class="card-title">
+      <i class="ti ti-devices me-2"></i>{{ __('Mon matériel', 'assetsign') }}
+      {% if equipment|length > 0 %}<span class="badge bg-blue-lt ms-2">{{ equipment|length }}</span>{% endif %}
+    </h3>
+  </div>
+
+  {% if equipment is empty %}
+    <div class="card-body">
+      <div class="empty">
+        <div class="empty-icon"><i class="ti ti-device-desktop-off text-muted fs-1"></i></div>
+        <p class="empty-title">{{ __('Aucun matériel ne vous est affecté', 'assetsign') }}</p>
+        <p class="empty-subtitle text-muted">{{ __('Le matériel que le service informatique vous remet apparaîtra ici, avec les documents que vous avez signés.', 'assetsign') }}</p>
+      </div>
+    </div>
+  {% else %}
+    <div class="card-body pb-0">
+      <p class="text-muted">{{ __('Le matériel qui vous est confié et les documents que vous avez signés. Un problème (panne, casse, perte, vol) ? Signalez-le ici : le service informatique reçoit un ticket avec le matériel concerné.', 'assetsign') }}</p>
+    </div>
+    <div class="list-group list-group-flush">
+      {% for e in equipment %}
+        {% set collapse_id = 'assetsign-report-' ~ loop.index %}
+        <div class="list-group-item">
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <div class="flex-fill">
+              <div><span class="badge bg-secondary-lt me-1">{{ e.type_label }}</span><strong>{{ e.name }}</strong></div>
+              <div class="text-muted small">
+                {{ [e.model, e.serial ? __('N° de série : %s', 'assetsign')|format(e.serial) : '', e.otherserial ? __('N° d\'inventaire : %s', 'assetsign')|format(e.otherserial) : '']|filter(v => v)|join(' · ') }}
+              </div>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              {% for d in e.documents %}
+                <a class="btn btn-sm btn-outline-secondary" target="_blank" href="{{ action }}?pdf={{ d.id }}">
+                  <i class="ti ti-file-certificate me-1"></i>{{ __('%1$s signée le %2$s', 'assetsign')|format(d.label, d.date|formatted_date) }}
+                </a>
+              {% endfor %}
+              {% if can_report %}
+                <button class="btn btn-sm btn-outline-warning" type="button" data-bs-toggle="collapse" data-bs-target="#{{ collapse_id }}" aria-expanded="false" aria-controls="{{ collapse_id }}">
+                  <i class="ti ti-alert-triangle me-1"></i>{{ __('Signaler un problème', 'assetsign') }}
+                </button>
+              {% endif %}
+            </div>
+          </div>
+          {% if can_report %}
+            <div class="collapse mt-3" id="{{ collapse_id }}">
+              <form method="post" action="{{ action }}" class="border rounded p-3 bg-light">
+                <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="item" value="{{ e.key }}">
+                <div class="mb-2 fw-bold">{{ __('Quel est le problème ?', 'assetsign') }}</div>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  {% for value, label in problem_types %}
+                    <input type="radio" class="btn-check" name="problem" value="{{ value }}" id="{{ collapse_id }}-{{ value }}" autocomplete="off" required>
+                    <label class="btn btn-outline-secondary" for="{{ collapse_id }}-{{ value }}"><i class="ti {{ problem_icons[value]|default('ti-alert-circle') }} me-1"></i>{{ label }}</label>
+                  {% endfor %}
+                </div>
+                <label class="form-label" for="{{ collapse_id }}-description">{{ __('Décrivez ce qui se passe (facultatif)', 'assetsign') }}</label>
+                <textarea class="form-control mb-3" name="description" id="{{ collapse_id }}-description" rows="3" placeholder="{{ __('Ex. : l\'écran ne s\'allume plus depuis ce matin.', 'assetsign') }}"></textarea>
+                <button type="submit" name="report_problem" value="1" class="btn btn-warning"><i class="ti ti-send me-1"></i>{{ __('Envoyer le signalement', 'assetsign') }}</button>
+              </form>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

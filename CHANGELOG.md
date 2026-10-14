@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **« Mon matériel » dans le portail self-service** (issue #194). La page « Mes documents à
+  signer » (menu Plugins de l'interface simplifiée, et bandeau de l'accueil) montre aussi :
+  - le matériel affecté à l'utilisateur, avec modèle, n° de série et n° d'inventaire ;
+  - les feuilles qu'il a signées pour ce matériel, y compris celle d'un ordinateur remis avec
+    l'écran. Le PDF est servi par le plugin après avoir vérifié que l'utilisateur est bien le
+    signataire : aucun droit n'est nécessaire sur le matériel ni sur les documents GLPI ;
+  - un bouton « Signaler un problème » (panne, casse, perte, vol), qui crée un ticket à son nom,
+    lié au matériel. Le matériel n'est jamais modifié : c'est l'équipe qui traite le ticket.
 - **Départ : ticket « Récupération du matériel » pour l'équipe** (issue #195). Quand un départ est
   préparé (à la main, à la désactivation du compte ou X jours avant sa date de fin), un ticket est
   ouvert :

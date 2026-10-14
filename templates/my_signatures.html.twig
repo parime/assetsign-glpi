@@ -11,12 +11,10 @@
     </div>
 
     {% if rows is empty %}
-      <div class="card-body">
-        <div class="empty">
-          <div class="empty-icon"><i class="ti ti-circle-check text-success fs-1"></i></div>
-          <p class="empty-title">{{ __('Aucun document à signer', 'assetsign') }}</p>
-          <p class="empty-subtitle text-muted">{{ __('Quand un document (remise, restitution, don...) attendra votre signature, il apparaîtra ici.', 'assetsign') }}</p>
-        </div>
+      {# Issue #194 : une ligne seulement, « Mon matériel » suit juste en dessous. #}
+      <div class="card-body py-3">
+        <i class="ti ti-circle-check text-success me-1"></i><strong>{{ __('Aucun document à signer', 'assetsign') }}</strong>
+        <span class="text-muted ms-1">{{ __('Quand un document (remise, restitution, don...) attendra votre signature, il apparaîtra ici.', 'assetsign') }}</span>
       </div>
     {% else %}
       <div class="card-body pb-0">
@@ -76,4 +74,6 @@
       </div>
     {% endif %}
   </div>
+  {# Issue #194 #}
+  {{ include('@assetsign/_my_equipment.html.twig') }}
 </div>

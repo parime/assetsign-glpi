@@ -13,6 +13,7 @@
 
 use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\MyEquipment;
 use GlpiPlugin\Assetsign\PendingSignatures;
 
 global $CFG_GLPI;
@@ -21,6 +22,35 @@ Session::checkLoginUser();
 
 $usersId = (int) Session::getLoginUserID();
 $selfUrl = $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/mysignatures.php';
+
+// Issue #194 : PDF signe d'une feuille dont l'utilisateur connecte est le beneficiaire (sans droit
+// necessaire sur le materiel ni sur les documents GLPI).
+if (isset($_GET['pdf'])) {
+    $document = MyEquipment::signedDocumentFor((int) $_GET['pdf'], $usersId);
+   if ($document === null) {
+       throw new \Glpi\Exception\Http\NotFoundHttpException();
+   }
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: inline; filename="' . basename((string) $document->fields['filename']) . '"');
+    readfile(GLPI_DOC_DIR . '/' . $document->fields['filepath']);
+    exit;
+}
+
+// Issue #194 : signaler un probleme sur son materiel = un ticket lie au materiel.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['report_problem'])) {
+   try {
+       $ticketsId = MyEquipment::reportProblem(
+           $usersId,
+           (string) ($_POST['item'] ?? ''),
+           (string) ($_POST['problem'] ?? ''),
+           (string) ($_POST['description'] ?? '')
+       );
+       Session::addMessageAfterRedirect(htmlescape(sprintf(__('Votre signalement est enregistré (ticket n° %d). Le service informatique va vous recontacter.', 'assetsign'), $ticketsId)));
+   } catch (\RuntimeException $e) {
+       Session::addMessageAfterRedirect(htmlescape($e->getMessage()), false, ERROR);
+   }
+    Html::redirect($selfUrl);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sign'])) {
    try {
@@ -32,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sign'])) {
    }
 }
 
-$title = __('Mes documents à signer', 'assetsign');
+$title = __('Mon matériel et mes documents', 'assetsign');
 $isHelpdesk = Session::getCurrentInterface() === 'helpdesk';
 if ($isHelpdesk) {
     Html::helpHeader($title);
@@ -94,8 +124,12 @@ foreach (PendingSignatures::pendingAttestationsForUser($usersId) as $attestation
 }
 
 TemplateRenderer::getInstance()->display('@assetsign/my_signatures.html.twig', [
-    'title'      => $title,
+    'title'      => __('Mes documents à signer', 'assetsign'),
     'rows'       => $rows,
+    // Issue #194
+    'equipment'     => MyEquipment::forUser($usersId),
+    'problem_types' => MyEquipment::getProblemTypes(),
+    'can_report'    => Session::haveRight(Ticket::$rightname, CREATE),
     'action'     => $selfUrl,
     'csrf_token' => Session::getNewCSRFToken(),
 ]);
