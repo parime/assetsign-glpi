@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Départ : ticket « Récupération du matériel » pour l'équipe** (issue #195). Quand un départ est
+  préparé (à la main, à la désactivation du compte ou X jours avant sa date de fin), un ticket est
+  ouvert :
+  - il liste et lie chaque matériel à récupérer ;
+  - il est assigné au technicien qui a préparé le départ ;
+  - le matériel ajouté plus tard au départ y est aussi lié.
+
+  Un suivi est ajouté à la signature, à l'annulation, et le jour du départ, avec la liste du
+  matériel encore affecté dans GLPI. Le plugin ne change jamais un statut ni une affectation, et
+  n'ajoute pas de suivi à un ticket résolu ou clos (GLPI le rouvrirait). Un seul ticket par départ.
+  L'écran du départ donne un lien vers le ticket. Option « Ouvrir un ticket “Récupération du
+  matériel” » dans la configuration, onglet Départ (active par défaut).
+
 ## [2.9.0] - 2026-10-11
 
 ### Changed

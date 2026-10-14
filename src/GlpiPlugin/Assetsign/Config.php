@@ -135,6 +135,9 @@ class Config extends Compat\Base\ConfigBase
         'departure_on_deactivation'           => 0,
         'departure_on_end_date'               => 0,
         'departure_end_date_days'             => 7,
+        // Issue #195 : ticket « Recuperation du materiel » pour l'equipe a la preparation d'un
+        // depart. Aucun statut ni affectation n'est change automatiquement.
+        'departure_ticket'                    => 1,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -658,6 +661,7 @@ class Config extends Compat\Base\ConfigBase
            'departure_on_deactivation' => (int) ($input['departure_on_deactivation'] ?? 0),
            'departure_on_end_date' => (int) ($input['departure_on_end_date'] ?? 0),
            'departure_end_date_days' => max(0, min(90, (int) ($input['departure_end_date_days'] ?? 7))),
+           'departure_ticket' => (int) ($input['departure_ticket'] ?? 0),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -844,6 +848,7 @@ class Config extends Compat\Base\ConfigBase
                 `departure_on_deactivation` tinyint NOT NULL DEFAULT 0,
                 `departure_on_end_date` tinyint NOT NULL DEFAULT 0,
                 `departure_end_date_days` int unsigned NOT NULL DEFAULT 7,
+                `departure_ticket` tinyint NOT NULL DEFAULT 1,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -916,6 +921,11 @@ class Config extends Compat\Base\ConfigBase
          // Issue #180 : statuts consideres comme « en stock ».
          if (!$DB->fieldExists($table, 'stock_states')) {
              $migration->addField($table, 'stock_states', 'text', []);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #195 : ticket de recuperation du materiel au depart.
+         if (!$DB->fieldExists($table, 'departure_ticket')) {
+             $migration->addField($table, 'departure_ticket', 'bool', ['value' => 1]);
              $migration->migrationOneTable($table);
          }
          // Issue #179 : rappel des feuilles restees en brouillon.

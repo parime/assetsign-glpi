@@ -3784,3 +3784,49 @@ msgstr "Verknüpftes Ticket lösen, wenn das Formular unterschrieben ist"
 
 msgid "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."
 msgstr "Ein aus einem Ticket vorbereitetes Formular (Registerkarte „Geräteübergabe“) fügt dem Ticket immer eine Folgemeldung mit dem unterschriebenen Dokument hinzu; ist dieses Kästchen aktiviert, wird das Ticket auch gelöst."
+
+#, php-format
+msgid "Récupération du matériel de %1$s (départ le %2$s)"
+msgstr "Rücknahme der Geräte von %1$s (Austritt am %2$s)"
+
+#, php-format
+msgid "Récupération du matériel de %s"
+msgstr "Rücknahme der Geräte von %s"
+
+#, php-format
+msgid "Le départ de %s est préparé : le matériel ci-dessous est à récupérer. La personne a reçu la fiche de restitution à signer."
+msgstr "Der Austritt von %s ist vorbereitet: Die unten aufgeführten Geräte sind zurückzunehmen. Die Person hat das Rückgabeformular zur Unterschrift erhalten."
+
+#, php-format
+msgid "%1$s a signé la restitution de son matériel le %2$s. Le document signé est joint au départ."
+msgstr "%1$s hat die Rückgabe der Geräte am %2$s unterschrieben. Das unterschriebene Dokument ist dem Austritt beigefügt."
+
+msgid "Le départ a été annulé dans assetsign : les fiches de restitution en attente sont annulées."
+msgstr "Der Austritt wurde in assetsign storniert: Ausstehende Rückgabeformulare sind storniert."
+
+msgid "Jour du départ : plus aucun matériel n'est affecté à la personne dans GLPI."
+msgstr "Austrittstag: Der Person sind in GLPI keine Geräte mehr zugewiesen."
+
+#, php-format
+msgid "N° de série %s"
+msgstr "Seriennr. %s"
+
+#, php-format
+msgid "Voir le départ n° %d dans assetsign"
+msgstr "Austritt Nr. %d in assetsign anzeigen"
+
+#, php-format
+msgid "Ticket de récupération du matériel n° %d"
+msgstr "Ticket zur Geräterücknahme Nr. %d"
+
+msgid "Ouvrir un ticket « Récupération du matériel » pour l'équipe"
+msgstr "Ein Ticket „Geräterücknahme“ für das Team eröffnen"
+
+msgid "Le ticket liste et lie le matériel à récupérer. Il est complété par un suivi à la signature, à l'annulation, et le jour du départ si du matériel est encore affecté. Le plugin ne change jamais un statut ni une affectation : c'est l'équipe qui traite le ticket."
+msgstr "Das Ticket listet und verknüpft die zurückzunehmenden Geräte. Bei Unterschrift, Stornierung und am Austrittstag (falls noch Geräte zugewiesen sind) wird eine Folgemeldung ergänzt. Das Plugin ändert nie einen Status oder eine Zuweisung: Das Team bearbeitet das Ticket."
+
+#, php-format
+msgid "Jour du départ : %d matériel est encore affecté à la personne dans GLPI."
+msgid_plural "Jour du départ : %d matériels sont encore affectés à la personne dans GLPI."
+msgstr[0] "Austrittstag: %d Gerät ist der Person in GLPI noch zugewiesen."
+msgstr[1] "Austrittstag: %d Geräte sind der Person in GLPI noch zugewiesen."

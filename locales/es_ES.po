@@ -3748,3 +3748,49 @@ msgstr "Resolver el ticket vinculado cuando se firma la ficha"
 
 msgid "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."
 msgstr "Una ficha preparada desde un ticket (pestaña «Entrega de material») siempre añade al ticket un seguimiento con el documento firmado; si esta casilla está marcada, el ticket también se resuelve."
+
+#, php-format
+msgid "Récupération du matériel de %1$s (départ le %2$s)"
+msgstr "Recuperación del material de %1$s (salida el %2$s)"
+
+#, php-format
+msgid "Récupération du matériel de %s"
+msgstr "Recuperación del material de %s"
+
+#, php-format
+msgid "Le départ de %s est préparé : le matériel ci-dessous est à récupérer. La personne a reçu la fiche de restitution à signer."
+msgstr "La salida de %s está preparada: hay que recuperar el material indicado abajo. La persona ha recibido la ficha de devolución para firmar."
+
+#, php-format
+msgid "%1$s a signé la restitution de son matériel le %2$s. Le document signé est joint au départ."
+msgstr "%1$s firmó la devolución de su material el %2$s. El documento firmado está adjunto a la salida."
+
+msgid "Le départ a été annulé dans assetsign : les fiches de restitution en attente sont annulées."
+msgstr "La salida se ha anulado en assetsign: las fichas de devolución pendientes quedan anuladas."
+
+msgid "Jour du départ : plus aucun matériel n'est affecté à la personne dans GLPI."
+msgstr "Día de la salida: la persona ya no tiene ningún material asignado en GLPI."
+
+#, php-format
+msgid "N° de série %s"
+msgstr "N.º de serie %s"
+
+#, php-format
+msgid "Voir le départ n° %d dans assetsign"
+msgstr "Ver la salida n.º %d en assetsign"
+
+#, php-format
+msgid "Ticket de récupération du matériel n° %d"
+msgstr "Ticket de recuperación del material n.º %d"
+
+msgid "Ouvrir un ticket « Récupération du matériel » pour l'équipe"
+msgstr "Abrir un ticket «Recuperación del material» para el equipo"
+
+msgid "Le ticket liste et lie le matériel à récupérer. Il est complété par un suivi à la signature, à l'annulation, et le jour du départ si du matériel est encore affecté. Le plugin ne change jamais un statut ni une affectation : c'est l'équipe qui traite le ticket."
+msgstr "El ticket lista y vincula el material que hay que recuperar. Se completa con un seguimiento en la firma, en la anulación y el día de la salida si aún queda material asignado. El plugin nunca cambia un estado ni una asignación: es el equipo quien gestiona el ticket."
+
+#, php-format
+msgid "Jour du départ : %d matériel est encore affecté à la personne dans GLPI."
+msgid_plural "Jour du départ : %d matériels sont encore affectés à la personne dans GLPI."
+msgstr[0] "Día de la salida: %d material sigue asignado a la persona en GLPI."
+msgstr[1] "Día de la salida: %d materiales siguen asignados a la persona en GLPI."
