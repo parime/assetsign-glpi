@@ -3728,3 +3728,49 @@ msgstr "Solve the linked ticket when the form is signed"
 
 msgid "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."
 msgstr "A form prepared from a ticket (“Equipment handover” tab) always adds a follow-up with the signed document to the ticket; if this box is ticked, the ticket is also solved."
+
+#, php-format
+msgid "Récupération du matériel de %1$s (départ le %2$s)"
+msgstr "Equipment recovery for %1$s (leaving on %2$s)"
+
+#, php-format
+msgid "Récupération du matériel de %s"
+msgstr "Equipment recovery for %s"
+
+#, php-format
+msgid "Le départ de %s est préparé : le matériel ci-dessous est à récupérer. La personne a reçu la fiche de restitution à signer."
+msgstr "The departure of %s is prepared: the equipment below must be recovered. The person has received the return form to sign."
+
+#, php-format
+msgid "%1$s a signé la restitution de son matériel le %2$s. Le document signé est joint au départ."
+msgstr "%1$s signed the return of their equipment on %2$s. The signed document is attached to the departure."
+
+msgid "Le départ a été annulé dans assetsign : les fiches de restitution en attente sont annulées."
+msgstr "The departure was cancelled in assetsign: pending return forms are cancelled."
+
+msgid "Jour du départ : plus aucun matériel n'est affecté à la personne dans GLPI."
+msgstr "Departure day: no equipment is assigned to the person in GLPI any more."
+
+#, php-format
+msgid "N° de série %s"
+msgstr "Serial no. %s"
+
+#, php-format
+msgid "Voir le départ n° %d dans assetsign"
+msgstr "View departure no. %d in assetsign"
+
+#, php-format
+msgid "Ticket de récupération du matériel n° %d"
+msgstr "Equipment recovery ticket no. %d"
+
+msgid "Ouvrir un ticket « Récupération du matériel » pour l'équipe"
+msgstr "Open an “Equipment recovery” ticket for the team"
+
+msgid "Le ticket liste et lie le matériel à récupérer. Il est complété par un suivi à la signature, à l'annulation, et le jour du départ si du matériel est encore affecté. Le plugin ne change jamais un statut ni une affectation : c'est l'équipe qui traite le ticket."
+msgstr "The ticket lists and links the equipment to recover. A follow-up is added on signature, on cancellation, and on the departure day if equipment is still assigned. The plugin never changes a status or an assignment: the team handles the ticket."
+
+#, php-format
+msgid "Jour du départ : %d matériel est encore affecté à la personne dans GLPI."
+msgid_plural "Jour du départ : %d matériels sont encore affectés à la personne dans GLPI."
+msgstr[0] "Departure day: %d item is still assigned to the person in GLPI."
+msgstr[1] "Departure day: %d items are still assigned to the person in GLPI."

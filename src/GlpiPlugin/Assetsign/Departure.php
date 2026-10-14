@@ -110,6 +110,10 @@ class Departure extends Compat\Base\DepartureBase
 
       if ($isNew) {
          NotificationEvent::raiseEvent('departure_created', $departure);
+         // Issue #195 : ticket de recuperation du materiel pour l'equipe.
+         DepartureTicket::open($departure);
+      } else {
+         DepartureTicket::linkItems($departure);
       }
 
       return $departure;
@@ -304,6 +308,7 @@ class Departure extends Compat\Base\DepartureBase
       ]);
 
       NotificationEvent::raiseEvent('departure_signed', $this);
+      DepartureTicket::onSigned($this);
    }
 
    /**
@@ -364,6 +369,7 @@ class Departure extends Compat\Base\DepartureBase
          }
       }
       $this->update(['id' => $this->getID(), 'status' => DepartureLogic::STATUS_CANCELLED]);
+      DepartureTicket::onCancelled($this);
    }
 
    public function sendReminderNow(): void {
@@ -422,9 +428,10 @@ class Departure extends Compat\Base\DepartureBase
    public static function cronAssetsignDepartures(CronTask $task): int {
       $created = self::runEndDateTriggers();
       $reminded = self::runReminders();
-      $task->addVolume($created + $reminded);
+      $followups = DepartureTicket::runDepartureDayFollowups();
+      $task->addVolume($created + $reminded + $followups);
 
-      return ($created + $reminded) > 0 ? 1 : 0;
+      return ($created + $reminded + $followups) > 0 ? 1 : 0;
    }
 
    public static function runEndDateTriggers(): int {
@@ -512,13 +519,23 @@ class Departure extends Compat\Base\DepartureBase
                `reminder_count` int unsigned NOT NULL DEFAULT 0,
                `date_last_reminder` timestamp NULL DEFAULT NULL,
                `date_signed` timestamp NULL DEFAULT NULL,
+               `tickets_id` int unsigned NOT NULL DEFAULT 0,
+               `date_departure_followup` timestamp NULL DEFAULT NULL,
                `date_creation` timestamp NULL DEFAULT NULL,
                `date_mod` timestamp NULL DEFAULT NULL,
                PRIMARY KEY (`id`),
                KEY `entities_id` (`entities_id`),
                KEY `users_id` (`users_id`),
-               KEY `status` (`status`)
+               KEY `status` (`status`),
+               KEY `tickets_id` (`tickets_id`)
            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+      }
+      // Issue #195 : ticket de recuperation du materiel et suivi du jour du depart.
+      if (!$DB->fieldExists($table, 'tickets_id')) {
+         $migration->addField($table, 'tickets_id', 'fkey');
+         $migration->addField($table, 'date_departure_followup', 'timestamp', ['null' => true]);
+         $migration->addKey($table, 'tickets_id');
+         $migration->migrationOneTable($table);
       }
    }
 
