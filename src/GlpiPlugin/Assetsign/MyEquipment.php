@@ -129,6 +129,22 @@ final class MyEquipment
    }
 
    /**
+    * Envoie au navigateur le PDF signé d'une feuille dont l'utilisateur est le bénéficiaire. Le
+    * fichier doit se trouver dans le dossier des documents GLPI (chemin résolu, pas de sortie).
+    */
+   public static function sendSignedPdf(int $assetsignsId, int $usersId): void {
+      $document = self::signedDocumentFor($assetsignsId, $usersId);
+      $root = realpath(GLPI_DOC_DIR);
+      $path = $document !== null ? realpath(GLPI_DOC_DIR . '/' . $document->fields['filepath']) : false;
+      if ($document === null || $root === false || $path === false || !str_starts_with($path, $root . DIRECTORY_SEPARATOR)) {
+         throw new \Glpi\Exception\Http\NotFoundHttpException();
+      }
+      header('Content-Type: application/pdf');
+      header('Content-Disposition: inline; filename="' . basename((string) $document->fields['filename']) . '"');
+      readfile($path);
+   }
+
+   /**
     * Ticket à son nom, lié au matériel. Refusé si le matériel ne lui est pas affecté.
     *
     * @return int id du ticket

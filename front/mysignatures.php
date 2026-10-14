@@ -26,13 +26,7 @@ $selfUrl = $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/mysignatures.php';
 // Issue #194 : PDF signe d'une feuille dont l'utilisateur connecte est le beneficiaire (sans droit
 // necessaire sur le materiel ni sur les documents GLPI).
 if (isset($_GET['pdf'])) {
-    $document = MyEquipment::signedDocumentFor((int) $_GET['pdf'], $usersId);
-   if ($document === null) {
-       throw new \Glpi\Exception\Http\NotFoundHttpException();
-   }
-    header('Content-Type: application/pdf');
-    header('Content-Disposition: inline; filename="' . basename((string) $document->fields['filename']) . '"');
-    readfile(GLPI_DOC_DIR . '/' . $document->fields['filepath']);
+    MyEquipment::sendSignedPdf((int) $_GET['pdf'], $usersId);
     exit;
 }
 
