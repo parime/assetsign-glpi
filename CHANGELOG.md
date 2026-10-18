@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.0] - 2026-10-18
+
 ### Added
 
 - **« Mon matériel » dans le portail self-service** (issue #194). La page « Mes documents à
