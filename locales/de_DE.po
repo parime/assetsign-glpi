@@ -4019,3 +4019,11 @@ msgstr "Z. B.: Der Bildschirm geht seit heute Morgen nicht mehr an."
 
 msgid "Envoyer le signalement"
 msgstr "Meldung senden"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
+msgid "Votre signature a été déléguée"
+msgstr "Ihre Unterschrift wurde übertragen"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
+msgid "Délégation faite par"
+msgstr "Übertragen von"

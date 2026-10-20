@@ -3963,3 +3963,11 @@ msgstr "E.g.: the screen has not turned on since this morning."
 
 msgid "Envoyer le signalement"
 msgstr "Send the report"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
+msgid "Votre signature a été déléguée"
+msgstr "Your signature has been delegated"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
+msgid "Délégation faite par"
+msgstr "Delegated by"

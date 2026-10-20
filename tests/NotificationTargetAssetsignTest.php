@@ -68,6 +68,32 @@ class NotificationTargetAssetsignTest extends AssetsignTestCase
         $this->assertArrayHasKey(NotificationTargetAssetsign::TARGET_TECHNICIAN, $targets);
     }
 
+    /**
+     * Delegation faite par un tiers : seul le beneficiaire d'origine est
+     * informe (le delegue recoit deja l'evenement "delegated").
+     */
+    public function testDelegatedBeneficiaryEventTargetsOnlyBeneficiary(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit NotifTarget DelegatedBeneficiary');
+        $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_SENT);
+
+        $target = new NotificationTargetAssetsign($entityId, 'delegated_beneficiary', $assetsign);
+        $targets = $this->availableUserTargets($target);
+
+        $this->assertArrayHasKey(NotificationTargetAssetsign::TARGET_BENEFICIARY, $targets);
+        $this->assertArrayNotHasKey(NotificationTargetAssetsign::TARGET_DELEGATE, $targets);
+        $this->assertArrayNotHasKey(NotificationTargetAssetsign::TARGET_TECHNICIAN, $targets);
+    }
+
+    public function testDelegatedBeneficiaryTemplateNeverCarriesTheSigningLink(): void
+    {
+        $def = \GlpiPlugin\Assetsign\Notification\DefaultNotificationContent::forEvent('delegated_beneficiary');
+        foreach (['fr_FR', 'en_GB', 'es_ES', 'de_DE', 'it_IT'] as $language) {
+            $this->assertStringNotContainsString('sign_url', $def[$language]['html'], "Le lien courant est celui du délégué ($language).");
+            $this->assertStringContainsString('##assetsign.delegation.by##', $def[$language]['html']);
+        }
+    }
+
     public function testAddDataForTemplatePopulatesExpectedTags(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit NotifTarget Data');

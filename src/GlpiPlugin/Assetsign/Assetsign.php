@@ -1885,6 +1885,12 @@ class Assetsign extends Compat\Base\AssetsignBase
        $this->_current_raw_token = $raw;
 
        NotificationEvent::raiseEvent('delegated', $this);
+       // Delegation decidee par un tiers (technicien/admin) : le beneficiaire
+       // d'origine, dont le lien vient d'etre invalide, en est informe — qui,
+       // au profit de qui, pourquoi. Sans objet quand il l'a faite lui-meme.
+      if ($initiatedByUsersId !== (int) $this->fields['users_id']) {
+          NotificationEvent::raiseEvent('delegated_beneficiary', $this);
+      }
    }
 
     /**
