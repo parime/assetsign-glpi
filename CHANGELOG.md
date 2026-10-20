@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **Revue de sécurité marketplace, re-vérification sur 2.10.0.** Les
+  18 constats du rapport 2.6.0 restaient corrigés, mais trois écrans ajoutés depuis reproduisaient
+  la famille « droit global sans contrôle d'entité » :
+  - attestations de détention, dossiers de départ et campagnes : consultation, PDF, export CSV,
+    relance, clôture, annulation et signature sur place vérifient maintenant l'entité de
+    l'enregistrement (`can()`), pas seulement le droit global ;
+  - lancement d'une campagne et préparation d'un départ : l'entité visée (formulaire, ou entité
+    de la personne) doit être dans le périmètre de la session.
+- Export CSV des campagnes : neutralisation des cellules interprétables comme formule (commentaire
+  libre saisi par la personne attestée).
+- La vérification de la dernière version sur GitHub ne contacte plus api.github.com que si
+  l'action automatique native « checkupdate » de GLPI est activée (désactivée par défaut), avec un
+  délai total de 10 s.
+- CI : règles Semgrep propres au projet (`.semgrep/`), bloquantes, qui détectent ces classes de
+  défaut (droit global au lieu de droit + entité, `entities_id` venant de la requête, `|raw`).
+
 ## [2.10.0] - 2026-10-18
 
 ### Added

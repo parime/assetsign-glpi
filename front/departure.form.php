@@ -18,12 +18,16 @@ global $CFG_GLPI;
 Session::checkLoginUser();
 
 $usersId = (int) Session::getLoginUserID();
-$canManage = Session::haveRight(Profile::RIGHT_ASSETSIGN, UPDATE);
-$canRead = Session::haveRight(Profile::RIGHT_ASSETSIGN, READ);
 $selfUrl = $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/departure.form.php';
 
 if (isset($_POST['prepare'])) {
    Session::checkRight(Profile::RIGHT_ASSETSIGN, UPDATE);
+   // Le dossier est cree dans l'entite par defaut de la personne (Departure::prepareFor()) : une
+   // entite hors du perimetre du technicien est refusee, comme partout ailleurs dans le plugin.
+   $leavingUser = new User();
+   if (!$leavingUser->getFromDB((int) ($_POST['users_id'] ?? 0)) || !Session::haveAccessToEntity((int) $leavingUser->fields['entities_id'])) {
+      throw new \Glpi\Exception\Http\AccessDeniedHttpException();
+   }
    // Messages techniques de Document::add() (« Création du répertoire PDF/… », un par PDF
    // généré) retirés : seul le message de synthèse ci-dessous a du sens pour l'utilisateur.
    $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
@@ -49,6 +53,10 @@ if ($id <= 0 || !$departure->getFromDB($id)) {
    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 $isLeavingUser = (int) $departure->fields['users_id'] === $usersId;
+// can() et non le seul droit global : il verifie aussi l'entite du dossier, sinon tout gestionnaire
+// pourrait consulter, relancer, annuler ou faire signer sur place le depart d'une autre entite.
+$canRead = $departure->can($id, READ);
+$canManage = $departure->can($id, UPDATE);
 if (!$isLeavingUser && !$canRead) {
    throw new \Glpi\Exception\Http\AccessDeniedHttpException();
 }
@@ -93,7 +101,9 @@ if (isset($_POST['sign'])) {
 }
 
 if (isset($_POST['remind']) || isset($_POST['cancel'])) {
-   Session::checkRight(Profile::RIGHT_ASSETSIGN, UPDATE);
+   if (!$canManage) {
+      throw new \Glpi\Exception\Http\AccessDeniedHttpException();
+   }
    try {
       if (isset($_POST['remind'])) {
          $departure->sendReminderNow();

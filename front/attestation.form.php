@@ -8,7 +8,6 @@
 use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Assetsign\Attestation;
 use GlpiPlugin\Assetsign\CampaignLogic;
-use GlpiPlugin\Assetsign\Profile;
 
 global $CFG_GLPI;
 
@@ -23,7 +22,9 @@ if ($id <= 0 || !$attestation->getFromDB($id)) {
     throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 $isHolder = (int) $attestation->fields['users_id'] === $usersId;
-$canRead = Session::haveRight(Profile::RIGHT_ASSETSIGN, READ);
+// can() et non le seul droit global : il verifie aussi l'entite de l'attestation (sinon tout
+// gestionnaire lirait, PDF signe compris, les attestations de n'importe quelle entite via l'id).
+$canRead = !$isHolder && $attestation->can($id, READ);
 if (!$isHolder && !$canRead) {
     throw new \Glpi\Exception\Http\AccessDeniedHttpException();
 }
