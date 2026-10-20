@@ -28,6 +28,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `package.json`, les fichiers servis étaient restés en 6.2.108 (même écart que celui relevé sur
   `signature_pad` en 2.6.0). La CI vérifie désormais que chaque fichier vendorisé correspond à la
   version déclarée. Vérifié dans Chromium : PDF rendu, signature dessinée et enregistrée.
+- **Le bénéficiaire est informé quand un tiers délègue sa signature** : nouvelle notification
+  « Votre signature a été déléguée » (qui a délégué, à qui, pourquoi ; sans lien de signature),
+  envoyée uniquement quand la délégation n'est pas faite par le bénéficiaire lui-même. Elle est
+  installée automatiquement à la mise à jour et modifiable dans Configuration > Notifications.
+  Nouveau tag de gabarit `##assetsign.delegation.by##`.
+- CI : test de contrôle d'accès de bout en bout (technicien limité à une entité, puis
+  super-admin), contrôle d'autorisation obligatoire sur chaque point d'entrée, et
+  `dependency-review` sur les PR.
 
 ## [2.10.0] - 2026-10-18
 
