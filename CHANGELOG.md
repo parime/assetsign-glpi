@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.1] - 2026-10-20
+
+### Security
+
+- **Revue de sécurité marketplace, re-vérification sur 2.10.0.** Les
+  18 constats du rapport 2.6.0 restaient corrigés, mais trois écrans ajoutés depuis reproduisaient
+  la famille « droit global sans contrôle d'entité » :
+  - attestations de détention, dossiers de départ et campagnes : consultation, PDF, export CSV,
+    relance, clôture, annulation et signature sur place vérifient maintenant l'entité de
+    l'enregistrement (`can()`), pas seulement le droit global ;
+  - lancement d'une campagne et préparation d'un départ : l'entité visée (formulaire, ou entité
+    de la personne) doit être dans le périmètre de la session.
+- Export CSV des campagnes : neutralisation des cellules interprétables comme formule (commentaire
+  libre saisi par la personne attestée).
+- La vérification de la dernière version sur GitHub ne contacte plus api.github.com que si
+  l'action automatique native « checkupdate » de GLPI est activée (désactivée par défaut), avec un
+  délai total de 10 s.
+- CI : règles Semgrep propres au projet (`.semgrep/`), bloquantes, qui détectent ces classes de
+  défaut (droit global au lieu de droit + entité, `entities_id` venant de la requête, `|raw`).
+- PDF.js réellement mis à jour en 6.4.299 : les PR Dependabot n'avaient modifié que
+  `package.json`, les fichiers servis étaient restés en 6.2.108 (même écart que celui relevé sur
+  `signature_pad` en 2.6.0). La CI vérifie désormais que chaque fichier vendorisé correspond à la
+  version déclarée. Vérifié dans Chromium : PDF rendu, signature dessinée et enregistrée.
+- **Le bénéficiaire est informé quand un tiers délègue sa signature** : nouvelle notification
+  « Votre signature a été déléguée » (qui a délégué, à qui, pourquoi ; sans lien de signature),
+  envoyée uniquement quand la délégation n'est pas faite par le bénéficiaire lui-même. Elle est
+  installée automatiquement à la mise à jour et modifiable dans Configuration > Notifications.
+  Nouveau tag de gabarit `##assetsign.delegation.by##`.
+- CI : test de contrôle d'accès de bout en bout (technicien limité à une entité, puis
+  super-admin), contrôle d'autorisation obligatoire sur chaque point d'entrée, et
+  `dependency-review` sur les PR.
+
 ## [2.10.0] - 2026-10-18
 
 ### Added

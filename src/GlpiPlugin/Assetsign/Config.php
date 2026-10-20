@@ -364,11 +364,21 @@ class Config extends Compat\Base\ConfigBase
      * (Toolbox::getURLContent() en GLPI 11, Glpi\Toolbox\HttpClient en
      * GLPI 12) : reutilise la gestion de proxy/timeout/erreurs deja etablie
      * par le cœur GLPI pour ce type d'appel.
+     * Opt-in : aucun appel sortant tant que l'action automatique native
+     * "checkupdate" de GLPI (Configuration > Actions automatiques, desactivee
+     * par defaut) n'est pas activee — refuser la verification de mise a jour
+     * de GLPI lui-meme refuse aussi celle-ci, sans reglage propre au plugin.
      * @return string|null Numero de version (sans le "v" du tag), ou null si
-     *         l'appel a echoue (pas de connexion, API GitHub indisponible...).
+     *         l'appel a echoue (pas de connexion, API GitHub indisponible...)
+     *         ou si la verification est desactivee.
      */
    public static function getLatestGithubVersion(): ?string {
        global $GLPI_CACHE;
+
+       $checkUpdate = new \CronTask();
+      if (!$checkUpdate->getFromDBbyName('CronTask', 'checkupdate') || (int) $checkUpdate->fields['state'] === \CronTask::STATE_DISABLE) {
+          return null;
+      }
 
        $cacheKey = 'plugin_assetsign_latest_github_version';
        $cached = $GLPI_CACHE->get($cacheKey);

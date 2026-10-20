@@ -25,6 +25,8 @@ final class Http
          }
       }
 
-       return (string) \Toolbox::getURLContent($url, $error);
+       // Delai TOTAL (le coeur ne fixe qu'un delai de connexion) : un hote qui
+       // accepte la connexion sans jamais repondre bloquerait sinon la page.
+       return (string) \Toolbox::getURLContent($url, $error, 0, [CURLOPT_TIMEOUT => 10]);
    }
 }

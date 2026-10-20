@@ -359,6 +359,49 @@ class AssetsignDelegationTest extends AssetsignTestCase
        $this->assertSame(0, (int) $assetsign->fields['delegated_users_id']);
    }
 
+    /**
+     * Revue de securite marketplace 2.6.0 : une delegation decidee par un
+     * technicien ne doit jamais etre invisible pour le beneficiaire d'origine
+     * (son lien est invalide) — il recoit "delegated_beneficiary". Rien quand
+     * il a delegue lui-meme.
+     */
+   public function testBeneficiaryIsNotifiedOnlyWhenSomeoneElseDelegates(): void {
+       global $CFG_GLPI;
+       $previous = [$CFG_GLPI['use_notifications'] ?? 0, $CFG_GLPI['notifications_mailing'] ?? 0];
+       $CFG_GLPI['use_notifications'] = 1;
+       $CFG_GLPI['notifications_mailing'] = 1;
+
+      try {
+          $entityId = $this->createTestEntity(0, 'PHPUnit Delegation NotifyBeneficiary');
+          Config::upsertForEntity($entityId, ['enable_signature_delegation' => 1]);
+          $beneficiaryId = $this->createTestUser('Ben', 'NotifyBeneficiary', ['_entities_id' => $entityId]);
+          $this->makeEmail($beneficiaryId, 'beneficiary.notify@example.test');
+          $delegateId = $this->createTestUser('Del', 'NotifyBeneficiary', ['_entities_id' => $entityId]);
+          $this->makeEmail($delegateId, 'delegate.notify@example.test');
+          $technicianId = $this->createTestUser('Tech', 'NotifyBeneficiary', ['_entities_id' => $entityId]);
+
+          $notification = new \Notification();
+          $this->assertTrue($notification->getFromDBByCrit(['itemtype' => Assetsign::class, 'event' => 'delegated_beneficiary']), 'La notification doit être installée.');
+          $link = new \Notification_NotificationTemplate();
+          $link->getFromDBByCrit(['notifications_id' => $notification->getID()]);
+          $templateId = (int) $link->fields['notificationtemplates_id'];
+          $queuedFor = static fn (string $email, string $unused): int => countElementsInTable(
+              \QueuedNotification::getTable(),
+              ['recipient' => $email, 'notificationtemplates_id' => $templateId]
+          );
+
+          $byTechnician = Assetsign::createManual('Computer', $this->createTestComputer($entityId, 'PHPUnit PC NotifyBen 1')->getID(), Assetsign::TYPE_DON, $beneficiaryId);
+          $byTechnician->delegateSignatureTo($delegateId, 'Absence', $technicianId);
+          $this->assertSame(1, $queuedFor('beneficiary.notify@example.test', 'sera signé par'), 'Le bénéficiaire doit être informé d\'une délégation faite par un tiers.');
+
+          $bySelf = Assetsign::createManual('Computer', $this->createTestComputer($entityId, 'PHPUnit PC NotifyBen 2')->getID(), Assetsign::TYPE_DON, $beneficiaryId);
+          $bySelf->delegateSignatureTo($delegateId, 'Congés', $beneficiaryId);
+          $this->assertSame(1, $queuedFor('beneficiary.notify@example.test', 'sera signé par'), 'Aucune information quand le bénéficiaire a délégué lui-même.');
+      } finally {
+          [$CFG_GLPI['use_notifications'], $CFG_GLPI['notifications_mailing']] = $previous;
+      }
+   }
+
    public function testConfigUpsertForcesSelfServiceOffWhenParentDisabled(): void {
        $entityId = $this->createTestEntity(0, 'PHPUnit Delegation Config');
 

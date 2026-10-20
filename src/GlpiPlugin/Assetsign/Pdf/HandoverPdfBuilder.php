@@ -78,16 +78,16 @@ final class HandoverPdfBuilder
            'inventoried_items'   => AssetsignItem::getForAssetsign($assetsign->getID()),
            // RichText::getSafeHtml() (pas seulement htmlspecialchars, qui casserait
            // la mise en forme voulue du gabarit) : ce contenu est affiche via
-           // {{ contract|raw }}/{{ charter|raw }} dans le twig PDF, et provient
+           // {{ contract_safe_html|raw }}/{{ charter_safe_html|raw }} dans le twig PDF, et provient
            // d'un champ de configuration modifiable par toute personne ayant
            // Config::$rightname ou Template::$rightname UPDATE - non purifie
            // jusqu'ici, un compte disposant de ce droit (mais pas forcement
            // d'un droit d'administration GLPI plus large) pouvait stocker du
            // JS qui s'executerait a chaque generation de PDF (rendu HTML avant
            // impression) et sur la page d'apercu (front/preview.php).
-           'contract'            => RichText::getSafeHtml($this->resolvePlaceholders($template?->fields['content'] ?? '', $placeholders)),
+           'contract_safe_html'  => RichText::getSafeHtml($this->resolvePlaceholders($template?->fields['content'] ?? '', $placeholders)),
            'include_content'     => (bool) ($template?->fields['include_content'] ?? true),
-           'charter'             => RichText::getSafeHtml($this->resolvePlaceholders($template?->fields['charter_content'] ?? '', $placeholders)),
+           'charter_safe_html'   => RichText::getSafeHtml($this->resolvePlaceholders($template?->fields['charter_content'] ?? '', $placeholders)),
            'include_charter'     => (bool) ($template?->fields['include_charter'] ?? true),
            'charter_url'         => $config->fields['charter_url'] ?: null,
            'enable_observations' => (bool) $config->fields['enable_observations'],
@@ -219,9 +219,9 @@ final class HandoverPdfBuilder
            // meme plus expose, puisque le contenu vient ici directement du
            // POST de live-preview.js (front/preview.php), affiche en HTML brut
            // dans le navigateur AVANT tout enregistrement.
-           'contract'            => RichText::getSafeHtml($this->resolvePlaceholders(array_key_exists('content', $overrides) ? (string) $overrides['content'] : ($template?->fields['content'] ?? ''), $placeholders)),
+           'contract_safe_html'  => RichText::getSafeHtml($this->resolvePlaceholders(array_key_exists('content', $overrides) ? (string) $overrides['content'] : ($template?->fields['content'] ?? ''), $placeholders)),
            'include_content'     => $includeContent,
-           'charter'             => RichText::getSafeHtml($this->resolvePlaceholders(array_key_exists('charter_content', $overrides) ? (string) $overrides['charter_content'] : ($template?->fields['charter_content'] ?? ''), $placeholders)),
+           'charter_safe_html'   => RichText::getSafeHtml($this->resolvePlaceholders(array_key_exists('charter_content', $overrides) ? (string) $overrides['charter_content'] : ($template?->fields['charter_content'] ?? ''), $placeholders)),
            'include_charter'     => $includeCharter,
            'charter_url'         => $charterUrl,
            'enable_observations' => $observationsEnabled,

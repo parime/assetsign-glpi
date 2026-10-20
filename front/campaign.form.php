@@ -18,9 +18,15 @@ $selfUrl = $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/campaign.form.php';
 
 if (isset($_POST['launch'])) {
    Session::checkRight(Profile::RIGHT_ASSETSIGN, UPDATE);
+   // entities_id vient du formulaire : jamais une entite hors du perimetre de la session (meme
+   // controle que front/config.php et front/preview.php).
+   $launchEntityId = (int) ($_POST['entities_id'] ?? Session::getActiveEntity());
+   if (!Session::haveAccessToEntity($launchEntityId)) {
+      throw new \Glpi\Exception\Http\AccessDeniedHttpException();
+   }
    $campaign = Campaign::launch([
       'name'          => (string) ($_POST['name'] ?? ''),
-      'entities_id'   => (int) ($_POST['entities_id'] ?? Session::getActiveEntity()),
+      'entities_id'   => $launchEntityId,
       'is_recursive'  => !empty($_POST['is_recursive']),
       'groups_id'     => (int) ($_POST['groups_id'] ?? 0),
       'profiles_id'   => (int) ($_POST['profiles_id'] ?? 0),
@@ -42,9 +48,16 @@ $campaign = new Campaign();
 if ($id > 0 && !$campaign->getFromDB($id)) {
    throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
+// can() verifie aussi l'entite de la campagne : sans lui, l'id suffisait a consulter/exporter le
+// rapport (noms, commentaires, ecarts) ou a relancer/cloturer la campagne d'une autre entite.
+if ($id > 0 && !$campaign->can($id, READ)) {
+   throw new \Glpi\Exception\Http\AccessDeniedHttpException();
+}
 
 if ($id > 0 && (isset($_POST['remind']) || isset($_POST['close']))) {
-   Session::checkRight(Profile::RIGHT_ASSETSIGN, UPDATE);
+   if (!$campaign->can($id, UPDATE)) {
+      throw new \Glpi\Exception\Http\AccessDeniedHttpException();
+   }
    if (isset($_POST['remind'])) {
       Session::addMessageAfterRedirect(sprintf(__('%d relance(s) envoyée(s).', 'assetsign'), $campaign->remindPending()));
    } else {
@@ -67,14 +80,17 @@ if ($id > 0 && ($_GET['export'] ?? '') === 'csv') {
       __('Personne', 'assetsign'), __('Statut'), __('Matériels', 'assetsign'), __('Date de réponse', 'assetsign'),
       __('Écart', 'assetsign'), __('Commentaire', 'assetsign'), __('Ticket', 'assetsign'), __('Relances', 'assetsign'),
    ], ';');
+   // Commentaire libre saisi par la personne attestee, noms de materiels : une cellule commencant
+   // par = + - @ (ou tabulation/retour) serait executee comme formule a l'ouverture dans un tableur.
+   $csvText = static fn (string $value): string => preg_match('/^[=+\-@\t\r]/', $value) ? "'" . $value : $value;
    foreach ($campaign->getReportLines() as $line) {
       fputcsv($out, [
-         $line['user'],
+         $csvText((string) $line['user']),
          $statusLabels[$line['status']] ?? '',
-         $line['items'],
+         $csvText((string) $line['items']),
          $line['date_answered'] ?? '',
          implode(', ', array_map(static fn (string $g): string => $gapLabels[$g], $line['gaps'])),
-         $line['comment'],
+         $csvText((string) $line['comment']),
          $line['tickets_id'] > 0 ? $line['tickets_id'] : '',
          $line['reminders'],
       ], ';');

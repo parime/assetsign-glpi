@@ -268,6 +268,47 @@ final class DefaultNotificationContent
                        . '<p><a href="##assetsign.url##">Apri la scheda di prestito</a> (solo servizio informatico)</p>',
                ],
            ],
+           // Delegation faite par un tiers : informe le beneficiaire d'origine.
+           // Volontairement sans ##assetsign.sign_url## : le jeton courant est
+           // celui du delegue, et l'ancien lien du beneficiaire est invalide.
+           'delegated_beneficiary' => [
+               'name'  => 'Attribution : votre signature a été déléguée',
+               'fr_FR' => [
+                   'subject' => 'Votre document de ##assetsign.type## sera signé par ##assetsign.delegate.name##',
+                   'html'    => '<p>Bonjour ##assetsign.user.name##,</p>'
+                       . '<p>##assetsign.delegation.by## a délégué la signature du document de ##assetsign.type## pour le matériel <strong>##assetsign.item.name##</strong> à <strong>##assetsign.delegate.name##</strong>.</p>'
+                       . '<p>Motif : ##assetsign.delegation.reason##</p>'
+                       . '<p>Le lien de signature que vous aviez reçu n\'est plus valable. Si vous n\'êtes pas d\'accord avec cette délégation, contactez le service informatique.</p>',
+               ],
+               'en_GB' => [
+                   'subject' => 'Your ##assetsign.type## document will be signed by ##assetsign.delegate.name##',
+                   'html'    => '<p>Hello ##assetsign.user.name##,</p>'
+                       . '<p>##assetsign.delegation.by## has delegated the signature of the ##assetsign.type## document for the equipment <strong>##assetsign.item.name##</strong> to <strong>##assetsign.delegate.name##</strong>.</p>'
+                       . '<p>Reason: ##assetsign.delegation.reason##</p>'
+                       . '<p>The signing link you received is no longer valid. If you disagree with this delegation, please contact the IT department.</p>',
+               ],
+               'es_ES' => [
+                   'subject' => 'Su documento de ##assetsign.type## será firmado por ##assetsign.delegate.name##',
+                   'html'    => '<p>Hola ##assetsign.user.name##,</p>'
+                       . '<p>##assetsign.delegation.by## ha delegado la firma del documento de ##assetsign.type## para el equipo <strong>##assetsign.item.name##</strong> a <strong>##assetsign.delegate.name##</strong>.</p>'
+                       . '<p>Motivo: ##assetsign.delegation.reason##</p>'
+                       . '<p>El enlace de firma que recibió ya no es válido. Si no está de acuerdo con esta delegación, contacte con el servicio informático.</p>',
+               ],
+               'de_DE' => [
+                   'subject' => 'Ihr ##assetsign.type##-Dokument wird von ##assetsign.delegate.name## unterschrieben',
+                   'html'    => '<p>Hallo ##assetsign.user.name##,</p>'
+                       . '<p>##assetsign.delegation.by## hat die Unterschrift des ##assetsign.type##-Dokuments für das Gerät <strong>##assetsign.item.name##</strong> an <strong>##assetsign.delegate.name##</strong> übertragen.</p>'
+                       . '<p>Grund: ##assetsign.delegation.reason##</p>'
+                       . '<p>Der Unterschriftslink, den Sie erhalten haben, ist nicht mehr gültig. Wenn Sie mit dieser Übertragung nicht einverstanden sind, wenden Sie sich bitte an die IT-Abteilung.</p>',
+               ],
+               'it_IT' => [
+                   'subject' => 'Il suo documento di ##assetsign.type## sarà firmato da ##assetsign.delegate.name##',
+                   'html'    => '<p>Buongiorno ##assetsign.user.name##,</p>'
+                       . '<p>##assetsign.delegation.by## ha delegato la firma del documento di ##assetsign.type## per l\'attrezzatura <strong>##assetsign.item.name##</strong> a <strong>##assetsign.delegate.name##</strong>.</p>'
+                       . '<p>Motivo: ##assetsign.delegation.reason##</p>'
+                       . '<p>Il link di firma che ha ricevuto non è più valido. Se non è d\'accordo con questa delega, contatti il servizio informatico.</p>',
+               ],
+           ],
            'delegated' => [
                'name'  => 'Attribution : signature déléguée',
                'fr_FR' => [

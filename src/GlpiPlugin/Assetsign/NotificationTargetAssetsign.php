@@ -66,6 +66,9 @@ class NotificationTargetAssetsign extends NotificationTarget
            'expired'       => __('Document expiré', 'assetsign'),
            'expiring_soon' => __('Document sur le point d\'expirer', 'assetsign'),
            'delegated'     => __('Signature déléguée', 'assetsign'),
+           // Information du beneficiaire d'origine quand la delegation est
+           // faite par un tiers (revue de securite marketplace 2.6.0).
+           'delegated_beneficiary' => __('Votre signature a été déléguée', 'assetsign'),
            // Signatures multiples (issue #143) : le beneficiaire vient de
            // signer, la fiche attend desormais la contre-signature du
            // responsable hierarchique.
@@ -214,6 +217,11 @@ class NotificationTargetAssetsign extends NotificationTarget
            ? formatUserName(0, $delegate['name'] ?? '', $delegate['realname'] ?? '', $delegate['firstname'] ?? '')
            : '';
        $this->data['##assetsign.delegation.reason##'] = (string) ($assetsign->fields['delegation_reason'] ?? '');
+       $delegatedBy = new \User();
+       $this->data['##assetsign.delegation.by##'] = (int) ($assetsign->fields['delegated_by_users_id'] ?? 0) > 0
+           && $delegatedBy->getFromDB((int) $assetsign->fields['delegated_by_users_id'])
+           ? formatUserName(0, $delegatedBy->fields['name'], $delegatedBy->fields['realname'], $delegatedBy->fields['firstname'])
+           : '';
 
        // Signatures multiples (issue #143) : vide si aucune contre-signature
        // requise, meme raisonnement que delegate.name ci-dessus.
@@ -243,6 +251,7 @@ class NotificationTargetAssetsign extends NotificationTarget
            'assetsign.loan_until' => __('Date de retour prévue (prêt)', 'assetsign'),
            'assetsign.delegate.name'      => __('Signataire délégué', 'assetsign'),
            'assetsign.delegation.reason'  => __('Motif de la délégation', 'assetsign'),
+           'assetsign.delegation.by'      => __('Délégation faite par', 'assetsign'),
            'assetsign.cosigner.name'      => __('Responsable hiérarchique (contre-signataire)', 'assetsign'),
        ];
 

@@ -112,13 +112,13 @@
 
 {% if include_content %}
 <h2>Conditions générales</h2>
-<div class="legal-text">{{ contract|raw }}</div>
+<div class="legal-text">{{ contract_safe_html|raw }}</div>
 {% endif %}
 
-{% if include_charter and (charter or charter_url) %}
+{% if include_charter and (charter_safe_html or charter_url) %}
 <h2>Charte informatique</h2>
-{% if charter %}
-<div class="legal-text">{{ charter|raw }}</div>
+{% if charter_safe_html %}
+<div class="legal-text">{{ charter_safe_html|raw }}</div>
 {% endif %}
 {% if charter_url %}
 <p class="legal-text">Charte informatique complète : <a href="{{ charter_url|e('html_attr') }}">{{ charter_url }}</a></p>
