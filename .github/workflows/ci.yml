@@ -164,7 +164,7 @@ jobs:
 
       - name: Démarre GLPI (auto-installation via l'image officielle)
         run: |
-          docker run -d --name glpi --network assetsign-ci \
+          docker run -d --name glpi --network assetsign-ci -p 8080:80 \
             -e TIMEZONE=Europe/Paris \
             -e GLPI_DB_HOST=mariadb \
             -e GLPI_DB_PORT=3306 \
@@ -353,6 +353,20 @@ jobs:
         # pas non plus de memoire, --memory-limit=512M necessaire en local).
         run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php -d extension=pcov.so -d memory_limit=512M vendor/bin/phpunit --coverage-text"
 
+      # Test de controle d'acces de bout en bout (vraies requetes HTTP, vraie session) : un
+      # technicien limite a l'entite A ne doit rien lire ni faire sur les dossiers de depart,
+      # campagnes et attestations de l'entite B ; le super-admin garde l'acces a tout. Couvre
+      # dynamiquement ce que .semgrep/ ne detecte que par motifs (revue de securite 2.6.0).
+      - name: Matrice de contrôle d'accès (technicien limité à une entité, puis super-admin)
+        run: |
+          # bin/console tourne en root plus haut : rend files/ a Apache (www-data) avant les
+          # requetes HTTP, sinon cache et sessions ne sont pas inscriptibles.
+          docker exec -u root glpi chown -R www-data:www-data /var/glpi/files
+          ids=$(docker exec -u www-data glpi php /var/www/glpi/plugins/assetsign/tests/security/setup.php | tail -1)
+          echo "$ids"
+          bash tests/security/access-matrix.sh http://localhost:8080 limited securite-tech 'Secrev#2026' "$ids"
+          bash tests/security/access-matrix.sh http://localhost:8080 admin glpi glpi "$ids"
+
       - name: Logs GLPI (en cas d'échec)
         if: failure()
         run: docker logs glpi --tail 200
@@ -519,6 +533,24 @@ jobs:
       # et local : ne depend ni du token Semgrep ni du registre de regles en ligne.
       - name: "Semgrep - regles securite GLPI du projet"
         run: semgrep scan --config .semgrep/ --error --metrics=off
+      # Chaque point d'entree front/ajax doit appeler un controle d'autorisation explicite, ou
+      # figurer avec sa justification dans .github/security-entrypoints-allowlist.txt.
+      - name: "Points d'entrée : contrôle d'autorisation présent"
+        run: sh .github/scripts/check-entrypoints-auth.sh
+
+  # Bloque une PR qui ajoute ou met a jour une dependance (composer, npm, actions) ayant un avis de
+  # securite connu - avant la fusion, la ou Dependabot ne previent qu'apres coup.
+  dependency-review:
+    name: "Dependency Review"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Récupère le code du plugin
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
+      - name: Dependency review
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0 (SHA pinned)
+        with:
+          fail-on-severity: moderate
 
   validation:
     # Verifie que les fichiers de configuration du depot sont bien formes,
