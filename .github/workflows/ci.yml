@@ -93,6 +93,22 @@ jobs:
           install -m 0755 trivy /usr/local/bin/trivy
           trivy fs --scanners vuln,secret,misconfig --exit-code 1 .
 
+      # npm audit lit package.json, pas les fichiers reellement servis : sans ce controle, une PR
+      # Dependabot qui ne met a jour que le manifeste (deja arrive : pdfjs-dist declare 6.4.299,
+      # fichiers restes en 6.2.108) ferait auditer une version que le plugin n'embarque pas.
+      - name: Versions des bibliothèques JS vendorisées identiques à package.json
+        run: |
+          status=0
+          pdfjs=$(jq -r '.dependencies["pdfjs-dist"]' package.json)
+          sigpad=$(jq -r '.dependencies["signature_pad"]' package.json)
+          for f in pdf.min.js pdf.worker.min.js; do
+            grep -qF "\"$pdfjs\"" "public/js/sign/vendor/$f" \
+              || { echo "::error::public/js/sign/vendor/$f n'est pas pdfjs-dist $pdfjs (build legacy/build/*.min.mjs)"; status=1; }
+          done
+          grep -qF "Signature Pad v$sigpad " public/js/sign/vendor/signature_pad.umd.min.js \
+            || { echo "::error::signature_pad.umd.min.js n'est pas signature_pad $sigpad"; status=1; }
+          exit $status
+
       - name: Audit de sécurité des bibliothèques JS vendorisées
         # package.json/package-lock.json ne declarent QUE les versions des
         # bibliotheques copiees a la main dans public/js/sign/vendor/ (PDF.js,

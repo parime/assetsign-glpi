@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   délai total de 10 s.
 - CI : règles Semgrep propres au projet (`.semgrep/`), bloquantes, qui détectent ces classes de
   défaut (droit global au lieu de droit + entité, `entities_id` venant de la requête, `|raw`).
+- PDF.js réellement mis à jour en 6.4.299 : les PR Dependabot n'avaient modifié que
+  `package.json`, les fichiers servis étaient restés en 6.2.108 (même écart que celui relevé sur
+  `signature_pad` en 2.6.0). La CI vérifie désormais que chaque fichier vendorisé correspond à la
+  version déclarée. Vérifié dans Chromium : PDF rendu, signature dessinée et enregistrée.
 
 ## [2.10.0] - 2026-10-18
 
