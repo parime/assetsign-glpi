@@ -18,16 +18,19 @@ interface WorkflowTypeInterface
    public function getLabel(): string;
 
     /**
-     * Libelle fixe, JAMAIS traduit via __() : utilise pour le contenu du PDF
-     * et le nom des Documents GLPI. Un PDF est un document archive, consulte
-     * a des dates et par des personnes potentiellement differentes de celle
-     * qui a declenche sa creation — le faire dependre de la langue de session
-     * produirait un document dont la langue varie selon qui l'a genere (deja
-     * constate en conditions reelles, cf. Assetsign::getCanonicalTypeLabel()).
+     * Libelle fixe, JAMAIS traduit via __() : utilise pour le nom des
+     * Documents GLPI, identifiant interne de classement qui ne doit pas
+     * dependre de la langue de qui a declenche sa creation (deja constate en
+     * conditions reelles, cf. Assetsign::getCanonicalTypeLabel()).
      */
    public function getCanonicalLabel(): string;
 
-    /** @return array{page_title: string, material_heading: string} */
+    /**
+     * Titres du PDF, traduits : appele pendant Pdf\PdfLanguage::run(), donc dans la langue du
+     * beneficiaire (issue #208), pas dans celle de la session.
+     *
+     * @return array{page_title: string, material_heading: string}
+     */
    public function getPdfHeadings(): array;
 
     /** @return array{content: string, charter_content: string} */

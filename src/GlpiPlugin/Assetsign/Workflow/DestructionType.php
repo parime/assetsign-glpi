@@ -31,8 +31,8 @@ final class DestructionType implements WorkflowTypeInterface
 
    public function getPdfHeadings(): array {
        return [
-           'page_title'       => 'Fiche de destruction de matériel',
-           'material_heading' => 'Matériel détruit',
+           'page_title'       => __('Fiche de destruction de matériel', 'assetsign'),
+           'material_heading' => __('Matériel détruit', 'assetsign'),
        ];
    }
 

@@ -1,6 +1,6 @@
 {% set _now = "now"|date('d/m/Y') %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ html_lang|default('fr') }}">
 <head>
 <meta charset="UTF-8">
 <title>{{ document_title }}</title>
@@ -18,29 +18,29 @@
 </div>
 {% endif %}
 
-<h1>Fiche de maintenance</h1>
-<p class="meta">Établie le {{ maintenance.date_creation|date('d/m/Y') }} — Référence fiche n°{{ maintenance.id }}</p>
+<h1>{{ __('Fiche de maintenance', 'assetsign') }}</h1>
+<p class="meta">{{ __('Établie le %1$s — Référence fiche n°%2$d', 'assetsign')|format(maintenance.date_creation|date('d/m/Y'), maintenance.id) }}</p>
 
-<h2>Technicien</h2>
+<h2>{{ __('Technicien', 'assetsign') }}</h2>
 <table class="info-table">
-    <tr><th>Nom</th><td>{{ technician_name }}</td></tr>
+    <tr><th>{{ __('Nom', 'assetsign') }}</th><td>{{ technician_name }}</td></tr>
 </table>
 
-<h2>Matériel</h2>
+<h2>{{ __('Matériel', 'assetsign') }}</h2>
 <table class="info-table">
-    <tr><th>Type</th><td>{{ itemtype }}</td></tr>
-    <tr><th>Nom GLPI</th><td>{{ item.name }}</td></tr>
+    <tr><th>{{ __('Type', 'assetsign') }}</th><td>{{ itemtype }}</td></tr>
+    <tr><th>{{ __('Nom GLPI', 'assetsign') }}</th><td>{{ item.name }}</td></tr>
     {% if item.manufacturer_name is defined and item.manufacturer_name %}
-    <tr><th>Marque</th><td>{{ item.manufacturer_name }}</td></tr>
+    <tr><th>{{ __('Marque', 'assetsign') }}</th><td>{{ item.manufacturer_name }}</td></tr>
     {% endif %}
     {% if item.model_name is defined and item.model_name %}
-    <tr><th>Modèle</th><td>{{ item.model_name }}</td></tr>
+    <tr><th>{{ __('Modèle', 'assetsign') }}</th><td>{{ item.model_name }}</td></tr>
     {% endif %}
-    <tr><th>N° de série</th><td>{{ item.serial|default('-') }}</td></tr>
-    <tr><th>N° d'inventaire</th><td>{{ item.otherserial|default('-') }}</td></tr>
+    <tr><th>{{ __('N° de série', 'assetsign') }}</th><td>{{ item.serial|default('-') }}</td></tr>
+    <tr><th>{{ __('N° d\'inventaire', 'assetsign') }}</th><td>{{ item.otherserial|default('-') }}</td></tr>
 </table>
 
-<h2>Points de contrôle</h2>
+<h2>{{ __('Points de contrôle', 'assetsign') }}</h2>
 {% if checklist_results|length %}
 <ul class="checklist">
     {% for result in checklist_results %}
@@ -48,11 +48,11 @@
     {% endfor %}
 </ul>
 {% else %}
-<p class="legal-text">Aucun point de contrôle validé.</p>
+<p class="legal-text">{{ __('Aucun point de contrôle validé.', 'assetsign') }}</p>
 {% endif %}
 
 {% if comment %}
-<h2>Commentaire</h2>
+<h2>{{ __('Commentaire', 'assetsign') }}</h2>
 {# Pas de |raw : saisi librement par le technicien, echappement automatique
    de Twig applique normalement (meme raison que beneficiary_comment dans
    handover.html.twig). #}
@@ -64,14 +64,14 @@
 {% if signature_required %}
 <div class="signature-zone">
     {% if signature_image|default(false) %}
-        <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
+        <p>{{ __('Document signé électroniquement le %1$s à %2$s', 'assetsign')|format(signed_at|date('d/m/Y'), signed_at|date('H:i')) }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">
-            Signataire : {{ technician_name }}
+            {{ __('Signataire : %s', 'assetsign')|format(technician_name) }}
         </p>
     {% else %}
-        <p>Fait le {{ _now }}</p>
-        <p>Signature du technicien : ______________________________</p>
+        <p>{{ __('Fait le %s', 'assetsign')|format(_now) }}</p>
+        <p>{{ __('Signature du technicien :', 'assetsign') }} ______________________________</p>
     {% endif %}
 </div>
 {% endif %}
@@ -80,7 +80,7 @@
 <div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
 {% endif %}
 
-<div class="footer">Fiche de maintenance #{{ maintenance.id }} — Document généré par GLPI (plugin assetsign)</div>
+<div class="footer">{{ __('Fiche de maintenance #%d — Document généré par GLPI (plugin assetsign)', 'assetsign')|format(maintenance.id) }}</div>
 
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace GlpiPlugin\Assetsign;
 
 use CronTask;
 use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Assetsign\Pdf\PdfLanguage;
 use GlpiPlugin\Assetsign\Pdf\PdfRenderingHelpers;
 use Html;
 use Migration;
@@ -32,7 +33,8 @@ class Campaign extends Compat\Base\CampaignBase
    public function renderReportPdf(): string {
        $config = Config::getForEntity((int) $this->fields['entities_id']);
        $html = TemplateRenderer::getInstance()->render('@assetsign/pdf/campaign_report.html.twig', [
-           'company_name'  => (string) ($config->fields['company_name'] ?? ''),
+           'html_lang'     => PdfLanguage::htmlLang(),
+           'company_name'=> (string) ($config->fields['company_name'] ?? ''),
            'campaign'      => $this->fields,
            'stats'         => $this->getStats(),
            'lines'         => $this->getReportLines(),

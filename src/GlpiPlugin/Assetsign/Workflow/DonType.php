@@ -29,8 +29,8 @@ final class DonType implements WorkflowTypeInterface
 
    public function getPdfHeadings(): array {
        return [
-           'page_title'       => 'Fiche de don de matériel',
-           'material_heading' => 'Matériel donné',
+           'page_title'       => __('Fiche de don de matériel', 'assetsign'),
+           'material_heading' => __('Matériel donné', 'assetsign'),
        ];
    }
 

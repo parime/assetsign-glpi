@@ -2331,6 +2331,20 @@ class Assetsign extends Compat\Base\AssetsignBase
        };
    }
 
+    /**
+     * Meme libelle que getCanonicalItemtypeLabel(), traduit : contenu des PDF (rendus dans la
+     * langue du beneficiaire, cf. Pdf\PdfLanguage) et des ecrans.
+     */
+   public static function getItemtypeLabel(string $itemtype): string {
+       return match ($itemtype) {
+           'Computer'   => __('Ordinateur', 'assetsign'),
+           'Monitor'    => __('Écran', 'assetsign'),
+           'Peripheral' => __('Périphérique', 'assetsign'),
+           'Phone'      => __('Téléphone', 'assetsign'),
+           default      => is_a($itemtype, \CommonDBTM::class, true) ? $itemtype::getTypeName(1) : $itemtype,
+       };
+   }
+
    public function getAccessories(): array {
        global $DB;
        $rows = $DB->request([

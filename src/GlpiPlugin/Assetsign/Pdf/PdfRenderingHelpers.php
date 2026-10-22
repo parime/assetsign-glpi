@@ -112,7 +112,7 @@ trait PdfRenderingHelpers
           $byView[(int) $marker['view_index']][] = $marker;
       }
 
-       $labels = DamageMarker::getCanonicalViewLabels();
+       $labels = DamageMarker::getViewLabels();
        $filenames = DamageMarker::getViewImageFilenames($itemtype);
 
        $views = [];
@@ -139,7 +139,7 @@ trait PdfRenderingHelpers
      * @return array<int, array{label: string, image_data_uri: string, markers: array}>
      */
    private function getSampleDamageViews(): array {
-       $labels = DamageMarker::getCanonicalViewLabels();
+       $labels = DamageMarker::getViewLabels();
        $filenames = DamageMarker::getViewImageFilenames();
        $sampleMarkers = [
            ['x_percent' => 60, 'y_percent' => 40, 'severity' => DamageMarker::SEVERITY_MINOR, 'description' => __('Exemple : petite rayure sur le capot, sans gravité.', 'assetsign')],

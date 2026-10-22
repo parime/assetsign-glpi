@@ -29,8 +29,8 @@ final class VenteType implements WorkflowTypeInterface
 
    public function getPdfHeadings(): array {
        return [
-           'page_title'       => 'Fiche de vente de matériel',
-           'material_heading' => 'Matériel vendu',
+           'page_title'       => __('Fiche de vente de matériel', 'assetsign'),
+           'material_heading' => __('Matériel vendu', 'assetsign'),
        ];
    }
 

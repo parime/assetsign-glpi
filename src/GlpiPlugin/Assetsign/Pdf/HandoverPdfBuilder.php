@@ -41,6 +41,15 @@ final class HandoverPdfBuilder
      *                      sur un PDF deja rendu (plus simple, plus robuste).
      */
    public function renderHtml(Assetsign $assetsign, array $extra = []): string {
+       // Issue #208 : toujours dans la langue du beneficiaire (externe : langue par defaut), que
+       // le rendu soit declenche par le technicien, le beneficiaire, un delegue ou le responsable.
+       return PdfLanguage::run(
+           PdfLanguage::forUser((int) ($assetsign->getBeneficiary()['id'] ?? 0)),
+           fn (): string => $this->renderLocalizedHtml($assetsign, $extra)
+       );
+   }
+
+   private function renderLocalizedHtml(Assetsign $assetsign, array $extra): string {
        $template = $assetsign->getTemplate();
        $headings = Assetsign::getPdfHeadings((int) $assetsign->fields['type']);
        $config = Config::getForEntity((int) $assetsign->fields['entities_id']);
@@ -69,11 +78,12 @@ final class HandoverPdfBuilder
        ];
 
        return TemplateRenderer::getInstance()->render('@assetsign/pdf/handover.html.twig', array_merge([
+           'html_lang'           => PdfLanguage::htmlLang(),
            'assetsign'              => $assetsign->fields,
            'user'                => $user,
            'beneficiary_is_external' => (int) ($assetsign->fields['beneficiary_type'] ?? Assetsign::BENEFICIARY_INTERNAL) === Assetsign::BENEFICIARY_EXTERNAL,
            'item'                => $item,
-           'itemtype'            => Assetsign::getCanonicalItemtypeLabel($assetsign->fields['itemtype']),
+           'itemtype'            => Assetsign::getItemtypeLabel($assetsign->fields['itemtype']),
            'accessories'         => $assetsign->getAccessories(),
            'inventoried_items'   => AssetsignItem::getForAssetsign($assetsign->getID()),
            // RichText::getSafeHtml() (pas seulement htmlspecialchars, qui casserait
@@ -209,10 +219,11 @@ final class HandoverPdfBuilder
        ];
 
        return TemplateRenderer::getInstance()->render('@assetsign/pdf/handover.html.twig', [
+           'html_lang'           => PdfLanguage::htmlLang(),
            'assetsign'              => ['id' => 0, 'date_creation' => date('Y-m-d H:i:s')],
            'user'                => ['firstname' => 'Alex', 'realname' => 'Dupont', 'name' => 'adupont', 'email' => 'alex.dupont@exemple.fr'],
            'item'                => ['name' => 'PC-EXEMPLE-001', 'serial' => 'SN-EXEMPLE-042', 'otherserial' => 'INV-1234', 'manufacturer_name' => 'Dell', 'model_name' => 'Latitude 5440'],
-           'itemtype'            => Assetsign::getCanonicalItemtypeLabel('Computer'),
+           'itemtype'            => Assetsign::getItemtypeLabel('Computer'),
            'accessories'         => [],
            'inventoried_items'   => [['type_label' => 'Écran', 'name' => 'ECRAN-EXEMPLE-007', 'manufacturer' => 'Dell', 'model' => 'P2422H', 'serial' => 'SN-ECR-0815', 'otherserial' => 'INV-5678']],
            // RichText::getSafeHtml() : cf. renderHtml() ci-dessus - ce chemin est

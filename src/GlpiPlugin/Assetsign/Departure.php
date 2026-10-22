@@ -7,6 +7,7 @@ use CronTask;
 use Document;
 use Document_Item;
 use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Assetsign\Pdf\PdfLanguage;
 use GlpiPlugin\Assetsign\Pdf\PdfRenderingHelpers;
 use GlpiPlugin\Assetsign\Pdf\SignatureImageValidator;
 use GlpiPlugin\Assetsign\Pdf\SignatureStamper;
@@ -232,7 +233,7 @@ class Departure extends Compat\Base\DepartureBase
          }
          $lines[] = [
             'assetsign_id' => (int) $row['id'],
-            'type_label'   => Assetsign::getCanonicalItemtypeLabel($itemtype),
+            'type_label'   => Assetsign::getItemtypeLabel($itemtype),
             'name'         => (string) ($fields['name'] ?? ('#' . $row['items_id'])),
             'serial'       => (string) ($fields['serial'] ?? ''),
             'otherserial'  => (string) ($fields['otherserial'] ?? ''),
@@ -320,7 +321,9 @@ class Departure extends Compat\Base\DepartureBase
       $user->getFromDB((int) $this->fields['users_id']);
       $config = Config::getForEntity((int) $this->fields['entities_id']);
 
-      $html = TemplateRenderer::getInstance()->render('@assetsign/pdf/departure_summary.html.twig', [
+      // Issue #208 : dans la langue de la personne qui part.
+      $html = PdfLanguage::run(PdfLanguage::forUser((int) $this->fields['users_id']), fn (): string => TemplateRenderer::getInstance()->render('@assetsign/pdf/departure_summary.html.twig', [
+         'html_lang'       => PdfLanguage::htmlLang(),
          'company_name'    => (string) ($config->fields['company_name'] ?? ''),
          'user_name'       => trim(\formatUserName(0, $user->fields['name'] ?? '', $user->fields['realname'] ?? '', $user->fields['firstname'] ?? '')),
          'departure_date'  => Html::convDate($this->fields['date_departure'] ?? null),
@@ -330,7 +333,7 @@ class Departure extends Compat\Base\DepartureBase
          'signed_at'       => Html::convDateTime($signedAt),
          'witness_name'    => $witnessName,
          'ip_address'      => $meta['ip'] ?? '',
-      ]);
+      ]));
       $binary = $this->renderPdf($html, (bool) ($config->fields['protect_pdf'] ?? false));
 
       $tmpName = uniqid('assetsign_departure_', true) . '.pdf';
