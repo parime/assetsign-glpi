@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **Test de contrôle d'accès étendu à toutes les pages** : la matrice de bout en bout couvre
+  désormais les 34 pages du plugin, en lecture comme en écriture. Les écritures refusées sont
+  vérifiées en base : aucun objet de l'autre entité ne doit changer. La CI échoue si une nouvelle
+  page n'y figure pas, sauf justification explicite (`tests/security/not-covered.txt`).
+- Points de contrôle (maintenance, mouvements) : seuls ceux des entités de l'utilisateur sont
+  proposés et appliqués. Ceux des autres entités apparaissaient dans ses fiches.
+
 ### Fixed
 
 - **Matériel disponible proposé sur une feuille** (issue #206) : quand des statuts « en stock » sont
@@ -17,6 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   GLPI au lieu de rester affiché comme attribution « annulée » dans l'onglet Attributions
   (récupérable, historique et passeport de l'actif conservés). Une feuille déjà envoyée reste
   visible, annulée.
+- **Liste des départs et onglet « Passeport utilisateur »** : erreur 500 pour tout profil qui
+  n'est pas à la racine des entités (restriction d'entité sur une colonne `is_recursive`
+  inexistante). Trouvé par le nouveau test d'accès.
 
 ## [2.10.1] - 2026-10-20
 

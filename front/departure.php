@@ -17,7 +17,9 @@ Session::checkRight(Profile::RIGHT_ASSETSIGN, READ);
 Html::header(Departure::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Departure::class);
 
 $showAll = !empty($_GET['all']);
-$where = getEntitiesRestrictCriteria(Departure::getTable(), '', '', true);
+// Pas de colonne is_recursive sur glpi_plugin_assetsign_departures : avec true, la liste
+// plantait (erreur SQL) pour tout profil qui n'est pas a la racine des entites.
+$where = getEntitiesRestrictCriteria(Departure::getTable(), '', '', false);
 if (!$showAll) {
    $where['status'] = DepartureLogic::STATUS_OPEN;
 }

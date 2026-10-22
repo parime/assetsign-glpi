@@ -167,7 +167,13 @@ class ChecklistItem extends CommonDropdown
        global $DB;
 
        $items = [];
-      foreach ($DB->request(['FROM' => self::getTable(), 'WHERE' => ['is_active' => 1], 'ORDER' => 'name']) as $row) {
+      // Entites de la session (meme regle que Kit pour les accessoires) : les points de controle
+      // d'une autre entite ne s'affichent ni ne s'appliquent ici.
+      foreach ($DB->request([
+          'FROM'  => self::getTable(),
+          'WHERE' => ['is_active' => 1] + getEntitiesRestrictCriteria(self::getTable(), '', '', true),
+          'ORDER' => 'name',
+      ]) as $row) {
           $decoded = json_decode((string) ($row['movement_types'] ?? ''), true);
           $applicable = is_array($decoded) ? array_map('intval', $decoded) : [];
          if (!in_array($movementType, $applicable, true)) {
