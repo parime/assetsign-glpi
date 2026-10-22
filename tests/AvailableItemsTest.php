@@ -63,6 +63,28 @@ final class AvailableItemsTest extends AssetsignTestCase
         $this->assertContains('Monitor:' . $inStock, $this->offered($sheet));
     }
 
+    /**
+     * Issue #206 : avec des statuts « en stock » configures, un materiel sans utilisateur mais
+     * reforme (ou sans statut) n'est plus propose : le statut fait foi a lui seul.
+     */
+    public function testWithStockStatesConfiguredOnlyTheStatusCounts(): void
+    {
+        $stock = $this->createTestState('PHPUnit en stock 206');
+        $scrapped = $this->createTestState('PHPUnit reforme 206');
+        $config = Config::getForEntity(0);
+        $config->update(['id' => $config->getID(), 'stock_states' => json_encode([$stock])]);
+        $sheet = $this->sheet($this->createTestComputer(0, 'PHPUNIT-PC'));
+        $inStock = $this->monitor(['states_id' => $stock]);
+        $scrappedFree = $this->monitor(['states_id' => $scrapped]);
+        $noStatusFree = $this->monitor();
+
+        $offered = $this->offered($sheet);
+
+        $this->assertContains('Monitor:' . $inStock, $offered);
+        $this->assertNotContains('Monitor:' . $scrappedFree, $offered, 'un materiel reforme sans utilisateur n\'est pas disponible');
+        $this->assertNotContains('Monitor:' . $noStatusFree, $offered, 'sans statut « en stock », le seul fait d\'etre sans utilisateur ne suffit plus');
+    }
+
     public function testItemsAlreadyOnASheetAreNotOffered(): void
     {
         $sheet = $this->sheet($this->createTestComputer(0, 'PHPUNIT-PC'));

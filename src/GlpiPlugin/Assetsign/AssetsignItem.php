@@ -228,10 +228,13 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
          if (!$item->isField('users_id')) {
              continue;
          }
-          $available = ["$table.users_id" => 0];
-         if ($stockStates !== [] && $item->isField('states_id')) {
-             $available = ['OR' => [["$table.users_id" => 0], ["$table.states_id" => $stockStates]]];
-         }
+          // Issue #206 : des statuts « en stock » configures font foi a eux seuls. « Sans
+          // utilisateur » n'est qu'un repli quand aucun n'est configure : sinon un materiel
+          // reforme, detruit ou en reparation (souvent sans utilisateur) serait propose comme
+          // disponible.
+          $available = $stockStates !== [] && $item->isField('states_id')
+              ? ["$table.states_id" => $stockStates]
+              : ["$table.users_id" => 0];
           // Les actifs personnalises (Glpi\Asset\Asset) partagent tous la table glpi_assets_assets :
           // sans ce critere, chaque type afficherait aussi les actifs des autres definitions.
           $where = array_merge(

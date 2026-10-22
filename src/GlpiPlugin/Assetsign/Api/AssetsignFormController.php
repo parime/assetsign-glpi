@@ -164,7 +164,15 @@ final class AssetsignFormController
    }
 
    public function discardDraft(Assetsign $assetsign): string {
+       // Issue #207 : un brouillon jamais envoye n'a produit aucun document, il n'a pas sa place
+       // dans l'onglet Attributions comme une feuille « annulee ». Il part a la corbeille GLPI
+       // (recuperable, historique conserve ; le passeport de l'actif garde la trace de
+       // l'attribution elle-meme). Une feuille deja envoyee reste visible, annulee.
+       $neverSent = empty($assetsign->fields['date_sent']);
        $assetsign->cancelRequest();
+      if ($neverSent) {
+          $assetsign->delete(['id' => $assetsign->getID()]);
+      }
 
        return __('Aucune feuille ne sera envoyée pour cette attribution.', 'assetsign');
    }

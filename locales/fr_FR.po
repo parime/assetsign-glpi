@@ -3991,3 +3991,11 @@ msgstr "Votre signature a été déléguée"
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
 msgid "Délégation faite par"
 msgstr "Délégation faite par"
+
+#: templates/_available_item_picker.html.twig
+msgid "Au statut « en stock » configuré (à défaut, sans utilisateur), pas déjà sur une autre feuille en attente."
+msgstr "Au statut « en stock » configuré (à défaut, sans utilisateur), pas déjà sur une autre feuille en attente."
+
+#: templates/config_form.html.twig
+msgid "Le matériel dans l'un de ces statuts est proposé en premier quand on ajoute un élément à une feuille. Si aucun statut n'est choisi, c'est le matériel sans utilisateur qui est proposé."
+msgstr "Le matériel dans l'un de ces statuts est proposé en premier quand on ajoute un élément à une feuille. Si aucun statut n'est choisi, c'est le matériel sans utilisateur qui est proposé."

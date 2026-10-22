@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Matériel disponible proposé sur une feuille** (issue #206) : quand des statuts « en stock » sont
+  configurés, ils font foi à eux seuls. Un matériel sans utilisateur mais réformé, détruit ou en
+  réparation n'est plus proposé comme disponible. Sans statut configuré, le repli reste « sans
+  utilisateur ».
+- **« Ne pas faire signer »** (issue #207) : un brouillon jamais envoyé part désormais à la corbeille
+  GLPI au lieu de rester affiché comme attribution « annulée » dans l'onglet Attributions
+  (récupérable, historique et passeport de l'actif conservés). Une feuille déjà envoyée reste
+  visible, annulée.
+
 ## [2.10.1] - 2026-10-20
 
 ### Security

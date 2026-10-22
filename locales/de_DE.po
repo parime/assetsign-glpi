@@ -4027,3 +4027,11 @@ msgstr "Ihre Unterschrift wurde übertragen"
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
 msgid "Délégation faite par"
 msgstr "Übertragen von"
+
+#: templates/_available_item_picker.html.twig
+msgid "Au statut « en stock » configuré (à défaut, sans utilisateur), pas déjà sur une autre feuille en attente."
+msgstr "Mit einem konfigurierten Status „auf Lager“ (andernfalls ohne Benutzer), nicht bereits auf einem anderen ausstehenden Formular."
+
+#: templates/config_form.html.twig
+msgid "Le matériel dans l'un de ces statuts est proposé en premier quand on ajoute un élément à une feuille. Si aucun statut n'est choisi, c'est le matériel sans utilisateur qui est proposé."
+msgstr "Geräte mit einem dieser Status werden beim Hinzufügen eines Elements zu einem Formular zuerst vorgeschlagen. Ist kein Status ausgewählt, werden Geräte ohne Benutzer vorgeschlagen."
