@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.11.0] - 2026-10-22
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Security
 
 - **Test XSS de bout en bout** : une charge piégée est écrite dans chaque champ texte libre (feuilles,
