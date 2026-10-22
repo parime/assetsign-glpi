@@ -1014,7 +1014,9 @@ class PassportEvent extends Compat\Base\PassportEventBase
        $rows = iterator_to_array($DB->request([
            'FROM'  => self::getTable(),
            'WHERE' => ['users_id' => $item->getID()]
-               + getEntitiesRestrictCriteria(self::getTable(), '', '', true),
+               // Pas de colonne is_recursive sur cette table : restriction stricte aux entites
+               // de la session (avec true, la requete plantait pour tout profil hors racine).
+               + getEntitiesRestrictCriteria(self::getTable(), '', '', false),
            'ORDER' => 'date ASC',
        ]));
 

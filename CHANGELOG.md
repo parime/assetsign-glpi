@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **Test XSS de bout en bout** : une charge piégée est écrite dans chaque champ texte libre (feuilles,
+  éléments, marqueurs, passeport, campagnes, attestations, maintenances, mouvements, gabarits,
+  kits, accessoires, points de contrôle, configuration, nom du matériel et du bénéficiaire) ;
+  aucune page ni onglet, y compris la page de signature, ne doit la restituer sans échappement.
+- **Test de contrôle d'accès étendu à toutes les pages** : la matrice de bout en bout couvre
+  désormais les 34 pages du plugin, en lecture comme en écriture. Les écritures refusées sont
+  vérifiées en base : aucun objet de l'autre entité ne doit changer. La CI échoue si une nouvelle
+  page n'y figure pas, sauf justification explicite (`tests/security/not-covered.txt`).
+- Points de contrôle (maintenance, mouvements) : seuls ceux des entités de l'utilisateur sont
+  proposés et appliqués. Ceux des autres entités apparaissaient dans ses fiches.
+- **Test des téléversements de bout en bout** : un script (`.php`, `.phtml`, `.phar`) ou un faux
+  PNG est refusé comme logo ou pièce jointe ; une image polyglotte (GIF valide suivi de PHP) est
+  servie comme image, jamais exécutée ; rien ne peut être joint à un mouvement d'une autre entité.
+
 ### Fixed
 
 - **Matériel disponible proposé sur une feuille** (issue #206) : quand des statuts « en stock » sont
@@ -17,6 +33,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   GLPI au lieu de rester affiché comme attribution « annulée » dans l'onglet Attributions
   (récupérable, historique et passeport de l'actif conservés). Une feuille déjà envoyée reste
   visible, annulée.
+- **Liste des départs et onglet « Passeport utilisateur »** : erreur 500 pour tout profil qui
+  n'est pas à la racine des entités (restriction d'entité sur une colonne `is_recursive`
+  inexistante). Trouvé par le nouveau test d'accès.
+- **Pièce jointe d'un type interdit** (justificatif de don, certificat de destruction, document
+  d'un mouvement) : GLPI refusait le fichier, mais un document vide portant son nom restait joint,
+  sans message d'erreur. Le type est désormais vérifié avant l'envoi et l'erreur affichée. Trouvé
+  par le nouveau test des téléversements.
 
 ## [2.10.1] - 2026-10-20
 

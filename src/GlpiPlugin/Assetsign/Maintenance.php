@@ -338,7 +338,13 @@ class Maintenance extends Compat\Base\MaintenanceBase
        global $DB;
 
        $items = [];
-      foreach ($DB->request(['FROM' => MaintenanceChecklistItem::getTable(), 'WHERE' => ['is_active' => 1], 'ORDER' => 'name']) as $row) {
+      // Entites de la session (meme regle que Kit pour les accessoires) : les points de controle
+      // d'une autre entite ne s'affichent ni ne s'appliquent ici.
+      foreach ($DB->request([
+          'FROM'  => MaintenanceChecklistItem::getTable(),
+          'WHERE' => ['is_active' => 1] + getEntitiesRestrictCriteria(MaintenanceChecklistItem::getTable(), '', '', true),
+          'ORDER' => 'name',
+      ]) as $row) {
           $items[(int) $row['id']] = [
               'name'    => $row['name'],
               'type'    => (int) $row['type'],

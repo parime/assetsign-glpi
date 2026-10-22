@@ -362,10 +362,36 @@ jobs:
           # bin/console tourne en root plus haut : rend files/ a Apache (www-data) avant les
           # requetes HTTP, sinon cache et sessions ne sont pas inscriptibles.
           docker exec -u root glpi chown -R www-data:www-data /var/glpi/files
-          ids=$(docker exec -u www-data glpi php /var/www/glpi/plugins/assetsign/tests/security/setup.php | tail -1)
+          setup() { docker exec -u www-data glpi php /var/www/glpi/plugins/assetsign/tests/security/setup.php "$@" | tail -1; }
+          ids=$(setup)
           echo "$ids"
+          before=$(setup snapshot)
           bash tests/security/access-matrix.sh http://localhost:8080 limited securite-tech 'Secrev#2026' "$ids"
+          after=$(setup snapshot)
+          if [ "$before" != "$after" ]; then
+            echo "::error::le technicien limite a l'entite A a modifie des objets de l'entite B"
+            echo "avant : $before"; echo "apres : $after"
+            exit 1
+          fi
+          echo "OK  aucun objet de l'entite B modifie ($after)"
           bash tests/security/access-matrix.sh http://localhost:8080 admin glpi glpi "$ids"
+
+      # Test XSS de bout en bout : une charge piegee dans chaque champ texte libre, aucune page ni
+      # onglet (y compris cote beneficiaire) ne doit la restituer sans echappement.
+      - name: Test XSS (charge piégée dans chaque champ texte libre)
+        run: |
+          setup() { docker exec -u www-data glpi php /var/www/glpi/plugins/assetsign/tests/security/setup.php "$@" | tail -1; }
+          ids=$(setup)
+          setup xss "$ids"
+          bash tests/security/xss-check.sh http://localhost:8080 "$ids"
+
+      # Televersements de bout en bout : scripts et images polyglottes refuses ou servis sans
+      # execution, aucune piece jointe possible sur un mouvement d'une autre entite.
+      - name: Test des téléversements (logo, pièces jointes)
+        run: |
+          ids=$(docker exec -u www-data glpi php /var/www/glpi/plugins/assetsign/tests/security/setup.php | tail -1)
+          bash tests/security/upload-check.sh http://localhost:8080 "$ids" \
+            "docker exec -u www-data glpi php /var/www/glpi/plugins/assetsign/tests/security/setup.php uploads"
 
       - name: Logs GLPI (en cas d'échec)
         if: failure()
@@ -537,6 +563,10 @@ jobs:
       # figurer avec sa justification dans .github/security-entrypoints-allowlist.txt.
       - name: "Points d'entrée : contrôle d'autorisation présent"
         run: sh .github/scripts/check-entrypoints-auth.sh
+      # Chaque page front/ajax doit figurer dans la matrice d'acces de bout en bout
+      # (tests/security/access-matrix.sh), ou etre justifiee dans tests/security/not-covered.txt.
+      - name: "Matrice d'accès : toutes les pages couvertes"
+        run: sh .github/scripts/check-security-matrix-coverage.sh
 
   # Bloque une PR qui ajoute ou met a jour une dependance (composer, npm, actions) ayant un avis de
   # securite connu - avant la fusion, la ou Dependabot ne previent qu'apres coup.
