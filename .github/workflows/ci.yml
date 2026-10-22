@@ -376,6 +376,15 @@ jobs:
           echo "OK  aucun objet de l'entite B modifie ($after)"
           bash tests/security/access-matrix.sh http://localhost:8080 admin glpi glpi "$ids"
 
+      # Test XSS de bout en bout : une charge piegee dans chaque champ texte libre, aucune page ni
+      # onglet (y compris cote beneficiaire) ne doit la restituer sans echappement.
+      - name: Test XSS (charge piégée dans chaque champ texte libre)
+        run: |
+          setup() { docker exec -u www-data glpi php /var/www/glpi/plugins/assetsign/tests/security/setup.php "$@" | tail -1; }
+          ids=$(setup)
+          setup xss "$ids"
+          bash tests/security/xss-check.sh http://localhost:8080 "$ids"
+
       - name: Logs GLPI (en cas d'échec)
         if: failure()
         run: docker logs glpi --tail 200

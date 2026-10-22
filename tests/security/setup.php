@@ -57,6 +57,67 @@ $insert = static function (string $table, array $row) use ($DB): int {
 $a = $entityId('Securite A');
 $b = $entityId('Securite B');
 
+if (($argv[1] ?? '') === 'xss') {
+    // Charge piegee ecrite dans chaque champ texte libre des objets de l'entite A (et dans le nom
+    // de l'ordinateur et de l'utilisateur concernes) : tests/security/xss-check.sh verifie
+    // qu'aucune page ne la restitue telle quelle. Usage : setup.php xss '<json du mode normal>'.
+    $ids = json_decode((string) ($argv[2] ?? ''), true);
+    if (!is_array($ids)) {
+        fwrite(STDERR, "Usage : setup.php xss '<json du mode normal>'\n");
+        exit(1);
+    }
+    $canary = "<svg/onload=alert('xss-canary')>";
+    $set = static function (string $table, array $values, array $where) use ($DB): void {
+        $DB->update('glpi_plugin_assetsign_' . $table, $values, $where);
+    };
+    $sheet = ['id' => $ids['assetsign_A']];
+    $set('assetsigns', [
+        'observations' => $canary, 'beneficiary_comment' => $canary, 'delegation_reason' => $canary,
+        'external_beneficiary_name' => $canary, 'external_beneficiary_contact' => $canary,
+    ], $sheet);
+    $DB->insert('glpi_plugin_assetsign_assetsignitems', [
+        'plugin_assetsign_assetsigns_id' => $ids['assetsign_A'], 'itemtype' => 'Monitor', 'items_id' => 0,
+        'name' => $canary, 'serial' => $canary, 'otherserial' => $canary, 'model' => $canary,
+        'type_label' => $canary, 'manufacturer' => $canary, 'return_comment' => $canary,
+    ]);
+    $DB->insert('glpi_plugin_assetsign_damagemarkers', [
+        'plugin_assetsign_assetsigns_id' => $ids['assetsign_A'], 'view_index' => 0,
+        'x_percent' => 10, 'y_percent' => 10, 'description' => $canary,
+    ]);
+    $DB->insert('glpi_plugin_assetsign_events', [
+        'itemtype' => 'Computer', 'items_id' => $ids['computer_A'], 'entities_id' => $ids['a'],
+        'event_type' => 1, 'users_id' => $ids['partant_A'], 'date' => date('Y-m-d H:i:s'),
+        'snapshot_name' => $canary, 'snapshot_email' => $canary, 'snapshot_entity_name' => $canary,
+        'comment' => $canary,
+    ]);
+    $set('campaigns', ['name' => $canary], ['id' => $ids['campaign_A']]);
+    $set('attestations', ['comment' => $canary, 'items' => json_encode([['name' => $canary]])], ['id' => $ids['attestation_A']]);
+    $set('maintenances', ['comment' => $canary], ['id' => $ids['maintenance_A']]);
+    $set('movements', ['comment' => $canary], ['id' => $ids['movement_A']]);
+    foreach (['templates', 'kits', 'accessories', 'checklistitems', 'maintenancechecklistitems'] as $table) {
+        $set($table, ['name' => $canary, 'comment' => $canary], ['id' => $ids[$table . '_A']]);
+    }
+    $set('configs', [
+        'company_name' => $canary, 'sender_name' => $canary, 'preview_watermark_text' => $canary,
+        'currency_symbol' => $canary, 'default_provider' => $canary,
+    ], ['entities_id' => $ids['a']]);
+    $DB->update('glpi_computers', ['name' => $canary, 'serial' => $canary], ['id' => $ids['computer_A']]);
+    $DB->update('glpi_users', ['realname' => $canary, 'firstname' => $canary], ['id' => $ids['partant_A']]);
+    // Le beneficiaire doit pouvoir se connecter (page de signature, « Mon materiel ») : profil
+    // natif Self-Service dans son entite.
+    $selfService = new Profile();
+    if ($selfService->getFromDBByCrit(['name' => 'Self-Service'])) {
+        $DB->delete('glpi_profiles_users', ['users_id' => $ids['partant_A']]);
+        $DB->insert('glpi_profiles_users', [
+            'users_id' => $ids['partant_A'], 'profiles_id' => $selfService->getID(), 'entities_id' => $ids['a'],
+            'is_recursive' => 0, 'is_dynamic' => 0, 'is_default_profile' => 1,
+        ]);
+        $DB->update('glpi_users', ['profiles_id' => $selfService->getID()], ['id' => $ids['partant_A']]);
+    }
+    echo "ok\n";
+    exit(0);
+}
+
 if (($argv[1] ?? '') === 'snapshot') {
     // Objets de l'entite B : aucun ne doit changer quand le technicien de A tente d'agir dessus.
     $computerB = (int) ($DB->request(['SELECT' => ['id'], 'FROM' => 'glpi_computers', 'WHERE' => ['name' => 'PC securite B'], 'ORDER' => 'id DESC', 'LIMIT' => 1])->current()['id'] ?? 0);

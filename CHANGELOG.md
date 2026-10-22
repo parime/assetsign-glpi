@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+- **Test XSS de bout en bout** : une charge piégée est écrite dans chaque champ texte libre (feuilles,
+  éléments, marqueurs, passeport, campagnes, attestations, maintenances, mouvements, gabarits,
+  kits, accessoires, points de contrôle, configuration, nom du matériel et du bénéficiaire) ;
+  aucune page ni onglet, y compris la page de signature, ne doit la restituer sans échappement.
 - **Test de contrôle d'accès étendu à toutes les pages** : la matrice de bout en bout couvre
   désormais les 34 pages du plugin, en lecture comme en écriture. Les écritures refusées sont
   vérifiées en base : aucun objet de l'autre entité ne doit changer. La CI échoue si une nouvelle
