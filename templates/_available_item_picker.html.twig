@@ -1,4 +1,4 @@
-{# Issue #180 : ajout d'un element du parc - materiel disponible d'abord (sans utilisateur ou « en stock »),
+{# Issue #180 : ajout d'un element du parc - materiel disponible d'abord (« en stock », ou a defaut sans utilisateur),
    recherche dans tout le parc ensuite. Inclus dans la fiche et dans la fenetre d'attribution. #}
 {% set available = available_items|default({}) %}
 {% if available|length %}
@@ -14,7 +14,7 @@
         </optgroup>
       {% endfor %}
     </select>
-    <div class="form-text">{{ __('Sans utilisateur ou au statut « en stock », pas déjà sur une autre feuille en attente.', 'assetsign') }}</div>
+    <div class="form-text">{{ __('Au statut « en stock » configuré (à défaut, sans utilisateur), pas déjà sur une autre feuille en attente.', 'assetsign') }}</div>
   </div>
 {% endif %}
 <div class="col-12">

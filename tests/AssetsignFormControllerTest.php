@@ -81,6 +81,31 @@ class AssetsignFormControllerTest extends AssetsignTestCase
         $this->assertSame(Assetsign::STATUS_CANCELLED, (int) $assetsign->fields['status']);
     }
 
+    /**
+     * Issue #207 : « Ne pas faire signer » sur un brouillon jamais envoye ne laisse pas de feuille
+     * « annulee » dans l'onglet Attributions (corbeille), alors qu'une feuille deja envoyee reste
+     * visible, annulee.
+     */
+    public function testDiscardDraftTrashesANeverSentSheetButKeepsASentOneVisible(): void
+    {
+        $entityId = $this->createTestEntity(0, 'PHPUnit AssetsignFormController DiscardDraft');
+        $controller = new AssetsignFormController();
+
+        $draft = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_DRAFT);
+        $controller->discardDraft($draft);
+        $draft->getFromDB($draft->getID());
+        $this->assertSame(Assetsign::STATUS_CANCELLED, (int) $draft->fields['status']);
+        $this->assertSame(1, (int) $draft->fields['is_deleted'], 'Un brouillon jamais envoyé part à la corbeille.');
+
+        $sent = $this->createBareAssetsign($entityId, Assetsign::TYPE_HANDOVER, Assetsign::STATUS_SENT);
+        $sent->update(['id' => $sent->getID(), 'date_sent' => date('Y-m-d H:i:s')]);
+        $sent->getFromDB($sent->getID());
+        $controller->discardDraft($sent);
+        $sent->getFromDB($sent->getID());
+        $this->assertSame(Assetsign::STATUS_CANCELLED, (int) $sent->fields['status']);
+        $this->assertSame(0, (int) $sent->fields['is_deleted'], 'Une feuille déjà envoyée reste visible, annulée.');
+    }
+
     public function testAddAccessoryThenRemoveAccessoryDelegateToModel(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit AssetsignFormController Accessory');

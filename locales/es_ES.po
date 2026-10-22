@@ -3991,3 +3991,11 @@ msgstr "Su firma ha sido delegada"
 #: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
 msgid "Délégation faite par"
 msgstr "Delegado por"
+
+#: templates/_available_item_picker.html.twig
+msgid "Au statut « en stock » configuré (à défaut, sans utilisateur), pas déjà sur une autre feuille en attente."
+msgstr "Con un estado «en stock» configurado (en su defecto, sin usuario), que no esté ya en otra ficha pendiente."
+
+#: templates/config_form.html.twig
+msgid "Le matériel dans l'un de ces statuts est proposé en premier quand on ajoute un élément à une feuille. Si aucun statut n'est choisi, c'est le matériel sans utilisateur qui est proposé."
+msgstr "El material en uno de estos estados se propone primero al añadir un elemento a una ficha. Si no se elige ningún estado, se propone el material sin usuario."

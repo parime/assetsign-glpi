@@ -415,7 +415,7 @@
           {% if all_states|default({})|length %}
             <div class="mb-3">
               <label class="form-label"><i class="ti ti-package me-1"></i>{{ __('Statuts considérés comme « en stock »', 'assetsign') }}</label>
-              <div class="form-text mt-0 mb-1">{{ __('Le matériel sans utilisateur, ou dans l\'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille.', 'assetsign') }}</div>
+              <div class="form-text mt-0 mb-1">{{ __('Le matériel dans l\'un de ces statuts est proposé en premier quand on ajoute un élément à une feuille. Si aucun statut n\'est choisi, c\'est le matériel sans utilisateur qui est proposé.', 'assetsign') }}</div>
               {% for id, name in all_states %}
                 <div class="form-check form-check-inline">
                   <input type="checkbox" name="stock_states[]" value="{{ id }}" class="form-check-input" id="stock_state_{{ id }}" {{ id in stock_states|default([]) ? 'checked' : '' }}>
