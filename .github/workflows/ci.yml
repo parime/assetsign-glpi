@@ -385,6 +385,14 @@ jobs:
           setup xss "$ids"
           bash tests/security/xss-check.sh http://localhost:8080 "$ids"
 
+      # Televersements de bout en bout : scripts et images polyglottes refuses ou servis sans
+      # execution, aucune piece jointe possible sur un mouvement d'une autre entite.
+      - name: Test des téléversements (logo, pièces jointes)
+        run: |
+          ids=$(docker exec -u www-data glpi php /var/www/glpi/plugins/assetsign/tests/security/setup.php | tail -1)
+          bash tests/security/upload-check.sh http://localhost:8080 "$ids" \
+            "docker exec -u www-data glpi php /var/www/glpi/plugins/assetsign/tests/security/setup.php uploads"
+
       - name: Logs GLPI (en cas d'échec)
         if: failure()
         run: docker logs glpi --tail 200

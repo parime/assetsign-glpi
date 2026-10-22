@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   page n'y figure pas, sauf justification explicite (`tests/security/not-covered.txt`).
 - Points de contrôle (maintenance, mouvements) : seuls ceux des entités de l'utilisateur sont
   proposés et appliqués. Ceux des autres entités apparaissaient dans ses fiches.
+- **Test des téléversements de bout en bout** : un script (`.php`, `.phtml`, `.phar`) ou un faux
+  PNG est refusé comme logo ou pièce jointe ; une image polyglotte (GIF valide suivi de PHP) est
+  servie comme image, jamais exécutée ; rien ne peut être joint à un mouvement d'une autre entité.
 
 ### Fixed
 
@@ -33,6 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Liste des départs et onglet « Passeport utilisateur »** : erreur 500 pour tout profil qui
   n'est pas à la racine des entités (restriction d'entité sur une colonne `is_recursive`
   inexistante). Trouvé par le nouveau test d'accès.
+- **Pièce jointe d'un type interdit** (justificatif de don, certificat de destruction, document
+  d'un mouvement) : GLPI refusait le fichier, mais un document vide portant son nom restait joint,
+  sans message d'erreur. Le type est désormais vérifié avant l'envoi et l'erreur affichée. Trouvé
+  par le nouveau test des téléversements.
 
 ## [2.10.1] - 2026-10-20
 

@@ -13,6 +13,7 @@
  *   php plugins/assetsign/tests/security/setup.php           cree les donnees, affiche les ids en JSON
  *   php plugins/assetsign/tests/security/setup.php snapshot  etat des objets de l'entite B que le
  *                                                            technicien ne doit jamais modifier
+ *   php plugins/assetsign/tests/security/setup.php uploads   etat des fichiers televerses
  */
 
 require dirname(__DIR__, 4) . '/vendor/autoload.php';
@@ -134,6 +135,23 @@ if (($argv[1] ?? '') === 'snapshot') {
     $snapshot['config_B'] = md5(json_encode(iterator_to_array($DB->request(['FROM' => 'glpi_plugin_assetsign_configs', 'WHERE' => ['entities_id' => $b]]))));
     ksort($snapshot);
     echo json_encode($snapshot), "\n";
+    exit(0);
+}
+
+if (($argv[1] ?? '') === 'uploads') {
+    // Etat des fichiers televerses (tests/security/upload-check.sh) : nombre de Documents, ceux dont
+    // le fichier stocke porte une extension executable, logo de l'entite racine, documents joints
+    // aux mouvements.
+    $executable = 0;
+    foreach ($DB->request(['SELECT' => ['filename', 'filepath'], 'FROM' => 'glpi_documents']) as $row) {
+        $executable += (int) preg_match('/\.(php\d?|phtml|phar|pht|phps|cgi|pl|sh)$/i', $row['filename'] . ' ' . $row['filepath']);
+    }
+    echo json_encode([
+        'documents'      => countElementsInTable('glpi_documents'),
+        'executable'     => $executable,
+        'logo'           => (int) ($DB->request(['SELECT' => ['logo_documents_id'], 'FROM' => 'glpi_plugin_assetsign_configs', 'WHERE' => ['entities_id' => 0]])->current()['logo_documents_id'] ?? 0),
+        'movement_links' => countElementsInTable('glpi_documents_items', ['itemtype' => \GlpiPlugin\Assetsign\Movement::class]),
+    ]), "\n";
     exit(0);
 }
 

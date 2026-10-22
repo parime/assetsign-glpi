@@ -403,6 +403,12 @@ class Movement extends Compat\Base\MovementBase
           return;
       }
 
+       // Type refuse par GLPI (.php...) : Document::add() rejette le fichier mais cree quand meme un
+       // Document vide, qui apparaissait joint sans aucun message d'erreur.
+      if (Document::isValidDoc((string) $file['name']) === '') {
+          \Session::addMessageAfterRedirect(__('Unauthorized file type'), false, ERROR);
+          return;
+      }
        $tmpName = uniqid('assetsign_movement_doc_', true) . '_' . basename((string) $file['name']);
       if (!copy($file['tmp_name'], GLPI_TMP_DIR . '/' . $tmpName)) {
           \Session::addMessageAfterRedirect(__('Échec de l\'envoi du document.', 'assetsign'), false, ERROR);
