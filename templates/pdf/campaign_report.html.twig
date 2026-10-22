@@ -1,10 +1,11 @@
-{# Issue #158 : rapport PDF d'une campagne d'attestation, preuve d'audit (A.5.9). Textes fixes
-   (document archivé) ; les libellés de statut et d'écart viennent du contrôleur. #}
+{# Issue #158 : rapport PDF d'une campagne d'attestation, preuve d'audit (A.5.9). Généré à la
+   demande par la personne qui consulte la campagne : textes traduits dans la langue de sa session
+   (issue #208) ; les libellés de statut et d'écart viennent du contrôleur. #}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ html_lang|default('fr') }}">
 <head>
 <meta charset="UTF-8">
-<title>Campagne d'attestation — {{ campaign.name }}</title>
+<title>{{ __('Campagne d\'attestation — %s', 'assetsign')|format(campaign.name) }}</title>
 {% include '@assetsign/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
@@ -13,29 +14,29 @@
 <div class="header-logo"><div class="company-name">{{ company_name }}</div></div>
 {% endif %}
 
-<h1>Campagne d'attestation de détention</h1>
-<p class="meta">{{ campaign.name }} — rapport généré le {{ generated_at }}</p>
+<h1>{{ __('Campagne d\'attestation de détention', 'assetsign') }}</h1>
+<p class="meta">{{ __('%1$s — rapport généré le %2$s', 'assetsign')|format(campaign.name, generated_at) }}</p>
 
 <table class="info-table">
-    <tr><th>Lancée le</th><td>{{ campaign.date_creation|date('d/m/Y') }}</td></tr>
-    <tr><th>Date limite</th><td>{{ campaign.date_deadline ? campaign.date_deadline|date('d/m/Y') : '—' }}</td></tr>
-    <tr><th>Personnes concernées</th><td>{{ stats.total }}</td></tr>
-    <tr><th>Attestations confirmées</th><td>{{ stats.confirmed }}</td></tr>
-    <tr><th>Écarts signalés</th><td>{{ stats.discrepancy }}</td></tr>
-    <tr><th>Sans réponse</th><td>{{ stats.pending }}</td></tr>
-    <tr><th>Taux de réponse</th><td>{{ stats.response_rate }} %</td></tr>
+    <tr><th>{{ __('Lancée le', 'assetsign') }}</th><td>{{ campaign.date_creation|date('d/m/Y') }}</td></tr>
+    <tr><th>{{ __('Date limite', 'assetsign') }}</th><td>{{ campaign.date_deadline ? campaign.date_deadline|date('d/m/Y') : '—' }}</td></tr>
+    <tr><th>{{ __('Personnes concernées', 'assetsign') }}</th><td>{{ stats.total }}</td></tr>
+    <tr><th>{{ __('Attestations confirmées', 'assetsign') }}</th><td>{{ stats.confirmed }}</td></tr>
+    <tr><th>{{ __('Écarts signalés', 'assetsign') }}</th><td>{{ stats.discrepancy }}</td></tr>
+    <tr><th>{{ __('Sans réponse', 'assetsign') }}</th><td>{{ stats.pending }}</td></tr>
+    <tr><th>{{ __('Taux de réponse', 'assetsign') }}</th><td>{{ stats.response_rate }} %</td></tr>
 </table>
 
-<h2>Détail</h2>
+<h2>{{ __('Détail', 'assetsign') }}</h2>
 <table class="info-table">
-    <tr><th>Personne</th><th>Matériels</th><th>Statut</th><th>Réponse</th><th>Écart</th></tr>
+    <tr><th>{{ __('Personne', 'assetsign') }}</th><th>{{ __('Matériels', 'assetsign') }}</th><th>{{ __('Statut', 'assetsign') }}</th><th>{{ __('Réponse', 'assetsign') }}</th><th>{{ __('Écart', 'assetsign') }}</th></tr>
     {% for line in lines %}
     <tr>
         <td>{{ line.user }}</td>
         <td>{{ line.items }}</td>
         <td>{{ status_labels[line.status] }}</td>
         <td>{{ line.date_answered ? line.date_answered|date('d/m/Y H:i') : '—' }}</td>
-        <td>{% for gap in line.gaps %}{{ gap_labels[gap] }}<br>{% endfor %}{{ line.comment }}{% if line.tickets_id > 0 %} (ticket n°{{ line.tickets_id }}){% endif %}</td>
+        <td>{% for gap in line.gaps %}{{ gap_labels[gap] }}<br>{% endfor %}{{ line.comment }}{% if line.tickets_id > 0 %} {{ __('(ticket n°%d)', 'assetsign')|format(line.tickets_id) }}{% endif %}</td>
     </tr>
     {% endfor %}
 </table>

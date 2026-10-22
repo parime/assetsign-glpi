@@ -27,8 +27,8 @@ final class HandoverType implements WorkflowTypeInterface
 
    public function getPdfHeadings(): array {
        return [
-           'page_title'       => 'Fiche d\'attribution de matériel',
-           'material_heading' => 'Matériel attribué',
+           'page_title'       => __('Fiche d\'attribution de matériel', 'assetsign'),
+           'material_heading' => __('Matériel attribué', 'assetsign'),
        ];
    }
 

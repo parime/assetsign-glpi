@@ -39,11 +39,21 @@ abstract class AssetsignTestCase extends TestCase
         }
         $_SESSION['glpiactiveentities'] ??= [0];
         $_SESSION['glpiactiveentities_string'] ??= '0';
+
+        // Issue #208 : un PDF est rendu dans la langue de son beneficiaire, a defaut dans la
+        // langue par defaut de GLPI (en_GB sur une instance fraichement installee). Les comptes de
+        // test n'ont pas de langue et les assertions portent sur les textes source (francais).
+        global $CFG_GLPI;
+        $this->defaultLanguage = $CFG_GLPI['language'] ?? null;
+        $CFG_GLPI['language'] = 'fr_FR';
     }
+
+    private ?string $defaultLanguage = null;
 
     protected function tearDown(): void
     {
-        global $DB;
+        global $DB, $CFG_GLPI;
+        $CFG_GLPI['language'] = $this->defaultLanguage;
         $DB->rollBack();
 
         parent::tearDown();

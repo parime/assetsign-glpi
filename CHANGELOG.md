@@ -23,6 +23,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   PNG est refusé comme logo ou pièce jointe ; une image polyglotte (GIF valide suivi de PHP) est
   servie comme image, jamais exécutée ; rien ne peut être joint à un mouvement d'une autre entité.
 
+### Added
+
+- **PDF dans la langue du bénéficiaire** (issue #208) : tous les textes fixes des PDF (fiches
+  d'attribution, restitution, don, vente, destruction, maintenance, attestation, départ, rapport de
+  campagne) sont traduits dans les 5 langues du plugin. Chaque PDF est généré dans la langue du
+  compte de la personne concernée (bénéficiaire, personne qui part ou qui atteste, technicien pour
+  la maintenance ; langue par défaut de GLPI à défaut), quel que soit le compte qui déclenche la
+  génération. Le rapport de campagne suit la langue de la personne qui le télécharge. Le contrat et
+  la charte restent ceux saisis dans Configuration.
+
 ### Fixed
 
 - **Matériel disponible proposé sur une feuille** (issue #206) : quand des statuts « en stock » sont
@@ -40,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   d'un mouvement) : GLPI refusait le fichier, mais un document vide portant son nom restait joint,
   sans message d'erreur. Le type est désormais vérifié avant l'envoi et l'erreur affichée. Trouvé
   par le nouveau test des téléversements.
+- Le pluriel « Départs » (titre de la liste des départs) n'était traduit dans aucune langue.
 
 ## [2.10.1] - 2026-10-20
 

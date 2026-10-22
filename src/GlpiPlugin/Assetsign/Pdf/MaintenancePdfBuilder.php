@@ -48,16 +48,25 @@ final class MaintenancePdfBuilder
    }
 
    public function renderHtml(Maintenance $maintenance, ?string $signatureImage = null, ?string $signedAt = null): string {
+       // Issue #208 : dans la langue du technicien, seul signataire de la fiche.
+       return PdfLanguage::run(
+           PdfLanguage::forUser((int) $maintenance->fields['users_id_tech']),
+           fn (): string => $this->renderLocalizedHtml($maintenance, $signatureImage, $signedAt)
+       );
+   }
+
+   private function renderLocalizedHtml(Maintenance $maintenance, ?string $signatureImage, ?string $signedAt): string {
        $config = Config::getForEntity((int) $maintenance->fields['entities_id']);
        $qrDataUri = (bool) $config->fields['show_qr_code']
            ? QrCode::toDataUri(rtrim((string) ($GLOBALS['CFG_GLPI']['url_base'] ?? ''), '/') . '/plugins/assetsign/front/maintenance.form.php?id=' . $maintenance->getID())
            : null;
 
        return TemplateRenderer::getInstance()->render('@assetsign/pdf/maintenance.html.twig', [
+           'html_lang'           => PdfLanguage::htmlLang(),
            'maintenance'         => $maintenance->fields,
            'technician'          => $maintenance->getTechnician(),
            'item'                => $maintenance->getTargetItem(),
-           'itemtype'            => Assetsign::getCanonicalItemtypeLabel($maintenance->fields['itemtype']),
+           'itemtype'            => Assetsign::getItemtypeLabel($maintenance->fields['itemtype']),
            'checklist_results'   => $maintenance->getChecklistResults(),
            'comment'             => $maintenance->fields['comment'] ?? '',
            'damage_views'        => (bool) $config->fields['enable_damage_annotation']

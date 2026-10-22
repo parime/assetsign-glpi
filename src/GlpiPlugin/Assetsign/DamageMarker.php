@@ -47,22 +47,6 @@ class DamageMarker extends Compat\Base\DamageMarkerBase
    }
 
     /**
-     * Libelles fixes (toujours en francais), pour le PDF (reel ou apercu)
-     * UNIQUEMENT — jamais getViewLabels() (traduit) ici, meme principe que
-     * Assetsign::getCanonicalItemtypeLabel() : un PDF est genere soit pendant
-     * le hook d'affectation (session du technicien), soit pendant la
-     * signature (session du beneficiaire) — le contenu archive ne doit pas
-     * dependre de la langue de qui l'a declenche.
-     */
-   public static function getCanonicalViewLabels(): array {
-       return [
-           0 => 'Vue arrière',
-           1 => 'Vue de face',
-           2 => 'Dessous',
-       ];
-   }
-
-    /**
      * Le materiel gere par defaut le plus visuellement different d'un ordinateur portable
      * (Computer/Monitor/Peripheral partagent tous une silhouette "boitier rectangulaire" pour
      * laquelle les 3 illustrations generiques restent plausibles) est Phone : trouve en verifiant

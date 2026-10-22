@@ -283,7 +283,9 @@ msgstr "Aucun mouvement enregistré pour ce matériel."
 
 #: templates/movement_tab.html.twig
 msgid "Départ"
-msgstr "Départ"
+msgid_plural "Départs"
+msgstr[0] "Départ"
+msgstr[1] "Départs"
 
 #: templates/movement_tab.html.twig
 msgid "Destination"
@@ -3999,3 +4001,192 @@ msgstr "Au statut « en stock » configuré (à défaut, sans utilisateur), pas 
 #: templates/config_form.html.twig
 msgid "Le matériel dans l'un de ces statuts est proposé en premier quand on ajoute un élément à une feuille. Si aucun statut n'est choisi, c'est le matériel sans utilisateur qui est proposé."
 msgstr "Le matériel dans l'un de ces statuts est proposé en premier quand on ajoute un élément à une feuille. Si aucun statut n'est choisi, c'est le matériel sans utilisateur qui est proposé."
+
+msgid "majeure"
+msgstr "majeure"
+
+msgid "Établie le %1$s — Référence assetsign n°%2$d"
+msgstr "Établie le %1$s — Référence assetsign n°%2$d"
+
+msgid "Bénéficiaire (externe, sans compte GLPI)"
+msgstr "Bénéficiaire (externe, sans compte GLPI)"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Nom GLPI"
+msgstr "Nom GLPI"
+
+msgid "Marque"
+msgstr "Marque"
+
+msgid "Matériel rendu avec"
+msgstr "Matériel rendu avec"
+
+msgid "Désignation"
+msgstr "Désignation"
+
+msgid "Retour prévu au plus tard le"
+msgstr "Retour prévu au plus tard le"
+
+msgid "Le matériel ci-dessus est prêté pour une durée limitée. Le bénéficiaire s'engage à le restituer au service informatique au plus tard à cette date, avec les accessoires remis."
+msgstr "Le matériel ci-dessus est prêté pour une durée limitée. Le bénéficiaire s'engage à le restituer au service informatique au plus tard à cette date, avec les accessoires remis."
+
+msgid "Conditions générales"
+msgstr "Conditions générales"
+
+msgid "Charte informatique complète :"
+msgstr "Charte informatique complète :"
+
+msgid "Document signé électroniquement le %1$s à %2$s"
+msgstr "Document signé électroniquement le %1$s à %2$s"
+
+msgid "Signataire : %s"
+msgstr "Signataire : %s"
+
+msgid "Signature recueillie sur place, en présence de : %s"
+msgstr "Signature recueillie sur place, en présence de : %s"
+
+msgid "Signature déléguée par %1$s le %2$s"
+msgstr "Signature déléguée par %1$s le %2$s"
+
+msgid "motif : %s"
+msgstr "motif : %s"
+
+msgid "Fait le %s"
+msgstr "Fait le %s"
+
+msgid "Signature de l'utilisateur :"
+msgstr "Signature de l'utilisateur :"
+
+msgid "Contre-signé électroniquement le %1$s à %2$s"
+msgstr "Contre-signé électroniquement le %1$s à %2$s"
+
+msgid "Responsable hiérarchique : %s"
+msgstr "Responsable hiérarchique : %s"
+
+msgid "Attribution #%d — Document généré par GLPI (plugin assetsign)"
+msgstr "Attribution #%d — Document généré par GLPI (plugin assetsign)"
+
+msgid "Attestation de détention — %s"
+msgstr "Attestation de détention — %s"
+
+msgid "Attestation de détention de matériel"
+msgstr "Attestation de détention de matériel"
+
+msgid "%1$s — signée le %2$s"
+msgstr "%1$s — signée le %2$s"
+
+msgid "Je soussigné(e) %s atteste détenir l'ensemble du matériel listé ci-dessous, et seulement celui-ci."
+msgstr "Je soussigné(e) %s atteste détenir l'ensemble du matériel listé ci-dessous, et seulement celui-ci."
+
+msgid "Signature"
+msgstr "Signature"
+
+msgid "Date et heure"
+msgstr "Date et heure"
+
+msgid "Campagne d'attestation — %s"
+msgstr "Campagne d'attestation — %s"
+
+msgid "Campagne d'attestation de détention"
+msgstr "Campagne d'attestation de détention"
+
+msgid "%1$s — rapport généré le %2$s"
+msgstr "%1$s — rapport généré le %2$s"
+
+msgid "Lancée le"
+msgstr "Lancée le"
+
+msgid "Personnes concernées"
+msgstr "Personnes concernées"
+
+msgid "Attestations confirmées"
+msgstr "Attestations confirmées"
+
+msgid "Détail"
+msgstr "Détail"
+
+msgid "Réponse"
+msgstr "Réponse"
+
+msgid "(ticket n°%d)"
+msgstr "(ticket n°%d)"
+
+msgid "Établie le %1$s — Référence fiche n°%2$d"
+msgstr "Établie le %1$s — Référence fiche n°%2$d"
+
+msgid "Points de contrôle"
+msgstr "Points de contrôle"
+
+msgid "Signature du technicien :"
+msgstr "Signature du technicien :"
+
+msgid "Fiche de maintenance #%d — Document généré par GLPI (plugin assetsign)"
+msgstr "Fiche de maintenance #%d — Document généré par GLPI (plugin assetsign)"
+
+msgid "Restitution de départ — %s"
+msgstr "Restitution de départ — %s"
+
+msgid "Restitution du matériel — départ"
+msgstr "Restitution du matériel — départ"
+
+msgid "Signée le %s"
+msgstr "Signée le %s"
+
+msgid "Matériel restitué"
+msgstr "Matériel restitué"
+
+msgid "Fiche n°"
+msgstr "Fiche n°"
+
+msgid "Chaque matériel dispose de sa propre fiche de restitution signée (PDF joint à la fiche). Empreintes SHA-256 de ces PDF :"
+msgstr "Chaque matériel dispose de sa propre fiche de restitution signée (PDF joint à la fiche). Empreintes SHA-256 de ces PDF :"
+
+msgid "Fiche n°%1$d : %2$s"
+msgstr "Fiche n°%1$d : %2$s"
+
+msgid "Recueillie en présence de"
+msgstr "Recueillie en présence de"
+
+msgid "Ordinateur"
+msgstr "Ordinateur"
+
+msgid "Écran"
+msgstr "Écran"
+
+msgid "Périphérique"
+msgstr "Périphérique"
+
+msgid "Téléphone"
+msgstr "Téléphone"
+
+msgid "Fiche de vente de matériel"
+msgstr "Fiche de vente de matériel"
+
+msgid "Matériel vendu"
+msgstr "Matériel vendu"
+
+msgid "Fiche de don de matériel"
+msgstr "Fiche de don de matériel"
+
+msgid "Matériel donné"
+msgstr "Matériel donné"
+
+msgid "Fiche d'attribution de matériel"
+msgstr "Fiche d'attribution de matériel"
+
+msgid "Matériel attribué"
+msgstr "Matériel attribué"
+
+msgid "Fiche de restitution de matériel"
+msgstr "Fiche de restitution de matériel"
+
+msgid "Fiche de destruction de matériel"
+msgstr "Fiche de destruction de matériel"
+
+msgid "Matériel détruit"
+msgstr "Matériel détruit"

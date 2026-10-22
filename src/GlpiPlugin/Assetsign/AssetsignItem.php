@@ -73,7 +73,7 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
 
        return [
            'name'         => (string) ($item->fields['name'] ?? ''),
-           'type_label'   => Assetsign::getCanonicalItemtypeLabel($itemtype),
+           'type_label'   => Assetsign::getItemtypeLabel($itemtype),
            'manufacturer' => Assetsign::resolveManufacturerName($item),
            'model'        => Assetsign::resolveModelName($item),
            'serial'       => (string) ($item->fields['serial'] ?? ''),

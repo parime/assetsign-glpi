@@ -22,8 +22,8 @@ final class ReturnType implements WorkflowTypeInterface
 
    public function getPdfHeadings(): array {
        return [
-           'page_title'       => 'Fiche de restitution de matériel',
-           'material_heading' => 'Matériel restitué',
+           'page_title'       => __('Fiche de restitution de matériel', 'assetsign'),
+           'material_heading' => __('Matériel restitué', 'assetsign'),
        ];
    }
 

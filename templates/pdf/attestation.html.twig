@@ -1,10 +1,10 @@
-{# Issue #158 : PDF d'attestation de détention signée. Textes fixes, jamais traduits via __()
-   (document archivé, même règle que handover.html.twig). #}
+{# Issue #158 : PDF d'attestation de détention signée. Textes traduits dans la langue de la
+   personne qui atteste (issue #208, cf. Pdf\PdfLanguage), quelle que soit la session. #}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ html_lang|default('fr') }}">
 <head>
 <meta charset="UTF-8">
-<title>Attestation de détention — {{ user_name }}</title>
+<title>{{ __('Attestation de détention — %s', 'assetsign')|format(user_name) }}</title>
 {% include '@assetsign/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
@@ -13,24 +13,24 @@
 <div class="header-logo"><div class="company-name">{{ company_name }}</div></div>
 {% endif %}
 
-<h1>Attestation de détention de matériel</h1>
-<p class="meta">{{ campaign_name }} — signée le {{ signed_at }}</p>
+<h1>{{ __('Attestation de détention de matériel', 'assetsign') }}</h1>
+<p class="meta">{{ __('%1$s — signée le %2$s', 'assetsign')|format(campaign_name, signed_at) }}</p>
 
-<p>Je soussigné(e) <strong>{{ user_name }}</strong> atteste détenir l'ensemble du matériel listé ci-dessous, et seulement celui-ci.</p>
+<p>{{ __('Je soussigné(e) %s atteste détenir l\'ensemble du matériel listé ci-dessous, et seulement celui-ci.', 'assetsign')|format(user_name) }}</p>
 
 <table class="info-table">
-    <tr><th>Type</th><th>Matériel</th><th>N° de série</th><th>N° d'inventaire</th></tr>
+    <tr><th>{{ __('Type', 'assetsign') }}</th><th>{{ __('Matériel', 'assetsign') }}</th><th>{{ __('N° de série', 'assetsign') }}</th><th>{{ __('N° d\'inventaire', 'assetsign') }}</th></tr>
     {% for item in items %}
     <tr><td>{{ item.type_label }}</td><td>{{ item.name }}</td><td>{{ item.serial }}</td><td>{{ item.otherserial }}</td></tr>
     {% endfor %}
 </table>
 
-<h2>Signature</h2>
+<h2>{{ __('Signature', 'assetsign') }}</h2>
 <img src="{{ signature_image }}" alt="" style="max-height: 110px; border: 1px solid #ccc;">
 <table class="info-table">
-    <tr><th>Signataire</th><td>{{ user_name }}</td></tr>
-    <tr><th>Date et heure</th><td>{{ signed_at }}</td></tr>
-    {% if ip_address %}<tr><th>Adresse IP</th><td>{{ ip_address }}</td></tr>{% endif %}
+    <tr><th>{{ __('Signataire', 'assetsign') }}</th><td>{{ user_name }}</td></tr>
+    <tr><th>{{ __('Date et heure', 'assetsign') }}</th><td>{{ signed_at }}</td></tr>
+    {% if ip_address %}<tr><th>{{ __('Adresse IP', 'assetsign') }}</th><td>{{ ip_address }}</td></tr>{% endif %}
 </table>
 
 </body>

@@ -5,6 +5,7 @@ namespace GlpiPlugin\Assetsign;
 use Document;
 use Document_Item;
 use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Assetsign\Pdf\PdfLanguage;
 use GlpiPlugin\Assetsign\Pdf\PdfRenderingHelpers;
 use GlpiPlugin\Assetsign\Pdf\SignatureImageValidator;
 use Html;
@@ -100,15 +101,21 @@ class Attestation extends Compat\Base\AttestationBase
        $campaign = $this->getCampaign();
        $config = Config::getForEntity((int) $this->fields['entities_id']);
 
-       $html = TemplateRenderer::getInstance()->render('@assetsign/pdf/attestation.html.twig', [
+       // Issue #208 : dans la langue de la personne qui atteste.
+       $html = PdfLanguage::run(PdfLanguage::forUser((int) $this->fields['users_id']), fn (): string => TemplateRenderer::getInstance()->render('@assetsign/pdf/attestation.html.twig', [
+           'html_lang'       => PdfLanguage::htmlLang(),
            'company_name'    => (string) ($config->fields['company_name'] ?? ''),
            'campaign_name'   => $campaign !== null ? (string) $campaign->fields['name'] : '',
            'user_name'       => trim(\formatUserName(0, $user->fields['name'] ?? '', $user->fields['realname'] ?? '', $user->fields['firstname'] ?? '')),
-           'items'           => $this->getItems(),
+           // Libelle de type re-traduit : celui de l'instantane est fige dans la langue du lancement.
+           'items'           => array_map(
+               static fn (array $item): array => ['type_label' => Assetsign::getItemtypeLabel($item['itemtype'])] + $item,
+               $this->getItems()
+           ),
            'signature_image' => $signaturePngDataUrl,
            'signed_at'       => Html::convDateTime($signedAt),
            'ip_address'      => $meta['ip'] ?? '',
-       ]);
+       ]));
        $binary = $this->renderPdf($html, (bool) ($config->fields['protect_pdf'] ?? false));
        $documentsId = $this->storePdf($binary, $user);
 

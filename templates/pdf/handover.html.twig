@@ -1,6 +1,6 @@
 {% set _now = "now"|date('d/m/Y') %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ html_lang|default('fr') }}">
 <head>
 <meta charset="UTF-8">
 <title>{{ document_title }}</title>
@@ -28,30 +28,30 @@
 {% endif %}
 
 <h1>{{ page_title }}</h1>
-<p class="meta">Établie le {{ assetsign.date_creation|date('d/m/Y') }} — Référence assetsign n°{{ assetsign.id }}</p>
+<p class="meta">{{ __('Établie le %1$s — Référence assetsign n°%2$d', 'assetsign')|format(assetsign.date_creation|date('d/m/Y'), assetsign.id) }}</p>
 
-<h2>Bénéficiaire{% if beneficiary_is_external|default(false) %} (externe, sans compte GLPI){% endif %}</h2>
+<h2>{{ beneficiary_is_external|default(false) ? __('Bénéficiaire (externe, sans compte GLPI)', 'assetsign') : __('Bénéficiaire', 'assetsign') }}</h2>
 <table class="info-table">
-    <tr><th>Nom</th><td>{{ beneficiary_name }}</td></tr>
-    <tr><th>{{ beneficiary_is_external|default(false) ? 'Contact' : 'E-mail' }}</th><td>{{ user.email|default('') }}</td></tr>
+    <tr><th>{{ __('Nom', 'assetsign') }}</th><td>{{ beneficiary_name }}</td></tr>
+    <tr><th>{{ beneficiary_is_external|default(false) ? __('Contact', 'assetsign') : __('E-mail', 'assetsign') }}</th><td>{{ user.email|default('') }}</td></tr>
 </table>
 
 <h2>{{ material_heading }}</h2>
 <table class="info-table">
-    <tr><th>Type</th><td>{{ itemtype }}</td></tr>
-    <tr><th>Nom GLPI</th><td>{{ item.name|default('') }}</td></tr>
+    <tr><th>{{ __('Type', 'assetsign') }}</th><td>{{ itemtype }}</td></tr>
+    <tr><th>{{ __('Nom GLPI', 'assetsign') }}</th><td>{{ item.name|default('') }}</td></tr>
     {% if item.manufacturer_name is defined and item.manufacturer_name %}
-    <tr><th>Marque</th><td>{{ item.manufacturer_name }}</td></tr>
+    <tr><th>{{ __('Marque', 'assetsign') }}</th><td>{{ item.manufacturer_name }}</td></tr>
     {% endif %}
     {% if item.model_name is defined and item.model_name %}
-    <tr><th>Modèle</th><td>{{ item.model_name }}</td></tr>
+    <tr><th>{{ __('Modèle', 'assetsign') }}</th><td>{{ item.model_name }}</td></tr>
     {% endif %}
-    <tr><th>N° de série</th><td>{{ item.serial|default('-') }}</td></tr>
-    <tr><th>N° d'inventaire</th><td>{{ item.otherserial|default('-') }}</td></tr>
+    <tr><th>{{ __('N° de série', 'assetsign') }}</th><td>{{ item.serial|default('-') }}</td></tr>
+    <tr><th>{{ __('N° d\'inventaire', 'assetsign') }}</th><td>{{ item.otherserial|default('-') }}</td></tr>
 </table>
 
 {% if accessories|length %}
-<h2>Accessoires remis</h2>
+<h2>{{ __('Accessoires remis', 'assetsign') }}</h2>
 <ul class="accessories">
     {% for a in accessories %}<li>{{ a.name }} &times; {{ a.quantity }}{% if a.comment %} — {{ a.comment }}{% endif %}</li>{% endfor %}
 </ul>
@@ -60,10 +60,10 @@
 {% if inventoried_items|default([])|length %}
 {# Issue #178 : sur une restitution, etat de chaque element au retour #}
 {% set is_return_pdf = (assetsign.type|default(0)) == 1 %}
-{% set return_labels = {0: 'À contrôler', 1: 'Rendu', 2: 'Manquant', 3: 'Abîmé'} %}
-<h2>{{ is_return_pdf ? 'Matériel rendu avec' : 'Matériel inventorié remis avec' }}</h2>
+{% set return_labels = {0: __('À contrôler', 'assetsign'), 1: __('Rendu', 'assetsign'), 2: __('Manquant', 'assetsign'), 3: __('Abîmé', 'assetsign')} %}
+<h2>{{ is_return_pdf ? __('Matériel rendu avec', 'assetsign') : __('Matériel inventorié remis avec', 'assetsign') }}</h2>
 <table class="data-table">
-    <tr><th>Type</th><th>Désignation</th><th>Marque / modèle</th><th>N° de série</th><th>N° d'inventaire</th>{% if is_return_pdf %}<th>État au retour</th>{% endif %}</tr>
+    <tr><th>{{ __('Type', 'assetsign') }}</th><th>{{ __('Désignation', 'assetsign') }}</th><th>{{ __('Marque / modèle', 'assetsign') }}</th><th>{{ __('N° de série', 'assetsign') }}</th><th>{{ __('N° d\'inventaire', 'assetsign') }}</th>{% if is_return_pdf %}<th>{{ __('État au retour', 'assetsign') }}</th>{% endif %}</tr>
     {% for i in inventoried_items %}
     <tr>
         <td>{{ i.type_label }}</td>
@@ -78,55 +78,55 @@
 {% endif %}
 
 {% if vente_price is not null %}
-<h2>Détails de la vente</h2>
+<h2>{{ __('Détails de la vente', 'assetsign') }}</h2>
 <table class="info-table">
-    <tr><th>Prix</th><td>{{ vente_price|number_format(2, ',', ' ') }} {{ currency_symbol|default('€') }}</td></tr>
-    <tr><th>Date de vente</th><td>{{ vente_sale_date|default('-') }}</td></tr>
+    <tr><th>{{ __('Prix', 'assetsign') }}</th><td>{{ vente_price|number_format(2, ',', ' ') }} {{ currency_symbol|default('€') }}</td></tr>
+    <tr><th>{{ __('Date de vente', 'assetsign') }}</th><td>{{ vente_sale_date|default('-') }}</td></tr>
 </table>
 {% endif %}
 
 {% if don_organization_name is not null and don_organization_name %}
-<h2>Détails du don</h2>
+<h2>{{ __('Détails du don', 'assetsign') }}</h2>
 <table class="info-table">
-    <tr><th>Organisme bénéficiaire</th><td>{{ don_organization_name }}</td></tr>
+    <tr><th>{{ __('Organisme bénéficiaire', 'assetsign') }}</th><td>{{ don_organization_name }}</td></tr>
 </table>
 {% endif %}
 
 {% if destruction_provider_name is not null and destruction_provider_name %}
-<h2>Détails de la destruction</h2>
+<h2>{{ __('Détails de la destruction', 'assetsign') }}</h2>
 <table class="info-table">
-    <tr><th>Prestataire</th><td>{{ destruction_provider_name }}</td></tr>
+    <tr><th>{{ __('Prestataire', 'assetsign') }}</th><td>{{ destruction_provider_name }}</td></tr>
 </table>
 {% endif %}
 
 {# Issue #193 : pret temporaire #}
 {% if loan_until|default(null) %}
-<h2>Prêt temporaire</h2>
+<h2>{{ __('Prêt temporaire', 'assetsign') }}</h2>
 <table class="info-table">
-    <tr><th>Retour prévu au plus tard le</th><td><strong>{{ loan_until }}</strong></td></tr>
+    <tr><th>{{ __('Retour prévu au plus tard le', 'assetsign') }}</th><td><strong>{{ loan_until }}</strong></td></tr>
 </table>
-<p class="legal-text">Le matériel ci-dessus est prêté pour une durée limitée. Le bénéficiaire s'engage à le restituer au service informatique au plus tard à cette date, avec les accessoires remis.</p>
+<p class="legal-text">{{ __('Le matériel ci-dessus est prêté pour une durée limitée. Le bénéficiaire s\'engage à le restituer au service informatique au plus tard à cette date, avec les accessoires remis.', 'assetsign') }}</p>
 {% endif %}
 
 {% include '@assetsign/pdf/_damage_views.html.twig' %}
 
 {% if include_content %}
-<h2>Conditions générales</h2>
+<h2>{{ __('Conditions générales', 'assetsign') }}</h2>
 <div class="legal-text">{{ contract_safe_html|raw }}</div>
 {% endif %}
 
 {% if include_charter and (charter_safe_html or charter_url) %}
-<h2>Charte informatique</h2>
+<h2>{{ __('Charte informatique', 'assetsign') }}</h2>
 {% if charter_safe_html %}
 <div class="legal-text">{{ charter_safe_html|raw }}</div>
 {% endif %}
 {% if charter_url %}
-<p class="legal-text">Charte informatique complète : <a href="{{ charter_url|e('html_attr') }}">{{ charter_url }}</a></p>
+<p class="legal-text">{{ __('Charte informatique complète :', 'assetsign') }} <a href="{{ charter_url|e('html_attr') }}">{{ charter_url }}</a></p>
 {% endif %}
 {% endif %}
 
 {% if enable_observations and observations %}
-<h2>Observations</h2>
+<h2>{{ __('Observations', 'assetsign') }}</h2>
 {# Pas de |raw ici volontairement : contrairement au contrat/charte (rediges par
    un administrateur de confiance via l'editeur riche du gabarit), ce champ est
    saisi librement par n'importe quel technicien ayant le droit de modification
@@ -138,7 +138,7 @@
 {% endif %}
 
 {% if beneficiary_comment|default('') %}
-<h2>Remarque du bénéficiaire</h2>
+<h2>{{ __('Remarque du bénéficiaire', 'assetsign') }}</h2>
 {# Pas de |raw : saisi librement par le beneficiaire lui-meme depuis la page
    de signature, echappement automatique de Twig applique normalement. #}
 <p class="legal-text" style="white-space: pre-line;">{{ beneficiary_comment }}</p>
@@ -146,18 +146,18 @@
 
 <div class="signature-zone">
     {% if signature_image|default(false) %}
-        <p>Document signé électroniquement le {{ signed_at|date('d/m/Y à H:i') }}</p>
+        <p>{{ __('Document signé électroniquement le %1$s à %2$s', 'assetsign')|format(signed_at|date('d/m/Y'), signed_at|date('H:i')) }}</p>
         <img src="{{ signature_image }}" class="signature-img">
         <p class="proof">
             {# E-mail entre parentheses seulement s'il existe : sinon "()" vide pour tout signataire
                sans adresse e-mail - cas courant depuis les issues #150/#152. #}
             {% set signer_mail = signer_email|default(user.email|default('')) %}
-            Signataire : {{ signer_name|default(beneficiary_name) }}{% if signer_mail is not empty %} ({{ signer_mail }}){% endif %}
+            {{ __('Signataire : %s', 'assetsign')|format(signer_name|default(beneficiary_name)) }}{% if signer_mail is not empty %} ({{ signer_mail }}){% endif %}
         </p>
         {% if witness_name|default('') is not empty %}
         {# Signature sur place (issue #152) : recueillie sur l'ecran d'un technicien, qui atteste
            de l'identite du signataire. Texte fixe en francais, comme le reste du PDF archive. #}
-        <p class="proof">Signature recueillie sur place, en présence de : {{ witness_name }}</p>
+        <p class="proof">{{ __('Signature recueillie sur place, en présence de : %s', 'assetsign')|format(witness_name) }}</p>
         {% endif %}
         {% if delegated_users_id %}
         {# Delegation de signature (issue #115) : delegated_users_id>0 sur une
@@ -167,7 +167,7 @@
            d'origine) des la delegation : seul le nouveau lien, envoye au
            delegue, peut aboutir a une signature. #}
         <p class="proof">
-            Signature déléguée par {{ delegated_by_name|default(beneficiary_name) }} le {{ delegation_date|date('d/m/Y') }}{% if delegation_reason %} — motif : {{ delegation_reason }}{% endif %}
+            {{ __('Signature déléguée par %1$s le %2$s', 'assetsign')|format(delegated_by_name|default(beneficiary_name), delegation_date|date('d/m/Y')) }}{% if delegation_reason %} — {{ __('motif : %s', 'assetsign')|format(delegation_reason) }}{% endif %}
         </p>
         {% endif %}
     {% elseif beneficiary_is_external|default(false) %}
@@ -175,10 +175,10 @@
            de compte GLPI pour se connecter), le document genere EST le
            document final des sa creation — pas de ligne de signature vide qui
            laisserait croire qu'une signature reste a recueillir. #}
-        <p>Fait le {{ _now }}</p>
+        <p>{{ __('Fait le %s', 'assetsign')|format(_now) }}</p>
     {% else %}
-        <p>Fait le {{ _now }}</p>
-        <p>Signature de l'utilisateur : ______________________________</p>
+        <p>{{ __('Fait le %s', 'assetsign')|format(_now) }}</p>
+        <p>{{ __('Signature de l\'utilisateur :', 'assetsign') }} ______________________________</p>
     {% endif %}
 </div>
 
@@ -189,10 +189,10 @@
    sur le PDF intermediaire signe par le seul beneficiaire (document_id_signed),
    ni sur une fiche qui ne requiert pas de contre-signature. #}
 <div class="signature-zone">
-    <p>Contre-signé électroniquement le {{ cosigner.signed_at|date('d/m/Y à H:i') }}</p>
+    <p>{{ __('Contre-signé électroniquement le %1$s à %2$s', 'assetsign')|format(cosigner.signed_at|date('d/m/Y'), cosigner.signed_at|date('H:i')) }}</p>
     <img src="{{ cosigner.signature_image }}" class="signature-img">
     <p class="proof">
-        Responsable hiérarchique : {{ cosigner.signer_name }}{% if cosigner.signer_email is not empty %} ({{ cosigner.signer_email }}){% endif %}
+        {{ __('Responsable hiérarchique : %s', 'assetsign')|format(cosigner.signer_name) }}{% if cosigner.signer_email is not empty %} ({{ cosigner.signer_email }}){% endif %}
     </p>
 </div>
 {% endif %}
@@ -201,7 +201,7 @@
 <div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
 {% endif %}
 
-<div class="footer">Attribution #{{ assetsign.id }} — Document généré par GLPI (plugin assetsign)</div>
+<div class="footer">{{ __('Attribution #%d — Document généré par GLPI (plugin assetsign)', 'assetsign')|format(assetsign.id) }}</div>
 
 </body>
 </html>

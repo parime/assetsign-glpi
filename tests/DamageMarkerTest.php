@@ -95,18 +95,11 @@ class DamageMarkerTest extends AssetsignTestCase
         $this->assertCount(0, DamageMarker::getForAssetsign($assetsign->getID()));
     }
 
-    public function testCanonicalViewLabelsAreFixedRegardlessOfLocale(): void
+    public function testViewLabelsCoverEveryReferenceView(): void
     {
-        // getCanonicalViewLabels() (utilisee par le PDF) doit rester fixe,
-        // contrairement a getViewLabels() (traduite, ecran d'annotation) —
-        // un vrai bug avait fait fuiter la langue de session dans le PDF
-        // archive, cf. TROUBLESHOOTING.md. Verifie juste que les deux jeux existent et
-        // ont la meme forme (memes cles 0/1/2), pas leur contenu traduit.
-        $canonical = DamageMarker::getCanonicalViewLabels();
-        $translated = DamageMarker::getViewLabels();
-
-        $this->assertSame(array_keys($canonical), array_keys($translated));
-        $this->assertSame(['Vue arrière', 'Vue de face', 'Dessous'], array_values($canonical));
+        // Issue #208 : le PDF utilise desormais les libelles traduits, rendus dans la langue du
+        // beneficiaire (cf. PdfLanguageTest) — il en faut un par vue de reference.
+        $this->assertSame(range(0, DamageMarker::VIEW_COUNT - 1), array_keys(DamageMarker::getViewLabels()));
     }
 
     public function testHandleMutationRequestRejectsInvalidViewIndex(): void

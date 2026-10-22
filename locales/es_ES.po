@@ -282,7 +282,9 @@ msgstr "No hay ningún movimiento registrado para este equipo."
 
 #: templates/movement_tab.html.twig
 msgid "Départ"
-msgstr "Salida"
+msgid_plural "Départs"
+msgstr[0] "Salida"
+msgstr[1] "Salidas"
 
 #: templates/movement_tab.html.twig
 msgid "Destination"
@@ -3999,3 +4001,192 @@ msgstr "Con un estado «en stock» configurado (en su defecto, sin usuario), que
 #: templates/config_form.html.twig
 msgid "Le matériel dans l'un de ces statuts est proposé en premier quand on ajoute un élément à une feuille. Si aucun statut n'est choisi, c'est le matériel sans utilisateur qui est proposé."
 msgstr "El material en uno de estos estados se propone primero al añadir un elemento a una ficha. Si no se elige ningún estado, se propone el material sin usuario."
+
+msgid "majeure"
+msgstr "importante"
+
+msgid "Établie le %1$s — Référence assetsign n°%2$d"
+msgstr "Emitida el %1$s — Referencia assetsign n.º %2$d"
+
+msgid "Bénéficiaire (externe, sans compte GLPI)"
+msgstr "Beneficiario (externo, sin cuenta GLPI)"
+
+msgid "Contact"
+msgstr "Contacto"
+
+msgid "E-mail"
+msgstr "Correo electrónico"
+
+msgid "Nom GLPI"
+msgstr "Nombre en GLPI"
+
+msgid "Marque"
+msgstr "Marca"
+
+msgid "Matériel rendu avec"
+msgstr "Equipo devuelto con"
+
+msgid "Désignation"
+msgstr "Designación"
+
+msgid "Retour prévu au plus tard le"
+msgstr "Restitución prevista a más tardar el"
+
+msgid "Le matériel ci-dessus est prêté pour une durée limitée. Le bénéficiaire s'engage à le restituer au service informatique au plus tard à cette date, avec les accessoires remis."
+msgstr "El equipo anterior se presta por un periodo limitado. El beneficiario se compromete a devolverlo al servicio informático a más tardar en esta fecha, junto con los accesorios entregados."
+
+msgid "Conditions générales"
+msgstr "Condiciones generales"
+
+msgid "Charte informatique complète :"
+msgstr "Política informática completa:"
+
+msgid "Document signé électroniquement le %1$s à %2$s"
+msgstr "Documento firmado electrónicamente el %1$s a las %2$s"
+
+msgid "Signataire : %s"
+msgstr "Firmante: %s"
+
+msgid "Signature recueillie sur place, en présence de : %s"
+msgstr "Firma recogida in situ, en presencia de: %s"
+
+msgid "Signature déléguée par %1$s le %2$s"
+msgstr "Firma delegada por %1$s el %2$s"
+
+msgid "motif : %s"
+msgstr "motivo: %s"
+
+msgid "Fait le %s"
+msgstr "Hecho el %s"
+
+msgid "Signature de l'utilisateur :"
+msgstr "Firma del usuario:"
+
+msgid "Contre-signé électroniquement le %1$s à %2$s"
+msgstr "Refrendado electrónicamente el %1$s a las %2$s"
+
+msgid "Responsable hiérarchique : %s"
+msgstr "Responsable jerárquico: %s"
+
+msgid "Attribution #%d — Document généré par GLPI (plugin assetsign)"
+msgstr "Atribución #%d — Documento generado por GLPI (plugin assetsign)"
+
+msgid "Attestation de détention — %s"
+msgstr "Certificación de tenencia — %s"
+
+msgid "Attestation de détention de matériel"
+msgstr "Certificación de tenencia de equipos"
+
+msgid "%1$s — signée le %2$s"
+msgstr "%1$s — firmado el %2$s"
+
+msgid "Je soussigné(e) %s atteste détenir l'ensemble du matériel listé ci-dessous, et seulement celui-ci."
+msgstr "El/la abajo firmante %s certifica tener todo el equipo indicado a continuación, y solo este."
+
+msgid "Signature"
+msgstr "Firma"
+
+msgid "Date et heure"
+msgstr "Fecha y hora"
+
+msgid "Campagne d'attestation — %s"
+msgstr "Campaña de certificación — %s"
+
+msgid "Campagne d'attestation de détention"
+msgstr "Campaña de certificación de tenencia"
+
+msgid "%1$s — rapport généré le %2$s"
+msgstr "%1$s — informe generado el %2$s"
+
+msgid "Lancée le"
+msgstr "Iniciada el"
+
+msgid "Personnes concernées"
+msgstr "Personas afectadas"
+
+msgid "Attestations confirmées"
+msgstr "Certificaciones confirmadas"
+
+msgid "Détail"
+msgstr "Detalle"
+
+msgid "Réponse"
+msgstr "Respuesta"
+
+msgid "(ticket n°%d)"
+msgstr "(ticket n.º %d)"
+
+msgid "Établie le %1$s — Référence fiche n°%2$d"
+msgstr "Emitida el %1$s — Referencia de ficha n.º %2$d"
+
+msgid "Points de contrôle"
+msgstr "Puntos de control"
+
+msgid "Signature du technicien :"
+msgstr "Firma del técnico:"
+
+msgid "Fiche de maintenance #%d — Document généré par GLPI (plugin assetsign)"
+msgstr "Ficha de mantenimiento #%d — Documento generado por GLPI (plugin assetsign)"
+
+msgid "Restitution de départ — %s"
+msgstr "Restitución por salida — %s"
+
+msgid "Restitution du matériel — départ"
+msgstr "Restitución del equipo — salida"
+
+msgid "Signée le %s"
+msgstr "Firmada el %s"
+
+msgid "Matériel restitué"
+msgstr "Equipo devuelto"
+
+msgid "Fiche n°"
+msgstr "Ficha n.º"
+
+msgid "Chaque matériel dispose de sa propre fiche de restitution signée (PDF joint à la fiche). Empreintes SHA-256 de ces PDF :"
+msgstr "Cada equipo tiene su propia ficha de restitución firmada (PDF adjunto a la ficha). Huellas SHA-256 de estos PDF:"
+
+msgid "Fiche n°%1$d : %2$s"
+msgstr "Ficha n.º %1$d: %2$s"
+
+msgid "Recueillie en présence de"
+msgstr "Recogida en presencia de"
+
+msgid "Ordinateur"
+msgstr "Ordenador"
+
+msgid "Écran"
+msgstr "Monitor"
+
+msgid "Périphérique"
+msgstr "Periférico"
+
+msgid "Téléphone"
+msgstr "Teléfono"
+
+msgid "Fiche de vente de matériel"
+msgstr "Ficha de venta de equipo"
+
+msgid "Matériel vendu"
+msgstr "Equipo vendido"
+
+msgid "Fiche de don de matériel"
+msgstr "Ficha de donación de equipo"
+
+msgid "Matériel donné"
+msgstr "Equipo donado"
+
+msgid "Fiche d'attribution de matériel"
+msgstr "Ficha de atribución de equipo"
+
+msgid "Matériel attribué"
+msgstr "Equipo atribuido"
+
+msgid "Fiche de restitution de matériel"
+msgstr "Ficha de restitución de equipo"
+
+msgid "Fiche de destruction de matériel"
+msgstr "Ficha de destrucción de equipo"
+
+msgid "Matériel détruit"
+msgstr "Equipo destruido"
