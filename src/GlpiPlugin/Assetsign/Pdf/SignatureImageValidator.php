@@ -53,7 +53,7 @@ final class SignatureImageValidator
       }
    }
 
-   private static function countInkPixels($image, int $width, int $height): int {
+   private static function countInkPixels(\GdImage $image, int $width, int $height): int {
        $count = 0;
 
        // Echantillonnage : parcourir toute l'image serait couteux pour rien,

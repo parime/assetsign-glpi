@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Audit de code (issue #205)** : PHPStan passe au niveau 6 (paramètres et retours typés,
+  génériques précisés) ; seule la forme des valeurs de tableaux reste à documenter. Condition
+  toujours vraie retirée de la détection des réaffectations. Revue sans autre constat : aucun code
+  mort, chaque exception PHPStan/Semgrep encore justifiée, `global` explicite et aucune
+  redirection construite depuis la requête dans les pages, dépendances à jour et auditées en CI.
+
 ## [2.11.0] - 2026-10-22
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
