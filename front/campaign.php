@@ -27,6 +27,7 @@ foreach ($DB->request([
         'id'            => (int) $row['id'],
         'name'          => (string) $row['name'],
         'is_open'       => $campaign->isOpen(),
+        'is_charter'    => $campaign->isCharter(),
         'date_deadline' => $row['date_deadline'],
         'date_creation' => $row['date_creation'],
         'stats'         => $campaign->getStats(),

@@ -2913,3 +2913,81 @@ msgstr ""
 
 msgid "Matériel détruit"
 msgstr ""
+
+msgid "Faire signer la charte informatique périodiquement"
+msgstr ""
+
+msgid "Renouvellement (mois)"
+msgstr ""
+
+msgid "Délai pour signer (jours)"
+msgstr ""
+
+msgid "Une campagne de charte est lancée pour cette entité et ses sous-entités à chaque période (tâche planifiée assetsignCampaigns), avec les relances habituelles. À la date limite, un ticket liste les personnes qui ne l'ont pas signée ; aucun compte n'est bloqué."
+msgstr ""
+
+msgid "Charte informatique : chaque personne signe la charte, renouvelable automatiquement chaque année (Configuration). Preuve de sensibilisation (ISO 27001 A.5.10 et A.6.3)."
+msgstr ""
+
+msgid "Attestation de détention du matériel"
+msgstr ""
+
+msgid "Signature de la charte informatique"
+msgstr ""
+
+msgid "Chaque personne du périmètre signe la charte informatique (charte du gabarit d'attribution par défaut et lien vers la charte complète, figés au lancement). À la date limite, un ticket liste les personnes qui ne l'ont pas signée."
+msgstr ""
+
+msgid "Aucune charte informatique n'est configurée pour cette entité : renseignez la charte du gabarit d'attribution par défaut ou le lien vers la charte dans la Configuration."
+msgstr ""
+
+msgid "Ticket des non-signataires n°%d"
+msgstr ""
+
+msgid "Charte informatique — %s"
+msgstr ""
+
+msgid "Je soussigné(e) %s déclare avoir pris connaissance de la charte informatique ci-dessous et m'engage à la respecter."
+msgstr ""
+
+msgid "Charte informatique de %s"
+msgstr ""
+
+msgid "Charte signée le %s."
+msgstr ""
+
+msgid "J'ai lu la charte : je signe"
+msgstr ""
+
+msgid "J'ai pris connaissance de la charte informatique ci-dessus et je m'engage à la respecter."
+msgstr ""
+
+msgid "Charte informatique %s"
+msgstr ""
+
+msgid "Campagnes d'attestation et de charte : relances jusqu'à la date limite, ticket des chartes non signées, renouvellement annuel de la charte"
+msgstr ""
+
+msgid "La charte informatique de la campagne « %1$s » n'a pas été signée avant le %2$s par :"
+msgstr ""
+
+msgid "Charte informatique non signée : %1$d personne(s) (%2$s)"
+msgstr ""
+
+msgid "Une charte informatique ne permet pas de signaler un écart."
+msgstr ""
+
+msgid "Charte informatique signée - %s"
+msgstr ""
+
+msgid "Charte informatique à signer"
+msgstr ""
+
+msgid "Charte informatique : relance"
+msgstr ""
+
+msgid "Campagne lancée : %d personne(s) invitée(s) à signer la charte informatique."
+msgstr ""
+
+msgid "Charte informatique signée. Merci !"
+msgstr ""

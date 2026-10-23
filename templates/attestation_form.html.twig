@@ -1,14 +1,18 @@
-{# Issue #158 : réponse d'une personne à son attestation de détention. #}
+{# Issue #158 : réponse d'une personne à son attestation de détention.
+   Issue #204 : même page pour la signature de la charte informatique (is_charter). #}
 <div class="container-lg my-3">
   <div class="card mb-3">
     <div class="card-header d-flex align-items-center gap-2">
-      <h3 class="card-title mb-0"><i class="ti ti-clipboard-check me-2"></i>{{ __('Attestation de détention de %s', 'assetsign')|format(user_name) }}</h3>
+      <h3 class="card-title mb-0"><i class="ti {{ is_charter ? 'ti-file-certificate' : 'ti-clipboard-check' }} me-2"></i>{{ (is_charter ? __('Charte informatique de %s', 'assetsign') : __('Attestation de détention de %s', 'assetsign'))|format(user_name) }}</h3>
       {% set status_class = {0: 'bg-secondary-lt', 1: 'bg-green-lt', 2: 'bg-orange-lt'}[attestation.status]|default('bg-secondary-lt') %}
       <span class="badge {{ status_class }}">{{ status_label }}</span>
     </div>
     <div class="card-body">
       <div class="text-muted">{{ campaign_name }}{% if deadline %} — {{ __('à rendre avant le %s', 'assetsign')|format(deadline|formatted_date) }}{% endif %}</div>
     </div>
+    {% if is_charter %}
+    <div class="card-body border-top" style="max-height: 60vh; overflow-y: auto;">{{ charter_safe_html|raw }}</div>
+    {% else %}
     <div class="table-responsive">
       <table class="table table-vcenter card-table">
         <thead>
@@ -26,12 +30,13 @@
         </tbody>
       </table>
     </div>
+    {% endif %}
   </div>
 
   {% if pdf_url %}
     <div class="alert alert-success d-flex align-items-center gap-2">
       <i class="ti ti-circle-check"></i>
-      <span>{{ __('Attestation signée le %s.', 'assetsign')|format(attestation.date_answered|formatted_datetime) }}</span>
+      <span>{{ (is_charter ? __('Charte signée le %s.', 'assetsign') : __('Attestation signée le %s.', 'assetsign'))|format(attestation.date_answered|formatted_datetime) }}</span>
       <a href="{{ pdf_url }}" class="btn btn-sm btn-outline-success ms-auto"><i class="ti ti-file-type-pdf me-1"></i>PDF</a>
     </div>
   {% endif %}
@@ -46,9 +51,9 @@
 
   {% if can_answer %}
     <div class="row g-3">
-      <div class="col-lg-7">
+      <div class="{{ is_charter ? 'col-12' : 'col-lg-7' }}">
         <div class="card border-primary h-100">
-          <div class="card-header"><h3 class="card-title"><i class="ti ti-writing-sign me-2"></i>{{ __('La liste est exacte : je confirme et je signe', 'assetsign') }}</h3></div>
+          <div class="card-header"><h3 class="card-title"><i class="ti ti-writing-sign me-2"></i>{{ is_charter ? __('J\'ai lu la charte : je signe', 'assetsign') : __('La liste est exacte : je confirme et je signe', 'assetsign') }}</h3></div>
           <div class="card-body">
             <form method="post" action="{{ action }}" id="attestation-sign-form">
               <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
@@ -56,7 +61,7 @@
               <input type="hidden" name="signature" id="attestation-signature">
               <label class="form-check mb-2">
                 <input type="checkbox" name="consent" value="1" class="form-check-input" id="attestation-consent">
-                <span class="form-check-label">{{ __('J\'atteste détenir l\'ensemble du matériel listé ci-dessus, et seulement celui-ci.', 'assetsign') }}</span>
+                <span class="form-check-label">{{ is_charter ? __('J\'ai pris connaissance de la charte informatique ci-dessus et je m\'engage à la respecter.', 'assetsign') : __('J\'atteste détenir l\'ensemble du matériel listé ci-dessus, et seulement celui-ci.', 'assetsign') }}</span>
               </label>
               <p class="mb-1">{{ __('Signez ci-dessous à la souris, au doigt ou au stylet :', 'assetsign') }}</p>
               <canvas id="attestation-signature-pad" style="border: 1px dashed #999; border-radius: 6px; width: 100%; height: 160px; touch-action: none; background: #fff;"></canvas>
@@ -68,6 +73,7 @@
           </div>
         </div>
       </div>
+      {% if not is_charter %}
       <div class="col-lg-5">
         <div class="card border-warning h-100">
           <div class="card-header"><h3 class="card-title"><i class="ti ti-alert-triangle me-2"></i>{{ __('La liste n\'est pas exacte : je signale un écart', 'assetsign') }}</h3></div>
@@ -86,6 +92,7 @@
           </div>
         </div>
       </div>
+      {% endif %}
     </div>
     <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
     <script>

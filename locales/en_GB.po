@@ -4170,3 +4170,81 @@ msgstr "Equipment destruction form"
 
 msgid "Matériel détruit"
 msgstr "Equipment destroyed"
+
+msgid "Faire signer la charte informatique périodiquement"
+msgstr "Have the IT charter signed periodically"
+
+msgid "Renouvellement (mois)"
+msgstr "Renewal (months)"
+
+msgid "Délai pour signer (jours)"
+msgstr "Time to sign (days)"
+
+msgid "Une campagne de charte est lancée pour cette entité et ses sous-entités à chaque période (tâche planifiée assetsignCampaigns), avec les relances habituelles. À la date limite, un ticket liste les personnes qui ne l'ont pas signée ; aucun compte n'est bloqué."
+msgstr "A charter campaign is launched for this entity and its sub-entities every period (automatic action assetsignCampaigns), with the usual reminders. At the deadline, a ticket lists the people who have not signed it; no account is blocked."
+
+msgid "Charte informatique : chaque personne signe la charte, renouvelable automatiquement chaque année (Configuration). Preuve de sensibilisation (ISO 27001 A.5.10 et A.6.3)."
+msgstr "IT charter: everyone signs the charter, automatically renewable every year (Configuration). Evidence of awareness (ISO 27001 A.5.10 and A.6.3)."
+
+msgid "Attestation de détention du matériel"
+msgstr "Equipment holding attestation"
+
+msgid "Signature de la charte informatique"
+msgstr "IT charter signature"
+
+msgid "Chaque personne du périmètre signe la charte informatique (charte du gabarit d'attribution par défaut et lien vers la charte complète, figés au lancement). À la date limite, un ticket liste les personnes qui ne l'ont pas signée."
+msgstr "Everyone in scope signs the IT charter (charter from the default handover template and link to the full charter, frozen at launch). At the deadline, a ticket lists the people who have not signed it."
+
+msgid "Aucune charte informatique n'est configurée pour cette entité : renseignez la charte du gabarit d'attribution par défaut ou le lien vers la charte dans la Configuration."
+msgstr "No IT charter is configured for this entity: fill in the charter of the default handover template or the link to the charter in the Configuration."
+
+msgid "Ticket des non-signataires n°%d"
+msgstr "Ticket for non-signers no. %d"
+
+msgid "Charte informatique — %s"
+msgstr "IT charter — %s"
+
+msgid "Je soussigné(e) %s déclare avoir pris connaissance de la charte informatique ci-dessous et m'engage à la respecter."
+msgstr "I, the undersigned %s, declare that I have read the IT charter below and undertake to comply with it."
+
+msgid "Charte informatique de %s"
+msgstr "IT charter of %s"
+
+msgid "Charte signée le %s."
+msgstr "Charter signed on %s."
+
+msgid "J'ai lu la charte : je signe"
+msgstr "I have read the charter: I sign"
+
+msgid "J'ai pris connaissance de la charte informatique ci-dessus et je m'engage à la respecter."
+msgstr "I have read the IT charter above and undertake to comply with it."
+
+msgid "Charte informatique %s"
+msgstr "IT charter %s"
+
+msgid "Campagnes d'attestation et de charte : relances jusqu'à la date limite, ticket des chartes non signées, renouvellement annuel de la charte"
+msgstr "Attestation and charter campaigns: reminders until the deadline, ticket for unsigned charters, annual renewal of the charter"
+
+msgid "La charte informatique de la campagne « %1$s » n'a pas été signée avant le %2$s par :"
+msgstr "The IT charter of campaign \"%1$s\" was not signed before %2$s by:"
+
+msgid "Charte informatique non signée : %1$d personne(s) (%2$s)"
+msgstr "IT charter not signed: %1$d person(s) (%2$s)"
+
+msgid "Une charte informatique ne permet pas de signaler un écart."
+msgstr "An IT charter does not allow reporting a discrepancy."
+
+msgid "Charte informatique signée - %s"
+msgstr "Signed IT charter - %s"
+
+msgid "Charte informatique à signer"
+msgstr "IT charter to sign"
+
+msgid "Charte informatique : relance"
+msgstr "IT charter: reminder"
+
+msgid "Campagne lancée : %d personne(s) invitée(s) à signer la charte informatique."
+msgstr "Campaign launched: %d person(s) invited to sign the IT charter."
+
+msgid "Charte informatique signée. Merci !"
+msgstr "IT charter signed. Thank you!"

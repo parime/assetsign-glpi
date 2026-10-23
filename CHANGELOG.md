@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Signature de la charte informatique** (issue #204), preuve de sensibilisation pour ISO 27001
+  A.5.10 et A.6.3 :
+  - nouveau type de campagne « Signature de la charte informatique » (Outils > Campagnes) :
+    chaque personne du périmètre, matériel ou pas, signe la charte en vigueur (charte du gabarit
+    d'attribution par défaut et lien vers la charte complète), figée au lancement ; PDF signé
+    dans sa langue, relances habituelles, page « Mes documents à signer » ;
+  - à la date limite, un ticket liste les personnes qui ne l'ont pas signée (aucun compte n'est
+    bloqué) ;
+  - renouvellement automatique par entité (Configuration : période en mois, délai pour signer),
+    par la tâche planifiée `assetsignCampaigns`.
+
 ### Changed
 
 - **Audit de code (issue #205)** : PHPStan passe au niveau 6 (paramètres et retours typés,

@@ -1,13 +1,26 @@
-{# Issue #158 : création et suivi d'une campagne d'attestation de détention. #}
+{# Issue #158 : création et suivi d'une campagne d'attestation de détention.
+   Issue #204 : même écran pour les campagnes de charte informatique (is_charter). #}
 <div class="container-lg my-3">
   {% if campaign is null %}
     <div class="card">
-      <div class="card-header"><h3 class="card-title"><i class="ti ti-clipboard-check me-2"></i>{{ __('Nouvelle campagne d\'attestation de détention', 'assetsign') }}</h3></div>
+      <div class="card-header"><h3 class="card-title"><i class="ti ti-clipboard-check me-2"></i>{{ __('Nouvelle campagne', 'assetsign') }}</h3></div>
       <div class="card-body">
-        <p class="text-muted">{{ __('Chaque personne du périmètre qui détient au moins un matériel géré reçoit sa liste (figée à la date du lancement) à confirmer en signant, ou sur laquelle signaler un écart. Les personnes sans e-mail la retrouvent dans « Mes documents à signer ».', 'assetsign') }}</p>
         <form method="post" action="{{ action }}">
           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
           <input type="hidden" name="entities_id" value="{{ entity_id }}">
+          <div class="mb-3">
+            <label class="form-check">
+              <input type="radio" class="form-check-input" name="type" value="0" checked>
+              <span class="form-check-label"><strong>{{ __('Attestation de détention du matériel', 'assetsign') }}</strong>
+                <span class="d-block text-muted">{{ __('Chaque personne du périmètre qui détient au moins un matériel géré reçoit sa liste (figée à la date du lancement) à confirmer en signant, ou sur laquelle signaler un écart. Les personnes sans e-mail la retrouvent dans « Mes documents à signer ».', 'assetsign') }}</span></span>
+            </label>
+            <label class="form-check">
+              <input type="radio" class="form-check-input" name="type" value="1"{{ charter_ready ? '' : ' disabled' }}>
+              <span class="form-check-label"><strong>{{ __('Signature de la charte informatique', 'assetsign') }}</strong>
+                <span class="d-block text-muted">{{ __('Chaque personne du périmètre signe la charte informatique (charte du gabarit d\'attribution par défaut et lien vers la charte complète, figés au lancement). À la date limite, un ticket liste les personnes qui ne l\'ont pas signée.', 'assetsign') }}</span>
+                {% if not charter_ready %}<span class="d-block text-warning">{{ __('Aucune charte informatique n\'est configurée pour cette entité : renseignez la charte du gabarit d\'attribution par défaut ou le lien vers la charte dans la Configuration.', 'assetsign') }}</span>{% endif %}</span>
+            </label>
+          </div>
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label" for="campaign-name">{{ __('Nom de la campagne', 'assetsign') }}</label>
@@ -51,10 +64,13 @@
         <div class="row text-center">
           <div class="col"><div class="h1 mb-0">{{ stats.response_rate }} %</div><div class="text-muted small">{{ __('Taux de réponse', 'assetsign') }}</div></div>
           <div class="col"><div class="h1 mb-0 text-green">{{ stats.confirmed }}</div><div class="text-muted small">{{ __('Confirmées', 'assetsign') }}</div></div>
-          <div class="col"><div class="h1 mb-0 text-orange">{{ stats.discrepancy }}</div><div class="text-muted small">{{ __('Écarts signalés', 'assetsign') }}</div></div>
+          {% if not is_charter %}<div class="col"><div class="h1 mb-0 text-orange">{{ stats.discrepancy }}</div><div class="text-muted small">{{ __('Écarts signalés', 'assetsign') }}</div></div>{% endif %}
           <div class="col"><div class="h1 mb-0 text-muted">{{ stats.pending }}</div><div class="text-muted small">{{ __('Sans réponse', 'assetsign') }}</div></div>
         </div>
         <div class="text-muted small mt-2">{{ __('Date limite', 'assetsign') }} : {{ campaign.date_deadline ? campaign.date_deadline|formatted_date : '—' }}</div>
+        {% if is_charter and campaign.tickets_id > 0 %}
+          <div class="small mt-1"><a href="{{ ticket_url ~ campaign.tickets_id }}"><i class="ti ti-ticket me-1"></i>{{ __('Ticket des non-signataires n°%d', 'assetsign')|format(campaign.tickets_id) }}</a></div>
+        {% endif %}
       </div>
       <div class="card-footer d-flex flex-wrap gap-2">
         <a href="{{ action }}?id={{ campaign.id }}&export=csv" class="btn btn-outline-secondary btn-sm"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('Export CSV', 'assetsign') }}</a>

@@ -103,10 +103,11 @@ foreach (PendingSignatures::openDeparturesForUser($usersId) as $departure) {
 foreach (PendingSignatures::pendingAttestationsForUser($usersId) as $attestation) {
     $items = $attestation->getItems();
     $campaign = $attestation->getCampaign();
+    $isCharter = $campaign?->isCharter() ?? false;
     $rows[] = [
         'id'            => 0,
-        'type'          => _n('Attestation de détention', 'Attestations de détention', 1, 'assetsign'),
-        'item'          => sprintf(_n('%d matériel', '%d matériels', count($items), 'assetsign'), count($items)),
+        'type'          => $isCharter ? __('Charte informatique', 'assetsign') : _n('Attestation de détention', 'Attestations de détention', 1, 'assetsign'),
+        'item'          => $isCharter ? (string) $campaign->fields['name'] : sprintf(_n('%d matériel', '%d matériels', count($items), 'assetsign'), count($items)),
         'serial'        => implode(', ', array_column($items, 'name')),
         'date_sent'     => $attestation->fields['date_creation'],
         'technician'    => $campaign !== null ? getUserName((int) $campaign->fields['users_id']) : '',

@@ -29,6 +29,9 @@ class NotificationTargetAttestation extends NotificationTarget
            'attestation_invitation'  => __('Attestation de détention à signer', 'assetsign'),
            'attestation_reminder'    => __('Attestation de détention : relance', 'assetsign'),
            'attestation_discrepancy' => __('Attestation de détention : écart signalé', 'assetsign'),
+           // Issue #204
+           'charter_invitation'      => __('Charte informatique à signer', 'assetsign'),
+           'charter_reminder'        => __('Charte informatique : relance', 'assetsign'),
        ];
    }
 
@@ -184,6 +187,39 @@ class NotificationTargetAttestation extends NotificationTarget
                    'it_IT' => ['subject' => 'Discrepanza di inventario segnalata da ##attestation.user##',
                        'html' => '<p>##attestation.user## segnala una discrepanza nel suo elenco di attrezzatura (campagna ##attestation.campaign##):</p><p>##attestation.comment##</p>'
                            . $list . '<p>Ticket n. ##attestation.ticket##.</p>'],
+               ],
+           ],
+           // Issue #204 : signature de la charte informatique.
+           'charter_invitation' => [
+               'name'    => 'Charte informatique à signer',
+               'targets' => [self::TARGET_HOLDER],
+               'texts'   => [
+                   'fr_FR' => ['subject' => 'Charte informatique à signer : ##attestation.campaign##',
+                       'html' => '<p>Bonjour ##attestation.user##,</p><p>Merci de prendre connaissance de la charte informatique et de la signer avant le ##attestation.deadline##.</p><p><a href="##attestation.url##">Lire et signer la charte</a></p>'],
+                   'en_GB' => ['subject' => 'IT charter to sign: ##attestation.campaign##',
+                       'html' => '<p>Hello ##attestation.user##,</p><p>Please read the IT charter and sign it before ##attestation.deadline##.</p><p><a href="##attestation.url##">Read and sign the charter</a></p>'],
+                   'es_ES' => ['subject' => 'Normativa informática por firmar: ##attestation.campaign##',
+                       'html' => '<p>Hola ##attestation.user##,</p><p>Lea la normativa informática y fírmela antes del ##attestation.deadline##.</p><p><a href="##attestation.url##">Leer y firmar la normativa</a></p>'],
+                   'de_DE' => ['subject' => 'IT-Nutzungsrichtlinie zu unterschreiben: ##attestation.campaign##',
+                       'html' => '<p>Hallo ##attestation.user##,</p><p>Bitte lesen Sie die IT-Nutzungsrichtlinie und unterschreiben Sie sie bis zum ##attestation.deadline##.</p><p><a href="##attestation.url##">Richtlinie lesen und unterschreiben</a></p>'],
+                   'it_IT' => ['subject' => 'Regolamento informatico da firmare: ##attestation.campaign##',
+                       'html' => '<p>Buongiorno ##attestation.user##,</p><p>La preghiamo di leggere il regolamento informatico e di firmarlo entro il ##attestation.deadline##.</p><p><a href="##attestation.url##">Leggere e firmare il regolamento</a></p>'],
+               ],
+           ],
+           'charter_reminder' => [
+               'name'    => 'Charte informatique : relance',
+               'targets' => [self::TARGET_HOLDER],
+               'texts'   => [
+                   'fr_FR' => ['subject' => 'Rappel : charte informatique à signer',
+                       'html' => '<p>Bonjour ##attestation.user##,</p><p>La charte informatique attend toujours votre signature (date limite : ##attestation.deadline##).</p><p><a href="##attestation.url##">Lire et signer la charte</a></p>'],
+                   'en_GB' => ['subject' => 'Reminder: IT charter to sign',
+                       'html' => '<p>Hello ##attestation.user##,</p><p>The IT charter is still awaiting your signature (deadline: ##attestation.deadline##).</p><p><a href="##attestation.url##">Read and sign the charter</a></p>'],
+                   'es_ES' => ['subject' => 'Recordatorio: normativa informática por firmar',
+                       'html' => '<p>Hola ##attestation.user##,</p><p>La normativa informática sigue pendiente de su firma (fecha límite: ##attestation.deadline##).</p><p><a href="##attestation.url##">Leer y firmar la normativa</a></p>'],
+                   'de_DE' => ['subject' => 'Erinnerung: IT-Nutzungsrichtlinie zu unterschreiben',
+                       'html' => '<p>Hallo ##attestation.user##,</p><p>Die IT-Nutzungsrichtlinie wartet noch auf Ihre Unterschrift (Frist: ##attestation.deadline##).</p><p><a href="##attestation.url##">Richtlinie lesen und unterschreiben</a></p>'],
+                   'it_IT' => ['subject' => 'Promemoria: regolamento informatico da firmare',
+                       'html' => '<p>Buongiorno ##attestation.user##,</p><p>Il regolamento informatico è ancora in attesa della sua firma (scadenza: ##attestation.deadline##).</p><p><a href="##attestation.url##">Leggere e firmare il regolamento</a></p>'],
                ],
            ],
        ];

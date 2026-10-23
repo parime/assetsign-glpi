@@ -4,12 +4,14 @@ namespace GlpiPlugin\Assetsign;
 
 use CronTask;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\RichText\RichText;
 use GlpiPlugin\Assetsign\Pdf\PdfLanguage;
 use GlpiPlugin\Assetsign\Pdf\PdfRenderingHelpers;
 use Html;
 use Migration;
 use NotificationEvent;
 use Session;
+use Ticket;
 
 /**
  * Issue #158 : campagne d'attestation annuelle de détention du matériel (inventaire
@@ -17,6 +19,11 @@ use Session;
  * sous-entités, éventuellement un groupe et/ou un profil) et une date limite ; chaque personne
  * du périmètre qui détient au moins un matériel géré reçoit une Attestation (liste figée de son
  * matériel au lancement) à confirmer en signant, ou sur laquelle signaler un écart.
+ *
+ * Issue #204 : même mécanisme pour la charte informatique (type CampaignLogic::TYPE_CHARTER,
+ * ISO 27001 A.5.10 et A.6.3) : chaque personne du périmètre signe la charte figée au lancement ;
+ * à l'échéance, un ticket liste les non-signataires (aucun compte n'est bloqué). Renouvellement
+ * automatique paramétrable par entité (Configuration, tâche planifiée assetsignCampaigns).
  *
  * Suivi : taux de réponse, écarts, non-répondants, relances automatiques jusqu'à la date limite
  * (tâche planifiée assetsignCampaigns), export CSV et PDF de la campagne comme preuve d'audit.
@@ -54,21 +61,40 @@ class Campaign extends Compat\Base\CampaignBase
    }
 
    /**
-    * Lance une campagne : une attestation par personne du périmètre détenant du matériel.
+    * Lance une campagne : une attestation par personne du périmètre détenant du matériel, ou, pour
+    * une campagne de charte (issue #204), par personne du périmètre, la charte en vigueur étant
+    * figée dans la campagne au lancement.
     *
-    * @param array{name: string, entities_id: int, is_recursive: bool, groups_id: int, profiles_id: int, date_deadline: string} $input
+    * @param array{name: string, entities_id: int, is_recursive: bool, groups_id: int, profiles_id: int, date_deadline: string, type?: int} $input
+    * @throws \RuntimeException campagne de charte sans charte configurée pour l'entité
     */
    public static function launch(array $input): ?self {
+       $type = (int) ($input['type'] ?? CampaignLogic::TYPE_HOLDING) === CampaignLogic::TYPE_CHARTER
+           ? CampaignLogic::TYPE_CHARTER
+           : CampaignLogic::TYPE_HOLDING;
+       $charter = '';
+      if ($type === CampaignLogic::TYPE_CHARTER) {
+          $charter = self::getCharterContent((int) $input['entities_id']);
+         if ($charter === '') {
+             throw new \RuntimeException(__('Aucune charte informatique n\'est configurée pour cette entité : renseignez la charte du gabarit d\'attribution par défaut ou le lien vers la charte dans la Configuration.', 'assetsign'));
+         }
+      }
+       $defaultName = $type === CampaignLogic::TYPE_CHARTER
+           ? sprintf(__('Charte informatique %s', 'assetsign'), date('Y'))
+           : sprintf(__('Attestation de détention %s', 'assetsign'), date('Y'));
+
        $campaign = new self();
        $id = $campaign->add([
-           'name'          => trim($input['name']) !== '' ? trim($input['name']) : sprintf(__('Attestation de détention %s', 'assetsign'), date('Y')),
-           'entities_id'   => $input['entities_id'],
-           'is_recursive'  => $input['is_recursive'] ? 1 : 0,
-           'groups_id'     => $input['groups_id'],
-           'profiles_id'   => $input['profiles_id'],
-           'date_deadline' => $input['date_deadline'] !== '' ? $input['date_deadline'] : null,
-           'status'        => CampaignLogic::CAMPAIGN_OPEN,
-           'users_id'      => Session::getLoginUserID() ?: 0,
+           'name'            => trim($input['name']) !== '' ? trim($input['name']) : $defaultName,
+           'type'            => $type,
+           'charter_content' => $charter,
+           'entities_id'     => $input['entities_id'],
+           'is_recursive'    => $input['is_recursive'] ? 1 : 0,
+           'groups_id'       => $input['groups_id'],
+           'profiles_id'     => $input['profiles_id'],
+           'date_deadline'   => $input['date_deadline'] !== '' ? $input['date_deadline'] : null,
+           'status'          => CampaignLogic::CAMPAIGN_OPEN,
+           'users_id'        => Session::getLoginUserID() ?: 0,
        ]);
       if (!$id) {
           return null;
@@ -76,8 +102,8 @@ class Campaign extends Compat\Base\CampaignBase
        $campaign->getFromDB($id);
 
       foreach ($campaign->findUsersInScope() as $usersId) {
-          $items = AssignedItems::find($usersId, (int) $campaign->fields['entities_id']);
-         if ($items === []) {
+          $items = $type === CampaignLogic::TYPE_CHARTER ? [] : AssignedItems::find($usersId, (int) $campaign->fields['entities_id']);
+         if ($type === CampaignLogic::TYPE_HOLDING && $items === []) {
              continue;
          }
           $attestation = new Attestation();
@@ -90,11 +116,30 @@ class Campaign extends Compat\Base\CampaignBase
           ]);
          if ($attestationId) {
              $attestation->getFromDB($attestationId);
-             NotificationEvent::raiseEvent('attestation_invitation', $attestation);
+             NotificationEvent::raiseEvent($campaign->isCharter() ? 'charter_invitation' : 'attestation_invitation', $attestation);
          }
       }
 
        return $campaign;
+   }
+
+   public function isCharter(): bool {
+       return (int) ($this->fields['type'] ?? CampaignLogic::TYPE_HOLDING) === CampaignLogic::TYPE_CHARTER;
+   }
+
+   /**
+    * Charte en vigueur pour une entité (issue #204) : texte de la charte du gabarit d'attribution
+    * par défaut, suivi du lien vers la charte complète s'il est renseigné. HTML assaini, chaîne
+    * vide si rien n'est configuré.
+    */
+   public static function getCharterContent(int $entitiesId): string {
+       $template = Template::getDefaultFor(Assetsign::TYPE_HANDOVER, $entitiesId);
+       $html = trim((string) ($template?->fields['charter_content'] ?? ''));
+       $url = (string) (Config::getForEntity($entitiesId)->fields['charter_url'] ?? '');
+      if ($url !== '') {
+          $html .= '<p><a href="' . htmlescape($url) . '">' . htmlescape($url) . '</a></p>';
+      }
+       return $html === '' ? '' : RichText::getSafeHtml($html);
    }
 
    /**
@@ -207,14 +252,112 @@ class Campaign extends Compat\Base\CampaignBase
     */
    public static function cronInfo(string $name): array {
        return $name === 'assetsignCampaigns'
-           ? ['description' => __('Relance les attestations de détention en attente jusqu\'à la date limite de leur campagne', 'assetsign')]
+           ? ['description' => __('Campagnes d\'attestation et de charte : relances jusqu\'à la date limite, ticket des chartes non signées, renouvellement annuel de la charte', 'assetsign')]
            : [];
    }
 
    public static function cronAssetsignCampaigns(CronTask $task): int {
-       $count = self::runReminders();
+       $count = self::runReminders() + self::runCharterFollowUp() + self::runCharterRenewals();
        $task->addVolume($count);
        return $count > 0 ? 1 : 0;
+   }
+
+   /**
+    * Issue #204 : une fois l'échéance d'une campagne de charte passée, un ticket (un seul par
+    * campagne) liste les personnes qui ne l'ont pas signée, pour suite à donner par le
+    * gestionnaire. Aucun compte n'est bloqué.
+    *
+    * @return int nombre de tickets créés
+    */
+   public static function runCharterFollowUp(): int {
+       global $DB;
+
+       $count = 0;
+      foreach ($DB->request([
+              'FROM'  => self::getTable(),
+              'WHERE' => ['status' => CampaignLogic::CAMPAIGN_OPEN, 'type' => CampaignLogic::TYPE_CHARTER, 'tickets_id' => 0],
+          ]) as $row
+      ) {
+          $campaign = new self();
+         if (!$campaign->getFromDB((int) $row['id'])) {
+             continue;
+         }
+          $pending = array_values(array_filter(
+              $campaign->getAttestations(),
+              static fn (array $a): bool => (int) $a['status'] === CampaignLogic::ATTESTATION_PENDING
+          ));
+         if (!CampaignLogic::charterTicketDue($row['date_deadline'], 0, count($pending), time())) {
+             continue;
+         }
+          $content = '<p>' . htmlescape(sprintf(
+              __('La charte informatique de la campagne « %1$s » n\'a pas été signée avant le %2$s par :', 'assetsign'),
+              $campaign->fields['name'],
+              Html::convDate($campaign->fields['date_deadline'])
+          )) . '</p><ul>';
+         foreach ($pending as $attestation) {
+             $content .= '<li>' . htmlescape(getUserName((int) $attestation['users_id'])) . '</li>';
+         }
+          $content .= '</ul>';
+          $ticketInput = [
+              'name'        => sprintf(__('Charte informatique non signée : %1$d personne(s) (%2$s)', 'assetsign'), count($pending), $campaign->fields['name']),
+              'content'     => $content,
+              'entities_id' => (int) $campaign->fields['entities_id'],
+              'type'        => Ticket::DEMAND_TYPE,
+          ];
+          if ((int) $campaign->fields['users_id'] > 0) {
+             $ticketInput['_users_id_requester'] = (int) $campaign->fields['users_id'];
+          }
+          $ticketId = (int) (new Ticket())->add($ticketInput);
+          if ($ticketId > 0) {
+             $campaign->update(['id' => $campaign->getID(), 'tickets_id' => $ticketId]);
+             $count++;
+          }
+      }
+       return $count;
+   }
+
+   /**
+    * Issue #204 : renouvellement de la charte, pour chaque entité qui l'a activé dans sa
+    * Configuration : une nouvelle campagne (entité et sous-entités) dès que la précédente date de
+    * la période choisie. Une entité sans charte configurée est ignorée.
+    *
+    * @return int nombre de campagnes lancées
+    */
+   public static function runCharterRenewals(): int {
+       global $DB;
+
+       $count = 0;
+      foreach ($DB->request(['FROM' => Config::getTable(), 'WHERE' => ['charter_campaign_enabled' => 1]]) as $config) {
+          $entitiesId = (int) $config['entities_id'];
+          $last = $DB->request([
+              'SELECT' => ['date_creation'],
+              'FROM'   => self::getTable(),
+              'WHERE'  => ['type' => CampaignLogic::TYPE_CHARTER, 'entities_id' => $entitiesId],
+              'ORDER'  => 'date_creation DESC',
+              'LIMIT'  => 1,
+          ])->current();
+         if (!CampaignLogic::charterRenewalDue($last['date_creation'] ?? null, (int) $config['charter_renewal_months'], time())) {
+             continue;
+         }
+         try {
+             $campaign = self::launch([
+                 'name'          => '',
+                 'type'          => CampaignLogic::TYPE_CHARTER,
+                 'entities_id'   => $entitiesId,
+                 'is_recursive'  => true,
+                 'groups_id'     => 0,
+                 'profiles_id'   => 0,
+                 'date_deadline' => date('Y-m-d', strtotime('+' . max(1, (int) $config['charter_deadline_days']) . ' days')),
+             ]);
+         } catch (\RuntimeException $e) {
+             \Glpi\Error\ErrorHandler::logCaughtException($e);
+             continue;
+         }
+         if ($campaign !== null) {
+             $count++;
+         }
+      }
+       return $count;
    }
 
    /**
@@ -269,6 +412,8 @@ class Campaign extends Compat\Base\CampaignBase
           $DB->doQuery("CREATE TABLE `$table` (
                 `id` int unsigned NOT NULL AUTO_INCREMENT,
                 `name` varchar(255) NOT NULL DEFAULT '',
+                `type` tinyint NOT NULL DEFAULT 0,
+                `charter_content` longtext,
                 `entities_id` int unsigned NOT NULL DEFAULT 0,
                 `is_recursive` tinyint NOT NULL DEFAULT 1,
                 `groups_id` int unsigned NOT NULL DEFAULT 0,
@@ -276,12 +421,21 @@ class Campaign extends Compat\Base\CampaignBase
                 `date_deadline` date DEFAULT NULL,
                 `status` tinyint NOT NULL DEFAULT 0,
                 `users_id` int unsigned NOT NULL DEFAULT 0,
+                `tickets_id` int unsigned NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
                 KEY `entities_id` (`entities_id`),
-                KEY `status` (`status`)
+                KEY `status` (`status`),
+                KEY `type` (`type`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+      } else if (!$DB->fieldExists($table, 'type')) {
+          // Issue #204 : campagnes de charte informatique.
+          $migration->addField($table, 'type', 'integer', ['value' => 0, 'after' => 'name']);
+          $migration->addField($table, 'charter_content', 'longtext', ['after' => 'type']);
+          $migration->addField($table, 'tickets_id', 'fkey', ['after' => 'users_id']);
+          $migration->addKey($table, 'type');
+          $migration->migrationOneTable($table);
       }
    }
 }

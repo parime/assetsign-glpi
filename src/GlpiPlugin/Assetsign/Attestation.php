@@ -5,6 +5,7 @@ namespace GlpiPlugin\Assetsign;
 use Document;
 use Document_Item;
 use Glpi\Application\View\TemplateRenderer;
+use Glpi\RichText\RichText;
 use GlpiPlugin\Assetsign\Pdf\PdfLanguage;
 use GlpiPlugin\Assetsign\Pdf\PdfRenderingHelpers;
 use GlpiPlugin\Assetsign\Pdf\SignatureImageValidator;
@@ -104,6 +105,9 @@ class Attestation extends Compat\Base\AttestationBase
        // Issue #208 : dans la langue de la personne qui atteste.
        $html = PdfLanguage::run(PdfLanguage::forUser((int) $this->fields['users_id']), fn (): string => TemplateRenderer::getInstance()->render('@assetsign/pdf/attestation.html.twig', [
            'html_lang'       => PdfLanguage::htmlLang(),
+           // Issue #204 : charte figée au lancement de la campagne, déjà assainie (getCharterContent()).
+           'is_charter'        => $campaign?->isCharter() ?? false,
+           'charter_safe_html' => RichText::getSafeHtml((string) ($campaign?->fields['charter_content'] ?? '')),
            'company_name'    => (string) ($config->fields['company_name'] ?? ''),
            'campaign_name'   => $campaign !== null ? (string) $campaign->fields['name'] : '',
            'user_name'       => trim(\formatUserName(0, $user->fields['name'] ?? '', $user->fields['realname'] ?? '', $user->fields['firstname'] ?? '')),
@@ -117,7 +121,7 @@ class Attestation extends Compat\Base\AttestationBase
            'ip_address'      => $meta['ip'] ?? '',
        ]));
        $binary = $this->renderPdf($html, (bool) ($config->fields['protect_pdf'] ?? false));
-       $documentsId = $this->storePdf($binary, $user);
+       $documentsId = $this->storePdf($binary, $user, $campaign?->isCharter() ?? false);
 
        $this->update([
            'id'             => $this->getID(),
@@ -135,6 +139,10 @@ class Attestation extends Compat\Base\AttestationBase
    public function reportDiscrepancy(array $gaps, string $comment): void {
       if (!$this->isAnswerable()) {
           throw new \RuntimeException(__('Cette attestation n\'attend plus de réponse.', 'assetsign'));
+      }
+      if ($this->isCharter()) {
+          // Une charte se signe ou reste sans réponse (ticket des non-signataires à l'échéance).
+          throw new \RuntimeException(__('Une charte informatique ne permet pas de signaler un écart.', 'assetsign'));
       }
        $gaps = CampaignLogic::sanitizeGaps($gaps);
        $comment = trim($comment);
@@ -192,10 +200,15 @@ class Attestation extends Compat\Base\AttestationBase
            'reminder_count'     => (int) $this->fields['reminder_count'] + 1,
            'date_last_reminder' => date('Y-m-d H:i:s'),
        ]);
-       NotificationEvent::raiseEvent('attestation_reminder', $this);
+       NotificationEvent::raiseEvent($this->isCharter() ? 'charter_reminder' : 'attestation_reminder', $this);
    }
 
-   private function storePdf(string $binary, User $user): int {
+   /** Issue #204 : attestation d'une campagne de charte informatique. */
+   public function isCharter(): bool {
+       return $this->getCampaign()?->isCharter() ?? false;
+   }
+
+   private function storePdf(string $binary, User $user, bool $isCharter = false): int {
        $tmpName = uniqid('assetsign_attestation_', true) . '.pdf';
       if (file_put_contents(GLPI_TMP_DIR . '/' . $tmpName, $binary) === false) {
           return 0;
@@ -203,7 +216,10 @@ class Attestation extends Compat\Base\AttestationBase
        $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
        $document = new Document();
        $documentsId = (int) $document->add([
-           'name'          => sprintf(__('Attestation de détention - %s', 'assetsign'), $user->getFriendlyName()),
+           'name'          => sprintf(
+               $isCharter ? __('Charte informatique signée - %s', 'assetsign') : __('Attestation de détention - %s', 'assetsign'),
+               $user->getFriendlyName()
+           ),
            'entities_id'   => $this->fields['entities_id'],
            '_filename'     => [$tmpName],
            '_tag_filename' => [$tmpName],

@@ -12,6 +12,11 @@ final class CampaignLogic
    public const CAMPAIGN_OPEN   = 0;
    public const CAMPAIGN_CLOSED = 1;
 
+   /** Attestation de détention du matériel (issue #158). */
+   public const TYPE_HOLDING = 0;
+   /** Signature de la charte informatique (issue #204). */
+   public const TYPE_CHARTER = 1;
+
    public const ATTESTATION_PENDING     = 0;
    public const ATTESTATION_CONFIRMED   = 1;
    public const ATTESTATION_DISCREPANCY = 2;
@@ -66,5 +71,26 @@ final class CampaignLogic
        $end = strtotime($deadline . ' 23:59:59');
 
        return $end !== false && $now > $end;
+   }
+
+   /**
+    * Issue #204 : une nouvelle campagne de charte est due quand aucune n'a encore été lancée pour
+    * l'entité, ou que la dernière date d'au moins $months mois.
+    */
+   public static function charterRenewalDue(?string $lastLaunch, int $months, int $now): bool {
+      if ($lastLaunch === null || $lastLaunch === '') {
+          return true;
+      }
+       $next = strtotime($lastLaunch . ' +' . max(1, $months) . ' months');
+
+       return $next !== false && $now >= $next;
+   }
+
+   /**
+    * Ticket des non-signataires de la charte : une seule fois, une fois l'échéance passée, et
+    * seulement s'il reste des personnes sans réponse.
+    */
+   public static function charterTicketDue(?string $deadline, int $existingTicketId, int $pending, int $now): bool {
+       return $existingTicketId === 0 && $pending > 0 && self::isPastDeadline($deadline, $now);
    }
 }

@@ -50,7 +50,9 @@ if ($isHolder && (isset($_POST['confirm']) || isset($_POST['report']))) {
               'ip'         => $_SERVER['REMOTE_ADDR'] ?? '',
               'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
           ]);
-          Session::addMessageAfterRedirect(__('Attestation signée. Merci !', 'assetsign'));
+          Session::addMessageAfterRedirect($attestation->isCharter()
+              ? __('Charte informatique signée. Merci !', 'assetsign')
+              : __('Attestation signée. Merci !', 'assetsign'));
       } else {
           $attestation->reportDiscrepancy(
               CampaignLogic::sanitizeGaps($_POST['gaps'] ?? []),
@@ -64,7 +66,8 @@ if ($isHolder && (isset($_POST['confirm']) || isset($_POST['report']))) {
     Html::redirect($selfUrl . '?id=' . $id);
 }
 
-$title = Attestation::getTypeName(1);
+$isCharter = $attestation->isCharter();
+$title = $isCharter ? __('Charte informatique', 'assetsign') : Attestation::getTypeName(1);
 $isHelpdesk = Session::getCurrentInterface() === 'helpdesk';
 if ($isHelpdesk) {
     Html::helpHeader($title);
@@ -75,6 +78,9 @@ if ($isHelpdesk) {
 $campaign = $attestation->getCampaign();
 TemplateRenderer::getInstance()->display('@assetsign/attestation_form.html.twig', [
     'attestation'   => $attestation->fields,
+    // Issue #204 : charte figée au lancement, assainie à nouveau à l'affichage.
+    'is_charter'        => $isCharter,
+    'charter_safe_html' => $isCharter ? \Glpi\RichText\RichText::getSafeHtml((string) ($campaign?->fields['charter_content'] ?? '')) : '',
     'user_name'     => getUserName((int) $attestation->fields['users_id']),
     'campaign_name' => $campaign !== null ? (string) $campaign->fields['name'] : '',
     'deadline'      => $campaign !== null ? $campaign->fields['date_deadline'] : null,

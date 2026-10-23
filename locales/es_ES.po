@@ -4190,3 +4190,81 @@ msgstr "Ficha de destrucción de equipo"
 
 msgid "Matériel détruit"
 msgstr "Equipo destruido"
+
+msgid "Faire signer la charte informatique périodiquement"
+msgstr "Hacer firmar la normativa informática periódicamente"
+
+msgid "Renouvellement (mois)"
+msgstr "Renovación (meses)"
+
+msgid "Délai pour signer (jours)"
+msgstr "Plazo para firmar (días)"
+
+msgid "Une campagne de charte est lancée pour cette entité et ses sous-entités à chaque période (tâche planifiée assetsignCampaigns), avec les relances habituelles. À la date limite, un ticket liste les personnes qui ne l'ont pas signée ; aucun compte n'est bloqué."
+msgstr "Se lanza una campaña de normativa para esta entidad y sus subentidades en cada periodo (acción automática assetsignCampaigns), con los recordatorios habituales. En la fecha límite, un ticket enumera a las personas que no la han firmado; no se bloquea ninguna cuenta."
+
+msgid "Charte informatique : chaque personne signe la charte, renouvelable automatiquement chaque année (Configuration). Preuve de sensibilisation (ISO 27001 A.5.10 et A.6.3)."
+msgstr "Normativa informática: cada persona firma la normativa, renovable automáticamente cada año (Configuración). Prueba de concienciación (ISO 27001 A.5.10 y A.6.3)."
+
+msgid "Attestation de détention du matériel"
+msgstr "Certificación de tenencia del material"
+
+msgid "Signature de la charte informatique"
+msgstr "Firma de la normativa informática"
+
+msgid "Chaque personne du périmètre signe la charte informatique (charte du gabarit d'attribution par défaut et lien vers la charte complète, figés au lancement). À la date limite, un ticket liste les personnes qui ne l'ont pas signée."
+msgstr "Cada persona del ámbito firma la normativa informática (normativa de la plantilla de atribución por defecto y enlace a la normativa completa, fijados al lanzamiento). En la fecha límite, un ticket enumera a las personas que no la han firmado."
+
+msgid "Aucune charte informatique n'est configurée pour cette entité : renseignez la charte du gabarit d'attribution par défaut ou le lien vers la charte dans la Configuration."
+msgstr "No hay ninguna normativa informática configurada para esta entidad: indique la normativa de la plantilla de atribución por defecto o el enlace a la normativa en la Configuración."
+
+msgid "Ticket des non-signataires n°%d"
+msgstr "Ticket de los no firmantes n.º %d"
+
+msgid "Charte informatique — %s"
+msgstr "Normativa informática — %s"
+
+msgid "Je soussigné(e) %s déclare avoir pris connaissance de la charte informatique ci-dessous et m'engage à la respecter."
+msgstr "El/la abajo firmante %s declara haber leído la normativa informática que figura a continuación y se compromete a respetarla."
+
+msgid "Charte informatique de %s"
+msgstr "Normativa informática de %s"
+
+msgid "Charte signée le %s."
+msgstr "Normativa firmada el %s."
+
+msgid "J'ai lu la charte : je signe"
+msgstr "He leído la normativa: firmo"
+
+msgid "J'ai pris connaissance de la charte informatique ci-dessus et je m'engage à la respecter."
+msgstr "He leído la normativa informática anterior y me comprometo a respetarla."
+
+msgid "Charte informatique %s"
+msgstr "Normativa informática %s"
+
+msgid "Campagnes d'attestation et de charte : relances jusqu'à la date limite, ticket des chartes non signées, renouvellement annuel de la charte"
+msgstr "Campañas de certificación y de normativa: recordatorios hasta la fecha límite, ticket de normativas no firmadas, renovación anual de la normativa"
+
+msgid "La charte informatique de la campagne « %1$s » n'a pas été signée avant le %2$s par :"
+msgstr "La normativa informática de la campaña «%1$s» no fue firmada antes del %2$s por:"
+
+msgid "Charte informatique non signée : %1$d personne(s) (%2$s)"
+msgstr "Normativa informática no firmada: %1$d persona(s) (%2$s)"
+
+msgid "Une charte informatique ne permet pas de signaler un écart."
+msgstr "Una normativa informática no permite indicar una discrepancia."
+
+msgid "Charte informatique signée - %s"
+msgstr "Normativa informática firmada - %s"
+
+msgid "Charte informatique à signer"
+msgstr "Normativa informática por firmar"
+
+msgid "Charte informatique : relance"
+msgstr "Normativa informática: recordatorio"
+
+msgid "Campagne lancée : %d personne(s) invitée(s) à signer la charte informatique."
+msgstr "Campaña lanzada: %d persona(s) invitada(s) a firmar la normativa informática."
+
+msgid "Charte informatique signée. Merci !"
+msgstr "Normativa informática firmada. ¡Gracias!"

@@ -9,6 +9,7 @@
     </div>
     <div class="card-body pb-0">
       <p class="text-muted">{{ __('Inventaire contradictoire : chaque personne confirme en signant la liste du matériel qu\'elle détient, ou signale un écart. Preuve attendue en audit (ISO 27001 A.5.9, inventaire des actifs).', 'assetsign') }}</p>
+      <p class="text-muted">{{ __('Charte informatique : chaque personne signe la charte, renouvelable automatiquement chaque année (Configuration). Preuve de sensibilisation (ISO 27001 A.5.10 et A.6.3).', 'assetsign') }}</p>
     </div>
     {% if rows is empty %}
       <div class="card-body"><div class="empty"><p class="empty-title">{{ __('Aucune campagne pour l\'instant', 'assetsign') }}</p></div></div>
@@ -27,7 +28,7 @@
           <tbody>
             {% for row in rows %}
               <tr>
-                <td><a href="{{ form_url }}?id={{ row.id }}">{{ row.name }}</a><div class="text-muted small">{{ row.date_creation|formatted_datetime }}</div></td>
+                <td><a href="{{ form_url }}?id={{ row.id }}">{{ row.name }}</a>{% if row.is_charter %} <span class="badge bg-purple-lt">{{ __('Charte informatique', 'assetsign') }}</span>{% endif %}<div class="text-muted small">{{ row.date_creation|formatted_datetime }}</div></td>
                 <td>{{ row.date_deadline ? row.date_deadline|formatted_date : '—' }}</td>
                 <td>
                   <div class="d-flex align-items-center gap-2">
