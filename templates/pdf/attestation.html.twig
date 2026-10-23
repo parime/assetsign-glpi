@@ -1,10 +1,13 @@
 {# Issue #158 : PDF d'attestation de détention signée. Textes traduits dans la langue de la
-   personne qui atteste (issue #208, cf. Pdf\PdfLanguage), quelle que soit la session. #}
+   personne qui atteste (issue #208, cf. Pdf\PdfLanguage), quelle que soit la session.
+   Issue #204 : même PDF pour la signature de la charte informatique (is_charter), la charte
+   figée au lancement de la campagne remplaçant la liste du matériel. #}
+{% set doc_title = is_charter|default(false) ? __('Charte informatique — %s', 'assetsign') : __('Attestation de détention — %s', 'assetsign') %}
 <!DOCTYPE html>
 <html lang="{{ html_lang|default('fr') }}">
 <head>
 <meta charset="UTF-8">
-<title>{{ __('Attestation de détention — %s', 'assetsign')|format(user_name) }}</title>
+<title>{{ doc_title|format(user_name) }}</title>
 {% include '@assetsign/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
@@ -13,6 +16,14 @@
 <div class="header-logo"><div class="company-name">{{ company_name }}</div></div>
 {% endif %}
 
+{% if is_charter|default(false) %}
+<h1>{{ __('Charte informatique', 'assetsign') }}</h1>
+<p class="meta">{{ __('%1$s — signée le %2$s', 'assetsign')|format(campaign_name, signed_at) }}</p>
+
+<p>{{ __('Je soussigné(e) %s déclare avoir pris connaissance de la charte informatique ci-dessous et m\'engage à la respecter.', 'assetsign')|format(user_name) }}</p>
+
+<div class="legal-text">{{ charter_safe_html|raw }}</div>
+{% else %}
 <h1>{{ __('Attestation de détention de matériel', 'assetsign') }}</h1>
 <p class="meta">{{ __('%1$s — signée le %2$s', 'assetsign')|format(campaign_name, signed_at) }}</p>
 
@@ -24,6 +35,7 @@
     <tr><td>{{ item.type_label }}</td><td>{{ item.name }}</td><td>{{ item.serial }}</td><td>{{ item.otherserial }}</td></tr>
     {% endfor %}
 </table>
+{% endif %}
 
 <h2>{{ __('Signature', 'assetsign') }}</h2>
 <img src="{{ signature_image }}" alt="" style="max-height: 110px; border: 1px solid #ccc;">

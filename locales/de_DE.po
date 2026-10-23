@@ -4226,3 +4226,81 @@ msgstr "Formular zur Vernichtung von Ausstattung"
 
 msgid "Matériel détruit"
 msgstr "Vernichtete Ausstattung"
+
+msgid "Faire signer la charte informatique périodiquement"
+msgstr "IT-Nutzungsrichtlinie regelmäßig unterschreiben lassen"
+
+msgid "Renouvellement (mois)"
+msgstr "Erneuerung (Monate)"
+
+msgid "Délai pour signer (jours)"
+msgstr "Frist zum Unterschreiben (Tage)"
+
+msgid "Une campagne de charte est lancée pour cette entité et ses sous-entités à chaque période (tâche planifiée assetsignCampaigns), avec les relances habituelles. À la date limite, un ticket liste les personnes qui ne l'ont pas signée ; aucun compte n'est bloqué."
+msgstr "Für diese Einheit und ihre Untereinheiten wird in jedem Zeitraum eine Richtlinienkampagne gestartet (automatische Aktion assetsignCampaigns), mit den üblichen Erinnerungen. Zur Frist listet ein Ticket die Personen auf, die sie nicht unterschrieben haben; kein Konto wird gesperrt."
+
+msgid "Charte informatique : chaque personne signe la charte, renouvelable automatiquement chaque année (Configuration). Preuve de sensibilisation (ISO 27001 A.5.10 et A.6.3)."
+msgstr "IT-Nutzungsrichtlinie: Jede Person unterschreibt die Richtlinie, jährlich automatisch erneuerbar (Konfiguration). Nachweis der Sensibilisierung (ISO 27001 A.5.10 und A.6.3)."
+
+msgid "Attestation de détention du matériel"
+msgstr "Bestätigung des Gerätebesitzes"
+
+msgid "Signature de la charte informatique"
+msgstr "Unterzeichnung der IT-Nutzungsrichtlinie"
+
+msgid "Chaque personne du périmètre signe la charte informatique (charte du gabarit d'attribution par défaut et lien vers la charte complète, figés au lancement). À la date limite, un ticket liste les personnes qui ne l'ont pas signée."
+msgstr "Jede Person im Geltungsbereich unterschreibt die IT-Nutzungsrichtlinie (Richtlinie aus der Standardvorlage für Zuweisungen und Link zur vollständigen Richtlinie, beim Start festgeschrieben). Zur Frist listet ein Ticket die Personen auf, die sie nicht unterschrieben haben."
+
+msgid "Aucune charte informatique n'est configurée pour cette entité : renseignez la charte du gabarit d'attribution par défaut ou le lien vers la charte dans la Configuration."
+msgstr "Für diese Einheit ist keine IT-Nutzungsrichtlinie konfiguriert: Tragen Sie die Richtlinie der Standardvorlage für Zuweisungen oder den Link zur Richtlinie in der Konfiguration ein."
+
+msgid "Ticket des non-signataires n°%d"
+msgstr "Ticket der Nicht-Unterzeichner Nr. %d"
+
+msgid "Charte informatique — %s"
+msgstr "IT-Nutzungsrichtlinie — %s"
+
+msgid "Je soussigné(e) %s déclare avoir pris connaissance de la charte informatique ci-dessous et m'engage à la respecter."
+msgstr "Ich, der/die Unterzeichnende %s, erkläre, die unten stehende IT-Nutzungsrichtlinie gelesen zu haben, und verpflichte mich, sie einzuhalten."
+
+msgid "Charte informatique de %s"
+msgstr "IT-Nutzungsrichtlinie von %s"
+
+msgid "Charte signée le %s."
+msgstr "Richtlinie unterschrieben am %s."
+
+msgid "J'ai lu la charte : je signe"
+msgstr "Ich habe die Richtlinie gelesen: Ich unterschreibe"
+
+msgid "J'ai pris connaissance de la charte informatique ci-dessus et je m'engage à la respecter."
+msgstr "Ich habe die oben stehende IT-Nutzungsrichtlinie gelesen und verpflichte mich, sie einzuhalten."
+
+msgid "Charte informatique %s"
+msgstr "IT-Nutzungsrichtlinie %s"
+
+msgid "Campagnes d'attestation et de charte : relances jusqu'à la date limite, ticket des chartes non signées, renouvellement annuel de la charte"
+msgstr "Bestätigungs- und Richtlinienkampagnen: Erinnerungen bis zur Frist, Ticket für nicht unterschriebene Richtlinien, jährliche Erneuerung der Richtlinie"
+
+msgid "La charte informatique de la campagne « %1$s » n'a pas été signée avant le %2$s par :"
+msgstr "Die IT-Nutzungsrichtlinie der Kampagne „%1$s“ wurde bis zum %2$s nicht unterschrieben von:"
+
+msgid "Charte informatique non signée : %1$d personne(s) (%2$s)"
+msgstr "IT-Nutzungsrichtlinie nicht unterschrieben: %1$d Person(en) (%2$s)"
+
+msgid "Une charte informatique ne permet pas de signaler un écart."
+msgstr "Bei einer IT-Nutzungsrichtlinie kann keine Abweichung gemeldet werden."
+
+msgid "Charte informatique signée - %s"
+msgstr "Unterschriebene IT-Nutzungsrichtlinie - %s"
+
+msgid "Charte informatique à signer"
+msgstr "IT-Nutzungsrichtlinie zu unterschreiben"
+
+msgid "Charte informatique : relance"
+msgstr "IT-Nutzungsrichtlinie: Erinnerung"
+
+msgid "Campagne lancée : %d personne(s) invitée(s) à signer la charte informatique."
+msgstr "Kampagne gestartet: %d Person(en) zur Unterzeichnung der IT-Nutzungsrichtlinie eingeladen."
+
+msgid "Charte informatique signée. Merci !"
+msgstr "IT-Nutzungsrichtlinie unterschrieben. Vielen Dank!"

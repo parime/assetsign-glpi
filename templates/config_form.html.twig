@@ -132,6 +132,26 @@
             <div class="form-text">{{ __('Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types.', 'assetsign') }}</div>
           </div>
 
+          {# Issue #204 : signature periodique de la charte par chaque personne de l'entite. #}
+          <div class="mb-3">
+            <label class="form-check form-switch">
+              <input type="hidden" name="charter_campaign_enabled" value="0">
+              <input type="checkbox" class="form-check-input" name="charter_campaign_enabled" value="1" {{ config.charter_campaign_enabled|default(0) ? 'checked' : '' }}>
+              <span class="form-check-label">{{ __('Faire signer la charte informatique périodiquement', 'assetsign') }}</span>
+            </label>
+            <div class="row g-2 mt-1">
+              <div class="col-sm-6">
+                <label class="form-label">{{ __('Renouvellement (mois)', 'assetsign') }}</label>
+                <input type="number" name="charter_renewal_months" class="form-control" min="1" max="60" value="{{ config.charter_renewal_months|default(12) }}">
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label">{{ __('Délai pour signer (jours)', 'assetsign') }}</label>
+                <input type="number" name="charter_deadline_days" class="form-control" min="1" max="365" value="{{ config.charter_deadline_days|default(30) }}">
+              </div>
+            </div>
+            <div class="form-text">{{ __('Une campagne de charte est lancée pour cette entité et ses sous-entités à chaque période (tâche planifiée assetsignCampaigns), avec les relances habituelles. À la date limite, un ticket liste les personnes qui ne l\'ont pas signée ; aucun compte n\'est bloqué.', 'assetsign') }}</div>
+          </div>
+
           <div class="mb-3">
             <label class="form-label">{{ __('Fournisseur de signature', 'assetsign') }}</label>
             <select name="default_provider" class="form-select">

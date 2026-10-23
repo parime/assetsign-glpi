@@ -52,6 +52,9 @@ class Config extends Compat\Base\ConfigBase
         'health_score_warning_color'          => '#f76707',
         'health_score_critical_color'         => '#d63939',
         'charter_url'                         => '',
+        'charter_campaign_enabled'            => 0,
+        'charter_renewal_months'              => 12,
+        'charter_deadline_days'               => 30,
         'default_provider'                    => 'canvas',
         'provider_config'                     => '',
         'reminder_delays'                     => '3,7,7',
@@ -590,6 +593,9 @@ class Config extends Compat\Base\ConfigBase
            // acceptait tout, y compris javascript:/data: - affiche tel quel
            // en attribut href du PDF genere (templates/pdf/handover.html.twig).
            'charter_url'          => self::sanitizeCharterUrl($input['charter_url'] ?? ''),
+           'charter_campaign_enabled' => (int) !empty($input['charter_campaign_enabled']),
+           'charter_renewal_months'   => max(1, min(60, (int) ($input['charter_renewal_months'] ?? 12))),
+           'charter_deadline_days'    => max(1, min(365, (int) ($input['charter_deadline_days'] ?? 30))),
            'default_provider'     => $input['default_provider'] ?? 'canvas',
            'reminder_delays'      => $input['reminder_delays'] ?? '3,7,7',
            'max_reminders'        => (int) ($input['max_reminders'] ?? 0),
@@ -809,6 +815,9 @@ class Config extends Compat\Base\ConfigBase
                 `health_score_warning_color` varchar(7) NOT NULL DEFAULT '#f76707',
                 `health_score_critical_color` varchar(7) NOT NULL DEFAULT '#d63939',
                 `charter_url` varchar(255) DEFAULT NULL,
+                `charter_campaign_enabled` tinyint NOT NULL DEFAULT 0,
+                `charter_renewal_months` int unsigned NOT NULL DEFAULT 12,
+                `charter_deadline_days` int unsigned NOT NULL DEFAULT 30,
                 `default_provider` varchar(32) NOT NULL DEFAULT 'canvas',
                 `provider_config` text,
                 `reminder_delays` varchar(255) NOT NULL DEFAULT '3,7,7',
@@ -950,6 +959,13 @@ class Config extends Compat\Base\ConfigBase
          if (!$DB->fieldExists($table, 'loan_reminder_days')) {
              $migration->addField($table, 'loan_reminder_days', 'integer', ['value' => 3]);
              $migration->addField($table, 'loan_overdue_ticket', 'bool', ['value' => 1]);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #204 : signature periodique de la charte informatique.
+         if (!$DB->fieldExists($table, 'charter_campaign_enabled')) {
+             $migration->addField($table, 'charter_campaign_enabled', 'bool', ['value' => 0, 'after' => 'charter_url']);
+             $migration->addField($table, 'charter_renewal_months', 'integer', ['value' => 12, 'after' => 'charter_campaign_enabled']);
+             $migration->addField($table, 'charter_deadline_days', 'integer', ['value' => 30, 'after' => 'charter_renewal_months']);
              $migration->migrationOneTable($table);
          }
          // Issue #179 : rappel des feuilles restees en brouillon.

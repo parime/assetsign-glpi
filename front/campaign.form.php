@@ -24,20 +24,28 @@ if (isset($_POST['launch'])) {
    if (!Session::haveAccessToEntity($launchEntityId)) {
       throw new \Glpi\Exception\Http\AccessDeniedHttpException();
    }
-   $campaign = Campaign::launch([
-      'name'          => (string) ($_POST['name'] ?? ''),
-      'entities_id'   => $launchEntityId,
-      'is_recursive'  => !empty($_POST['is_recursive']),
-      'groups_id'     => (int) ($_POST['groups_id'] ?? 0),
-      'profiles_id'   => (int) ($_POST['profiles_id'] ?? 0),
-      'date_deadline' => (string) ($_POST['date_deadline'] ?? ''),
-   ]);
+   try {
+      $campaign = Campaign::launch([
+         'name'          => (string) ($_POST['name'] ?? ''),
+         'type'          => (int) ($_POST['type'] ?? CampaignLogic::TYPE_HOLDING),
+         'entities_id'   => $launchEntityId,
+         'is_recursive'  => !empty($_POST['is_recursive']),
+         'groups_id'     => (int) ($_POST['groups_id'] ?? 0),
+         'profiles_id'   => (int) ($_POST['profiles_id'] ?? 0),
+         'date_deadline' => (string) ($_POST['date_deadline'] ?? ''),
+      ]);
+   } catch (\RuntimeException $e) {
+      Session::addMessageAfterRedirect(htmlescape($e->getMessage()), false, ERROR);
+      Html::back();
+   }
    if ($campaign === null) {
       Session::addMessageAfterRedirect(__('La campagne n\'a pas pu être créée.', 'assetsign'), false, ERROR);
       Html::back();
    }
    Session::addMessageAfterRedirect(sprintf(
-      __('Campagne lancée : %d personne(s) invitée(s) à attester leur matériel.', 'assetsign'),
+      $campaign->isCharter()
+         ? __('Campagne lancée : %d personne(s) invitée(s) à signer la charte informatique.', 'assetsign')
+         : __('Campagne lancée : %d personne(s) invitée(s) à attester leur matériel.', 'assetsign'),
       $campaign->getStats()['total']
    ));
    Html::redirect($selfUrl . '?id=' . $campaign->getID());
@@ -123,6 +131,8 @@ if ($id === 0) {
 
 TemplateRenderer::getInstance()->display('@assetsign/campaign_form.html.twig', [
    'campaign'         => $id > 0 ? $campaign->fields : null,
+   'is_charter'       => $id > 0 && $campaign->isCharter(),
+   'charter_ready'    => Campaign::getCharterContent(Session::getActiveEntity()) !== '',
    'is_open'          => $id > 0 && $campaign->isOpen(),
    'is_past_deadline' => $id > 0 && CampaignLogic::isPastDeadline($campaign->fields['date_deadline'], time()),
    'stats'            => $id > 0 ? $campaign->getStats() : null,
