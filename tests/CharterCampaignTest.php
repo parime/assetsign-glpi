@@ -111,6 +111,23 @@ final class CharterCampaignTest extends AssetsignTestCase
        $this->launchCharter($entityId);
    }
 
+   public function testASecondCharterCampaignIsRefusedWhileOneIsRunning(): void {
+       global $DB;
+       $entityId = $this->charterEntity('PHPUnit Charte En Cours');
+       $this->member($entityId, 'Doublon');
+       $first = $this->launchCharter($entityId);
+       try {
+           $this->launchCharter($entityId);
+           $this->fail('Une seconde campagne de charte en cours doit être refusée.');
+       } catch (\RuntimeException $e) {
+           $this->assertStringContainsString((string) $first->fields['name'], $e->getMessage());
+       }
+
+       // Échue (encore ouverte pour les signatures tardives) : la suivante peut être lancée.
+       $DB->update(Campaign::getTable(), ['date_deadline' => date('Y-m-d', strtotime('-1 day'))], ['id' => $first->getID()]);
+       $this->assertInstanceOf(Campaign::class, $this->launchCharter($entityId));
+   }
+
    public function testSigningProducesAPdfAndNoDiscrepancyCanBeReported(): void {
        $entityId = $this->charterEntity('PHPUnit Charte Signature');
        $usersId = $this->member($entityId, 'Signataire');
@@ -176,7 +193,7 @@ final class CharterCampaignTest extends AssetsignTestCase
        $campaign = new Campaign();
        $campaign->getFromDBByCrit(['entities_id' => $enabled, 'type' => CampaignLogic::TYPE_CHARTER]);
        $this->assertSame(date('Y-m-d', strtotime('+15 days')), (string) $campaign->fields['date_deadline']);
-       $DB->update(Campaign::getTable(), ['date_creation' => date('Y-m-d H:i:s', strtotime('-13 months'))], ['id' => $campaign->getID()]);
+       $DB->update(Campaign::getTable(), ['date_creation' => date('Y-m-d H:i:s', strtotime('-13 months')), 'date_deadline' => date('Y-m-d', strtotime('-12 months'))], ['id' => $campaign->getID()]);
 
        Campaign::runCharterRenewals();
        $this->assertSame(2, $countFor($enabled), 'Nouvelle campagne une fois la période écoulée.');

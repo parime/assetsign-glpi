@@ -4248,3 +4248,7 @@ msgstr "Campaign launched: %d person(s) invited to sign the IT charter."
 
 msgid "Charte informatique signée. Merci !"
 msgstr "IT charter signed. Thank you!"
+
+#, php-format
+msgid "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
+msgstr "The IT charter campaign \"%s\" is still running for this entity: wait for its deadline or close it before launching a new one."

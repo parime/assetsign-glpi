@@ -4268,3 +4268,7 @@ msgstr "Campagne lancée : %d personne(s) invitée(s) à signer la charte inform
 
 msgid "Charte informatique signée. Merci !"
 msgstr "Charte informatique signée. Merci !"
+
+#, php-format
+msgid "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
+msgstr "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
