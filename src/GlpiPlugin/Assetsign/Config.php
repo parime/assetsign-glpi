@@ -623,7 +623,7 @@ class Config extends Compat\Base\ConfigBase
            'enable_observations'  => (int) ($input['enable_observations'] ?? 0),
            'auto_attach_connected_items' => (int) ($input['auto_attach_connected_items'] ?? 0),
            'confirm_before_sending' => in_array((int) ($input['confirm_before_sending'] ?? self::SENDING_CONFIRM), [self::SENDING_IMMEDIATE, self::SENDING_CONFIRM, self::SENDING_MANUAL], true)
-               ? (int) $input['confirm_before_sending']
+               ? (int) ($input['confirm_before_sending'] ?? self::SENDING_CONFIRM)
                : self::SENDING_CONFIRM,
            'ignore_inventory_changes' => (int) ($input['ignore_inventory_changes'] ?? 0),
            'assign_handed_items'      => (int) ($input['assign_handed_items'] ?? 0),
