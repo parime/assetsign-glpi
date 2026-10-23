@@ -15,6 +15,8 @@ use NotificationTemplateTranslation;
  * (technicien qui a préparé le départ). Même modèle que NotificationTargetAssetsign : cibles
  * propres (personne qui part, technicien), modèles en 5 langues semés à l'installation et
  * modifiables ensuite dans Configuration > Notifications.
+ *
+ * @extends NotificationTarget<Departure>
  */
 class NotificationTargetDeparture extends NotificationTarget
 {

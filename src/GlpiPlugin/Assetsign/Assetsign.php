@@ -947,18 +947,12 @@ class Assetsign extends Compat\Base\AssetsignBase
           return false;
       }
 
-      // Toujours vrai a ce point precis (les 3 autres cas - egalite, old=0,
-      // new=0 - viennent d'etre exclus ci-dessus) ; conserve pour la symetrie
-      // de lecture avec les branches precedentes plutot qu'un simple else.
-      // @phpstan-ignore notIdentical.alwaysTrue
-      if ($old_user !== 0 && $new_user !== 0) {
-          // Un transfert direct entre deux personnes (l'ancien detenteur n'est
-          // jamais passe par 0) est traite comme une remise normale au nouveau
-          // detenteur : pas de type "Echange" distinct (retire, cf. TYPE_EXCHANGE).
-         if ($config->fields['sign_on_reassignment']) {
-             self::createAssetsign($item, self::TYPE_HANDOVER, $new_user);
-             return true;
-         }
+      // Reste le transfert direct entre deux personnes (egalite, old=0 et new=0 sont exclus
+      // ci-dessus) : traite comme une remise normale au nouveau detenteur, pas de type
+      // "Echange" distinct (retire, cf. TYPE_EXCHANGE).
+      if ($config->fields['sign_on_reassignment']) {
+          self::createAssetsign($item, self::TYPE_HANDOVER, $new_user);
+          return true;
       }
 
        return false;

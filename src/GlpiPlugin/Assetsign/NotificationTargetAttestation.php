@@ -14,6 +14,8 @@ use NotificationTemplateTranslation;
  * qui atteste, alerte au gestionnaire du parc (auteur de la campagne) quand un écart est signalé.
  * Même modèle que NotificationTargetDeparture : cibles propres, modèles en 5 langues semés à
  * l'installation et modifiables ensuite dans Configuration > Notifications.
+ *
+ * @extends NotificationTarget<Attestation>
  */
 class NotificationTargetAttestation extends NotificationTarget
 {

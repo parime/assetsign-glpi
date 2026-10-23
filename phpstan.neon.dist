@@ -1,5 +1,9 @@
 parameters:
-    level: 5
+    # Niveau 6 (issue #205) : parametres et retours sans type, generiques non precises. Seul le
+    # type des VALEURS de tableaux (missingType.iterableValue, ignore plus bas) reste a documenter :
+    # ~150 signatures `array` sans forme precise, chantier de documentation a mener fichier par
+    # fichier.
+    level: 6
     paths:
         - src
         - front
@@ -15,6 +19,9 @@ parameters:
         analyse:
             - src/GlpiPlugin/Assetsign/Compat/Base/*
     ignoreErrors:
+        -
+            # Cf. le commentaire de `level` ci-dessus.
+            identifier: missingType.iterableValue
         -
             # Les methodes de hook GLPI (getTabNameForItem, displayTabContentForItem,
             # processMassiveActionsForOneItemtype) typent obligatoirement leur
