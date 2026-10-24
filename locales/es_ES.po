@@ -4272,3 +4272,114 @@ msgstr "Normativa informática firmada. ¡Gracias!"
 #, php-format
 msgid "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
 msgstr "La campaña de carta informática «%s» sigue en curso para esta entidad: espere a su fecha límite o ciérrela antes de lanzar una nueva."
+
+msgid "Arrivée"
+msgid_plural "Arrivées"
+msgstr[0] "Incorporación"
+msgstr[1] "Incorporaciones"
+
+msgid "Création du compte"
+msgstr "Creación de la cuenta"
+
+msgid "Réactivation du compte"
+msgstr "Reactivación de la cuenta"
+
+msgid "Date de début du compte"
+msgstr "Fecha de inicio de la cuenta"
+
+msgid "Commander ou préparer le poste de travail"
+msgstr "Pedir o preparar el puesto de trabajo"
+
+msgid "Attribuer les licences logicielles"
+msgstr "Asignar las licencias de software"
+
+msgid "Créer les accès (badge, comptes applicatifs, messagerie)"
+msgstr "Crear los accesos (tarjeta, cuentas de aplicaciones, correo)"
+
+msgid "Remettre le matériel et faire signer la fiche d'attribution"
+msgstr "Entregar el material y hacer firmar la hoja de asignación"
+
+#, php-format
+msgid "Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel."
+msgstr "%1$s se incorpora el %2$s: prepare su puesto, sus accesos y su material."
+
+#, php-format
+msgid "Arrivée de %s : préparez son poste, ses accès et son matériel."
+msgstr "Incorporación de %s: prepare su puesto, sus accesos y su material."
+
+msgid "Le matériel se remet depuis l'onglet « Remise de matériel » de ce ticket : la fiche d'attribution est envoyée à la personne pour signature."
+msgstr "El material se entrega desde la pestaña «Entrega de material» de este ticket: la hoja de asignación se envía a la persona para su firma."
+
+#, php-format
+msgid "Arrivée de %1$s (le %2$s)"
+msgstr "Incorporación de %1$s (el %2$s)"
+
+#, php-format
+msgid "Arrivée de %s"
+msgstr "Incorporación de %s"
+
+#, php-format
+msgid "Le compte de %1$s ne sera valide qu'à partir du %2$s : la personne sera ajoutée automatiquement comme demandeur de ce ticket ce jour-là. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "La cuenta de %1$s solo será válida a partir del %2$s: la persona se añadirá automáticamente como solicitante de este ticket ese día. Entonces se le podrá entregar el material desde la pestaña «Entrega de material»."
+
+#, php-format
+msgid "%s n'a pas encore de profil dans cette entité : la personne sera ajoutée automatiquement comme demandeur de ce ticket dès que ses habilitations seront créées. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "%s aún no tiene perfil en esta entidad: la persona se añadirá automáticamente como solicitante de este ticket en cuanto se creen sus autorizaciones. Entonces se le podrá entregar el material desde la pestaña «Entrega de material»."
+
+msgid "Prépare les arrivées à l'approche de la date de début du compte"
+msgstr "Prepara las incorporaciones al acercarse la fecha de inicio de la cuenta"
+
+msgid "Le ticket d'arrivée n'a pas pu être créé. Vérifiez vos droits de création de tickets dans l'entité de la personne."
+msgstr "No se pudo crear el ticket de incorporación. Compruebe sus derechos de creación de tickets en la entidad de la persona."
+
+msgid "Une arrivée est déjà en cours pour cette personne : voici son ticket."
+msgstr "Ya hay una incorporación en curso para esta persona: aquí está su ticket."
+
+msgid "Arrivée préparée : le ticket liste les étapes, le matériel se remet depuis son onglet « Remise de matériel »."
+msgstr "Incorporación preparada: el ticket enumera los pasos, el material se entrega desde su pestaña «Entrega de material»."
+
+msgid "Arrivée de la personne"
+msgstr "Incorporación de la persona"
+
+#, php-format
+msgid "Arrivée en cours : ticket n°%d."
+msgstr "Incorporación en curso: ticket n.º %d."
+
+msgid "Voir le ticket d'arrivée"
+msgstr "Ver el ticket de incorporación"
+
+msgid "Un ticket pour l'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket."
+msgstr "Un ticket para el equipo con los pasos a seguir (puesto, licencias, accesos); el material se entrega después desde este ticket."
+
+msgid "Préparer l'arrivée"
+msgstr "Preparar la incorporación"
+
+msgid "Arrivée d'un salarié"
+msgstr "Incorporación de un empleado"
+
+msgid "Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-dessous ; le matériel se remet ensuite depuis l'onglet « Remise de matériel » du ticket. L'action « Préparer l'arrivée » est toujours disponible dans l'onglet « Attributions » de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "Un ticket «Incorporación de …» para el equipo, con una tarea por paso a continuación; el material se entrega después desde la pestaña «Entrega de material» del ticket. La acción «Preparar la incorporación» está siempre disponible en la pestaña «Atribuciones» de la ficha del usuario; los disparadores automáticos siguientes son opcionales."
+
+msgid "Préparer l'arrivée quand un compte GLPI est créé"
+msgstr "Preparar la incorporación cuando se crea una cuenta GLPI"
+
+msgid "À activer après le premier import de l'annuaire : sinon chaque compte importé ouvrirait un ticket. Un compte dont la date de début est passée de plus de 30 jours est ignoré."
+msgstr "Activar después de la primera importación del directorio: si no, cada cuenta importada abriría un ticket. Se ignora una cuenta cuya fecha de inicio pasó hace más de 30 días."
+
+msgid "Préparer l'arrivée quand un compte GLPI est réactivé (retour d'un salarié)"
+msgstr "Preparar la incorporación cuando se reactiva una cuenta GLPI (regreso de un empleado)"
+
+msgid "Préparer l'arrivée à l'approche de la date de début du compte"
+msgstr "Preparar la incorporación al acercarse la fecha de inicio de la cuenta"
+
+msgid "Nombre de jours avant la date de début"
+msgstr "Número de días antes de la fecha de inicio"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignArrivals »."
+msgstr "Lo comprueba cada día la acción automática «assetsignArrivals»."
+
+msgid "Tâches du ticket d'arrivée (une par ligne)"
+msgstr "Tareas del ticket de incorporación (una por línea)"
+
+msgid "Vide : liste proposée par défaut. 20 tâches au plus."
+msgstr "Vacío: lista por defecto. Como máximo 20 tareas."

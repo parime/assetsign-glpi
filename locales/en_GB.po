@@ -4252,3 +4252,114 @@ msgstr "IT charter signed. Thank you!"
 #, php-format
 msgid "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
 msgstr "The IT charter campaign \"%s\" is still running for this entity: wait for its deadline or close it before launching a new one."
+
+msgid "Arrivée"
+msgid_plural "Arrivées"
+msgstr[0] "Arrival"
+msgstr[1] "Arrivals"
+
+msgid "Création du compte"
+msgstr "Account creation"
+
+msgid "Réactivation du compte"
+msgstr "Account reactivation"
+
+msgid "Date de début du compte"
+msgstr "Account start date"
+
+msgid "Commander ou préparer le poste de travail"
+msgstr "Order or prepare the workstation"
+
+msgid "Attribuer les licences logicielles"
+msgstr "Assign software licences"
+
+msgid "Créer les accès (badge, comptes applicatifs, messagerie)"
+msgstr "Create access (badge, application accounts, email)"
+
+msgid "Remettre le matériel et faire signer la fiche d'attribution"
+msgstr "Hand over the equipment and have the handover form signed"
+
+#, php-format
+msgid "Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel."
+msgstr "%1$s arrives on %2$s: prepare their workstation, access and equipment."
+
+#, php-format
+msgid "Arrivée de %s : préparez son poste, ses accès et son matériel."
+msgstr "%s is arriving: prepare their workstation, access and equipment."
+
+msgid "Le matériel se remet depuis l'onglet « Remise de matériel » de ce ticket : la fiche d'attribution est envoyée à la personne pour signature."
+msgstr "Hand over equipment from this ticket's \"Equipment handover\" tab: the handover form is sent to the person for signature."
+
+#, php-format
+msgid "Arrivée de %1$s (le %2$s)"
+msgstr "Arrival of %1$s (on %2$s)"
+
+#, php-format
+msgid "Arrivée de %s"
+msgstr "Arrival of %s"
+
+#, php-format
+msgid "Le compte de %1$s ne sera valide qu'à partir du %2$s : la personne sera ajoutée automatiquement comme demandeur de ce ticket ce jour-là. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "The account of %1$s is only valid from %2$s: the person will be added automatically as requester of this ticket on that day. Equipment can then be handed over from the \"Equipment handover\" tab."
+
+#, php-format
+msgid "%s n'a pas encore de profil dans cette entité : la personne sera ajoutée automatiquement comme demandeur de ce ticket dès que ses habilitations seront créées. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "%s has no profile in this entity yet: the person will be added automatically as requester of this ticket as soon as their authorisations are created. Equipment can then be handed over from the \"Equipment handover\" tab."
+
+msgid "Prépare les arrivées à l'approche de la date de début du compte"
+msgstr "Prepares arrivals as the account start date approaches"
+
+msgid "Le ticket d'arrivée n'a pas pu être créé. Vérifiez vos droits de création de tickets dans l'entité de la personne."
+msgstr "The arrival ticket could not be created. Check your ticket creation rights in the person's entity."
+
+msgid "Une arrivée est déjà en cours pour cette personne : voici son ticket."
+msgstr "An arrival is already in progress for this person: here is its ticket."
+
+msgid "Arrivée préparée : le ticket liste les étapes, le matériel se remet depuis son onglet « Remise de matériel »."
+msgstr "Arrival prepared: the ticket lists the steps, equipment is handed over from its \"Equipment handover\" tab."
+
+msgid "Arrivée de la personne"
+msgstr "Person's arrival"
+
+#, php-format
+msgid "Arrivée en cours : ticket n°%d."
+msgstr "Arrival in progress: ticket #%d."
+
+msgid "Voir le ticket d'arrivée"
+msgstr "View the arrival ticket"
+
+msgid "Un ticket pour l'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket."
+msgstr "A ticket for the team with the steps to follow (workstation, licences, access); equipment is then handed over from this ticket."
+
+msgid "Préparer l'arrivée"
+msgstr "Prepare the arrival"
+
+msgid "Arrivée d'un salarié"
+msgstr "Employee arrival"
+
+msgid "Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-dessous ; le matériel se remet ensuite depuis l'onglet « Remise de matériel » du ticket. L'action « Préparer l'arrivée » est toujours disponible dans l'onglet « Attributions » de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "An \"Arrival of …\" ticket for the team, with one task per step below; equipment is then handed over from the ticket's \"Equipment handover\" tab. The \"Prepare the arrival\" action is always available in the \"Handovers\" tab of the user record; the automatic triggers below are optional."
+
+msgid "Préparer l'arrivée quand un compte GLPI est créé"
+msgstr "Prepare the arrival when a GLPI account is created"
+
+msgid "À activer après le premier import de l'annuaire : sinon chaque compte importé ouvrirait un ticket. Un compte dont la date de début est passée de plus de 30 jours est ignoré."
+msgstr "Enable after the first directory import: otherwise every imported account would open a ticket. An account whose start date is more than 30 days in the past is ignored."
+
+msgid "Préparer l'arrivée quand un compte GLPI est réactivé (retour d'un salarié)"
+msgstr "Prepare the arrival when a GLPI account is reactivated (returning employee)"
+
+msgid "Préparer l'arrivée à l'approche de la date de début du compte"
+msgstr "Prepare the arrival as the account start date approaches"
+
+msgid "Nombre de jours avant la date de début"
+msgstr "Number of days before the start date"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignArrivals »."
+msgstr "Checked daily by the \"assetsignArrivals\" automatic action."
+
+msgid "Tâches du ticket d'arrivée (une par ligne)"
+msgstr "Arrival ticket tasks (one per line)"
+
+msgid "Vide : liste proposée par défaut. 20 tâches au plus."
+msgstr "Empty: default list. 20 tasks at most."

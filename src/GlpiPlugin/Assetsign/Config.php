@@ -145,6 +145,15 @@ class Config extends Compat\Base\ConfigBase
         // et ticket « Retour de pret en retard » une fois l'echeance passee.
         'loan_reminder_days'                  => 3,
         'loan_overdue_ticket'                 => 1,
+        // Issue #221 : arrivee d'un salarie - declencheurs automatiques du dossier d'arrivee,
+        // DESACTIVES par defaut (un premier import de l'annuaire creerait sinon un ticket par
+        // compte) ; l'action manuelle « Preparer l'arrivee » reste toujours disponible. Delai en
+        // jours avant la date de debut du compte ; taches du ticket, une par ligne (vide = defaut).
+        'arrival_on_creation'                 => 0,
+        'arrival_on_reactivation'             => 0,
+        'arrival_on_begin_date'               => 0,
+        'arrival_begin_date_days'             => 14,
+        'arrival_tasks'                       => '',
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -188,6 +197,8 @@ class Config extends Compat\Base\ConfigBase
 
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/config_form.html.twig', [
            'config'          => $config->fields,
+           // Issue #221 : liste effective des taches d'arrivee (la liste par defaut si vide).
+           'arrival_tasks'   => implode("\n", Arrival::effectiveTasks((string) ($config->fields['arrival_tasks'] ?? ''))),
            'entity_id'       => $entities_id,
            'csrf_token'      => \Session::getNewCSRFToken(),
            // Jeton CSRF DEDIE au canal d'apercu en direct (live-preview.js),
@@ -471,6 +482,19 @@ class Config extends Compat\Base\ConfigBase
      * Sinon, valeurs par defaut en memoire (le plugin fonctionne meme sans
      * configuration explicite).
      */
+   /**
+    * Issue #221 : taches du ticket d'arrivee telles que saisies, nettoyees (une par ligne, sans
+    * doublon ni ligne vide). Identiques a la liste par defaut : stockees vides.
+    */
+   public static function normalizeArrivalTasks(string $text): string {
+      if (trim($text) === '') {
+          return '';
+      }
+       $tasks = ArrivalLogic::parseTasks($text);
+       $isDefault = $tasks === ArrivalLogic::parseTasks(null) || $tasks === Arrival::effectiveTasks('');
+       return $isDefault ? '' : implode("\n", $tasks);
+   }
+
    public static function getForEntity(int $entities_id): self {
        global $DB;
 
@@ -684,6 +708,13 @@ class Config extends Compat\Base\ConfigBase
            'departure_ticket' => (int) ($input['departure_ticket'] ?? 0),
            'loan_reminder_days' => max(0, min(60, (int) ($input['loan_reminder_days'] ?? 3))),
            'loan_overdue_ticket' => (int) ($input['loan_overdue_ticket'] ?? 0),
+           'arrival_on_creation' => (int) ($input['arrival_on_creation'] ?? 0),
+           'arrival_on_reactivation' => (int) ($input['arrival_on_reactivation'] ?? 0),
+           'arrival_on_begin_date' => (int) ($input['arrival_on_begin_date'] ?? 0),
+           'arrival_begin_date_days' => max(0, min(90, (int) ($input['arrival_begin_date_days'] ?? 14))),
+           // Normalisee a l'enregistrement : la liste par defaut n'est pas recopiee, pour suivre
+           // ses evolutions tant que l'admin ne l'a pas personnalisee.
+           'arrival_tasks' => self::normalizeArrivalTasks((string) ($input['arrival_tasks'] ?? '')),
        ];
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
@@ -876,6 +907,11 @@ class Config extends Compat\Base\ConfigBase
                 `departure_ticket` tinyint NOT NULL DEFAULT 1,
                 `loan_reminder_days` int unsigned NOT NULL DEFAULT 3,
                 `loan_overdue_ticket` tinyint NOT NULL DEFAULT 1,
+                `arrival_on_creation` tinyint NOT NULL DEFAULT 0,
+                `arrival_on_reactivation` tinyint NOT NULL DEFAULT 0,
+                `arrival_on_begin_date` tinyint NOT NULL DEFAULT 0,
+                `arrival_begin_date_days` int unsigned NOT NULL DEFAULT 14,
+                `arrival_tasks` text,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -959,6 +995,15 @@ class Config extends Compat\Base\ConfigBase
          if (!$DB->fieldExists($table, 'loan_reminder_days')) {
              $migration->addField($table, 'loan_reminder_days', 'integer', ['value' => 3]);
              $migration->addField($table, 'loan_overdue_ticket', 'bool', ['value' => 1]);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #221 : dossier d'arrivee d'un salarie.
+         if (!$DB->fieldExists($table, 'arrival_on_creation')) {
+             $migration->addField($table, 'arrival_on_creation', 'bool', ['value' => 0]);
+             $migration->addField($table, 'arrival_on_reactivation', 'bool', ['value' => 0]);
+             $migration->addField($table, 'arrival_on_begin_date', 'bool', ['value' => 0]);
+             $migration->addField($table, 'arrival_begin_date_days', 'integer', ['value' => 14]);
+             $migration->addField($table, 'arrival_tasks', 'text', []);
              $migration->migrationOneTable($table);
          }
          // Issue #204 : signature periodique de la charte informatique.

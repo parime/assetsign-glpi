@@ -761,6 +761,8 @@ class Assetsign extends Compat\Base\AssetsignBase
 
        // Issue #157 : depart de la personne — restitution groupee de tout son materiel.
       if ($canAssign) {
+          // Issue #221 : arrivee de la personne — ticket de preparation et remise du materiel.
+          self::showArrivalCard($users_id);
           self::showDepartureCard($users_id);
       }
 
@@ -807,6 +809,37 @@ class Assetsign extends Compat\Base\AssetsignBase
           echo '<input type="hidden" name="users_id" value="' . $users_id . '">';
           echo '<button type="submit" name="prepare" value="1" class="btn btn-primary">'
               . '<i class="ti ti-door-exit me-1"></i>' . __('Préparer le départ', 'assetsign') . '</button></form>';
+      }
+       echo '</div></div>';
+   }
+
+    /**
+     * Issue #221 : carte « Arrivée » de l'onglet Assetsign d'un utilisateur — lien vers le ticket
+     * de son arrivée en cours, sinon bouton « Préparer l'arrivée ».
+     */
+   private static function showArrivalCard(int $users_id): void {
+       global $CFG_GLPI;
+
+       $formUrl = $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/arrival.form.php';
+       $open = Arrival::findOpenFor($users_id);
+       $ticketsId = $open !== null ? (int) $open->fields['tickets_id'] : 0;
+
+       echo '<div class="card mb-3"><div class="card-body d-flex align-items-center gap-3">';
+       echo '<i class="ti ti-door-enter fs-2 text-muted"></i><div class="flex-grow-1">';
+       echo '<strong>' . __('Arrivée de la personne', 'assetsign') . '</strong><div class="text-muted small">';
+      if ($ticketsId > 0) {
+          echo htmlescape(sprintf(__('Arrivée en cours : ticket n°%d.', 'assetsign'), $ticketsId));
+          echo '</div></div>';
+          echo '<a class="btn btn-outline-primary" href="' . htmlescape(\Ticket::getFormURLWithID($ticketsId)) . '">'
+              . '<i class="ti ti-ticket me-1"></i>' . __('Voir le ticket d\'arrivée', 'assetsign') . '</a>';
+      } else {
+          echo __('Un ticket pour l\'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket.', 'assetsign');
+          echo '</div></div>';
+          echo '<form method="post" action="' . htmlescape($formUrl) . '" class="m-0">';
+          echo '<input type="hidden" name="_glpi_csrf_token" value="' . htmlescape(Session::getNewCSRFToken()) . '">';
+          echo '<input type="hidden" name="users_id" value="' . $users_id . '">';
+          echo '<button type="submit" name="prepare" value="1" class="btn btn-primary">'
+              . '<i class="ti ti-door-enter me-1"></i>' . __('Préparer l\'arrivée', 'assetsign') . '</button></form>';
       }
        echo '</div></div>';
    }

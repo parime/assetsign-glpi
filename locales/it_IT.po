@@ -4282,3 +4282,114 @@ msgstr "Regolamento informatico firmato. Grazie!"
 #, php-format
 msgid "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
 msgstr "La campagna della carta informatica «%s» è ancora in corso per questa entità: attendere la scadenza o chiuderla prima di avviarne una nuova."
+
+msgid "Arrivée"
+msgid_plural "Arrivées"
+msgstr[0] "Arrivo"
+msgstr[1] "Arrivi"
+
+msgid "Création du compte"
+msgstr "Creazione dell'account"
+
+msgid "Réactivation du compte"
+msgstr "Riattivazione dell'account"
+
+msgid "Date de début du compte"
+msgstr "Data di inizio dell'account"
+
+msgid "Commander ou préparer le poste de travail"
+msgstr "Ordinare o preparare la postazione di lavoro"
+
+msgid "Attribuer les licences logicielles"
+msgstr "Assegnare le licenze software"
+
+msgid "Créer les accès (badge, comptes applicatifs, messagerie)"
+msgstr "Creare gli accessi (badge, account applicativi, posta)"
+
+msgid "Remettre le matériel et faire signer la fiche d'attribution"
+msgstr "Consegnare l'attrezzatura e far firmare il modulo di assegnazione"
+
+#, php-format
+msgid "Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel."
+msgstr "%1$s arriva il %2$s: preparate postazione, accessi e attrezzatura."
+
+#, php-format
+msgid "Arrivée de %s : préparez son poste, ses accès et son matériel."
+msgstr "Arrivo di %s: preparate postazione, accessi e attrezzatura."
+
+msgid "Le matériel se remet depuis l'onglet « Remise de matériel » de ce ticket : la fiche d'attribution est envoyée à la personne pour signature."
+msgstr "L'attrezzatura si consegna dalla scheda «Consegna di attrezzatura» di questo ticket: il modulo di assegnazione viene inviato alla persona per la firma."
+
+#, php-format
+msgid "Arrivée de %1$s (le %2$s)"
+msgstr "Arrivo di %1$s (il %2$s)"
+
+#, php-format
+msgid "Arrivée de %s"
+msgstr "Arrivo di %s"
+
+#, php-format
+msgid "Le compte de %1$s ne sera valide qu'à partir du %2$s : la personne sera ajoutée automatiquement comme demandeur de ce ticket ce jour-là. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "L'account di %1$s sarà valido solo dal %2$s: la persona verrà aggiunta automaticamente come richiedente di questo ticket quel giorno. L'attrezzatura potrà quindi esserle consegnata dalla scheda «Consegna di attrezzatura»."
+
+#, php-format
+msgid "%s n'a pas encore de profil dans cette entité : la personne sera ajoutée automatiquement comme demandeur de ce ticket dès que ses habilitations seront créées. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "%s non ha ancora un profilo in questa entità: la persona verrà aggiunta automaticamente come richiedente di questo ticket non appena saranno create le sue autorizzazioni. L'attrezzatura potrà quindi esserle consegnata dalla scheda «Consegna di attrezzatura»."
+
+msgid "Prépare les arrivées à l'approche de la date de début du compte"
+msgstr "Prepara gli arrivi all'avvicinarsi della data di inizio dell'account"
+
+msgid "Le ticket d'arrivée n'a pas pu être créé. Vérifiez vos droits de création de tickets dans l'entité de la personne."
+msgstr "Impossibile creare il ticket di arrivo. Verificate i vostri diritti di creazione ticket nell'entità della persona."
+
+msgid "Une arrivée est déjà en cours pour cette personne : voici son ticket."
+msgstr "Un arrivo è già in corso per questa persona: ecco il suo ticket."
+
+msgid "Arrivée préparée : le ticket liste les étapes, le matériel se remet depuis son onglet « Remise de matériel »."
+msgstr "Arrivo preparato: il ticket elenca i passaggi, l'attrezzatura si consegna dalla sua scheda «Consegna di attrezzatura»."
+
+msgid "Arrivée de la personne"
+msgstr "Arrivo della persona"
+
+#, php-format
+msgid "Arrivée en cours : ticket n°%d."
+msgstr "Arrivo in corso: ticket n. %d."
+
+msgid "Voir le ticket d'arrivée"
+msgstr "Vedi il ticket di arrivo"
+
+msgid "Un ticket pour l'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket."
+msgstr "Un ticket per il team con i passaggi da seguire (postazione, licenze, accessi); l'attrezzatura si consegna poi da questo ticket."
+
+msgid "Préparer l'arrivée"
+msgstr "Preparare l'arrivo"
+
+msgid "Arrivée d'un salarié"
+msgstr "Arrivo di un dipendente"
+
+msgid "Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-dessous ; le matériel se remet ensuite depuis l'onglet « Remise de matériel » du ticket. L'action « Préparer l'arrivée » est toujours disponible dans l'onglet « Attributions » de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "Un ticket «Arrivo di …» per il team, con un'attività per ogni passaggio qui sotto; l'attrezzatura si consegna poi dalla scheda «Consegna di attrezzatura» del ticket. L'azione «Preparare l'arrivo» è sempre disponibile nella scheda «Attribuzioni» della scheda utente; gli attivatori automatici qui sotto sono facoltativi."
+
+msgid "Préparer l'arrivée quand un compte GLPI est créé"
+msgstr "Preparare l'arrivo quando viene creato un account GLPI"
+
+msgid "À activer après le premier import de l'annuaire : sinon chaque compte importé ouvrirait un ticket. Un compte dont la date de début est passée de plus de 30 jours est ignoré."
+msgstr "Da attivare dopo la prima importazione della directory: altrimenti ogni account importato aprirebbe un ticket. Un account la cui data di inizio è passata da più di 30 giorni viene ignorato."
+
+msgid "Préparer l'arrivée quand un compte GLPI est réactivé (retour d'un salarié)"
+msgstr "Preparare l'arrivo quando un account GLPI viene riattivato (rientro di un dipendente)"
+
+msgid "Préparer l'arrivée à l'approche de la date de début du compte"
+msgstr "Preparare l'arrivo all'avvicinarsi della data di inizio dell'account"
+
+msgid "Nombre de jours avant la date de début"
+msgstr "Numero di giorni prima della data di inizio"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignArrivals »."
+msgstr "Verificato ogni giorno dall'azione automatica «assetsignArrivals»."
+
+msgid "Tâches du ticket d'arrivée (une par ligne)"
+msgstr "Attività del ticket di arrivo (una per riga)"
+
+msgid "Vide : liste proposée par défaut. 20 tâches au plus."
+msgstr "Vuoto: elenco predefinito. Al massimo 20 attività."
