@@ -11,6 +11,8 @@ use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\DamageMarker;
 use GlpiPlugin\Assetsign\DestructionDetails;
 use GlpiPlugin\Assetsign\DonDetails;
+use GlpiPlugin\Assetsign\FieldsPluginLogic;
+use GlpiPlugin\Assetsign\FieldsPluginValues;
 use GlpiPlugin\Assetsign\QrCode;
 use GlpiPlugin\Assetsign\Template;
 use GlpiPlugin\Assetsign\VenteDetails;
@@ -77,6 +79,17 @@ final class HandoverPdfBuilder
            'entite'       => \Dropdown::getDropdownName('glpi_entities', (int) $assetsign->fields['entities_id']),
        ];
 
+       // Issue #229 : champs du plugin Fields des blocs retenus (aucun par defaut). Echappes avant
+       // d'entrer dans le texte riche du gabarit, comme toute donnee saisie hors du gabarit.
+       $itemFields = FieldsPluginValues::getValues(
+           (string) $assetsign->fields['itemtype'],
+           (int) $assetsign->fields['items_id'],
+           FieldsPluginLogic::decodeContainerIds($config->fields['fields_containers'] ?? '[]')
+       );
+      foreach ($itemFields as $field) {
+          $placeholders[FieldsPluginLogic::placeholderKey($field['name'])] = htmlescape($field['value']);
+      }
+
        return TemplateRenderer::getInstance()->render('@assetsign/pdf/handover.html.twig', array_merge([
            'html_lang'           => PdfLanguage::htmlLang(),
            'assetsign'              => $assetsign->fields,
@@ -86,6 +99,7 @@ final class HandoverPdfBuilder
            'itemtype'            => Assetsign::getItemtypeLabel($assetsign->fields['itemtype']),
            'accessories'         => $assetsign->getAccessories(),
            'inventoried_items'   => AssetsignItem::getForAssetsign($assetsign->getID()),
+           'item_fields'         => $itemFields,
            // RichText::getSafeHtml() (pas seulement htmlspecialchars, qui casserait
            // la mise en forme voulue du gabarit) : ce contenu est affiche via
            // {{ contract_safe_html|raw }}/{{ charter_safe_html|raw }} dans le twig PDF, et provient

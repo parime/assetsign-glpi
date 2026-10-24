@@ -4383,3 +4383,27 @@ msgstr "Tareas del ticket de incorporación (una por línea)"
 
 msgid "Vide : liste proposée par défaut. 20 tâches au plus."
 msgstr "Vacío: lista por defecto. Como máximo 20 tareas."
+
+msgid "Oui"
+msgstr "Sí"
+
+msgid "Non"
+msgstr "No"
+
+msgid "Champs du plugin Fields sur la fiche"
+msgstr "Campos del plugin Fields en la ficha"
+
+msgid "Le plugin Fields n'est pas actif : rien à configurer."
+msgstr "El plugin Fields no está activo: nada que configurar."
+
+msgid "Aucun bloc de champs actif dans le plugin Fields."
+msgstr "Ningún bloque de campos activo en el plugin Fields."
+
+msgid "La fiche est remise au bénéficiaire : ne cochez pas un bloc qui contient des informations internes (prix d'achat, code analytique…)."
+msgstr "La ficha se entrega al beneficiario: no marque un bloque que contenga información interna (precio de compra, código analítico…)."
+
+msgid "Les champs renseignés des blocs cochés s'ajoutent au tableau du matériel sur la fiche. Dans le texte du gabarit, un champ s'insère avec {champ:nom_du_champ} (nom système du champ dans Fields)."
+msgstr "Los campos rellenados de los bloques marcados se añaden a la tabla del equipo en la ficha. En el texto de la plantilla, un campo se inserta con {champ:nombre_campo} (nombre de sistema del campo en Fields)."
+
+msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
+msgstr "(campo del plugin Fields, si su bloque está seleccionado en la configuración)"

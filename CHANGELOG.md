@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Champs du plugin Fields sur la fiche PDF** (issue #229) : dans Configuration > Compléments, l'administrateur coche les blocs du plugin Fields (pluginsGLPI/fields) à imprimer ; leurs champs renseignés s'ajoutent au tableau du matériel, et `{champ:nom_du_champ}` les insère dans le texte du gabarit. Aucun bloc par défaut : la fiche est remise au bénéficiaire et un bloc peut porter des informations internes. Sans le plugin Fields, rien ne change.
+
 - **Arrivée d'un salarié** (issue #221), le pendant du départ :
   - bouton « Préparer l'arrivée » dans l'onglet « Attributions » de la fiche utilisateur : un
     ticket « Arrivée de … » pour l'équipe, avec une tâche par étape (poste, licences, accès,

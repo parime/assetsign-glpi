@@ -154,6 +154,9 @@ class Config extends Compat\Base\ConfigBase
         'arrival_on_begin_date'               => 0,
         'arrival_begin_date_days'             => 14,
         'arrival_tasks'                       => '',
+        // Issue #229 : blocs du plugin Fields imprimes sur la fiche (JSON d'identifiants). Aucun par
+        // defaut : la fiche est remise au beneficiaire, un bloc peut porter des donnees internes.
+        'fields_containers'                   => '[]',
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -199,6 +202,10 @@ class Config extends Compat\Base\ConfigBase
            'config'          => $config->fields,
            // Issue #221 : liste effective des taches d'arrivee (la liste par defaut si vide).
            'arrival_tasks'   => implode("\n", Arrival::effectiveTasks((string) ($config->fields['arrival_tasks'] ?? ''))),
+           // Issue #229 : blocs du plugin Fields proposes, et ceux deja retenus.
+           'fields_available'  => FieldsPluginValues::isAvailable(),
+           'fields_containers' => FieldsPluginValues::getContainers(),
+           'fields_selected'   => FieldsPluginLogic::decodeContainerIds($config->fields['fields_containers'] ?? '[]'),
            'entity_id'       => $entities_id,
            'csrf_token'      => \Session::getNewCSRFToken(),
            // Jeton CSRF DEDIE au canal d'apercu en direct (live-preview.js),
@@ -717,6 +724,14 @@ class Config extends Compat\Base\ConfigBase
            'arrival_tasks' => self::normalizeArrivalTasks((string) ($input['arrival_tasks'] ?? '')),
        ];
 
+       // Issue #229 : sans le plugin Fields (desactive un temps), le choix enregistre est conserve.
+       if (FieldsPluginValues::isAvailable()) {
+           $data['fields_containers'] = FieldsPluginLogic::normalizeContainerIds(
+               $input['fields_containers'] ?? [],
+               FieldsPluginValues::getContainerIds()
+           );
+       }
+
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
 
        $config = new self();
@@ -912,6 +927,7 @@ class Config extends Compat\Base\ConfigBase
                 `arrival_on_begin_date` tinyint NOT NULL DEFAULT 0,
                 `arrival_begin_date_days` int unsigned NOT NULL DEFAULT 14,
                 `arrival_tasks` text,
+                `fields_containers` text,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -1004,6 +1020,11 @@ class Config extends Compat\Base\ConfigBase
              $migration->addField($table, 'arrival_on_begin_date', 'bool', ['value' => 0]);
              $migration->addField($table, 'arrival_begin_date_days', 'integer', ['value' => 14]);
              $migration->addField($table, 'arrival_tasks', 'text', []);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #229 : blocs du plugin Fields imprimes sur la fiche.
+         if (!$DB->fieldExists($table, 'fields_containers')) {
+             $migration->addField($table, 'fields_containers', 'text', []);
              $migration->migrationOneTable($table);
          }
          // Issue #204 : signature periodique de la charte informatique.

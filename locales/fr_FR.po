@@ -4383,3 +4383,27 @@ msgstr "Tâches du ticket d'arrivée (une par ligne)"
 
 msgid "Vide : liste proposée par défaut. 20 tâches au plus."
 msgstr "Vide : liste proposée par défaut. 20 tâches au plus."
+
+msgid "Oui"
+msgstr "Oui"
+
+msgid "Non"
+msgstr "Non"
+
+msgid "Champs du plugin Fields sur la fiche"
+msgstr "Champs du plugin Fields sur la fiche"
+
+msgid "Le plugin Fields n'est pas actif : rien à configurer."
+msgstr "Le plugin Fields n'est pas actif : rien à configurer."
+
+msgid "Aucun bloc de champs actif dans le plugin Fields."
+msgstr "Aucun bloc de champs actif dans le plugin Fields."
+
+msgid "La fiche est remise au bénéficiaire : ne cochez pas un bloc qui contient des informations internes (prix d'achat, code analytique…)."
+msgstr "La fiche est remise au bénéficiaire : ne cochez pas un bloc qui contient des informations internes (prix d'achat, code analytique…)."
+
+msgid "Les champs renseignés des blocs cochés s'ajoutent au tableau du matériel sur la fiche. Dans le texte du gabarit, un champ s'insère avec {champ:nom_du_champ} (nom système du champ dans Fields)."
+msgstr "Les champs renseignés des blocs cochés s'ajoutent au tableau du matériel sur la fiche. Dans le texte du gabarit, un champ s'insère avec {champ:nom_du_champ} (nom système du champ dans Fields)."
+
+msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
+msgstr "(champ du plugin Fields, si son bloc est retenu dans la configuration)"

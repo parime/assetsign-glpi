@@ -32,7 +32,7 @@
         {% if not (item.fields.id is defined and item.fields.id) %}
           <div class="form-text">{{ __('Texte de départ pré-rempli à titre d\'exemple : modifiez-le ou effacez-le librement.', 'assetsign') }}</div>
         {% endif %}
-        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
+        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>, <code>{champ:nom}</code> {{ __('(champ du plugin Fields, si son bloc est retenu dans la configuration)', 'assetsign') }}.</div>
       </div>
 
       <div class="mb-3 form-check">
@@ -44,7 +44,7 @@
       <div class="mb-3">
         {{ fields.textareaField('charter_content', item.fields.charter_content|default(default_content.charter_content), __('Charte informatique', 'assetsign'), {'enable_richtext': true, 'enable_images': false, 'rows': 8}) }}
         <div class="form-text">{{ __('Utilisez le bouton "lien" de la barre d\'outils pour renvoyer vers un document existant (ex: la charte informatique complète), plutôt que de tout retaper ici.', 'assetsign') }}</div>
-        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
+        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>, <code>{champ:nom}</code> {{ __('(champ du plugin Fields, si son bloc est retenu dans la configuration)', 'assetsign') }}.</div>
       </div>
 
       <div class="mb-3 form-check">

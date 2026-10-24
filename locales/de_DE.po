@@ -4419,3 +4419,27 @@ msgstr "Aufgaben des Eintrittstickets (eine pro Zeile)"
 
 msgid "Vide : liste proposée par défaut. 20 tâches au plus."
 msgstr "Leer: Standardliste. Höchstens 20 Aufgaben."
+
+msgid "Oui"
+msgstr "Ja"
+
+msgid "Non"
+msgstr "Nein"
+
+msgid "Champs du plugin Fields sur la fiche"
+msgstr "Felder des Fields-Plugins auf dem Formular"
+
+msgid "Le plugin Fields n'est pas actif : rien à configurer."
+msgstr "Das Fields-Plugin ist nicht aktiv: nichts zu konfigurieren."
+
+msgid "Aucun bloc de champs actif dans le plugin Fields."
+msgstr "Kein aktiver Feldblock im Fields-Plugin."
+
+msgid "La fiche est remise au bénéficiaire : ne cochez pas un bloc qui contient des informations internes (prix d'achat, code analytique…)."
+msgstr "Das Formular wird dem Empfänger übergeben: Wählen Sie keinen Block mit internen Informationen (Einkaufspreis, Kostenstelle…)."
+
+msgid "Les champs renseignés des blocs cochés s'ajoutent au tableau du matériel sur la fiche. Dans le texte du gabarit, un champ s'insère avec {champ:nom_du_champ} (nom système du champ dans Fields)."
+msgstr "Ausgefüllte Felder der gewählten Blöcke werden der Gerätetabelle des Formulars hinzugefügt. Im Vorlagentext wird ein Feld mit {champ:feldname} eingefügt (Systemname des Feldes in Fields)."
+
+msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
+msgstr "(Feld des Fields-Plugins, falls sein Block in der Konfiguration gewählt ist)"
