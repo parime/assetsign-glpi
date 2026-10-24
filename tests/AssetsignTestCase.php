@@ -46,14 +46,24 @@ abstract class AssetsignTestCase extends TestCase
         global $CFG_GLPI;
         $this->defaultLanguage = $CFG_GLPI['language'] ?? null;
         $CFG_GLPI['language'] = 'fr_FR';
+
+        // Les tests creent eux-memes leurs lignes Infocom. Avec la creation automatique des
+        // informations financieres (activee par l'assistant de Configuration-glpi-auto), GLPI en
+        // cree deja une a l'ajout du materiel : doublon sur la cle `unicity`. Desactivee en memoire
+        // le temps du test, jamais en base.
+        $this->autoCreateInfocoms = $CFG_GLPI['auto_create_infocoms'] ?? null;
+        $CFG_GLPI['auto_create_infocoms'] = 0;
     }
 
     private ?string $defaultLanguage = null;
+
+    private mixed $autoCreateInfocoms = null;
 
     protected function tearDown(): void
     {
         global $DB, $CFG_GLPI;
         $CFG_GLPI['language'] = $this->defaultLanguage;
+        $CFG_GLPI['auto_create_infocoms'] = $this->autoCreateInfocoms;
         $DB->rollBack();
 
         parent::tearDown();

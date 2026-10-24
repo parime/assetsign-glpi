@@ -33,6 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   mort, chaque exception PHPStan/Semgrep encore justifiée, `global` explicite et aucune
   redirection construite depuis la requête dans les pages, dépendances à jour et auditées en CI.
 
+- **Tests** : préconditions explicites. La création automatique des informations financières
+  (activée par l'assistant de Configuration-glpi-auto) est désactivée en mémoire le temps de chaque
+  test, et le test du bandeau d'accueil ne vérifie plus que le bandeau des signatures. 32 tests
+  échouaient sur une instance configurée par l'assistant, sans défaut du plugin.
+
 ## [2.11.0] - 2026-10-22
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

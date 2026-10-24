@@ -197,7 +197,9 @@ class PendingSignaturesTest extends AssetsignTestCase
         $_SESSION['glpiactive_entity'] = $entityId;
 
         $_SESSION['glpiID'] = $user;
-        $this->assertSame('', $this->renderBanner(), 'Rien a signer : pas de bandeau.');
+        // Seul le bandeau des signatures en attente est verifie : la page d'accueil peut afficher
+        // d'autres blocs du plugin (prets en cours de l'instance de test, par exemple).
+        $this->assertStringNotContainsString('mysignatures.php', $this->renderBanner(), 'Rien a signer : pas de bandeau.');
 
         $this->createSentAssetsign($entityId, $user);
         $html = $this->renderBanner();
@@ -219,7 +221,7 @@ class PendingSignaturesTest extends AssetsignTestCase
         $_SESSION['glpiactive_entity'] = $entityId;
         $_SESSION['glpiID'] = $user;
 
-        $this->assertSame('', $this->renderBanner());
+        $this->assertStringNotContainsString('mysignatures.php', $this->renderBanner());
     }
 
     private function renderBanner(): string
