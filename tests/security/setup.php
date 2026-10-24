@@ -132,6 +132,9 @@ if (($argv[1] ?? '') === 'snapshot') {
         $snapshot['assetsign_B.status'] = (int) $row['status'];
         $snapshot['assetsign_B.markers'] = countElementsInTable('glpi_plugin_assetsign_damagemarkers', ['plugin_assetsign_assetsigns_id' => $row['id']]);
     }
+    // Issue #221 : dossiers d'arrivee et tickets de l'entite B.
+    $snapshot['arrivals_B'] = countElementsInTable('glpi_plugin_assetsign_arrivals', ['entities_id' => $b]);
+    $snapshot['tickets_B'] = countElementsInTable('glpi_tickets', ['entities_id' => $b]);
     $snapshot['config_B'] = md5(json_encode(iterator_to_array($DB->request(['FROM' => 'glpi_plugin_assetsign_configs', 'WHERE' => ['entities_id' => $b]]))));
     ksort($snapshot);
     echo json_encode($snapshot), "\n";

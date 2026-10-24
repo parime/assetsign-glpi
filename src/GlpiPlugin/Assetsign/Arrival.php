@@ -11,8 +11,8 @@ use Migration;
 use Planning;
 use Session;
 use Ticket;
-use TicketTask;
 use Ticket_User;
+use TicketTask;
 use User;
 
 /**
@@ -136,7 +136,7 @@ class Arrival extends Compat\Base\ArrivalBase
          ) {
             return null;
          }
-      } elseif (strtotime((string) $row['date_creation']) < time() - 60 * 86400) {
+      } else if (strtotime((string) $row['date_creation']) < time() - 60 * 86400) {
          return null;
       }
       $arrival = new self();

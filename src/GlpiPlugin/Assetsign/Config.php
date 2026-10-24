@@ -487,9 +487,9 @@ class Config extends Compat\Base\ConfigBase
     * doublon ni ligne vide). Identiques a la liste par defaut : stockees vides.
     */
    public static function normalizeArrivalTasks(string $text): string {
-       if (trim($text) === '') {
-           return '';
-       }
+      if (trim($text) === '') {
+          return '';
+      }
        $tasks = ArrivalLogic::parseTasks($text);
        $isDefault = $tasks === ArrivalLogic::parseTasks(null) || $tasks === Arrival::effectiveTasks('');
        return $isDefault ? '' : implode("\n", $tasks);
