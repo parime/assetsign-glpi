@@ -4393,3 +4393,27 @@ msgstr "Attività del ticket di arrivo (una per riga)"
 
 msgid "Vide : liste proposée par défaut. 20 tâches au plus."
 msgstr "Vuoto: elenco predefinito. Al massimo 20 attività."
+
+msgid "Oui"
+msgstr "Sì"
+
+msgid "Non"
+msgstr "No"
+
+msgid "Champs du plugin Fields sur la fiche"
+msgstr "Campi del plugin Fields sulla scheda"
+
+msgid "Le plugin Fields n'est pas actif : rien à configurer."
+msgstr "Il plugin Fields non è attivo: niente da configurare."
+
+msgid "Aucun bloc de champs actif dans le plugin Fields."
+msgstr "Nessun blocco di campi attivo nel plugin Fields."
+
+msgid "La fiche est remise au bénéficiaire : ne cochez pas un bloc qui contient des informations internes (prix d'achat, code analytique…)."
+msgstr "La scheda viene consegnata al beneficiario: non selezionare un blocco con informazioni interne (prezzo d'acquisto, codice analitico…)."
+
+msgid "Les champs renseignés des blocs cochés s'ajoutent au tableau du matériel sur la fiche. Dans le texte du gabarit, un champ s'insère avec {champ:nom_du_champ} (nom système du champ dans Fields)."
+msgstr "I campi compilati dei blocchi selezionati si aggiungono alla tabella dell'attrezzatura sulla scheda. Nel testo del modello, un campo si inserisce con {champ:nome_campo} (nome di sistema del campo in Fields)."
+
+msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
+msgstr "(campo del plugin Fields, se il suo blocco è selezionato nella configurazione)"

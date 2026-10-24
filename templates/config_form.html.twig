@@ -435,6 +435,29 @@
             <label class="form-check-label" for="enable_observations">{{ __('Champ « Observations » libre sur chaque fiche', 'assetsign') }}</label>
             <div class="form-text">{{ __('Si activé, un champ de texte libre devient disponible sur chaque fiche d\'attribution (ex: état constaté du matériel) et apparaît sur le PDF tant que la fiche n\'est pas encore signée.', 'assetsign') }}</div>
           </div>
+          {# Issue #229 : champs du plugin Fields sur la fiche PDF #}
+          <div class="mb-3">
+            <label class="form-label"><i class="ti ti-forms me-1"></i>{{ __('Champs du plugin Fields sur la fiche', 'assetsign') }}</label>
+            {% if not fields_available %}
+              <div class="form-text">{{ __('Le plugin Fields n\'est pas actif : rien à configurer.', 'assetsign') }}</div>
+            {% elseif fields_containers is empty %}
+              <div class="form-text">{{ __('Aucun bloc de champs actif dans le plugin Fields.', 'assetsign') }}</div>
+            {% else %}
+              <div class="alert alert-warning py-2 mb-2" style="max-width: 760px;"><i class="ti ti-alert-triangle me-1"></i>{{ __('La fiche est remise au bénéficiaire : ne cochez pas un bloc qui contient des informations internes (prix d\'achat, code analytique…).', 'assetsign') }}</div>
+              {% for c in fields_containers %}
+                <div class="form-check">
+                  <input type="checkbox" name="fields_containers[]" value="{{ c.id }}" class="form-check-input" id="fields_container_{{ c.id }}" {{ c.id in fields_selected ? 'checked' : '' }}>
+                  <label class="form-check-label" for="fields_container_{{ c.id }}">{{ c.label }} <span class="text-muted small">({{ c.itemtype_labels|join(', ') }})</span></label>
+                  {% if c.fields is not empty %}
+                    <div class="small text-muted">
+                      {% for f in c.fields %}{{ f.label }} : <code>{{ f.placeholder }}</code>{{ not loop.last ? ' · ' : '' }}{% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+              <div class="form-text">{{ __('Les champs renseignés des blocs cochés s\'ajoutent au tableau du matériel sur la fiche. Dans le texte du gabarit, un champ s\'insère avec {champ:nom_du_champ} (nom système du champ dans Fields).', 'assetsign') }}</div>
+            {% endif %}
+          </div>
           {# Issues #170 et #163 : envoi des feuilles declenchees automatiquement #}
           {% set sending_mode = config.confirm_before_sending|default(1) %}
           <div class="mb-3">
@@ -784,7 +807,7 @@
       </div>
       <div class="mb-3">
         {{ fields.textareaField('content', template.fields.content|default(''), __('Conditions générales (contrat)', 'assetsign'), {'enable_richtext': true, 'enable_images': false, 'rows': 6, 'additional_attributes': {'form': form_id}}) }}
-        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>.</div>
+        <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>, <code>{champ:nom}</code> {{ __('(champ du plugin Fields, si son bloc est retenu dans la configuration)', 'assetsign') }}.</div>
       </div>
 
       <div class="mb-3 form-check">

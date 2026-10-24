@@ -23,6 +23,13 @@ parameters:
             # Cf. le commentaire de `level` ci-dessus.
             identifier: missingType.iterableValue
         -
+            # Issue #229 : le plugin Fields (pluginsGLPI/fields) est un plugin tiers facultatif,
+            # absent de l'analyse. Ses classes ne sont appelees qu'apres
+            # FieldsPluginValues::isAvailable() (plugin actif, classe et methode presentes).
+            message: '#PluginFields#'
+            paths:
+                - src/GlpiPlugin/Assetsign/FieldsPluginValues.php
+        -
             # Les methodes de hook GLPI (getTabNameForItem, displayTabContentForItem,
             # processMassiveActionsForOneItemtype) typent obligatoirement leur
             # parametre a la classe parente (CommonGLPI/CommonDBTM) pour respecter

@@ -4363,3 +4363,27 @@ msgstr "Arrival ticket tasks (one per line)"
 
 msgid "Vide : liste proposée par défaut. 20 tâches au plus."
 msgstr "Empty: default list. 20 tasks at most."
+
+msgid "Oui"
+msgstr "Yes"
+
+msgid "Non"
+msgstr "No"
+
+msgid "Champs du plugin Fields sur la fiche"
+msgstr "Fields plugin fields on the sheet"
+
+msgid "Le plugin Fields n'est pas actif : rien à configurer."
+msgstr "The Fields plugin is not active: nothing to configure."
+
+msgid "Aucun bloc de champs actif dans le plugin Fields."
+msgstr "No active field block in the Fields plugin."
+
+msgid "La fiche est remise au bénéficiaire : ne cochez pas un bloc qui contient des informations internes (prix d'achat, code analytique…)."
+msgstr "The sheet is given to the recipient: do not tick a block that holds internal information (purchase price, cost code…)."
+
+msgid "Les champs renseignés des blocs cochés s'ajoutent au tableau du matériel sur la fiche. Dans le texte du gabarit, un champ s'insère avec {champ:nom_du_champ} (nom système du champ dans Fields)."
+msgstr "Filled-in fields of the ticked blocks are added to the equipment table on the sheet. In the template text, insert a field with {champ:field_name} (the field's system name in Fields)."
+
+msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
+msgstr "(Fields plugin field, if its block is selected in the configuration)"

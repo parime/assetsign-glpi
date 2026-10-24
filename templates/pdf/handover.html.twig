@@ -48,6 +48,10 @@
     {% endif %}
     <tr><th>{{ __('N° de série', 'assetsign') }}</th><td>{{ item.serial|default('-') }}</td></tr>
     <tr><th>{{ __('N° d\'inventaire', 'assetsign') }}</th><td>{{ item.otherserial|default('-') }}</td></tr>
+    {# Issue #229 : champs du plugin Fields des blocs retenus dans la configuration #}
+    {% for f in item_fields|default([]) %}
+    <tr><th>{{ f.label }}</th><td>{{ f.value|nl2br }}</td></tr>
+    {% endfor %}
 </table>
 
 {% if accessories|length %}
