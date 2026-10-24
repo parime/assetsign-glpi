@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.12.0] - 2026-10-24
+
 ### Added
 
 - **Signature de la charte informatique** (issue #204), preuve de sensibilisation pour ISO 27001
