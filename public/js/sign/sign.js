@@ -110,12 +110,56 @@
         }).then(function (res) { return res.json(); });
     }
 
+    // Mode guichet (issue #230) : ecran verrouille apres une signature sur place. Seul le
+    // bouton du technicien en sort, en remplacant l'entree d'historique : le bouton
+    // Precedent ne ramene ni a la page de signature ni ailleurs dans sa session.
+    function lockKiosk(kiosk) {
+        var wrap = document.createElement('div');
+        wrap.className = 'wrap';
+        var card = document.createElement('div');
+        card.className = 'card';
+        var message = document.createElement('p');
+        message.textContent = kiosk.done;
+        var resume = document.createElement('button');
+        resume.type = 'button';
+        resume.className = 'primary';
+        resume.id = 'btn-kiosk-resume';
+        resume.textContent = kiosk.resume;
+        resume.addEventListener('click', function () {
+            if (document.fullscreenElement && document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+            window.location.replace(kiosk.returnUrl);
+        });
+        card.appendChild(message);
+        card.appendChild(resume);
+        wrap.appendChild(card);
+        document.body.textContent = '';
+        document.body.appendChild(wrap);
+        window.history.pushState(null, '', window.location.href);
+        window.addEventListener('popstate', function () {
+            window.history.pushState(null, '', window.location.href);
+        });
+    }
+
+    var btnFullscreen = document.getElementById('btn-kiosk-fullscreen');
+    if (btnFullscreen && document.documentElement.requestFullscreen) {
+        btnFullscreen.addEventListener('click', function () {
+            document.documentElement.requestFullscreen();
+            btnFullscreen.hidden = true;
+        });
+    } else if (btnFullscreen) {
+        btnFullscreen.hidden = true;
+    }
+
     btnSubmit.addEventListener('click', function () {
         btnSubmit.disabled = true;
         statusMsg.textContent = window.ASSETSIGN_I18N.sending;
 
         post('sign', { signature: signaturePad.toDataURL('image/png') }).then(function (data) {
-            if (data.success) {
+            if (data.success && window.ASSETSIGN_KIOSK) {
+                lockKiosk(window.ASSETSIGN_KIOSK);
+            } else if (data.success) {
                 // Racine de GLPI (pas /front/central.php en dur, page par defaut de
                 // l'interface "centrale" mais pas forcement de CET utilisateur) :
                 // la racine redirige chacun vers sa vraie page d'accueil configuree.

@@ -4407,3 +4407,13 @@ msgstr "Les champs renseignés des blocs cochés s'ajoutent au tableau du matér
 
 msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
 msgstr "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
+
+msgid "Plein écran (tablette)"
+msgstr "Plein écran (tablette)"
+
+#, php-format
+msgid "Merci, votre signature a bien été enregistrée. Vous pouvez rendre l'appareil à %s."
+msgstr "Merci, votre signature a bien été enregistrée. Vous pouvez rendre l'appareil à %s."
+
+msgid "Reprendre la main (technicien)"
+msgstr "Reprendre la main (technicien)"

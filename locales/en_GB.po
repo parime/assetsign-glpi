@@ -4387,3 +4387,13 @@ msgstr "Filled-in fields of the ticked blocks are added to the equipment table o
 
 msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
 msgstr "(Fields plugin field, if its block is selected in the configuration)"
+
+msgid "Plein écran (tablette)"
+msgstr "Full screen (tablet)"
+
+#, php-format
+msgid "Merci, votre signature a bien été enregistrée. Vous pouvez rendre l'appareil à %s."
+msgstr "Thank you, your signature has been recorded. You can hand the device back to %s."
+
+msgid "Reprendre la main (technicien)"
+msgstr "Take back control (technician)"

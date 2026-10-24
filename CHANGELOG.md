@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Mode guichet pour la signature sur place** (issue #230) : la page de signature ouverte par « Faire signer sur place » propose un bouton « Plein écran (tablette) ». Après la signature, l'écran se verrouille : il indique à qui rendre l'appareil et seul le bouton « Reprendre la main (technicien) » en sort, vers la fiche. Le bouton Précédent du navigateur ne ramène plus dans la session du technicien, et l'ancien lien vers l'accueil GLPI n'est plus proposé dans ce mode.
+
 ### Changed
 
 - **Exigences du Marketplace GLPI vérifiées par la CI** : plus de SQL brut hors installation (l'heure de la base pour les jetons passe par le constructeur de requêtes de GLPI), et le HTML écrit en PHP ne peut plus augmenter : les nouveaux écrans s'écrivent en Twig (`.github/scripts/check-marketplace-readiness.php`, référence dans `.github/twig-baseline.txt`).
