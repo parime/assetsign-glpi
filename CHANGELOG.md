@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.13.0] - 2026-10-24
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Added
 
 - **Champs du plugin Fields sur la fiche PDF** (issue #229) : dans Configuration > Compléments, l'administrateur coche les blocs du plugin Fields (pluginsGLPI/fields) à imprimer ; leurs champs renseignés s'ajoutent au tableau du matériel, et `{champ:nom_du_champ}` les insère dans le texte du gabarit. Aucun bloc par défaut : la fiche est remise au bénéficiaire et un bloc peut porter des informations internes. Sans le plugin Fields, rien ne change.
