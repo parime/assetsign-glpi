@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - renouvellement automatique par entité (Configuration : période en mois, délai pour signer),
     par la tâche planifiée `assetsignCampaigns`.
 
+- **Une seule campagne de charte en cours par entité** : lancer une nouvelle campagne de charte
+  alors qu'une autre est encore en cours (ouverte et non échue) sur la même entité est refusé, avec
+  son nom. Sinon chacun devait signer deux fois et le taux de signature ne suivait que la plus
+  récente. Une campagne échue reste ouverte aux signatures tardives sans bloquer la suivante.
+
 ### Changed
 
 - **Audit de code (issue #205)** : PHPStan passe au niveau 6 (paramètres et retours typés,

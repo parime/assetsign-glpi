@@ -78,6 +78,15 @@ class Campaign extends Compat\Base\CampaignBase
          if ($charter === '') {
              throw new \RuntimeException(__('Aucune charte informatique n\'est configurée pour cette entité : renseignez la charte du gabarit d\'attribution par défaut ou le lien vers la charte dans la Configuration.', 'assetsign'));
          }
+          // Deux campagnes de charte en cours sur la même entité : chacun devrait signer deux fois,
+          // et le taux de signature (repris par grcmanager) ne suivrait que la plus récente.
+          $running = self::findRunningCharter((int) $input['entities_id']);
+         if ($running !== null) {
+             throw new \RuntimeException(sprintf(
+                 __('La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d\'en lancer une nouvelle.', 'assetsign'),
+                 $running
+             ));
+         }
       }
        $defaultName = $type === CampaignLogic::TYPE_CHARTER
            ? sprintf(__('Charte informatique %s', 'assetsign'), date('Y'))
@@ -121,6 +130,30 @@ class Campaign extends Compat\Base\CampaignBase
       }
 
        return $campaign;
+   }
+
+   /**
+    * Nom de la campagne de charte encore en cours (ouverte et non échue) de l'entité, ou null.
+    * Une campagne échue reste ouverte pour les signatures tardives sans bloquer la suivante.
+    */
+   public static function findRunningCharter(int $entitiesId): ?string {
+       global $DB;
+
+       $row = $DB->request([
+           'SELECT' => ['name'],
+           'FROM'   => self::getTable(),
+           'WHERE'  => [
+               'type'        => CampaignLogic::TYPE_CHARTER,
+               'status'      => CampaignLogic::CAMPAIGN_OPEN,
+               'entities_id' => $entitiesId,
+               'OR'          => [
+                   ['date_deadline' => null],
+                   ['date_deadline' => ['>=', date('Y-m-d')]],
+               ],
+           ],
+           'LIMIT'  => 1,
+       ])->current();
+       return $row !== null ? (string) $row['name'] : null;
    }
 
    public function isCharter(): bool {

@@ -4278,3 +4278,7 @@ msgstr "Campagna avviata: %d persona/e invitata/e a firmare il regolamento infor
 
 msgid "Charte informatique signée. Merci !"
 msgstr "Regolamento informatico firmato. Grazie!"
+
+#, php-format
+msgid "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
+msgstr "La campagna della carta informatica «%s» è ancora in corso per questa entità: attendere la scadenza o chiuderla prima di avviarne una nuova."
