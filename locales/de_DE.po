@@ -4443,3 +4443,13 @@ msgstr "Ausgefüllte Felder der gewählten Blöcke werden der Gerätetabelle des
 
 msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
 msgstr "(Feld des Fields-Plugins, falls sein Block in der Konfiguration gewählt ist)"
+
+msgid "Plein écran (tablette)"
+msgstr "Vollbild (Tablet)"
+
+#, php-format
+msgid "Merci, votre signature a bien été enregistrée. Vous pouvez rendre l'appareil à %s."
+msgstr "Vielen Dank, Ihre Unterschrift wurde gespeichert. Sie können das Gerät an %s zurückgeben."
+
+msgid "Reprendre la main (technicien)"
+msgstr "Kontrolle übernehmen (Techniker)"

@@ -176,5 +176,40 @@ class TemplateRenderingTest extends AssetsignTestCase
        $this->assertStringContainsString('name="delegate_users_id"', $html, 'Le formulaire d\'auto-delegation doit etre rendu pour que ce test ait un sens.');
        $this->assertStringContainsString('<option value="123456">PHPUnit Candidate One</option>', $html);
        $this->assertStringContainsString('<option value="123457">PHPUnit Candidate Two</option>', $html);
+       $this->assertStringNotContainsString('ASSETSIGN_KIOSK', $html, 'Hors signature sur place, pas de mode guichet.');
+   }
+
+    /**
+     * Mode guichet (issue #230) : sur une page ouverte sur place, l'ecran de fin renvoie a la fiche
+     * du technicien (pas a l'accueil GLPI de sa session) et nomme a qui rendre l'appareil.
+     */
+   public function testSignPageInPersonRendersKioskLock(): void {
+       $entityId = $this->createTestEntity(0, 'PHPUnit TemplateRendering Kiosk');
+       $assetsign = $this->createBareAssetsign($entityId, Assetsign::TYPE_DON, Assetsign::STATUS_SENT);
+
+       $html = TemplateRenderer::getInstance()->render('@assetsign/sign_page.html.twig', [
+           'token'              => 'phpunit-test-token',
+           'csrf_token'         => 'phpunit-test-token',
+           'assetsign'          => $assetsign->fields,
+           'user'               => [],
+           'item'               => [],
+           'expiry'             => '',
+           'is_delegate_signer' => false,
+           'is_cosigner'        => false,
+           'in_person_witness'  => ['name' => 'tech', 'firstname' => 'Alex', 'realname' => 'Martin'],
+           'in_person_signer'   => ['name' => 'user', 'firstname' => 'Camille', 'realname' => 'Durand'],
+           'page_title'         => 'PHPUnit',
+           'pdf_url'            => '',
+           'error'              => null,
+       ]);
+
+       $this->assertStringContainsString('id="btn-kiosk-fullscreen"', $html);
+       $this->assertStringContainsString('window.ASSETSIGN_KIOSK', $html);
+       $this->assertStringContainsString(
+           '/plugins/assetsign/front/assetsign.form.php?id=' . $assetsign->getID(),
+           str_replace('\/', '/', $html),
+           'Le json_encode de Twig echappe les « / ».'
+       );
+       $this->assertStringContainsString('Alex Martin', $html);
    }
 }

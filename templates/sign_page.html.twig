@@ -61,6 +61,9 @@
         {{ __('en présence de', 'assetsign') }} <strong>{{ witness_display }}</strong>.
         {{ __('Le document signé mentionnera ce technicien comme témoin.', 'assetsign') }}
       </p>
+      {# Mode guichet (issue #230) : plein ecran sur une tablette partagee, la barre du
+         navigateur et la session du technicien restent hors de portee pendant la signature. #}
+      <p><button type="button" id="btn-kiosk-fullscreen">{{ __('Plein écran (tablette)', 'assetsign') }}</button></p>
     {% endif %}
     {% endif %}
   </header>
@@ -189,6 +192,15 @@
     networkError: {{ __('Erreur réseau, merci de réessayer.', 'assetsign')|json_encode|raw }},
     backToHome: {{ __('Retour à l\'accueil GLPI', 'assetsign')|json_encode|raw }}
   };
+  {% if in_person_witness|default(null) %}
+  // Mode guichet (issue #230) : apres la signature, l'ecran se verrouille au lieu de proposer
+  // l'accueil GLPI, qui serait celui de la session du technicien.
+  window.ASSETSIGN_KIOSK = {
+    returnUrl: {{ (config('root_doc') ~ '/plugins/assetsign/front/assetsign.form.php?id=' ~ assetsign.id)|json_encode|raw }},
+    done: {{ __('Merci, votre signature a bien été enregistrée. Vous pouvez rendre l\'appareil à %s.', 'assetsign')|format(witness_display)|json_encode|raw }},
+    resume: {{ __('Reprendre la main (technicien)', 'assetsign')|json_encode|raw }}
+  };
+  {% endif %}
 </script>
 <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/csrf-queue.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
 <script type="module" src="{{ config('root_doc') }}/plugins/assetsign/js/sign/sign.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>

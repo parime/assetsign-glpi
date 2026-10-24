@@ -4407,3 +4407,13 @@ msgstr "Los campos rellenados de los bloques marcados se añaden a la tabla del 
 
 msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
 msgstr "(campo del plugin Fields, si su bloque está seleccionado en la configuración)"
+
+msgid "Plein écran (tablette)"
+msgstr "Pantalla completa (tableta)"
+
+#, php-format
+msgid "Merci, votre signature a bien été enregistrée. Vous pouvez rendre l'appareil à %s."
+msgstr "Gracias, su firma se ha registrado. Puede devolver el dispositivo a %s."
+
+msgid "Reprendre la main (technicien)"
+msgstr "Retomar el control (técnico)"
