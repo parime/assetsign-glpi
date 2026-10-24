@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Exigences du Marketplace GLPI vérifiées par la CI** : plus de SQL brut hors installation (l'heure de la base pour les jetons passe par le constructeur de requêtes de GLPI), et le HTML écrit en PHP ne peut plus augmenter : les nouveaux écrans s'écrivent en Twig (`.github/scripts/check-marketplace-readiness.php`, référence dans `.github/twig-baseline.txt`).
+
 ## [2.13.0] - 2026-10-24
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

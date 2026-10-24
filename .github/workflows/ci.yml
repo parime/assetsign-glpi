@@ -616,6 +616,11 @@ jobs:
           find . -type f -name "*.xml*" -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./.git/*" \
             | xargs -I {} sh -c 'echo "Validation de {}" && xmllint --noout {} || exit 1'
 
+      # Exigences de revue du Marketplace GLPI : pas de SQL brut hors installation, et HTML ecrit en
+      # PHP qui ne peut que baisser (les nouveaux ecrans s'ecrivent en Twig). Voir le script.
+      - name: "Marketplace GLPI : SQL brut et Twig"
+        run: php .github/scripts/check-marketplace-readiness.php
+
   locales:
     # #91 : detecte une chaine __()/_n() ajoutee au code sans etre propagee a
     # locales/*.po - exactement la derive qui a laisse ~77 chaines (passeport

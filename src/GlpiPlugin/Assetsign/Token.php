@@ -2,6 +2,7 @@
 
 namespace GlpiPlugin\Assetsign;
 
+use Glpi\DBAL\QueryFunction;
 use Migration;
 use RuntimeException;
 
@@ -196,8 +197,13 @@ class Token extends Compat\Base\TokenBase
      */
    private static function dbNow(): string {
        global $DB;
-       $result = $DB->doQuery('SELECT NOW() AS n');
-       return $DB->fetchAssoc($result)['n'];
+       // Le constructeur de requetes de GLPI exige un FROM : glpi_configs a toujours des lignes.
+       $row = $DB->request([
+           'SELECT' => [QueryFunction::now('n')],
+           'FROM'   => 'glpi_configs',
+           'LIMIT'  => 1,
+       ])->current();
+       return $row['n'];
    }
 
    private static function generateRaw(): string {

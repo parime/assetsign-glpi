@@ -1,0 +1,31 @@
+# Chaines HTML ecrites en PHP, par fichier (genere par check-marketplace-readiness.php).
+# Ces nombres ne peuvent que baisser : les nouveaux ecrans s'ecrivent en Twig (templates/).
+front/accessory.php 5
+front/checklistitem.php 5
+front/kit.php 5
+front/maintenancechecklistitem.php 5
+front/template.php 5
+hook.php 6
+src/GlpiPlugin/Assetsign/Arrival.php 10
+src/GlpiPlugin/Assetsign/Assetsign.php 39
+src/GlpiPlugin/Assetsign/Attestation.php 12
+src/GlpiPlugin/Assetsign/Campaign.php 7
+src/GlpiPlugin/Assetsign/ChecklistItem.php 11
+src/GlpiPlugin/Assetsign/Config.php 2
+src/GlpiPlugin/Assetsign/DepartureTicket.php 19
+src/GlpiPlugin/Assetsign/FieldsPluginLogic.php 4
+src/GlpiPlugin/Assetsign/Kit.php 15
+src/GlpiPlugin/Assetsign/Loan.php 4
+src/GlpiPlugin/Assetsign/Maintenance.php 4
+src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php 4
+src/GlpiPlugin/Assetsign/Movement.php 6
+src/GlpiPlugin/Assetsign/MyEquipment.php 8
+src/GlpiPlugin/Assetsign/Notification/DefaultNotificationContent.php 186
+src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php 3
+src/GlpiPlugin/Assetsign/NotificationTargetAttestation.php 43
+src/GlpiPlugin/Assetsign/NotificationTargetDeparture.php 33
+src/GlpiPlugin/Assetsign/Workflow/DestructionType.php 2
+src/GlpiPlugin/Assetsign/Workflow/DonType.php 2
+src/GlpiPlugin/Assetsign/Workflow/HandoverType.php 4
+src/GlpiPlugin/Assetsign/Workflow/ReturnType.php 1
+src/GlpiPlugin/Assetsign/Workflow/VenteType.php 2
