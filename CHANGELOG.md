@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.12.0] - 2026-10-24
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Added
 
 - **Signature de la charte informatique** (issue #204), preuve de sensibilisation pour ISO 27001
