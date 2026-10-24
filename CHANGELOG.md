@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Arrivée d'un salarié** (issue #221), le pendant du départ :
+  - bouton « Préparer l'arrivée » dans l'onglet « Attributions » de la fiche utilisateur : un
+    ticket « Arrivée de … » pour l'équipe, avec une tâche par étape (poste, licences, accès,
+    remise du matériel). La liste se modifie par entité (Configuration, onglet Attribution) ;
+  - la personne est demandeuse du ticket, sans notification : son matériel se remet depuis
+    l'onglet « Remise de matériel » du ticket, avec la fiche à signer ;
+  - GLPI refuse comme demandeur un compte pas encore valide (date de début à venir, aucun profil
+    dans l'entité) : une note privée prévient l'équipe, et la tâche planifiée `assetsignArrivals`
+    ajoute la personne dès que son compte devient valide ;
+  - déclencheurs facultatifs, désactivés par défaut : création du compte (un compte importé dont
+    la date de début est passée depuis plus de 30 jours est ignoré), réactivation du compte,
+    approche de la date de début (tâche planifiée). Pas de connecteur propre à un logiciel RH :
+    le SIRH alimente l'annuaire, synchronisé avec les comptes GLPI ;
+  - un seul dossier en cours par personne, tant que son ticket n'est ni résolu ni clos.
+
 ## [2.12.0] - 2026-10-24
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

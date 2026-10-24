@@ -4308,3 +4308,114 @@ msgstr "IT-Nutzungsrichtlinie unterschrieben. Vielen Dank!"
 #, php-format
 msgid "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
 msgstr "Die IT-Charta-Kampagne „%s“ läuft für diese Entität noch: Warten Sie ihre Frist ab oder schließen Sie sie, bevor Sie eine neue starten."
+
+msgid "Arrivée"
+msgid_plural "Arrivées"
+msgstr[0] "Eintritt"
+msgstr[1] "Eintritte"
+
+msgid "Création du compte"
+msgstr "Kontoerstellung"
+
+msgid "Réactivation du compte"
+msgstr "Reaktivierung des Kontos"
+
+msgid "Date de début du compte"
+msgstr "Startdatum des Kontos"
+
+msgid "Commander ou préparer le poste de travail"
+msgstr "Arbeitsplatzrechner bestellen oder vorbereiten"
+
+msgid "Attribuer les licences logicielles"
+msgstr "Softwarelizenzen zuweisen"
+
+msgid "Créer les accès (badge, comptes applicatifs, messagerie)"
+msgstr "Zugänge einrichten (Ausweis, Anwendungskonten, E-Mail)"
+
+msgid "Remettre le matériel et faire signer la fiche d'attribution"
+msgstr "Geräte übergeben und das Übergabeprotokoll unterschreiben lassen"
+
+#, php-format
+msgid "Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel."
+msgstr "%1$s fängt am %2$s an: Arbeitsplatz, Zugänge und Geräte vorbereiten."
+
+#, php-format
+msgid "Arrivée de %s : préparez son poste, ses accès et son matériel."
+msgstr "%s fängt an: Arbeitsplatz, Zugänge und Geräte vorbereiten."
+
+msgid "Le matériel se remet depuis l'onglet « Remise de matériel » de ce ticket : la fiche d'attribution est envoyée à la personne pour signature."
+msgstr "Geräte werden über die Registerkarte „Geräteübergabe“ dieses Tickets übergeben: Das Übergabeprotokoll wird der Person zur Unterschrift gesendet."
+
+#, php-format
+msgid "Arrivée de %1$s (le %2$s)"
+msgstr "Eintritt von %1$s (am %2$s)"
+
+#, php-format
+msgid "Arrivée de %s"
+msgstr "Eintritt von %s"
+
+#, php-format
+msgid "Le compte de %1$s ne sera valide qu'à partir du %2$s : la personne sera ajoutée automatiquement comme demandeur de ce ticket ce jour-là. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "Das Konto von %1$s ist erst ab dem %2$s gültig: Die Person wird an diesem Tag automatisch als Anforderer dieses Tickets hinzugefügt. Danach können die Geräte über die Registerkarte „Geräteübergabe“ übergeben werden."
+
+#, php-format
+msgid "%s n'a pas encore de profil dans cette entité : la personne sera ajoutée automatiquement comme demandeur de ce ticket dès que ses habilitations seront créées. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "%s hat noch kein Profil in dieser Einheit: Die Person wird automatisch als Anforderer dieses Tickets hinzugefügt, sobald ihre Berechtigungen angelegt sind. Danach können die Geräte über die Registerkarte „Geräteübergabe“ übergeben werden."
+
+msgid "Prépare les arrivées à l'approche de la date de début du compte"
+msgstr "Bereitet Eintritte vor, wenn das Startdatum des Kontos näher rückt"
+
+msgid "Le ticket d'arrivée n'a pas pu être créé. Vérifiez vos droits de création de tickets dans l'entité de la personne."
+msgstr "Das Eintrittsticket konnte nicht erstellt werden. Prüfen Sie Ihre Rechte zur Ticketerstellung in der Einheit der Person."
+
+msgid "Une arrivée est déjà en cours pour cette personne : voici son ticket."
+msgstr "Für diese Person läuft bereits ein Eintritt: Hier ist das Ticket."
+
+msgid "Arrivée préparée : le ticket liste les étapes, le matériel se remet depuis son onglet « Remise de matériel »."
+msgstr "Eintritt vorbereitet: Das Ticket listet die Schritte auf, die Geräte werden über seine Registerkarte „Geräteübergabe“ übergeben."
+
+msgid "Arrivée de la personne"
+msgstr "Eintritt der Person"
+
+#, php-format
+msgid "Arrivée en cours : ticket n°%d."
+msgstr "Eintritt läuft: Ticket Nr. %d."
+
+msgid "Voir le ticket d'arrivée"
+msgstr "Eintrittsticket anzeigen"
+
+msgid "Un ticket pour l'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket."
+msgstr "Ein Ticket für das Team mit den nötigen Schritten (Arbeitsplatz, Lizenzen, Zugänge); die Geräte werden anschließend über dieses Ticket übergeben."
+
+msgid "Préparer l'arrivée"
+msgstr "Eintritt vorbereiten"
+
+msgid "Arrivée d'un salarié"
+msgstr "Eintritt eines Mitarbeiters"
+
+msgid "Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-dessous ; le matériel se remet ensuite depuis l'onglet « Remise de matériel » du ticket. L'action « Préparer l'arrivée » est toujours disponible dans l'onglet « Attributions » de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "Ein Ticket „Eintritt von …“ für das Team, mit einer Aufgabe pro Schritt unten; die Geräte werden anschließend über die Registerkarte „Geräteübergabe“ des Tickets übergeben. Die Aktion „Eintritt vorbereiten“ ist immer in der Registerkarte „Zuweisungen“ des Benutzers verfügbar; die automatischen Auslöser unten sind optional."
+
+msgid "Préparer l'arrivée quand un compte GLPI est créé"
+msgstr "Eintritt vorbereiten, wenn ein GLPI-Konto erstellt wird"
+
+msgid "À activer après le premier import de l'annuaire : sinon chaque compte importé ouvrirait un ticket. Un compte dont la date de début est passée de plus de 30 jours est ignoré."
+msgstr "Erst nach dem ersten Verzeichnisimport aktivieren: sonst würde jedes importierte Konto ein Ticket öffnen. Ein Konto, dessen Startdatum mehr als 30 Tage zurückliegt, wird ignoriert."
+
+msgid "Préparer l'arrivée quand un compte GLPI est réactivé (retour d'un salarié)"
+msgstr "Eintritt vorbereiten, wenn ein GLPI-Konto reaktiviert wird (Rückkehr eines Mitarbeiters)"
+
+msgid "Préparer l'arrivée à l'approche de la date de début du compte"
+msgstr "Eintritt vorbereiten, wenn das Startdatum des Kontos näher rückt"
+
+msgid "Nombre de jours avant la date de début"
+msgstr "Anzahl Tage vor dem Startdatum"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignArrivals »."
+msgstr "Wird täglich von der automatischen Aktion „assetsignArrivals“ geprüft."
+
+msgid "Tâches du ticket d'arrivée (une par ligne)"
+msgstr "Aufgaben des Eintrittstickets (eine pro Zeile)"
+
+msgid "Vide : liste proposée par défaut. 20 tâches au plus."
+msgstr "Leer: Standardliste. Höchstens 20 Aufgaben."

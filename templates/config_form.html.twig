@@ -261,6 +261,36 @@
               </div>
             {% endfor %}
           {% endif %}
+
+          {# Issue #221 : arrivee d'un salarie, ticket de preparation et remise du materiel. #}
+          <h4 class="mt-4"><i class="ti ti-door-enter me-1"></i>{{ __('Arrivée d\'un salarié', 'assetsign') }}</h4>
+          <p class="text-muted">{{ __('Un ticket « Arrivée de … » pour l\'équipe, avec une tâche par étape ci-dessous ; le matériel se remet ensuite depuis l\'onglet « Remise de matériel » du ticket. L\'action « Préparer l\'arrivée » est toujours disponible dans l\'onglet « Attributions » de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs.', 'assetsign') }}</p>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="arrival_on_creation" value="0">
+            <input type="checkbox" name="arrival_on_creation" value="1" class="form-check-input" id="arrival_on_creation" {{ config.arrival_on_creation|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="arrival_on_creation">{{ __('Préparer l\'arrivée quand un compte GLPI est créé', 'assetsign') }}</label>
+            <div class="form-text"><i class="ti ti-alert-triangle text-warning me-1"></i>{{ __('À activer après le premier import de l\'annuaire : sinon chaque compte importé ouvrirait un ticket. Un compte dont la date de début est passée de plus de 30 jours est ignoré.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="arrival_on_reactivation" value="0">
+            <input type="checkbox" name="arrival_on_reactivation" value="1" class="form-check-input" id="arrival_on_reactivation" {{ config.arrival_on_reactivation|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="arrival_on_reactivation">{{ __('Préparer l\'arrivée quand un compte GLPI est réactivé (retour d\'un salarié)', 'assetsign') }}</label>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="arrival_on_begin_date" value="0">
+            <input type="checkbox" name="arrival_on_begin_date" value="1" class="form-check-input" id="arrival_on_begin_date" {{ config.arrival_on_begin_date|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="arrival_on_begin_date">{{ __('Préparer l\'arrivée à l\'approche de la date de début du compte', 'assetsign') }}</label>
+          </div>
+          <div class="mb-3" style="max-width: 320px;">
+            <label class="form-label" for="arrival_begin_date_days">{{ __('Nombre de jours avant la date de début', 'assetsign') }}</label>
+            <input type="number" min="0" max="90" name="arrival_begin_date_days" id="arrival_begin_date_days" class="form-control" value="{{ config.arrival_begin_date_days|default(14) }}">
+            <div class="form-text">{{ __('Vérifié chaque jour par l\'action automatique « assetsignArrivals ».', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="arrival_tasks"><i class="ti ti-list-check me-1"></i>{{ __('Tâches du ticket d\'arrivée (une par ligne)', 'assetsign') }}</label>
+            <textarea name="arrival_tasks" id="arrival_tasks" class="form-control" rows="5">{{ arrival_tasks }}</textarea>
+            <div class="form-text">{{ __('Vide : liste proposée par défaut. 20 tâches au plus.', 'assetsign') }}</div>
+          </div>
         </div>
 
         {# ---------------------------------------------------------------- Restitution #}

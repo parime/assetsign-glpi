@@ -88,7 +88,8 @@ function plugin_init_assetsign(): void {
     $manageableItemtypes = \GlpiPlugin\Assetsign\Config::getAllManageableItemtypes();
 
     $itemHooks = array_fill_keys($manageableItemtypes, 'plugin_assetsign_item_assignment');
-    $PLUGIN_HOOKS[Hooks::ITEM_ADD]['assetsign']    = $itemHooks;
+    // Issue #221 : la creation d'un compte peut preparer son arrivee (Arrival::onUserAdd()).
+    $PLUGIN_HOOKS[Hooks::ITEM_ADD]['assetsign']    = $itemHooks + ['User' => 'plugin_assetsign_user_add'];
     // Issue #157 : la desactivation d'un compte peut preparer son depart (Departure::onUserUpdate()).
     $PLUGIN_HOOKS[Hooks::ITEM_UPDATE]['assetsign'] = $itemHooks + ['User' => 'plugin_assetsign_user_update'];
 
@@ -145,6 +146,7 @@ function plugin_init_assetsign(): void {
     Plugin::registerClass(\GlpiPlugin\Assetsign\Template::class);
     // Issue #157 : dossiers de depart, porteurs de leurs propres notifications.
     Plugin::registerClass(\GlpiPlugin\Assetsign\Departure::class);
+    Plugin::registerClass(\GlpiPlugin\Assetsign\Arrival::class);
     // Issue #158 : campagnes d'attestation et attestations (porteuses de leurs notifications).
     Plugin::registerClass(\GlpiPlugin\Assetsign\Campaign::class);
     Plugin::registerClass(\GlpiPlugin\Assetsign\Attestation::class);

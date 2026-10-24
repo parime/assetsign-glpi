@@ -9,6 +9,7 @@
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\Cache\CacheManager;
 use GlpiPlugin\Assetsign\Accessory;
+use GlpiPlugin\Assetsign\Arrival;
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\AssetsignAccessory;
 use GlpiPlugin\Assetsign\AssetsignItem;
@@ -68,6 +69,38 @@ function plugin_assetsign_user_update(CommonDBTM $item): void {
    } catch (\Throwable $e) {
        \Toolbox::logInFile('assetsign', sprintf(
            "Echec de la preparation du depart pour l'utilisateur #%d : %s\n%s",
+           $item->getID(),
+           $e->getMessage(),
+           $e->getTraceAsString()
+       ));
+   }
+   // Issue #221 : la reactivation d'un compte peut preparer une arrivee (retour d'un salarie).
+   try {
+       Arrival::onUserUpdate($item);
+   } catch (\Throwable $e) {
+       \Toolbox::logInFile('assetsign', sprintf(
+           "Echec de la preparation de l'arrivee pour l'utilisateur #%d : %s\n%s",
+           $item->getID(),
+           $e->getMessage(),
+           $e->getTraceAsString()
+       ));
+   }
+}
+
+/**
+ * Hook ITEM_ADD sur User (setup.php) - issue #221 : la creation d'un compte peut preparer
+ * l'arrivee de la personne (si active dans la configuration, cf. Arrival::onUserAdd()). Jamais
+ * bloquant pour la creation du compte.
+ */
+function plugin_assetsign_user_add(CommonDBTM $item): void {
+   if (!$item instanceof User) {
+      return;
+   }
+   try {
+       Arrival::onUserAdd($item);
+   } catch (\Throwable $e) {
+       \Toolbox::logInFile('assetsign', sprintf(
+           "Echec de la preparation de l'arrivee pour l'utilisateur #%d : %s\n%s",
            $item->getID(),
            $e->getMessage(),
            $e->getTraceAsString()
@@ -341,6 +374,8 @@ function plugin_assetsign_install(): bool {
     // Issue #157 : dossiers de depart (restitution groupee), apres Assetsign::install()
     // qui ajoute la colonne de rattachement plugin_assetsign_departures_id.
     Departure::install($migration);
+    // Issue #221 : dossiers d'arrivee.
+    Arrival::install($migration);
     // Issue #158 : campagnes d'attestation annuelle de detention.
     Campaign::install($migration);
     Attestation::install($migration);
@@ -435,6 +470,15 @@ function plugin_assetsign_install(): bool {
         ]
     );
     CronTask::register(
+        Arrival::class,
+        'assetsignArrivals',
+        DAY_TIMESTAMP,
+        [
+            'comment' => 'Prepare les arrivees a l\'approche de la date de debut du compte (si active)',
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
+    CronTask::register(
         Departure::class,
         'assetsignDepartures',
         DAY_TIMESTAMP,
@@ -505,6 +549,7 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_checklistvalues',
         'glpi_plugin_assetsign_assetsigns',
         'glpi_plugin_assetsign_departures',
+        'glpi_plugin_assetsign_arrivals',
         'glpi_plugin_assetsign_attestations',
         'glpi_plugin_assetsign_campaigns',
         'glpi_plugin_assetsign_checklistitems',

@@ -4272,3 +4272,114 @@ msgstr "Charte informatique signée. Merci !"
 #, php-format
 msgid "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
 msgstr "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
+
+msgid "Arrivée"
+msgid_plural "Arrivées"
+msgstr[0] "Arrivée"
+msgstr[1] "Arrivées"
+
+msgid "Création du compte"
+msgstr "Création du compte"
+
+msgid "Réactivation du compte"
+msgstr "Réactivation du compte"
+
+msgid "Date de début du compte"
+msgstr "Date de début du compte"
+
+msgid "Commander ou préparer le poste de travail"
+msgstr "Commander ou préparer le poste de travail"
+
+msgid "Attribuer les licences logicielles"
+msgstr "Attribuer les licences logicielles"
+
+msgid "Créer les accès (badge, comptes applicatifs, messagerie)"
+msgstr "Créer les accès (badge, comptes applicatifs, messagerie)"
+
+msgid "Remettre le matériel et faire signer la fiche d'attribution"
+msgstr "Remettre le matériel et faire signer la fiche d'attribution"
+
+#, php-format
+msgid "Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel."
+msgstr "Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel."
+
+#, php-format
+msgid "Arrivée de %s : préparez son poste, ses accès et son matériel."
+msgstr "Arrivée de %s : préparez son poste, ses accès et son matériel."
+
+msgid "Le matériel se remet depuis l'onglet « Remise de matériel » de ce ticket : la fiche d'attribution est envoyée à la personne pour signature."
+msgstr "Le matériel se remet depuis l'onglet « Remise de matériel » de ce ticket : la fiche d'attribution est envoyée à la personne pour signature."
+
+#, php-format
+msgid "Arrivée de %1$s (le %2$s)"
+msgstr "Arrivée de %1$s (le %2$s)"
+
+#, php-format
+msgid "Arrivée de %s"
+msgstr "Arrivée de %s"
+
+#, php-format
+msgid "Le compte de %1$s ne sera valide qu'à partir du %2$s : la personne sera ajoutée automatiquement comme demandeur de ce ticket ce jour-là. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "Le compte de %1$s ne sera valide qu'à partir du %2$s : la personne sera ajoutée automatiquement comme demandeur de ce ticket ce jour-là. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+
+#, php-format
+msgid "%s n'a pas encore de profil dans cette entité : la personne sera ajoutée automatiquement comme demandeur de ce ticket dès que ses habilitations seront créées. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "%s n'a pas encore de profil dans cette entité : la personne sera ajoutée automatiquement comme demandeur de ce ticket dès que ses habilitations seront créées. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+
+msgid "Prépare les arrivées à l'approche de la date de début du compte"
+msgstr "Prépare les arrivées à l'approche de la date de début du compte"
+
+msgid "Le ticket d'arrivée n'a pas pu être créé. Vérifiez vos droits de création de tickets dans l'entité de la personne."
+msgstr "Le ticket d'arrivée n'a pas pu être créé. Vérifiez vos droits de création de tickets dans l'entité de la personne."
+
+msgid "Une arrivée est déjà en cours pour cette personne : voici son ticket."
+msgstr "Une arrivée est déjà en cours pour cette personne : voici son ticket."
+
+msgid "Arrivée préparée : le ticket liste les étapes, le matériel se remet depuis son onglet « Remise de matériel »."
+msgstr "Arrivée préparée : le ticket liste les étapes, le matériel se remet depuis son onglet « Remise de matériel »."
+
+msgid "Arrivée de la personne"
+msgstr "Arrivée de la personne"
+
+#, php-format
+msgid "Arrivée en cours : ticket n°%d."
+msgstr "Arrivée en cours : ticket n°%d."
+
+msgid "Voir le ticket d'arrivée"
+msgstr "Voir le ticket d'arrivée"
+
+msgid "Un ticket pour l'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket."
+msgstr "Un ticket pour l'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket."
+
+msgid "Préparer l'arrivée"
+msgstr "Préparer l'arrivée"
+
+msgid "Arrivée d'un salarié"
+msgstr "Arrivée d'un salarié"
+
+msgid "Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-dessous ; le matériel se remet ensuite depuis l'onglet « Remise de matériel » du ticket. L'action « Préparer l'arrivée » est toujours disponible dans l'onglet « Attributions » de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-dessous ; le matériel se remet ensuite depuis l'onglet « Remise de matériel » du ticket. L'action « Préparer l'arrivée » est toujours disponible dans l'onglet « Attributions » de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+
+msgid "Préparer l'arrivée quand un compte GLPI est créé"
+msgstr "Préparer l'arrivée quand un compte GLPI est créé"
+
+msgid "À activer après le premier import de l'annuaire : sinon chaque compte importé ouvrirait un ticket. Un compte dont la date de début est passée de plus de 30 jours est ignoré."
+msgstr "À activer après le premier import de l'annuaire : sinon chaque compte importé ouvrirait un ticket. Un compte dont la date de début est passée de plus de 30 jours est ignoré."
+
+msgid "Préparer l'arrivée quand un compte GLPI est réactivé (retour d'un salarié)"
+msgstr "Préparer l'arrivée quand un compte GLPI est réactivé (retour d'un salarié)"
+
+msgid "Préparer l'arrivée à l'approche de la date de début du compte"
+msgstr "Préparer l'arrivée à l'approche de la date de début du compte"
+
+msgid "Nombre de jours avant la date de début"
+msgstr "Nombre de jours avant la date de début"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignArrivals »."
+msgstr "Vérifié chaque jour par l'action automatique « assetsignArrivals »."
+
+msgid "Tâches du ticket d'arrivée (une par ligne)"
+msgstr "Tâches du ticket d'arrivée (une par ligne)"
+
+msgid "Vide : liste proposée par défaut. 20 tâches au plus."
+msgstr "Vide : liste proposée par défaut. 20 tâches au plus."
