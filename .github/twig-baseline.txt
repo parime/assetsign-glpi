@@ -14,7 +14,6 @@ src/GlpiPlugin/Assetsign/ChecklistItem.php 11
 src/GlpiPlugin/Assetsign/Config.php 2
 src/GlpiPlugin/Assetsign/DepartureTicket.php 19
 src/GlpiPlugin/Assetsign/FieldsPluginLogic.php 4
-src/GlpiPlugin/Assetsign/Kit.php 15
 src/GlpiPlugin/Assetsign/Loan.php 4
 src/GlpiPlugin/Assetsign/Maintenance.php 4
 src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php 4
