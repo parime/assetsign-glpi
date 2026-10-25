@@ -93,4 +93,36 @@ final class CampaignLogic
    public static function charterTicketDue(?string $deadline, int $existingTicketId, int $pending, int $now): bool {
        return $existingTicketId === 0 && $pending > 0 && self::isPastDeadline($deadline, $now);
    }
+
+   /**
+    * Issue #224 : empreinte d'une version de la charte. Les espaces sont normalises : un simple
+    * changement de mise en page de l'editeur ne cree pas une nouvelle version. Chaine vide si aucune
+    * charte.
+    */
+   public static function charterHash(string $html): string {
+       $normalized = trim((string) preg_replace('/\s+/u', ' ', $html));
+       return $normalized === '' ? '' : hash('sha256', $normalized);
+   }
+
+   /**
+    * Issue #224 : personnes dont la derniere signature porte sur une autre version que la charte en
+    * vigueur. Une personne qui n'a jamais signe n'en fait pas partie : la campagne habituelle la
+    * concerne deja.
+    *
+    * @param array<int, string> $lastSignedHashByUser identifiant de la personne => empreinte signee
+    * @return list<int>
+    */
+   public static function outdatedSigners(array $lastSignedHashByUser, string $currentHash): array {
+      if ($currentHash === '') {
+          return [];
+      }
+       $outdated = [];
+      foreach ($lastSignedHashByUser as $usersId => $hash) {
+         if ($hash !== '' && $hash !== $currentHash) {
+             $outdated[] = (int) $usersId;
+         }
+      }
+       sort($outdated);
+       return $outdated;
+   }
 }

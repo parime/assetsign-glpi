@@ -116,12 +116,12 @@ final class CharterCampaignTest extends AssetsignTestCase
        $entityId = $this->charterEntity('PHPUnit Charte En Cours');
        $this->member($entityId, 'Doublon');
        $first = $this->launchCharter($entityId);
-       try {
-           $this->launchCharter($entityId);
-           $this->fail('Une seconde campagne de charte en cours doit être refusée.');
-       } catch (\RuntimeException $e) {
-           $this->assertStringContainsString((string) $first->fields['name'], $e->getMessage());
-       }
+      try {
+          $this->launchCharter($entityId);
+          $this->fail('Une seconde campagne de charte en cours doit être refusée.');
+      } catch (\RuntimeException $e) {
+          $this->assertStringContainsString((string) $first->fields['name'], $e->getMessage());
+      }
 
        // Échue (encore ouverte pour les signatures tardives) : la suivante peut être lancée.
        $DB->update(Campaign::getTable(), ['date_deadline' => date('Y-m-d', strtotime('-1 day'))], ['id' => $first->getID()]);
@@ -197,5 +197,87 @@ final class CharterCampaignTest extends AssetsignTestCase
 
        Campaign::runCharterRenewals();
        $this->assertSame(2, $countFor($enabled), 'Nouvelle campagne une fois la période écoulée.');
+   }
+
+   /** Issue #224 : signature confirmee posee directement, comme l'enregistre la page de signature. */
+   private function confirm(Campaign $campaign, int $usersId, string $when): void {
+       global $DB;
+       $DB->update(Attestation::getTable(), [
+           'status'        => CampaignLogic::ATTESTATION_CONFIRMED,
+           'date_answered' => $when,
+       ], ['plugin_assetsign_campaigns_id' => $campaign->getID(), 'users_id' => $usersId]);
+   }
+
+   private function changeCharter(int $entityId, string $html): void {
+       $template = new Template();
+       $template->getFromDBByCrit(['entities_id' => $entityId, 'is_default' => 1, 'type' => Assetsign::TYPE_HANDOVER]);
+       $template->update(['id' => $template->getID(), 'charter_content' => $html]);
+   }
+
+   public function testNewCharterVersionIsResignedOnlyByPreviousSigners(): void {
+       $entityId = $this->charterEntity('PHPUnit Charte Version');
+       $signer = $this->member($entityId, 'Signataire');
+       $nonSigner = $this->member($entityId, 'Absent');
+       $first = $this->launchCharter($entityId);
+       $this->assertSame(64, strlen((string) $first->fields['charter_hash']));
+       $this->confirm($first, $signer, '2026-01-10 10:00:00');
+       $this->assertFalse(Campaign::isCurrentCharterUndistributed($entityId));
+       $this->assertSame([], Campaign::outdatedSignerIds($entityId), 'Version en vigueur déjà signée.');
+
+       // Même texte, autre mise en page : pas une nouvelle version.
+       $this->changeCharter($entityId, "<p>Article 1 :   verrouiller\n sa session.</p>");
+       $this->assertFalse(Campaign::isCurrentCharterUndistributed($entityId));
+
+       $this->changeCharter($entityId, '<p>Article 1 : verrouiller sa session. Article 2 : signaler les incidents.</p>');
+       $this->assertTrue(Campaign::isCurrentCharterUndistributed($entityId));
+       $this->assertSame([$signer], Campaign::outdatedSignerIds($entityId), 'Seul le signataire de l\'ancienne version.');
+
+       // L'ancienne campagne est encore en cours : on la clôt, comme le ferait le gestionnaire.
+       $first->close();
+       $resign = Campaign::launch([
+           'name' => '', 'type' => CampaignLogic::TYPE_CHARTER, 'only_outdated' => true, 'entities_id' => $entityId,
+           'is_recursive' => false, 'groups_id' => 0, 'profiles_id' => 0, 'date_deadline' => date('Y-m-d', strtotime('+30 days')),
+       ]);
+       $this->assertSame([$signer], array_map('intval', array_column($resign->getAttestations(), 'users_id')));
+       $this->assertNotSame($first->fields['charter_hash'], $resign->fields['charter_hash']);
+       $this->assertStringContainsString('signaler les incidents', (string) $resign->fields['charter_content']);
+       $this->assertFalse(Campaign::isCurrentCharterUndistributed($entityId));
+
+       $versions = Campaign::charterVersions($entityId);
+       $this->assertCount(2, $versions);
+       $this->assertTrue($versions[0]['is_current']);
+       $this->assertSame(0, $versions[0]['signers']);
+       $this->assertFalse($versions[1]['is_current']);
+       $this->assertSame(1, $versions[1]['signers']);
+       $this->assertNotContains($nonSigner, array_map('intval', array_column($resign->getAttestations(), 'users_id')));
+   }
+
+   public function testResignWithoutPreviousSignerIsRefused(): void {
+       $entityId = $this->charterEntity('PHPUnit Charte Sans Signataire');
+       $this->member($entityId, 'Personne');
+       $this->expectException(\RuntimeException::class);
+       Campaign::launch([
+           'name' => '', 'type' => CampaignLogic::TYPE_CHARTER, 'only_outdated' => true, 'entities_id' => $entityId,
+           'is_recursive' => false, 'groups_id' => 0, 'profiles_id' => 0, 'date_deadline' => '',
+       ]);
+   }
+
+   public function testAutomaticResignLaunchesOncePerVersion(): void {
+       $entityId = $this->charterEntity('PHPUnit Charte Auto');
+       $signer = $this->member($entityId, 'Auto');
+       Config::upsertForEntity($entityId, ['charter_resign_on_change' => 1, 'charter_deadline_days' => 10]);
+       $first = $this->launchCharter($entityId);
+       $this->confirm($first, $signer, '2026-01-10 10:00:00');
+       $first->close();
+       $countFor = static fn (): int => countElementsInTable(Campaign::getTable(), ['entities_id' => $entityId, 'type' => CampaignLogic::TYPE_CHARTER]);
+
+       Campaign::runCharterVersionChecks();
+       $this->assertSame(1, $countFor(), 'Charte inchangée : rien à relancer.');
+
+       $this->changeCharter($entityId, '<p>Version 2</p>');
+       Campaign::runCharterVersionChecks();
+       $this->assertSame(2, $countFor());
+       Campaign::runCharterVersionChecks();
+       $this->assertSame(2, $countFor(), 'Une seule campagne par version.');
    }
 }

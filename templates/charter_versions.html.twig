@@ -1,0 +1,32 @@
+{# Issue #224 : versions successives de la charte informatique, la plus recente d'abord. #}
+<div class="container-lg my-3">
+  <div class="card">
+    <div class="card-header d-flex align-items-center">
+      <h3 class="card-title mb-0"><i class="ti ti-history me-2"></i>{{ __('Historique des versions de la charte', 'assetsign') }}</h3>
+      <a href="{{ campaigns_url }}" class="btn btn-outline-secondary ms-auto"><i class="ti ti-arrow-left me-1"></i>{{ __('Campagnes', 'assetsign') }}</a>
+    </div>
+    <div class="card-body">
+      <p class="text-muted">{{ __('Chaque modification du texte de la charte crée une nouvelle version. Les fiches et les campagnes déjà signées gardent la version en vigueur au moment de la signature.', 'assetsign') }}</p>
+      {% if undistributed %}
+        <div class="alert alert-warning"><i class="ti ti-file-diff me-1"></i>{{ __('La charte en vigueur n\'a encore été diffusée par aucune campagne.', 'assetsign') }}</div>
+      {% endif %}
+      {% if versions is empty %}
+        <div class="empty"><p class="empty-title">{{ __('Aucune campagne de charte pour l\'instant', 'assetsign') }}</p></div>
+      {% endif %}
+      {% for v in versions %}
+        <details class="card mb-2" {{ loop.first ? 'open' : '' }}>
+          <summary class="card-header d-flex flex-wrap align-items-center gap-2" style="cursor: pointer;">
+            <strong>{{ __('Version du %s', 'assetsign')|format(v.first_date|formatted_date) }}</strong>
+            {% if v.is_current %}<span class="badge bg-green-lt">{{ __('En vigueur', 'assetsign') }}</span>{% else %}<span class="badge bg-secondary-lt">{{ __('Ancienne version', 'assetsign') }}</span>{% endif %}
+            <span class="text-muted small ms-auto">{{ __('%d signataire(s)', 'assetsign')|format(v.signers) }} — {{ v.campaigns|join(', ') }}</span>
+          </summary>
+          <div class="card-body">
+            <div class="text-muted small mb-2">{{ __('Empreinte', 'assetsign') }} : <code>{{ v.hash[:12] }}</code></div>
+            {% set version_html = v.safe_html %}
+            <div class="border rounded p-2">{{ version_html|raw }}</div>
+          </div>
+        </details>
+      {% endfor %}
+    </div>
+  </div>
+</div>

@@ -4485,3 +4485,55 @@ msgstr "Envoyer un message de test"
 
 msgid "Utilise les réglages déjà enregistrés : enregistrez d'abord."
 msgstr "Utilise les réglages déjà enregistrés : enregistrez d'abord."
+
+msgid "Personne n'a signé une ancienne version de la charte : aucune re-signature à lancer."
+msgstr "Personne n'a signé une ancienne version de la charte : aucune re-signature à lancer."
+
+#, php-format
+msgid "Charte informatique, nouvelle version du %s"
+msgstr "Charte informatique, nouvelle version du %s"
+
+msgid "Historique des versions de la charte"
+msgstr "Historique des versions de la charte"
+
+msgid "Campagnes"
+msgstr "Campagnes"
+
+msgid "Chaque modification du texte de la charte crée une nouvelle version. Les fiches et les campagnes déjà signées gardent la version en vigueur au moment de la signature."
+msgstr "Chaque modification du texte de la charte crée une nouvelle version. Les fiches et les campagnes déjà signées gardent la version en vigueur au moment de la signature."
+
+msgid "La charte en vigueur n'a encore été diffusée par aucune campagne."
+msgstr "La charte en vigueur n'a encore été diffusée par aucune campagne."
+
+msgid "Aucune campagne de charte pour l'instant"
+msgstr "Aucune campagne de charte pour l'instant"
+
+#, php-format
+msgid "Version du %s"
+msgstr "Version du %s"
+
+msgid "En vigueur"
+msgstr "En vigueur"
+
+msgid "Ancienne version"
+msgstr "Ancienne version"
+
+#, php-format
+msgid "%d signataire(s)"
+msgstr "%d signataire(s)"
+
+msgid "Empreinte"
+msgstr "Empreinte"
+
+#, php-format
+msgid "La charte informatique a changé : %d personne(s) ont signé une ancienne version."
+msgstr "La charte informatique a changé : %d personne(s) ont signé une ancienne version."
+
+msgid "Leur faire signer la nouvelle version"
+msgstr "Leur faire signer la nouvelle version"
+
+msgid "Faire re-signer automatiquement quand la charte change"
+msgstr "Faire re-signer automatiquement quand la charte change"
+
+msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
+msgstr "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."

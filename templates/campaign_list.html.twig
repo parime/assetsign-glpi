@@ -8,6 +8,21 @@
       {% endif %}
     </div>
     <div class="card-body pb-0">
+      {% if outdated_signers > 0 %}
+        {# Issue #224 : nouvelle version de la charte, pas encore diffusee. #}
+        <div class="alert alert-warning d-flex flex-wrap align-items-center gap-2">
+          <i class="ti ti-file-diff"></i>
+          <span>{{ __('La charte informatique a changé : %d personne(s) ont signé une ancienne version.', 'assetsign')|format(outdated_signers) }}</span>
+          {% if can_create %}
+            <form method="post" action="{{ form_url }}" class="ms-auto">
+              <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="entities_id" value="{{ active_entity }}">
+              <button type="submit" name="launch_resign" value="1" class="btn btn-warning btn-sm"><i class="ti ti-send me-1"></i>{{ __('Leur faire signer la nouvelle version', 'assetsign') }}</button>
+            </form>
+          {% endif %}
+        </div>
+      {% endif %}
+      <p class="mb-2"><a href="{{ versions_url }}"><i class="ti ti-history me-1"></i>{{ __('Historique des versions de la charte', 'assetsign') }}</a></p>
       <p class="text-muted">{{ __('Inventaire contradictoire : chaque personne confirme en signant la liste du matériel qu\'elle détient, ou signale un écart. Preuve attendue en audit (ISO 27001 A.5.9, inventaire des actifs).', 'assetsign') }}</p>
       <p class="text-muted">{{ __('Charte informatique : chaque personne signe la charte, renouvelable automatiquement chaque année (Configuration). Preuve de sensibilisation (ISO 27001 A.5.10 et A.6.3).', 'assetsign') }}</p>
     </div>

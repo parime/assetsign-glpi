@@ -34,8 +34,15 @@ foreach ($DB->request([
     ];
 }
 
+// Issue #224 : la charte de l'entite active a change depuis sa derniere diffusion.
+$activeEntity = Session::getActiveEntity();
+$outdated = Campaign::isCurrentCharterUndistributed($activeEntity) ? count(Campaign::outdatedSignerIds($activeEntity)) : 0;
+
 TemplateRenderer::getInstance()->display('@assetsign/campaign_list.html.twig', [
     'rows'       => $rows,
+    'outdated_signers' => $outdated,
+    'versions_url'     => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/charterversions.php',
+    'active_entity'    => $activeEntity,
     'form_url'   => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/campaign.form.php',
     'can_create' => Session::haveRight(Profile::RIGHT_ASSETSIGN, UPDATE),
 ]);

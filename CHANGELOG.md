@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Versions de la charte informatique** (issue #224) : chaque campagne de charte enregistre
+  l'empreinte de la version diffusée (une simple différence d'espaces ne compte pas). Quand le
+  texte change, la page des campagnes l'indique (« La charte informatique a changé : N personne(s)
+  ont signé une ancienne version ») avec le bouton « Leur faire signer la nouvelle version », qui
+  lance une campagne limitée à ces personnes. Option de Configuration pour la lancer
+  automatiquement, une seule fois par version. Page « Historique des versions de la charte » pour
+  l'auditeur : texte de chaque version, date de première diffusion, campagnes et nombre de
+  signataires. Les campagnes existantes reçoivent leur empreinte à la mise à jour.
+
 - **Mode guichet pour la signature sur place** (issue #230) : la page de signature ouverte par « Faire signer sur place » propose un bouton « Plein écran (tablette) ». Après la signature, l'écran se verrouille : il indique à qui rendre l'appareil et seul le bouton « Reprendre la main (technicien) » en sort, vers la fiche. Le bouton Précédent du navigateur ne ramène plus dans la session du technicien, et l'ancien lien vers l'accueil GLPI n'est plus proposé dans ce mode.
 
 - **Avis dans Teams, Slack ou Mattermost** (issue #231), Configuration > onglet Général, section « Avis

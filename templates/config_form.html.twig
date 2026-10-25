@@ -150,6 +150,13 @@
               </div>
             </div>
             <div class="form-text">{{ __('Une campagne de charte est lancée pour cette entité et ses sous-entités à chaque période (tâche planifiée assetsignCampaigns), avec les relances habituelles. À la date limite, un ticket liste les personnes qui ne l\'ont pas signée ; aucun compte n\'est bloqué.', 'assetsign') }}</div>
+            {# Issue #224 : nouvelle version de la charte. #}
+            <label class="form-check form-switch mt-2">
+              <input type="hidden" name="charter_resign_on_change" value="0">
+              <input type="checkbox" class="form-check-input" name="charter_resign_on_change" value="1" {{ config.charter_resign_on_change|default(0) ? 'checked' : '' }}>
+              <span class="form-check-label">{{ __('Faire re-signer automatiquement quand la charte change', 'assetsign') }}</span>
+            </label>
+            <div class="form-text">{{ __('Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
