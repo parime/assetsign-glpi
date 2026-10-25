@@ -789,28 +789,19 @@ class Assetsign extends Compat\Base\AssetsignBase
 
        $formUrl = $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/departure.form.php';
        $open = Departure::findOpenFor($users_id);
-
-       echo '<div class="card mb-3"><div class="card-body d-flex align-items-center gap-3">';
-       echo '<i class="ti ti-door-exit fs-2 text-muted"></i><div class="flex-grow-1">';
-       echo '<strong>' . __('Départ de la personne', 'assetsign') . '</strong><div class="text-muted small">';
-      if ($open !== null) {
-          echo htmlescape(sprintf(
-              __('Départ en cours : %d matériel(s) à restituer.', 'assetsign'),
-              count($open->getChildren())
-          ));
-          echo '</div></div>';
-          echo '<a class="btn btn-outline-primary" href="' . htmlescape($formUrl . '?id=' . $open->getID()) . '">'
-              . '<i class="ti ti-eye me-1"></i>' . __('Voir le départ', 'assetsign') . '</a>';
-      } else {
-          echo __('Une seule fiche de restitution groupée pour tout le matériel affecté, signée en une fois.', 'assetsign');
-          echo '</div></div>';
-          echo '<form method="post" action="' . htmlescape($formUrl) . '" class="m-0">';
-          echo '<input type="hidden" name="_glpi_csrf_token" value="' . htmlescape(Session::getNewCSRFToken()) . '">';
-          echo '<input type="hidden" name="users_id" value="' . $users_id . '">';
-          echo '<button type="submit" name="prepare" value="1" class="btn btn-primary">'
-              . '<i class="ti ti-door-exit me-1"></i>' . __('Préparer le départ', 'assetsign') . '</button></form>';
-      }
-       echo '</div></div>';
+       self::showLifecycleCard($users_id, [
+           'icon'          => 'ti-door-exit',
+           'title'         => __('Départ de la personne', 'assetsign'),
+           'help'          => __('Une seule fiche de restitution groupée pour tout le matériel affecté, signée en une fois.', 'assetsign'),
+           'form_url'      => $formUrl,
+           'prepare_label' => __('Préparer le départ', 'assetsign'),
+           'open_url'      => $open !== null ? $formUrl . '?id=' . $open->getID() : '',
+           'open_text'     => $open !== null
+               ? sprintf(__('Départ en cours : %d matériel(s) à restituer.', 'assetsign'), count($open->getChildren()))
+               : '',
+           'open_icon'     => 'ti-eye',
+           'open_label'    => __('Voir le départ', 'assetsign'),
+       ]);
    }
 
     /**
@@ -820,28 +811,31 @@ class Assetsign extends Compat\Base\AssetsignBase
    private static function showArrivalCard(int $users_id): void {
        global $CFG_GLPI;
 
-       $formUrl = $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/arrival.form.php';
        $open = Arrival::findOpenFor($users_id);
        $ticketsId = $open !== null ? (int) $open->fields['tickets_id'] : 0;
+       self::showLifecycleCard($users_id, [
+           'icon'          => 'ti-door-enter',
+           'title'         => __('Arrivée de la personne', 'assetsign'),
+           'help'          => __('Un ticket pour l\'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket.', 'assetsign'),
+           'form_url'      => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/arrival.form.php',
+           'prepare_label' => __('Préparer l\'arrivée', 'assetsign'),
+           'open_url'      => $ticketsId > 0 ? \Ticket::getFormURLWithID($ticketsId) : '',
+           'open_text'     => sprintf(__('Arrivée en cours : ticket n°%d.', 'assetsign'), $ticketsId),
+           'open_icon'     => 'ti-ticket',
+           'open_label'    => __('Voir le ticket d\'arrivée', 'assetsign'),
+       ]);
+   }
 
-       echo '<div class="card mb-3"><div class="card-body d-flex align-items-center gap-3">';
-       echo '<i class="ti ti-door-enter fs-2 text-muted"></i><div class="flex-grow-1">';
-       echo '<strong>' . __('Arrivée de la personne', 'assetsign') . '</strong><div class="text-muted small">';
-      if ($ticketsId > 0) {
-          echo htmlescape(sprintf(__('Arrivée en cours : ticket n°%d.', 'assetsign'), $ticketsId));
-          echo '</div></div>';
-          echo '<a class="btn btn-outline-primary" href="' . htmlescape(\Ticket::getFormURLWithID($ticketsId)) . '">'
-              . '<i class="ti ti-ticket me-1"></i>' . __('Voir le ticket d\'arrivée', 'assetsign') . '</a>';
-      } else {
-          echo __('Un ticket pour l\'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket.', 'assetsign');
-          echo '</div></div>';
-          echo '<form method="post" action="' . htmlescape($formUrl) . '" class="m-0">';
-          echo '<input type="hidden" name="_glpi_csrf_token" value="' . htmlescape(Session::getNewCSRFToken()) . '">';
-          echo '<input type="hidden" name="users_id" value="' . $users_id . '">';
-          echo '<button type="submit" name="prepare" value="1" class="btn btn-primary">'
-              . '<i class="ti ti-door-enter me-1"></i>' . __('Préparer l\'arrivée', 'assetsign') . '</button></form>';
-      }
-       echo '</div></div>';
+    /**
+     * Issue #236 : rendu commun des cartes « Départ » et « Arrivée ».
+     *
+     * @param array<string, string> $card
+     */
+   private static function showLifecycleCard(int $users_id, array $card): void {
+       \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/_user_lifecycle_card.html.twig', [
+           'users_id' => $users_id,
+           'card'     => $card,
+       ]);
    }
 
     /**

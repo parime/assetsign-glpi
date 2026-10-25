@@ -7,7 +7,7 @@ front/maintenancechecklistitem.php 5
 front/template.php 5
 hook.php 6
 src/GlpiPlugin/Assetsign/Arrival.php 10
-src/GlpiPlugin/Assetsign/Assetsign.php 39
+src/GlpiPlugin/Assetsign/Assetsign.php 7
 src/GlpiPlugin/Assetsign/Attestation.php 12
 src/GlpiPlugin/Assetsign/Campaign.php 7
 src/GlpiPlugin/Assetsign/ChecklistItem.php 11
