@@ -103,7 +103,7 @@ class MaintenancePreparationTest extends AssetsignTestCase
        $maintenance->getFromDB($id);
        $this->assertSame(Maintenance::KIND_PREPARATION, (int) $maintenance->fields['kind']);
        $this->assertSame($ticketsId, (int) $maintenance->fields['tickets_id']);
-       $this->assertStringContainsString('Préparation de poste', $maintenance->getDocumentTitle());
+       $this->assertStringContainsString(__('Préparation de poste', 'assetsign'), $maintenance->getDocumentTitle());
 
        $followups = (new \ITILFollowup())->find(['itemtype' => \Ticket::class, 'items_id' => $ticketsId]);
        $this->assertCount(1, $followups);
