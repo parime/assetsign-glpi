@@ -1,0 +1,21 @@
+{# Champs particuliers de la fiche d'un kit (issue #236 : passés de PHP à Twig) :
+   éléments du parc attendus par type (#181), ou accessoires attendus. #}
+{% if field == 'item_lines' %}
+  <div class="row g-2">
+    {% for line in item_lines %}
+      <div class="col-sm-6 col-lg-4"><div class="input-group input-group-sm">
+        <span class="input-group-text" style="min-width: 150px;">{{ line.label }}</span>
+        <input type="number" min="0" max="20" class="form-control" name="item_lines[{{ line.itemtype }}]" value="{{ line.count }}" aria-label="{{ line.label }}">
+      </div></div>
+    {% endfor %}
+  </div>
+  <p class="text-muted mt-1">{{ __('Nombre d\'éléments inventoriés de chaque type attendus (0 = aucun). À l\'attribution, on choisit l\'écran, le dock, le casque… réels ; ils sont ensuite contrôlés un par un à la restitution.', 'assetsign') }}</p>
+{% else %}
+  {% for a in accessories %}
+    <label class="form-check form-check-inline">
+      <input type="checkbox" class="form-check-input" name="accessories_id[]" value="{{ a.id }}" {{ a.checked ? 'checked' }}>
+      <span class="form-check-label">{{ a.name }}</span>
+    </label>
+  {% endfor %}
+  <p class="text-muted">{{ __('Ces accessoires seront automatiquement vérifiés à la restitution si ce kit est assigné à une remise.', 'assetsign') }}</p>
+{% endif %}

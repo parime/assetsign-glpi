@@ -159,21 +159,24 @@ class Kit extends CommonDropdown
    }
 
    public function displaySpecificTypeField($ID, $field = [], array $options = []) {
-      if (($field['type'] ?? '') === 'assetsign_kit_item_lines') {
+      $type = $field['type'] ?? '';
+      if ($type === 'assetsign_kit_item_lines') {
           $lines = $this->isNewItem() ? [] : $this->getExpectedItemLines();
-          echo '<div class="row g-2">';
+          $itemLines = [];
          foreach (AssetsignItem::getAllowedItemtypes() as $itemtype) {
-             echo '<div class="col-sm-6 col-lg-4"><div class="input-group input-group-sm">'
-                 . '<span class="input-group-text" style="min-width: 150px;">' . htmlspecialchars(Assetsign::getCanonicalItemtypeLabel($itemtype)) . '</span>'
-                 . '<input type="number" min="0" max="20" class="form-control" name="item_lines[' . htmlspecialchars($itemtype) . ']" value="' . (int) ($lines[$itemtype] ?? 0) . '">'
-                 . '</div></div>';
+             $itemLines[] = [
+                 'itemtype' => $itemtype,
+                 'label'    => Assetsign::getCanonicalItemtypeLabel($itemtype),
+                 'count'    => (int) ($lines[$itemtype] ?? 0),
+             ];
          }
-          echo '</div><p class="text-muted mt-1">'
-              . __('Nombre d\'éléments inventoriés de chaque type attendus (0 = aucun). À l\'attribution, on choisit l\'écran, le dock, le casque… réels ; ils sont ensuite contrôlés un par un à la restitution.', 'assetsign')
-              . '</p>';
+          \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/_kit_fields.html.twig', [
+              'field'      => 'item_lines',
+              'item_lines' => $itemLines,
+          ]);
           return;
       }
-      if (($field['type'] ?? '') !== 'assetsign_kit_accessories') {
+      if ($type !== 'assetsign_kit_accessories') {
           return;
       }
 
@@ -181,20 +184,22 @@ class Kit extends CommonDropdown
        // Nouveau kit : rien de pre-coche par defaut, meme convention que
        // ChecklistItem::movement_types (l'administrateur choisit explicitement).
        $selected = $this->isNewItem() ? [] : $this->getExpectedAccessoryIds();
+       $accessories = [];
       foreach ($DB->request([
           'FROM'  => Accessory::getTable(),
           'WHERE' => ['is_active' => 1] + getEntitiesRestrictCriteria(Accessory::getTable(), '', '', true),
           'ORDER' => 'name',
       ]) as $row) {
-          $checked = in_array((int) $row['id'], $selected, true) ? ' checked' : '';
-          echo '<label class="form-check form-check-inline">'
-              . '<input type="checkbox" class="form-check-input" name="accessories_id[]" value="' . (int) $row['id'] . '"' . $checked . '>'
-              . '<span class="form-check-label">' . htmlspecialchars($row['name']) . '</span>'
-              . '</label>';
+          $accessories[] = [
+              'id'      => (int) $row['id'],
+              'name'    => $row['name'],
+              'checked' => in_array((int) $row['id'], $selected, true),
+          ];
       }
-       echo '<p class="text-muted">'
-           . __('Ces accessoires seront automatiquement vérifiés à la restitution si ce kit est assigné à une remise.', 'assetsign')
-           . '</p>';
+       \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/_kit_fields.html.twig', [
+           'field'       => 'accessories',
+           'accessories' => $accessories,
+       ]);
    }
 
     /**

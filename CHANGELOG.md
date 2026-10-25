@@ -53,7 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Écrans en Twig** (issue #236) : cartes « Arrivée » et « Départ » de l'onglet Attributions d'un
-  utilisateur, rendues par un gabarit commun.
+  utilisateur, rendues par un gabarit commun, et champs particuliers de la fiche d'un kit (éléments
+  du parc et accessoires attendus).
 - **Exigences du Marketplace GLPI vérifiées par la CI** : plus de SQL brut hors installation (l'heure de la base pour les jetons passe par le constructeur de requêtes de GLPI), et le HTML écrit en PHP ne peut plus augmenter : les nouveaux écrans s'écrivent en Twig (`.github/scripts/check-marketplace-readiness.php`, référence dans `.github/twig-baseline.txt`).
 
 ## [2.13.0] - 2026-10-24
