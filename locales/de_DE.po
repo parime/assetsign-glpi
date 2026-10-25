@@ -4453,3 +4453,71 @@ msgstr "Vielen Dank, Ihre Unterschrift wurde gespeichert. Sie können das Gerät
 
 msgid "Reprendre la main (technicien)"
 msgstr "Kontrolle übernehmen (Techniker)"
+
+msgid "Rappel : signature en attente"
+msgstr "Erinnerung: Unterschrift ausstehend"
+
+#, php-format
+msgid "La fiche « %1$s » de %2$s attend sa signature depuis le %3$s."
+msgstr "Das Formular „%1$s“ von %2$s wartet seit dem %3$s auf die Unterschrift."
+
+msgid "Nouvelle fiche à signer"
+msgstr "Neues Formular zur Unterschrift"
+
+#, php-format
+msgid "La fiche « %1$s » attend la signature de %2$s."
+msgstr "Das Formular „%1$s“ wartet auf die Unterschrift von %2$s."
+
+msgid "Ouvrir mes signatures"
+msgstr "Meine Unterschriften öffnen"
+
+msgid "Message de test AssetSign"
+msgstr "AssetSign-Testnachricht"
+
+msgid "Les avis de signature de cette entité arriveront dans ce canal."
+msgstr "Die Unterschriftshinweise dieser Einheit erscheinen in diesem Kanal."
+
+msgid "Message de test envoyé."
+msgstr "Testnachricht gesendet."
+
+msgid "Échec de l'envoi : vérifiez l'outil choisi et l'adresse du webhook, enregistrez, puis réessayez (détail dans le journal assetsign)."
+msgstr "Senden fehlgeschlagen: Prüfen Sie das gewählte Werkzeug und die Webhook-Adresse, speichern Sie und versuchen Sie es erneut (Details im assetsign-Protokoll)."
+
+msgid "Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même."
+msgstr "Webhook-Adresse abgelehnt: Sie muss mit https:// beginnen und darf nicht auf den Server selbst zeigen."
+
+msgid "Avis dans un outil de messagerie"
+msgstr "Hinweise in einem Messaging-Werkzeug"
+
+msgid "Un message est publié dans un canal Teams, Slack ou Mattermost (webhook entrant) quand une fiche est envoyée et à chaque relance. Il ne contient jamais le lien de signature personnel : seulement un lien vers « Mes signatures », qui demande la connexion du bénéficiaire."
+msgstr "Eine Nachricht wird in einem Teams-, Slack- oder Mattermost-Kanal (eingehender Webhook) veröffentlicht, wenn ein Formular gesendet wird, und bei jeder Erinnerung. Sie enthält nie den persönlichen Unterschriftslink, sondern nur einen Link zu „Meine Unterschriften“, der die Anmeldung des Empfängers erfordert."
+
+msgid "Outil"
+msgstr "Werkzeug"
+
+msgid "Aucun (e-mails seulement)"
+msgstr "Keines (nur E-Mails)"
+
+msgid "Adresse du webhook entrant"
+msgstr "Adresse des eingehenden Webhooks"
+
+msgid "Adresse enregistrée : laissez vide pour la conserver"
+msgstr "Adresse gespeichert: leer lassen, um sie zu behalten"
+
+msgid "Elle vaut mot de passe : elle est chiffrée en base et n'est jamais réaffichée. Adresse en https uniquement."
+msgstr "Sie ist so sensibel wie ein Passwort: Sie wird verschlüsselt gespeichert und nie wieder angezeigt. Nur https-Adressen."
+
+msgid "Supprimer l'adresse enregistrée"
+msgstr "Gespeicherte Adresse löschen"
+
+msgid "Quand une fiche est envoyée"
+msgstr "Wenn ein Formular gesendet wird"
+
+msgid "À chaque relance"
+msgstr "Bei jeder Erinnerung"
+
+msgid "Envoyer un message de test"
+msgstr "Testnachricht senden"
+
+msgid "Utilise les réglages déjà enregistrés : enregistrez d'abord."
+msgstr "Verwendet die bereits gespeicherten Einstellungen: zuerst speichern."

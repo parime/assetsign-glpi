@@ -157,6 +157,12 @@ class Config extends Compat\Base\ConfigBase
         // Issue #229 : blocs du plugin Fields imprimes sur la fiche (JSON d'identifiants). Aucun par
         // defaut : la fiche est remise au beneficiaire, un bloc peut porter des donnees internes.
         'fields_containers'                   => '[]',
+        // Issue #231 : avis dans Teams, Slack ou Mattermost (webhook entrant). Format vide = aucun
+        // avis ; l'adresse du webhook est chiffree (GLPIKey), jamais reaffichee.
+        'chat_webhook_format'                 => '',
+        'chat_webhook_url'                    => '',
+        'chat_on_send'                        => 1,
+        'chat_on_reminder'                    => 1,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -206,6 +212,8 @@ class Config extends Compat\Base\ConfigBase
            'fields_available'  => FieldsPluginValues::isAvailable(),
            'fields_containers' => FieldsPluginValues::getContainers(),
            'fields_selected'   => FieldsPluginLogic::decodeContainerIds($config->fields['fields_containers'] ?? '[]'),
+           // Issue #231 : seule la presence d'une adresse est transmise, jamais l'adresse elle-meme.
+           'chat_webhook_configured' => ($config->fields['chat_webhook_url'] ?? '') !== '',
            'entity_id'       => $entities_id,
            'csrf_token'      => \Session::getNewCSRFToken(),
            // Jeton CSRF DEDIE au canal d'apercu en direct (live-preview.js),
@@ -722,7 +730,27 @@ class Config extends Compat\Base\ConfigBase
            // Normalisee a l'enregistrement : la liste par defaut n'est pas recopiee, pour suivre
            // ses evolutions tant que l'admin ne l'a pas personnalisee.
            'arrival_tasks' => self::normalizeArrivalTasks((string) ($input['arrival_tasks'] ?? '')),
+           'chat_webhook_format' => in_array($input['chat_webhook_format'] ?? '', Notification\ChatWebhook::FORMATS, true)
+               ? (string) $input['chat_webhook_format'] : '',
+           'chat_on_send' => (int) ($input['chat_on_send'] ?? 0),
+           'chat_on_reminder' => (int) ($input['chat_on_reminder'] ?? 0),
        ];
+
+       // Issue #231 : adresse du webhook chiffree ; un champ vide conserve l'adresse enregistree.
+       $chatUrl = trim((string) ($input['chat_webhook_url'] ?? ''));
+       if (!empty($input['chat_webhook_remove'])) {
+          $data['chat_webhook_url'] = '';
+       } else if ($chatUrl !== '') {
+          if (Notification\ChatWebhook::validateUrl($chatUrl) === null) {
+             $data['chat_webhook_url'] = Notification\ChatWebhook::encryptUrl($chatUrl);
+          } else {
+             \Session::addMessageAfterRedirect(
+                 __('Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même.', 'assetsign'),
+                 false,
+                 ERROR
+             );
+          }
+       }
 
        // Issue #229 : sans le plugin Fields (desactive un temps), le choix enregistre est conserve.
        if (FieldsPluginValues::isAvailable()) {
@@ -928,6 +956,10 @@ class Config extends Compat\Base\ConfigBase
                 `arrival_begin_date_days` int unsigned NOT NULL DEFAULT 14,
                 `arrival_tasks` text,
                 `fields_containers` text,
+                `chat_webhook_format` varchar(255) NOT NULL DEFAULT '',
+                `chat_webhook_url` text,
+                `chat_on_send` tinyint NOT NULL DEFAULT 1,
+                `chat_on_reminder` tinyint NOT NULL DEFAULT 1,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -1025,6 +1057,14 @@ class Config extends Compat\Base\ConfigBase
          // Issue #229 : blocs du plugin Fields imprimes sur la fiche.
          if (!$DB->fieldExists($table, 'fields_containers')) {
              $migration->addField($table, 'fields_containers', 'text', []);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #231 : avis dans un outil de messagerie.
+         if (!$DB->fieldExists($table, 'chat_webhook_format')) {
+             $migration->addField($table, 'chat_webhook_format', 'string', ['value' => '']);
+             $migration->addField($table, 'chat_webhook_url', 'text', []);
+             $migration->addField($table, 'chat_on_send', 'bool', ['value' => 1]);
+             $migration->addField($table, 'chat_on_reminder', 'bool', ['value' => 1]);
              $migration->migrationOneTable($table);
          }
          // Issue #204 : signature periodique de la charte informatique.

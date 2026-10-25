@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Mode guichet pour la signature sur place** (issue #230) : la page de signature ouverte par « Faire signer sur place » propose un bouton « Plein écran (tablette) ». Après la signature, l'écran se verrouille : il indique à qui rendre l'appareil et seul le bouton « Reprendre la main (technicien) » en sort, vers la fiche. Le bouton Précédent du navigateur ne ramène plus dans la session du technicien, et l'ancien lien vers l'accueil GLPI n'est plus proposé dans ce mode.
 
+- **Avis dans Teams, Slack ou Mattermost** (issue #231), Configuration > onglet Général, section « Avis
+  dans un outil de messagerie » : un message est publié dans un canal (webhook entrant) quand une
+  fiche est envoyée et à chaque relance, en plus des e-mails. Il ne contient jamais le lien de
+  signature personnel, seulement un lien vers « Mes signatures », qui demande la connexion du
+  bénéficiaire. L'adresse du webhook, qui vaut mot de passe, est chiffrée en base et jamais
+  réaffichée ; seules les adresses https sont acceptées, jamais le serveur lui-même. Réglage par
+  entité, avec bouton « Envoyer un message de test ». Un échec d'envoi est journalisé et
+  n'empêche ni l'envoi de la fiche ni la relance.
+
 ### Changed
 
 - **Exigences du Marketplace GLPI vérifiées par la CI** : plus de SQL brut hors installation (l'heure de la base pour les jetons passe par le constructeur de requêtes de GLPI), et le HTML écrit en PHP ne peut plus augmenter : les nouveaux écrans s'écrivent en Twig (`.github/scripts/check-marketplace-readiness.php`, référence dans `.github/twig-baseline.txt`).

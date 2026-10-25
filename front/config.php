@@ -2,6 +2,7 @@
 
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\Notification\ChatWebhook;
 
 Session::checkRight(Config::$rightname, READ);
 
@@ -52,6 +53,30 @@ if (isset($_POST['send_test_email'])) {
        Session::addMessageAfterRedirect(__('E-mail de test envoyé.', 'assetsign'));
    } else {
        Session::addMessageAfterRedirect($error, false, ERROR);
+   }
+    Html::back();
+}
+
+// Issue #231 : message de test dans l'outil de messagerie configure (formulaire du test e-mail).
+if (isset($_POST['send_test_chat'])) {
+    Session::checkRight(Config::$rightname, UPDATE);
+    $entities_id = (int) ($_POST['entities_id'] ?? 0);
+   if (!Session::haveAccessToEntity($entities_id)) {
+       throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+   }
+    $sent = ChatWebhook::send(
+        Config::getForEntity($entities_id),
+        __('Message de test AssetSign', 'assetsign'),
+        __('Les avis de signature de cette entité arriveront dans ce canal.', 'assetsign')
+    );
+   if ($sent) {
+       Session::addMessageAfterRedirect(__('Message de test envoyé.', 'assetsign'));
+   } else {
+       Session::addMessageAfterRedirect(
+           __('Échec de l\'envoi : vérifiez l\'outil choisi et l\'adresse du webhook, enregistrez, puis réessayez (détail dans le journal assetsign).', 'assetsign'),
+           false,
+           ERROR
+       );
    }
     Html::back();
 }

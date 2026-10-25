@@ -184,6 +184,47 @@
             <input type="number" name="draft_reminder_days" class="form-control" value="{{ config.draft_reminder_days|default(3) }}" min="0">
             <div class="form-text">{{ __('Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d\'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu\'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d\'accueil.', 'assetsign') }}</div>
           </div>
+
+          {# Issue #231 : avis dans Teams, Slack ou Mattermost, en plus des e-mails. L'adresse du
+             webhook n'est jamais reaffichee (elle vaut mot de passe) : seule sa presence est connue. #}
+          <h4 class="mt-4"><i class="ti ti-message-chatbot me-1"></i>{{ __('Avis dans un outil de messagerie', 'assetsign') }}</h4>
+          <div class="form-text mb-2">{{ __('Un message est publié dans un canal Teams, Slack ou Mattermost (webhook entrant) quand une fiche est envoyée et à chaque relance. Il ne contient jamais le lien de signature personnel : seulement un lien vers « Mes signatures », qui demande la connexion du bénéficiaire.', 'assetsign') }}</div>
+          <div class="mb-3">
+            <label class="form-label" for="chat_webhook_format">{{ __('Outil', 'assetsign') }}</label>
+            <select name="chat_webhook_format" id="chat_webhook_format" class="form-select">
+              <option value="" {{ config.chat_webhook_format|default('') == '' ? 'selected' : '' }}>{{ __('Aucun (e-mails seulement)', 'assetsign') }}</option>
+              <option value="teams" {{ config.chat_webhook_format|default('') == 'teams' ? 'selected' : '' }}>Microsoft Teams (Workflows)</option>
+              <option value="slack" {{ config.chat_webhook_format|default('') == 'slack' ? 'selected' : '' }}>Slack</option>
+              <option value="mattermost" {{ config.chat_webhook_format|default('') == 'mattermost' ? 'selected' : '' }}>Mattermost</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="chat_webhook_url">{{ __('Adresse du webhook entrant', 'assetsign') }}</label>
+            <input type="password" autocomplete="new-password" name="chat_webhook_url" id="chat_webhook_url" class="form-control" placeholder="{{ chat_webhook_configured ? __('Adresse enregistrée : laissez vide pour la conserver', 'assetsign') : 'https://' }}">
+            <div class="form-text">{{ __('Elle vaut mot de passe : elle est chiffrée en base et n\'est jamais réaffichée. Adresse en https uniquement.', 'assetsign') }}</div>
+            {% if chat_webhook_configured %}
+              <div class="form-check mt-1">
+                <input type="checkbox" name="chat_webhook_remove" value="1" class="form-check-input" id="chat_webhook_remove">
+                <label class="form-check-label" for="chat_webhook_remove">{{ __('Supprimer l\'adresse enregistrée', 'assetsign') }}</label>
+              </div>
+            {% endif %}
+          </div>
+          <div class="mb-3">
+            <div class="form-check">
+              <input type="hidden" name="chat_on_send" value="0">
+              <input type="checkbox" name="chat_on_send" value="1" class="form-check-input" id="chat_on_send" {{ config.chat_on_send|default(1) ? 'checked' : '' }}>
+              <label class="form-check-label" for="chat_on_send">{{ __('Quand une fiche est envoyée', 'assetsign') }}</label>
+            </div>
+            <div class="form-check">
+              <input type="hidden" name="chat_on_reminder" value="0">
+              <input type="checkbox" name="chat_on_reminder" value="1" class="form-check-input" id="chat_on_reminder" {{ config.chat_on_reminder|default(1) ? 'checked' : '' }}>
+              <label class="form-check-label" for="chat_on_reminder">{{ __('À chaque relance', 'assetsign') }}</label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <button type="submit" form="assetsign-test-email-form" name="send_test_chat" class="btn btn-outline-secondary btn-sm"><i class="ti ti-send me-1"></i>{{ __('Envoyer un message de test', 'assetsign') }}</button>
+            <div class="form-text">{{ __('Utilise les réglages déjà enregistrés : enregistrez d\'abord.', 'assetsign') }}</div>
+          </div>
           {# Issue #193 : pret temporaire #}
           <div class="mb-3">
             <label class="form-label"><i class="ti ti-clock-share me-1"></i>{{ __('Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)', 'assetsign') }}</label>
