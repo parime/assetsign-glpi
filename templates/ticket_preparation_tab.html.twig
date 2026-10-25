@@ -1,0 +1,38 @@
+{# Issue #223 : onglet « Préparation de poste » d'un ticket (nouvel arrivant). #}
+<div class="card">
+  <div class="card-body">
+    {% if preparations is empty %}
+      <p class="text-muted"><i class="ti ti-info-circle me-1"></i>{{ __('Aucune fiche rattachée à ce ticket.', 'assetsign') }}</p>
+    {% else %}
+      <table class="table table-striped">
+        <thead><tr><th>{{ __('Date', 'assetsign') }}</th><th>{{ __('Nature', 'assetsign') }}</th><th>{{ __('Matériel', 'assetsign') }}</th><th></th></tr></thead>
+        <tbody>
+          {% for p in preparations %}
+            <tr>
+              <td>{{ p.date_creation|formatted_datetime }}</td>
+              <td>{{ kind_labels[p.kind]|default('') }}</td>
+              <td>{{ p.item_name }}</td>
+              <td class="text-nowrap">
+                <a href="{{ config('root_doc') }}/plugins/assetsign/front/maintenance.form.php?id={{ p.id }}">{{ __('Voir', 'assetsign') }}</a>
+                {% if p.document_id %} · <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ p.document_id }}" target="_blank">PDF</a>{% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+
+    {% if can_create %}
+      <h3 class="mt-3">{{ __('Préparer un poste', 'assetsign') }}</h3>
+      {% if items is empty %}
+        <p class="text-muted">{{ __('Liez d\'abord le matériel à préparer à ce ticket (onglet « Éléments »).', 'assetsign') }}</p>
+      {% else %}
+        <div class="d-flex flex-wrap gap-2">
+          {% for i in items %}
+            <a href="{{ i.url }}" class="btn btn-outline-primary"><i class="ti ti-checklist me-1"></i>{{ i.type }} — {{ i.name }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

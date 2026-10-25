@@ -163,8 +163,9 @@ function plugin_init_assetsign(): void {
     // Maintenance.php) — possede neanmoins son propre onglet sur les memes
     // materiels geres, comme Assetsign, pour rester decouvrable depuis la fiche
     // du materiel en plus de son propre menu (ci-dessous).
+    // Issue #223 : aussi sur les tickets (onglet « Préparation de poste » du nouvel arrivant).
     Plugin::registerClass(\GlpiPlugin\Assetsign\Maintenance::class, [
-        'addtabon' => $manageableItemtypes,
+        'addtabon' => array_merge($manageableItemtypes, ['Ticket']),
     ]);
     // Passeport materiel/utilisateur : agrege Assetsign + Maintenance en lecture
     // seule (cf. PassportEvent::recordForAssetsign()/recordForMaintenance()),

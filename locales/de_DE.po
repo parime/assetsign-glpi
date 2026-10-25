@@ -4645,3 +4645,63 @@ msgstr "Wird verwendet, wenn die Finanzdaten des Geräts keine Abschreibungsdaue
 
 msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
 msgstr "Jeden Monat eine Änderung mit den in 12 Monaten zu erneuernden Geräten erstellen"
+
+msgid "Préparation de poste"
+msgstr "Arbeitsplatzvorbereitung"
+
+msgid "Nature"
+msgstr "Art"
+
+#, php-format
+msgid "Points obligatoires non renseignés : %s"
+msgstr "Nicht ausgefüllte Pflichtpunkte: %s"
+
+msgid "Seules des photos (JPEG, PNG, WebP) peuvent être jointes."
+msgstr "Nur Fotos (JPEG, PNG, WebP) können angehängt werden."
+
+msgid "Maintenance et préparation de poste"
+msgstr "Wartung und Arbeitsplatzvorbereitung"
+
+msgid "Utilisé pour"
+msgstr "Verwendet für"
+
+msgid "Obligatoire"
+msgstr "Pflicht"
+
+msgid "Nouvelle fiche"
+msgstr "Neues Blatt"
+
+msgid "Préparation d'un poste pour un nouvel arrivant : les points marqués * sont obligatoires pour valider la fiche."
+msgstr "Vorbereitung eines Arbeitsplatzes für einen neuen Mitarbeiter: mit * markierte Punkte sind Pflicht, um das Blatt zu bestätigen."
+
+msgid "Photos du matériel"
+msgstr "Fotos des Geräts"
+
+msgid "Sur smartphone, ouvre directement l'appareil photo. Les photos sont jointes au matériel, à la fiche et au ticket."
+msgstr "Öffnet auf dem Smartphone direkt die Kamera. Die Fotos werden dem Gerät, dem Blatt und dem Ticket angehängt."
+
+msgid "Aucun ticket ouvert lié à ce matériel"
+msgstr "Kein offenes Ticket mit diesem Gerät verknüpft"
+
+msgid "La fiche PDF et les photos y sont jointes, avec un suivi privé. Le ticket n'est jamais fermé automatiquement."
+msgstr "Das PDF-Blatt und die Fotos werden angehängt, mit einer privaten Folgeaktion. Das Ticket wird nie automatisch geschlossen."
+
+msgid "Aucune fiche rattachée à ce ticket."
+msgstr "Kein Blatt mit diesem Ticket verknüpft."
+
+msgid "Préparer un poste"
+msgstr "Arbeitsplatz vorbereiten"
+
+msgid "Liez d'abord le matériel à préparer à ce ticket (onglet « Éléments »)."
+msgstr "Verknüpfen Sie zuerst das vorzubereitende Gerät mit diesem Ticket (Registerkarte „Elemente“)."
+
+#, php-format
+msgid "Points de contrôle renseignés : %d"
+msgstr "Ausgefüllte Prüfpunkte: %d"
+
+#, php-format
+msgid "Photos jointes : %d"
+msgstr "Angehängte Fotos: %d"
+
+msgid "Fiche de préparation de poste créée."
+msgstr "Blatt zur Arbeitsplatzvorbereitung erstellt."

@@ -7,6 +7,7 @@
         <thead>
           <tr>
             <th>{{ __('Date', 'assetsign') }}</th>
+            <th>{{ __('Nature', 'assetsign') }}</th>
             <th>{{ __('Commentaire', 'assetsign') }}</th>
             <th></th>
             <th></th>
@@ -16,6 +17,7 @@
           {% for m in maintenances %}
           <tr>
             <td>{{ m.date_creation }}</td>
+            <td>{% if m.kind|default(0) == 1 %}<span class="badge bg-teal text-white"><i class="ti ti-checklist me-1"></i>{{ kind_labels[1] }}</span>{% else %}{{ kind_labels[0] }}{% endif %}</td>
             <td>{{ m.comment|default('')|slice(0, 80) }}</td>
             <td><a href="{{ config('root_doc') }}/plugins/assetsign/front/maintenance.form.php?id={{ m.id }}">{{ __('Voir', 'assetsign') }}</a></td>
             <td>{% if m.document_id %}<a href="{{ config('root_doc') }}/front/document.send.php?docid={{ m.document_id }}" target="_blank">{{ __('Télécharger en PDF', 'assetsign') }}</a>{% endif %}</td>
@@ -27,37 +29,71 @@
 
     {% if can_create %}
       <hr>
-      <h3>{{ __('Nouvelle fiche de maintenance', 'assetsign') }}</h3>
-      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/maintenance.form.php">
+      <h3>{{ __('Nouvelle fiche', 'assetsign') }}</h3>
+      {# Issue #223 : une fiche est une maintenance ou une préparation de poste (masterisation). #}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/maintenance.form.php" enctype="multipart/form-data" id="assetsign-maintenance-new">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="itemtype" value="{{ item.getType() }}">
         <input type="hidden" name="items_id" value="{{ item.getID() }}">
 
-        {% if checklist_items|length == 0 %}
-          <p class="text-muted">{{ __('Aucun point de contrôle configuré (Configuration > Intitulés > Points de contrôle de maintenance).', 'assetsign') }}</p>
-        {% else %}
-          {% for id, checklistItem in checklist_items %}
-            <div class="mb-2">
-              {% if checklistItem.type == 0 %}
-                <div class="form-check">
-                  <input type="checkbox" name="checklist[{{ id }}]" value="1" class="form-check-input" id="checklist_{{ id }}">
-                  <label class="form-check-label" for="checklist_{{ id }}">{{ checklistItem.name }}</label>
-                </div>
-              {% elseif checklistItem.type == 1 %}
-                <label class="form-label" for="checklist_{{ id }}">{{ checklistItem.name }}</label>
-                <input type="text" name="checklist[{{ id }}]" class="form-control" id="checklist_{{ id }}">
-              {% elseif checklistItem.type == 2 %}
-                <label class="form-label" for="checklist_{{ id }}">{{ checklistItem.name }}</label>
-                <select name="checklist[{{ id }}]" class="form-select" id="checklist_{{ id }}">
-                  <option value="">-----</option>
-                  {% for opt in checklistItem.options %}
-                    <option value="{{ opt }}">{{ opt }}</option>
-                  {% endfor %}
-                </select>
-              {% endif %}
-            </div>
+        <div class="btn-group mb-3" role="group">
+          {% for kind, label in kind_labels %}
+            <input type="radio" class="btn-check" name="kind" value="{{ kind }}" id="assetsign-kind-{{ kind }}" autocomplete="off" {{ kind == preset_kind ? 'checked' : '' }}>
+            <label class="btn btn-outline-primary" for="assetsign-kind-{{ kind }}"><i class="ti {{ kind == 1 ? 'ti-checklist' : 'ti-tool' }} me-1"></i>{{ label }}</label>
           {% endfor %}
-        {% endif %}
+        </div>
+
+        {% for kind, items in {0: checklist_items, 1: preparation_items} %}
+          <fieldset class="assetsign-kind-block" data-kind="{{ kind }}">
+            {% if kind == 1 %}
+              <p class="text-muted"><i class="ti ti-info-circle me-1"></i>{{ __('Préparation d\'un poste pour un nouvel arrivant : les points marqués * sont obligatoires pour valider la fiche.', 'assetsign') }}</p>
+            {% endif %}
+            {% if items|length == 0 %}
+              <p class="text-muted">{{ __('Aucun point de contrôle configuré (Configuration > Intitulés > Points de contrôle de maintenance).', 'assetsign') }}</p>
+            {% else %}
+              {% for id, checklistItem in items %}
+                <div class="mb-2">
+                  {% set req = checklistItem.mandatory|default(false) %}
+                  {% if checklistItem.type == 0 %}
+                    <div class="form-check">
+                      <input type="checkbox" name="checklist[{{ id }}]" value="1" class="form-check-input" id="checklist_{{ kind }}_{{ id }}" {{ req ? 'required' : '' }}>
+                      <label class="form-check-label" for="checklist_{{ kind }}_{{ id }}">{{ checklistItem.name }}{% if req %} <span class="text-danger">*</span>{% endif %}</label>
+                    </div>
+                  {% elseif checklistItem.type == 1 %}
+                    <label class="form-label" for="checklist_{{ kind }}_{{ id }}">{{ checklistItem.name }}{% if req %} <span class="text-danger">*</span>{% endif %}</label>
+                    <input type="text" name="checklist[{{ id }}]" class="form-control" id="checklist_{{ kind }}_{{ id }}" {{ req ? 'required' : '' }}>
+                  {% elseif checklistItem.type == 2 %}
+                    <label class="form-label" for="checklist_{{ kind }}_{{ id }}">{{ checklistItem.name }}{% if req %} <span class="text-danger">*</span>{% endif %}</label>
+                    <select name="checklist[{{ id }}]" class="form-select" id="checklist_{{ kind }}_{{ id }}" {{ req ? 'required' : '' }}>
+                      <option value="">-----</option>
+                      {% for opt in checklistItem.options %}
+                        <option value="{{ opt }}">{{ opt }}</option>
+                      {% endfor %}
+                    </select>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% endif %}
+          </fieldset>
+        {% endfor %}
+
+        <div class="row g-3 mt-1">
+          <div class="col-md-6">
+            <label class="form-label" for="assetsign-photos"><i class="ti ti-camera me-1"></i>{{ __('Photos du matériel', 'assetsign') }}</label>
+            <input type="file" name="photos[]" id="assetsign-photos" class="form-control" accept="image/*" capture="environment" multiple>
+            <div class="form-hint">{{ __('Sur smartphone, ouvre directement l\'appareil photo. Les photos sont jointes au matériel, à la fiche et au ticket.', 'assetsign') }}</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="assetsign-ticket"><i class="ti ti-ticket me-1"></i>{{ __('Ticket', 'assetsign') }}</label>
+            <select name="tickets_id" id="assetsign-ticket" class="form-select">
+              <option value="0">{{ open_tickets is empty ? __('Aucun ticket ouvert lié à ce matériel', 'assetsign') : '-----' }}</option>
+              {% for id, label in open_tickets %}
+                <option value="{{ id }}" {{ open_tickets|length == 1 ? 'selected' : '' }}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            <div class="form-hint">{{ __('La fiche PDF et les photos y sont jointes, avec un suivi privé. Le ticket n\'est jamais fermé automatiquement.', 'assetsign') }}</div>
+          </div>
+        </div>
 
         <div class="mb-2 mt-2">
           <label class="form-label">{{ __('Commentaire', 'assetsign') }}</label>
@@ -68,8 +104,36 @@
 
         {% include '@assetsign/technician_signature_edit.html.twig' %}
 
-        <button type="submit" name="create" class="btn btn-secondary">{{ __('Créer la fiche', 'assetsign') }}</button>
+        <button type="submit" name="create" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i>{{ __('Créer la fiche', 'assetsign') }}</button>
       </form>
+      <script>
+        (function () {
+          const form = document.getElementById('assetsign-maintenance-new');
+          const sync = function () {
+            const kind = form.querySelector('input[name=kind]:checked').value;
+            form.querySelectorAll('.assetsign-kind-block').forEach(function (block) {
+              const active = block.dataset.kind === kind;
+              block.hidden = !active;
+              block.disabled = !active;
+            });
+          };
+          form.querySelectorAll('input[name=kind]').forEach(function (radio) {
+            radio.addEventListener('change', sync);
+          });
+          // Issue #223 : arrivée depuis l'onglet « Préparation de poste » d'un ticket (l'onglet est
+          // chargé à part : les paramètres sont lus dans l'adresse de la page).
+          const params = new URLSearchParams(window.location.search);
+          const presetKind = form.querySelector('input[name=kind][value="' + (params.get('assetsign_kind') || '') + '"]');
+          if (presetKind) {
+            presetKind.checked = true;
+          }
+          const ticket = form.querySelector('select[name=tickets_id] option[value="' + (params.get('assetsign_ticket') || '') + '"]');
+          if (ticket) {
+            ticket.selected = true;
+          }
+          sync();
+        })();
+      </script>
     {% endif %}
   </div>
 </div>

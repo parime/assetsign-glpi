@@ -4609,3 +4609,63 @@ msgstr "Utilisée quand la fiche financière du matériel ne précise pas de dur
 
 msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
 msgstr "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
+
+msgid "Préparation de poste"
+msgstr "Préparation de poste"
+
+msgid "Nature"
+msgstr "Nature"
+
+#, php-format
+msgid "Points obligatoires non renseignés : %s"
+msgstr "Points obligatoires non renseignés : %s"
+
+msgid "Seules des photos (JPEG, PNG, WebP) peuvent être jointes."
+msgstr "Seules des photos (JPEG, PNG, WebP) peuvent être jointes."
+
+msgid "Maintenance et préparation de poste"
+msgstr "Maintenance et préparation de poste"
+
+msgid "Utilisé pour"
+msgstr "Utilisé pour"
+
+msgid "Obligatoire"
+msgstr "Obligatoire"
+
+msgid "Nouvelle fiche"
+msgstr "Nouvelle fiche"
+
+msgid "Préparation d'un poste pour un nouvel arrivant : les points marqués * sont obligatoires pour valider la fiche."
+msgstr "Préparation d'un poste pour un nouvel arrivant : les points marqués * sont obligatoires pour valider la fiche."
+
+msgid "Photos du matériel"
+msgstr "Photos du matériel"
+
+msgid "Sur smartphone, ouvre directement l'appareil photo. Les photos sont jointes au matériel, à la fiche et au ticket."
+msgstr "Sur smartphone, ouvre directement l'appareil photo. Les photos sont jointes au matériel, à la fiche et au ticket."
+
+msgid "Aucun ticket ouvert lié à ce matériel"
+msgstr "Aucun ticket ouvert lié à ce matériel"
+
+msgid "La fiche PDF et les photos y sont jointes, avec un suivi privé. Le ticket n'est jamais fermé automatiquement."
+msgstr "La fiche PDF et les photos y sont jointes, avec un suivi privé. Le ticket n'est jamais fermé automatiquement."
+
+msgid "Aucune fiche rattachée à ce ticket."
+msgstr "Aucune fiche rattachée à ce ticket."
+
+msgid "Préparer un poste"
+msgstr "Préparer un poste"
+
+msgid "Liez d'abord le matériel à préparer à ce ticket (onglet « Éléments »)."
+msgstr "Liez d'abord le matériel à préparer à ce ticket (onglet « Éléments »)."
+
+#, php-format
+msgid "Points de contrôle renseignés : %d"
+msgstr "Points de contrôle renseignés : %d"
+
+#, php-format
+msgid "Photos jointes : %d"
+msgstr "Photos jointes : %d"
+
+msgid "Fiche de préparation de poste créée."
+msgstr "Fiche de préparation de poste créée."

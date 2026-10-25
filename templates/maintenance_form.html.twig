@@ -11,6 +11,22 @@
         <th>{{ __('Date', 'assetsign') }}</th>
         <td>{{ item.fields.date_creation }}</td>
       </tr>
+      <tr>
+        <th>{{ __('Nature', 'assetsign') }}</th>
+        <td>{{ kind_label }}</td>
+      </tr>
+      {% if item.fields.tickets_id|default(0) %}
+      <tr>
+        <th>{{ __('Ticket') }}</th>
+        <td><a href="{{ config('root_doc') }}/front/ticket.form.php?id={{ item.fields.tickets_id }}">#{{ item.fields.tickets_id }}</a></td>
+      </tr>
+      {% endif %}
+      {% if photos is not empty %}
+      <tr>
+        <th>{{ __('Photos du matériel', 'assetsign') }}</th>
+        <td>{% for p in photos %}<a href="{{ config('root_doc') }}/front/document.send.php?docid={{ p.id }}" target="_blank" class="me-2"><i class="ti ti-photo me-1"></i>{{ p.name }}</a>{% endfor %}</td>
+      </tr>
+      {% endif %}
       {% if item.fields.document_id %}
       <tr>
         <th>{{ __('Fiche PDF', 'assetsign') }}</th>

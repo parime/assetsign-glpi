@@ -7,8 +7,10 @@ if (isset($_POST['create'])) {
     Session::checkRight(Maintenance::$rightname, CREATE);
 
    try {
-       (new MaintenanceFormController())->createWithChecklist($_POST);
-       Session::addMessageAfterRedirect(__('Fiche de maintenance créée.', 'assetsign'));
+       (new MaintenanceFormController())->createWithChecklist($_POST, $_FILES);
+       Session::addMessageAfterRedirect((int) ($_POST['kind'] ?? 0) === Maintenance::KIND_PREPARATION
+           ? __('Fiche de préparation de poste créée.', 'assetsign')
+           : __('Fiche de maintenance créée.', 'assetsign'));
    } catch (\InvalidArgumentException $e) {
        throw new \Glpi\Exception\Http\NotFoundHttpException();
    } catch (\Throwable $e) {

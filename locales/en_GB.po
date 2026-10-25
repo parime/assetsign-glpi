@@ -4589,3 +4589,63 @@ msgstr "Used when the device's financial information does not specify a deprecia
 
 msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
 msgstr "Create a change every month listing the devices to renew within 12 months"
+
+msgid "Préparation de poste"
+msgstr "Workstation preparation"
+
+msgid "Nature"
+msgstr "Kind"
+
+#, php-format
+msgid "Points obligatoires non renseignés : %s"
+msgstr "Mandatory points not filled in: %s"
+
+msgid "Seules des photos (JPEG, PNG, WebP) peuvent être jointes."
+msgstr "Only photos (JPEG, PNG, WebP) can be attached."
+
+msgid "Maintenance et préparation de poste"
+msgstr "Maintenance and workstation preparation"
+
+msgid "Utilisé pour"
+msgstr "Used for"
+
+msgid "Obligatoire"
+msgstr "Mandatory"
+
+msgid "Nouvelle fiche"
+msgstr "New sheet"
+
+msgid "Préparation d'un poste pour un nouvel arrivant : les points marqués * sont obligatoires pour valider la fiche."
+msgstr "Preparing a workstation for a newcomer: points marked * are mandatory to validate the sheet."
+
+msgid "Photos du matériel"
+msgstr "Equipment photos"
+
+msgid "Sur smartphone, ouvre directement l'appareil photo. Les photos sont jointes au matériel, à la fiche et au ticket."
+msgstr "On a smartphone, opens the camera directly. Photos are attached to the equipment, the sheet and the ticket."
+
+msgid "Aucun ticket ouvert lié à ce matériel"
+msgstr "No open ticket linked to this equipment"
+
+msgid "La fiche PDF et les photos y sont jointes, avec un suivi privé. Le ticket n'est jamais fermé automatiquement."
+msgstr "The PDF sheet and the photos are attached to it, with a private followup. The ticket is never closed automatically."
+
+msgid "Aucune fiche rattachée à ce ticket."
+msgstr "No sheet linked to this ticket."
+
+msgid "Préparer un poste"
+msgstr "Prepare a workstation"
+
+msgid "Liez d'abord le matériel à préparer à ce ticket (onglet « Éléments »)."
+msgstr "First link the equipment to prepare to this ticket (\"Items\" tab)."
+
+#, php-format
+msgid "Points de contrôle renseignés : %d"
+msgstr "Checkpoints filled in: %d"
+
+#, php-format
+msgid "Photos jointes : %d"
+msgstr "Attached photos: %d"
+
+msgid "Fiche de préparation de poste créée."
+msgstr "Workstation preparation sheet created."
