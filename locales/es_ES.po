@@ -4609,3 +4609,63 @@ msgstr "Se usa cuando la ficha financiera del equipo no indica una duración de 
 
 msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
 msgstr "Crear cada mes un cambio con los equipos que renovar en 12 meses"
+
+msgid "Préparation de poste"
+msgstr "Preparación del puesto"
+
+msgid "Nature"
+msgstr "Naturaleza"
+
+#, php-format
+msgid "Points obligatoires non renseignés : %s"
+msgstr "Puntos obligatorios sin completar: %s"
+
+msgid "Seules des photos (JPEG, PNG, WebP) peuvent être jointes."
+msgstr "Solo se pueden adjuntar fotos (JPEG, PNG, WebP)."
+
+msgid "Maintenance et préparation de poste"
+msgstr "Mantenimiento y preparación del puesto"
+
+msgid "Utilisé pour"
+msgstr "Usado para"
+
+msgid "Obligatoire"
+msgstr "Obligatorio"
+
+msgid "Nouvelle fiche"
+msgstr "Nueva ficha"
+
+msgid "Préparation d'un poste pour un nouvel arrivant : les points marqués * sont obligatoires pour valider la fiche."
+msgstr "Preparación de un puesto para una nueva incorporación: los puntos marcados con * son obligatorios para validar la ficha."
+
+msgid "Photos du matériel"
+msgstr "Fotos del equipo"
+
+msgid "Sur smartphone, ouvre directement l'appareil photo. Les photos sont jointes au matériel, à la fiche et au ticket."
+msgstr "En un smartphone, abre directamente la cámara. Las fotos se adjuntan al equipo, a la ficha y al ticket."
+
+msgid "Aucun ticket ouvert lié à ce matériel"
+msgstr "Ningún ticket abierto vinculado a este equipo"
+
+msgid "La fiche PDF et les photos y sont jointes, avec un suivi privé. Le ticket n'est jamais fermé automatiquement."
+msgstr "La ficha PDF y las fotos se adjuntan, con un seguimiento privado. El ticket nunca se cierra automáticamente."
+
+msgid "Aucune fiche rattachée à ce ticket."
+msgstr "Ninguna ficha vinculada a este ticket."
+
+msgid "Préparer un poste"
+msgstr "Preparar un puesto"
+
+msgid "Liez d'abord le matériel à préparer à ce ticket (onglet « Éléments »)."
+msgstr "Vincule primero el equipo a preparar con este ticket (pestaña «Elementos»)."
+
+#, php-format
+msgid "Points de contrôle renseignés : %d"
+msgstr "Puntos de control completados: %d"
+
+#, php-format
+msgid "Photos jointes : %d"
+msgstr "Fotos adjuntas: %d"
+
+msgid "Fiche de préparation de poste créée."
+msgstr "Ficha de preparación del puesto creada."

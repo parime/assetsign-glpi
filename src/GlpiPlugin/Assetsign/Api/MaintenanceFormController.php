@@ -25,7 +25,11 @@ final class MaintenanceFormController
      * @throws \RuntimeException si la creation echoue cote metier (ex:
      *         signature technicien requise mais absente/invalide).
      */
-   public function createWithChecklist(array $post): int {
+    /**
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $files $_FILES (issue #223 : photos[] multiples)
+     */
+   public function createWithChecklist(array $post, array $files = []): int {
        $itemtype = (string) ($post['itemtype'] ?? '');
        $items_id = (int) ($post['items_id'] ?? 0);
 
@@ -60,7 +64,36 @@ final class MaintenanceFormController
            [
                'ip'         => $_SERVER['REMOTE_ADDR'] ?? '',
                'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
-           ]
+           ],
+           (int) ($post['kind'] ?? Maintenance::KIND_MAINTENANCE),
+           (int) ($post['tickets_id'] ?? 0),
+           self::normalizePhotos($files['photos'] ?? [])
        );
+   }
+
+    /**
+     * $_FILES['photos'] (champ multiple) en liste de fichiers ; les champs laisses vides sont
+     * ignores.
+     *
+     * @return list<array{name: string, type: string, tmp_name: string, error: int, size: int}>
+     */
+   public static function normalizePhotos(mixed $raw): array {
+      if (!is_array($raw) || !is_array($raw['name'] ?? null)) {
+          return [];
+      }
+       $photos = [];
+      foreach ($raw['name'] as $i => $name) {
+         if ((int) ($raw['error'][$i] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+             continue;
+         }
+          $photos[] = [
+              'name'     => (string) $name,
+              'type'     => (string) ($raw['type'][$i] ?? ''),
+              'tmp_name' => (string) ($raw['tmp_name'][$i] ?? ''),
+              'error'    => (int) ($raw['error'][$i] ?? UPLOAD_ERR_NO_FILE),
+              'size'     => (int) ($raw['size'][$i] ?? 0),
+          ];
+      }
+       return $photos;
    }
 }

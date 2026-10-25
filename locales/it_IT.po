@@ -4619,3 +4619,63 @@ msgstr "Usata quando le informazioni finanziarie del dispositivo non indicano un
 
 msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
 msgstr "Creare ogni mese un cambiamento con i dispositivi da rinnovare entro 12 mesi"
+
+msgid "Préparation de poste"
+msgstr "Preparazione della postazione"
+
+msgid "Nature"
+msgstr "Natura"
+
+#, php-format
+msgid "Points obligatoires non renseignés : %s"
+msgstr "Punti obbligatori non compilati: %s"
+
+msgid "Seules des photos (JPEG, PNG, WebP) peuvent être jointes."
+msgstr "Si possono allegare solo foto (JPEG, PNG, WebP)."
+
+msgid "Maintenance et préparation de poste"
+msgstr "Manutenzione e preparazione della postazione"
+
+msgid "Utilisé pour"
+msgstr "Usato per"
+
+msgid "Obligatoire"
+msgstr "Obbligatorio"
+
+msgid "Nouvelle fiche"
+msgstr "Nuova scheda"
+
+msgid "Préparation d'un poste pour un nouvel arrivant : les points marqués * sont obligatoires pour valider la fiche."
+msgstr "Preparazione di una postazione per un nuovo arrivato: i punti contrassegnati con * sono obbligatori per convalidare la scheda."
+
+msgid "Photos du matériel"
+msgstr "Foto dell'apparecchiatura"
+
+msgid "Sur smartphone, ouvre directement l'appareil photo. Les photos sont jointes au matériel, à la fiche et au ticket."
+msgstr "Su smartphone apre direttamente la fotocamera. Le foto sono allegate all'apparecchiatura, alla scheda e al ticket."
+
+msgid "Aucun ticket ouvert lié à ce matériel"
+msgstr "Nessun ticket aperto collegato a questa apparecchiatura"
+
+msgid "La fiche PDF et les photos y sont jointes, avec un suivi privé. Le ticket n'est jamais fermé automatiquement."
+msgstr "La scheda PDF e le foto vengono allegate, con un followup privato. Il ticket non viene mai chiuso automaticamente."
+
+msgid "Aucune fiche rattachée à ce ticket."
+msgstr "Nessuna scheda collegata a questo ticket."
+
+msgid "Préparer un poste"
+msgstr "Prepara una postazione"
+
+msgid "Liez d'abord le matériel à préparer à ce ticket (onglet « Éléments »)."
+msgstr "Collega prima l'apparecchiatura da preparare a questo ticket (scheda «Elementi»)."
+
+#, php-format
+msgid "Points de contrôle renseignés : %d"
+msgstr "Punti di controllo compilati: %d"
+
+#, php-format
+msgid "Photos jointes : %d"
+msgstr "Foto allegate: %d"
+
+msgid "Fiche de préparation de poste créée."
+msgstr "Scheda di preparazione della postazione creata."

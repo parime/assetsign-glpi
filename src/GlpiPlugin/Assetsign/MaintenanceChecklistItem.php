@@ -21,6 +21,21 @@ class MaintenanceChecklistItem extends CommonDropdown
    public const TYPE_TEXT     = 1;
    public const TYPE_SELECT   = 2;
 
+    // Issue #223 : un point de controle sert a la maintenance, a la preparation d'un poste
+    // (masterisation) ou aux deux. Colonne `checklist_usage` : USAGE est un mot reserve MySQL.
+   public const USAGE_MAINTENANCE = 0;
+   public const USAGE_PREPARATION = 1;
+   public const USAGE_BOTH        = 2;
+
+    /** @return array<int, string> */
+   public static function getUsageLabels(): array {
+       return [
+           self::USAGE_MAINTENANCE => __('Maintenance', 'assetsign'),
+           self::USAGE_PREPARATION => __('Préparation de poste', 'assetsign'),
+           self::USAGE_BOTH        => __('Maintenance et préparation de poste', 'assetsign'),
+       ];
+   }
+
    public static function getTypeName($nb = 0): string {
        return _n('Point de contrôle de maintenance', 'Points de contrôle de maintenance', $nb, 'assetsign');
    }
@@ -68,6 +83,16 @@ class MaintenanceChecklistItem extends CommonDropdown
                'label' => __('Options du menu déroulant (une par ligne)', 'assetsign'),
                'type'  => 'assetsign_checklist_options',
            ],
+           [
+               'name'  => 'checklist_usage',
+               'label' => __('Utilisé pour', 'assetsign'),
+               'type'  => 'assetsign_checklist_usage',
+           ],
+           [
+               'name'  => 'is_mandatory',
+               'label' => __('Obligatoire', 'assetsign'),
+               'type'  => 'bool',
+           ],
        ];
    }
 
@@ -76,6 +101,12 @@ class MaintenanceChecklistItem extends CommonDropdown
          case 'assetsign_checklist_type':
             \Dropdown::showFromArray('type', self::getInputTypeLabels(), [
                 'value' => (int) ($this->fields['type'] ?? self::TYPE_CHECKBOX),
+            ]);
+              break;
+
+         case 'assetsign_checklist_usage':
+            \Dropdown::showFromArray('checklist_usage', self::getUsageLabels(), [
+                'value' => (int) ($this->fields['checklist_usage'] ?? self::USAGE_MAINTENANCE),
             ]);
               break;
 
@@ -141,6 +172,36 @@ class MaintenanceChecklistItem extends CommonDropdown
       }
       if (!$DB->fieldExists($table, 'options')) {
           $migration->addField($table, 'options', 'text');
+      }
+      if (!$DB->fieldExists($table, 'checklist_usage')) {
+          $migration->addField($table, 'checklist_usage', 'integer', ['value' => self::USAGE_MAINTENANCE]);
+      }
+      if (!$DB->fieldExists($table, 'is_mandatory')) {
+          $migration->addField($table, 'is_mandatory', 'bool', ['value' => 0]);
+      }
+       $migration->migrationOneTable($table);
+
+       // Issue #223 : points de preparation de poste proposes une seule fois (obligatoires,
+       // modifiables ensuite dans Configuration > Intitules).
+      if (countElementsInTable($table, ['checklist_usage' => self::USAGE_PREPARATION]) === 0) {
+         foreach ([
+              'Mise à jour du BIOS',
+              'Système et applications à jour',
+              'Antivirus installé et actif',
+              'Étiquette d\'inventaire posée',
+              'Nettoyage de l\'écran et du clavier',
+          ] as $name) {
+            $DB->insert($table, [
+              'entities_id'     => 0,
+              'is_recursive'    => 1,
+              'name'            => $name,
+              'is_active'       => 1,
+              'type'            => self::TYPE_CHECKBOX,
+              'checklist_usage' => self::USAGE_PREPARATION,
+              'is_mandatory'    => 1,
+              'date_creation'   => date('Y-m-d H:i:s'),
+             ]);
+         }
       }
    }
 }

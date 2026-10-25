@@ -1,0 +1,7 @@
+{# Issue #223 : suivi privé ajouté au ticket quand une fiche y est rattachée. #}
+<p><strong>{{ kind }}</strong> — {{ item }}</p>
+<ul>
+  <li>{{ __('Points de contrôle renseignés : %d', 'assetsign')|format(checked) }}</li>
+  <li>{{ __('Photos jointes : %d', 'assetsign')|format(photos) }}</li>
+</ul>
+<p><a href="{{ url }}">{{ __('Voir la fiche', 'assetsign') }}</a></p>

@@ -30,6 +30,21 @@ class Maintenance extends Compat\Base\MaintenanceBase
 {
    public const RIGHTNAME = Profile::RIGHT_MAINTENANCE;
 
+    // Issue #223 : une fiche est une maintenance ou une preparation de poste (masterisation).
+   public const KIND_MAINTENANCE = 0;
+   public const KIND_PREPARATION = 1;
+
+    /** Photos jointes a une fiche : types d'image acceptes. */
+   private const PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
+
+    /** @return array<int, string> */
+   public static function getKindLabels(): array {
+       return [
+           self::KIND_MAINTENANCE => __('Maintenance', 'assetsign'),
+           self::KIND_PREPARATION => __('Préparation de poste', 'assetsign'),
+       ];
+   }
+
    public static function getTypeName($nb = 0): string {
        return _n('Fiche de maintenance', 'Fiches de maintenance', $nb, 'assetsign');
    }
@@ -91,12 +106,18 @@ class Maintenance extends Compat\Base\MaintenanceBase
            // direct depuis la liste (cf. getSpecificValueToDisplay()), meme
            // convention que Assetsign::rawSearchOptions().
            ['id' => 6, 'table' => self::getTable(), 'field' => 'document_id', 'name' => __('PDF', 'assetsign'), 'datatype' => 'specific', 'nosearch' => true],
+           // Issue #223 : nature de la fiche et ticket de l'arrivant.
+           ['id' => 7, 'table' => self::getTable(), 'field' => 'kind', 'name' => __('Nature', 'assetsign'), 'datatype' => 'specific', 'searchtype' => ['equals', 'notequals']],
+           ['id' => 8, 'table' => 'glpi_tickets', 'field' => 'name', 'linkfield' => 'tickets_id', 'name' => __('Ticket'), 'datatype' => 'itemlink', 'itemlink_type' => 'Ticket'],
        ];
    }
 
    public static function getSpecificValueToDisplay($field, $values, array $options = []) {
       if (!is_array($values)) {
           $values = [$field => $values];
+      }
+      if ($field === 'kind') {
+          return htmlescape(self::getKindLabels()[(int) ($values[$field] ?? 0)] ?? '');
       }
       if ($field === 'document_id') {
           $documents_id = (int) ($values[$field] ?? 0);
@@ -113,6 +134,11 @@ class Maintenance extends Compat\Base\MaintenanceBase
       if (!Session::haveRight(self::$rightname, READ)) {
           return '';
       }
+       // Issue #223 : onglet « Préparation de poste » du ticket (nouvel arrivant).
+      if ($item instanceof \Ticket) {
+          $count = countElementsInTable(self::getTable(), ['tickets_id' => $item->getID()]);
+          return self::createTabEntry(__('Préparation de poste', 'assetsign'), $count);
+      }
       if (!in_array($item->getType(), Config::getAllManageableItemtypes(), true)) {
           return '';
       }
@@ -123,6 +149,10 @@ class Maintenance extends Compat\Base\MaintenanceBase
    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0): bool {
       if (!Session::haveRight(self::$rightname, READ)) {
           return false;
+      }
+      if ($item instanceof \Ticket) {
+          self::showForTicket($item);
+          return true;
       }
       if (!($item instanceof CommonDBTM)) {
           return false;
@@ -146,6 +176,11 @@ class Maintenance extends Compat\Base\MaintenanceBase
            'item'            => $item,
            'maintenances'    => iterator_to_array($rows),
            'checklist_items' => self::getActiveChecklistItems(),
+           // Issue #223 : preparation de poste, photos et ticket de l'arrivant.
+           'preparation_items' => self::getActiveChecklistItems(self::KIND_PREPARATION),
+           'kind_labels'       => self::getKindLabels(),
+           'open_tickets'      => self::getOpenTicketsFor($item),
+           'preset_kind'       => self::KIND_MAINTENANCE,
            'can_create'      => Session::haveRight(self::$rightname, CREATE),
            // Etat des lieux visuel : meme reglage que sur les fiches signees
            // (Config::enable_damage_annotation, cf. Assetsign::showForm()) -
@@ -187,9 +222,36 @@ class Maintenance extends Compat\Base\MaintenanceBase
            'damage_images'  => DamageMarker::getViewImageFilenames($this->fields['itemtype'] ?? null),
            'damage_markers_by_view' => $this->isNewID($ID) ? [] : Assetsign::groupMarkersByView(DamageMarker::getForMaintenance((int) $ID)),
            'signature_proof' => $this->isNewID($ID) ? null : Signature::getForMaintenance((int) $ID),
+           // Issue #223 : nature, ticket et photos jointes.
+           'kind_label'     => self::getKindLabels()[(int) ($this->fields['kind'] ?? 0)] ?? '',
+           'photos'         => $this->isNewID($ID) ? [] : $this->getPhotos(),
        ]);
 
        return true;
+   }
+
+    /**
+     * Issue #223 : photos jointes a cette fiche (Document_Item), hors PDF genere.
+     *
+     * @return list<array{id: int, name: string}>
+     */
+   public function getPhotos(): array {
+       global $DB;
+
+       $photos = [];
+      foreach ($DB->request([
+          'SELECT'     => ['glpi_documents.id', 'glpi_documents.name'],
+          'FROM'       => 'glpi_documents',
+          'INNER JOIN' => ['glpi_documents_items' => ['FKEY' => ['glpi_documents_items' => 'documents_id', 'glpi_documents' => 'id']]],
+          'WHERE'      => [
+              'glpi_documents_items.itemtype' => self::class,
+              'glpi_documents_items.items_id' => $this->getID(),
+              'NOT'                           => ['glpi_documents.id' => (int) $this->fields['document_id']],
+          ],
+      ]) as $row) {
+          $photos[] = ['id' => (int) $row['id'], 'name' => (string) $row['name']];
+      }
+       return $photos;
    }
 
     /**
@@ -234,7 +296,10 @@ class Maintenance extends Compat\Base\MaintenanceBase
 
        $date = $this->fields['date_creation'] ? date('Y-m-d', strtotime($this->fields['date_creation'])) : date('Y-m-d');
 
-       return trim(sprintf('%s — Maintenance — %s (%s)', $date, $itemName ?: $this->fields['itemtype'], $techName ?: '?'));
+       $kind = (int) ($this->fields['kind'] ?? self::KIND_MAINTENANCE) === self::KIND_PREPARATION
+           ? __('Préparation de poste', 'assetsign')
+           : 'Maintenance';
+       return trim(sprintf('%s — %s — %s (%s)', $date, $kind, $itemName ?: $this->fields['itemtype'], $techName ?: '?'));
    }
 
     /**
@@ -333,25 +398,198 @@ class Maintenance extends Compat\Base\MaintenanceBase
        ]);
    }
 
-    /** @return array<int, array{name: string, type: int, options: string[]}> Tous les points de controle actifs, par id. */
-   public static function getActiveChecklistItems(): array {
+    /**
+     * Points de controle actifs d'une nature de fiche (maintenance ou preparation de poste,
+     * issue #223), par id.
+     *
+     * @return array<int, array{name: string, type: int, options: string[], mandatory: bool}>
+     */
+   public static function getActiveChecklistItems(int $kind = self::KIND_MAINTENANCE): array {
        global $DB;
 
+       $usage = $kind === self::KIND_PREPARATION
+           ? MaintenanceChecklistItem::USAGE_PREPARATION
+           : MaintenanceChecklistItem::USAGE_MAINTENANCE;
        $items = [];
       // Entites de la session (meme regle que Kit pour les accessoires) : les points de controle
       // d'une autre entite ne s'affichent ni ne s'appliquent ici.
       foreach ($DB->request([
           'FROM'  => MaintenanceChecklistItem::getTable(),
-          'WHERE' => ['is_active' => 1] + getEntitiesRestrictCriteria(MaintenanceChecklistItem::getTable(), '', '', true),
+          'WHERE' => [
+              'is_active'       => 1,
+              'checklist_usage' => [$usage, MaintenanceChecklistItem::USAGE_BOTH],
+          ] + getEntitiesRestrictCriteria(MaintenanceChecklistItem::getTable(), '', '', true),
           'ORDER' => 'name',
       ]) as $row) {
           $items[(int) $row['id']] = [
-              'name'    => $row['name'],
-              'type'    => (int) $row['type'],
-              'options' => MaintenanceChecklistItem::parseOptions((string) ($row['options'] ?? '')),
+              'name'      => $row['name'],
+              'type'      => (int) $row['type'],
+              'options'   => MaintenanceChecklistItem::parseOptions((string) ($row['options'] ?? '')),
+              'mandatory' => (bool) ($row['is_mandatory'] ?? false),
           ];
       }
        return $items;
+   }
+
+    /**
+     * Issue #223 : points obligatoires non renseignes (case non cochee, texte ou choix vide).
+     *
+     * @param array<int, array{name: string, type: int, mandatory?: bool}> $items
+     * @param array<int|string, mixed> $values
+     * @return list<string> Noms des points manquants.
+     */
+   public static function missingMandatory(array $items, array $values): array {
+       $missing = [];
+      foreach ($items as $id => $item) {
+         if (empty($item['mandatory'])) {
+             continue;
+         }
+          $value = $values[$id] ?? $values[(string) $id] ?? null;
+          $filled = $item['type'] === MaintenanceChecklistItem::TYPE_CHECKBOX
+              ? $value !== null && $value !== '' && $value !== '0'
+              : trim((string) $value) !== '';
+         if (!$filled) {
+             $missing[] = (string) $item['name'];
+         }
+      }
+       return $missing;
+   }
+
+    /**
+     * Issue #223 : tickets ouverts lies a ce materiel (ticket de l'arrivant, en general), pour y
+     * rattacher la fiche de preparation.
+     *
+     * @return array<int, string> id => libelle
+     */
+   public static function getOpenTicketsFor(CommonDBTM $item): array {
+       global $DB;
+
+       $tickets = [];
+      foreach ($DB->request([
+          'SELECT'     => ['glpi_tickets.id', 'glpi_tickets.name'],
+          'FROM'       => 'glpi_tickets',
+          'INNER JOIN' => ['glpi_items_tickets' => ['FKEY' => ['glpi_items_tickets' => 'tickets_id', 'glpi_tickets' => 'id']]],
+          'WHERE'      => [
+              'glpi_items_tickets.itemtype' => $item->getType(),
+              'glpi_items_tickets.items_id' => $item->getID(),
+              'glpi_tickets.is_deleted'     => 0,
+              'NOT'                         => ['glpi_tickets.status' => array_merge(\Ticket::getSolvedStatusArray(), \Ticket::getClosedStatusArray())],
+          ],
+          'ORDER'      => 'glpi_tickets.id DESC',
+      ]) as $row) {
+          $tickets[(int) $row['id']] = sprintf('#%d — %s', $row['id'], $row['name']);
+      }
+       return $tickets;
+   }
+
+    /**
+     * Issue #223 : onglet du ticket — fiches de preparation rattachees, et materiels du ticket
+     * avec un lien direct vers leur onglet Maintenance, preparation preselectionnee.
+     */
+   public static function showForTicket(\Ticket $ticket): void {
+       global $DB;
+
+       $items = [];
+      foreach ((new \Item_Ticket())->find(['tickets_id' => $ticket->getID()]) as $link) {
+          $itemtype = (string) $link['itemtype'];
+         if (!in_array($itemtype, Config::getAllManageableItemtypes(), true)) {
+             continue;
+         }
+          $target = new $itemtype();
+         if (!$target->getFromDB((int) $link['items_id']) || !$target->canViewItem()) {
+             continue;
+         }
+          $items[] = [
+              'name' => $target->getName(),
+              'type' => $target::getTypeName(1),
+              'url'  => $itemtype::getFormURLWithID((int) $link['items_id'])
+                  . '&forcetab=' . rawurlencode(self::class . '$1') . '&assetsign_kind=' . self::KIND_PREPARATION
+                  . '&assetsign_ticket=' . $ticket->getID(),
+          ];
+      }
+       $preparations = [];
+      foreach ($DB->request([
+          'FROM'  => self::getTable(),
+          'WHERE' => ['tickets_id' => $ticket->getID()],
+          'ORDER' => 'date_creation DESC',
+      ]) as $row) {
+          $sheet = new self();
+          $sheet->getFromResultSet($row);
+          $row['item_name'] = (string) ($sheet->getTargetItem()['name'] ?? '') ?: $row['itemtype'] . ' #' . $row['items_id'];
+          $preparations[] = $row;
+      }
+       TemplateRenderer::getInstance()->display('@assetsign/ticket_preparation_tab.html.twig', [
+           'preparations' => $preparations,
+           'kind_labels'  => self::getKindLabels(),
+           'items'        => $items,
+           'can_create'   => Session::haveRight(self::$rightname, CREATE),
+       ]);
+   }
+
+    /**
+     * Issue #223 : verifie qu'un fichier envoye est bien une photo, avant toute ecriture.
+     *
+     * @param array{name?: string, error?: int, tmp_name?: string} $file
+     */
+   public static function isAcceptablePhoto(array $file): bool {
+       $extension = strtolower(pathinfo((string) ($file['name'] ?? ''), PATHINFO_EXTENSION));
+       return ($file['error'] ?? null) === UPLOAD_ERR_OK
+           && in_array($extension, self::PHOTO_EXTENSIONS, true)
+           && \Document::isValidDoc((string) $file['name']) !== '';
+   }
+
+    /**
+     * Enregistre une photo en Document GLPI, liee au materiel et a la fiche.
+     *
+     * @param array{name: string, tmp_name: string} $file
+     */
+   private static function storePhoto(array $file, int $entities_id, string $itemtype, int $items_id, int $maintenanceId): int {
+       $tmpName = uniqid('assetsign_photo_', true) . '_' . basename($file['name']);
+      if (!is_uploaded_file($file['tmp_name']) || !copy($file['tmp_name'], GLPI_TMP_DIR . '/' . $tmpName)) {
+          return 0;
+      }
+       $documents_id = (int) (new \Document())->add([
+           'name'          => $file['name'],
+           'entities_id'   => $entities_id,
+           '_filename'     => [$tmpName],
+           '_tag_filename' => [$tmpName],
+       ]);
+      if ($documents_id <= 0) {
+          return 0;
+      }
+      foreach ([[$itemtype, $items_id], [self::class, $maintenanceId]] as [$linkType, $linkId]) {
+          (new \Document_Item())->add(['documents_id' => $documents_id, 'itemtype' => $linkType, 'items_id' => $linkId]);
+      }
+       return $documents_id;
+   }
+
+    /**
+     * Issue #223 : rattache le PDF et les photos au ticket, et y ajoute un suivi prive. Le statut
+     * du ticket n'est jamais modifie.
+     *
+     * @param list<int> $documentIds
+     */
+   private static function reportToTicket(self $maintenance, int $tickets_id, array $documentIds, int $checked, int $photos): void {
+       $ticket = new \Ticket();
+      if (!$ticket->getFromDB($tickets_id) || !$ticket->canViewItem()) {
+          return;
+      }
+      foreach ($documentIds as $documents_id) {
+          (new \Document_Item())->add(['documents_id' => $documents_id, 'itemtype' => \Ticket::class, 'items_id' => $tickets_id]);
+      }
+       $item = $maintenance->getTargetItem();
+       (new \ITILFollowup())->add([
+           'itemtype'   => \Ticket::class,
+           'items_id'   => $tickets_id,
+           'is_private' => 1,
+           'content'    => TemplateRenderer::getInstance()->render('@assetsign/preparation_followup.html.twig', [
+               'kind'     => self::getKindLabels()[(int) $maintenance->fields['kind']] ?? '',
+               'item'     => (string) ($item['name'] ?? $maintenance->fields['itemtype']),
+               'checked'  => $checked,
+               'photos'   => $photos,
+               'url'      => self::getFormURLWithID($maintenance->getID()),
+           ]),
+       ]);
    }
 
     /**
@@ -389,9 +627,26 @@ class Maintenance extends Compat\Base\MaintenanceBase
        string $comment,
        array $damageMarkers = [],
        ?string $signatureImage = null,
-       array $signatureMeta = []
+       array $signatureMeta = [],
+       int $kind = self::KIND_MAINTENANCE,
+       int $tickets_id = 0,
+       array $photos = []
    ): int {
        global $DB;
+
+       $kind = $kind === self::KIND_PREPARATION ? self::KIND_PREPARATION : self::KIND_MAINTENANCE;
+       $checklistItems = self::getActiveChecklistItems($kind);
+       // Issue #223 : refus AVANT toute ecriture si un point obligatoire manque ou si un fichier
+       // joint n'est pas une photo.
+       $missing = self::missingMandatory($checklistItems, $itemValues);
+      if ($missing !== []) {
+          throw new \RuntimeException(sprintf(__('Points obligatoires non renseignés : %s', 'assetsign'), implode(', ', $missing)));
+      }
+      foreach ($photos as $photo) {
+         if (!self::isAcceptablePhoto($photo)) {
+             throw new \RuntimeException(__('Seules des photos (JPEG, PNG, WebP) peuvent être jointes.', 'assetsign'));
+         }
+      }
 
        $signatureEnabled = (bool) Config::getForEntity($entities_id)->fields['enable_maintenance_signature'];
       if ($signatureEnabled) {
@@ -405,6 +660,8 @@ class Maintenance extends Compat\Base\MaintenanceBase
            'items_id'      => $items_id,
            'users_id_tech' => Session::getLoginUserID() ?: 0,
            'comment'       => $comment,
+           'kind'          => $kind,
+           'tickets_id'    => max(0, $tickets_id),
        ]);
 
       if ($id <= 0) {
@@ -415,7 +672,8 @@ class Maintenance extends Compat\Base\MaintenanceBase
           DamageMarker::createMarkersForMaintenance($id, $damageMarkers);
       }
 
-      foreach (self::getActiveChecklistItems() as $checklistItemId => $checklistItem) {
+       $checked = 0;
+      foreach ($checklistItems as $checklistItemId => $checklistItem) {
          if (!array_key_exists($checklistItemId, $itemValues) && !array_key_exists((string) $checklistItemId, $itemValues)) {
              continue;
          }
@@ -438,6 +696,7 @@ class Maintenance extends Compat\Base\MaintenanceBase
               'plugin_assetsign_maintenancechecklistitems_id' => $checklistItemId,
               'value'                                   => $value,
             ]);
+            $checked++;
       }
 
        $maintenance->getFromDB($id);
@@ -461,6 +720,18 @@ class Maintenance extends Compat\Base\MaintenanceBase
       }
 
        PassportEvent::recordForMaintenance($maintenance);
+
+       // Issue #223 : photos du materiel pret, puis compte rendu sur le ticket de l'arrivant.
+       $photoIds = [];
+      foreach ($photos as $photo) {
+          $documents_id = self::storePhoto($photo, $entities_id, $itemtype, $items_id, $id);
+         if ($documents_id > 0) {
+             $photoIds[] = $documents_id;
+         }
+      }
+      if ($tickets_id > 0) {
+          self::reportToTicket($maintenance, $tickets_id, array_merge([(int) $result['document']->getID()], $photoIds), $checked, count($photoIds));
+      }
 
        return $id;
    }
@@ -515,6 +786,16 @@ class Maintenance extends Compat\Base\MaintenanceBase
       if (!$DB->fieldExists($valuesTable, 'value')) {
           $migration->addField($valuesTable, 'value', 'text');
       }
+
+       // Issue #223 : nature de la fiche (maintenance / preparation de poste) et ticket rattache.
+      if (!$DB->fieldExists($table, 'kind')) {
+          $migration->addField($table, 'kind', 'integer', ['value' => self::KIND_MAINTENANCE, 'after' => 'items_id']);
+      }
+      if (!$DB->fieldExists($table, 'tickets_id')) {
+          $migration->addField($table, 'tickets_id', 'fkey', ['after' => 'kind']);
+          $migration->addKey($table, 'tickets_id');
+      }
+       $migration->migrationOneTable($table);
 
        self::seedDefaultDisplayPreferences();
    }

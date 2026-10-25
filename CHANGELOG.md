@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Préparation de poste (masterisation)** (issue #223) :
+  - onglet Maintenance du matériel : choix « Maintenance » ou **« Préparation de poste »**. La
+    préparation a ses propres points de contrôle, dont 5 proposés à l'installation et modifiables :
+    BIOS, système et applications, antivirus, étiquette d'inventaire, nettoyage ;
+  - **points obligatoires** (nouvelle option des points de contrôle, utilisable aussi pour la
+    maintenance) : la fiche ne peut pas être validée tant qu'un point marqué * manque. Le navigateur
+    le signale, et le serveur refuse aussi la fiche ;
+  - **photos du matériel prêt** : sur smartphone, le champ ouvre directement l'appareil photo. Les
+    photos (JPEG, PNG, WebP) sont jointes au matériel, à la fiche et au ticket ;
+  - **ticket du nouvel arrivant** : un nouvel onglet « Préparation de poste » sur le ticket mène au
+    matériel lié, avec la préparation et le ticket présélectionnés. À la validation, le PDF et les
+    photos sont joints au ticket, avec un suivi privé. Le ticket n'est jamais fermé ni modifié ;
+  - liste des fiches et recherche : colonnes « Nature » et « Ticket ».
 - **Renouvellement du parc** (issue #222), menu Outils > Renouvellement du parc : les matériels dont
   l'amortissement se termine dans les 3, 6, 12 ou 24 prochains mois (fins déjà passées comprises),
   d'après la fiche financière GLPI (mise en service, ou à défaut achat, et durée d'amortissement, ou
