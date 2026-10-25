@@ -487,6 +487,16 @@ function plugin_assetsign_install(): bool {
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
+    // Issue #222 : changement groupe mensuel des materiels a renouveler (si active par entite).
+    CronTask::register(
+        \GlpiPlugin\Assetsign\Renewal::class,
+        'assetsignRenewal',
+        DAY_TIMESTAMP,
+        [
+            'comment' => 'Cree chaque mois un ticket de changement listant les materiels en fin d\'amortissement (si active)',
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
     CronTask::register(
         Campaign::class,
         'assetsignCampaigns',

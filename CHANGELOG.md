@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Renouvellement du parc** (issue #222), menu Outils > Renouvellement du parc : les matériels dont
+  l'amortissement se termine dans les 3, 6, 12 ou 24 prochains mois (fins déjà passées comprises),
+  d'après la fiche financière GLPI (mise en service, ou à défaut achat, et durée d'amortissement, ou
+  à défaut la durée par défaut de la Configuration). Budget estimé par année d'après la valeur
+  d'achat, export CSV, et bouton « Créer le ticket de changement » : un changement groupé qui liste
+  les matériels et le budget, chacun lié au changement. Option de Configuration pour le créer
+  automatiquement chaque mois. Rien n'est modifié sur les matériels.
+
 - **Versions de la charte informatique** (issue #224) : chaque campagne de charte enregistre
   l'empreinte de la version diffusée (une simple différence d'espaces ne compte pas). Quand le
   texte change, la page des campagnes l'indique (« La charte informatique a changé : N personne(s)

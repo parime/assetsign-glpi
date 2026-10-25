@@ -4517,3 +4517,75 @@ msgstr "Automatically ask for a new signature when the charter changes"
 
 msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
 msgstr "When the charter text is changed, a campaign is launched for only the people who signed an older version. Otherwise, it is offered on the campaigns page."
+
+msgid "Renouvellement du parc"
+msgstr "Fleet renewal"
+
+#, php-format
+msgid "Renouvellement du parc : %1$d matériel(s), budget estimé %2$s"
+msgstr "Fleet renewal: %1$d device(s), estimated budget %2$s"
+
+msgid "Utilisateur"
+msgstr "User"
+
+msgid "Fin d'amortissement"
+msgstr "End of depreciation"
+
+msgid "Valeur d'achat"
+msgstr "Purchase value"
+
+msgid "Renouvellement du parc : un ticket de changement mensuel listant les matériels en fin d'amortissement (si activé)"
+msgstr "Fleet renewal: a monthly change listing devices at the end of depreciation (if enabled)"
+
+#, php-format
+msgid "Ticket de changement n°%d créé."
+msgstr "Change #%d created."
+
+msgid "Aucun matériel à renouveler sur cette période."
+msgstr "No device to renew over this period."
+
+msgid "Matériels dont l'amortissement se termine dans la période choisie (fins déjà passées comprises), d'après leur fiche financière : mise en service, ou à défaut achat, et durée d'amortissement, ou à défaut celle de la Configuration. Rien n'est modifié sur les matériels."
+msgstr "Devices whose depreciation ends within the chosen period (past ends included), based on their financial information: start of use, or else purchase, and depreciation period, or else the one from the Configuration. Nothing is changed on the devices."
+
+#, php-format
+msgid "Déjà amortis (%s)"
+msgstr "Already depreciated (%s)"
+
+#, php-format
+msgid "%d matériel(s)"
+msgstr "%d device(s)"
+
+msgid "Budget estimé d'après la valeur d'achat ; un matériel sans valeur compte zéro."
+msgstr "Budget estimated from the purchase value; a device without a value counts as zero."
+
+msgid "Exporter (CSV)"
+msgstr "Export (CSV)"
+
+msgid "Créer le ticket de changement"
+msgstr "Create the change"
+
+msgid "Durée par défaut et changement mensuel : Configuration"
+msgstr "Default period and monthly change: Configuration"
+
+msgid "Les matériels sans date de mise en service ni d'achat dans leur fiche financière ne sont pas comptés."
+msgstr "Devices with neither a start-of-use nor a purchase date in their financial information are not counted."
+
+#, php-format
+msgid "Matériels dont l'amortissement se termine dans les %d prochains mois (fins déjà passées comprises). Aucune donnée des matériels n'a été modifiée."
+msgstr "Devices whose depreciation ends within the next %d months (past ends included). No device data was changed."
+
+msgid "Budget estimé par année"
+msgstr "Estimated budget per year"
+
+#, php-format
+msgid "fin d'amortissement le %s"
+msgstr "depreciation ends on %s"
+
+msgid "Durée d'amortissement par défaut (années)"
+msgstr "Default depreciation period (years)"
+
+msgid "Utilisée quand la fiche financière du matériel ne précise pas de durée d'amortissement."
+msgstr "Used when the device's financial information does not specify a depreciation period."
+
+msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
+msgstr "Create a change every month listing the devices to renew within 12 months"

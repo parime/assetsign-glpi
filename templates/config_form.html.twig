@@ -232,6 +232,19 @@
             <button type="submit" form="assetsign-test-email-form" name="send_test_chat" class="btn btn-outline-secondary btn-sm"><i class="ti ti-send me-1"></i>{{ __('Envoyer un message de test', 'assetsign') }}</button>
             <div class="form-text">{{ __('Utilise les réglages déjà enregistrés : enregistrez d\'abord.', 'assetsign') }}</div>
           </div>
+
+          {# Issue #222 : renouvellement du parc. #}
+          <h4 class="mt-4"><i class="ti ti-recycle me-1"></i>{{ __('Renouvellement du parc', 'assetsign') }}</h4>
+          <div class="mb-3">
+            <label class="form-label" for="renewal_default_years">{{ __('Durée d\'amortissement par défaut (années)', 'assetsign') }}</label>
+            <input type="number" name="renewal_default_years" id="renewal_default_years" class="form-control" min="1" max="15" value="{{ config.renewal_default_years|default(4) }}">
+            <div class="form-text">{{ __('Utilisée quand la fiche financière du matériel ne précise pas de durée d\'amortissement.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="renewal_monthly_change" value="0">
+            <input type="checkbox" name="renewal_monthly_change" value="1" class="form-check-input" id="renewal_monthly_change" {{ config.renewal_monthly_change|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="renewal_monthly_change">{{ __('Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois', 'assetsign') }}</label>
+          </div>
           {# Issue #193 : pret temporaire #}
           <div class="mb-3">
             <label class="form-label"><i class="ti ti-clock-share me-1"></i>{{ __('Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)', 'assetsign') }}</label>
