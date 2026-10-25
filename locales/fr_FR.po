@@ -4537,3 +4537,75 @@ msgstr "Faire re-signer automatiquement quand la charte change"
 
 msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
 msgstr "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
+
+msgid "Renouvellement du parc"
+msgstr "Renouvellement du parc"
+
+#, php-format
+msgid "Renouvellement du parc : %1$d matériel(s), budget estimé %2$s"
+msgstr "Renouvellement du parc : %1$d matériel(s), budget estimé %2$s"
+
+msgid "Utilisateur"
+msgstr "Utilisateur"
+
+msgid "Fin d'amortissement"
+msgstr "Fin d'amortissement"
+
+msgid "Valeur d'achat"
+msgstr "Valeur d'achat"
+
+msgid "Renouvellement du parc : un ticket de changement mensuel listant les matériels en fin d'amortissement (si activé)"
+msgstr "Renouvellement du parc : un ticket de changement mensuel listant les matériels en fin d'amortissement (si activé)"
+
+#, php-format
+msgid "Ticket de changement n°%d créé."
+msgstr "Ticket de changement n°%d créé."
+
+msgid "Aucun matériel à renouveler sur cette période."
+msgstr "Aucun matériel à renouveler sur cette période."
+
+msgid "Matériels dont l'amortissement se termine dans la période choisie (fins déjà passées comprises), d'après leur fiche financière : mise en service, ou à défaut achat, et durée d'amortissement, ou à défaut celle de la Configuration. Rien n'est modifié sur les matériels."
+msgstr "Matériels dont l'amortissement se termine dans la période choisie (fins déjà passées comprises), d'après leur fiche financière : mise en service, ou à défaut achat, et durée d'amortissement, ou à défaut celle de la Configuration. Rien n'est modifié sur les matériels."
+
+#, php-format
+msgid "Déjà amortis (%s)"
+msgstr "Déjà amortis (%s)"
+
+#, php-format
+msgid "%d matériel(s)"
+msgstr "%d matériel(s)"
+
+msgid "Budget estimé d'après la valeur d'achat ; un matériel sans valeur compte zéro."
+msgstr "Budget estimé d'après la valeur d'achat ; un matériel sans valeur compte zéro."
+
+msgid "Exporter (CSV)"
+msgstr "Exporter (CSV)"
+
+msgid "Créer le ticket de changement"
+msgstr "Créer le ticket de changement"
+
+msgid "Durée par défaut et changement mensuel : Configuration"
+msgstr "Durée par défaut et changement mensuel : Configuration"
+
+msgid "Les matériels sans date de mise en service ni d'achat dans leur fiche financière ne sont pas comptés."
+msgstr "Les matériels sans date de mise en service ni d'achat dans leur fiche financière ne sont pas comptés."
+
+#, php-format
+msgid "Matériels dont l'amortissement se termine dans les %d prochains mois (fins déjà passées comprises). Aucune donnée des matériels n'a été modifiée."
+msgstr "Matériels dont l'amortissement se termine dans les %d prochains mois (fins déjà passées comprises). Aucune donnée des matériels n'a été modifiée."
+
+msgid "Budget estimé par année"
+msgstr "Budget estimé par année"
+
+#, php-format
+msgid "fin d'amortissement le %s"
+msgstr "fin d'amortissement le %s"
+
+msgid "Durée d'amortissement par défaut (années)"
+msgstr "Durée d'amortissement par défaut (années)"
+
+msgid "Utilisée quand la fiche financière du matériel ne précise pas de durée d'amortissement."
+msgstr "Utilisée quand la fiche financière du matériel ne précise pas de durée d'amortissement."
+
+msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
+msgstr "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"

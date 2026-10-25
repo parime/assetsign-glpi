@@ -4573,3 +4573,75 @@ msgstr "Bei Änderung der Charta automatisch erneut unterschreiben lassen"
 
 msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
 msgstr "Wenn der Chartatext geändert wird, startet eine Kampagne nur für die Personen, die eine ältere Version unterschrieben haben. Andernfalls wird sie auf der Kampagnenseite vorgeschlagen."
+
+msgid "Renouvellement du parc"
+msgstr "Erneuerung des Bestands"
+
+#, php-format
+msgid "Renouvellement du parc : %1$d matériel(s), budget estimé %2$s"
+msgstr "Erneuerung des Bestands: %1$d Gerät(e), geschätztes Budget %2$s"
+
+msgid "Utilisateur"
+msgstr "Benutzer"
+
+msgid "Fin d'amortissement"
+msgstr "Ende der Abschreibung"
+
+msgid "Valeur d'achat"
+msgstr "Kaufwert"
+
+msgid "Renouvellement du parc : un ticket de changement mensuel listant les matériels en fin d'amortissement (si activé)"
+msgstr "Erneuerung des Bestands: eine monatliche Änderung mit den Geräten am Ende der Abschreibung (falls aktiviert)"
+
+#, php-format
+msgid "Ticket de changement n°%d créé."
+msgstr "Änderung Nr. %d erstellt."
+
+msgid "Aucun matériel à renouveler sur cette période."
+msgstr "Kein Gerät in diesem Zeitraum zu erneuern."
+
+msgid "Matériels dont l'amortissement se termine dans la période choisie (fins déjà passées comprises), d'après leur fiche financière : mise en service, ou à défaut achat, et durée d'amortissement, ou à défaut celle de la Configuration. Rien n'est modifié sur les matériels."
+msgstr "Geräte, deren Abschreibung im gewählten Zeitraum endet (bereits vergangene Enden eingeschlossen), gemäß ihren Finanzdaten: Inbetriebnahme oder sonst Kauf, und Abschreibungsdauer oder sonst die aus der Konfiguration. An den Geräten wird nichts geändert."
+
+#, php-format
+msgid "Déjà amortis (%s)"
+msgstr "Bereits abgeschrieben (%s)"
+
+#, php-format
+msgid "%d matériel(s)"
+msgstr "%d Gerät(e)"
+
+msgid "Budget estimé d'après la valeur d'achat ; un matériel sans valeur compte zéro."
+msgstr "Budget anhand des Kaufwerts geschätzt; ein Gerät ohne Wert zählt null."
+
+msgid "Exporter (CSV)"
+msgstr "Exportieren (CSV)"
+
+msgid "Créer le ticket de changement"
+msgstr "Änderung erstellen"
+
+msgid "Durée par défaut et changement mensuel : Configuration"
+msgstr "Standarddauer und monatliche Änderung: Konfiguration"
+
+msgid "Les matériels sans date de mise en service ni d'achat dans leur fiche financière ne sont pas comptés."
+msgstr "Geräte ohne Inbetriebnahme- oder Kaufdatum in den Finanzdaten werden nicht gezählt."
+
+#, php-format
+msgid "Matériels dont l'amortissement se termine dans les %d prochains mois (fins déjà passées comprises). Aucune donnée des matériels n'a été modifiée."
+msgstr "Geräte, deren Abschreibung in den nächsten %d Monaten endet (bereits vergangene Enden eingeschlossen). Keine Gerätedaten wurden geändert."
+
+msgid "Budget estimé par année"
+msgstr "Geschätztes Budget pro Jahr"
+
+#, php-format
+msgid "fin d'amortissement le %s"
+msgstr "Abschreibung endet am %s"
+
+msgid "Durée d'amortissement par défaut (années)"
+msgstr "Standard-Abschreibungsdauer (Jahre)"
+
+msgid "Utilisée quand la fiche financière du matériel ne précise pas de durée d'amortissement."
+msgstr "Wird verwendet, wenn die Finanzdaten des Geräts keine Abschreibungsdauer angeben."
+
+msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
+msgstr "Jeden Monat eine Änderung mit den in 12 Monaten zu erneuernden Geräten erstellen"

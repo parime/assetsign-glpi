@@ -1,0 +1,10 @@
+{# Issue #222 : contenu du ticket de changement groupe #}
+<p>{{ __('Matériels dont l\'amortissement se termine dans les %d prochains mois (fins déjà passées comprises). Aucune donnée des matériels n\'a été modifiée.', 'assetsign')|format(horizon) }}</p>
+<p><strong>{{ __('Budget estimé par année', 'assetsign') }}</strong></p>
+<ul>
+{% for year, b in budget %}<li>{{ year }} : {{ b.budget|number_format(2, ',', ' ') }} € ({{ __('%d matériel(s)', 'assetsign')|format(b.count) }})</li>{% endfor %}
+</ul>
+<p><strong>{{ __('Matériels', 'assetsign') }}</strong></p>
+<ul>
+{% for r in rows %}<li>{{ r.type }} {{ r.name }}{% if r.user %} ({{ r.user }}){% endif %} — {{ __('fin d\'amortissement le %s', 'assetsign')|format(r.end_of_life|formatted_date) }}{% if r.value > 0 %}, {{ r.value|number_format(2, ',', ' ') }} €{% endif %}</li>{% endfor %}
+</ul>

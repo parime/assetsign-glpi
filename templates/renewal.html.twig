@@ -1,0 +1,70 @@
+{# Issue #222 : renouvellement du parc. #}
+<div class="container-lg my-3">
+  <div class="card mb-3">
+    <div class="card-header d-flex flex-wrap align-items-center gap-2">
+      <h3 class="card-title mb-0"><i class="ti ti-recycle me-2"></i>{{ __('Renouvellement du parc', 'assetsign') }}</h3>
+      <div class="btn-group ms-auto" role="group">
+        {% for h in horizons %}
+          <a class="btn btn-sm {{ h == horizon ? 'btn-primary' : 'btn-outline-primary' }}" href="{{ self_url }}?horizon={{ h }}">{{ __('%d mois', 'assetsign')|format(h) }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="text-muted">{{ __('Matériels dont l\'amortissement se termine dans la période choisie (fins déjà passées comprises), d\'après leur fiche financière : mise en service, ou à défaut achat, et durée d\'amortissement, ou à défaut celle de la Configuration. Rien n\'est modifié sur les matériels.', 'assetsign') }}</p>
+      {% if budget is not empty %}
+        <div class="row row-cards mb-2">
+          {% for year, b in budget %}
+            <div class="col-sm-6 col-lg-3"><div class="card card-sm"><div class="card-body">
+              <div class="text-muted">{{ year < today[:4] ? __('Déjà amortis (%s)', 'assetsign')|format(year) : year }}</div>
+              <div class="h2 mb-0">{{ b.budget|number_format(0, ',', ' ') }} €</div>
+              <div class="text-muted small">{{ __('%d matériel(s)', 'assetsign')|format(b.count) }}</div>
+            </div></div></div>
+          {% endfor %}
+        </div>
+        <div class="text-muted small">{{ __('Budget estimé d\'après la valeur d\'achat ; un matériel sans valeur compte zéro.', 'assetsign') }}</div>
+      {% endif %}
+    </div>
+    <div class="card-footer d-flex flex-wrap gap-2">
+      <a class="btn btn-outline-secondary" href="{{ self_url }}?horizon={{ horizon }}&export=csv"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('Exporter (CSV)', 'assetsign') }}</a>
+      {% if can_change and rows is not empty %}
+        <form method="post" action="{{ self_url }}">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="horizon" value="{{ horizon }}">
+          <button type="submit" name="create_change" value="1" class="btn btn-primary"><i class="ti ti-clipboard-plus me-1"></i>{{ __('Créer le ticket de changement', 'assetsign') }}</button>
+        </form>
+      {% endif %}
+      <a class="ms-auto align-self-center" href="{{ config_url }}">{{ __('Durée par défaut et changement mensuel : Configuration', 'assetsign') }}</a>
+    </div>
+  </div>
+
+  <div class="card">
+    {% if rows is empty %}
+      <div class="card-body"><div class="empty"><p class="empty-title">{{ __('Aucun matériel à renouveler sur cette période.', 'assetsign') }}</p><p class="empty-subtitle text-muted">{{ __('Les matériels sans date de mise en service ni d\'achat dans leur fiche financière ne sont pas comptés.', 'assetsign') }}</p></div></div>
+    {% else %}
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>{{ __('Matériel', 'assetsign') }}</th>
+              <th>{{ __('Utilisateur', 'assetsign') }}</th>
+              <th>{{ __('Mise en service', 'assetsign') }}</th>
+              <th>{{ __('Fin d\'amortissement', 'assetsign') }}</th>
+              <th class="text-end">{{ __('Valeur d\'achat', 'assetsign') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+              <tr>
+                <td><span class="text-muted small">{{ r.type }}</span><br><a href="{{ r.url }}">{{ r.name }}</a></td>
+                <td>{{ r.user }}</td>
+                <td>{{ r.start ? r.start|formatted_date : '' }}</td>
+                <td><span class="badge {{ r.end_of_life < today ? 'bg-red-lt' : 'bg-orange-lt' }}">{{ r.end_of_life|formatted_date }}</span></td>
+                <td class="text-end">{{ r.value > 0 ? r.value|number_format(2, ',', ' ') ~ ' €' : '—' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>

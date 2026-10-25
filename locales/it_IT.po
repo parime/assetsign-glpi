@@ -4547,3 +4547,75 @@ msgstr "Far firmare di nuovo automaticamente quando la carta cambia"
 
 msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
 msgstr "Quando il testo della carta viene modificato, viene avviata una campagna solo per le persone che hanno firmato una versione precedente. Altrimenti viene proposta nella pagina delle campagne."
+
+msgid "Renouvellement du parc"
+msgstr "Rinnovo del parco"
+
+#, php-format
+msgid "Renouvellement du parc : %1$d matériel(s), budget estimé %2$s"
+msgstr "Rinnovo del parco: %1$d dispositivo/i, budget stimato %2$s"
+
+msgid "Utilisateur"
+msgstr "Utente"
+
+msgid "Fin d'amortissement"
+msgstr "Fine ammortamento"
+
+msgid "Valeur d'achat"
+msgstr "Valore d'acquisto"
+
+msgid "Renouvellement du parc : un ticket de changement mensuel listant les matériels en fin d'amortissement (si activé)"
+msgstr "Rinnovo del parco: un cambiamento mensile con i dispositivi a fine ammortamento (se attivato)"
+
+#, php-format
+msgid "Ticket de changement n°%d créé."
+msgstr "Cambiamento n. %d creato."
+
+msgid "Aucun matériel à renouveler sur cette période."
+msgstr "Nessun dispositivo da rinnovare in questo periodo."
+
+msgid "Matériels dont l'amortissement se termine dans la période choisie (fins déjà passées comprises), d'après leur fiche financière : mise en service, ou à défaut achat, et durée d'amortissement, ou à défaut celle de la Configuration. Rien n'est modifié sur les matériels."
+msgstr "Dispositivi il cui ammortamento termina nel periodo scelto (scadenze passate comprese), in base alle informazioni finanziarie: messa in servizio, o altrimenti acquisto, e durata dell'ammortamento, o altrimenti quella della Configurazione. Nulla viene modificato sui dispositivi."
+
+#, php-format
+msgid "Déjà amortis (%s)"
+msgstr "Già ammortizzati (%s)"
+
+#, php-format
+msgid "%d matériel(s)"
+msgstr "%d dispositivo/i"
+
+msgid "Budget estimé d'après la valeur d'achat ; un matériel sans valeur compte zéro."
+msgstr "Budget stimato in base al valore d'acquisto; un dispositivo senza valore conta zero."
+
+msgid "Exporter (CSV)"
+msgstr "Esporta (CSV)"
+
+msgid "Créer le ticket de changement"
+msgstr "Crea il cambiamento"
+
+msgid "Durée par défaut et changement mensuel : Configuration"
+msgstr "Durata predefinita e cambiamento mensile: Configurazione"
+
+msgid "Les matériels sans date de mise en service ni d'achat dans leur fiche financière ne sont pas comptés."
+msgstr "I dispositivi senza data di messa in servizio né d'acquisto nelle informazioni finanziarie non sono contati."
+
+#, php-format
+msgid "Matériels dont l'amortissement se termine dans les %d prochains mois (fins déjà passées comprises). Aucune donnée des matériels n'a été modifiée."
+msgstr "Dispositivi il cui ammortamento termina nei prossimi %d mesi (scadenze passate comprese). Nessun dato dei dispositivi è stato modificato."
+
+msgid "Budget estimé par année"
+msgstr "Budget stimato per anno"
+
+#, php-format
+msgid "fin d'amortissement le %s"
+msgstr "fine ammortamento il %s"
+
+msgid "Durée d'amortissement par défaut (années)"
+msgstr "Durata di ammortamento predefinita (anni)"
+
+msgid "Utilisée quand la fiche financière du matériel ne précise pas de durée d'amortissement."
+msgstr "Usata quando le informazioni finanziarie del dispositivo non indicano una durata di ammortamento."
+
+msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
+msgstr "Creare ogni mese un cambiamento con i dispositivi da rinnovare entro 12 mesi"

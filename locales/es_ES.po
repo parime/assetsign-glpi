@@ -4537,3 +4537,75 @@ msgstr "Pedir automáticamente una nueva firma cuando cambie la carta"
 
 msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
 msgstr "Cuando se modifica el texto de la carta, se lanza una campaña solo para las personas que firmaron una versión anterior. Si no, se propone en la página de campañas."
+
+msgid "Renouvellement du parc"
+msgstr "Renovación del parque"
+
+#, php-format
+msgid "Renouvellement du parc : %1$d matériel(s), budget estimé %2$s"
+msgstr "Renovación del parque: %1$d equipo(s), presupuesto estimado %2$s"
+
+msgid "Utilisateur"
+msgstr "Usuario"
+
+msgid "Fin d'amortissement"
+msgstr "Fin de amortización"
+
+msgid "Valeur d'achat"
+msgstr "Valor de compra"
+
+msgid "Renouvellement du parc : un ticket de changement mensuel listant les matériels en fin d'amortissement (si activé)"
+msgstr "Renovación del parque: un cambio mensual con los equipos al final de su amortización (si está activado)"
+
+#, php-format
+msgid "Ticket de changement n°%d créé."
+msgstr "Cambio n.º %d creado."
+
+msgid "Aucun matériel à renouveler sur cette période."
+msgstr "Ningún equipo que renovar en este período."
+
+msgid "Matériels dont l'amortissement se termine dans la période choisie (fins déjà passées comprises), d'après leur fiche financière : mise en service, ou à défaut achat, et durée d'amortissement, ou à défaut celle de la Configuration. Rien n'est modifié sur les matériels."
+msgstr "Equipos cuya amortización termina en el período elegido (finales ya pasados incluidos), según su ficha financiera: puesta en servicio, o si no compra, y duración de amortización, o si no la de la Configuración. No se modifica nada en los equipos."
+
+#, php-format
+msgid "Déjà amortis (%s)"
+msgstr "Ya amortizados (%s)"
+
+#, php-format
+msgid "%d matériel(s)"
+msgstr "%d equipo(s)"
+
+msgid "Budget estimé d'après la valeur d'achat ; un matériel sans valeur compte zéro."
+msgstr "Presupuesto estimado según el valor de compra; un equipo sin valor cuenta como cero."
+
+msgid "Exporter (CSV)"
+msgstr "Exportar (CSV)"
+
+msgid "Créer le ticket de changement"
+msgstr "Crear el cambio"
+
+msgid "Durée par défaut et changement mensuel : Configuration"
+msgstr "Duración predeterminada y cambio mensual: Configuración"
+
+msgid "Les matériels sans date de mise en service ni d'achat dans leur fiche financière ne sont pas comptés."
+msgstr "No se cuentan los equipos sin fecha de puesta en servicio ni de compra en su ficha financiera."
+
+#, php-format
+msgid "Matériels dont l'amortissement se termine dans les %d prochains mois (fins déjà passées comprises). Aucune donnée des matériels n'a été modifiée."
+msgstr "Equipos cuya amortización termina en los próximos %d meses (finales ya pasados incluidos). No se modificó ningún dato de los equipos."
+
+msgid "Budget estimé par année"
+msgstr "Presupuesto estimado por año"
+
+#, php-format
+msgid "fin d'amortissement le %s"
+msgstr "fin de amortización el %s"
+
+msgid "Durée d'amortissement par défaut (années)"
+msgstr "Duración de amortización predeterminada (años)"
+
+msgid "Utilisée quand la fiche financière du matériel ne précise pas de durée d'amortissement."
+msgstr "Se usa cuando la ficha financiera del equipo no indica una duración de amortización."
+
+msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
+msgstr "Crear cada mes un cambio con los equipos que renovar en 12 meses"
