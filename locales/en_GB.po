@@ -4397,3 +4397,71 @@ msgstr "Thank you, your signature has been recorded. You can hand the device bac
 
 msgid "Reprendre la main (technicien)"
 msgstr "Take back control (technician)"
+
+msgid "Rappel : signature en attente"
+msgstr "Reminder: signature pending"
+
+#, php-format
+msgid "La fiche « %1$s » de %2$s attend sa signature depuis le %3$s."
+msgstr "The \"%1$s\" form for %2$s has been awaiting signature since %3$s."
+
+msgid "Nouvelle fiche à signer"
+msgstr "New form to sign"
+
+#, php-format
+msgid "La fiche « %1$s » attend la signature de %2$s."
+msgstr "The \"%1$s\" form is awaiting %2$s's signature."
+
+msgid "Ouvrir mes signatures"
+msgstr "Open my signatures"
+
+msgid "Message de test AssetSign"
+msgstr "AssetSign test message"
+
+msgid "Les avis de signature de cette entité arriveront dans ce canal."
+msgstr "Signature notices for this entity will arrive in this channel."
+
+msgid "Message de test envoyé."
+msgstr "Test message sent."
+
+msgid "Échec de l'envoi : vérifiez l'outil choisi et l'adresse du webhook, enregistrez, puis réessayez (détail dans le journal assetsign)."
+msgstr "Sending failed: check the chosen tool and the webhook address, save, then try again (details in the assetsign log)."
+
+msgid "Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même."
+msgstr "Webhook address rejected: it must start with https:// and must not target the server itself."
+
+msgid "Avis dans un outil de messagerie"
+msgstr "Notices in a messaging tool"
+
+msgid "Un message est publié dans un canal Teams, Slack ou Mattermost (webhook entrant) quand une fiche est envoyée et à chaque relance. Il ne contient jamais le lien de signature personnel : seulement un lien vers « Mes signatures », qui demande la connexion du bénéficiaire."
+msgstr "A message is posted in a Teams, Slack or Mattermost channel (incoming webhook) when a form is sent and at each reminder. It never contains the personal signature link: only a link to \"My signatures\", which requires the beneficiary to log in."
+
+msgid "Outil"
+msgstr "Tool"
+
+msgid "Aucun (e-mails seulement)"
+msgstr "None (e-mails only)"
+
+msgid "Adresse du webhook entrant"
+msgstr "Incoming webhook address"
+
+msgid "Adresse enregistrée : laissez vide pour la conserver"
+msgstr "Address saved: leave empty to keep it"
+
+msgid "Elle vaut mot de passe : elle est chiffrée en base et n'est jamais réaffichée. Adresse en https uniquement."
+msgstr "It is as sensitive as a password: it is encrypted in the database and never shown again. https addresses only."
+
+msgid "Supprimer l'adresse enregistrée"
+msgstr "Delete the saved address"
+
+msgid "Quand une fiche est envoyée"
+msgstr "When a form is sent"
+
+msgid "À chaque relance"
+msgstr "At each reminder"
+
+msgid "Envoyer un message de test"
+msgstr "Send a test message"
+
+msgid "Utilise les réglages déjà enregistrés : enregistrez d'abord."
+msgstr "Uses the settings already saved: save first."

@@ -29,4 +29,32 @@ final class Http
        // accepte la connexion sans jamais repondre bloquerait sinon la page.
        return (string) \Toolbox::getURLContent($url, $error, 0, [CURLOPT_TIMEOUT => 10]);
    }
+
+    /**
+     * Envoie un corps JSON en POST (issue #231, webhooks de messagerie), en respectant le proxy de
+     * GLPI. Vrai si le serveur a repondu par un code 2xx ; sinon faux, $error decrivant la cause.
+     *
+     * @param array<string, mixed> $payload
+     */
+   public static function postJson(string $url, array $payload, ?string &$error = null): bool {
+      try {
+         if (class_exists(\Glpi\Toolbox\HttpClient::class)) {
+             $status = (new \Glpi\Toolbox\HttpClient())
+                 ->post($url, ['json' => $payload, 'timeout' => 5])
+                 ->getStatusCode();
+         } else {
+             $status = \Toolbox::getGuzzleClient(['timeout' => 5])
+                 ->post($url, ['json' => $payload, 'http_errors' => false])
+                 ->getStatusCode();
+         }
+      } catch (\Throwable $e) {
+          $error = $e->getMessage();
+          return false;
+      }
+      if ($status < 200 || $status >= 300) {
+          $error = 'HTTP ' . $status;
+          return false;
+      }
+       return true;
+   }
 }

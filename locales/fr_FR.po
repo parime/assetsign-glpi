@@ -4417,3 +4417,71 @@ msgstr "Merci, votre signature a bien été enregistrée. Vous pouvez rendre l'a
 
 msgid "Reprendre la main (technicien)"
 msgstr "Reprendre la main (technicien)"
+
+msgid "Rappel : signature en attente"
+msgstr "Rappel : signature en attente"
+
+#, php-format
+msgid "La fiche « %1$s » de %2$s attend sa signature depuis le %3$s."
+msgstr "La fiche « %1$s » de %2$s attend sa signature depuis le %3$s."
+
+msgid "Nouvelle fiche à signer"
+msgstr "Nouvelle fiche à signer"
+
+#, php-format
+msgid "La fiche « %1$s » attend la signature de %2$s."
+msgstr "La fiche « %1$s » attend la signature de %2$s."
+
+msgid "Ouvrir mes signatures"
+msgstr "Ouvrir mes signatures"
+
+msgid "Message de test AssetSign"
+msgstr "Message de test AssetSign"
+
+msgid "Les avis de signature de cette entité arriveront dans ce canal."
+msgstr "Les avis de signature de cette entité arriveront dans ce canal."
+
+msgid "Message de test envoyé."
+msgstr "Message de test envoyé."
+
+msgid "Échec de l'envoi : vérifiez l'outil choisi et l'adresse du webhook, enregistrez, puis réessayez (détail dans le journal assetsign)."
+msgstr "Échec de l'envoi : vérifiez l'outil choisi et l'adresse du webhook, enregistrez, puis réessayez (détail dans le journal assetsign)."
+
+msgid "Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même."
+msgstr "Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même."
+
+msgid "Avis dans un outil de messagerie"
+msgstr "Avis dans un outil de messagerie"
+
+msgid "Un message est publié dans un canal Teams, Slack ou Mattermost (webhook entrant) quand une fiche est envoyée et à chaque relance. Il ne contient jamais le lien de signature personnel : seulement un lien vers « Mes signatures », qui demande la connexion du bénéficiaire."
+msgstr "Un message est publié dans un canal Teams, Slack ou Mattermost (webhook entrant) quand une fiche est envoyée et à chaque relance. Il ne contient jamais le lien de signature personnel : seulement un lien vers « Mes signatures », qui demande la connexion du bénéficiaire."
+
+msgid "Outil"
+msgstr "Outil"
+
+msgid "Aucun (e-mails seulement)"
+msgstr "Aucun (e-mails seulement)"
+
+msgid "Adresse du webhook entrant"
+msgstr "Adresse du webhook entrant"
+
+msgid "Adresse enregistrée : laissez vide pour la conserver"
+msgstr "Adresse enregistrée : laissez vide pour la conserver"
+
+msgid "Elle vaut mot de passe : elle est chiffrée en base et n'est jamais réaffichée. Adresse en https uniquement."
+msgstr "Elle vaut mot de passe : elle est chiffrée en base et n'est jamais réaffichée. Adresse en https uniquement."
+
+msgid "Supprimer l'adresse enregistrée"
+msgstr "Supprimer l'adresse enregistrée"
+
+msgid "Quand une fiche est envoyée"
+msgstr "Quand une fiche est envoyée"
+
+msgid "À chaque relance"
+msgstr "À chaque relance"
+
+msgid "Envoyer un message de test"
+msgstr "Envoyer un message de test"
+
+msgid "Utilise les réglages déjà enregistrés : enregistrez d'abord."
+msgstr "Utilise les réglages déjà enregistrés : enregistrez d'abord."

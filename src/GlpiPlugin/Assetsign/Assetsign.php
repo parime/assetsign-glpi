@@ -2054,6 +2054,8 @@ class Assetsign extends Compat\Base\AssetsignBase
        ]);
 
        NotificationEvent::raiseEvent('new', $this);
+       // Issue #231 : avis dans l'outil de messagerie de l'entite, s'il est configure.
+       Notification\ChatWebhook::notify($this, 'sent');
    }
 
     /**
@@ -3579,6 +3581,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        NotificationEvent::raiseEvent('reminder', $this);
+       Notification\ChatWebhook::notify($this, 'reminder');
 
        $newCount = (int) $this->fields['reminder_count'] + 1;
        Reminder::log($this);

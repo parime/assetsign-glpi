@@ -4417,3 +4417,71 @@ msgstr "Gracias, su firma se ha registrado. Puede devolver el dispositivo a %s."
 
 msgid "Reprendre la main (technicien)"
 msgstr "Retomar el control (técnico)"
+
+msgid "Rappel : signature en attente"
+msgstr "Recordatorio: firma pendiente"
+
+#, php-format
+msgid "La fiche « %1$s » de %2$s attend sa signature depuis le %3$s."
+msgstr "La ficha «%1$s» de %2$s espera su firma desde el %3$s."
+
+msgid "Nouvelle fiche à signer"
+msgstr "Nueva ficha para firmar"
+
+#, php-format
+msgid "La fiche « %1$s » attend la signature de %2$s."
+msgstr "La ficha «%1$s» espera la firma de %2$s."
+
+msgid "Ouvrir mes signatures"
+msgstr "Abrir mis firmas"
+
+msgid "Message de test AssetSign"
+msgstr "Mensaje de prueba de AssetSign"
+
+msgid "Les avis de signature de cette entité arriveront dans ce canal."
+msgstr "Los avisos de firma de esta entidad llegarán a este canal."
+
+msgid "Message de test envoyé."
+msgstr "Mensaje de prueba enviado."
+
+msgid "Échec de l'envoi : vérifiez l'outil choisi et l'adresse du webhook, enregistrez, puis réessayez (détail dans le journal assetsign)."
+msgstr "Error en el envío: compruebe la herramienta elegida y la dirección del webhook, guarde y vuelva a intentarlo (detalle en el registro de assetsign)."
+
+msgid "Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même."
+msgstr "Dirección del webhook rechazada: debe empezar por https:// y no apuntar al propio servidor."
+
+msgid "Avis dans un outil de messagerie"
+msgstr "Avisos en una herramienta de mensajería"
+
+msgid "Un message est publié dans un canal Teams, Slack ou Mattermost (webhook entrant) quand une fiche est envoyée et à chaque relance. Il ne contient jamais le lien de signature personnel : seulement un lien vers « Mes signatures », qui demande la connexion du bénéficiaire."
+msgstr "Se publica un mensaje en un canal de Teams, Slack o Mattermost (webhook entrante) cuando se envía una ficha y en cada recordatorio. Nunca contiene el enlace de firma personal: solo un enlace a «Mis firmas», que requiere que el beneficiario inicie sesión."
+
+msgid "Outil"
+msgstr "Herramienta"
+
+msgid "Aucun (e-mails seulement)"
+msgstr "Ninguna (solo correos)"
+
+msgid "Adresse du webhook entrant"
+msgstr "Dirección del webhook entrante"
+
+msgid "Adresse enregistrée : laissez vide pour la conserver"
+msgstr "Dirección guardada: déjela vacía para conservarla"
+
+msgid "Elle vaut mot de passe : elle est chiffrée en base et n'est jamais réaffichée. Adresse en https uniquement."
+msgstr "Equivale a una contraseña: se cifra en la base de datos y nunca se vuelve a mostrar. Solo direcciones https."
+
+msgid "Supprimer l'adresse enregistrée"
+msgstr "Eliminar la dirección guardada"
+
+msgid "Quand une fiche est envoyée"
+msgstr "Cuando se envía una ficha"
+
+msgid "À chaque relance"
+msgstr "En cada recordatorio"
+
+msgid "Envoyer un message de test"
+msgstr "Enviar un mensaje de prueba"
+
+msgid "Utilise les réglages déjà enregistrés : enregistrez d'abord."
+msgstr "Usa los ajustes ya guardados: guarde primero."
