@@ -44,4 +44,15 @@ final class CampaignLogicTest extends TestCase
        $this->assertFalse(CampaignLogic::charterTicketDue('2026-10-10', 0, 0, $after), 'Tout le monde a signé.');
        $this->assertFalse(CampaignLogic::charterTicketDue('2026-10-10', 0, 3, strtotime('2026-10-10 18:00:00')), 'Échéance pas encore passée.');
    }
+
+   public function testCharterHashIgnoresWhitespaceOnly(): void {
+       $this->assertSame('', CampaignLogic::charterHash('  '));
+       $this->assertSame(CampaignLogic::charterHash('<p>A  b</p>'), CampaignLogic::charterHash("<p>A\n b</p> "));
+       $this->assertNotSame(CampaignLogic::charterHash('<p>A b</p>'), CampaignLogic::charterHash('<p>A c</p>'));
+   }
+
+   public function testOutdatedSignersAreThoseWhoSignedAnotherVersion(): void {
+       $this->assertSame([3, 7], CampaignLogic::outdatedSigners([7 => 'old', 5 => 'new', 3 => 'older', 9 => ''], 'new'));
+       $this->assertSame([], CampaignLogic::outdatedSigners([7 => 'old'], ''), 'Plus de charte : personne.');
+   }
 }

@@ -4521,3 +4521,55 @@ msgstr "Testnachricht senden"
 
 msgid "Utilise les réglages déjà enregistrés : enregistrez d'abord."
 msgstr "Verwendet die bereits gespeicherten Einstellungen: zuerst speichern."
+
+msgid "Personne n'a signé une ancienne version de la charte : aucune re-signature à lancer."
+msgstr "Niemand hat eine ältere Version der Charta unterschrieben: keine erneute Unterschrift zu starten."
+
+#, php-format
+msgid "Charte informatique, nouvelle version du %s"
+msgstr "IT-Charta, neue Version vom %s"
+
+msgid "Historique des versions de la charte"
+msgstr "Versionsverlauf der Charta"
+
+msgid "Campagnes"
+msgstr "Kampagnen"
+
+msgid "Chaque modification du texte de la charte crée une nouvelle version. Les fiches et les campagnes déjà signées gardent la version en vigueur au moment de la signature."
+msgstr "Jede Änderung des Chartatextes erzeugt eine neue Version. Bereits unterschriebene Formulare und Kampagnen behalten die zum Zeitpunkt der Unterschrift gültige Version."
+
+msgid "La charte en vigueur n'a encore été diffusée par aucune campagne."
+msgstr "Die gültige Charta wurde noch durch keine Kampagne verteilt."
+
+msgid "Aucune campagne de charte pour l'instant"
+msgstr "Noch keine Charta-Kampagne"
+
+#, php-format
+msgid "Version du %s"
+msgstr "Version vom %s"
+
+msgid "En vigueur"
+msgstr "Gültig"
+
+msgid "Ancienne version"
+msgstr "Ältere Version"
+
+#, php-format
+msgid "%d signataire(s)"
+msgstr "%d Unterzeichner"
+
+msgid "Empreinte"
+msgstr "Fingerabdruck"
+
+#, php-format
+msgid "La charte informatique a changé : %d personne(s) ont signé une ancienne version."
+msgstr "Die IT-Charta hat sich geändert: %d Person(en) haben eine ältere Version unterschrieben."
+
+msgid "Leur faire signer la nouvelle version"
+msgstr "Neue Version unterschreiben lassen"
+
+msgid "Faire re-signer automatiquement quand la charte change"
+msgstr "Bei Änderung der Charta automatisch erneut unterschreiben lassen"
+
+msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
+msgstr "Wenn der Chartatext geändert wird, startet eine Kampagne nur für die Personen, die eine ältere Version unterschrieben haben. Andernfalls wird sie auf der Kampagnenseite vorgeschlagen."

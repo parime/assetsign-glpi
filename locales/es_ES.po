@@ -4485,3 +4485,55 @@ msgstr "Enviar un mensaje de prueba"
 
 msgid "Utilise les réglages déjà enregistrés : enregistrez d'abord."
 msgstr "Usa los ajustes ya guardados: guarde primero."
+
+msgid "Personne n'a signé une ancienne version de la charte : aucune re-signature à lancer."
+msgstr "Nadie firmó una versión anterior de la carta: no hay nueva firma que lanzar."
+
+#, php-format
+msgid "Charte informatique, nouvelle version du %s"
+msgstr "Carta informática, nueva versión del %s"
+
+msgid "Historique des versions de la charte"
+msgstr "Historial de versiones de la carta"
+
+msgid "Campagnes"
+msgstr "Campañas"
+
+msgid "Chaque modification du texte de la charte crée une nouvelle version. Les fiches et les campagnes déjà signées gardent la version en vigueur au moment de la signature."
+msgstr "Cada modificación del texto de la carta crea una nueva versión. Las fichas y campañas ya firmadas conservan la versión vigente en el momento de la firma."
+
+msgid "La charte en vigueur n'a encore été diffusée par aucune campagne."
+msgstr "La carta vigente aún no se ha difundido en ninguna campaña."
+
+msgid "Aucune campagne de charte pour l'instant"
+msgstr "Ninguna campaña de carta por ahora"
+
+#, php-format
+msgid "Version du %s"
+msgstr "Versión del %s"
+
+msgid "En vigueur"
+msgstr "Vigente"
+
+msgid "Ancienne version"
+msgstr "Versión anterior"
+
+#, php-format
+msgid "%d signataire(s)"
+msgstr "%d firmante(s)"
+
+msgid "Empreinte"
+msgstr "Huella"
+
+#, php-format
+msgid "La charte informatique a changé : %d personne(s) ont signé une ancienne version."
+msgstr "La carta informática ha cambiado: %d persona(s) firmaron una versión anterior."
+
+msgid "Leur faire signer la nouvelle version"
+msgstr "Hacerles firmar la nueva versión"
+
+msgid "Faire re-signer automatiquement quand la charte change"
+msgstr "Pedir automáticamente una nueva firma cuando cambie la carta"
+
+msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
+msgstr "Cuando se modifica el texto de la carta, se lanza una campaña solo para las personas que firmaron una versión anterior. Si no, se propone en la página de campañas."

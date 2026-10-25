@@ -4465,3 +4465,55 @@ msgstr "Send a test message"
 
 msgid "Utilise les réglages déjà enregistrés : enregistrez d'abord."
 msgstr "Uses the settings already saved: save first."
+
+msgid "Personne n'a signé une ancienne version de la charte : aucune re-signature à lancer."
+msgstr "Nobody signed an older version of the charter: no re-signature to launch."
+
+#, php-format
+msgid "Charte informatique, nouvelle version du %s"
+msgstr "IT charter, new version of %s"
+
+msgid "Historique des versions de la charte"
+msgstr "Charter version history"
+
+msgid "Campagnes"
+msgstr "Campaigns"
+
+msgid "Chaque modification du texte de la charte crée une nouvelle version. Les fiches et les campagnes déjà signées gardent la version en vigueur au moment de la signature."
+msgstr "Each change to the charter text creates a new version. Forms and campaigns already signed keep the version in force at the time of signature."
+
+msgid "La charte en vigueur n'a encore été diffusée par aucune campagne."
+msgstr "The charter in force has not yet been sent out by any campaign."
+
+msgid "Aucune campagne de charte pour l'instant"
+msgstr "No charter campaign yet"
+
+#, php-format
+msgid "Version du %s"
+msgstr "Version of %s"
+
+msgid "En vigueur"
+msgstr "In force"
+
+msgid "Ancienne version"
+msgstr "Older version"
+
+#, php-format
+msgid "%d signataire(s)"
+msgstr "%d signer(s)"
+
+msgid "Empreinte"
+msgstr "Fingerprint"
+
+#, php-format
+msgid "La charte informatique a changé : %d personne(s) ont signé une ancienne version."
+msgstr "The IT charter has changed: %d person(s) signed an older version."
+
+msgid "Leur faire signer la nouvelle version"
+msgstr "Have them sign the new version"
+
+msgid "Faire re-signer automatiquement quand la charte change"
+msgstr "Automatically ask for a new signature when the charter changes"
+
+msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
+msgstr "When the charter text is changed, a campaign is launched for only the people who signed an older version. Otherwise, it is offered on the campaigns page."

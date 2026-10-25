@@ -75,7 +75,7 @@ expect "front/sign.php : PDF via le lien d'autrui"            404   "$(code "$P/
 expect "front/opcache_reset.php : sans jeton de deploiement"  403   "$(code "$P/opcache_reset.php")"
 
 # --- Listes et tableaux : objets de A seulement (et la page ne plante pas) ---
-for list in front/assetsign.php front/maintenance.php front/movement.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php; do
+for list in front/assetsign.php front/maintenance.php front/movement.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php; do
   body=$(page "$BASE/plugins/assetsign/$list?all=1")
   expect "$list : la liste s'affiche" 200 "$(code "$BASE/plugins/assetsign/$list?all=1")"
   # Ces listes nomment les objets : le super-admin y voit B, le technicien jamais. Les autres ne
@@ -109,6 +109,8 @@ expect "front/ticket_handover.php : ticket de B"             $NF_POST "$(post ti
 expect "front/preview.php : apercu avec la configuration de B" $DENY "$(post preview.php "entities_id=$(id b)&type=0")"
 expect "front/config.php : modifier la configuration de B"   $DENY_W "$(post config.php "update=1&entities_id=$(id b)&link_validity_days=1")"
 expect "front/campaign.form.php : lancer une campagne en B"  $DENY_POST "$(post campaign.form.php "launch=1&name=securite&entities_id=$(id b)&date_deadline=2099-01-01")"
+# Issue #224 : re-signature de la charte de B.
+expect "front/campaign.form.php : re-signature de la charte de B" $DENY_POST "$(post campaign.form.php "launch_resign=1&entities_id=$(id b)")"
 expect "front/departure.form.php : depart d'une personne de B" $DENY_POST "$(post departure.form.php "prepare=1&users_id=$(id partant_B)")"
 # Issue #221 : preparer l'arrivee d'une personne de B (ticket cree dans son entite).
 expect "front/arrival.form.php : arrivee d'une personne de B" $DENY_POST "$(post arrival.form.php "prepare=1&users_id=$(id partant_B)")"

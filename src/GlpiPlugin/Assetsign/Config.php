@@ -163,6 +163,8 @@ class Config extends Compat\Base\ConfigBase
         'chat_webhook_url'                    => '',
         'chat_on_send'                        => 1,
         'chat_on_reminder'                    => 1,
+        // Issue #224 : re-signature automatique quand la charte change (sinon, proposee).
+        'charter_resign_on_change'            => 0,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -734,6 +736,7 @@ class Config extends Compat\Base\ConfigBase
                ? (string) $input['chat_webhook_format'] : '',
            'chat_on_send' => (int) ($input['chat_on_send'] ?? 0),
            'chat_on_reminder' => (int) ($input['chat_on_reminder'] ?? 0),
+           'charter_resign_on_change' => (int) ($input['charter_resign_on_change'] ?? 0),
        ];
 
        // Issue #231 : adresse du webhook chiffree ; un champ vide conserve l'adresse enregistree.
@@ -960,6 +963,7 @@ class Config extends Compat\Base\ConfigBase
                 `chat_webhook_url` text,
                 `chat_on_send` tinyint NOT NULL DEFAULT 1,
                 `chat_on_reminder` tinyint NOT NULL DEFAULT 1,
+                `charter_resign_on_change` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -1057,6 +1061,11 @@ class Config extends Compat\Base\ConfigBase
          // Issue #229 : blocs du plugin Fields imprimes sur la fiche.
          if (!$DB->fieldExists($table, 'fields_containers')) {
              $migration->addField($table, 'fields_containers', 'text', []);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #224 : re-signature quand la charte change.
+         if (!$DB->fieldExists($table, 'charter_resign_on_change')) {
+             $migration->addField($table, 'charter_resign_on_change', 'bool', ['value' => 0]);
              $migration->migrationOneTable($table);
          }
          // Issue #231 : avis dans un outil de messagerie.

@@ -16,6 +16,41 @@ global $CFG_GLPI;
 Session::checkRight(Profile::RIGHT_ASSETSIGN, READ);
 $selfUrl = $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/campaign.form.php';
 
+// Issue #224 : re-signature de la nouvelle version de la charte, par les seuls signataires d'une
+// ancienne version.
+if (isset($_POST['launch_resign'])) {
+   Session::checkRight(Profile::RIGHT_ASSETSIGN, UPDATE);
+   $launchEntityId = (int) ($_POST['entities_id'] ?? Session::getActiveEntity());
+   if (!Session::haveAccessToEntity($launchEntityId)) {
+      throw new \Glpi\Exception\Http\AccessDeniedHttpException();
+   }
+   $deadlineDays = max(1, (int) (\GlpiPlugin\Assetsign\Config::getForEntity($launchEntityId)->fields['charter_deadline_days'] ?? 30));
+   try {
+      $campaign = Campaign::launch([
+         'name'          => '',
+         'type'          => CampaignLogic::TYPE_CHARTER,
+         'only_outdated' => true,
+         'entities_id'   => $launchEntityId,
+         'is_recursive'  => true,
+         'groups_id'     => 0,
+         'profiles_id'   => 0,
+         'date_deadline' => date('Y-m-d', strtotime('+' . $deadlineDays . ' days')),
+      ]);
+   } catch (\RuntimeException $e) {
+      Session::addMessageAfterRedirect(htmlescape($e->getMessage()), false, ERROR);
+      Html::back();
+   }
+   if ($campaign === null) {
+      Session::addMessageAfterRedirect(__('La campagne n\'a pas pu être créée.', 'assetsign'), false, ERROR);
+      Html::back();
+   }
+   Session::addMessageAfterRedirect(sprintf(
+      __('Campagne lancée : %d personne(s) invitée(s) à signer la charte informatique.', 'assetsign'),
+      $campaign->getStats()['total']
+   ));
+   Html::redirect($selfUrl . '?id=' . $campaign->getID());
+}
+
 if (isset($_POST['launch'])) {
    Session::checkRight(Profile::RIGHT_ASSETSIGN, UPDATE);
    // entities_id vient du formulaire : jamais une entite hors du perimetre de la session (meme

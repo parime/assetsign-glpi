@@ -65,7 +65,7 @@ class Campaign extends Compat\Base\CampaignBase
     * une campagne de charte (issue #204), par personne du périmètre, la charte en vigueur étant
     * figée dans la campagne au lancement.
     *
-    * @param array{name: string, entities_id: int, is_recursive: bool, groups_id: int, profiles_id: int, date_deadline: string, type?: int} $input
+    * @param array{name: string, entities_id: int, is_recursive: bool, groups_id: int, profiles_id: int, date_deadline: string, type?: int, only_outdated?: bool} $input
     * @throws \RuntimeException campagne de charte sans charte configurée pour l'entité
     */
    public static function launch(array $input): ?self {
@@ -88,8 +88,19 @@ class Campaign extends Compat\Base\CampaignBase
              ));
          }
       }
+       // Issue #224 : re-signature d'une nouvelle version, limitee aux personnes dont la derniere
+       // signature porte sur une ancienne version.
+       $restrictTo = null;
+      if ($type === CampaignLogic::TYPE_CHARTER && !empty($input['only_outdated'])) {
+          $restrictTo = array_flip(self::outdatedSignerIds((int) $input['entities_id']));
+         if ($restrictTo === []) {
+             throw new \RuntimeException(__('Personne n\'a signé une ancienne version de la charte : aucune re-signature à lancer.', 'assetsign'));
+         }
+      }
        $defaultName = $type === CampaignLogic::TYPE_CHARTER
-           ? sprintf(__('Charte informatique %s', 'assetsign'), date('Y'))
+           ? ($restrictTo !== null
+               ? sprintf(__('Charte informatique, nouvelle version du %s', 'assetsign'), \Html::convDate(date('Y-m-d')))
+               : sprintf(__('Charte informatique %s', 'assetsign'), date('Y')))
            : sprintf(__('Attestation de détention %s', 'assetsign'), date('Y'));
 
        $campaign = new self();
@@ -97,6 +108,7 @@ class Campaign extends Compat\Base\CampaignBase
            'name'            => trim($input['name']) !== '' ? trim($input['name']) : $defaultName,
            'type'            => $type,
            'charter_content' => $charter,
+           'charter_hash'    => CampaignLogic::charterHash($charter),
            'entities_id'     => $input['entities_id'],
            'is_recursive'    => $input['is_recursive'] ? 1 : 0,
            'groups_id'       => $input['groups_id'],
@@ -111,6 +123,9 @@ class Campaign extends Compat\Base\CampaignBase
        $campaign->getFromDB($id);
 
       foreach ($campaign->findUsersInScope() as $usersId) {
+         if ($restrictTo !== null && !isset($restrictTo[$usersId])) {
+             continue;
+         }
           $items = $type === CampaignLogic::TYPE_CHARTER ? [] : AssignedItems::find($usersId, (int) $campaign->fields['entities_id']);
          if ($type === CampaignLogic::TYPE_HOLDING && $items === []) {
              continue;
@@ -290,7 +305,8 @@ class Campaign extends Compat\Base\CampaignBase
    }
 
    public static function cronAssetsignCampaigns(CronTask $task): int {
-       $count = self::runReminders() + self::runCharterFollowUp() + self::runCharterRenewals();
+       $count = self::runReminders() + self::runCharterFollowUp() + self::runCharterRenewals()
+           + self::runCharterVersionChecks();
        $task->addVolume($count);
        return $count > 0 ? 1 : 0;
    }
@@ -436,6 +452,148 @@ class Campaign extends Compat\Base\CampaignBase
        return $count;
    }
 
+   /**
+    * Issue #224 : empreinte de la derniere charte signee par chaque personne de l'entite.
+    *
+    * @return array<int, string>
+    */
+   public static function lastSignedHashByUser(int $entitiesId): array {
+       global $DB;
+
+       $campaigns = self::getTable();
+       $attestations = Attestation::getTable();
+       $map = [];
+      foreach ($DB->request([
+              'SELECT'     => ["$attestations.users_id", "$campaigns.charter_hash"],
+              'FROM'       => $attestations,
+              'INNER JOIN' => [
+                  $campaigns => ['FKEY' => [$attestations => 'plugin_assetsign_campaigns_id', $campaigns => 'id']],
+              ],
+              'WHERE'      => [
+                  "$campaigns.type"        => CampaignLogic::TYPE_CHARTER,
+                  "$campaigns.entities_id" => $entitiesId,
+                  "$attestations.status"   => CampaignLogic::ATTESTATION_CONFIRMED,
+              ],
+              'ORDER'      => ["$attestations.date_answered ASC", "$attestations.id ASC"],
+          ]) as $row
+      ) {
+          $map[(int) $row['users_id']] = (string) $row['charter_hash'];
+      }
+       return $map;
+   }
+
+   /**
+    * Issue #224 : personnes de l'entite dont la derniere signature porte sur une ancienne version.
+    *
+    * @return list<int>
+    */
+   public static function outdatedSignerIds(int $entitiesId): array {
+       return CampaignLogic::outdatedSigners(
+           self::lastSignedHashByUser($entitiesId),
+           CampaignLogic::charterHash(self::getCharterContent($entitiesId))
+       );
+   }
+
+   /**
+    * Issue #224 : versions successives de la charte de l'entite, la plus recente d'abord : date de
+    * premiere diffusion, campagnes, nombre de signataires et texte.
+    *
+    * @return list<array{hash: string, first_date: string, campaigns: list<string>, signers: int, content: string, is_current: bool}>
+    */
+   public static function charterVersions(int $entitiesId): array {
+       global $DB;
+
+       $current = CampaignLogic::charterHash(self::getCharterContent($entitiesId));
+       $versions = [];
+      foreach ($DB->request([
+              'FROM'  => self::getTable(),
+              'WHERE' => ['type' => CampaignLogic::TYPE_CHARTER, 'entities_id' => $entitiesId],
+              'ORDER' => 'date_creation ASC',
+          ]) as $row
+      ) {
+          $hash = (string) $row['charter_hash'];
+          $versions[$hash] ??= [
+              'hash'       => $hash,
+              'first_date' => (string) $row['date_creation'],
+              'campaigns'  => [],
+              'ids'        => [],
+              'content'    => (string) $row['charter_content'],
+              'is_current' => $hash === $current,
+          ];
+          $versions[$hash]['campaigns'][] = (string) $row['name'];
+          $versions[$hash]['ids'][] = (int) $row['id'];
+      }
+       $result = [];
+      foreach ($versions as $version) {
+          $signers = $DB->request([
+              'SELECT'   => ['users_id'],
+              'DISTINCT' => true,
+              'FROM'     => Attestation::getTable(),
+              'WHERE'    => [
+                  'plugin_assetsign_campaigns_id' => $version['ids'],
+                  'status'                        => CampaignLogic::ATTESTATION_CONFIRMED,
+              ],
+          ])->count();
+          unset($version['ids']);
+          $result[] = $version + ['signers' => $signers];
+      }
+       return array_reverse($result);
+   }
+
+   /**
+    * Issue #224 : la charte en vigueur n'a encore ete diffusee par aucune campagne de l'entite.
+    */
+   public static function isCurrentCharterUndistributed(int $entitiesId): bool {
+       global $DB;
+
+       $current = CampaignLogic::charterHash(self::getCharterContent($entitiesId));
+       return $current !== '' && $DB->request([
+           'FROM'  => self::getTable(),
+           'WHERE' => ['type' => CampaignLogic::TYPE_CHARTER, 'entities_id' => $entitiesId, 'charter_hash' => $current],
+       ])->count() === 0;
+   }
+
+   /**
+    * Issue #224 : pour chaque entite qui l'a choisi dans sa Configuration, une campagne de
+    * re-signature des que la charte change, limitee aux signataires d'une ancienne version. Une
+    * seule fois par version : une version deja diffusee ne relance rien.
+    *
+    * @return int nombre de campagnes lancees
+    */
+   public static function runCharterVersionChecks(): int {
+       global $DB;
+
+       $count = 0;
+      foreach ($DB->request(['FROM' => Config::getTable(), 'WHERE' => ['charter_resign_on_change' => 1]]) as $config) {
+          $entitiesId = (int) $config['entities_id'];
+         if (!self::isCurrentCharterUndistributed($entitiesId)
+             || self::findRunningCharter($entitiesId) !== null
+             || self::outdatedSignerIds($entitiesId) === []
+         ) {
+             continue;
+         }
+         try {
+             $campaign = self::launch([
+                 'name'          => '',
+                 'type'          => CampaignLogic::TYPE_CHARTER,
+                 'only_outdated' => true,
+                 'entities_id'   => $entitiesId,
+                 'is_recursive'  => true,
+                 'groups_id'     => 0,
+                 'profiles_id'   => 0,
+                 'date_deadline' => date('Y-m-d', strtotime('+' . max(1, (int) $config['charter_deadline_days']) . ' days')),
+             ]);
+         } catch (\RuntimeException $e) {
+             \Glpi\Error\ErrorHandler::logCaughtException($e);
+             continue;
+         }
+         if ($campaign !== null) {
+             $count++;
+         }
+      }
+       return $count;
+   }
+
    public static function install(Migration $migration): void {
        global $DB;
 
@@ -447,6 +605,7 @@ class Campaign extends Compat\Base\CampaignBase
                 `name` varchar(255) NOT NULL DEFAULT '',
                 `type` tinyint NOT NULL DEFAULT 0,
                 `charter_content` longtext,
+                `charter_hash` varchar(64) NOT NULL DEFAULT '',
                 `entities_id` int unsigned NOT NULL DEFAULT 0,
                 `is_recursive` tinyint NOT NULL DEFAULT 1,
                 `groups_id` int unsigned NOT NULL DEFAULT 0,
@@ -469,6 +628,14 @@ class Campaign extends Compat\Base\CampaignBase
           $migration->addField($table, 'tickets_id', 'fkey', ['after' => 'users_id']);
           $migration->addKey($table, 'type');
           $migration->migrationOneTable($table);
+      }
+       // Issue #224 : empreinte de la version de charte diffusee, calculee pour l'existant.
+      if (!$DB->fieldExists($table, 'charter_hash')) {
+          $migration->addField($table, 'charter_hash', 'string', ['value' => '', 'after' => 'charter_content']);
+          $migration->migrationOneTable($table);
+         foreach ($DB->request(['FROM' => $table, 'WHERE' => ['type' => CampaignLogic::TYPE_CHARTER]]) as $row) {
+             $DB->update($table, ['charter_hash' => CampaignLogic::charterHash((string) $row['charter_content'])], ['id' => $row['id']]);
+         }
       }
    }
 }
