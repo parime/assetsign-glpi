@@ -1,0 +1,18 @@
+{# Issues #157 et #221 : carte « Départ » ou « Arrivée » de l'onglet Assetsign d'un utilisateur
+   (issue #236 : passée de PHP à Twig). Lien vers le dossier en cours, sinon bouton de préparation. #}
+<div class="card mb-3"><div class="card-body d-flex align-items-center gap-3">
+  <i class="ti {{ card.icon }} fs-2 text-muted"></i>
+  <div class="flex-grow-1">
+    <strong>{{ card.title }}</strong>
+    <div class="text-muted small">{{ card.open_url ? card.open_text : card.help }}</div>
+  </div>
+  {% if card.open_url %}
+    <a class="btn btn-outline-primary" href="{{ card.open_url }}"><i class="ti {{ card.open_icon }} me-1"></i>{{ card.open_label }}</a>
+  {% else %}
+    <form method="post" action="{{ card.form_url }}" class="m-0">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="users_id" value="{{ users_id }}">
+      <button type="submit" name="prepare" value="1" class="btn btn-primary"><i class="ti {{ card.icon }} me-1"></i>{{ card.prepare_label }}</button>
+    </form>
+  {% endif %}
+</div></div>
