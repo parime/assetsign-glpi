@@ -550,9 +550,9 @@ function plugin_assetsign_uninstall(): bool {
     // que ses propres nettoyages s'exécutent.
     $pluginItemtype = ['LIKE', 'GlpiPlugin\\\\Assetsign\\\\%'];
     (new Document_Item())->deleteByCriteria(['itemtype' => $pluginItemtype], true);
-    foreach (['glpi_displaypreferences', 'glpi_notepads', 'glpi_savedsearches'] as $table) {
+   foreach (['glpi_displaypreferences', 'glpi_notepads', 'glpi_savedsearches'] as $table) {
         $DB->delete($table, ['itemtype' => $pluginItemtype]);
-    }
+   }
     $DB->delete('glpi_logs', ['OR' => [['itemtype' => $pluginItemtype], ['itemtype_link' => $pluginItemtype]]]);
 
    foreach ([
