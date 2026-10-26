@@ -539,7 +539,21 @@ function plugin_assetsign_install(): bool {
 }
 
 function plugin_assetsign_uninstall(): bool {
+    global $DB;
+
     $migration = new Migration(str_replace('.', '', PLUGIN_ASSETSIGN_VERSION));
+
+    // Lignes des tables du cœur rattachées aux objets du plugin, qui disparaissent avec lui
+    // (contrôle commun parime/glpi-plugin-security) : liens de documents (les documents eux-mêmes,
+    // attestations signées comprises, restent liés au matériel et aux utilisateurs), préférences
+    // d'affichage, notes, recherches enregistrées, historique. Liens par la classe du cœur, pour
+    // que ses propres nettoyages s'exécutent.
+    $pluginItemtype = ['LIKE', 'GlpiPlugin\\\\Assetsign\\\\%'];
+    (new Document_Item())->deleteByCriteria(['itemtype' => $pluginItemtype], true);
+    foreach (['glpi_displaypreferences', 'glpi_notepads', 'glpi_savedsearches'] as $table) {
+        $DB->delete($table, ['itemtype' => $pluginItemtype]);
+    }
+    $DB->delete('glpi_logs', ['OR' => [['itemtype' => $pluginItemtype], ['itemtype_link' => $pluginItemtype]]]);
 
    foreach ([
         'glpi_plugin_assetsign_events',

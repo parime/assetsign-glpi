@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Désinstallation complète** : les liens de documents vers les objets du plugin, ses préférences
+  d'affichage, notes, recherches enregistrées et lignes d'historique sont retirés des tables du
+  cœur. Les documents eux-mêmes (attestations signées) restent liés au matériel et aux utilisateurs.
+
+### Security
+
+- Contrôles de sécurité communs aux plugins GLPI branchés sur la CI
+  ([parime/glpi-plugin-security](https://github.com/parime/glpi-plugin-security)) : règles Semgrep,
+  contenu des onglets sans droit, cibles de notification, restes après désinstallation.
+
 ## [2.14.0] - 2026-10-25
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
