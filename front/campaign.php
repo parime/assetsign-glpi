@@ -12,7 +12,8 @@ global $CFG_GLPI, $DB;
 
 Session::checkRight(Profile::RIGHT_ASSETSIGN, READ);
 
-Html::header(Campaign::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Campaign::class);
+Html::header(Campaign::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Campaign::class);
+\GlpiPlugin\Assetsign\MenuSection::showSection(\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Campaign::class);
 
 $rows = [];
 foreach ($DB->request([

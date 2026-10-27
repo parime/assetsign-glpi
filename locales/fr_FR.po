@@ -4673,3 +4673,6 @@ msgstr "Fiche de préparation de poste créée."
 #, php-format
 msgid "%1$s, version %2$s approuvée le %3$s"
 msgstr "%1$s, version %2$s approuvée le %3$s"
+
+msgid "Pilotage du parc"
+msgstr "Pilotage du parc"

@@ -2991,3 +2991,7 @@ msgstr ""
 
 msgid "Charte informatique signée. Merci !"
 msgstr ""
+
+#: src/GlpiPlugin/Assetsign/CsrDashboard.php
+msgid "Pilotage du parc"
+msgstr ""

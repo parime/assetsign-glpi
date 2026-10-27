@@ -60,7 +60,7 @@ if (isset($_POST['attach_document'])) {
 
 Session::checkRight(Movement::$rightname, READ);
 
-Html::header(Movement::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Movement::class);
+Html::header(Movement::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Movement::class);
 
 $movement->showForm($id);
 

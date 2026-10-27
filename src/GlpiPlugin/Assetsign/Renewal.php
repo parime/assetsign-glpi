@@ -16,7 +16,7 @@ use Session;
  * le budget previsionnel par annee, un export CSV et un ticket de changement groupe.
  *
  * Rien n'est modifie sur les materiels : le changement liste les machines, l'equipe decide. Entree
- * de menu Outils > « Renouvellement du parc », visible avec le droit de lecture assetsign.
+ * de la rubrique Outils > « Pilotage du parc », visible avec le droit de lecture assetsign.
  */
 class Renewal extends CommonGLPI
 {

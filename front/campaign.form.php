@@ -150,7 +150,7 @@ if ($id > 0 && ($_GET['export'] ?? '') === 'pdf') {
    exit;
 }
 
-Html::header(Campaign::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Campaign::class);
+Html::header(Campaign::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Campaign::class);
 
 $groupDropdown = '';
 $profileDropdown = '';

@@ -4653,3 +4653,6 @@ msgstr "Workstation preparation sheet created."
 #, php-format
 msgid "%1$s, version %2$s approuvée le %3$s"
 msgstr "%1$s, version %2$s approved on %3$s"
+
+msgid "Pilotage du parc"
+msgstr "Fleet management"

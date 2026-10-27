@@ -15,7 +15,7 @@ Session::checkRight(Profile::RIGHT_ASSETSIGN, READ);
 
 $entitiesId = Session::getActiveEntity();
 
-Html::header(__('Historique des versions de la charte', 'assetsign'), $_SERVER['PHP_SELF'], 'tools', Campaign::class);
+Html::header(__('Historique des versions de la charte', 'assetsign'), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Campaign::class);
 
 TemplateRenderer::getInstance()->display('@assetsign/charter_versions.html.twig', [
     // Texte assaini a l'affichage, comme sur la page de signature d'une attestation.
