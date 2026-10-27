@@ -1,0 +1,10 @@
+{# Rubrique du menu Outils qui regroupe plusieurs écrans (GlpiPlugin\Assetsign\MenuSection::showSection()). #}
+<ul class="nav nav-tabs mb-3">
+   {% for tab in tabs %}
+      <li class="nav-item">
+         <a class="nav-link{{ tab.active ? ' active' : '' }}" href="{{ tab.url }}"{% if tab.active %} aria-current="page"{% endif %}>
+            {% if tab.icon %}<i class="{{ tab.icon }} me-1"></i>{% endif %}{{ tab.label }}
+         </a>
+      </li>
+   {% endfor %}
+</ul>

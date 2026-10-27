@@ -4709,3 +4709,6 @@ msgstr "Blatt zur Arbeitsplatzvorbereitung erstellt."
 #, php-format
 msgid "%1$s, version %2$s approuvée le %3$s"
 msgstr "%1$s, Version %2$s genehmigt am %3$s"
+
+msgid "Pilotage du parc"
+msgstr "Bestandssteuerung"

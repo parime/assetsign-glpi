@@ -15,6 +15,7 @@ Session::checkRight(Assetsign::$rightname, READ);
 unset($_GET['as_map'], $_POST['as_map'], $_REQUEST['as_map']);
 
 Html::header(Assetsign::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Assetsign::class);
+\GlpiPlugin\Assetsign\MenuSection::showSection(\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Assetsign::class);
 
 Search::show(Assetsign::class);
 

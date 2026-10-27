@@ -193,7 +193,8 @@ class Assetsign extends Compat\Base\AssetsignBase
           ];
       }
 
-       return $menu;
+       // Rubrique « Attributions » : mouvements, départs et campagnes d'attestation en sous-pages.
+       return MenuSection::withSubPages(self::class, $menu);
    }
 
     /**

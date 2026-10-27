@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Menu Outils en trois rubriques** au lieu de sept entrées, comme le plugin GRC Manager :
+  **Attributions** (attributions, mouvements, départs, campagnes d'attestation, plus les gabarits,
+  accessoires et points de contrôle), **Fiches de maintenance** (droit dédié, inchangée) et
+  **Pilotage du parc** (tableau de bord RSE, renouvellement du parc). Les pages d'une rubrique
+  partagent une barre d'onglets et le fil d'Ariane « Rubrique > Page » ; aucune page n'est retirée.
+
 ## [2.15.0] - 2026-10-27
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

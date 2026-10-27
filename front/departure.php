@@ -14,7 +14,8 @@ global $CFG_GLPI, $DB;
 
 Session::checkRight(Profile::RIGHT_ASSETSIGN, READ);
 
-Html::header(Departure::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Departure::class);
+Html::header(Departure::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Departure::class);
+\GlpiPlugin\Assetsign\MenuSection::showSection(\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Departure::class);
 
 $showAll = !empty($_GET['all']);
 // Pas de colonne is_recursive sur glpi_plugin_assetsign_departures : avec true, la liste
