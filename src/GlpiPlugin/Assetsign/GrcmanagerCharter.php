@@ -66,11 +66,11 @@ final class GrcmanagerCharter
      * @param array{title: string, version: string, approval_date: string} $version
      */
    public static function headerHtml(array $version): string {
-       return '<p><strong>' . htmlescape(sprintf(
-           __('%1$s, version %2$s approuvée le %3$s', 'assetsign'),
-           $version['title'],
-           $version['version'],
-           \Html::convDate($version['approval_date'])
-       )) . '</strong></p>';
+       // Gabarit Twig (échappement automatique), pas de HTML écrit en PHP.
+       return \Glpi\Application\View\TemplateRenderer::getInstance()->render('@assetsign/_charter_version.html.twig', [
+           'title'         => $version['title'],
+           'version'       => $version['version'],
+           'approval_date' => (string) \Html::convDate($version['approval_date']),
+       ]);
    }
 }
