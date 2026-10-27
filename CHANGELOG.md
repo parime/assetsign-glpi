@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.15.0] - 2026-10-27
+
 ### Added
 
 - **Onglet « AssetSign » dans les profils** (Administration > Profils) : matrice des quatre droits du
