@@ -144,6 +144,10 @@ function plugin_init_assetsign(): void {
         'addtabon' => ['Entity'],
     ]);
     Plugin::registerClass(\GlpiPlugin\Assetsign\Template::class);
+    // Onglet « AssetSign » des profils : attribuer les droits du plugin depuis l'interface.
+    Plugin::registerClass(\GlpiPlugin\Assetsign\Profile::class, [
+        'addtabon' => ['Profile'],
+    ]);
     // Issue #157 : dossiers de depart, porteurs de leurs propres notifications.
     Plugin::registerClass(\GlpiPlugin\Assetsign\Departure::class);
     Plugin::registerClass(\GlpiPlugin\Assetsign\Arrival::class);
