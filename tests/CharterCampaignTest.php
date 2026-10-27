@@ -100,6 +100,18 @@ final class CharterCampaignTest extends AssetsignTestCase
        $this->assertStringContainsString('https://intranet.example.org/charte.pdf', $html);
    }
 
+   /** grcmanager #283 : ligne de version de la politique « Charte informatique », échappée. */
+   public function testGrcmanagerCharterVersionHeaderIsEscaped(): void {
+       $html = \GlpiPlugin\Assetsign\GrcmanagerCharter::headerHtml([
+           'title' => 'Charte <b>informatique</b>', 'version' => '2.1', 'approval_date' => '2026-10-20',
+       ]);
+       $this->assertStringContainsString('2.1', $html);
+       $this->assertStringNotContainsString('<b>', $html);
+       if (!\Plugin::isPluginActive('grcmanager')) {
+           $this->assertNull(\GlpiPlugin\Assetsign\GrcmanagerCharter::approvedVersion(), 'Sans grcmanager : aucune version.');
+       }
+   }
+
    public function testLaunchIsRefusedWithoutACharter(): void {
        global $DB;
        // Sans charte propre, une entité hérite de celle du gabarit par défaut de la racine : la

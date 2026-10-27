@@ -4705,3 +4705,7 @@ msgstr "Angehängte Fotos: %d"
 
 msgid "Fiche de préparation de poste créée."
 msgstr "Blatt zur Arbeitsplatzvorbereitung erstellt."
+
+#, php-format
+msgid "%1$s, version %2$s approuvée le %3$s"
+msgstr "%1$s, Version %2$s genehmigt am %3$s"

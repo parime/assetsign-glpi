@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Version de la charte depuis GRC Manager** (grcmanager #283) : quand le plugin GRC Manager est
+  actif, la version approuvée la plus récente de sa politique « Charte informatique » figure en
+  tête de la charte signée dans les campagnes. Une nouvelle version approuvée change l'empreinte de
+  la charte : les anciens signataires sont à faire re-signer (#224). Lecture seule de la table de
+  GRC Manager, sans dépendance : rien ne change sans lui.
+
 ### Fixed
 
 - **Désinstallation complète** : les liens de documents vers les objets du plugin, ses préférences
