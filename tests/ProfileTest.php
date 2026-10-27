@@ -135,4 +135,47 @@ final class ProfileTest extends AssetsignTestCase
           $this->assertSame(ALLSTANDARDRIGHT, (int) $row['rights']);
       }
    }
+
+   private function tabContent(\Profile $profile): array {
+       ob_start();
+       $shown = Profile::displayTabContentForItem($profile);
+
+       return [$shown, (string) ob_get_clean()];
+   }
+
+   public function testProfileTabShowsEveryPluginRight(): void {
+       $profile = new \Profile();
+       $this->assertTrue($profile->getFromDB($this->profileId('Technician')));
+
+       $this->assertNotSame('', (new Profile())->getTabNameForItem($profile));
+       [$shown, $html] = $this->tabContent($profile);
+       $this->assertTrue($shown);
+      foreach ($this->allRights() as $right) {
+          $this->assertStringContainsString('name="_' . $right . '[', $html);
+      }
+   }
+
+   public function testProfileTabIsRefusedWithoutTheCoreProfileRightOrThePluginRight(): void {
+       $profile = new \Profile();
+       $this->assertTrue($profile->getFromDB($this->profileId('Technician')));
+
+      foreach (['profile', Profile::RIGHT_ASSETSIGN] as $right) {
+          $saved = $_SESSION['glpiactiveprofile'][$right] ?? 0;
+          $_SESSION['glpiactiveprofile'][$right] = 0;
+         try {
+             $this->assertSame('', (new Profile())->getTabNameForItem($profile));
+             // ajax/common.tabs.php appelle directement le contenu : il doit refuser lui aussi.
+             $this->assertSame([false, ''], $this->tabContent($profile));
+         } finally {
+             $_SESSION['glpiactiveprofile'][$right] = $saved;
+         }
+      }
+   }
+
+   public function testProfileTabIsHiddenOnSimplifiedInterfaceProfiles(): void {
+       $profile = new \Profile();
+       $this->assertTrue($profile->getFromDB($this->profileId('Self-Service')));
+
+       $this->assertSame('', (new Profile())->getTabNameForItem($profile));
+   }
 }

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Onglet « AssetSign » dans les profils** (Administration > Profils) : matrice des quatre droits du
+  plugin (remises, fiches de maintenance, gabarits, configuration). Ils n'étaient jusqu'ici réglables
+  qu'en base, faute d'onglet. Visible avec le droit « Profils » du cœur et l'accès au plugin, profils
+  en interface standard uniquement. Contrôle commun « profile-right » (glpi-plugin-security v1.1.0).
 - **Version de la charte depuis GRC Manager** (grcmanager #283) : quand le plugin GRC Manager est
   actif, la version approuvée la plus récente de sa politique « Charte informatique » figure en
   tête de la charte signée dans les campagnes. Une nouvelle version approuvée change l'empreinte de

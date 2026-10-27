@@ -2,14 +2,16 @@
 
 namespace GlpiPlugin\Assetsign;
 
+use Glpi\Application\View\TemplateRenderer;
 use Migration;
 
 /**
  * Declaration des droits du plugin dans la matrice de profils GLPI standard
  * (Administration > Profils) : rien de reinvente, ce sont des lignes
- * supplementaires dans la table native glpi_profilerights.
+ * supplementaires dans la table native glpi_profilerights, affichees dans l'onglet
+ * « AssetSign » des profils (matrice du coeur, enregistree par front/profile.form.php).
  */
-class Profile
+class Profile extends \CommonGLPI
 {
    public const RIGHT_ASSETSIGN      = 'plugin_assetsign_assetsign';
    public const RIGHT_CONFIG      = 'plugin_assetsign_config';
@@ -95,6 +97,50 @@ class Profile
       foreach ($rows as $row) {
           \ProfileRight::updateProfileRights((int) $row['id'], array_fill_keys(self::ALL_RIGHTS, ALLSTANDARDRIGHT));
       }
+   }
+
+   public function getTabNameForItem(\CommonGLPI $item, $withtemplate = 0) {
+      return self::canManage($item) ? self::createTabEntry(Config::getTypeName(), 0, null, 'ti ti-signature') : '';
+   }
+
+   public static function displayTabContentForItem(\CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
+       // ajax/common.tabs.php sert le contenu sans passer par getTabNameForItem().
+      if (!self::canManage($item)) {
+          return false;
+      }
+       TemplateRenderer::getInstance()->display('@assetsign/profile_rights.html.twig', [
+           'item'   => $item,
+           'title'  => Config::getTypeName(),
+           'rights' => self::getRightsMatrix(),
+       ]);
+
+       return true;
+   }
+
+    /**
+     * Une ligne par droit du plugin (controle commun « profile-right » : chacun doit y figurer).
+     *
+     * @return list<array<string, mixed>>
+     */
+   public static function getRightsMatrix(): array {
+       return [
+           ['itemtype' => Assetsign::class, 'label' => Assetsign::getTypeName(\Session::getPluralNumber()), 'field' => self::RIGHT_ASSETSIGN],
+           ['itemtype' => Maintenance::class, 'label' => Maintenance::getTypeName(\Session::getPluralNumber()), 'field' => self::RIGHT_MAINTENANCE],
+           ['itemtype' => Template::class, 'label' => Template::getTypeName(\Session::getPluralNumber()), 'field' => self::RIGHT_TEMPLATE],
+           // Seule la modification du parametrage est controlee (Config::RIGHTNAME, UPDATE).
+           ['rights' => [READ => __('Read'), UPDATE => __('Update')], 'label' => __('Setup'), 'field' => self::RIGHT_CONFIG],
+       ];
+   }
+
+    /**
+     * Droit « profile » du coeur, et acces au plugin : on ne delegue pas des droits sur un
+     * module qu'on ne voit pas. Un profil en interface simplifiee n'a pas acces au plugin.
+     */
+   private static function canManage(\CommonGLPI $item): bool {
+       return $item instanceof \Profile && !$item->isNewItem()
+           && ($item->fields['interface'] ?? '') === 'central'
+           && \Profile::canView()
+           && \Session::haveRightsOr(self::RIGHT_ASSETSIGN, [READ, UPDATE]);
    }
 
    public static function uninstall(): void {

@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   security:
-    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.0.1
+    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.1.0
     with:
       plugin-key: assetsign
       seed-command: php plugins/assetsign/tests/security/setup.php
