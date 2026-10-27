@@ -206,3 +206,4 @@ jobs:
           # dans auto-tag.yml pour release.yml lui-meme) -- on redeclenche donc explicitement la
           # CI pour que la verification requise s'execute reellement au lieu de rester en attente.
           gh workflow run ci.yml --ref "$BRANCH"
+          gh workflow run security.yml --ref "$BRANCH"
