@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.16.0] - 2026-10-27
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Changed
 
 - **Menu Outils en trois rubriques** au lieu de sept entrées, comme le plugin GRC Manager :
