@@ -179,6 +179,10 @@ class Campaign extends Compat\Base\CampaignBase
     * Charte en vigueur pour une entité (issue #204) : texte de la charte du gabarit d'attribution
     * par défaut, suivi du lien vers la charte complète s'il est renseigné. HTML assaini, chaîne
     * vide si rien n'est configuré.
+    *
+    * Avec GRC Manager (grcmanager #283), la version approuvée de sa politique « Charte
+    * informatique » figure en tête : une nouvelle version change l'empreinte de la charte et les
+    * anciens signataires sont alors à faire re-signer (issue #224).
     */
    public static function getCharterContent(int $entitiesId): string {
        $template = Template::getDefaultFor(Assetsign::TYPE_HANDOVER, $entitiesId);
@@ -186,6 +190,10 @@ class Campaign extends Compat\Base\CampaignBase
        $url = (string) (Config::getForEntity($entitiesId)->fields['charter_url'] ?? '');
       if ($url !== '') {
           $html .= '<p><a href="' . htmlescape($url) . '">' . htmlescape($url) . '</a></p>';
+      }
+       $version = $html !== '' ? GrcmanagerCharter::approvedVersion() : null;
+      if ($version !== null) {
+          $html = GrcmanagerCharter::headerHtml($version) . $html;
       }
        return $html === '' ? '' : RichText::getSafeHtml($html);
    }

@@ -4679,3 +4679,7 @@ msgstr "Foto allegate: %d"
 
 msgid "Fiche de préparation de poste créée."
 msgstr "Scheda di preparazione della postazione creata."
+
+#, php-format
+msgid "%1$s, version %2$s approuvée le %3$s"
+msgstr "%1$s, versione %2$s approvata il %3$s"
