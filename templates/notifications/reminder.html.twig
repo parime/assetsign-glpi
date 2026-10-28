@@ -1,0 +1,13 @@
+{# Contenu par défaut de la notification « Attribution : relance de signature » (semé à l'installation, cf.
+   Notification\DefaultNotificationContent). Texte figé, balises ##…## de GLPI. #}
+{%- block name %}{% verbatim %}Attribution : relance de signature{% endverbatim %}{% endblock -%}
+{%- block fr_FR_subject %}{% verbatim %}Rappel : document de ##assetsign.type## en attente de signature{% endverbatim %}{% endblock -%}
+{%- block fr_FR_html %}{% verbatim %}<p>Bonjour ##assetsign.user.name##,</p><p>Le document de ##assetsign.type## pour <strong>##assetsign.item.name##</strong> n'a pas encore été signé.</p><p><a href="##assetsign.sign_url##">Consulter et signer le document</a></p><p>Ce lien est valable jusqu'au ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}
+{%- block en_GB_subject %}{% verbatim %}Reminder: ##assetsign.type## document pending signature{% endverbatim %}{% endblock -%}
+{%- block en_GB_html %}{% verbatim %}<p>Hello ##assetsign.user.name##,</p><p>The ##assetsign.type## document for <strong>##assetsign.item.name##</strong> has not been signed yet.</p><p><a href="##assetsign.sign_url##">View and sign the document</a></p><p>This link is valid until ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}
+{%- block es_ES_subject %}{% verbatim %}Recordatorio: documento de ##assetsign.type## pendiente de firma{% endverbatim %}{% endblock -%}
+{%- block es_ES_html %}{% verbatim %}<p>Hola ##assetsign.user.name##,</p><p>El documento de ##assetsign.type## para <strong>##assetsign.item.name##</strong> todavía no se ha firmado.</p><p><a href="##assetsign.sign_url##">Consultar y firmar el documento</a></p><p>Este enlace es válido hasta el ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}
+{%- block de_DE_subject %}{% verbatim %}Erinnerung: ##assetsign.type##-Dokument wartet auf Unterschrift{% endverbatim %}{% endblock -%}
+{%- block de_DE_html %}{% verbatim %}<p>Hallo ##assetsign.user.name##,</p><p>Das ##assetsign.type##-Dokument für <strong>##assetsign.item.name##</strong> wurde noch nicht unterschrieben.</p><p><a href="##assetsign.sign_url##">Dokument ansehen und unterschreiben</a></p><p>Dieser Link ist gültig bis ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}
+{%- block it_IT_subject %}{% verbatim %}Promemoria: documento di ##assetsign.type## in attesa di firma{% endverbatim %}{% endblock -%}
+{%- block it_IT_html %}{% verbatim %}<p>Ciao ##assetsign.user.name##,</p><p>Il documento di ##assetsign.type## per <strong>##assetsign.item.name##</strong> non è ancora stato firmato.</p><p><a href="##assetsign.sign_url##">Consulta e firma il documento</a></p><p>Questo link è valido fino al ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}

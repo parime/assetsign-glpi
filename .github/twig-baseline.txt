@@ -19,10 +19,9 @@ src/GlpiPlugin/Assetsign/Maintenance.php 4
 src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php 4
 src/GlpiPlugin/Assetsign/Movement.php 6
 src/GlpiPlugin/Assetsign/MyEquipment.php 8
-src/GlpiPlugin/Assetsign/Notification/DefaultNotificationContent.php 186
 src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php 3
-src/GlpiPlugin/Assetsign/NotificationTargetAttestation.php 43
-src/GlpiPlugin/Assetsign/NotificationTargetDeparture.php 33
+src/GlpiPlugin/Assetsign/NotificationTargetAttestation.php 2
+src/GlpiPlugin/Assetsign/NotificationTargetDeparture.php 2
 src/GlpiPlugin/Assetsign/Workflow/DestructionType.php 2
 src/GlpiPlugin/Assetsign/Workflow/DonType.php 2
 src/GlpiPlugin/Assetsign/Workflow/HandoverType.php 4

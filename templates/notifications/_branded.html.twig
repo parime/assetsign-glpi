@@ -1,0 +1,7 @@
+{# Habillage des e-mails par défaut (cf. Notification\DefaultNotificationContent) : bande de couleur,
+   nom de l'entreprise s'il est renseigné, pas de logo (les images en data URI sont souvent bloquées
+   par les messageries). body_safe_html : texte figé des gabarits notifications/*.html.twig.
+   Une seule ligne : le HTML produit est stocké tel quel dans les gabarits de notification. #}
+{%- if company_name != '' %}{% set header %}<div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#9fb3d1;font-family:Arial,sans-serif;">{{ company_name }}</div>{% endset %}{% else %}{% set header = '' %}{% endif -%}
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#eef1f6;padding:24px 0;"><tr><td align="center"><table width="560" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:10px;overflow:hidden;font-family:Arial,sans-serif;"><tr><td style="background:#1c2536;padding:18px 28px;border-top:4px solid #2a4b8d;">{{ header }}<div style="color:#ffffff;font-size:15px;font-weight:bold;margin-top:2px;">AssetSign</div></td></tr><tr><td style="padding:24px 28px;color:#1c2536;font-size:14px;line-height:1.6;">{{ body_safe_html|raw }}</td></tr><tr><td style="padding:12px 28px;background:#f5f6f9;border-top:1px solid #e5e8ee;"><span style="font-family:Arial,sans-serif;font-size:11px;color:#9aa2b1;">Généré automatiquement par GLPI (plugin assetsign)</span></td></tr></table></td></tr></table>
+{#- fin -#}

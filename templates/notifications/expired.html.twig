@@ -1,0 +1,13 @@
+{# Contenu par défaut de la notification « Attribution : document expiré » (semé à l'installation, cf.
+   Notification\DefaultNotificationContent). Texte figé, balises ##…## de GLPI. #}
+{%- block name %}{% verbatim %}Attribution : document expiré{% endverbatim %}{% endblock -%}
+{%- block fr_FR_subject %}{% verbatim %}Document de ##assetsign.type## expiré sans signature{% endverbatim %}{% endblock -%}
+{%- block fr_FR_html %}{% verbatim %}<p>Le document de ##assetsign.type## pour <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) a expiré sans avoir été signé.</p>{% endverbatim %}{% endblock -%}
+{%- block en_GB_subject %}{% verbatim %}##assetsign.type## document expired without signature{% endverbatim %}{% endblock -%}
+{%- block en_GB_html %}{% verbatim %}<p>The ##assetsign.type## document for <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) has expired without being signed.</p>{% endverbatim %}{% endblock -%}
+{%- block es_ES_subject %}{% verbatim %}Documento de ##assetsign.type## caducado sin firmar{% endverbatim %}{% endblock -%}
+{%- block es_ES_html %}{% verbatim %}<p>El documento de ##assetsign.type## para <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) ha caducado sin haberse firmado.</p>{% endverbatim %}{% endblock -%}
+{%- block de_DE_subject %}{% verbatim %}##assetsign.type##-Dokument ohne Unterschrift abgelaufen{% endverbatim %}{% endblock -%}
+{%- block de_DE_html %}{% verbatim %}<p>Das ##assetsign.type##-Dokument für <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) ist abgelaufen, ohne unterschrieben worden zu sein.</p>{% endverbatim %}{% endblock -%}
+{%- block it_IT_subject %}{% verbatim %}Documento di ##assetsign.type## scaduto senza firma{% endverbatim %}{% endblock -%}
+{%- block it_IT_html %}{% verbatim %}<p>Il documento di ##assetsign.type## per <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) è scaduto senza essere stato firmato.</p>{% endverbatim %}{% endblock -%}
