@@ -100,7 +100,8 @@ final class FieldsPluginValuesTest extends AssetsignTestCase
 
        $values = FieldsPluginValues::getValues('Computer', $computer->getID(), [self::$containersId]);
        $this->assertSame(
-           ['BC-PHPUNIT-114', 'Oui', '31/12/2027'],
+           // Oui/non dans la langue de la session (« Yes » en CI, « Oui » en français).
+           ['BC-PHPUNIT-114', __('Yes'), '31/12/2027'],
            array_column($values, 'value')
        );
        $this->assertSame('Bon de commande', $values[0]['label']);
