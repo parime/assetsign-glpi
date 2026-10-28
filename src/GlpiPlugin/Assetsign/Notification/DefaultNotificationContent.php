@@ -2,7 +2,6 @@
 
 namespace GlpiPlugin\Assetsign\Notification;
 
-use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Assetsign\Config;
 
 /**
@@ -49,8 +48,10 @@ final class DefaultNotificationContent
       if (!in_array($event, self::EVENTS, true)) {
           throw new \RuntimeException("Plugin assetsign : évènement de notification inconnu ($event).");
       }
-       $renderer = TemplateRenderer::getInstance();
-       $template = $renderer->getEnvironment()->load('@assetsign/notifications/' . $event . '.html.twig');
+       // Lu à l'installation, avant l'activation : NotificationTexts::environment() enregistre @assetsign.
+       $environment = NotificationTexts::environment();
+       $template = $environment->load('@assetsign/notifications/' . $event . '.html.twig');
+       $branded = $environment->load('@assetsign/notifications/_branded.html.twig');
 
        // Habille chaque corps HTML d'un en-tete/pied de page sobres (bande de
        // couleur, nom de l'entreprise si renseigne), cf. _branded.html.twig. Genere une
@@ -65,7 +66,7 @@ final class DefaultNotificationContent
       foreach (self::LANGUAGES as $lang) {
           $content[$lang] = [
               'subject' => $template->renderBlock($lang . '_subject'),
-              'html'    => $renderer->render('@assetsign/notifications/_branded.html.twig', [
+              'html'    => $branded->render([
                   'company_name'   => $companyName,
                   'body_safe_html' => $template->renderBlock($lang . '_html'),
               ]),

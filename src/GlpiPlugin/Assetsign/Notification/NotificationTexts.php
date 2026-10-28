@@ -16,8 +16,22 @@ final class NotificationTexts
    /**
     * @return array<string, array{subject: string, html: string}>
     */
+   /**
+    * Environnement Twig de GLPI, avec l'espace de noms @assetsign. Ces textes sont lus à
+    * l'installation, avant l'activation du plugin : GLPI n'a alors pas encore enregistré les
+    * gabarits du plugin (« There are no registered paths for namespace assetsign »).
+    */
+   public static function environment(): \Twig\Environment {
+       $environment = TemplateRenderer::getInstance()->getEnvironment();
+       $loader = $environment->getLoader();
+      if ($loader instanceof \Twig\Loader\FilesystemLoader && !in_array('assetsign', $loader->getNamespaces(), true)) {
+          $loader->addPath(dirname(__DIR__, 4) . '/templates', 'assetsign');
+      }
+       return $environment;
+   }
+
    public static function load(string $template, string $event): array {
-       $twig = TemplateRenderer::getInstance()->getEnvironment()->load('@assetsign/notifications/' . $template . '.html.twig');
+       $twig = self::environment()->load('@assetsign/notifications/' . $template . '.html.twig');
        $texts = [];
       foreach (self::LANGUAGES as $lang) {
           $texts[$lang] = [
