@@ -4750,3 +4750,13 @@ msgstr "Herstellungs-Fußabdruck aus dem Carbon-Plugin"
 
 msgid "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
 msgstr "Manuelle Eingabe: Die Quelle gibt an, woher der Wert stammt (Herstellerdatenblatt, verwendetes externes Tool, eigene Schätzung). Sie hat Vorrang vor dem vom Carbon-Plugin berechneten Fußabdruck, der nur ersatzweise verwendet wird."
+
+msgid "Ce matériel n'a pas d'utilisateur assigné :"
+msgstr "Diesem Gerät ist kein Benutzer zugewiesen:"
+
+#, php-format
+msgid "créez maintenant la fiche de %s"
+msgstr "erstellen Sie jetzt das Formular für %s"
+
+msgid "(bénéficiaire interne ou externe)."
+msgstr "(interner oder externer Begünstigter)."

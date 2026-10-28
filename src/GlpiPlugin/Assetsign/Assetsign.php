@@ -366,7 +366,10 @@ class Assetsign extends Compat\Base\AssetsignBase
          }
           global $CFG_GLPI;
           $label = $field === 'document_id_signed' ? __('Télécharger (signé)', 'assetsign') : __('Télécharger (non signé)', 'assetsign');
-          return '<a href="' . $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documents_id . '" target="_blank">' . $label . '</a>';
+          return TwigBlocks::fragment('components/document_link.html.twig', [
+              'url'   => $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documents_id,
+              'label' => $label,
+          ]);
       }
        return parent::getSpecificValueToDisplay($field, $values, $options);
    }
@@ -538,12 +541,14 @@ class Assetsign extends Compat\Base\AssetsignBase
    public static function showMassiveActionsSubForm(MassiveAction $ma) {
       switch ($ma->getAction()) {
          case 'send_reminder':
-            echo __('Envoyer une relance de signature aux attributions sélectionnées ?', 'assetsign');
-            echo '<br><br>' . \Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+            echo TwigBlocks::fragment('components/massive_action_confirm.html.twig', [
+                'message' => __('Envoyer une relance de signature aux attributions sélectionnées ?', 'assetsign'),
+            ]);
               return true;
          case 'cancel_request':
-             echo __('Annuler les demandes de signature sélectionnées ? Le lien envoyé au bénéficiaire deviendra invalide.', 'assetsign');
-             echo '<br><br>' . \Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+             echo TwigBlocks::fragment('components/massive_action_confirm.html.twig', [
+                 'message' => __('Annuler les demandes de signature sélectionnées ? Le lien envoyé au bénéficiaire deviendra invalide.', 'assetsign'),
+             ]);
               return true;
       }
        return parent::showMassiveActionsSubForm($ma);
@@ -744,9 +749,7 @@ class Assetsign extends Compat\Base\AssetsignBase
           $itemtypeDropdownHtml = ob_get_clean();
 
           ob_start();
-          echo '<span id="assetsign-assign-items-container">'
-              . __('Choisissez d\'abord un type de matériel ci-dessus.', 'assetsign')
-              . '</span>';
+          echo TwigBlocks::fragment('components/items_container.html.twig', ['id' => 'assetsign-assign-items-container']);
           \Ajax::updateItemOnSelectEvent(
               "dropdown_itemtype$rand",
               'assetsign-assign-items-container',
@@ -1059,11 +1062,10 @@ class Assetsign extends Compat\Base\AssetsignBase
                . '&forcetab=' . urlencode(self::class . '$1')
                . '&tab_params[assetsign_prefill_type]=' . $targetType;
           \Session::addMessageAfterRedirect(
-              sprintf(
-                  __('Ce matériel n\'a pas d\'utilisateur assigné : <a href="%s">créez maintenant la fiche de %s</a> (bénéficiaire interne ou externe).', 'assetsign'),
-                  htmlspecialchars($link, ENT_QUOTES),
-                  $targetLabel
-              ),
+              TwigBlocks::fragment('components/unassigned_item_message.html.twig', [
+                  'url'        => $link,
+                  'type_label' => $targetLabel,
+              ]),
               false,
               INFO
           );

@@ -125,7 +125,10 @@ class Maintenance extends Compat\Base\MaintenanceBase
              return '';
          }
           global $CFG_GLPI;
-          return '<a href="' . $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documents_id . '" target="_blank">' . __('Télécharger', 'assetsign') . '</a>';
+          return TwigBlocks::fragment('components/document_link.html.twig', [
+              'url'   => $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documents_id,
+              'label' => __('Télécharger', 'assetsign'),
+          ]);
       }
        return parent::getSpecificValueToDisplay($field, $values, $options);
    }
@@ -366,9 +369,7 @@ class Maintenance extends Compat\Base\MaintenanceBase
        $itemtypeDropdownHtml = ob_get_clean();
 
        ob_start();
-       echo '<span id="assetsign-maintenance-items-container">'
-           . __('Choisissez d\'abord un type de matériel ci-dessus.', 'assetsign')
-           . '</span>';
+       echo TwigBlocks::fragment('components/items_container.html.twig', ['id' => 'assetsign-maintenance-items-container']);
        \Ajax::updateItemOnSelectEvent(
            "dropdown_itemtype$rand",
            'assetsign-maintenance-items-container',

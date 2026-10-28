@@ -1,0 +1,2 @@
+{# Message après un changement d'état d'un matériel sans utilisateur : lien vers la création de la fiche. #}
+{{ __('Ce matériel n\'a pas d\'utilisateur assigné :', 'assetsign') }} <a href="{{ url }}">{{ __('créez maintenant la fiche de %s', 'assetsign')|format(type_label) }}</a> {{ __('(bénéficiaire interne ou externe).', 'assetsign') }}

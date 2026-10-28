@@ -3,16 +3,10 @@
 namespace GlpiPlugin\Assetsign\Workflow;
 
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\TwigBlocks;
 
 final class HandoverType implements WorkflowTypeInterface
 {
-   private const DEFAULT_CONTENT = '<p>Je reconnais avoir reçu le matériel décrit ci-dessus, en bon état de fonctionnement, '
-        . 'et m\'engage à en assurer la garde, l\'usage raisonnable et la restitution en cas de départ ou de demande '
-        . 'de l\'équipe informatique.</p>';
-
-   private const DEFAULT_CHARTER_CONTENT = '<p>L\'utilisation du matériel informatique doit se conformer à la charte informatique en vigueur '
-        . 'dans l\'entreprise. Toute anomalie ou dysfonctionnement doit être signalé sans délai au service informatique.</p>';
-
    public function getId(): int {
        return Assetsign::TYPE_HANDOVER;
    }
@@ -33,6 +27,9 @@ final class HandoverType implements WorkflowTypeInterface
    }
 
    public function getDefaultTemplateContent(): array {
-       return ['content' => self::DEFAULT_CONTENT, 'charter_content' => self::DEFAULT_CHARTER_CONTENT];
+       return [
+           'content'         => TwigBlocks::render('workflow/default_texts.html.twig', 'handover_content'),
+           'charter_content' => TwigBlocks::render('workflow/default_texts.html.twig', 'handover_charter_content'),
+       ];
    }
 }

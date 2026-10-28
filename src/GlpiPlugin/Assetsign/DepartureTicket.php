@@ -46,11 +46,14 @@ final class DepartureTicket
          ? sprintf(__('Récupération du matériel de %1$s (départ le %2$s)', 'assetsign'), $name, $date)
          : sprintf(__('Récupération du matériel de %s', 'assetsign'), $name);
 
-      $content = '<p>' . htmlescape(sprintf(
-         __('Le départ de %s est préparé : le matériel ci-dessous est à récupérer. La personne a reçu la fiche de restitution à signer.', 'assetsign'),
-         $name
-      )) . '</p>' . self::itemList($departure->getItemLines())
-         . '<p>' . self::departureLink($departure) . '</p>';
+      $content = TwigBlocks::content([
+         TwigBlocks::p(sprintf(
+            __('Le départ de %s est préparé : le matériel ci-dessous est à récupérer. La personne a reçu la fiche de restitution à signer.', 'assetsign'),
+            $name
+         )),
+         self::itemList($departure->getItemLines()),
+         self::departureLink($departure),
+      ]);
 
       $tech = (int) ($departure->fields['users_id_tech'] ?? 0);
       $input = [
@@ -116,15 +119,20 @@ final class DepartureTicket
    }
 
    public static function onSigned(Departure $departure): void {
-      self::addFollowup($departure, '<p>' . htmlescape(sprintf(
-         __('%1$s a signé la restitution de son matériel le %2$s. Le document signé est joint au départ.', 'assetsign'),
-         self::personName((int) $departure->fields['users_id']),
-         Html::convDateTime($departure->fields['date_signed'] ?? date('Y-m-d H:i:s'))
-      )) . '</p><p>' . self::departureLink($departure) . '</p>');
+      self::addFollowup($departure, TwigBlocks::content([
+         TwigBlocks::p(sprintf(
+            __('%1$s a signé la restitution de son matériel le %2$s. Le document signé est joint au départ.', 'assetsign'),
+            self::personName((int) $departure->fields['users_id']),
+            Html::convDateTime($departure->fields['date_signed'] ?? date('Y-m-d H:i:s'))
+         )),
+         self::departureLink($departure),
+      ]));
    }
 
    public static function onCancelled(Departure $departure): void {
-      self::addFollowup($departure, '<p>' . htmlescape(__('Le départ a été annulé dans assetsign : les fiches de restitution en attente sont annulées.', 'assetsign')) . '</p>');
+      self::addFollowup($departure, TwigBlocks::content([
+         TwigBlocks::p(__('Le départ a été annulé dans assetsign : les fiches de restitution en attente sont annulées.', 'assetsign')),
+      ]));
    }
 
    /**
@@ -153,16 +161,21 @@ final class DepartureTicket
          }
          $remaining = AssignedItems::find((int) $row['users_id'], (int) $row['entities_id']);
          $html = $remaining === []
-            ? '<p>' . htmlescape(__('Jour du départ : plus aucun matériel n\'est affecté à la personne dans GLPI.', 'assetsign')) . '</p>'
-            : '<p>' . htmlescape(sprintf(
-               _n(
-                  'Jour du départ : %d matériel est encore affecté à la personne dans GLPI.',
-                  'Jour du départ : %d matériels sont encore affectés à la personne dans GLPI.',
-                  count($remaining),
-                  'assetsign'
-               ),
-               count($remaining)
-            )) . '</p>' . self::itemList(array_map(static fn (CommonDBTM $item): array => AssignedItems::snapshot($item), $remaining));
+            ? TwigBlocks::content([
+               TwigBlocks::p(__('Jour du départ : plus aucun matériel n\'est affecté à la personne dans GLPI.', 'assetsign')),
+            ])
+            : TwigBlocks::content([
+               TwigBlocks::p(sprintf(
+                  _n(
+                     'Jour du départ : %d matériel est encore affecté à la personne dans GLPI.',
+                     'Jour du départ : %d matériels sont encore affectés à la personne dans GLPI.',
+                     count($remaining),
+                     'assetsign'
+                  ),
+                  count($remaining)
+               )),
+               self::itemList(array_map(static fn (CommonDBTM $item): array => AssignedItems::snapshot($item), $remaining)),
+            ]);
          if (self::addFollowup($departure, $html)) {
             $count++;
          }
@@ -174,27 +187,33 @@ final class DepartureTicket
    }
 
    /**
+    * Liste du matériel (bloc de TwigBlocks::content()), null s'il n'y en a pas.
+    *
     * @param list<array{type_label: string, name: string, serial: string}> $lines
+    * @return array<string, mixed>|null
     */
-   private static function itemList(array $lines): string {
+   private static function itemList(array $lines): ?array {
       if ($lines === []) {
-         return '';
+         return null;
       }
-      $html = '<ul>';
+      $labels = [];
       foreach ($lines as $line) {
          $label = trim($line['type_label'] . ' « ' . $line['name'] . ' »');
          if ($line['serial'] !== '') {
             $label .= ' — ' . sprintf(__('N° de série %s', 'assetsign'), $line['serial']);
          }
-         $html .= '<li>' . htmlescape($label) . '</li>';
+         $labels[] = $label;
       }
 
-      return $html . '</ul>';
+      return TwigBlocks::list($labels);
    }
 
-   private static function departureLink(Departure $departure): string {
-      return '<a href="' . htmlescape(Departure::getFormURLWithID($departure->getID())) . '">'
-         . htmlescape(sprintf(__('Voir le départ n° %d dans assetsign', 'assetsign'), $departure->getID())) . '</a>';
+   /** @return array<string, mixed> lien vers le départ (bloc de TwigBlocks::content()) */
+   private static function departureLink(Departure $departure): array {
+      return TwigBlocks::link(
+         Departure::getFormURLWithID($departure->getID()),
+         sprintf(__('Voir le départ n° %d dans assetsign', 'assetsign'), $departure->getID())
+      );
    }
 
    private static function personName(int $usersId): string {

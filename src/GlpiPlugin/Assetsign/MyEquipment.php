@@ -169,16 +169,14 @@ final class MyEquipment
          $item['serial'] !== '' ? sprintf(__('N° de série %s', 'assetsign'), $item['serial']) : '',
          $item['otherserial'] !== '' ? sprintf(__('N° d\'inventaire %s', 'assetsign'), $item['otherserial']) : '',
       ]);
-      $content = '<p>' . htmlescape(sprintf(__('%1$s signalé(e) sur %2$s.', 'assetsign'), $types[$problem], $itemLabel)) . '</p>';
-      if ($details !== []) {
-         $content .= '<p>' . htmlescape(implode(' — ', $details)) . '</p>';
-      }
-      if (trim($description) !== '') {
-         $content .= '<p>' . nl2br(htmlescape(trim($description))) . '</p>';
-      }
-      if (in_array($problem, [self::PROBLEM_LOSS, self::PROBLEM_THEFT], true)) {
-         $content .= '<p>' . htmlescape(__('Perte ou vol : le service informatique vous indiquera les démarches (déclaration, blocage des accès, remplacement).', 'assetsign')) . '</p>';
-      }
+      $content = TwigBlocks::content([
+         TwigBlocks::p(sprintf(__('%1$s signalé(e) sur %2$s.', 'assetsign'), $types[$problem], $itemLabel)),
+         $details !== [] ? TwigBlocks::p(implode(' — ', $details)) : null,
+         trim($description) !== '' ? TwigBlocks::lines(trim($description)) : null,
+         in_array($problem, [self::PROBLEM_LOSS, self::PROBLEM_THEFT], true)
+            ? TwigBlocks::p(__('Perte ou vol : le service informatique vous indiquera les démarches (déclaration, blocage des accès, remplacement).', 'assetsign'))
+            : null,
+      ]);
 
       $ticketsId = (int) (new Ticket())->add([
          'name'                => sprintf(__('%1$s : %2$s', 'assetsign'), $types[$problem], $item['name']),

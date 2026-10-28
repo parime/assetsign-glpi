@@ -48,8 +48,8 @@ final class DefaultNotificationContent
       if (!in_array($event, self::EVENTS, true)) {
           throw new \RuntimeException("Plugin assetsign : évènement de notification inconnu ($event).");
       }
-       // Lu à l'installation, avant l'activation : NotificationTexts::environment() enregistre @assetsign.
-       $environment = NotificationTexts::environment();
+       // Lu à l'installation, avant l'activation : TwigBlocks::environment() enregistre @assetsign.
+       $environment = \GlpiPlugin\Assetsign\TwigBlocks::environment();
        $template = $environment->load('@assetsign/notifications/' . $event . '.html.twig');
        $branded = $environment->load('@assetsign/notifications/_branded.html.twig');
 

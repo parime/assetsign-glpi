@@ -194,7 +194,10 @@ class Movement extends Compat\Base\MovementBase
       if ($field === 'status') {
           $status = (int) $values['status'];
           $label = self::getStatuses()[$status] ?? $status;
-          return '<span class="badge" style="background-color: ' . self::getStatusColor($status) . '; color: #fff;">' . htmlspecialchars((string) $label) . '</span>';
+          return TwigBlocks::fragment('components/status_badge.html.twig', [
+              'color' => self::getStatusColor($status),
+              'label' => (string) $label,
+          ]);
       }
        return parent::getSpecificValueToDisplay($field, $values, $options);
    }
@@ -278,9 +281,9 @@ class Movement extends Compat\Base\MovementBase
           return;
       }
       if (!(bool) Config::getForEntity(Session::getActiveEntity())->fields['enable_movements']) {
-          echo '<div class="alert alert-info">'
-              . __('La fonctionnalité « Mouvements » n\'est pas activée pour cette entité (Configuration > Mouvements).', 'assetsign')
-              . '</div>';
+          echo TwigBlocks::fragment('components/alert_info.html.twig', [
+              'message' => __('La fonctionnalité « Mouvements » n\'est pas activée pour cette entité (Configuration > Mouvements).', 'assetsign'),
+          ]);
           return;
       }
 
@@ -296,9 +299,7 @@ class Movement extends Compat\Base\MovementBase
        $itemtypeDropdownHtml = ob_get_clean();
 
        ob_start();
-       echo '<span id="assetsign-movement-items-container">'
-           . __('Choisissez d\'abord un type de matériel ci-dessus.', 'assetsign')
-           . '</span>';
+       echo TwigBlocks::fragment('components/items_container.html.twig', ['id' => 'assetsign-movement-items-container']);
        \Ajax::updateItemOnSelectEvent(
            "dropdown_itemtype$rand",
            'assetsign-movement-items-container',

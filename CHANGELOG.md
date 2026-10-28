@@ -26,6 +26,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   attestations, charte, départs) dans des gabarits Twig (`templates/notifications/`) au lieu
   de HTML écrit en PHP (#236, recommandation de la revue de la marketplace) : 262 chaînes HTML
   en moins. Le contenu semé à l'installation est identique à l'octet près.
+- Plus aucun HTML écrit en PHP (#236) : contenus des tickets, tâches et suivis générés (arrivée,
+  départ, écart d'attestation, charte non signée, prêt en retard, signalement d'un problème),
+  textes par défaut des fiches, champs des points de contrôle, encarts de la page d'accueil,
+  boutons « Ajouter » des listes, badges et liens des listes passent par des gabarits Twig. Le
+  texte est toujours échappé par Twig.
+
+### Fixed
+
+- Bouton des listes Accessoires, Kits et Points de contrôle : « Ajouter » restait en français
+  dans les autres langues.
 
 ## [2.16.0] - 2026-10-27
 

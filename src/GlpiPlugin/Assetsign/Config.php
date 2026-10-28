@@ -373,7 +373,9 @@ class Config extends Compat\Base\ConfigBase
          }
           $mail->to($email);
           $mail->subject(__('E-mail de test — Assetsign & signature', 'assetsign'));
-          $mail->html('<p>' . __('Cet e-mail confirme que la configuration d\'envoi du plugin Assetsign & signature fonctionne.', 'assetsign') . '</p>');
+          $mail->html(TwigBlocks::content([
+              TwigBlocks::p(__('Cet e-mail confirme que la configuration d\'envoi du plugin Assetsign & signature fonctionne.', 'assetsign')),
+          ]));
 
          if (!$mailer->send()) {
              return __('Le serveur de messagerie a refusé l\'envoi.', 'assetsign');

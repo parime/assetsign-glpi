@@ -203,15 +203,20 @@ final class Loan
       $itemName = (string) ($item['name'] ?? ('#' . $row['items_id']));
       $dueDate = Html::convDate((string) $row['loan_until']);
 
-      $content = '<p>' . htmlescape(sprintf(
-         __('%1$s « %2$s » prêté à %3$s devait être rendu le %4$s. Le matériel est toujours affecté à cette personne.', 'assetsign'),
-         Assetsign::getCanonicalItemtypeLabel((string) $row['itemtype']),
-         $itemName,
-         $name,
-         $dueDate
-      )) . '</p><p>' . htmlescape(__('Récupérez le matériel puis faites signer la restitution, ou prolongez le prêt depuis la feuille.', 'assetsign'))
-         . '</p><p><a href="' . htmlescape(Assetsign::getFormURLWithID((int) $row['id'])) . '">'
-         . htmlescape(sprintf(__('Feuille de prêt n° %d', 'assetsign'), (int) $row['id'])) . '</a></p>';
+      $content = TwigBlocks::content([
+         TwigBlocks::p(sprintf(
+            __('%1$s « %2$s » prêté à %3$s devait être rendu le %4$s. Le matériel est toujours affecté à cette personne.', 'assetsign'),
+            Assetsign::getCanonicalItemtypeLabel((string) $row['itemtype']),
+            $itemName,
+            $name,
+            $dueDate
+         )),
+         TwigBlocks::p(__('Récupérez le matériel puis faites signer la restitution, ou prolongez le prêt depuis la feuille.', 'assetsign')),
+         TwigBlocks::link(
+            Assetsign::getFormURLWithID((int) $row['id']),
+            sprintf(__('Feuille de prêt n° %d', 'assetsign'), (int) $row['id'])
+         ),
+      ]);
 
       $input = [
          'name'        => sprintf(__('Retour de prêt en retard : %1$s (%2$s)', 'assetsign'), $itemName, $name),

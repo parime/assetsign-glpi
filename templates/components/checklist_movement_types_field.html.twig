@@ -1,0 +1,8 @@
+{# Types de fiche auxquels s'applique un point de contrôle. #}
+{% for type, label in types %}
+  <label class="form-check form-check-inline">
+    <input type="checkbox" class="form-check-input" name="movement_types[]" value="{{ type }}" {{ type in selected ? 'checked' }}>
+    <span class="form-check-label">{{ label }}</span>
+  </label>
+{% endfor %}
+<p class="text-muted">{{ __('Un point non rattaché à aucun mouvement n\'apparaît jamais sur aucune fiche.', 'assetsign') }}</p>

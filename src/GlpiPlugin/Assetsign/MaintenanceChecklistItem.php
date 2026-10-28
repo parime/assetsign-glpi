@@ -111,12 +111,9 @@ class MaintenanceChecklistItem extends CommonDropdown
               break;
 
          case 'assetsign_checklist_options':
-             echo '<textarea name="options" class="form-control" rows="4">'
-                 . htmlspecialchars((string) ($this->fields['options'] ?? ''))
-                 . '</textarea>';
-             echo '<p class="text-muted">'
-                 . __('Utilisé uniquement si le type de saisie est "Menu déroulant".', 'assetsign')
-                 . '</p>';
+             \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/components/checklist_options_field.html.twig', [
+                 'options' => (string) ($this->fields['options'] ?? ''),
+             ]);
               break;
       }
    }

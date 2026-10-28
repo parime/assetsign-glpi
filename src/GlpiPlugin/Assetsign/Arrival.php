@@ -161,11 +161,13 @@ class Arrival extends Compat\Base\ArrivalBase
       $date = (string) Html::convDate($this->fields['date_arrival'] ?? null);
       $tasks = self::effectiveTasks((string) (Config::getForEntity($entitiesId)->fields['arrival_tasks'] ?? ''));
 
-      $content = '<p>' . htmlescape($date !== ''
-         ? sprintf(__('Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel.', 'assetsign'), $name, $date)
-         : sprintf(__('Arrivée de %s : préparez son poste, ses accès et son matériel.', 'assetsign'), $name))
-         . '</p><ul><li>' . implode('</li><li>', array_map('htmlescape', $tasks)) . '</li></ul>'
-         . '<p>' . htmlescape(__('Le matériel se remet depuis l\'onglet « Remise de matériel » de ce ticket : la fiche d\'attribution est envoyée à la personne pour signature.', 'assetsign')) . '</p>';
+      $content = TwigBlocks::content([
+         TwigBlocks::p($date !== ''
+            ? sprintf(__('Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel.', 'assetsign'), $name, $date)
+            : sprintf(__('Arrivée de %s : préparez son poste, ses accès et son matériel.', 'assetsign'), $name)),
+         TwigBlocks::list($tasks),
+         TwigBlocks::p(__('Le matériel se remet depuis l\'onglet « Remise de matériel » de ce ticket : la fiche d\'attribution est envoyée à la personne pour signature.', 'assetsign')),
+      ]);
 
       $input = [
          'name'                      => $date !== ''
@@ -190,7 +192,7 @@ class Arrival extends Compat\Base\ArrivalBase
       foreach ($ticketsId > 0 ? $tasks : [] as $task) {
          (new TicketTask())->add([
             'tickets_id' => $ticketsId,
-            'content'    => '<p>' . htmlescape($task) . '</p>',
+            'content'    => TwigBlocks::content([TwigBlocks::p($task)]),
             'state'      => Planning::TODO,
          ]);
       }
@@ -205,7 +207,7 @@ class Arrival extends Compat\Base\ArrivalBase
             'itemtype'   => Ticket::class,
             'items_id'   => $ticketsId,
             'is_private' => 1,
-            'content'    => '<p>' . htmlescape($begin !== '' && strtotime($begin) > time()
+            'content'    => TwigBlocks::content([TwigBlocks::p($begin !== '' && strtotime($begin) > time()
                ? sprintf(
                   __('Le compte de %1$s ne sera valide qu\'à partir du %2$s : la personne sera ajoutée automatiquement comme demandeur de ce ticket ce jour-là. Le matériel pourra alors lui être remis depuis l\'onglet « Remise de matériel ».', 'assetsign'),
                   $name,
@@ -214,7 +216,7 @@ class Arrival extends Compat\Base\ArrivalBase
                : sprintf(
                   __('%s n\'a pas encore de profil dans cette entité : la personne sera ajoutée automatiquement comme demandeur de ce ticket dès que ses habilitations seront créées. Le matériel pourra alors lui être remis depuis l\'onglet « Remise de matériel ».', 'assetsign'),
                   $name
-               )) . '</p>',
+               ))]),
          ]);
       }
       // « Votre ticket a été enregistré »… : messages du cœur sans intérêt ici.

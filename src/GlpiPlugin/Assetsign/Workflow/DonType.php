@@ -3,6 +3,7 @@
 namespace GlpiPlugin\Assetsign\Workflow;
 
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\TwigBlocks;
 
 /**
  * Don de materiel : contrairement a Assetsign/Restitution, jamais declenche
@@ -12,9 +13,6 @@ use GlpiPlugin\Assetsign\Assetsign;
  */
 final class DonType implements WorkflowTypeInterface
 {
-   private const DEFAULT_CONTENT = '<p>Je reconnais avoir reçu, à titre gratuit, le matériel décrit ci-dessus, '
-        . 'sans garantie ni contrepartie de la part de l\'organisation qui me le remet.</p>';
-
    public function getId(): int {
        return Assetsign::TYPE_DON;
    }
@@ -37,6 +35,9 @@ final class DonType implements WorkflowTypeInterface
    public function getDefaultTemplateContent(): array {
        // Pas de charte informatique par defaut : un don sort definitivement
        // le materiel du parc, l'usage futur n'engage plus l'organisation.
-       return ['content' => self::DEFAULT_CONTENT, 'charter_content' => ''];
+       return [
+           'content'         => TwigBlocks::render('workflow/default_texts.html.twig', 'don_content'),
+           'charter_content' => '',
+       ];
    }
 }

@@ -1,0 +1,13 @@
+{# Contenu riche généré par le plugin (ticket, tâche, suivi, e-mail de test), composé en PHP par
+   blocs (TwigBlocks::p(), lines(), list(), link()) : texte toujours échappé par Twig. #}
+{%- for block in blocks -%}
+  {%- if block.type == 'p' -%}
+    <p>{{ block.text }}</p>
+  {%- elseif block.type == 'lines' -%}
+    <p>{{ block.text|nl2br }}</p>
+  {%- elseif block.type == 'list' -%}
+    <ul>{% for item in block.items %}<li>{{ item }}</li>{% endfor %}</ul>
+  {%- elseif block.type == 'link' -%}
+    <p><a href="{{ block.url }}">{{ block.text }}</a></p>
+  {%- endif -%}
+{%- endfor -%}
