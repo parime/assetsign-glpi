@@ -36,6 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bouton des listes Accessoires, Kits et Points de contrôle : « Ajouter » restait en français
   dans les autres langues.
+- CI : les tests de la liaison avec le plugin Fields (champs personnalisés dans le PDF)
+  s'ignoraient faute du plugin et ne tournaient nulle part. La CI installe Fields 1.24.6
+  (archive officielle vérifiée par empreinte) et refuse désormais tout test ignoré ; le test
+  qui supposait une interface en français est corrigé.
 
 ## [2.16.0] - 2026-10-27
 
