@@ -4676,3 +4676,41 @@ msgstr "%1$s, versión %2$s aprobada el %3$s"
 
 msgid "Pilotage du parc"
 msgstr "Gestión del parque"
+
+msgid "Consommation d'énergie"
+msgstr "Consumo de energía"
+
+msgid "Poids : Consommation d'énergie"
+msgstr "Peso: Consumo de energía"
+
+msgid "Consommation d'énergie : moyenne journalière sur 12 mois calculée par le plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si le plugin Carbon n'est pas actif ou n'a rien calculé pour le matériel."
+msgstr "Consumo de energía: media diaria en 12 meses calculada por el plugin Carbon (degradación completa a partir de 1 kWh al día). Se ignora si el plugin Carbon no está activo o no ha calculado nada para el equipo."
+
+#, php-format
+msgid "dont %d calculés par le plugin Carbon (sans saisie manuelle)"
+msgstr "de ellos %d calculados por el plugin Carbon (sin entrada manual)"
+
+msgid "Plugin Carbon"
+msgstr "Plugin Carbon"
+
+msgid "Fabrication (scope 3)"
+msgstr "Fabricación (alcance 3)"
+
+msgid "la saisie manuelle ci-dessus est retenue"
+msgstr "se utiliza la entrada manual anterior"
+
+msgid "Usage (scope 2)"
+msgstr "Uso (alcance 2)"
+
+msgid "12 derniers mois"
+msgstr "Últimos 12 meses"
+
+#, php-format
+msgid "%d jour(s) calculé(s)"
+msgstr "%d día(s) calculado(s)"
+
+msgid "empreinte de fabrication du plugin Carbon"
+msgstr "huella de fabricación del plugin Carbon"
+
+msgid "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
+msgstr "Entrada manual: la fuente indica de dónde procede la cifra (ficha del fabricante, herramienta externa consultada, estimación propia). Prevalece sobre la huella calculada por el plugin Carbon, que solo se usa en su defecto."

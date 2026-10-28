@@ -22,6 +22,9 @@
         <div class="h1 mb-0">{{ summary.footprint_total|number_format(0, ',', ' ') }} <span class="fs-5">kg CO2-eq</span></div>
         <div class="progress progress-sm mt-2"><div class="progress-bar bg-green" style="width: {{ summary.footprint_coverage }}%"></div></div>
         <div class="text-muted small">{{ __('%1$d / %2$d matériels renseignés (%3$d %%)', 'assetsign')|format(summary.with_footprint, summary.total_items, summary.footprint_coverage) }}</div>
+        {% if summary.footprint_from_carbon > 0 %}
+          <div class="text-muted small"><i class="ti ti-leaf me-1"></i>{{ __('dont %d calculés par le plugin Carbon (sans saisie manuelle)', 'assetsign')|format(summary.footprint_from_carbon) }}</div>
+        {% endif %}
       </div></div>
     </div>
     <div class="col-md-3">

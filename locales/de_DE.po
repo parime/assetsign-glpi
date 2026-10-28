@@ -4712,3 +4712,41 @@ msgstr "%1$s, Version %2$s genehmigt am %3$s"
 
 msgid "Pilotage du parc"
 msgstr "Bestandssteuerung"
+
+msgid "Consommation d'énergie"
+msgstr "Energieverbrauch"
+
+msgid "Poids : Consommation d'énergie"
+msgstr "Gewichtung: Energieverbrauch"
+
+msgid "Consommation d'énergie : moyenne journalière sur 12 mois calculée par le plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si le plugin Carbon n'est pas actif ou n'a rien calculé pour le matériel."
+msgstr "Energieverbrauch: Tagesdurchschnitt über 12 Monate, berechnet vom Carbon-Plugin (ab 1 kWh pro Tag vollständig abgewertet). Wird ignoriert, wenn das Carbon-Plugin nicht aktiv ist oder für das Gerät nichts berechnet hat."
+
+#, php-format
+msgid "dont %d calculés par le plugin Carbon (sans saisie manuelle)"
+msgstr "davon %d vom Carbon-Plugin berechnet (ohne manuelle Eingabe)"
+
+msgid "Plugin Carbon"
+msgstr "Carbon-Plugin"
+
+msgid "Fabrication (scope 3)"
+msgstr "Herstellung (Scope 3)"
+
+msgid "la saisie manuelle ci-dessus est retenue"
+msgstr "die obige manuelle Eingabe wird verwendet"
+
+msgid "Usage (scope 2)"
+msgstr "Nutzung (Scope 2)"
+
+msgid "12 derniers mois"
+msgstr "Letzte 12 Monate"
+
+#, php-format
+msgid "%d jour(s) calculé(s)"
+msgstr "%d Tag(e) berechnet"
+
+msgid "empreinte de fabrication du plugin Carbon"
+msgstr "Herstellungs-Fußabdruck aus dem Carbon-Plugin"
+
+msgid "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
+msgstr "Manuelle Eingabe: Die Quelle gibt an, woher der Wert stammt (Herstellerdatenblatt, verwendetes externes Tool, eigene Schätzung). Sie hat Vorrang vor dem vom Carbon-Plugin berechneten Fußabdruck, der nur ersatzweise verwendet wird."

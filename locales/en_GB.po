@@ -4656,3 +4656,41 @@ msgstr "%1$s, version %2$s approved on %3$s"
 
 msgid "Pilotage du parc"
 msgstr "Fleet management"
+
+msgid "Consommation d'énergie"
+msgstr "Energy consumption"
+
+msgid "Poids : Consommation d'énergie"
+msgstr "Weight: Energy consumption"
+
+msgid "Consommation d'énergie : moyenne journalière sur 12 mois calculée par le plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si le plugin Carbon n'est pas actif ou n'a rien calculé pour le matériel."
+msgstr "Energy consumption: daily average over 12 months calculated by the Carbon plugin (fully degraded from 1 kWh per day). Ignored if the Carbon plugin is not active or has calculated nothing for the asset."
+
+#, php-format
+msgid "dont %d calculés par le plugin Carbon (sans saisie manuelle)"
+msgstr "including %d calculated by the Carbon plugin (no manual entry)"
+
+msgid "Plugin Carbon"
+msgstr "Carbon plugin"
+
+msgid "Fabrication (scope 3)"
+msgstr "Manufacturing (scope 3)"
+
+msgid "la saisie manuelle ci-dessus est retenue"
+msgstr "the manual entry above is used"
+
+msgid "Usage (scope 2)"
+msgstr "Use (scope 2)"
+
+msgid "12 derniers mois"
+msgstr "Last 12 months"
+
+#, php-format
+msgid "%d jour(s) calculé(s)"
+msgstr "%d day(s) calculated"
+
+msgid "empreinte de fabrication du plugin Carbon"
+msgstr "manufacturing footprint from the Carbon plugin"
+
+msgid "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
+msgstr "Manual entry: the source states where the figure comes from (manufacturer data sheet, external tool consulted, own estimate). It takes precedence over the footprint calculated by the Carbon plugin, which is only used as a fallback."

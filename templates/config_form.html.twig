@@ -714,7 +714,9 @@
             <div class="col-6"><label class="form-label">{{ __('Poids : Incidents', 'assetsign') }}</label><input type="number" name="health_weight_incidents" class="form-control" min="0" value="{{ config.health_weight_incidents|default(30) }}"></div>
             <div class="col-6"><label class="form-label">{{ __('Poids : État physique', 'assetsign') }}</label><input type="number" name="health_weight_damage" class="form-control" min="0" value="{{ config.health_weight_damage|default(25) }}"></div>
             <div class="col-6"><label class="form-label">{{ __('Poids : Mouvements', 'assetsign') }}</label><input type="number" name="health_weight_movements" class="form-control" min="0" value="{{ config.health_weight_movements|default(15) }}"></div>
+            <div class="col-6"><label class="form-label">{{ __('Poids : Consommation d\'énergie', 'assetsign') }}</label><input type="number" name="health_weight_energy" class="form-control" min="0" value="{{ config.health_weight_energy|default(0) }}"></div>
           </div>
+          <div class="form-text mb-4" style="max-width: 500px;">{{ __('Consommation d\'énergie : moyenne journalière sur 12 mois calculée par le plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si le plugin Carbon n\'est pas actif ou n\'a rien calculé pour le matériel.', 'assetsign') }}</div>
           <h4>{{ __('Couleurs et seuils', 'assetsign') }}</h4>
           <p class="text-muted">{{ __('Le score utilise la couleur « Bon » à partir de son seuil, « Vigilance » entre les deux seuils et « Critique » en dessous. Les seuils sont inclusifs.', 'assetsign') }}</p>
           <div class="row g-3" style="max-width: 720px;">

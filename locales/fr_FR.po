@@ -4676,3 +4676,41 @@ msgstr "%1$s, version %2$s approuvée le %3$s"
 
 msgid "Pilotage du parc"
 msgstr "Pilotage du parc"
+
+msgid "Consommation d'énergie"
+msgstr "Consommation d'énergie"
+
+msgid "Poids : Consommation d'énergie"
+msgstr "Poids : Consommation d'énergie"
+
+msgid "Consommation d'énergie : moyenne journalière sur 12 mois calculée par le plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si le plugin Carbon n'est pas actif ou n'a rien calculé pour le matériel."
+msgstr "Consommation d'énergie : moyenne journalière sur 12 mois calculée par le plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si le plugin Carbon n'est pas actif ou n'a rien calculé pour le matériel."
+
+#, php-format
+msgid "dont %d calculés par le plugin Carbon (sans saisie manuelle)"
+msgstr "dont %d calculés par le plugin Carbon (sans saisie manuelle)"
+
+msgid "Plugin Carbon"
+msgstr "Plugin Carbon"
+
+msgid "Fabrication (scope 3)"
+msgstr "Fabrication (scope 3)"
+
+msgid "la saisie manuelle ci-dessus est retenue"
+msgstr "la saisie manuelle ci-dessus est retenue"
+
+msgid "Usage (scope 2)"
+msgstr "Usage (scope 2)"
+
+msgid "12 derniers mois"
+msgstr "12 derniers mois"
+
+#, php-format
+msgid "%d jour(s) calculé(s)"
+msgstr "%d jour(s) calculé(s)"
+
+msgid "empreinte de fabrication du plugin Carbon"
+msgstr "empreinte de fabrication du plugin Carbon"
+
+msgid "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
+msgstr "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
