@@ -324,6 +324,22 @@ jobs:
           docker exec glpi php bin/console plugin:install assetsign --force --no-interaction
           docker exec glpi php bin/console plugin:activate assetsign --no-interaction
 
+      # Sans le plugin Fields, les tests de la liaison Fields -> PDF (FieldsPluginValuesTest) sont
+      # ignorés : ils ne tournaient nulle part. Archive officielle figée (pluginsGLPI/fields, dernière
+      # version pour GLPI 11), vérifiée par son empreinte SHA-256 avant installation.
+      - name: Installe le plugin Fields (tests de la liaison Fields)
+        env:
+          FIELDS_VERSION: "1.24.6"
+          FIELDS_SHA256: "e9243f6aae117e9b5c746b9d05d146ccb1ac1b27b8859ba9bc8d7ddb99d4ed34"
+        run: |
+          archive="glpi-fields-${FIELDS_VERSION}.tar.bz2"
+          curl -fsSL -o "$archive" "https://github.com/pluginsGLPI/fields/releases/download/${FIELDS_VERSION}/${archive}"
+          echo "${FIELDS_SHA256}  ${archive}" | sha256sum -c -
+          docker cp "$archive" glpi:/tmp/fields.tar.bz2
+          docker exec -u root glpi sh -c "cd /var/www/glpi/plugins && tar -xjf /tmp/fields.tar.bz2 && chown -R www-data:www-data fields"
+          docker exec glpi php bin/console plugin:install fields --no-interaction
+          docker exec glpi php bin/console plugin:activate fields --no-interaction
+
       - name: Installe pcov (couverture de code)
         # pcov (pas Xdebug) : ni l'un ni l'autre n'est present dans l'image
         # glpi/glpi (production, pas de driver de couverture par defaut), mais
@@ -351,7 +367,7 @@ jobs:
         # passait systematiquement en local (Docker) - 128M etait deja
         # limite, cf. le meme constat sur phpstan (phpstan.neon.dist ne fixe
         # pas non plus de memoire, --memory-limit=512M necessaire en local).
-        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php -d extension=pcov.so -d memory_limit=512M vendor/bin/phpunit --coverage-text"
+        run: docker exec glpi sh -c "cd /var/www/glpi/plugins/assetsign && php -d extension=pcov.so -d memory_limit=512M vendor/bin/phpunit --coverage-text --fail-on-skipped"
 
       # Test de controle d'acces de bout en bout (vraies requetes HTTP, vraie session) : un
       # technicien limite a l'entite A ne doit rien lire ni faire sur les dossiers de depart,
