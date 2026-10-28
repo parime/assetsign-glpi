@@ -67,6 +67,7 @@ final class DefaultNotificationContent
           $content[$lang] = [
               'subject' => $template->renderBlock($lang . '_subject'),
               'html'    => $branded->render([
+                  'lang'           => $lang,
                   'company_name'   => $companyName,
                   'body_safe_html' => $template->renderBlock($lang . '_html'),
               ]),

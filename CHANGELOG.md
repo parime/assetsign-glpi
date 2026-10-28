@@ -36,6 +36,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bouton des listes Accessoires, Kits et Points de contrôle : « Ajouter » restait en français
   dans les autres langues.
+- Pied de page des e-mails par défaut (« Généré automatiquement par GLPI ») dans la langue de
+  l'e-mail, et non plus toujours en français. Vaut pour les nouvelles installations : un modèle
+  déjà créé se modifie dans Configuration > Notifications.
 - CI : les tests de la liaison avec le plugin Fields (champs personnalisés dans le PDF)
   s'ignoraient faute du plugin et ne tournaient nulle part. La CI installe Fields 1.24.6
   (archive officielle vérifiée par empreinte) et refuse désormais tout test ignoré ; le test
