@@ -1,0 +1,13 @@
+{# Contenu par défaut de la notification « Attribution : document signé » (semé à l'installation, cf.
+   Notification\DefaultNotificationContent). Texte figé, balises ##…## de GLPI. #}
+{%- block name %}{% verbatim %}Attribution : document signé{% endverbatim %}{% endblock -%}
+{%- block fr_FR_subject %}{% verbatim %}Document de ##assetsign.type## signé{% endverbatim %}{% endblock -%}
+{%- block fr_FR_html %}{% verbatim %}<p>Le document de ##assetsign.type## pour <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) a été signé et archivé dans GLPI.</p>{% endverbatim %}{% endblock -%}
+{%- block en_GB_subject %}{% verbatim %}##assetsign.type## document signed{% endverbatim %}{% endblock -%}
+{%- block en_GB_html %}{% verbatim %}<p>The ##assetsign.type## document for <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) has been signed and archived in GLPI.</p>{% endverbatim %}{% endblock -%}
+{%- block es_ES_subject %}{% verbatim %}Documento de ##assetsign.type## firmado{% endverbatim %}{% endblock -%}
+{%- block es_ES_html %}{% verbatim %}<p>El documento de ##assetsign.type## para <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) se ha firmado y archivado en GLPI.</p>{% endverbatim %}{% endblock -%}
+{%- block de_DE_subject %}{% verbatim %}##assetsign.type##-Dokument unterschrieben{% endverbatim %}{% endblock -%}
+{%- block de_DE_html %}{% verbatim %}<p>Das ##assetsign.type##-Dokument für <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) wurde unterschrieben und in GLPI archiviert.</p>{% endverbatim %}{% endblock -%}
+{%- block it_IT_subject %}{% verbatim %}Documento di ##assetsign.type## firmato{% endverbatim %}{% endblock -%}
+{%- block it_IT_html %}{% verbatim %}<p>Il documento di ##assetsign.type## per <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) è stato firmato e archiviato in GLPI.</p>{% endverbatim %}{% endblock -%}

@@ -2,6 +2,7 @@
 
 namespace GlpiPlugin\Assetsign;
 
+use GlpiPlugin\Assetsign\Notification\NotificationTexts;
 use Html;
 use Notification;
 use Notification_NotificationTemplate;
@@ -123,104 +124,32 @@ class NotificationTargetAttestation extends NotificationTarget
     * @return array<string, array{name: string, targets: list<int>, texts: array<string, array{subject: string, html: string}>}>
     */
    private static function defaults(): array {
-       $list = '<ul>##FOREACHitems##<li>##item.type## <strong>##item.name##</strong> ##item.serial##</li>##ENDFOREACHitems##</ul>';
-
        return [
            'attestation_invitation' => [
                'name'    => 'Attestation de détention à signer',
                'targets' => [self::TARGET_HOLDER],
-               'texts'   => [
-                   'fr_FR' => ['subject' => 'Attestation de détention de matériel : ##attestation.campaign##',
-                       'html' => '<p>Bonjour ##attestation.user##,</p><p>Merci de vérifier la liste du matériel qui vous est attribué, puis de la confirmer en signant (ou de nous signaler un écart) avant le ##attestation.deadline## :</p>'
-                           . $list . '<p><a href="##attestation.url##">Vérifier et signer mon attestation</a></p>'],
-                   'en_GB' => ['subject' => 'Equipment holding attestation: ##attestation.campaign##',
-                       'html' => '<p>Hello ##attestation.user##,</p><p>Please check the list of equipment assigned to you, then confirm it by signing (or report a discrepancy) before ##attestation.deadline##:</p>'
-                           . $list . '<p><a href="##attestation.url##">Check and sign my attestation</a></p>'],
-                   'es_ES' => ['subject' => 'Certificación de tenencia de material: ##attestation.campaign##',
-                       'html' => '<p>Hola ##attestation.user##,</p><p>Compruebe la lista del material que tiene asignado y confírmela firmando (o indíquenos una discrepancia) antes del ##attestation.deadline##:</p>'
-                           . $list . '<p><a href="##attestation.url##">Comprobar y firmar mi certificación</a></p>'],
-                   'de_DE' => ['subject' => 'Bestätigung des Gerätebesitzes: ##attestation.campaign##',
-                       'html' => '<p>Hallo ##attestation.user##,</p><p>Bitte prüfen Sie die Liste der Ihnen zugewiesenen Geräte und bestätigen Sie sie mit Ihrer Unterschrift (oder melden Sie eine Abweichung) bis zum ##attestation.deadline##:</p>'
-                           . $list . '<p><a href="##attestation.url##">Bestätigung prüfen und unterschreiben</a></p>'],
-                   'it_IT' => ['subject' => 'Attestazione di detenzione dell\'attrezzatura: ##attestation.campaign##',
-                       'html' => '<p>Buongiorno ##attestation.user##,</p><p>Verifichi l\'elenco dell\'attrezzatura a lei assegnata, poi lo confermi firmando (o ci segnali una discrepanza) entro il ##attestation.deadline##:</p>'
-                           . $list . '<p><a href="##attestation.url##">Verificare e firmare la mia attestazione</a></p>'],
-               ],
+               'texts'   => NotificationTexts::load('attestation', 'attestation_invitation'),
            ],
            'attestation_reminder' => [
                'name'    => 'Attestation de détention : relance',
                'targets' => [self::TARGET_HOLDER],
-               'texts'   => [
-                   'fr_FR' => ['subject' => 'Rappel : attestation de détention à signer',
-                       'html' => '<p>Bonjour ##attestation.user##,</p><p>Votre attestation de détention de matériel attend toujours votre réponse (date limite : ##attestation.deadline##).</p>'
-                           . $list . '<p><a href="##attestation.url##">Vérifier et signer mon attestation</a></p>'],
-                   'en_GB' => ['subject' => 'Reminder: equipment holding attestation to sign',
-                       'html' => '<p>Hello ##attestation.user##,</p><p>Your equipment holding attestation is still awaiting your answer (deadline: ##attestation.deadline##).</p>'
-                           . $list . '<p><a href="##attestation.url##">Check and sign my attestation</a></p>'],
-                   'es_ES' => ['subject' => 'Recordatorio: certificación de tenencia por firmar',
-                       'html' => '<p>Hola ##attestation.user##,</p><p>Su certificación de tenencia de material sigue pendiente de respuesta (fecha límite: ##attestation.deadline##).</p>'
-                           . $list . '<p><a href="##attestation.url##">Comprobar y firmar mi certificación</a></p>'],
-                   'de_DE' => ['subject' => 'Erinnerung: Bestätigung des Gerätebesitzes',
-                       'html' => '<p>Hallo ##attestation.user##,</p><p>Ihre Bestätigung des Gerätebesitzes wartet noch auf Ihre Antwort (Frist: ##attestation.deadline##).</p>'
-                           . $list . '<p><a href="##attestation.url##">Bestätigung prüfen und unterschreiben</a></p>'],
-                   'it_IT' => ['subject' => 'Promemoria: attestazione di detenzione da firmare',
-                       'html' => '<p>Buongiorno ##attestation.user##,</p><p>La sua attestazione di detenzione dell\'attrezzatura è ancora in attesa di risposta (scadenza: ##attestation.deadline##).</p>'
-                           . $list . '<p><a href="##attestation.url##">Verificare e firmare la mia attestazione</a></p>'],
-               ],
+               'texts'   => NotificationTexts::load('attestation', 'attestation_reminder'),
            ],
            'attestation_discrepancy' => [
                'name'    => 'Attestation de détention : écart signalé',
                'targets' => [self::TARGET_CAMPAIGN_OWNER],
-               'texts'   => [
-                   'fr_FR' => ['subject' => 'Écart d\'inventaire signalé par ##attestation.user##',
-                       'html' => '<p>##attestation.user## signale un écart dans sa liste de matériel (campagne ##attestation.campaign##) :</p><p>##attestation.comment##</p>'
-                           . $list . '<p>Ticket n°##attestation.ticket##.</p>'],
-                   'en_GB' => ['subject' => 'Inventory discrepancy reported by ##attestation.user##',
-                       'html' => '<p>##attestation.user## reports a discrepancy in their equipment list (campaign ##attestation.campaign##):</p><p>##attestation.comment##</p>'
-                           . $list . '<p>Ticket ###attestation.ticket##.</p>'],
-                   'es_ES' => ['subject' => 'Discrepancia de inventario indicada por ##attestation.user##',
-                       'html' => '<p>##attestation.user## indica una discrepancia en su lista de material (campaña ##attestation.campaign##):</p><p>##attestation.comment##</p>'
-                           . $list . '<p>Ticket n.º ##attestation.ticket##.</p>'],
-                   'de_DE' => ['subject' => 'Inventarabweichung gemeldet von ##attestation.user##',
-                       'html' => '<p>##attestation.user## meldet eine Abweichung in der Geräteliste (Kampagne ##attestation.campaign##):</p><p>##attestation.comment##</p>'
-                           . $list . '<p>Ticket Nr. ##attestation.ticket##.</p>'],
-                   'it_IT' => ['subject' => 'Discrepanza di inventario segnalata da ##attestation.user##',
-                       'html' => '<p>##attestation.user## segnala una discrepanza nel suo elenco di attrezzatura (campagna ##attestation.campaign##):</p><p>##attestation.comment##</p>'
-                           . $list . '<p>Ticket n. ##attestation.ticket##.</p>'],
-               ],
+               'texts'   => NotificationTexts::load('attestation', 'attestation_discrepancy'),
            ],
            // Issue #204 : signature de la charte informatique.
            'charter_invitation' => [
                'name'    => 'Charte informatique à signer',
                'targets' => [self::TARGET_HOLDER],
-               'texts'   => [
-                   'fr_FR' => ['subject' => 'Charte informatique à signer : ##attestation.campaign##',
-                       'html' => '<p>Bonjour ##attestation.user##,</p><p>Merci de prendre connaissance de la charte informatique et de la signer avant le ##attestation.deadline##.</p><p><a href="##attestation.url##">Lire et signer la charte</a></p>'],
-                   'en_GB' => ['subject' => 'IT charter to sign: ##attestation.campaign##',
-                       'html' => '<p>Hello ##attestation.user##,</p><p>Please read the IT charter and sign it before ##attestation.deadline##.</p><p><a href="##attestation.url##">Read and sign the charter</a></p>'],
-                   'es_ES' => ['subject' => 'Normativa informática por firmar: ##attestation.campaign##',
-                       'html' => '<p>Hola ##attestation.user##,</p><p>Lea la normativa informática y fírmela antes del ##attestation.deadline##.</p><p><a href="##attestation.url##">Leer y firmar la normativa</a></p>'],
-                   'de_DE' => ['subject' => 'IT-Nutzungsrichtlinie zu unterschreiben: ##attestation.campaign##',
-                       'html' => '<p>Hallo ##attestation.user##,</p><p>Bitte lesen Sie die IT-Nutzungsrichtlinie und unterschreiben Sie sie bis zum ##attestation.deadline##.</p><p><a href="##attestation.url##">Richtlinie lesen und unterschreiben</a></p>'],
-                   'it_IT' => ['subject' => 'Regolamento informatico da firmare: ##attestation.campaign##',
-                       'html' => '<p>Buongiorno ##attestation.user##,</p><p>La preghiamo di leggere il regolamento informatico e di firmarlo entro il ##attestation.deadline##.</p><p><a href="##attestation.url##">Leggere e firmare il regolamento</a></p>'],
-               ],
+               'texts'   => NotificationTexts::load('attestation', 'charter_invitation'),
            ],
            'charter_reminder' => [
                'name'    => 'Charte informatique : relance',
                'targets' => [self::TARGET_HOLDER],
-               'texts'   => [
-                   'fr_FR' => ['subject' => 'Rappel : charte informatique à signer',
-                       'html' => '<p>Bonjour ##attestation.user##,</p><p>La charte informatique attend toujours votre signature (date limite : ##attestation.deadline##).</p><p><a href="##attestation.url##">Lire et signer la charte</a></p>'],
-                   'en_GB' => ['subject' => 'Reminder: IT charter to sign',
-                       'html' => '<p>Hello ##attestation.user##,</p><p>The IT charter is still awaiting your signature (deadline: ##attestation.deadline##).</p><p><a href="##attestation.url##">Read and sign the charter</a></p>'],
-                   'es_ES' => ['subject' => 'Recordatorio: normativa informática por firmar',
-                       'html' => '<p>Hola ##attestation.user##,</p><p>La normativa informática sigue pendiente de su firma (fecha límite: ##attestation.deadline##).</p><p><a href="##attestation.url##">Leer y firmar la normativa</a></p>'],
-                   'de_DE' => ['subject' => 'Erinnerung: IT-Nutzungsrichtlinie zu unterschreiben',
-                       'html' => '<p>Hallo ##attestation.user##,</p><p>Die IT-Nutzungsrichtlinie wartet noch auf Ihre Unterschrift (Frist: ##attestation.deadline##).</p><p><a href="##attestation.url##">Richtlinie lesen und unterschreiben</a></p>'],
-                   'it_IT' => ['subject' => 'Promemoria: regolamento informatico da firmare',
-                       'html' => '<p>Buongiorno ##attestation.user##,</p><p>Il regolamento informatico è ancora in attesa della sua firma (scadenza: ##attestation.deadline##).</p><p><a href="##attestation.url##">Leggere e firmare il regolamento</a></p>'],
-               ],
+               'texts'   => NotificationTexts::load('attestation', 'charter_reminder'),
            ],
        ];
    }
