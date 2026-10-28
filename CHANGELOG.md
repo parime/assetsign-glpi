@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Liaison avec le plugin Carbon** (pluginsGLPI/carbon, 1.3 sur GLPI 11, 1.4 sur GLPI 12)
+  quand il est actif (#228). Aucune dépendance : assetsign lit ses tables en lecture seule.
+  - Passeport matériel : bloc « Plugin Carbon » avec l'empreinte de fabrication (scope 3),
+    l'impact d'usage (scope 2) et l'énergie et les émissions des 12 derniers mois.
+  - Empreinte de fabrication : la saisie manuelle reste prioritaire, celle de Carbon complète
+    les matériels sans saisie. Elle alimente le bénéfice du réemploi (impact évité, avec sa
+    source) et le tableau de bord RSE (nombre de matériels couverts par Carbon).
+  - Score de santé : nouveau facteur « Consommation d'énergie » (moyenne journalière sur
+    12 mois, entièrement dégradé à partir de 1 kWh/jour). Poids 0 par défaut : les scores
+    existants ne changent pas tant qu'il n'est pas réglé.
+
 ## [2.16.0] - 2026-10-27
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

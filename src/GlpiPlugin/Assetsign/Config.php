@@ -46,6 +46,7 @@ class Config extends Compat\Base\ConfigBase
         'health_weight_incidents'              => 30,
         'health_weight_damage'                => 25,
         'health_weight_movements'             => 15,
+        'health_weight_energy'                => 0,
         'health_score_good_threshold'         => 70,
         'health_score_warning_threshold'      => 40,
         'health_score_good_color'             => '#2fb344',
@@ -659,6 +660,7 @@ class Config extends Compat\Base\ConfigBase
            'health_weight_incidents' => max(0, (int) ($input['health_weight_incidents'] ?? 30)),
            'health_weight_damage'    => max(0, (int) ($input['health_weight_damage'] ?? 25)),
            'health_weight_movements' => max(0, (int) ($input['health_weight_movements'] ?? 15)),
+           'health_weight_energy'    => max(0, (int) ($input['health_weight_energy'] ?? 0)),
            'health_score_good_threshold' => max(0, min(100, (int) ($input['health_score_good_threshold'] ?? 70))),
            'health_score_warning_threshold' => max(0, min(100, (int) ($input['health_score_warning_threshold'] ?? 40))),
            'health_score_good_color' => self::sanitizeHealthColor($input['health_score_good_color'] ?? self::DEFAULTS['health_score_good_color']),
@@ -892,6 +894,7 @@ class Config extends Compat\Base\ConfigBase
                 `health_weight_incidents` int unsigned NOT NULL DEFAULT 30,
                 `health_weight_damage` int unsigned NOT NULL DEFAULT 25,
                 `health_weight_movements` int unsigned NOT NULL DEFAULT 15,
+                `health_weight_energy` int unsigned NOT NULL DEFAULT 0,
                 `health_score_good_threshold` int unsigned NOT NULL DEFAULT 70,
                 `health_score_warning_threshold` int unsigned NOT NULL DEFAULT 40,
                 `health_score_good_color` varchar(7) NOT NULL DEFAULT '#2fb344',
@@ -1318,6 +1321,12 @@ class Config extends Compat\Base\ConfigBase
           // la colonne is_default de glpi_plugin_assetsign_templates.
          if ($DB->fieldExists($table, 'default_plugin_assetsign_templates_id')) {
              $migration->dropField($table, 'default_plugin_assetsign_templates_id');
+         }
+          // Issue #228 : poids du facteur « consommation d'énergie » (plugin Carbon), 0 par défaut
+          // pour ne pas modifier les scores existants.
+         if (!$DB->fieldExists($table, 'health_weight_energy')) {
+             $migration->addField($table, 'health_weight_energy', 'integer', ['value' => 0, 'after' => 'health_weight_movements']);
+             $migration->migrationOneTable($table);
          }
       }
    }

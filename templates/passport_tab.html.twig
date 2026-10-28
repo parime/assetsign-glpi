@@ -83,8 +83,33 @@
           <div class="col-auto"><strong>{{ __('Dernière mise à jour', 'assetsign') }} :</strong> {{ environmental.date_mod|formatted_date }}</div>
         {% endif %}
       </div>
-    {% else %}
+    {% elseif not carbon or carbon.embodied_kg is null %}
       <p class="text-muted">{{ __('Empreinte de fabrication non renseignée.', 'assetsign') }}</p>
+    {% endif %}
+
+    {# Issue #228 : impacts calculés par le plugin Carbon (lecture seule). #}
+    {% if carbon %}
+      <div class="card card-sm mb-3">
+        <div class="card-body">
+          <div class="fw-bold mb-1"><i class="ti ti-leaf me-1"></i>{{ __('Plugin Carbon', 'assetsign') }}</div>
+          <div class="row g-2">
+            {% if carbon.embodied_kg is not null %}
+              <div class="col-auto"><strong>{{ __('Fabrication (scope 3)', 'assetsign') }} :</strong> {{ carbon.embodied_kg|number_format(2, '.', ' ') }} kg CO2-eq
+                {% if environmental %}<span class="text-muted small">({{ __('la saisie manuelle ci-dessus est retenue', 'assetsign') }})</span>{% endif %}
+              </div>
+            {% endif %}
+            {% if carbon.usage_kg is not null %}
+              <div class="col-auto"><strong>{{ __('Usage (scope 2)', 'assetsign') }} :</strong> {{ carbon.usage_kg|number_format(2, '.', ' ') }} kg CO2-eq</div>
+            {% endif %}
+            {% if carbon.days > 0 %}
+              <div class="col-auto"><strong>{{ __('12 derniers mois', 'assetsign') }} :</strong>
+                {{ carbon.energy_kwh|number_format(1, '.', ' ') }} kWh, {{ carbon.emissions_kg|number_format(2, '.', ' ') }} kg CO2-eq
+                <span class="text-muted small">({{ __('%d jour(s) calculé(s)', 'assetsign')|format(carbon.days) }})</span>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     {% endif %}
 
     {% if can_backfill %}
@@ -125,7 +150,7 @@
           <button type="submit" class="btn btn-sm btn-outline-secondary">{{ __('Effacer', 'assetsign') }}</button>
         </form>
       {% endif %}
-      <div class="form-text">{{ __('Toujours une saisie manuelle dans cette version : la source précise d\'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre), jamais une recherche automatique.', 'assetsign') }}</div>
+      <div class="form-text">{{ __('Saisie manuelle : la source précise d\'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l\'emporte sur l\'empreinte calculée par le plugin Carbon, utilisée seulement à défaut.', 'assetsign') }}</div>
     {% endif %}
   </div>
 {% endif %}
@@ -137,6 +162,9 @@
       <div class="col-auto">
         <strong>{{ __('Impact évité', 'assetsign') }} :</strong>
         <span class="badge" style="background-color: #2fb344; color: #fff;">{{ reuse_benefit.avoided_impact|number_format(2, '.', '') }} kg CO2-eq</span>
+        {% if reuse_benefit.footprint_source == 'carbon' %}
+          <span class="text-muted small">({{ __('empreinte de fabrication du plugin Carbon', 'assetsign') }})</span>
+        {% endif %}
       </div>
       <div class="col-auto">
         {{ reuse_benefit.is_still_in_service

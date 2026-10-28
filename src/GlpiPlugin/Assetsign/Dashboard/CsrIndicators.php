@@ -4,6 +4,7 @@ namespace GlpiPlugin\Assetsign\Dashboard;
 
 use CommonDBTM;
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\CarbonPlugin;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\CsrLogic;
 use GlpiPlugin\Assetsign\EnvironmentalData;
@@ -25,13 +26,14 @@ final class CsrIndicators
     *     total_items: int, with_footprint: int, footprint_coverage: int, footprint_total: float,
     *     avoided_total: float, extended_items: int, average_age_years: float|null,
     *     average_lifetime_years: float|null, end_of_life: array{don: int, vente: int, destruction: int},
-    *     second_life_rate: int|null
+    *     second_life_rate: int|null, footprint_from_carbon: int
     * }
     */
    public static function collect(): array {
        global $DB;
 
        $items = [];
+       $fromCarbon = 0;
        $itemtypes = Config::getForEntity((int) Session::getActiveEntity())->getManagedItemtypes();
       foreach ($itemtypes as $itemtype) {
          if (!is_subclass_of($itemtype, CommonDBTM::class)) {
@@ -65,6 +67,12 @@ final class CsrIndicators
          ) {
              $footprints[(int) $row['items_id']] = (float) $row['carbon_footprint_manufacturing'];
          }
+          // Issue #228 : sans saisie, l'empreinte calculée par le plugin Carbon (CarbonLogic::footprint()).
+          $missing = array_values(array_diff($ids, array_keys($footprints)));
+         foreach (CarbonPlugin::embodiedFootprints($itemtype, $missing) as $id => $value) {
+             $footprints[$id] = $value;
+             $fromCarbon++;
+         }
           $infocoms = [];
          foreach ($DB->request([
                  'SELECT' => ['items_id', 'use_date', 'decommission_date', 'sink_time'],
@@ -86,7 +94,7 @@ final class CsrIndicators
          }
       }
 
-       return CsrLogic::summarize($items, self::endOfLife(), time());
+       return CsrLogic::summarize($items, self::endOfLife(), time()) + ['footprint_from_carbon' => $fromCarbon];
    }
 
    /**

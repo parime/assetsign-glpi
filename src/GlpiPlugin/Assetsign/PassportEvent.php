@@ -414,6 +414,8 @@ class PassportEvent extends Compat\Base\PassportEventBase
        // defaut, `environmentalData` reste `null` tant que rien n'a ete saisi.
        $environmentalEnabled = (bool) $config->fields['enable_environmental_passport'];
        $environmentalData = $environmentalEnabled ? EnvironmentalData::getForItem($item->getType(), $item->getID()) : null;
+       // Issue #228 : impacts calculés par le plugin Carbon, s'il est actif (lecture seule).
+       $carbon = $environmentalEnabled ? CarbonPlugin::forItem($item->getType(), (int) $item->getID()) : null;
 
        // Benefice du reemploi / "impact evite" (cf. ROADMAP.md V3, issue #81) : voir
        // getReuseBenefit() pour la methodologie complete - reste `null` (rien
@@ -472,6 +474,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
                'confidence_color' => EnvironmentalData::getConfidenceColor($environmentalData->fields['confidence_level']),
                'date_mod'   => $environmentalData->fields['date_mod'] ?? null,
            ] : null,
+           'carbon'                          => $carbon,
            'environmental_source_labels'     => EnvironmentalData::getSourceLabels(),
            'environmental_confidence_labels' => EnvironmentalData::getConfidenceLabels(),
            'environmental_raw' => [
@@ -665,6 +668,24 @@ class PassportEvent extends Compat\Base\PassportEventBase
      *
      * @return array{avoided_impact: float, planned_years: float, actual_years: float, is_still_in_service: bool}|null
      */
+   /**
+    * Issue #228 : empreinte de fabrication retenue, saisie manuelle ou, à défaut, calculée par
+    * le plugin Carbon (CarbonLogic::footprint()).
+    *
+    * @return array{value: float, source: string}|null
+    */
+   private static function getFootprint(CommonDBTM $item): ?array {
+       $environmental = EnvironmentalData::getForItem($item->getType(), $item->getID());
+       $manual = $environmental !== null && $environmental->fields['carbon_footprint_manufacturing'] !== null
+           ? (float) $environmental->fields['carbon_footprint_manufacturing']
+           : null;
+       $carbon = $manual === null
+           ? (CarbonPlugin::embodiedFootprints($item->getType(), [(int) $item->getID()])[(int) $item->getID()] ?? null)
+           : null;
+
+       return CarbonLogic::footprint($manual, $carbon);
+   }
+
    private static function getReuseBenefit(CommonDBTM $item, Config $config): ?array {
       if (!\Infocom::canApplyOn($item->getType())) {
           return null;
@@ -680,19 +701,22 @@ class PassportEvent extends Compat\Base\PassportEventBase
           return null;
       }
 
-       $environmental = EnvironmentalData::getForItem($item->getType(), $item->getID());
-      if ($environmental === null || $environmental->fields['carbon_footprint_manufacturing'] === null) {
+       // Issue #228 : empreinte saisie, à défaut celle du plugin Carbon (CarbonLogic::footprint()).
+       $footprint = self::getFootprint($item);
+      if ($footprint === null) {
           return null;
       }
        // Formule partagee avec le tableau de bord RSE (issue #142) : CsrLogic::avoidedImpact().
        // null tant que le materiel n'a pas depasse sa duree prevue : rien a valoriser.
-       return CsrLogic::avoidedImpact(
-           (float) $environmental->fields['carbon_footprint_manufacturing'],
+       $benefit = CsrLogic::avoidedImpact(
+           $footprint['value'],
            $plannedYears,
            (string) $infocom->fields['use_date'],
            $infocom->fields['decommission_date'] ?: null,
            time()
        );
+
+       return $benefit === null ? null : $benefit + ['footprint_source' => $footprint['source']];
    }
 
     /**
@@ -727,6 +751,8 @@ class PassportEvent extends Compat\Base\PassportEventBase
            'incidents'  => max(0, (int) $config->fields['health_weight_incidents']),
            'damage'     => max(0, (int) $config->fields['health_weight_damage']),
            'movements'  => max(0, (int) $config->fields['health_weight_movements']),
+           // Issue #228 : consommation calculée par le plugin Carbon (poids 0 par défaut).
+           'energy'     => max(0, (int) ($config->fields['health_weight_energy'] ?? 0)),
        ];
        $totalWeight = array_sum($weights);
        if ($totalWeight <= 0) {
@@ -777,6 +803,21 @@ class PassportEvent extends Compat\Base\PassportEventBase
        // Mouvements : nombre de "vies" deja calculees, aucune requete supplementaire.
        $movementCount = count($lives);
        $degradations['movements'] = ['label' => __('Mouvements', 'assetsign'), 'degradation' => min(100, (int) round($movementCount / PLUGIN_ASSETSIGN_HEALTH_MOVEMENTS_FULL_DEGRADATION_COUNT * 100))];
+
+       // Énergie (issue #228) : consommation moyenne journalière sur 12 mois selon le plugin Carbon.
+       // Sans donnée Carbon, le facteur est absent (ni compté à 0, ni dans le total des poids).
+      if ($weights['energy'] > 0) {
+          $carbon = CarbonPlugin::forItem($item->getType(), (int) $item->getID());
+          $energy = CarbonLogic::energyDegradation($carbon['kwh_per_day'] ?? null);
+         if ($energy !== null) {
+             $degradations['energy'] = ['label' => __('Consommation d\'énergie', 'assetsign'), 'degradation' => $energy];
+         } else {
+             $totalWeight -= $weights['energy'];
+            if ($totalWeight <= 0) {
+                return null;
+            }
+         }
+      }
 
        $weightedDegradation = 0.0;
        $breakdown = [];
