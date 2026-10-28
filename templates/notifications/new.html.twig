@@ -1,0 +1,13 @@
+{# Contenu par défaut de la notification « Attribution : nouveau document à signer » (semé à l'installation, cf.
+   Notification\DefaultNotificationContent). Texte figé, balises ##…## de GLPI. #}
+{%- block name %}{% verbatim %}Attribution : nouveau document à signer{% endverbatim %}{% endblock -%}
+{%- block fr_FR_subject %}{% verbatim %}Un document de ##assetsign.type## vous attend pour signature{% endverbatim %}{% endblock -%}
+{%- block fr_FR_html %}{% verbatim %}<p>Bonjour ##assetsign.user.name##,</p><p>Un document de ##assetsign.type## pour le matériel <strong>##assetsign.item.name##</strong> vous attend.</p><p><a href="##assetsign.sign_url##">Consulter et signer le document</a></p><p>Ce lien est valable jusqu'au ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}
+{%- block en_GB_subject %}{% verbatim %}##assetsign.type## document awaiting your signature{% endverbatim %}{% endblock -%}
+{%- block en_GB_html %}{% verbatim %}<p>Hello ##assetsign.user.name##,</p><p>A ##assetsign.type## document for the equipment <strong>##assetsign.item.name##</strong> is waiting for you.</p><p><a href="##assetsign.sign_url##">View and sign the document</a></p><p>This link is valid until ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}
+{%- block es_ES_subject %}{% verbatim %}Un documento de ##assetsign.type## le espera para su firma{% endverbatim %}{% endblock -%}
+{%- block es_ES_html %}{% verbatim %}<p>Hola ##assetsign.user.name##,</p><p>Un documento de ##assetsign.type## para el equipo <strong>##assetsign.item.name##</strong> le espera.</p><p><a href="##assetsign.sign_url##">Consultar y firmar el documento</a></p><p>Este enlace es válido hasta el ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}
+{%- block de_DE_subject %}{% verbatim %}Ein ##assetsign.type##-Dokument wartet auf Ihre Unterschrift{% endverbatim %}{% endblock -%}
+{%- block de_DE_html %}{% verbatim %}<p>Hallo ##assetsign.user.name##,</p><p>Ein ##assetsign.type##-Dokument für das Gerät <strong>##assetsign.item.name##</strong> wartet auf Sie.</p><p><a href="##assetsign.sign_url##">Dokument ansehen und unterschreiben</a></p><p>Dieser Link ist gültig bis ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}
+{%- block it_IT_subject %}{% verbatim %}Un documento di ##assetsign.type## attende la vostra firma{% endverbatim %}{% endblock -%}
+{%- block it_IT_html %}{% verbatim %}<p>Ciao ##assetsign.user.name##,</p><p>Un documento di ##assetsign.type## per il dispositivo <strong>##assetsign.item.name##</strong> vi attende.</p><p><a href="##assetsign.sign_url##">Consulta e firma il documento</a></p><p>Questo link è valido fino al ##assetsign.deadline##.</p>{% endverbatim %}{% endblock -%}

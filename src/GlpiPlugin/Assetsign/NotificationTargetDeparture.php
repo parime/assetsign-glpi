@@ -2,6 +2,7 @@
 
 namespace GlpiPlugin\Assetsign;
 
+use GlpiPlugin\Assetsign\Notification\NotificationTexts;
 use Html;
 use Notification;
 use Notification_NotificationTemplate;
@@ -120,71 +121,21 @@ class NotificationTargetDeparture extends NotificationTarget
     * @return array<string, array{name: string, targets: list<int>, texts: array<string, array{subject: string, html: string}>}>
     */
    private static function defaults(): array {
-      $list = '<ul>##FOREACHitems##<li>##item.type## <strong>##item.name##</strong> ##item.serial##</li>##ENDFOREACHitems##</ul>';
-
       return [
          'departure_created' => [
             'name'    => 'Départ : restitution du matériel à signer',
             'targets' => [self::TARGET_LEAVING_USER, self::TARGET_TECHNICIAN],
-            'texts'   => [
-               'fr_FR' => ['subject' => 'Restitution de votre matériel : ##departure.count## élément(s) à signer',
-                  'html' => '<p>Bonjour ##departure.user##,</p><p>Dans le cadre de votre départ, merci de restituer le matériel suivant et de signer la fiche de restitution :</p>'
-                     . $list . '<p><a href="##departure.sign_url##">Consulter et signer la restitution</a></p>'],
-               'en_GB' => ['subject' => 'Returning your equipment: ##departure.count## item(s) to sign',
-                  'html' => '<p>Hello ##departure.user##,</p><p>As part of your departure, please return the following equipment and sign the return form:</p>'
-                     . $list . '<p><a href="##departure.sign_url##">View and sign the return</a></p>'],
-               'es_ES' => ['subject' => 'Devolución de su material: ##departure.count## elemento(s) que firmar',
-                  'html' => '<p>Hola ##departure.user##,</p><p>Con motivo de su salida, devuelva el siguiente material y firme la ficha de devolución:</p>'
-                     . $list . '<p><a href="##departure.sign_url##">Consultar y firmar la devolución</a></p>'],
-               'de_DE' => ['subject' => 'Rückgabe Ihrer Geräte: ##departure.count## Element(e) zu unterschreiben',
-                  'html' => '<p>Hallo ##departure.user##,</p><p>Im Rahmen Ihres Austritts geben Sie bitte die folgenden Geräte zurück und unterschreiben das Rückgabeformular:</p>'
-                     . $list . '<p><a href="##departure.sign_url##">Rückgabe ansehen und unterschreiben</a></p>'],
-               'it_IT' => ['subject' => 'Restituzione della sua attrezzatura: ##departure.count## elemento/i da firmare',
-                  'html' => '<p>Buongiorno ##departure.user##,</p><p>In vista della sua partenza, la preghiamo di restituire la seguente attrezzatura e di firmare la scheda di restituzione:</p>'
-                     . $list . '<p><a href="##departure.sign_url##">Consultare e firmare la restituzione</a></p>'],
-            ],
+            'texts'   => NotificationTexts::load('departure', 'departure_created'),
          ],
          'departure_reminder' => [
             'name'    => 'Départ : relance de signature',
             'targets' => [self::TARGET_LEAVING_USER],
-            'texts'   => [
-               'fr_FR' => ['subject' => 'Rappel : restitution de votre matériel à signer',
-                  'html' => '<p>Bonjour ##departure.user##,</p><p>La restitution du matériel suivant attend toujours votre signature :</p>'
-                     . $list . '<p><a href="##departure.sign_url##">Signer la restitution</a></p>'],
-               'en_GB' => ['subject' => 'Reminder: equipment return awaiting your signature',
-                  'html' => '<p>Hello ##departure.user##,</p><p>The return of the following equipment is still awaiting your signature:</p>'
-                     . $list . '<p><a href="##departure.sign_url##">Sign the return</a></p>'],
-               'es_ES' => ['subject' => 'Recordatorio: devolución de su material pendiente de firma',
-                  'html' => '<p>Hola ##departure.user##,</p><p>La devolución del siguiente material sigue pendiente de su firma:</p>'
-                     . $list . '<p><a href="##departure.sign_url##">Firmar la devolución</a></p>'],
-               'de_DE' => ['subject' => 'Erinnerung: Rückgabe Ihrer Geräte wartet auf Ihre Unterschrift',
-                  'html' => '<p>Hallo ##departure.user##,</p><p>Die Rückgabe der folgenden Geräte wartet noch auf Ihre Unterschrift:</p>'
-                     . $list . '<p><a href="##departure.sign_url##">Rückgabe unterschreiben</a></p>'],
-               'it_IT' => ['subject' => 'Promemoria: restituzione della sua attrezzatura da firmare',
-                  'html' => '<p>Buongiorno ##departure.user##,</p><p>La restituzione della seguente attrezzatura è ancora in attesa della sua firma:</p>'
-                     . $list . '<p><a href="##departure.sign_url##">Firmare la restituzione</a></p>'],
-            ],
+            'texts'   => NotificationTexts::load('departure', 'departure_reminder'),
          ],
          'departure_signed' => [
             'name'    => 'Départ : restitution signée',
             'targets' => [self::TARGET_TECHNICIAN],
-            'texts'   => [
-               'fr_FR' => ['subject' => 'Restitution signée : ##departure.user##',
-                  'html' => '<p>##departure.user## a signé la restitution de ##departure.count## matériel(s) :</p>' . $list
-                     . '<p><a href="##departure.sign_url##">Voir le départ et le PDF récapitulatif</a></p>'],
-               'en_GB' => ['subject' => 'Return signed: ##departure.user##',
-                  'html' => '<p>##departure.user## signed the return of ##departure.count## item(s):</p>' . $list
-                     . '<p><a href="##departure.sign_url##">View the departure and the summary PDF</a></p>'],
-               'es_ES' => ['subject' => 'Devolución firmada: ##departure.user##',
-                  'html' => '<p>##departure.user## firmó la devolución de ##departure.count## elemento(s):</p>' . $list
-                     . '<p><a href="##departure.sign_url##">Ver la salida y el PDF resumen</a></p>'],
-               'de_DE' => ['subject' => 'Rückgabe unterschrieben: ##departure.user##',
-                  'html' => '<p>##departure.user## hat die Rückgabe von ##departure.count## Gerät(en) unterschrieben:</p>' . $list
-                     . '<p><a href="##departure.sign_url##">Austritt und Zusammenfassungs-PDF ansehen</a></p>'],
-               'it_IT' => ['subject' => 'Restituzione firmata: ##departure.user##',
-                  'html' => '<p>##departure.user## ha firmato la restituzione di ##departure.count## elemento/i:</p>' . $list
-                     . '<p><a href="##departure.sign_url##">Vedere la partenza e il PDF riepilogativo</a></p>'],
-            ],
+            'texts'   => NotificationTexts::load('departure', 'departure_signed'),
          ],
       ];
    }

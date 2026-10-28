@@ -1,0 +1,13 @@
+{# Contenu par défaut de la notification « Attribution : document sur le point d'expirer » (semé à l'installation, cf.
+   Notification\DefaultNotificationContent). Texte figé, balises ##…## de GLPI. #}
+{%- block name %}{% verbatim %}Attribution : document sur le point d'expirer{% endverbatim %}{% endblock -%}
+{%- block fr_FR_subject %}{% verbatim %}Document de ##assetsign.type## bientôt expiré sans signature{% endverbatim %}{% endblock -%}
+{%- block fr_FR_html %}{% verbatim %}<p>Le document de ##assetsign.type## pour <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) n'est toujours pas signé et expirera le ##assetsign.deadline##.</p><p>Pensez à relancer le bénéficiaire autrement (appel, passage sur place) avant l'expiration du lien.</p>{% endverbatim %}{% endblock -%}
+{%- block en_GB_subject %}{% verbatim %}##assetsign.type## document soon to expire without signature{% endverbatim %}{% endblock -%}
+{%- block en_GB_html %}{% verbatim %}<p>The ##assetsign.type## document for <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) is still unsigned and will expire on ##assetsign.deadline##.</p><p>Consider reaching out to the beneficiary another way (call, in person) before the link expires.</p>{% endverbatim %}{% endblock -%}
+{%- block es_ES_subject %}{% verbatim %}Documento de ##assetsign.type## a punto de caducar sin firma{% endverbatim %}{% endblock -%}
+{%- block es_ES_html %}{% verbatim %}<p>El documento de ##assetsign.type## para <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) sigue sin firmarse y caducará el ##assetsign.deadline##.</p><p>Considere contactar al beneficiario de otra forma (llamada, visita presencial) antes de que caduque el enlace.</p>{% endverbatim %}{% endblock -%}
+{%- block de_DE_subject %}{% verbatim %}##assetsign.type##-Dokument läuft bald ohne Unterschrift ab{% endverbatim %}{% endblock -%}
+{%- block de_DE_html %}{% verbatim %}<p>Das ##assetsign.type##-Dokument für <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) ist noch nicht unterschrieben und läuft am ##assetsign.deadline## ab.</p><p>Erwägen Sie, den Empfänger vor Ablauf des Links auf anderem Weg zu kontaktieren (Anruf, persönlicher Besuch).</p>{% endverbatim %}{% endblock -%}
+{%- block it_IT_subject %}{% verbatim %}Documento di ##assetsign.type## in scadenza senza firma{% endverbatim %}{% endblock -%}
+{%- block it_IT_html %}{% verbatim %}<p>Il documento di ##assetsign.type## per <strong>##assetsign.item.name##</strong> (##assetsign.user.name##) non è ancora firmato e scadrà il ##assetsign.deadline##.</p><p>Si consiglia di contattare il beneficiario in altro modo (chiamata, visita di persona) prima della scadenza del link.</p>{% endverbatim %}{% endblock -%}

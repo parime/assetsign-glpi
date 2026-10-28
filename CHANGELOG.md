@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Contenu par défaut des e-mails (signature, relances, délégation, cosignature, prêt,
+  attestations, charte, départs) dans des gabarits Twig (`templates/notifications/`) au lieu
+  de HTML écrit en PHP (#236, recommandation de la revue de la marketplace) : 262 chaînes HTML
+  en moins. Le contenu semé à l'installation est identique à l'octet près.
+
 ## [2.16.0] - 2026-10-27
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
