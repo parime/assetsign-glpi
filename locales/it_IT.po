@@ -4724,3 +4724,13 @@ msgstr "impronta di produzione dal plugin Carbon"
 
 msgid "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
 msgstr "Inserimento manuale: la fonte indica da dove proviene il valore (scheda del produttore, strumento esterno consultato, stima propria). Prevale sull'impronta calcolata dal plugin Carbon, usata solo in mancanza."
+
+msgid "Ce matériel n'a pas d'utilisateur assigné :"
+msgstr "Questo dispositivo non ha un utente assegnato:"
+
+#, php-format
+msgid "créez maintenant la fiche de %s"
+msgstr "create ora il modulo di %s"
+
+msgid "(bénéficiaire interne ou externe)."
+msgstr "(beneficiario interno o esterno)."

@@ -1,0 +1,8 @@
+{# Textes par défaut des gabarits de fiche (engagement signé, charte), un bloc par type :
+   repris à la création d'un gabarit (Template::getDefaultContentFor()), puis modifiables. #}
+{%- block handover_content %}{% verbatim %}<p>Je reconnais avoir reçu le matériel décrit ci-dessus, en bon état de fonctionnement, et m'engage à en assurer la garde, l'usage raisonnable et la restitution en cas de départ ou de demande de l'équipe informatique.</p>{% endverbatim %}{% endblock -%}
+{%- block handover_charter_content %}{% verbatim %}<p>L'utilisation du matériel informatique doit se conformer à la charte informatique en vigueur dans l'entreprise. Toute anomalie ou dysfonctionnement doit être signalé sans délai au service informatique.</p>{% endverbatim %}{% endblock -%}
+{%- block return_content %}{% verbatim %}<p>Je reconnais avoir restitué le matériel décrit ci-dessus au service informatique.</p>{% endverbatim %}{% endblock -%}
+{%- block don_content %}{% verbatim %}<p>Je reconnais avoir reçu, à titre gratuit, le matériel décrit ci-dessus, sans garantie ni contrepartie de la part de l'organisation qui me le remet.</p>{% endverbatim %}{% endblock -%}
+{%- block vente_content %}{% verbatim %}<p>Je reconnais avoir acheté, aux conditions indiquées ci-dessus, le matériel décrit ci-dessus, cédé en l'état par l'organisation qui me le vend, sans garantie au-delà de ce qui serait légalement obligatoire.</p>{% endverbatim %}{% endblock -%}
+{%- block destruction_content %}{% verbatim %}<p>Je certifie que le matériel décrit ci-dessus a été détruit, conformément aux obligations réglementaires en vigueur (traçabilité, protection des données, environnement), par le prestataire mentionné ci-dessus.</p>{% endverbatim %}{% endblock -%}

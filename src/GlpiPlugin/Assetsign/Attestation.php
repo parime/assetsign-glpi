@@ -152,22 +152,19 @@ class Attestation extends Compat\Base\AttestationBase
 
        $campaign = $this->getCampaign();
        $gapLabels = self::getGapLabels();
-       $content = '<p>' . htmlescape(sprintf(
-           __('Écart d\'inventaire signalé lors de la campagne « %s ».', 'assetsign'),
-           $campaign !== null ? $campaign->fields['name'] : ''
-       )) . '</p>';
-      if ($gaps !== []) {
-          $content .= '<ul>';
-         foreach ($gaps as $gap) {
-             $content .= '<li>' . htmlescape($gapLabels[$gap]) . '</li>';
-         }
-          $content .= '</ul>';
-      }
-       $content .= '<p>' . nl2br(htmlescape($comment)) . '</p><p>' . htmlescape(__('Matériel listé :', 'assetsign')) . '</p><ul>';
-      foreach ($this->getItems() as $item) {
-          $content .= '<li>' . htmlescape(trim($item['type_label'] . ' ' . $item['name'] . ' ' . $item['serial'])) . '</li>';
-      }
-       $content .= '</ul>';
+       $content = TwigBlocks::content([
+           TwigBlocks::p(sprintf(
+               __('Écart d\'inventaire signalé lors de la campagne « %s ».', 'assetsign'),
+               $campaign !== null ? $campaign->fields['name'] : ''
+           )),
+           $gaps !== [] ? TwigBlocks::list(array_map(static fn ($gap): string => $gapLabels[$gap], $gaps)) : null,
+           TwigBlocks::lines($comment),
+           TwigBlocks::p(__('Matériel listé :', 'assetsign')),
+           TwigBlocks::list(array_map(
+               static fn (array $item): string => trim($item['type_label'] . ' ' . $item['name'] . ' ' . $item['serial']),
+               $this->getItems()
+           )),
+       ]);
 
        $ticket = new Ticket();
        $ticketId = (int) $ticket->add([

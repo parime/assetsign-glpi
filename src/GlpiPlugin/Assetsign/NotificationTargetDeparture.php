@@ -154,7 +154,7 @@ class NotificationTargetDeparture extends NotificationTarget
                'language'                 => $language,
                'subject'                  => $def['texts'][$key]['subject'],
                'content_html'             => $def['texts'][$key]['html'],
-               'content_text'             => strip_tags(str_replace(['</p>', '</li>'], "\n", $def['texts'][$key]['html'])),
+               'content_text'             => NotificationTexts::plainText($def['texts'][$key]['html']),
             ]);
          }
 

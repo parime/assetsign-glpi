@@ -257,6 +257,18 @@ function plugin_assetsign_dashboard_cards(?array $cards = null): array {
  * templates/pages/helpdesk/index.html.twig), d'ou la ligne <tr><td>. Comme les callbacks
  * item_add plus haut, une erreur du plugin ne doit jamais casser la page d'accueil de GLPI.
  */
+/**
+ * Encart de la page d'accueil : une ligne du tableau central de GLPI (components/central_row).
+ *
+ * @param array<string, mixed> $variables
+ */
+function plugin_assetsign_central_row(string $template, array $variables): void {
+    TemplateRenderer::getInstance()->display('@assetsign/components/central_row.html.twig', [
+        'template'  => $template,
+        'variables' => $variables,
+    ]);
+}
+
 function plugin_assetsign_display_central(): void {
     global $CFG_GLPI;
 
@@ -264,14 +276,14 @@ function plugin_assetsign_display_central(): void {
    try {
        $drafts = Assetsign::getDraftsToSend((int) Session::getLoginUserID());
       if ($drafts !== []) {
-          echo '<tr><td>' . TemplateRenderer::getInstance()->render('@assetsign/drafts_to_send.html.twig', [
+          plugin_assetsign_central_row('@assetsign/drafts_to_send.html.twig', [
               'drafts'     => $drafts,
               'total'      => Assetsign::countDraftsToSend((int) Session::getLoginUserID()),
               // Liste des feuilles filtree sur le statut Brouillon (option de recherche 5 = statut).
               'list_url'   => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.php?criteria[0][field]=5&criteria[0][searchtype]=equals&criteria[0][value]=' . Assetsign::STATUS_DRAFT,
               'form_url'   => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.form.php',
               'csrf_token' => Session::getNewCSRFToken(),
-          ]) . '</td></tr>';
+          ]);
       }
    } catch (\Throwable $e) {
        \Toolbox::logInFile('assetsign', sprintf("Feuilles a envoyer : %s\n", $e->getMessage()), true);
@@ -281,13 +293,13 @@ function plugin_assetsign_display_central(): void {
    try {
        $loans = Loan::getActiveLoans(200);
       if ($loans !== []) {
-          echo '<tr><td>' . TemplateRenderer::getInstance()->render('@assetsign/loans_in_progress.html.twig', [
+          plugin_assetsign_central_row('@assetsign/loans_in_progress.html.twig', [
               'loans'         => array_slice($loans, 0, 10),
               'overdue_count' => count(array_filter($loans, static fn (array $l): bool => $l['overdue'])),
               // Liste des feuilles avec une date de retour prevue (option de recherche 14), triee par echeance.
               'list_url'      => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.php?criteria[0][field]=14&criteria[0][searchtype]=morethan&criteria[0][value]=2000-01-01&sort=14&order=ASC',
               'form_url'      => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.form.php',
-          ]) . '</td></tr>';
+          ]);
       }
    } catch (\Throwable $e) {
        \Toolbox::logInFile('assetsign', sprintf("Prets en cours : %s\n", $e->getMessage()), true);
@@ -302,10 +314,10 @@ function plugin_assetsign_display_central(): void {
           return;
       }
 
-       echo '<tr><td>' . TemplateRenderer::getInstance()->render('@assetsign/pending_signatures_banner.html.twig', [
+       plugin_assetsign_central_row('@assetsign/pending_signatures_banner.html.twig', [
            'count' => $count,
            'url'   => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/mysignatures.php',
-       ]) . '</td></tr>';
+       ]);
    } catch (\Throwable $e) {
        \Toolbox::logInFile('assetsign', sprintf("Bandeau des documents a signer : %s\n", $e->getMessage()), true);
    }

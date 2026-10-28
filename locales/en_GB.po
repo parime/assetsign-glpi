@@ -4694,3 +4694,13 @@ msgstr "manufacturing footprint from the Carbon plugin"
 
 msgid "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
 msgstr "Manual entry: the source states where the figure comes from (manufacturer data sheet, external tool consulted, own estimate). It takes precedence over the footprint calculated by the Carbon plugin, which is only used as a fallback."
+
+msgid "Ce matériel n'a pas d'utilisateur assigné :"
+msgstr "This equipment has no assigned user:"
+
+#, php-format
+msgid "créez maintenant la fiche de %s"
+msgstr "create the %s form now"
+
+msgid "(bénéficiaire interne ou externe)."
+msgstr "(internal or external beneficiary)."

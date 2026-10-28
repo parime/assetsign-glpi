@@ -108,28 +108,18 @@ class ChecklistItem extends CommonDropdown
               break;
 
          case 'assetsign_checklistitem_options':
-             echo '<textarea name="options" class="form-control" rows="4">'
-                 . htmlspecialchars((string) ($this->fields['options'] ?? ''))
-                 . '</textarea>';
-             echo '<p class="text-muted">'
-                 . __('Utilisé uniquement si le type de saisie est "Menu déroulant".', 'assetsign')
-                 . '</p>';
+             \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/components/checklist_options_field.html.twig', [
+                 'options' => (string) ($this->fields['options'] ?? ''),
+             ]);
               break;
 
          case 'assetsign_checklistitem_movement_types':
              // Nouveau point : rien de pre-coche par defaut (l'administrateur choisit
              // explicitement), plutot que de supposer qu'il s'applique a tout.
-             $selected = $this->isNewItem() ? [] : $this->getMovementTypes();
-            foreach (Assetsign::getTypes() as $type => $label) {
-                $checked = in_array($type, $selected, true) ? ' checked' : '';
-                echo '<label class="form-check form-check-inline">'
-                    . '<input type="checkbox" class="form-check-input" name="movement_types[]" value="' . (int) $type . '"' . $checked . '>'
-                    . '<span class="form-check-label">' . htmlspecialchars($label) . '</span>'
-                    . '</label>';
-            }
-             echo '<p class="text-muted">'
-                 . __('Un point non rattaché à aucun mouvement n\'apparaît jamais sur aucune fiche.', 'assetsign')
-                 . '</p>';
+             \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/components/checklist_movement_types_field.html.twig', [
+                 'types'    => Assetsign::getTypes(),
+                 'selected' => $this->isNewItem() ? [] : $this->getMovementTypes(),
+             ]);
               break;
       }
    }

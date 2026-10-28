@@ -3,6 +3,7 @@
 namespace GlpiPlugin\Assetsign\Workflow;
 
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\TwigBlocks;
 
 /**
  * Vente de materiel : meme declenchement manuel que le Don (cf. DonType,
@@ -12,9 +13,6 @@ use GlpiPlugin\Assetsign\Assetsign;
  */
 final class VenteType implements WorkflowTypeInterface
 {
-   private const DEFAULT_CONTENT = '<p>Je reconnais avoir acheté, aux conditions indiquées ci-dessus, le matériel décrit '
-        . 'ci-dessus, cédé en l\'état par l\'organisation qui me le vend, sans garantie au-delà de ce qui serait légalement obligatoire.</p>';
-
    public function getId(): int {
        return Assetsign::TYPE_VENTE;
    }
@@ -37,6 +35,9 @@ final class VenteType implements WorkflowTypeInterface
    public function getDefaultTemplateContent(): array {
        // Pas de charte informatique par defaut : comme pour le Don, le
        // materiel sort definitivement du parc.
-       return ['content' => self::DEFAULT_CONTENT, 'charter_content' => ''];
+       return [
+           'content'         => TwigBlocks::render('workflow/default_texts.html.twig', 'vente_content'),
+           'charter_content' => '',
+       ];
    }
 }

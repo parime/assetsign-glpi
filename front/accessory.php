@@ -1,5 +1,6 @@
 <?php
 
+use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Assetsign\Accessory;
 use GlpiPlugin\Assetsign\Assetsign;
 
@@ -10,11 +11,7 @@ Html::header(Accessory::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Assetsign
 // Search::show() seul ne genere aucun lien de creation (cf. TROUBLESHOOTING.md,
 // meme piege que sur les autres intitules de ce plugin).
 if (Accessory::canCreate()) {
-    echo "<div class='mb-3'>";
-    echo "<a class='btn btn-primary' href='" . htmlspecialchars(Accessory::getFormURL()) . "'>";
-    echo "<i class='ti ti-plus'></i> " . __('Ajouter');
-    echo "</a>";
-    echo "</div>";
+    TemplateRenderer::getInstance()->display('@assetsign/components/add_button.html.twig', ['url' => Accessory::getFormURL()]);
 }
 
 Search::show(Accessory::class);

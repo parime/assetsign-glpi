@@ -9,6 +9,7 @@ namespace GlpiPlugin\Assetsign;
 // --force echouait avec "Attempted to load class DefaultNotificationContent from
 // namespace Notification").
 use GlpiPlugin\Assetsign\Notification\DefaultNotificationContent;
+use GlpiPlugin\Assetsign\Notification\NotificationTexts;
 use Notification;
 use Notification_NotificationTemplate;
 use NotificationTarget;
@@ -317,7 +318,7 @@ class NotificationTargetAssetsign extends NotificationTarget
               'language'                 => '',
               'subject'                  => $def['fr_FR']['subject'],
               'content_html'             => $def['fr_FR']['html'],
-              'content_text'             => strip_tags(str_replace('</p>', "\n", $def['fr_FR']['html'])),
+              'content_text'             => NotificationTexts::plainText($def['fr_FR']['html']),
           ]);
 
          foreach (self::NOTIFICATION_LANGUAGES as $language) {
@@ -326,7 +327,7 @@ class NotificationTargetAssetsign extends NotificationTarget
                  'language'                 => $language,
                  'subject'                  => $def[$language]['subject'],
                  'content_html'             => $def[$language]['html'],
-                 'content_text'             => strip_tags(str_replace('</p>', "\n", $def[$language]['html'])),
+                 'content_text'             => NotificationTexts::plainText($def[$language]['html']),
              ]);
          }
 
@@ -447,7 +448,7 @@ class NotificationTargetAssetsign extends NotificationTarget
            'language'                 => $language,
            'subject'                  => $content['subject'],
            'content_html'             => $content['html'],
-           'content_text'             => strip_tags(str_replace('</p>', "\n", $content['html'])),
+           'content_text'             => NotificationTexts::plainText($content['html']),
        ]);
    }
 

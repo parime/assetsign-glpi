@@ -4714,3 +4714,13 @@ msgstr "huella de fabricación del plugin Carbon"
 
 msgid "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
 msgstr "Entrada manual: la fuente indica de dónde procede la cifra (ficha del fabricante, herramienta externa consultada, estimación propia). Prevalece sobre la huella calculada por el plugin Carbon, que solo se usa en su defecto."
+
+msgid "Ce matériel n'a pas d'utilisateur assigné :"
+msgstr "Este equipo no tiene ningún usuario asignado:"
+
+#, php-format
+msgid "créez maintenant la fiche de %s"
+msgstr "cree ahora el formulario de %s"
+
+msgid "(bénéficiaire interne ou externe)."
+msgstr "(beneficiario interno o externo)."

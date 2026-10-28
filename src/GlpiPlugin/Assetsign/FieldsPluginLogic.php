@@ -53,7 +53,8 @@ final class FieldsPluginLogic
       }
       if (in_array($type, self::TEXT_TYPES, true)) {
           $text = str_replace("\u{a0}", ' ', html_entity_decode(
-              strip_tags(str_replace(['<br>', '<br/>', '<br />', '</p>'], "\n", (string) $raw)),
+              // Retour à la ligne pour chaque saut de ligne (<br>, <br/>, <br />) et fin de paragraphe.
+              strip_tags((string) preg_replace('#<br\s*/?\s*>|</p\s*>#i', "\n", (string) $raw)),
               ENT_QUOTES | ENT_HTML5
           ));
           $text = trim($text);

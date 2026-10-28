@@ -189,7 +189,7 @@ class Campaign extends Compat\Base\CampaignBase
        $html = trim((string) ($template?->fields['charter_content'] ?? ''));
        $url = (string) (Config::getForEntity($entitiesId)->fields['charter_url'] ?? '');
       if ($url !== '') {
-          $html .= '<p><a href="' . htmlescape($url) . '">' . htmlescape($url) . '</a></p>';
+          $html .= TwigBlocks::content([TwigBlocks::link($url, $url)]);
       }
        $version = $html !== '' ? GrcmanagerCharter::approvedVersion() : null;
       if ($version !== null) {
@@ -346,15 +346,17 @@ class Campaign extends Compat\Base\CampaignBase
          if (!CampaignLogic::charterTicketDue($row['date_deadline'], 0, count($pending), time())) {
              continue;
          }
-          $content = '<p>' . htmlescape(sprintf(
-              __('La charte informatique de la campagne « %1$s » n\'a pas été signée avant le %2$s par :', 'assetsign'),
-              $campaign->fields['name'],
-              Html::convDate($campaign->fields['date_deadline'])
-          )) . '</p><ul>';
-         foreach ($pending as $attestation) {
-             $content .= '<li>' . htmlescape(getUserName((int) $attestation['users_id'])) . '</li>';
-         }
-          $content .= '</ul>';
+          $content = TwigBlocks::content([
+              TwigBlocks::p(sprintf(
+                  __('La charte informatique de la campagne « %1$s » n\'a pas été signée avant le %2$s par :', 'assetsign'),
+                  $campaign->fields['name'],
+                  Html::convDate($campaign->fields['date_deadline'])
+              )),
+              TwigBlocks::list(array_map(
+                  static fn (array $attestation): string => (string) getUserName((int) $attestation['users_id']),
+                  $pending
+              )),
+          ]);
           $ticketInput = [
               'name'        => sprintf(__('Charte informatique non signée : %1$d personne(s) (%2$s)', 'assetsign'), count($pending), $campaign->fields['name']),
               'content'     => $content,
