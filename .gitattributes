@@ -12,3 +12,5 @@
 /package.json export-ignore
 /package-lock.json export-ignore
 /.semgrep export-ignore
+/.yamllint.yml export-ignore
+/phpstan.glpi12.neon export-ignore
