@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.17.1] - 2026-10-29
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Fixed
 
 - Archive publiée : les fichiers de développement `.yamllint.yml` et `phpstan.glpi12.neon` n'y
