@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.17.0] - 2026-10-29
+
 ### Added
 
 - **Liaison avec le plugin Carbon** (pluginsGLPI/carbon, 1.3 sur GLPI 11, 1.4 sur GLPI 12)
