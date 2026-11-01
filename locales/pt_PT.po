@@ -5285,3 +5285,20 @@ msgid ""
 msgstr ""
 "Dossiê de admissão de %s vinculado a este chamado: o equipamento é entregue "
 "pela aba \"Entrega de equipamento\"."
+
+#, php-format
+msgid "Statut : %s"
+msgstr "Status: %s"
+
+msgid "Sans statut"
+msgstr "Sem status"
+
+#, php-format
+msgid "Utilisateur : %s"
+msgstr "Usuário: %s"
+
+msgid "Aucun utilisateur"
+msgstr "Nenhum usuário"
+
+msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
+msgstr "Os termos de entrega e de devolução são criados automaticamente quando um usuário é atribuído a este equipamento ou removido dele."

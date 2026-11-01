@@ -4764,3 +4764,20 @@ msgstr "(interner oder externer Begünstigter)."
 #, php-format
 msgid "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."
 msgstr "Ankunftsvorgang von %s mit diesem Ticket verknüpft: Die Ausrüstung wird über die Registerkarte „Geräteübergabe“ übergeben."
+
+#, php-format
+msgid "Statut : %s"
+msgstr "Status: %s"
+
+msgid "Sans statut"
+msgstr "Kein Status"
+
+#, php-format
+msgid "Utilisateur : %s"
+msgstr "Benutzer: %s"
+
+msgid "Aucun utilisateur"
+msgstr "Kein Benutzer"
+
+msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
+msgstr "Übergabe- und Rückgabeformulare werden automatisch erstellt, wenn diesem Gerät ein Benutzer zugewiesen oder entzogen wird."

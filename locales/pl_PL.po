@@ -5298,3 +5298,20 @@ msgid ""
 msgstr ""
 "Teczka przybycia osoby %s powiązana z tym zgłoszeniem: sprzęt przekazuje się "
 "z zakładki \"Przekazanie sprzętu\"."
+
+#, php-format
+msgid "Statut : %s"
+msgstr "Status: %s"
+
+msgid "Sans statut"
+msgstr "Brak statusu"
+
+#, php-format
+msgid "Utilisateur : %s"
+msgstr "Użytkownik: %s"
+
+msgid "Aucun utilisateur"
+msgstr "Brak użytkownika"
+
+msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
+msgstr "Formularze przekazania i zwrotu są tworzone automatycznie, gdy użytkownik zostaje przypisany do tego sprzętu lub z niego usunięty."

@@ -2999,3 +2999,20 @@ msgstr ""
 #, php-format
 msgid "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."
 msgstr ""
+
+#, php-format
+msgid "Statut : %s"
+msgstr ""
+
+msgid "Sans statut"
+msgstr ""
+
+#, php-format
+msgid "Utilisateur : %s"
+msgstr ""
+
+msgid "Aucun utilisateur"
+msgstr ""
+
+msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
+msgstr ""

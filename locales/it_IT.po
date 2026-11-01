@@ -4738,3 +4738,20 @@ msgstr "(beneficiario interno o esterno)."
 #, php-format
 msgid "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."
 msgstr "Pratica di arrivo di %s collegata a questo ticket: il materiale si consegna dalla scheda «Consegna di attrezzatura»."
+
+#, php-format
+msgid "Statut : %s"
+msgstr "Stato: %s"
+
+msgid "Sans statut"
+msgstr "Nessuno stato"
+
+#, php-format
+msgid "Utilisateur : %s"
+msgstr "Utente: %s"
+
+msgid "Aucun utilisateur"
+msgstr "Nessun utente"
+
+msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
+msgstr "Le schede di consegna e di restituzione vengono create automaticamente quando un utente viene assegnato a questa apparecchiatura o rimosso da essa."
