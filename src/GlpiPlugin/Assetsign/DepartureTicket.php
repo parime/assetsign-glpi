@@ -55,6 +55,24 @@ final class DepartureTicket
          self::departureLink($departure),
       ]);
 
+      // grcmanager #362 : catégorie et gabarit de tâche de départ de Configuration GLPI Auto ; un
+      // ticket déjà ouvert pour ce départ (Configuration, formulaire ou saisie manuelle) reçoit un
+      // suivi au lieu d'un second ticket.
+      $cga = StaffMovementLink::forEvent('departure');
+      $existing = StaffMovementLink::findOpenTicket((int) $departure->fields['users_id'], $cga['itilcategories_id']);
+      if ($existing > 0) {
+         (new ITILFollowup())->add([
+            'itemtype'   => Ticket::class,
+            'items_id'   => $existing,
+            'is_private' => 1,
+            'content'    => $content,
+         ]);
+         $departure->update(['id' => $departure->getID(), 'tickets_id' => $existing]);
+         self::linkItems($departure);
+
+         return $existing;
+      }
+
       $tech = (int) ($departure->fields['users_id_tech'] ?? 0);
       $input = [
          'name'                => $title,
@@ -66,6 +84,9 @@ final class DepartureTicket
       if ($tech > 0) {
          $input['_users_id_assign'] = $tech;
       }
+      if ($cga['itilcategories_id'] > 0) {
+         $input['itilcategories_id'] = $cga['itilcategories_id'];
+      }
 
       $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
       $ticketsId = (int) (new Ticket())->add($input);
@@ -73,6 +94,15 @@ final class DepartureTicket
       $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
       if ($ticketsId <= 0) {
          return 0;
+      }
+      $templateTask = StaffMovementLink::templateContent($cga['tasktemplates_id']);
+      if ($templateTask !== '') {
+         (new \TicketTask())->add([
+            'tickets_id'       => $ticketsId,
+            'content'          => TwigBlocks::content([TwigBlocks::lines($templateTask)]),
+            'tasktemplates_id' => $cga['tasktemplates_id'],
+            'state'            => \Planning::TODO,
+         ]);
       }
 
       $departure->update(['id' => $departure->getID(), 'tickets_id' => $ticketsId]);
