@@ -273,6 +273,13 @@
           </div>
 
           <div class="mb-3 form-check">
+            <input type="hidden" name="allow_typed_signature" value="0">
+            <input type="checkbox" name="allow_typed_signature" value="1" class="form-check-input" id="allow_typed_signature" {{ config.allow_typed_signature|default(1) ? 'checked' : '' }}>
+            <label class="form-check-label" for="allow_typed_signature">{{ __('Autoriser la signature en tapant son nom', 'assetsign') }}</label>
+            <div class="form-text">{{ __('En plus du tracé à la souris, au doigt ou au stylet, le signataire peut taper son nom : utile sans écran tactile et pour l\'accessibilité. La preuve et le PDF indiquent la méthode utilisée.', 'assetsign') }}</div>
+          </div>
+
+          <div class="mb-3 form-check">
             <input type="hidden" name="signature_required" value="0">
             <input type="checkbox" name="signature_required" value="1" class="form-check-input" id="signature_required" {{ config.signature_required|default(1) ? 'checked' : '' }}>
             <label class="form-check-label" for="signature_required">{{ __('Signature obligatoire', 'assetsign') }}</label>

@@ -25,7 +25,7 @@ final class SignatureStamper
      * $witnessName : technicien en presence duquel la signature a ete recueillie, mentionne
      * sur le PDF (null pour une signature depuis la propre session du signataire).
      */
-   public function apply(\GlpiPlugin\Assetsign\Assetsign $assetsign, string $signaturePngDataUrl, ?array $signer = null, ?string $witnessName = null): array {
+   public function apply(\GlpiPlugin\Assetsign\Assetsign $assetsign, string $signaturePngDataUrl, ?array $signer = null, ?string $witnessName = null, string $signatureMethod = 'drawn'): array {
        $signedAt = date('Y-m-d H:i:s');
 
        // getActualSigner() (pas le beneficiaire d'origine systematiquement) :
@@ -40,6 +40,7 @@ final class SignatureStamper
            'signer_name'     => trim(\formatUserName(0, $signer['name'] ?? '', $signer['realname'] ?? '', $signer['firstname'] ?? '')),
            'signer_email'    => $signer['email'] ?? '',
            'witness_name'    => $witnessName,
+           'signature_method' => $signatureMethod,
        ]);
 
        $protect = (bool) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['protect_pdf'];

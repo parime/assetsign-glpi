@@ -105,6 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        $meta = [
            'ip'         => $_SERVER['REMOTE_ADDR'] ?? '',
            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+           // Issue #275 : signature tracee ou nom tape.
+           'signature_method' => ($_POST['signature_method'] ?? '') === 'typed' ? 'typed' : 'drawn',
        ];
 
        $signatureImage = $_POST['signature'] ?? '';
@@ -167,6 +169,8 @@ try {
         'cosigner'               => $data['cosigner'],
         // Signature sur place (issue #152) : bandeau "en presence de", cf. sign_page.html.twig.
         'in_person_witness'      => $data['in_person_witness'],
+        // Issue #275 : onglet « Taper mon nom ».
+        'allow_typed_signature'  => $data['allow_typed_signature'],
         'in_person_signer'       => $data['in_person_signer'],
         // Volontairement DIFFERENT de Assetsign::getPdfHeadings() (fixe en francais,
         // car c'est le contenu d'un PDF archive, cf. commentaire sur

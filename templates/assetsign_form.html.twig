@@ -289,6 +289,10 @@
             <th>{{ __('Signataire', 'assetsign') }}</th>
             <td>{{ proof.signer_name|default('') }}{% if proof.signer_email|default('') is not empty %} ({{ proof.signer_email }}){% endif %}</td>
           </tr>
+          <tr>
+            <th>{{ __('Méthode de signature', 'assetsign') }}</th>
+            <td>{% if proof.signature_method|default('drawn') == 'typed' %}<i class="ti ti-keyboard me-1"></i>{{ __('Nom tapé', 'assetsign') }}{% else %}<i class="ti ti-signature me-1"></i>{{ __('Tracé à l\'écran', 'assetsign') }}{% endif %}</td>
+          </tr>
           {% if proof.witness_name|default('') is not empty %}
           {# Signature sur place (issue #152) : technicien temoin. #}
           <tr>

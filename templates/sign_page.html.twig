@@ -18,6 +18,13 @@
   #pdf-container canvas{ max-width:100%; margin:8px auto; display:block; box-shadow:0 1px 4px rgba(0,0,0,.15); }
   .sign-zone{ margin-top:16px; }
   #signature-pad{ border:1px dashed var(--ink-soft); border-radius:6px; width:100%; height:180px; touch-action:none; background:#fff; }
+  .sig-modes{ display:flex; gap:0; margin-top:14px; }
+  .sig-modes button{ border-radius:0; }
+  .sig-modes button:first-child{ border-radius:6px 0 0 6px; }
+  .sig-modes button:last-child{ border-radius:0 6px 6px 0; }
+  .sig-modes button[aria-pressed="true"]{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  #typed-zone input{ font:inherit; width:100%; padding:10px; border:1px solid var(--line); border-radius:6px; margin:6px 0 10px; box-sizing:border-box; }
+  #typed-canvas{ border:1px dashed var(--ink-soft); border-radius:6px; width:100%; height:150px; background:#fff; }
   .actions{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
   button{ font:inherit; padding:10px 18px; border-radius:6px; border:1px solid var(--line); background:#fff; cursor:pointer; }
   button.primary{ background:var(--accent); color:#fff; border-color:var(--accent); }
@@ -165,8 +172,24 @@
         <span>{{ __('J\'ai lu et j\'accepte les conditions générales et la charte informatique présentées dans le document ci-dessus.', 'assetsign') }}</span>
       </label>
 
-      <p style="margin-top:14px;">{{ __('Signez ci-dessous à la souris, au doigt ou au stylet :', 'assetsign') }}</p>
-      <canvas id="signature-pad"></canvas>
+      {# Issue #275 : signer en tapant son nom, si l'entité l'autorise. #}
+      {% if allow_typed_signature|default(false) %}
+        <div class="sig-modes" role="group" aria-label="{{ __('Méthode de signature', 'assetsign') }}">
+          <button type="button" id="sig-mode-draw" aria-pressed="true">{{ __('Dessiner', 'assetsign') }}</button>
+          <button type="button" id="sig-mode-type" aria-pressed="false">{{ __('Taper mon nom', 'assetsign') }}</button>
+        </div>
+      {% endif %}
+      <div id="draw-zone">
+        <p style="margin-top:14px;">{{ __('Signez ci-dessous à la souris, au doigt ou au stylet :', 'assetsign') }}</p>
+        <canvas id="signature-pad"></canvas>
+      </div>
+      {% if allow_typed_signature|default(false) %}
+        <div id="typed-zone" hidden>
+          <label for="typed-name" style="display:block;margin-top:14px;">{{ __('Tapez votre nom complet :', 'assetsign') }}</label>
+          <input type="text" id="typed-name" autocomplete="name" maxlength="80">
+          <canvas id="typed-canvas" aria-hidden="true"></canvas>
+        </div>
+      {% endif %}
 
       <div class="actions">
         <button type="button" id="btn-clear">{{ __('Effacer', 'assetsign') }}</button>

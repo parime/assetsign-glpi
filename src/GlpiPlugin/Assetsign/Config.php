@@ -133,6 +133,8 @@ class Config extends Compat\Base\ConfigBase
         // par defaut - change le modele de securite (l'identite du signataire est
         // attestee par le technicien temoin, plus prouvee par sa propre connexion).
         'enable_in_person_signature'          => 0,
+        // Issue #275 : signer en tapant son nom (signature electronique simple, comme le trace).
+        'allow_typed_signature'               => 1,
         // Depart d'un salarie (issue #157) : declencheurs automatiques du dossier de
         // restitution groupee, DESACTIVES par defaut (l'action manuelle « Preparer le
         // depart » reste toujours disponible). Delai en jours avant la date de fin du compte.
@@ -747,6 +749,7 @@ class Config extends Compat\Base\ConfigBase
            'enable_co_signature' => (int) ($input['enable_co_signature'] ?? 0),
            'enable_pending_signatures_banner' => (int) ($input['enable_pending_signatures_banner'] ?? 0),
            'enable_in_person_signature' => (int) ($input['enable_in_person_signature'] ?? 0),
+           'allow_typed_signature' => (int) ($input['allow_typed_signature'] ?? 0),
            'departure_on_deactivation' => (int) ($input['departure_on_deactivation'] ?? 0),
            'departure_on_end_date' => (int) ($input['departure_on_end_date'] ?? 0),
            'departure_end_date_days' => max(0, min(90, (int) ($input['departure_end_date_days'] ?? 7))),
@@ -978,6 +981,7 @@ class Config extends Compat\Base\ConfigBase
                 `enable_co_signature` tinyint NOT NULL DEFAULT 0,
                 `enable_pending_signatures_banner` tinyint NOT NULL DEFAULT 1,
                 `enable_in_person_signature` tinyint NOT NULL DEFAULT 0,
+                `allow_typed_signature` tinyint NOT NULL DEFAULT 1,
                 `departure_on_deactivation` tinyint NOT NULL DEFAULT 0,
                 `departure_on_end_date` tinyint NOT NULL DEFAULT 0,
                 `departure_end_date_days` int unsigned NOT NULL DEFAULT 7,
@@ -1346,6 +1350,9 @@ class Config extends Compat\Base\ConfigBase
          }
           // Issue #228 : poids du facteur « consommation d'énergie » (plugin Carbon), 0 par défaut
           // pour ne pas modifier les scores existants.
+         if (!$DB->fieldExists($table, 'allow_typed_signature')) {
+             $migration->addField($table, 'allow_typed_signature', 'bool', ['value' => 1]);
+         }
          if (!$DB->fieldExists($table, 'health_weight_energy')) {
              $migration->addField($table, 'health_weight_energy', 'integer', ['value' => 0, 'after' => 'health_weight_movements']);
              $migration->migrationOneTable($table);

@@ -134,6 +134,8 @@ final class SignController
            // session) - bandeau dedie et signataire attendu nomme, cf. sign_page.html.twig.
            'in_person_witness' => $witness,
            'in_person_signer'  => $witness !== null ? $assetsign->getExpectedSigner() : null,
+           // Issue #275 : onglet « Taper mon nom » sur la page de signature.
+           'allow_typed_signature' => (bool) (int) (Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['allow_typed_signature'] ?? 1),
        ];
    }
 
@@ -156,6 +158,12 @@ final class SignController
        // les erreurs d'usage normales ; un appel direct (ou un client modifie)
        // pourrait envoyer n'importe quoi, d'ou cette verification independante.
        SignatureImageValidator::assertValid($signatureImagePng);
+
+       // Issue #275 : la signature par nom tape doit etre autorisee pour l'entite.
+       if (($meta['signature_method'] ?? 'drawn') === 'typed'
+           && !(int) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['allow_typed_signature']) {
+           throw new RuntimeException(__('La signature en tapant son nom n\'est pas autorisée pour cette fiche.', 'assetsign'));
+       }
 
        $newCosignerToken = null;
       if ($token->fields['for_cosigner']) {
@@ -188,7 +196,8 @@ final class SignController
            : null;
 
        $stamper = new SignatureStamper();
-       $result = $stamper->apply($assetsign, $signatureImagePng, $signer, $witnessName);
+       $method = ($meta['signature_method'] ?? 'drawn') === 'typed' ? 'typed' : 'drawn';
+       $result = $stamper->apply($assetsign, $signatureImagePng, $signer, $witnessName, $method);
 
        $proof = [
            'signer_name'   => trim(\formatUserName(0, $signer['name'] ?? '', $signer['realname'] ?? '', $signer['firstname'] ?? '')),
@@ -198,6 +207,7 @@ final class SignController
            'document_hash' => $result['hash'],
            'signed_at'     => $result['signed_at'],
            'witness_name'  => $witnessName,
+           'signature_method' => $method,
        ];
 
        $cosignerId = (int) ($assetsign->fields['cosigner_users_id'] ?? 0);
