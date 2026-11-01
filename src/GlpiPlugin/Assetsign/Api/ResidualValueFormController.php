@@ -6,7 +6,7 @@ use GlpiPlugin\Assetsign\ResidualValue;
 
 /**
  * Logique partagée par front/residualvalue.form.php (saisie manuelle de la
- * valeur résiduelle sur l'onglet Passeport matériel, issue #77) — même
+ * valeur résiduelle sur l'onglet Passeport matériel, issue #77) : même
  * motivation que Api\PassportBackfillController : rendre ce dispatch testable
  * en PHPUnit, sans passer par le vrai front/*.php (Html::back()/exit()).
  */

@@ -8,7 +8,7 @@ use GlpiPlugin\Assetsign\Kit;
  * Couvre le catalogue de kits d'accessoires reutilisables (cf. ROADMAP.md V3,
  * issue #83, docs/design/ADR-passeport-v1.md) : encodage JSON de accessories_id
  * (meme motif que ChecklistItem::movement_types), et surtout
- * Kit::computeCompleteness() — le coeur de la detection automatique de perte de
+ * Kit::computeCompleteness() : le coeur de la detection automatique de perte de
  * materiel au retour, volontairement une fonction PURE (aucun acces base) pour
  * rester testable sans fiche Assetsign reelle.
  */

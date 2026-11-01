@@ -6,7 +6,7 @@ use GlpiPlugin\Assetsign\PassportEvent;
 
 /**
  * Logique partagee par front/passport_backfill.php (bouton "Forcer la
- * recherche" des onglets Passeport materiel/utilisateur) — meme motivation
+ * recherche" des onglets Passeport materiel/utilisateur) : meme motivation
  * que Api\AssetsignFormController : rendre ce dispatch testable en PHPUnit,
  * sans passer par le vrai front/*.php qui appelle Html::back()/exit().
  */

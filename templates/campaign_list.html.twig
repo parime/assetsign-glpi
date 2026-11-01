@@ -44,7 +44,7 @@
             {% for row in rows %}
               <tr>
                 <td><a href="{{ form_url }}?id={{ row.id }}">{{ row.name }}</a>{% if row.is_charter %} <span class="badge bg-purple-lt">{{ __('Charte informatique', 'assetsign') }}</span>{% endif %}<div class="text-muted small">{{ row.date_creation|formatted_datetime }}</div></td>
-                <td>{{ row.date_deadline ? row.date_deadline|formatted_date : '—' }}</td>
+                <td>{{ row.date_deadline ? row.date_deadline|formatted_date : '-' }}</td>
                 <td>
                   <div class="d-flex align-items-center gap-2">
                     <div class="progress" style="width: 80px; height: 6px;"><div class="progress-bar bg-green" style="width: {{ row.stats.response_rate }}%"></div></div>

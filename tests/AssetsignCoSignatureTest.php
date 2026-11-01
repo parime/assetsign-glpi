@@ -29,7 +29,7 @@ final class AssetsignCoSignatureTest extends AssetsignTestCase
      * (appele par SignController::submit(), contrairement a SignatureStamperTest
      * qui appelle SignatureStamper directement et ne passe jamais par ce
      * controle) exige au moins 40x20px et un minimum de pixels d'encre reels
-     * — memes dimensions/trace que SignatureImageValidatorTest. $offset permet
+     * - memes dimensions/trace que SignatureImageValidatorTest. $offset permet
      * d'obtenir deux images visuellement distinctes (deux hash differents) pour
      * simuler deux signataires differents.
      */
@@ -141,7 +141,7 @@ final class AssetsignCoSignatureTest extends AssetsignTestCase
      * -> SIGNED, PDF final a deux signatures, cosigner_pending_signature
      * efface). Chaque jeton est cree directement (Token::createForAssetsign(),
      * meme pattern que SignControllerTest) plutot que via launchWorkflow()/un
-     * e-mail reellement envoye — ce test porte sur la MACHINE A ETATS, pas
+     * e-mail reellement envoye : ce test porte sur la MACHINE A ETATS, pas
      * sur l'acheminement des notifications (deja couvert par
      * NotificationTargetAssetsignTest).
      */

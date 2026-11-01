@@ -19,7 +19,7 @@
 {% endif %}
 
 <h1>{{ __('Fiche de maintenance', 'assetsign') }}</h1>
-<p class="meta">{{ __('Établie le %1$s — Référence fiche n°%2$d', 'assetsign')|format(maintenance.date_creation|date('d/m/Y'), maintenance.id) }}</p>
+<p class="meta">{{ __('Établie le %1$s : Référence fiche n°%2$d', 'assetsign')|format(maintenance.date_creation|date('d/m/Y'), maintenance.id) }}</p>
 
 <h2>{{ __('Technicien', 'assetsign') }}</h2>
 <table class="info-table">
@@ -80,7 +80,7 @@
 <div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
 {% endif %}
 
-<div class="footer">{{ __('Fiche de maintenance #%d — Document généré par GLPI (plugin assetsign)', 'assetsign')|format(maintenance.id) }}</div>
+<div class="footer">{{ __('Fiche de maintenance #%d : Document généré par GLPI (plugin assetsign)', 'assetsign')|format(maintenance.id) }}</div>
 
 </body>
 </html>

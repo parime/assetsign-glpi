@@ -10,7 +10,7 @@ use Item_Ticket;
 use Ticket;
 
 /**
- * Issue #193 : prêt temporaire — attribution avec une date de retour prévue, rappel avant
+ * Issue #193 : prêt temporaire : attribution avec une date de retour prévue, rappel avant
  * l'échéance, ticket en cas de retard. Jamais de désaffectation ni de changement de statut.
  */
 final class LoanTest extends AssetsignTestCase

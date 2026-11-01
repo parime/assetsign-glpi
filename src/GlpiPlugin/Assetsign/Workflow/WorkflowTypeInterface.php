@@ -5,7 +5,7 @@ namespace GlpiPlugin\Assetsign\Workflow;
 /**
  * Contrat que doit remplir tout type de fiche gere par le plugin (Assetsign,
  * Restitution, et les types a venir : Don, Vente...). Chaque type vit dans
- * sa propre classe, enregistree une fois aupres de WorkflowTypeRegistry —
+ * sa propre classe, enregistree une fois aupres de WorkflowTypeRegistry -
  * ajouter un type ne modifie donc jamais Assetsign.php, Template.php ni
  * HandoverPdfBuilder.php, seulement ce fichier + une ligne d'enregistrement
  * dans hook.php (meme convention que Provider\ProviderFactory).

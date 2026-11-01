@@ -9,7 +9,7 @@
       {% for group, rows in available %}
         <optgroup label="{{ group }}">
           {% for r in rows %}
-            <option value="{{ r.value }}">{{ r.name|default('#' ~ r.items_id) }}{% if r.serial %} — {{ __('N° de série', 'assetsign') }} {{ r.serial }}{% endif %}</option>
+            <option value="{{ r.value }}">{{ r.name|default('#' ~ r.items_id) }}{% if r.serial %} - {{ __('N° de série', 'assetsign') }} {{ r.serial }}{% endif %}</option>
           {% endfor %}
         </optgroup>
       {% endfor %}

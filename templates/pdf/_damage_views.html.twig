@@ -21,7 +21,7 @@
     {% if described|length %}
     <ul class="damage-pdf-desc">
         {% for marker in described %}
-        <li>{{ marker.description }}{% if marker.severity == 1 %} — {{ __('majeure', 'assetsign') }}{% endif %}</li>
+        <li>{{ marker.description }}{% if marker.severity == 1 %} - {{ __('majeure', 'assetsign') }}{% endif %}</li>
         {% endfor %}
     </ul>
     {% endif %}

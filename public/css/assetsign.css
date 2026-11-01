@@ -12,7 +12,7 @@
     border: 1px solid currentColor;
 }
 
-/* Etat des lieux visuel (annotation de dommages) — cf. damage-annotation.js */
+/* Etat des lieux visuel (annotation de dommages) : cf. damage-annotation.js */
 .damage-view-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -54,7 +54,7 @@
     margin-top: -8px;
     border-radius: 50%;
     /* Mineure (par defaut) : jaune. Majeure : rouge, cf. .damage-marker-major
-       ci-dessous — deux couleurs distinctes plutot que deux nuances de rouge,
+       ci-dessous : deux couleurs distinctes plutot que deux nuances de rouge,
        pour reperer la gravite d'un coup d'œil sans avoir a cliquer sur chaque
        repere. */
     background: rgba(240, 180, 20, 0.9);
@@ -98,7 +98,7 @@
     margin-top: 4px;
 }
 
-/* Signature du technicien (fiche de maintenance) — meme apparence que
+/* Signature du technicien (fiche de maintenance) : meme apparence que
    #signature-pad sur la page publique de signature (cf. sign_page.html.twig),
    qui a son propre CSS inline et ne partage pas ce fichier. */
 .assetsign-signature-pad {
@@ -121,7 +121,7 @@
     margin-bottom: 60px;
 }
 
-/* Onglet Passeport materiel — frise verticale reprenant le langage visuel du
+/* Onglet Passeport materiel : frise verticale reprenant le langage visuel du
    panneau "Dates"/historique natif d'un ticket GLPI (ligne verticale, cercle
    avec coche pour un evenement passe, point plein pour le plus recent),
    demande explicite de l'utilisateur plutot qu'un style "Notion/Linear"

@@ -3,7 +3,7 @@
 namespace GlpiPlugin\Assetsign;
 
 /**
- * Issue #157 (départ d'un salarié) : règles pures, sans GLPI, du « dossier groupé » Departure —
+ * Issue #157 (départ d'un salarié) : règles pures, sans GLPI, du « dossier groupé » Departure -
  * détection des déclencheurs, statut du dossier d'après ses fiches de restitution, échéance des
  * relances. Testées sans base de données (tests/DepartureLogicTest.php).
  */

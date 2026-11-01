@@ -11,7 +11,7 @@ use Migration;
  * Socle du "Passeport materiel" (cf. ROADMAP.md, "Vision produit a long terme") : une
  * ligne = un evenement metier immuable sur un materiel gere par le plugin (attribution,
  * restitution, don, vente, maintenance). Assetsign/Maintenance restent les seules sources de
- * verite pour leur propre workflow (PDF, preuve de signature...) — cette classe ne fait
+ * verite pour leur propre workflow (PDF, preuve de signature...) : cette classe ne fait
  * qu'agreger, jamais dupliquer, via recordForAssetsign()/recordForMaintenance() appelees
  * depuis ces classes au moment ou l'evenement a reellement lieu.
  */
@@ -37,7 +37,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
     /**
      * Nom de table force explicitement : la derivation automatique de GLPI a partir du nom
      * de classe n'insere pas de underscore aux frontieres de casse interne (deja rencontre
-     * et documente ailleurs dans ce plugin) — autant ne jamais s'y fier.
+     * et documente ailleurs dans ce plugin) : autant ne jamais s'y fier.
      */
    public static function getTable($classname = null): string {
        return 'glpi_plugin_assetsign_events';
@@ -66,10 +66,10 @@ class PassportEvent extends Compat\Base\PassportEventBase
 
     /**
      * Enregistre l'evenement correspondant a une Assetsign (attribution, restitution, don ou
-     * vente) — appelee depuis Assetsign::launchWorkflow(), point de passage commun a toutes
+     * vente): appelee depuis Assetsign::launchWorkflow(), point de passage commun a toutes
      * les voies de creation (automatique par affectation/Etat, manuelle Don/Vente). Le
      * snapshot beneficiaire est resolu via Assetsign::getBeneficiary(), deja unifie pour un
-     * beneficiaire interne (compte GLPI) ou externe (texte libre) — cf. son propre
+     * beneficiaire interne (compte GLPI) ou externe (texte libre) : cf. son propre
      * commentaire, meme forme de tableau dans les deux cas.
      */
    public static function recordForAssetsign(Assetsign $assetsign): void {
@@ -149,7 +149,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
            default                        => sprintf(__('Manquant à la restitution de %s', 'assetsign'), $main),
        };
       if (trim((string) ($row['return_comment'] ?? '')) !== '') {
-          $comment .= ' — ' . trim((string) $row['return_comment']);
+          $comment .= ' - ' . trim((string) $row['return_comment']);
       }
        return self::upsertHandedItemEvent($assetsign, $row, self::TYPE_RETURN, $comment);
    }
@@ -234,7 +234,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
    }
 
     /**
-     * Enregistre l'evenement correspondant a une fiche de maintenance — appelee depuis
+     * Enregistre l'evenement correspondant a une fiche de maintenance : appelee depuis
      * Maintenance::createWithChecklist(), une fois la fiche reellement creee. Pas de
      * snapshot utilisateur ici : une maintenance ne change pas le detenteur du materiel,
      * hors du perimetre RGPD que le snapshot beneficiaire adresse.
@@ -496,7 +496,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
 
     /**
      * Fiche d'identite : vue d'ensemble immediate du materiel sans avoir a
-     * derouler toute la frise (cf. ROADMAP.md, tableau V1) — pure agregation
+     * derouler toute la frise (cf. ROADMAP.md, tableau V1) : pure agregation
      * de donnees deja natives GLPI (modele, fabricant, n° serie, Etat,
      * utilisateur/entite ACTUELS), aucune nouvelle donnee ni table. Achat et
      * fin de garantie reutilises depuis Infocom (meme lecture que
@@ -596,7 +596,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
    }
 
     /**
-     * Valeur résiduelle estimée (V2, cf. ROADMAP.md — "Valeur résiduelle
+     * Valeur résiduelle estimée (V2, cf. ROADMAP.md - "Valeur résiduelle
      * (linéaire / durée personnalisable / saisie manuelle)", issue #77). Deux
      * sources, la saisie manuelle (ResidualValue::getForItem() - table dédiée,
      * un type d'item natif GLPI ne pouvant recevoir de colonne supplémentaire,
@@ -647,10 +647,10 @@ class PassportEvent extends Compat\Base\PassportEventBase
     /**
      * Benefice du reemploi / "impact evite" (cf. ROADMAP.md V3, issue #81) : valorise
      * la prolongation de duree de vie au-dela de la duree d'amortissement prevue,
-     * jamais une donnee inventee — trois prealables REELS et deja saisis dans GLPI/ce
+     * jamais une donnee inventee : trois prealables REELS et deja saisis dans GLPI/ce
      * plugin, tous obligatoires, `null` sinon (meme convention que getResidualValue()
      * ci-dessus et le principe fondateur documente dans EnvironmentalData) :
-     * - `Infocom::sink_time` (duree d'amortissement comptable, en ANNEES — confirme
+     * - `Infocom::sink_time` (duree d'amortissement comptable, en ANNEES: confirme
      *   contre le core GLPI, `Infocom::rawSearchOptions()` id 56, `'unit' => 'year'`),
      *   la "duree prevue" : c'est un champ natif deja rempli par l'utilisateur/sa
      *   comptabilite, jamais une moyenne sectorielle inventee par ce plugin.
@@ -662,7 +662,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
      *
      * Formule (methode standard "evitement proportionnel" en economie circulaire) :
      * `empreinte × (duree_reelle − duree_prevue) / duree_prevue`, seulement si
-     * `duree_reelle > duree_prevue` — tant que le materiel n'a pas depasse sa duree
+     * `duree_reelle > duree_prevue` - tant que le materiel n'a pas depasse sa duree
      * d'amortissement, aucun benefice a valoriser (retourne `null`, jamais 0 ni une
      * valeur negative).
      *
@@ -721,7 +721,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
 
     /**
      * Score de sante (0-100, 100 = etat ideal), premiere brique du moteur
-     * d'indicateurs V2 (cf. ROADMAP.md — methodologie et sources documentees
+     * d'indicateurs V2 (cf. ROADMAP.md : methodologie et sources documentees
      * dans ROADMAP.md, section dediee). Formule standard du secteur ITAM :
      * `100 - Σ(poids_i × degradation_i)`, chaque degradation_i normalisee sur
      * 0-100 puis ponderee par un poids RELATIF (pas force a sommer a 100 :
@@ -855,11 +855,11 @@ class PassportEvent extends Compat\Base\PassportEventBase
    }
 
     /**
-     * Module d'aide a la decision (troisieme brique du V2, cf. ROADMAP.md —
+     * Module d'aide a la decision (troisieme brique du V2, cf. ROADMAP.md -
      * "Module d'aide a la decision (moteur de regles simple, ex: 'reevaluer'/
      * 'preparer remplacement' avec raisons)", issue #79). Moteur de REGLES SIMPLE
      * a seuils, explicitement PAS du machine learning (la roadmap le precise :
-     * "architecture prete pour de l'IA plus tard sans y aller maintenant") — deux
+     * "architecture prete pour de l'IA plus tard sans y aller maintenant") : deux
      * regles independantes sur les deux indicateurs V2 deja livres (score de
      * sante, valeur residuelle), chacune retournant son propre libelle ET sa
      * propre raison explicite, jamais une simple note opaque. "Architecture prete
@@ -1041,7 +1041,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
     /**
      * Onglet "Passeport utilisateur" cote beneficiaire (fiche Administration >
      * Utilisateurs) : agrege les memes evenements que showForItem(), mais
-     * filtres par users_id (le beneficiaire) plutot que par itemtype/items_id —
+     * filtres par users_id (le beneficiaire) plutot que par itemtype/items_id -
      * une meme personne ayant pu recevoir/rendre/acheter plusieurs materiels
      * differents dans le temps. Les evenements de maintenance n'ont jamais de
      * users_id renseigne (pas de notion de beneficiaire), ils sont donc deja
@@ -1111,8 +1111,8 @@ class PassportEvent extends Compat\Base\PassportEventBase
      * renseignee (date d'entree explicite, cf. Administration > Utilisateurs),
      * sinon `date_creation` (toujours disponible). Fin de frise UNIQUEMENT si
      * le compte est reellement desactive/supprime (jamais pour un compte actif
-     * — la frise reste "en cours", meme principe que getLivesForItem() cote
-     * materiel) : `end_date` si renseignee, sinon `date_mod` en repli — le
+     * - la frise reste "en cours", meme principe que getLivesForItem() cote
+     * materiel) : `end_date` si renseignee, sinon `date_mod` en repli : le
      * coeur GLPI ne conserve aucune date de desactivation explicite, ce repli
      * reste donc approximatif par construction.
      * @return array{start: ?string, end: ?string, is_deleted: bool}
@@ -1133,7 +1133,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
      * cette fonctionnalite. Rejoue exactement la meme logique que le declenchement
      * en direct (`Assetsign::handleUserBasedTrigger()`/`handleStateBasedTrigger()`),
      * sur les memes reglages d'Etats declencheurs (`Config::getHandoverStates()`
-     * et consorts) — un seul endroit a regler, coherent avec ce qui declenche deja
+     * et consorts) : un seul endroit a regler, coherent avec ce qui declenche deja
      * les remises automatiques (cf. ROADMAP.md, choix explicite de l'utilisateur).
      * Idempotent par evenement candidat (jamais par simple compteur global) : peut
      * etre rappele sans risque, y compris via `$force` (bouton "Forcer la
@@ -1193,7 +1193,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
      * produits Assetsign::handleItemAssignment() s'il avait existe a l'epoque.
      * Regroupes par `date_mod` : une meme sauvegarde peut modifier les deux
      * champs a la fois, avec le meme timestamp sur les deux lignes de log qui
-     * en resultent — le declenchement par affectation reste alors prioritaire
+     * en resultent : le declenchement par affectation reste alors prioritaire
      * sur celui par Etat pour ce meme groupe, exactement comme en direct.
      * @return list<array{event_type: int, users_id: int, date: string}>
      */
@@ -1257,7 +1257,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
     /**
      * Retro-remplit TOUS les materiels qu'un utilisateur a pu avoir avant
      * l'installation de cette fonctionnalite : `glpi_logs` est indexe par
-     * materiel, jamais par utilisateur — il faut donc d'abord retrouver quels
+     * materiel, jamais par utilisateur: il faut donc d'abord retrouver quels
      * materiels le concernent (comme ancien OU nouveau detenteur) avant de
      * rejouer leur historique un par un via backfillFromLogs().
      * @return int Nombre d'evenements effectivement ajoutes, tous materiels confondus.
@@ -1398,7 +1398,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
      * indicateurs calcules") : 1) quel Kit (le cas echeant) est assigne a
      * chaque Restitution affichee, 2) composition de chaque Kit DISTINCT
      * concerne, 3) accessoires reellement restitues sur ces memes Restitutions,
-     * 4) libelles des accessoires (pour la liste des manquants) — jamais une
+     * 4) libelles des accessoires (pour la liste des manquants) : jamais une
      * cinquieme requete par ligne pour resoudre un nom. Absent (`kit_summary`
      * jamais ajoute) si aucun kit n'est assigne a cette Restitution, ou si le
      * kit assigne n'a plus aucun accessoire attendu configure : l'absence de
@@ -1551,7 +1551,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
      * intermediaire, prolonge la vie en cours plutot que d'en ouvrir une nouvelle).
      *
      * @param array|null $rows Evenements deja charges (ordre chronologique croissant),
-     *        pour eviter une seconde requete depuis showForItem() — recharges depuis la
+     *        pour eviter une seconde requete depuis showForItem() : recharges depuis la
      *        base si non fournis (utilise par les tests/appels directs).
      * @return array<int, array{users_id: int, name: string, is_external: bool, start: string, end: ?string}>
      */

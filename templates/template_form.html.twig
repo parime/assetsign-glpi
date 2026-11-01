@@ -86,7 +86,7 @@
 <script>
   window.ASSETSIGN_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
   // Jeton DEDIE au canal d'apercu en direct, jamais partage avec celui du
-  // formulaire (champ _glpi_csrf_token, reserve au vrai bouton Enregistrer) —
+  // formulaire (champ _glpi_csrf_token, reserve au vrai bouton Enregistrer) -
   // cf. commentaire de Config::showConfigForm().
   window.ASSETSIGN_PREVIEW_CSRF_TOKEN = {{ preview_csrf_token|json_encode|raw }};
 </script>

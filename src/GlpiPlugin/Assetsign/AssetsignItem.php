@@ -12,7 +12,7 @@ use Migration;
  * lus dans GLPI et jamais ressaisis.
  *
  * Ces valeurs sont recopiees dans la ligne (instantane) : rafraichies a chaque regeneration du PDF
- * non signe (refreshSnapshots()), puis figees une fois la fiche signee — le document signe reste
+ * non signe (refreshSnapshots()), puis figees une fois la fiche signee : le document signe reste
  * la preuve de ce qui a ete remis, meme si la fiche GLPI de l'accessoire change ensuite.
  */
 class AssetsignItem extends Compat\Base\AssetsignItemBase

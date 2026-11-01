@@ -8,7 +8,7 @@ use GlpiPlugin\Assetsign\Config;
  * Produit le PDF final signe : plutot que de superposer une image sur un PDF
  * deja fige (calque via FPDI, sensible au positionnement en points/pixels),
  * on re-rend le meme gabarit Twig en y injectant l'image de signature et les
- * metadonnees d'horodatage — le resultat est un document final, aplati,
+ * metadonnees d'horodatage : le resultat est un document final, aplati,
  * strictement equivalent visuellement au PDF non signe plus la signature.
  */
 final class SignatureStamper
@@ -29,7 +29,7 @@ final class SignatureStamper
        $signedAt = date('Y-m-d H:i:s');
 
        // getActualSigner() (pas le beneficiaire d'origine systematiquement) :
-       // reflete qui a REELLEMENT signe (cf. son docblock, issue #115) — sans
+       // reflete qui a REELLEMENT signe (cf. son docblock, issue #115) : sans
        // quoi la ligne "Signataire" du PDF final resterait fausse des qu'un
        // delegue signe a la place du beneficiaire d'origine.
        $signer ??= $assetsign->getActualSigner();
@@ -56,7 +56,7 @@ final class SignatureStamper
      * Rend le PDF final a DEUX signatures (issue #143), lors de la
      * contre-signature. Distincte de apply() ci-dessus : PAS de resolution
      * automatique via getActualSigner() (qui compare l'identite de la
-     * session courante a delegated_users_id — inadaptee ici, la session
+     * session courante a delegated_users_id : inadaptee ici, la session
      * courante est TOUJOURS le responsable a cette etape, jamais le
      * beneficiaire). Les deux identites sont donc fournies explicitement par
      * l'appelant (SignController::submit()) : celle du beneficiaire,

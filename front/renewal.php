@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Issue #222 : renouvellement du parc — materiels en fin d'amortissement dans l'horizon choisi,
+ * Issue #222 : renouvellement du parc : materiels en fin d'amortissement dans l'horizon choisi,
  * budget par annee, export CSV et ticket de changement groupe (creation uniquement).
  */
 

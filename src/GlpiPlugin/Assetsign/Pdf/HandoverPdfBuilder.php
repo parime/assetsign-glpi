@@ -37,7 +37,7 @@ final class HandoverPdfBuilder
 
     /**
      * @param array $extra Variables additionnelles (ex: signature_image, signed_at)
-     *                      fusionnees dans le contexte Twig — utilise par
+     *                      fusionnees dans le contexte Twig : utilise par
      *                      SignatureStamper pour re-rendre le meme gabarit avec la
      *                      signature incrustee, plutot que de superposer des calques
      *                      sur un PDF deja rendu (plus simple, plus robuste).
@@ -139,7 +139,7 @@ final class HandoverPdfBuilder
                : null,
            // Delegation de signature (issue #115) : toujours lu depuis
            // $assetsign->fields (pas seulement au moment de la signature, cf.
-           // $extra ci-dessus) — un PDF non signe regenere apres delegation
+           // $extra ci-dessus) : un PDF non signe regenere apres delegation
            // (ex: ajout d'un accessoire) doit deja mentionner le delegue.
            'delegated_users_id' => (int) ($assetsign->fields['delegated_users_id'] ?? 0),
            'delegation_date'    => $assetsign->fields['delegation_date'] ?? null,
@@ -165,14 +165,14 @@ final class HandoverPdfBuilder
    }
 
     /**
-     * Rendu du meme gabarit qu'un vrai PDF, mais avec des donnees fictives —
+     * Rendu du meme gabarit qu'un vrai PDF, mais avec des donnees fictives -
      * utilise par la page de configuration ET par la page de gabarit pour
      * afficher un aperçu en direct sans qu'aucune remise reelle n'existe.
      * Reutilise handover.html.twig tel quel : l'aperçu est donc visuellement
      * strictement identique a ce que produira un vrai PDF.
      *
      * @param int $type Quel type de fiche previsualiser (Assetsign, Restitution,
-     *                   Don, Vente...) — chaque onglet de configuration montre
+     *                   Don, Vente...): chaque onglet de configuration montre
      *                   l'apercu de SON propre type.
      * @param array $overrides Valeurs pas encore enregistrees (en cours de
      *                          saisie dans un formulaire), qui remplacent
@@ -267,7 +267,7 @@ final class HandoverPdfBuilder
                : null,
            // Uniquement dans renderPreview(), JAMAIS dans renderHtml() (vrai PDF) :
            // c'est ce qui garantit qu'un vrai document genere ne peut pas se
-           // retrouver filigrane par erreur — cf. handover.html.twig, qui
+           // retrouver filigrane par erreur : cf. handover.html.twig, qui
            // conditionne l'affichage a la simple presence de cette variable.
            'watermark_text'      => $watermarkText,
            'watermark_opacity'   => $watermarkOpacity,
@@ -277,7 +277,7 @@ final class HandoverPdfBuilder
     /**
      * Remplace {beneficiaire}/{technicien}/{materiel}/{date}/{entite} dans le
      * contrat/la charte (texte libre saisi par l'administrateur dans le
-     * gabarit, cf. Template::class) — permet de rediger un texte generique
+     * gabarit, cf. Template::class) : permet de rediger un texte generique
      * une seule fois plutot que de dupliquer un gabarit par variante. Simple
      * str_replace sur le HTML brut (contenu riche TinyMCE) : la syntaxe
      * {xxx} n'entre jamais en collision avec du HTML/texte normal.

@@ -7,7 +7,7 @@ use GlpiPlugin\Assetsign\PassportEvent;
 
 /**
  * Couvre le module d'aide à la décision (troisième brique du V2, cf.
- * ROADMAP.md — "Module d'aide à la décision (moteur de règles simple...)",
+ * ROADMAP.md - "Module d'aide à la décision (moteur de règles simple...)",
  * issue #79) : moteur de règles à seuils (pas de machine learning) sur les
  * deux indicateurs V2 déjà livrés (score de santé, valeur résiduelle),
  * chaque règle affichant son libellé ET sa raison explicite, jamais une

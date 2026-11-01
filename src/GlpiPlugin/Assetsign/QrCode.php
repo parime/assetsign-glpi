@@ -13,7 +13,7 @@ namespace GlpiPlugin\Assetsign;
  *
  * Renderer GD (pas SVG : plus fiable avec Dompdf, cf. usage PDF) et Writer,
  * fournis par le CŒUR GLPI lui-meme (deja utilises pour les QR codes de double
- * authentification, cf. vendor/bacon/bacon-qr-code) — volontairement PAS
+ * authentification, cf. vendor/bacon/bacon-qr-code) : volontairement PAS
  * ajoute au composer.json du plugin : cette dependance est deja chargee par
  * l'autoloader de GLPI a l'execution d'un plugin, l'ajouter en double romprait
  * juste la consistance des versions. class_exists() + try/catch : si une

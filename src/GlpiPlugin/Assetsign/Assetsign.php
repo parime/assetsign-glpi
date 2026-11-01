@@ -43,7 +43,7 @@ class Assetsign extends Compat\Base\AssetsignBase
     /**
      * Don/vente a un beneficiaire EXTERNE (pas de compte GLPI, cf.
      * BENEFICIARY_EXTERNAL) : aucune signature electronique n'est possible
-     * dans ce cas (choix assume, pas de lien de signature sans connexion —
+     * dans ce cas (choix assume, pas de lien de signature sans connexion -
      * cf. USER_GUIDE.md), le document genere devient directement le document final.
      * Statut terminal distinct de STATUS_SIGNED expres : une vraie signature
      * electronique n'a jamais eu lieu, melanger les deux serait trompeur pour
@@ -55,7 +55,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * attend desormais la contre-signature du responsable hierarchique
      * (cf. cosigner_users_id, Config::enable_co_signature). Statut
      * intermediaire distinct de STATUS_SIGNED (qui reste reserve a une fiche
-     * ENTIEREMENT signee) — voir markAwaitingCosignature()/markCosigned().
+     * ENTIEREMENT signee) : voir markAwaitingCosignature()/markCosigned().
      */
    public const STATUS_AWAITING_COSIGNATURE = 9;
 
@@ -64,7 +64,7 @@ class Assetsign extends Compat\Base\AssetsignBase
    public const BENEFICIARY_INTERNAL = 0;
     /**
      * Beneficiaire = une personne EXTERIEURE a l'entreprise, sans compte GLPI
-     * (nom/contact en texte libre, cf. external_beneficiary_name/_contact) —
+     * (nom/contact en texte libre, cf. external_beneficiary_name/_contact) -
      * pertinent pour un Don ou une Vente (createManual() uniquement, jamais
      * pour une Assetsign/Restitution automatique qui suppose toujours un vrai
      * utilisateur GLPI affecte au materiel).
@@ -89,7 +89,7 @@ class Assetsign extends Compat\Base\AssetsignBase
     /**
      * Types autorises pour une creation MANUELLE (cf. createManual()) : la
      * remise/restitution restent exclusivement automatiques (hooks
-     * d'affectation/etat, cf. handleItemAssignment()) — un technicien ne doit
+     * d'affectation/etat, cf. handleItemAssignment()) : un technicien ne doit
      * pas pouvoir en creer une par ce canal, qui contournerait la deduplication
      * faite par cancelPendingAssetsignsFor() et pourrait laisser des fiches
      * orphelines pour un meme materiel.
@@ -99,13 +99,13 @@ class Assetsign extends Compat\Base\AssetsignBase
     /**
      * Statuts "envoyee mais pas encore signee" : utilise par le bouton "Relancer
      * maintenant", les crons de relance/expiration, et le widget "En attente" du
-     * tableau de bord (Dashboard\CardProvider::pending()) — une seule definition
+     * tableau de bord (Dashboard\CardProvider::pending()) : une seule definition
      * partagee plutot que ce couple de statuts recopie a chaque endroit.
      *
      * STATUS_AWAITING_COSIGNATURE inclus (issue #143) : ces trois crons/widget
      * n'ont pas besoin d'un second jeu de champs "cosigner_*" pour la relance/
      * expiration (cf. le commentaire sur date_sent/date_viewed/reminder_count
-     * dans install() plus bas) — ces colonnes sont reutilisees telles quelles
+     * dans install() plus bas) : ces colonnes sont reutilisees telles quelles
      * pour suivre l'etape EN COURS, que ce soit celle du beneficiaire ou celle
      * du responsable. sendReminderNow() distingue ensuite qui relancer/quel
      * jeton regenerer selon le statut exact.
@@ -150,7 +150,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * pour Template et Accessory : sans "options", le fil d'Ariane de ces
      * deux intitules (aujourd'hui geres via Configuration > Intitulés) ne
      * peut jamais afficher de segment "Gabarits de remise"/"Accessoires de
-     * remise" — cf. templates/layout/parts/breadcrumbs.html.twig du coeur,
+     * remise" - cf. templates/layout/parts/breadcrumbs.html.twig du coeur,
      * qui lit exactement menu[sector]['content'][item]['options'][option].
      */
    public static function getMenuContent(): array {
@@ -199,11 +199,11 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Nommee rawSearchOptions() (pas getSearchOptions(), qui n'existe pas dans
-     * l'API de recherche de GLPI 11) : CommonDBTM::searchOptions() — la
-     * methode reellement appelee par Search::getOptions() — est declaree
+     * l'API de recherche de GLPI 11) : CommonDBTM::searchOptions() : la
+     * methode reellement appelee par Search::getOptions() : est declaree
      * `final`, donc impossible a surcharger ; c'est rawSearchOptions() qui est
      * le point d'extension prevu. Bug reel corrige ici : sous l'ancien nom,
-     * ces colonnes n'etaient jamais vues par GLPI — la liste "Gestion des
+     * ces colonnes n'etaient jamais vues par GLPI : la liste "Gestion des
      * fiches" affichait ses lignes (case a cocher, pagination correcte) mais
      * aucune colonne de donnee, ni le moindre en-tete, sans la moindre erreur
      * visible. Constate en conditions reelles (page reellement chargee,
@@ -460,13 +460,13 @@ class Assetsign extends Compat\Base\AssetsignBase
            'attached_documents' => $this->isNewID($ID) ? [] : self::getAttachedDocuments((int) $ID),
            // Preuve de signature (adresse IP, empreinte du document...) : la seule
            // trace de ces informations jusqu'ici etait a l'interieur du PDF signe
-           // lui-meme (cf. handover.html.twig) — rien ne les affichait cote GLPI,
+           // lui-meme (cf. handover.html.twig) : rien ne les affichait cote GLPI,
            // alors que glpi_plugin_assetsign_signatures les enregistre a chaque
            // signature (Signature::recordProofForAssetsign(), appele par markSigned()).
            //
            // Signatures multiples (issue #143) : getAllForAssetsign() (toutes les
            // preuves, pas seulement la plus recente) des que la fiche a signe au
-           // moins une fois OU attend une contre-signature — sans ca, la preuve du
+           // moins une fois OU attend une contre-signature : sans ca, la preuve du
            // beneficiaire deviendrait invisible cote admin des que le responsable
            // contre-signe (Signature::getForAssetsign() ne renverrait plus alors
            // que la preuve la plus recente, celle du responsable).
@@ -477,7 +477,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'cosigner_pending' => !$this->isNewID($ID) && (int) $this->fields['status'] === self::STATUS_AWAITING_COSIGNATURE,
            // Delegation de signature (issue #115) : bouton "Deleguer" affiche
            // seulement si le reglage entite est actif ET que le beneficiaire
-           // est interne (cf. delegateSignatureTo()) — meme droit/garde que le
+           // est interne (cf. delegateSignatureTo()) : meme droit/garde que le
            // reste de cette fiche (isStillEditable() + droit UPDATE).
            'delegation_enabled' => !$this->isNewID($ID)
                && (bool) Config::getForEntity((int) $this->fields['entities_id'])->fields['enable_signature_delegation']
@@ -661,7 +661,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        ]);
 
        // Types a declenchement manuel disponibles depuis cet onglet (Don, puis
-       // Vente...), chacun derriere son propre reglage d'entite — un technicien
+       // Vente...), chacun derriere son propre reglage d'entite : un technicien
        // ne voit le formulaire que si au moins un type est active ET qu'il a le
        // droit de modification. Cf. Assetsign::createManual().
        $config = Config::getForEntity((int) $item->fields['entities_id']);
@@ -679,7 +679,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        // Pre-selection du type (Don/Vente) et ouverture immediate du formulaire,
        // quand on arrive ici via le lien "creez maintenant la fiche" propose par
        // handleStateBasedTrigger() (cf. assetsign_prefill_type dans ce lien, et le
-       // script de assetsign_tab.html.twig qui declenche le clic correspondant) —
+       // script de assetsign_tab.html.twig qui declenche le clic correspondant) -
        // jamais fait confiance aveuglement a une valeur venue de l'URL : doit
        // correspondre a un type reellement propose ci-dessus.
        $prefillType = isset($_GET['assetsign_prefill_type']) ? (int) $_GET['assetsign_prefill_type'] : null;
@@ -763,9 +763,9 @@ class Assetsign extends Compat\Base\AssetsignBase
           $itemDropdownHtml = ob_get_clean();
       }
 
-       // Issue #157 : depart de la personne — restitution groupee de tout son materiel.
+       // Issue #157 : depart de la personne : restitution groupee de tout son materiel.
       if ($canAssign) {
-          // Issue #221 : arrivee de la personne — ticket de preparation et remise du materiel.
+          // Issue #221 : arrivee de la personne : ticket de preparation et remise du materiel.
           self::showArrivalCard($users_id);
           self::showDepartureCard($users_id);
       }
@@ -785,7 +785,7 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
-     * Issue #157 : carte « Départ » de l'onglet Assetsign d'un utilisateur — lien vers son
+     * Issue #157 : carte « Départ » de l'onglet Assetsign d'un utilisateur : lien vers son
      * dossier de depart ouvert, sinon bouton « Préparer le départ ».
      */
    private static function showDepartureCard(int $users_id): void {
@@ -809,7 +809,7 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
-     * Issue #221 : carte « Arrivée » de l'onglet Assetsign d'un utilisateur — lien vers le ticket
+     * Issue #221 : carte « Arrivée » de l'onglet Assetsign d'un utilisateur : lien vers le ticket
      * de son arrivée en cours, sinon bouton « Préparer l'arrivée ».
      */
    private static function showArrivalCard(int $users_id): void {
@@ -844,7 +844,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Libelle lisible d'un materiel arbitraire (type canonique + nom), pour la
-     * colonne "Materiel" de showForUser() — un materiel peut avoir ete purge
+     * colonne "Materiel" de showForUser() : un materiel peut avoir ete purge
      * depuis, d'ou le repli sur "type #id" plutot qu'un nom vide ou une erreur.
      */
    private static function resolveItemDisplayName(string $itemtype, int $items_id): string {
@@ -855,7 +855,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       if (!$item->getFromDB($items_id)) {
           return $itemtype . ' #' . $items_id;
       }
-       return self::getCanonicalItemtypeLabel($itemtype) . ' — ' . ($item->fields['name'] ?: ('#' . $items_id));
+       return self::getCanonicalItemtypeLabel($itemtype) . ' - ' . ($item->fields['name'] ?: ('#' . $items_id));
    }
 
    public static function getStatuses(): array {
@@ -891,13 +891,13 @@ class Assetsign extends Compat\Base\AssetsignBase
      * par des personnes potentiellement differentes (le beneficiaire, mais
      * aussi un admin, un service RH...). Utiliser __() ici ferait dependre la
      * langue du CONTENU du PDF de la session du technicien qui a declenche la
-     * remise au moment de sa creation — constate en conditions reelles :
+     * remise au moment de sa creation : constate en conditions reelles :
      * "Equipment handover form" en-tete alors que le reste de la fiche
      * ("Bénéficiaire", "Conditions générales"...) reste en francais, car ces
      * autres textes sont deja fixes en dur dans le gabarit Twig
      * (handover.html.twig) et n'utilisent pas __(). Le texte du contrat/charte
      * lui-meme (saisi librement dans Template) reste dans la langue de
-     * redaction de l'organisation, non traduit — meme logique.
+     * redaction de l'organisation, non traduit: meme logique.
      */
    public static function getPdfHeadings(int $type): array {
        return Workflow\WorkflowTypeRegistry::get($type)->getPdfHeadings();
@@ -994,7 +994,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * configurable dans Assetsign & signature > Configuration : utile pour les
      * organisations qui pilotent le cycle de vie du materiel via son Etat
      * (ex: "En prêt" / "Disponible") plutot que via l'affectation d'utilisateur
-     * elle-meme — les listes d'Etats variant fortement d'un GLPI a l'autre,
+     * elle-meme : les listes d'Etats variant fortement d'un GLPI a l'autre,
      * rien n'est presuppose ici : l'administrateur choisit ses propres Etats.
      */
    private static function handleStateBasedTrigger(CommonDBTM $item, Config $config): void {
@@ -1021,7 +1021,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        $currentUser = (int) ($item->fields['users_id'] ?? 0);
 
        // Don/Vente sans utilisateur assigne (materiel en stock, jamais affecte
-       // a personne) : cas legitime — contrairement a Assetsign/Restitution, un don
+       // a personne) : cas legitime : contrairement a Assetsign/Restitution, un don
        // ou une vente n'a pas forcement de "detenteur GLPI" prealable, et peut
        // tres bien concerner un beneficiaire EXTERNE (cf. BENEFICIARY_EXTERNAL,
        // createManual()). Le declenchement automatique, lui, ne connait que
@@ -1029,17 +1029,17 @@ class Assetsign extends Compat\Base\AssetsignBase
        // Plutot que d'ignorer silencieusement ce changement d'Etat comme avant
        // (le technicien n'avait alors aucun moyen de savoir qu'une fiche etait
        // attendue), le message pointe directement vers le formulaire de creation
-       // manuelle — seul canal qui sait gerer un beneficiaire externe ou un choix
+       // manuelle : seul canal qui sait gerer un beneficiaire externe ou un choix
        // explicite d'utilisateur. Impossible de rediriger reellement (Html::redirect())
        // depuis ce hook : il s'execute EN PLEIN MILIEU de la sauvegarde native de
        // l'item (CommonDBTM::update() -> Plugin::doHook()), avant que le controleur
        // GLPI (front/computer.form.php...) n'ait fini son propre travail post-
-       // sauvegarde (autres hooks, historique, notifications, redirection finale) —
+       // sauvegarde (autres hooks, historique, notifications, redirection finale) -
        // interrompre cette chaine ici casserait des choses hors du controle du
        // plugin. Le lien utilise le parametre standard `forcetab` du coeur GLPI
        // pour ouvrir directement l'onglet Assetsigns au clic, plus `tab_params`
        // (autre parametre standard du coeur, cf. CommonGLPI::showTabsContent()/
-       // displayFullPageForItem() — meme convention que Reservation.php pour
+       // displayFullPageForItem() : meme convention que Reservation.php pour
        // preremplir un champ via un lien direct) pour transmettre
        // assetsign_prefill_type jusqu'a l'appel ajax qui charge reellement le
        // contenu de l'onglet (ajax/common.tabs.php, requete SEPAREE de la page
@@ -1078,7 +1078,7 @@ class Assetsign extends Compat\Base\AssetsignBase
           // Contrairement a Don/Vente ci-dessus, aucun message ne peut orienter
           // vers une creation manuelle : Assetsign::MANUALLY_CREATABLE_TYPES exclut
           // volontairement Assetsign/Restitution de ce canal (cf. commentaire sur
-          // cette constante) — une remise/restitution automatique a toujours
+          // cette constante) : une remise/restitution automatique a toujours
           // besoin d'un detenteur GLPI reel (avant ou apres le changement), que
           // seul le declenchement par affectation (handleUserBasedTrigger())
           // sait fournir. Le seul geste utile ici est donc d'assigner (ou de
@@ -1111,7 +1111,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        // Vente ainsi declenchee : AUCUNE VenteDetails n'est creee ici (contrairement
-       // a createManual(), qui recoit un prix/date saisis a la main) — le prix n'est
+       // a createManual(), qui recoit un prix/date saisis a la main) : le prix n'est
        // pas connu au moment d'un changement d'Etat. handover.html.twig masque deja
        // la section "Details de la vente" tant que vente_price est null ; un
        // technicien la complete ensuite via Assetsign::updateVenteDetails().
@@ -1122,7 +1122,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
        // Meme principe que la Vente ci-dessus, applique a la Destruction (issue
        // #78) : ni DestructionDetails ni document (certificat) ne sont connus au
-       // moment d'un simple changement d'Etat — completes ensuite via
+       // moment d'un simple changement d'Etat : completes ensuite via
        // Assetsign::updateDestructionDetails().
       if (in_array($newState, $config->getDestructionStates(), true)) {
           self::createAssetsign($item, self::TYPE_DESTRUCTION, $currentUser);
@@ -1311,7 +1311,7 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
-     * Issue #170 : envoi d'un brouillon (fenetre de confirmation ou bouton de l'onglet) — ne garde que
+     * Issue #170 : envoi d'un brouillon (fenetre de confirmation ou bouton de l'onglet) : ne garde que
      * les elements du parc encore coches ($keptItemIds = null : tout garder), puis lance le workflow
      * habituel (PDF, passeport, lien et e-mail de signature).
      *
@@ -1471,7 +1471,7 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
-     * Issue #157 : fiche de restitution creee pour un dossier de depart — meme
+     * Issue #157 : fiche de restitution creee pour un dossier de depart : meme
      * creation que createAssetsign() (kit reporte, modele de l'entite, passeport,
      * PDF), mais en mode groupe : ni lien ni e-mail individuels (cf.
      * launchWorkflow()), signature depuis la page du dossier.
@@ -1538,7 +1538,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * Report automatique du Kit assigne a la DERNIERE Attribution de ce materiel
      * vers une nouvelle Restitution (V3, issue #83) : evite de faire ressaisir
      * au technicien un kit deja choisi a la remise, tout en restant un simple
-     * report d'une VRAIE donnee deja saisie — jamais une invention (meme
+     * report d'une VRAIE donnee deja saisie : jamais une invention (meme
      * principe que writeDecommissionDateIfMissing() : copier un fait reel,
      * jamais en deviner un). Reste corrigeable ensuite via updateKit() (ex:
      * kit determine seulement au moment de la restitution, ou report errone
@@ -1572,11 +1572,11 @@ class Assetsign extends Compat\Base\AssetsignBase
      * Point d'entree PUBLIC pour les types a declenchement manuel (Don, Vente,
      * Destruction) : contrairement a createAssetsign() (privee, appelee depuis
      * les hooks d'affectation/etat), rien ne signale automatiquement "ce
-     * materiel est donne/vendu/detruit" — un technicien choisit explicitement
+     * materiel est donne/vendu/detruit" - un technicien choisit explicitement
      * de creer la fiche depuis l'onglet Assetsign du materiel (cf.
      * assetsign_tab.html.twig, front/assetsign.form.php action "create_manual").
      *
-     * @param array $extra Donnees specifiques au type — ignorees pour les types
+     * @param array $extra Donnees specifiques au type : ignorees pour les types
      *                      qui n'en utilisent pas : 'price'/'sale_date' (TYPE_VENTE,
      *                      cf. VenteDetails) ; 'organization_name' (TYPE_DON, cf.
      *                      DonDetails) + 'justificatif' (entree $_FILES, document
@@ -1586,7 +1586,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      *                      (BENEFICIARY_INTERNAL par defaut, ou
      *                      BENEFICIARY_EXTERNAL), et dans ce dernier cas
      *                      'external_name' (obligatoire)/'external_contact'
-     *                      (facultatif, email ou telephone en texte libre) —
+     *                      (facultatif, email ou telephone en texte libre) -
      *                      un don/une vente/une destruction peut concerner
      *                      quelqu'un hors de l'entreprise, sans compte GLPI.
      *
@@ -1702,7 +1702,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * handleItemAssignment() -> handleStateBasedTrigger() pour CE MEME
      * changement d'Etat, qui recreerait une deuxieme fiche (si un utilisateur
      * est assigne) ou reafficherait le message "creez maintenant" qu'on vient
-     * justement de traiter (si aucun ne l'est) — cf. TROUBLESHOOTING.md.
+     * justement de traiter (si aucun ne l'est) : cf. TROUBLESHOOTING.md.
      */
    private static function syncItemStateAfterManualCreation(CommonDBTM $item, int $type, Config $config): void {
        global $DB;
@@ -1724,7 +1724,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        // Plusieurs Etats peuvent etre configures comme declencheurs pour la meme
        // entite (ex: "Donné" et "Recyclé" tous deux declencheurs de Don) : le
        // premier de la liste sert de cible canonique, par convention documentee
-       // (meme ordre que celui choisi par l'administrateur dans le reglage) —
+       // (meme ordre que celui choisi par l'administrateur dans le reglage) -
        // aucun moyen de deviner lequel des plusieurs Etats correspond a CETTE
        // fiche precise.
        $targetState = $targetStates[0];
@@ -1811,14 +1811,14 @@ class Assetsign extends Compat\Base\AssetsignBase
      * 'users_id' (le beneficiaire d'origine) n'est JAMAIS modifie : seules les
      * 4 colonnes dediees (delegated_users_id/delegation_date/delegation_reason/
      * delegated_by_users_id) changent, pour garder une tracabilite complete
-     * (signataire prevu vs signataire reel) — cf. getActualSigner().
+     * (signataire prevu vs signataire reel): cf. getActualSigner().
      *
      * Utilisee aussi bien par un technicien/admin (front/assetsign.form.php,
      * cf. Config::enable_signature_delegation) que par le beneficiaire
      * lui-meme depuis la page de signature (front/sign.php, cf.
      * Config::enable_self_service_delegation) : $initiatedByUsersId distingue
      * les deux cas dans l'historique natif, ecrit explicitement ci-dessous
-     * (\Log::history(), meme mecanisme que cancelPendingAssetsignsFor() —
+     * (\Log::history(), meme mecanisme que cancelPendingAssetsignsFor() -
      * contrairement a cancelRequest(), Assetsign::$dohistory n'est jamais
      * passe a true, update() seul ne journalise donc rien automatiquement ;
      * verifie en conditions reelles pendant le developpement de cette
@@ -1827,7 +1827,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * Regenere systematiquement le jeton de signature : l'ancien lien, deja
      * envoye au beneficiaire d'origine, devient donc invalide dans le meme
      * mouvement. C'est le choix retenu ici pour repondre a "le beneficiaire
-     * d'origine ne doit plus pouvoir signer lui-meme apres avoir delegue" —
+     * d'origine ne doit plus pouvoir signer lui-meme apres avoir delegue" -
      * plus simple qu'un etat de delegation actif/inactif verifie a chaque
      * acces (aucune modification necessaire a assertCurrentUserIsAuthorizedSigner(),
      * qui continue d'accepter users_id OU delegated_users_id : dans les
@@ -1894,7 +1894,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            ['0', '', sprintf(
                __('Signature déléguée à %s (motif : %s)', 'assetsign'),
                formatUserName(0, $delegate->fields['name'], $delegate->fields['realname'], $delegate->fields['firstname']),
-               trim($reason) !== '' ? trim($reason) : '—'
+               trim($reason) !== '' ? trim($reason) : '-'
            )],
            0,
            \Log::HISTORY_LOG_SIMPLE_MESSAGE
@@ -1910,7 +1910,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
        NotificationEvent::raiseEvent('delegated', $this);
        // Delegation decidee par un tiers (technicien/admin) : le beneficiaire
-       // d'origine, dont le lien vient d'etre invalide, en est informe — qui,
+       // d'origine, dont le lien vient d'etre invalide, en est informe : qui,
        // au profit de qui, pourquoi. Sans objet quand il l'a faite lui-meme.
       if ($initiatedByUsersId !== (int) $this->fields['users_id']) {
           NotificationEvent::raiseEvent('delegated_beneficiary', $this);
@@ -1922,7 +1922,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * front/assetsign.form.php) : seule voie de "revocation" d'une delegation,
      * cf. le commentaire de delegateSignatureTo(). Regenere le jeton (meme
      * raisonnement : l'ancien lien, envoye au delegue, devient invalide) et
-     * renvoie l'evenement 'new' (contenu deja generique — "un document vous
+     * renvoie l'evenement 'new' (contenu deja generique - "un document vous
      * attend" reste vrai ici, pas besoin d'un gabarit de notification dedie).
      *
      * @throws \RuntimeException si la fiche n'est pas deleguee ou plus modifiable.
@@ -1991,7 +1991,7 @@ class Assetsign extends Compat\Base\AssetsignBase
           // Beneficiaire externe (cf. BENEFICIARY_EXTERNAL) : pas de compte
           // GLPI, donc pas de connexion possible pour signer (le systeme de
           // signature exige une session GLPI authentifiee, cf.
-          // Firewall::STRATEGY_AUTHENTICATED sur front/sign.php — choix
+          // Firewall::STRATEGY_AUTHENTICATED sur front/sign.php : choix
           // assume, cf. USER_GUIDE.md). Le document genere devient directement le
           // document final, sans jeton ni notification d'invitation a
           // signer. STATUS_COMPLETED_NO_SIGNATURE, jamais STATUS_SIGNED :
@@ -2008,7 +2008,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        // Signatures multiples (issue #143), Attribution uniquement (cf.
        // Config::enable_co_signature) : responsable hierarchique du
        // beneficiaire (User::users_id_supervisor, deja renseigne par
-       // l'annuaire) SNAPSHOTE ici, au lancement — jamais relu dynamiquement
+       // l'annuaire) SNAPSHOTE ici, au lancement : jamais relu dynamiquement
        // ensuite, pour que le signataire attendu ne change pas en cours de
        // route si l'organigramme est modifie pendant que la fiche est en
        // circulation. Si aucun responsable n'est renseigne, la fiche reste
@@ -2029,7 +2029,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        // cf. Provider\ProviderFactory).
        // Le jeton brut n'est jamais stocke : il transite en propriete volatile le temps
        // de construire l'e-mail de notification dans la meme requete (cf. Token::validate()).
-      // Issue #157 : fiche d'un dossier de depart — signee depuis la page du dossier
+      // Issue #157 : fiche d'un dossier de depart : signee depuis la page du dossier
       // (Departure::sign()), donc ni lien de signature ni e-mail individuels : une
       // seule invitation pour tout le materiel, envoyee par le dossier lui-meme.
       if ($grouped) {
@@ -2139,19 +2139,19 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
-     * Comptes GLPI eligibles comme delegue pour une entite donnee (issue #115) —
+     * Comptes GLPI eligibles comme delegue pour une entite donnee (issue #115) -
      * memes criteres (`right => 'all'`, restreint a l'entite) que la liste
      * deroulante equivalente cote technicien/admin (assetsign_form.html.twig),
      * mais rendue en `<option>` simples plutot qu'en widget AJAX select2 : la
      * page de signature (sign_page.html.twig) est une page volontairement
-     * autonome, sans jQuery (JS moderne fetch/module uniquement) — le widget
+     * autonome, sans jQuery (JS moderne fetch/module uniquement) : le widget
      * `User::dropdown()` y genere du JS qui suppose jQuery disponible et ne
      * s'initialise donc jamais, laissant un `<select>` vide avec pour seule
      * option "-----" (bug reel trouve en testant issue #115 en conditions
      * reelles avec Playwright, independant du correctif right='id' vs 'all').
      * Une liste simple, pre-remplie cote serveur, ne depend d'aucun JS pour
      * fonctionner. La validation reelle (compte actif, acces a l'entite, motif
-     * obligatoire...) reste faite par delegateSignatureTo() a la soumission —
+     * obligatoire...) reste faite par delegateSignatureTo() a la soumission -
      * cette liste n'est qu'un confort d'affichage, jamais la seule barriere.
      *
      * @return array<int, array{id: int, label: string}>
@@ -2173,7 +2173,7 @@ class Assetsign extends Compat\Base\AssetsignBase
     /**
      * Identite du signataire REEL (delegue ou beneficiaire d'origine), utilisee
      * pour la ligne "Signataire" du PDF final et pour la preuve de signature
-     * (glpi_plugin_assetsign_signatures) — cf. SignController::submit(). Sans
+     * (glpi_plugin_assetsign_signatures): cf. SignController::submit(). Sans
      * cette distinction, un document signe par un delegue afficherait quand
      * meme le nom du beneficiaire d'origine (getBeneficiary()), ce qui serait
      * faux au sens de la preuve de signature.
@@ -2276,7 +2276,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Modele : contrairement a la marque, la table/FK varie selon le type
-     * (computermodels_id, monitormodels_id...) — CommonDBTM::getModelClass()
+     * (computermodels_id, monitormodels_id...): CommonDBTM::getModelClass()
      * resout cette convention generiquement pour n'importe quel itemtype.
      * Public : reutilise telle quelle par Maintenance::getTargetItem().
      */
@@ -2315,7 +2315,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        // ne suit pas la chronologie sans elle.
        $date = $this->fields['date_creation'] ? date('Y-m-d', strtotime($this->fields['date_creation'])) : date('Y-m-d');
 
-       return trim(sprintf('%s — %s — %s (%s)', $date, $userName ?: '?', $itemName ?: $this->fields['itemtype'], $type));
+       return trim(sprintf('%s - %s - %s (%s)', $date, $userName ?: '?', $itemName ?: $this->fields['itemtype'], $type));
    }
 
     /**
@@ -2329,7 +2329,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * donc dependre le nom de qui a declenche l'action, avec un resultat
      * incoherent constate en conditions reelles : un meme type de remise
      * apparaissant tantot "(Assetsign) [signée]", tantot "(Handover) [signed]"
-     * selon la langue du compte de la personne agissante — deux documents
+     * selon la langue du compte de la personne agissante : deux documents
      * de la MEME assetsign pouvant meme finir dans deux langues differentes.
      * Le nom de fichier est un identifiant interne de classement, pas un
      * contenu utilisateur : il n'a pas besoin d'etre traduit.
@@ -2343,7 +2343,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * getTypeName() natif de GLPI (Computer::getTypeName()...) est traduit via
      * __() cote coeur GLPI, donc lui aussi dependant de la session active.
      * Fixe en dur pour les 4 types geres par defaut ; pour un actif personnalise,
-     * on garde son nom tel que defini par l'admin (getTypeName()) — un actif
+     * on garde son nom tel que defini par l'admin (getTypeName()) : un actif
      * personnalise n'a pas cette ambiguite, son nom est saisi une fois par
      * l'organisation, pas traduit dynamiquement par GLPI.
      */
@@ -2410,7 +2410,7 @@ class Assetsign extends Compat\Base\AssetsignBase
     /**
      * Ajoute (ou met a jour la quantite d') un accessoire a cette remise, puis
      * regenere immediatement le PDF non signe pour qu'il reflete la liste a
-     * jour — sans quoi le beneficiaire verrait un document qui ne mentionne
+     * jour : sans quoi le beneficiaire verrait un document qui ne mentionne
      * jamais les accessoires ajoutes apres la creation automatique de la remise.
      * Sans effet si la remise est deja signee/expiree/annulee.
      */
@@ -2821,7 +2821,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       if (!$ticket->getFromDB($tickets_id)) {
           return null;
       }
-       return ['id' => $tickets_id, 'label' => sprintf('#%d — %s', $tickets_id, (string) $ticket->fields['name'])];
+       return ['id' => $tickets_id, 'label' => sprintf('#%d - %s', $tickets_id, (string) $ticket->fields['name'])];
    }
 
     /** Issue #183 : rattache la feuille a un ticket ouvert dont le beneficiaire est demandeur. */
@@ -2858,7 +2858,7 @@ class Assetsign extends Compat\Base\AssetsignBase
           'ORDER'      => 'glpi_tickets.id DESC',
           'LIMIT'      => 30,
       ]) as $row) {
-          $tickets[(int) $row['id']] = sprintf('#%d — %s', (int) $row['id'], (string) $row['name']);
+          $tickets[(int) $row['id']] = sprintf('#%d - %s', (int) $row['id'], (string) $row['name']);
       }
        return $tickets;
    }
@@ -2992,7 +2992,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Met a jour le champ "Observations" (libre, ex: etat constate du materiel)
-     * et regenere le PDF non signe pour qu'il reflete le nouveau texte — meme
+     * et regenere le PDF non signe pour qu'il reflete le nouveau texte : meme
      * logique que add/removeAccessory(). Sans effet si la remise est deja
      * signee/expiree/annulee (le PDF signe est une preuve figee, cf.
      * isStillEditable()) ; le reglage global "enable_observations" (cf. Config)
@@ -3013,7 +3013,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * Meme garde (isStillEditable()) et meme regeneration du PDF non signe.
      * Le controle d'identite (ce champ n'est modifiable que par le vrai
      * beneficiaire de CETTE remise) est fait cote appelant
-     * (SignController::assertCurrentUserIsBeneficiary()), pas ici — comme
+     * (SignController::assertCurrentUserIsBeneficiary()), pas ici : comme
      * updateObservations() qui delegue de meme le controle du reglage
      * "enable_observations" a son appelant.
      */
@@ -3027,7 +3027,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Renseigne ou corrige le prix/la date d'une Vente, puis regenere le PDF
-     * non signe — necessaire pour une Vente declenchee automatiquement par
+     * non signe : necessaire pour une Vente declenchee automatiquement par
      * changement d'Etat (cf. handleStateBasedTrigger()), qui ne connait aucun
      * prix au moment de sa creation. Sans effet sur un autre type de fiche ou
      * une fiche deja signee/expiree/annulee.
@@ -3067,11 +3067,11 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Joint un document natif GLPI (Document/Document_Item) a cette fiche
-     * elle-meme — justificatif de don ou certificat de destruction (issue #78),
+     * elle-meme: justificatif de don ou certificat de destruction (issue #78),
      * sans nouvelle table de stockage. showForm() n'est PAS enveloppee par le
      * cadre d'onglets standard de CommonDBTM (fiche en lecture seule autonome,
      * cf. son propre commentaire) : aucun onglet "Documents" natif n'existe
-     * donc sur cette fiche — le document est plutot re-liste explicitement via
+     * donc sur cette fiche : le document est plutot re-liste explicitement via
      * getAttachedDocuments() ci-dessous, affiche dans assetsign_form.html.twig
      * (meme motif que Movement::getAttachedDocuments()/movement_form.html.twig).
      * copy() plutot que move_uploaded_file() (GLPI reconstruit un objet Request
@@ -3122,7 +3122,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Documents joints a CETTE fiche via attachUploadedDocument() (justificatif
-     * de don, certificat de destruction — issue #78) : reutilise Document_Item,
+     * de don, certificat de destruction: issue #78) : reutilise Document_Item,
      * la relation polymorphe deja native GLPI, jamais un nouveau stockage.
      * Meme motif exact que Movement::getAttachedDocuments().
      * @return list<array{id: int, name: string}>
@@ -3255,7 +3255,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * editable. **Bug reel corrige** : sans cet appel, un repere ajoute par
      * un technicien apres la creation de la remise n'apparaissait jamais
      * sur le vrai PDF (contrairement a l'apercu, qui re-rend a chaque appel)
-     * — constate en conditions reelles par un premier usage humain.
+     * - constate en conditions reelles par un premier usage humain.
      */
    public function refreshDamageAnnotationPdf(): void {
        $this->regenerateUnsignedPdf();
@@ -3324,7 +3324,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * Pose volontairement sur N'IMPORTE QUEL type de fiche (pas seulement
      * Attribution) : un technicien doit pouvoir assigner/corriger le kit
      * directement sur la Restitution elle-meme (ex: kit determine apres coup,
-     * ou correction d'un report automatique errone — cf.
+     * ou correction d'un report automatique errone : cf.
      * resolveKitForAutomaticCreation() ci-dessous), pas seulement a
      * l'Attribution d'origine.
      */
@@ -3337,17 +3337,17 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
-     * Resultat du controle automatique de kit pour CETTE fiche (V3, issue #83) —
+     * Resultat du controle automatique de kit pour CETTE fiche (V3, issue #83) -
      * `null` (jamais un tableau "vide") si aucun kit n'est assigne, ou si le kit
      * assigne n'a plus aucun accessoire attendu configure : meme principe de
      * non-invention que getResidualValue()/attachChecklistSummaries(), l'absence
      * de kit n'est pas un defaut a signaler. Les accessoires "reellement
      * restitues" sont ceux enregistres sur CETTE fiche precise (getAccessories(),
-     * deja alimentee par addAccessory() — les accessoires physiquement rendus au
+     * deja alimentee par addAccessory() : les accessoires physiquement rendus au
      * technicien au moment de LA restitution), jamais ceux de l'attribution
      * d'origine. PUREMENT calcule a l'affichage (cf. ADR-passeport-v1.md,
      * risque 2.2) : aucune donnee copiee, la comparaison (Kit::computeCompleteness())
-     * est refaite depuis les tables reelles a chaque appel — sans consequence de
+     * est refaite depuis les tables reelles a chaque appel : sans consequence de
      * performance ici (un seul enregistrement, contrairement a
      * PassportEvent::attachKitSummaries() qui doit batcher pour toute une frise).
      * @return array{kit_name: string, expected_total: int, returned_count: int, missing_names: string[], complete: bool, color: string}|null
@@ -3396,7 +3396,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       } else if ((int) $this->fields['status'] === self::STATUS_AWAITING_COSIGNATURE && empty($this->fields['date_viewed'])) {
           // Contre-signature (issue #143) : date_viewed reutilise pour
           // l'etape en cours (cf. commentaire sur STATUSES_AWAITING_SIGNATURE)
-          // — pas de transition de statut ici (contrairement au cas
+          // - pas de transition de statut ici (contrairement au cas
           // beneficiaire ci-dessus), juste l'horodatage de premiere
           // consultation par le responsable.
           $this->update(['id' => $this->getID(), 'date_viewed' => date('Y-m-d H:i:s')]);
@@ -3405,7 +3405,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
    public function markSigned(string $signedPdfPath, array $proof, bool $notify = true): void {
        // "[signée]" volontairement non traduit : cf. le commentaire de
-       // getCanonicalTypeLabel() — traduire ici ferait dependre la langue du
+       // getCanonicalTypeLabel() : traduire ici ferait dependre la langue du
        // nom de fichier de la session du beneficiaire qui signe, incoherent
        // avec le suffixe "[non signée]" du PDF non signe (deja fixe en dur).
        $document = $this->attachDocument($signedPdfPath, $this->getDocumentTitle() . ' [signée]');
@@ -3429,7 +3429,7 @@ class Assetsign extends Compat\Base\AssetsignBase
     /**
      * Signatures multiples (issue #143) : le beneficiaire vient de signer, et
      * cette fiche requiert une contre-signature (cosigner_users_id > 0, cf.
-     * launchWorkflow()) — la fiche n'est PAS encore consideree signee
+     * launchWorkflow()) : la fiche n'est PAS encore consideree signee
      * (STATUS_AWAITING_COSIGNATURE, statut intermediaire). Le PDF signe par
      * le seul beneficiaire est tout de meme attache comme document_id_signed
      * (tracabilite de cette etape) ; markCosigned() ci-dessous produira le
@@ -3438,14 +3438,14 @@ class Assetsign extends Compat\Base\AssetsignBase
      * $rawSignatureImagePng (data URI PNG, meme format que celui traite par
      * SignatureStamper) est conserve en base (cosigner_pending_signature) le
      * temps de l'attente : SignatureStamper re-rend tout le gabarit Twig a
-     * chaque etape (pas de calque/overlay, cf. son docblock) — sans le
+     * chaque etape (pas de calque/overlay, cf. son docblock) : sans le
      * reinjecter au moment de la contre-signature, la signature du
      * beneficiaire disparaitrait purement et simplement du PDF final.
      *
      * Ne declenche PAS elle-meme la notification 'cosignature_requested' :
      * contrairement a markSigned()/markCosigned(), le jeton du responsable
      * n'existe pas encore a ce stade (cree par l'appelant juste apres, cf.
-     * SignController::submitBeneficiarySignature()) — la notifier ici
+     * SignController::submitBeneficiarySignature()) : la notifier ici
      * resoudrait ##assetsign.sign_url## avant que _current_raw_token ne soit
      * renseigne, donc vide.
      */
@@ -3461,14 +3461,14 @@ class Assetsign extends Compat\Base\AssetsignBase
            'cosigner_pending_signature' => $rawSignatureImagePng,
            // Reutilises pour suivre l'etape EN COURS (desormais celle du
            // responsable) plutot que de dupliquer un jeu de colonnes
-           // cosigner_* parallele — cf. commentaire sur
+           // cosigner_* parallele : cf. commentaire sur
            // STATUSES_AWAITING_SIGNATURE.
            'date_sent'                  => date('Y-m-d H:i:s'),
            'date_viewed'                => null,
            'reminder_count'             => 0,
        ]);
 
-       // Jeton BENEFICIAIRE invalide (deja utilise pour cette signature) — un
+       // Jeton BENEFICIAIRE invalide (deja utilise pour cette signature) : un
        // nouveau jeton, distinct, est cree pour le responsable par
        // l'appelant (cf. SignController::submitBeneficiarySignature()), qui
        // declenche ensuite lui-meme la notification 'cosignature_requested'
@@ -3478,12 +3478,12 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Contre-signature terminee (issue #143) : la fiche devient reellement
-     * SIGNEE — document_id_cosigned (PAS document_id_signed, qui reste le
+     * SIGNEE : document_id_cosigned (PAS document_id_signed, qui reste le
      * PDF intermediaire signe par le seul beneficiaire, conserve pour la
      * tracabilite, cf. markAwaitingCosignature() ci-dessus). Distinct de
      * markSigned() : cible une colonne differente et efface
      * cosigner_pending_signature (plus necessaire une fois le PDF final
-     * produit — inutile de garder cette image de signature en base).
+     * produit : inutile de garder cette image de signature en base).
      */
    public function markCosigned(string $signedPdfPath, array $proof): void {
        $document = $this->attachDocument($signedPdfPath, $this->getDocumentTitle() . ' [signée]');
@@ -3549,7 +3549,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Envoie une relance immediatement pour CETTE remise, sans attendre le delai
-     * planifie — utilise aussi bien par le bouton "Relancer maintenant" (action
+     * planifie : utilise aussi bien par le bouton "Relancer maintenant" (action
      * manuelle d'un technicien) que par runReminders() (execution automatique).
      *
      * @throws \RuntimeException si le statut ne permet pas de relance (deja signee, expiree...)
@@ -3563,7 +3563,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
       if ((int) $this->fields['status'] === self::STATUS_AWAITING_COSIGNATURE) {
           // Contre-signature (issue #143) : jamais geree par un prestataire
-          // externe — Provider vise les futures integrations SaaS pour la
+          // externe : Provider vise les futures integrations SaaS pour la
           // signature du BENEFICIAIRE (cf. docblock de CanvasProvider), hors
           // perimetre pour cette premiere version de la contre-signature.
           // Jeton "responsable" regenere directement, meme mecanisme que
@@ -3587,7 +3587,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Logique de relance automatique, independante de tout mecanisme de
-     * planification — appelee par le CronTask GLPI (cronAssetsignReminders) et par
+     * planification : appelee par le CronTask GLPI (cronAssetsignReminders) et par
      * la commande console plugins:assetsign:run-reminders (cf. USER_GUIDE.md,
      * section "Alternative au cron GLPI").
      */
@@ -3648,7 +3648,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Logique d'expiration automatique, independante de tout mecanisme de
-     * planification — appelee par le CronTask GLPI (cronAssetsignExpire) et par
+     * planification : appelee par le CronTask GLPI (cronAssetsignExpire) et par
      * la commande console plugins:assetsign:run-expiration.
      */
    public static function runExpiration(): int {
@@ -3657,7 +3657,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        // Le filtre de delai ne peut plus se faire dans le SQL (comme avant) :
        // chaque remise doit etre comparee a la duree de validite resolue pour
        // SA PROPRE entite (Config::getForEntity()), pas une valeur globale
-       // unique — cf. INSTALLATION.md, section "3. Configurer".
+       // unique: cf. INSTALLATION.md, section "3. Configurer".
        $rows = $DB->request([
            'FROM'  => self::getTable(),
            'WHERE' => [
@@ -3702,7 +3702,7 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Alerte le technicien (users_id_tech) qu'une remise est sur le point
-     * d'expirer, quelques jours avant l'echeance reelle — sans quoi la seule
+     * d'expirer, quelques jours avant l'echeance reelle : sans quoi la seule
      * notification liee a l'expiration arrive une fois le lien deja invalide
      * (cf. l'evenement "expired"), trop tard pour que le technicien agisse
      * autrement (appeler le beneficiaire, passer sur place...). Desactivable
@@ -3975,7 +3975,7 @@ class Assetsign extends Compat\Base\AssetsignBase
          if (!$DB->fieldExists($table, 'expiry_warning_sent')) {
              // 'bool' (pas 'tinyint') : seul un type "logique" reconnu par
              // Migration::fieldFormat() fait que 'value' produise reellement une
-             // clause DEFAULT — cf. le commentaire equivalent dans Config::install().
+             // clause DEFAULT : cf. le commentaire equivalent dans Config::install().
              $migration->addField($table, 'expiry_warning_sent', 'bool', ['value' => 0, 'after' => 'date_expired']);
              $migration->migrationOneTable($table);
          }
@@ -4011,7 +4011,7 @@ class Assetsign extends Compat\Base\AssetsignBase
           // Audit code mort : 'locations_id' (archivage jamais recherche/affiche,
           // cf. l'ancien commentaire de maybeLocated()) et 'comment' (toujours
           // insere vide par createAssetsign()/createManual(), jamais lu nulle part)
-          // n'ont jamais ete exploites — colonnes retirees.
+          // n'ont jamais ete exploites: colonnes retirees.
          if ($DB->fieldExists($table, 'locations_id')) {
              $migration->dropField($table, 'locations_id');
          }
@@ -4020,11 +4020,11 @@ class Assetsign extends Compat\Base\AssetsignBase
          }
          if (!$DB->fieldExists($table, 'beneficiary_type')) {
              // Don/Vente a un beneficiaire EXTERIEUR a l'entreprise (sans
-             // compte GLPI), en plus du cas interne existant (users_id) —
+             // compte GLPI), en plus du cas interne existant (users_id) -
              // cf. BENEFICIARY_INTERNAL/BENEFICIARY_EXTERNAL, createManual().
              // 'bool'-like ('integer', pas le type SQL brut 'tinyint') :
              // seul un type "logique" reconnu par Migration::fieldFormat()
-             // fait que 'value' produise reellement une clause DEFAULT —
+             // fait que 'value' produise reellement une clause DEFAULT -
              // meme piege deja documenté sur expiry_warning_sent ci-dessus.
              $migration->addField($table, 'beneficiary_type', 'integer', ['value' => 0, 'after' => 'users_id_tech']);
              $migration->addField($table, 'external_beneficiary_name', 'string', ['after' => 'beneficiary_type']);
@@ -4039,7 +4039,7 @@ class Assetsign extends Compat\Base\AssetsignBase
              // fait pour plugin_assetsign_templates_id (cf. son propre
              // commentaire plus haut) : un Kit purge ne doit jamais entrainer la
              // suppression en cascade de tout l'historique des remises qui l'ont
-             // utilise — seule une KEY (index de lecture) est necessaire.
+             // utilise : seule une KEY (index de lecture) est necessaire.
              $migration->addField($table, 'plugin_assetsign_kits_id', 'integer', ['value' => 0, 'after' => 'plugin_assetsign_templates_id']);
              $migration->migrationOneTable($table);
              $migration->addKey($table, 'plugin_assetsign_kits_id');
@@ -4121,7 +4121,7 @@ class Assetsign extends Compat\Base\AssetsignBase
      * Sans ca, la liste "Gestion des fiches" (Administration > Assetsign &
      * signature > Assetsigns) n'affiche par defaut QUE la colonne ID (repli
      * standard de GLPI quand aucune preference d'affichage n'existe pour un
-     * itemtype, cf. SearchOption::getDefaultToView()) — un administrateur
+     * itemtype, cf. SearchOption::getDefaultToView()) : un administrateur
      * doit alors deviner qu'il faut ouvrir le selecteur de colonnes pour
      * retrouver, par exemple, les liens de telechargement des PDF. Seme une
      * seule fois (ligne users_id=0 = preference par defaut, cf.

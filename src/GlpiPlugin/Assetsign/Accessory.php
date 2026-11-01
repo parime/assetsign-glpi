@@ -18,7 +18,7 @@ class Accessory extends CommonDropdown
    }
 
     /**
-     * Rattache au fil d'Ariane de Assetsign (menu 'tools') — meme raison que
+     * Rattache au fil d'Ariane de Assetsign (menu 'tools') : meme raison que
      * Template::getSectorizedDetails().
      */
    public static function getSectorizedDetails(): array {

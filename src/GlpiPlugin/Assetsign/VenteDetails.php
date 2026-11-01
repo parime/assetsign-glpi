@@ -32,7 +32,7 @@ class VenteDetails extends Compat\Base\VenteDetailsBase
     /**
      * Cree la ligne si elle n'existe pas encore (cas d'une Vente declenchee
      * automatiquement par changement d'Etat, cf. Assetsign::handleStateBasedTrigger()
-     * — aucun prix connu au moment de la creation), sinon la met a jour.
+     * - aucun prix connu au moment de la creation), sinon la met a jour.
      */
    public static function upsertForAssetsign(int $assetsigns_id, float $price, string $saleDate): void {
        $existing = self::getForAssetsign($assetsigns_id);

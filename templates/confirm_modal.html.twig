@@ -25,7 +25,7 @@
                 <label class="list-group-item d-flex align-items-center gap-2">
                   <input class="form-check-input m-0" type="checkbox" name="keep_items[]" value="{{ i.id }}" checked>
                   <span class="flex-fill">
-                    <strong>{{ i.type_label }}</strong> — {{ i.name|default('#' ~ i.items_id) }}
+                    <strong>{{ i.type_label }}</strong> - {{ i.name|default('#' ~ i.items_id) }}
                     <span class="text-muted small">
                       {{ [i.manufacturer, i.model]|filter(v => v)|join(' ') }}
                       {% if i.serial %} · {{ __('N° de série', 'assetsign') }} {{ i.serial }}{% endif %}

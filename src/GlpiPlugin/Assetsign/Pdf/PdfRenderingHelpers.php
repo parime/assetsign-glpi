@@ -12,7 +12,7 @@ use GlpiPlugin\Assetsign\DamageMarker;
  * Logique de rendu PDF commune a HandoverPdfBuilder (Assetsign) et
  * MaintenancePdfBuilder (Maintenance) : ni l'une ni l'autre n'est specifique
  * a un type de fiche parente en particulier (logo par entite, moteur Dompdf,
- * vues de reference de l'etat des lieux visuel) — seule la RECUPERATION des
+ * vues de reference de l'etat des lieux visuel) : seule la RECUPERATION des
  * marqueurs differe (DamageMarker::getForAssetsign() vs getForMaintenance()),
  * deja geree par l'appelant avant d'invoquer getDamageViewsForPdf().
  */
@@ -20,7 +20,7 @@ trait PdfRenderingHelpers
 {
     /**
      * @param bool $protect Si vrai, chiffre le PDF pour en restreindre la copie
-     *        et l'edition (cf. Config::protect_pdf) — sans mot de passe
+     *        et l'edition (cf. Config::protect_pdf) : sans mot de passe
      *        utilisateur (le document reste consultable/imprimable par
      *        n'importe qui), seul un mot de passe proprietaire jetable est
      *        pose pour faire respecter les permissions par les lecteurs PDF
@@ -91,9 +91,9 @@ trait PdfRenderingHelpers
 
     /**
      * Les 3 vues de reference sont TOUJOURS incluses dans le PDF des que le
-     * reglage est actif — meme sans aucun repere encore depose (comme un
+     * reglage est actif : meme sans aucun repere encore depose (comme un
      * schema d'etat des lieux de location de vehicule, presente vierge par
-     * defaut) — pour que le rendu reel corresponde exactement a l'apercu, qui
+     * defaut) : pour que le rendu reel corresponde exactement a l'apercu, qui
      * montre systematiquement les 3 vues. Chaque vue porte les repres reels
      * qui lui sont propres (tableau vide si aucun). Image encodee en data
      * URI, meme raison que le logo (cf. getLogoDataUri()) : ces images vivent
@@ -170,11 +170,11 @@ trait PdfRenderingHelpers
      * (technique CSS "boite a ratio d'aspect" : height:0 + padding-bottom en %
      * de la LARGEUR, seule base que Dompdf resout correctement ici). Sans ca,
      * .damage-pdf-view n'a qu'un position:relative et une hauteur "auto" (celle
-     * de l'image) — Dompdf ne parvient alors pas a etablir une base fiable pour
+     * de l'image) : Dompdf ne parvient alors pas a etablir une base fiable pour
      * les top/left en % des reperes (.damage-pdf-marker, eux aussi en position
      * absolute) : un repere a top:5% s'affiche correctement pres du haut, mais
      * un repere a top:85% atterrit tres loin en bas de la PAGE entiere, bien
-     * au-dela de la petite image — constate en conditions reelles en comparant
+     * au-dela de la petite image : constate en conditions reelles en comparant
      * plusieurs reperes a des hauteurs croissantes sur la meme vue, avec des PDF
      * reellement generes (pas une simple lecture du gabarit).
      */

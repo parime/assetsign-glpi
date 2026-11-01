@@ -143,7 +143,7 @@ class AssetsignKitTest extends AssetsignTestCase
      * Coeur de "controle AUTOMATIQUE" (titre de l'issue #83) : le Kit assigne a
      * la derniere Attribution d'un materiel doit etre report automatiquement
      * sur la Restitution creee ensuite pour ce meme materiel, sans que le
-     * technicien ait a le re-choisir — cf.
+     * technicien ait a le re-choisir : cf.
      * Assetsign::resolveKitForAutomaticCreation(), meme motif que
      * writeDecommissionDateIfMissing() (copier un fait reel, jamais en deviner
      * un).

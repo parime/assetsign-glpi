@@ -11,7 +11,7 @@ use NotificationTemplate;
 use NotificationTemplateTranslation;
 
 /**
- * Issue #157 : notifications du dossier de départ (Departure) — invitation unique à signer la
+ * Issue #157 : notifications du dossier de départ (Departure) : invitation unique à signer la
  * restitution de tout le matériel, relances, et avis de signature au gestionnaire du parc
  * (technicien qui a préparé le départ). Même modèle que NotificationTargetAssetsign : cibles
  * propres (personne qui part, technicien), modèles en 5 langues semés à l'installation et

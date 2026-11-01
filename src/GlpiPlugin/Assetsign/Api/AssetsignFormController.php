@@ -6,7 +6,7 @@ use GlpiPlugin\Assetsign\Assetsign;
 
 /**
  * Logique partagee par front/assetsign.form.php : une methode par action POST,
- * chacune ne faisant qu'extraire les parametres et deleguer a Assetsign — meme
+ * chacune ne faisant qu'extraire les parametres et deleguer a Assetsign : meme
  * motivation que Api\SignController pour front/sign.php (rendre ce dispatch
  * testable en PHPUnit, sans passer par le vrai front/*.php qui appelle
  * Html::back()/exit()).
@@ -15,7 +15,7 @@ final class AssetsignFormController
 {
     /**
      * $files : $_FILES du formulaire de creation manuelle (justificatif de don,
-     * certificat de destruction) — parametre distinct de $post plutot qu'un
+     * certificat de destruction) : parametre distinct de $post plutot qu'un
      * simple merge, meme convention que la separation native $_POST/$_FILES de
      * PHP, transmis tel quel jusqu'a Assetsign::createManual()/attachDocument().
      */

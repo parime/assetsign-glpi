@@ -11,7 +11,7 @@ use NotificationTemplate;
 use NotificationTemplateTranslation;
 
 /**
- * Issue #158 : notifications des attestations de détention — invitation et relances à la personne
+ * Issue #158 : notifications des attestations de détention : invitation et relances à la personne
  * qui atteste, alerte au gestionnaire du parc (auteur de la campagne) quand un écart est signalé.
  * Même modèle que NotificationTargetDeparture : cibles propres, modèles en 5 langues semés à
  * l'installation et modifiables ensuite dans Configuration > Notifications.

@@ -10,7 +10,7 @@ if (isset($_POST['update'])) {
     Session::checkRight(Config::$rightname, UPDATE);
     // Pas de Session::checkCSRF() ici : le pare-feu GLPI (CheckCsrfListener) valide
     // deja le jeton de maniere centrale pour toute requete POST, et consomme le
-    // jeton a usage unique — le revalider ici echouerait a tort.
+    // jeton a usage unique : le revalider ici echouerait a tort.
     $entities_id = (int) ($_POST['entities_id'] ?? 0);
    if (!Session::haveAccessToEntity($entities_id)) {
        // Config::$rightname est un droit global : sans ce controle, un

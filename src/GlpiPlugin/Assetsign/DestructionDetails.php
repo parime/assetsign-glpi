@@ -33,7 +33,7 @@ class DestructionDetails extends Compat\Base\DestructionDetailsBase
     /**
      * Cree la ligne si elle n'existe pas encore (cas d'une Destruction declenchee
      * automatiquement par changement d'Etat, cf. Assetsign::handleStateBasedTrigger()
-     * — aucun prestataire connu au moment de la creation), sinon la met a jour.
+     * - aucun prestataire connu au moment de la creation), sinon la met a jour.
      */
    public static function upsertForAssetsign(int $assetsigns_id, string $providerName): void {
        $existing = self::getForAssetsign($assetsigns_id);

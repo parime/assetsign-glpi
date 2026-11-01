@@ -9,7 +9,7 @@ use GlpiPlugin\Assetsign\Assetsign;
  * Rendu reel des gabarits Twig d'administration : jusqu'ici, aucune suite
  * automatisee n'inspectait le HTML produit (seulement la logique PHP), ce qui
  * a laisse passer un bug reel decouvert en preparant des captures d'ecran
- * documentaires (cf. TROUBLESHOOTING.md) — {{ call('User::dropdown', ...) }}
+ * documentaires (cf. TROUBLESHOOTING.md) - {{ call('User::dropdown', ...) }}
  * imprimait, en plus du widget lui-meme, la valeur de retour de
  * Dropdown::show() (l'entier aleatoire de l'id DOM genere, cf. Dropdown.php),
  * affichee comme un nombre parasite juste apres le menu deroulant. Corrige en
@@ -57,11 +57,11 @@ class TemplateRenderingTest extends AssetsignTestCase
      * `assetsign_form.html.twig`/`sign_page.html.twig`'s delegation dropdowns): this "Destinataire"
      * picker on the manual Don/Vente/Destruction creation form used the same `User::dropdown()`
      * default (`right => 'id'`, which restricts the list to the currently logged-in user only,
-     * regardless of profile) — never fixed alongside the delegation dropdowns, even though it's
+     * regardless of profile): never fixed alongside the delegation dropdowns, even though it's
      * the exact same underlying defect. `Html::jsAjaxDropdown()` embeds the resolved options as a
      * literal JSON blob in an inline `<script>` (confirmed by rendering this template directly and
      * inspecting the output), so `"right":"all"` appearing in the HTML is a direct, reliable proxy
-     * for "this dropdown can actually list other users" — not just "the widget renders".
+     * for "this dropdown can actually list other users" - not just "the widget renders".
      */
    private function assertUserDropdownIsNotRestrictedToTheCurrentUser(string $html, string $context): void {
        $this->assertStringContainsString('"right":"all"', $html, "$context : la liste doit pouvoir proposer d'autres utilisateurs que celui actuellement connecte (right='all'), pas seulement lui (right='id', le defaut de User::dropdown()).");
@@ -117,7 +117,7 @@ class TemplateRenderingTest extends AssetsignTestCase
            'type_return'               => Assetsign::TYPE_RETURN,
            'csrf_token'                => 'phpunit-test-token',
            // Force le rendu du formulaire de delegation (bloc contenant
-           // {% do call('User::dropdown', ..., {'right': 'all'}) %}) — voir
+           // {% do call('User::dropdown', ..., {'right': 'all'}) %}) : voir
            // testAssetsignFormTemplateDelegateDropdownIsNotRestrictedToTheCurrentUser().
            'delegation_enabled'        => true,
            'can_delegate'              => true,
@@ -135,7 +135,7 @@ class TemplateRenderingTest extends AssetsignTestCase
      * `sign_page.html.twig`'s delegate dropdown is a plain, server-populated `<select>`, not a
      * `User::dropdown()` AJAX widget (see `Assetsign::getDelegateCandidates()`'s own docblock for
      * why: this page loads no jQuery, so the select2 widget the other two dropdowns use never
-     * initializes here — a real bug found by testing issue #115 with Playwright, independent of
+     * initializes here: a real bug found by testing issue #115 with Playwright, independent of
      * the `right='id'` vs `'all'` fix already covered by the two tests above). This confirms every
      * candidate passed in actually renders as a real, selectable `<option>`.
      */

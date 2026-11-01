@@ -12,7 +12,7 @@ use GlpiPlugin\Assetsign\PassportEvent;
  * inventée quand l'un des trois préalables réels (durée d'amortissement
  * `Infocom::sink_time`, date de mise en service, empreinte carbone déjà saisie)
  * manque, et surtout jamais affiché tant que la durée réelle n'a pas dépassé la
- * durée d'amortissement prévue — cf. le docblock de
+ * durée d'amortissement prévue : cf. le docblock de
  * `PassportEvent::getReuseBenefit()` pour la méthodologie complète.
  */
 class PassportEventReuseBenefitTest extends AssetsignTestCase

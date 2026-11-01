@@ -45,12 +45,12 @@ function plugin_init_assetsign(): void {
 
     // Clé littérale plutôt que la constante Hooks::CSRF_COMPLIANT : GLPI 12.0.0-rc2 a supprimé
     // cette constante. La clé de tableau elle-même ('csrf_compliant') reste identique dans GLPI 12,
-    // seule la constante qui la nommait a disparu — même convention déjà utilisée sans souci par
+    // seule la constante qui la nommait a disparu : même convention déjà utilisée sans souci par
     // les plugins jumeaux Configuration-glpi-auto et glpi-iso27001-management.
     $PLUGIN_HOOKS['csrf_compliant']['assetsign'] = true;
 
     // Tout ce qui suit référence de vraies classes du plugin (WorkflowTypeRegistry ci-dessous,
-    // Assetsign::class/Maintenance::class/Movement::class dans le hook MENU_TOADD plus bas...) —
+    // Assetsign::class/Maintenance::class/Movement::class dans le hook MENU_TOADD plus bas...) -
     // sans ce garde-fou, cette fonction plante en erreur fatale PHP sur une version de GLPI
     // incompatible (cas réel rencontré avec GLPI 12.0.0-rc2 avant la couche Compat/ :
     // "Type of GlpiPlugin\Assetsign\Assetsign::$rightname must be string, as in class CommonGLPI").
@@ -59,7 +59,7 @@ function plugin_init_assetsign(): void {
     //
     // Comparaison de version explicite, PAS `Plugin::isPluginActive('assetsign')` : cette fonction
     // est aussi appelée (et son contenu genuinement necessaire) PENDANT `plugin:install` lui-meme,
-    // avant que le plugin ne soit actif — confirme en conditions reelles, la premiere version de ce
+    // avant que le plugin ne soit actif : confirme en conditions reelles, la premiere version de ce
     // correctif cassait l'installation sur GLPI 11 avec "Plugin assetsign : type de workflow
     // inconnu (id=0)" (WorkflowTypeRegistry jamais peuplee car `isPluginActive()` renvoie faux
     // pendant l'installation elle-meme). Seule la VERSION de GLPI doit court-circuiter cette
@@ -110,7 +110,7 @@ function plugin_init_assetsign(): void {
     // DEFAUT du pare-feu GLPI 11 (Glpi\Http\Firewall) pour tout script legacy
     // front/*.php, y compris pour les plugins. La ligne ci-dessous est volontairement
     // explicite (STRATEGY_AUTHENTICATED) pour documenter que c'est un choix assume et
-    // non un oubli — la seule fois ou l'on aurait autrement besoin de la declarer
+    // non un oubli : la seule fois ou l'on aurait autrement besoin de la declarer
     // c'est pour l'inverse (STRATEGY_NO_CHECK), qui n'est plus utilise ici.
     // Le controle d'identite fin (seul le beneficiaire peut voir/signer SON document,
     // pas n'importe quel utilisateur connecte) est fait dans Api\SignController.
@@ -124,7 +124,7 @@ function plugin_init_assetsign(): void {
     // front/opcache_reset.php (appele automatiquement par plugin_assetsign_install(),
     // cf. hook.php) restreint lui-meme l'acces a 127.0.0.1/::1 : aucune session
     // GLPI n'existe a ce moment (script CLI), STRATEGY_NO_CHECK est donc necessaire
-    // ici — le controle de securite reste fait par le endpoint lui-meme.
+    // ici : le controle de securite reste fait par le endpoint lui-meme.
     \Glpi\Http\Firewall::addPluginStrategyForLegacyScripts(
         'assetsign',
         '#^/front/opcache_reset\.php#',
@@ -164,7 +164,7 @@ function plugin_init_assetsign(): void {
     // MaintenanceChecklistItem (sous-systeme Maintenance, deliberement separe).
     Plugin::registerClass(\GlpiPlugin\Assetsign\ChecklistItem::class);
     // Maintenance : sous-systeme volontairement separe du moteur Assetsign (cf.
-    // Maintenance.php) — possede neanmoins son propre onglet sur les memes
+    // Maintenance.php) : possede neanmoins son propre onglet sur les memes
     // materiels geres, comme Assetsign, pour rester decouvrable depuis la fiche
     // du materiel en plus de son propre menu (ci-dessous).
     // Issue #223 : aussi sur les tickets (onglet « Préparation de poste » du nouvel arrivant).
@@ -174,7 +174,7 @@ function plugin_init_assetsign(): void {
     // Passeport materiel/utilisateur : agrege Assetsign + Maintenance en lecture
     // seule (cf. PassportEvent::recordForAssetsign()/recordForMaintenance()),
     // avec deux onglets distincts sur les memes points d'accroche que Assetsign
-    // ci-dessus — sur le materiel (getTabNameForItem()/showForItem(), filtre
+    // ci-dessus : sur le materiel (getTabNameForItem()/showForItem(), filtre
     // par itemtype/items_id) ET sur 'User' (showForUser(), filtre par
     // users_id, vue symetrique cote beneficiaire).
     Plugin::registerClass(\GlpiPlugin\Assetsign\PassportEvent::class, [
@@ -218,26 +218,26 @@ function plugin_init_assetsign(): void {
     // menu Administration, on l'enregistre ici pour qu'elle apparaisse dans la page
     // Intitulés comme n'importe quelle liste deroulante de GLPI (voir
     // Plugin::getDropdowns(), qui appelle automatiquement plugin_assetsign_getDropdown()
-    // pour chaque plugin actif — aucune entree $PLUGIN_HOOKS n'est necessaire pour ce
+    // pour chaque plugin actif : aucune entree $PLUGIN_HOOKS n'est necessaire pour ce
     // hook "auto", le nom de fonction est resolu par convention).
 
     // --- Menu d'administration --------------------------------------------------------
     // "Gestion des fiches" (Search::show(Assetsign::class), cf. front/assetsign.php) : vue
     // transverse de toutes les assetsigns/restitutions, tous materiels et beneficiaires
     // confondus, avec telechargement direct des PDF et annulation (cf. Assetsign::
-    // rawSearchOptions()/cancelRequest()) — un onglet par materiel ne suffit plus des
+    // rawSearchOptions()/cancelRequest()) : un onglet par materiel ne suffit plus des
     // qu'il faut suivre l'ensemble des fiches en attente sans savoir a l'avance sur
     // quel materiel chercher.
     // "Fiches de maintenance" (Search::show(Maintenance::class), cf. front/maintenance.php) :
     // volontairement une entree de menu SEPAREE de "Gestion des fiches" (pas fusionnee),
     // le sous-systeme de maintenance etant lui-meme structurellement independant du
-    // moteur de fiches signees (cf. Maintenance.php) — un tableau melant les deux
+    // moteur de fiches signees (cf. Maintenance.php) : un tableau melant les deux
     // brouillerait deux notions de statut/cycle de vie totalement differentes.
     //   - Config : icone "Configurer" + nom cliquable sur la ligne du plugin dans
     //     Configuration > Plugins (Hooks::CONFIG_PAGE plus haut) ;
     //   - Template/Points de controle de maintenance : page Configuration > Intitulés (ci-dessus).
     // Format attendu par le coeur GLPI : une LISTE PLATE de classes par categorie
-    // (pas le format documente ['types'=>[...],'icon'=>'...']) — piege deja
+    // (pas le format documente ['types'=>[...],'icon'=>'...']) : piege deja
     // rencontre et documente dans TROUBLESHOOTING.md.
     $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign'] = [
         // Trois rubriques (GlpiPlugin\Assetsign\MenuSection) : Attributions (mouvements, départs,

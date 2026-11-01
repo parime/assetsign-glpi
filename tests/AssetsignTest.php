@@ -16,7 +16,7 @@ use RuntimeException;
 /**
  * Couvre le cycle de vie central de Assetsign : creation manuelle (Don/Vente) et
  * ses garde-fous, et surtout les deux mecanismes de declenchement automatique
- * (affectation d'utilisateur / changement d'Etat) — la partie la moins
+ * (affectation d'utilisateur / changement d'Etat) : la partie la moins
  * couverte jusqu'ici (verifiee uniquement via des scripts Docker manuels,
  * jamais par une suite automatisee), cf. ARCHITECTURE.md section Tests automatisés.
  */
@@ -147,7 +147,7 @@ class AssetsignTest extends AssetsignTestCase
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit CreateManual State NoConfig');
         // Explicite plutot que de compter sur l'absence de config propre a
-        // l'entite (qui heriterait sinon du reglage racine — non garanti vide
+        // l'entite (qui heriterait sinon du reglage racine : non garanti vide
         // sur une instance deja configuree manuellement, cf. TROUBLESHOOTING.md).
         Config::upsertForEntity($entityId, ['donation_states' => []]);
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC State NoConfig');
@@ -179,7 +179,7 @@ class AssetsignTest extends AssetsignTestCase
     public function testHandleItemAssignmentCreatesHandoverOnNewAssignment(): void
     {
         // Entite sans config propre : herite du reglage racine sign_on_assignment=1
-        // (seme a l'installation, cf. Config::install()) — aucune config explicite
+        // (seme a l'installation, cf. Config::install()): aucune config explicite
         // necessaire pour ce cas "activation par defaut".
         $entityId = $this->createTestEntity(0, 'PHPUnit Assignment Handover');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Assignment');
@@ -227,7 +227,7 @@ class AssetsignTest extends AssetsignTestCase
 
         // Desactive explicitement le declenchement par affectation pour cette
         // entite (upsertForEntity remet a 0/defaut tout champ absent du tableau
-        // partiel, cf. TROUBLESHOOTING.md — sans consequence ici, seul
+        // partiel, cf. TROUBLESHOOTING.md: sans consequence ici, seul
         // sign_on_assignment nous interesse pour ce test).
         Config::upsertForEntity($entityId, ['sign_on_assignment' => 0]);
 
@@ -942,7 +942,7 @@ class AssetsignTest extends AssetsignTestCase
     /** Derniere assetsign (par id) pour ce materiel, ou null. $excludeId ignore un id precis (ex: l'ancienne assetsign annulee). */
     /**
      * Extrait le nombre affiche dans le badge de decompte d'un libelle
-     * d'onglet (cf. CommonGLPI::createTabEntry()) — 0 si absent (echec reel
+     * d'onglet (cf. CommonGLPI::createTabEntry()): 0 si absent (echec reel
      * constate en CI, sur une base fraiche sans aucune remise prealable pour
      * l'utilisateur : createTabEntry() n'affiche alors aucun badge du tout,
      * pas un badge a "0").

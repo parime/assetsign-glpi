@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Issue #157 : dossier de départ d'un salarié — consultation, signature groupée de la restitution
+ * Issue #157 : dossier de départ d'un salarié : consultation, signature groupée de la restitution
  * de tout son matériel (par la personne elle-même, ou sur place sur l'écran du technicien),
  * relance, annulation, PDF récapitulatif. Préparation manuelle depuis l'onglet Assetsign du compte
  * utilisateur (POST « prepare »).

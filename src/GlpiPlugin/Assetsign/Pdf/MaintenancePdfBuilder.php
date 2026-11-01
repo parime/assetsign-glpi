@@ -14,13 +14,13 @@ use GlpiPlugin\Assetsign\QrCode;
 /**
  * Construit le PDF d'une fiche de maintenance, meme gabarit visuel (logo,
  * style, etat des lieux visuel) que HandoverPdfBuilder (Assetsign), via le
- * trait partage PdfRenderingHelpers — cf. templates/pdf/maintenance.html.twig.
+ * trait partage PdfRenderingHelpers: cf. templates/pdf/maintenance.html.twig.
  *
  * Contrairement a Assetsign (PDF non signe genere a la creation, remplace par un
  * PDF signe apres passage du beneficiaire sur une page separee, cf.
  * SignatureStamper), une fiche de maintenance ne genere qu'UN SEUL PDF, une
  * seule fois : le technicien signe (si active pour l'entite) directement sur
- * le meme formulaire de creation, en une seule requete — il n'y a donc jamais
+ * le meme formulaire de creation, en une seule requete : il n'y a donc jamais
  * de PDF "non signe" intermediaire a remplacer ensuite.
  */
 final class MaintenancePdfBuilder

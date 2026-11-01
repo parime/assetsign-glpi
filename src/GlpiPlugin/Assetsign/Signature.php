@@ -138,7 +138,7 @@ class Signature extends Compat\Base\SignatureBase
           // Audit code mort : 'provider'/'provider_reference'/'proof_data'
           // n'etaient jamais lus (seuls signer_name/signer_email/ip_address/
           // user_agent/document_hash/signed_at sont affiches, cf.
-          // assetsign_form.html.twig) — provider_reference en particulier ne
+          // assetsign_form.html.twig) : provider_reference en particulier ne
           // recevait jamais que null, CanvasProvider (seul fournisseur reel)
           // ne renseignant pas de reference externe.
          foreach (['provider', 'provider_reference', 'proof_data'] as $obsoleteField) {

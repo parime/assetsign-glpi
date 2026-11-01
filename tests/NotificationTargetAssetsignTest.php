@@ -10,7 +10,7 @@ use Notification;
  * Couvre la logique propre au plugin dans NotificationTargetAssetsign : quelle
  * cible (Beneficiaire/Technicien) est proposee pour quel evenement
  * (addAdditionalTargets()), et quelles balises de gabarit sont renseignees
- * (addDataForTemplate()) — jamais couvert par une suite automatisee jusqu'ici
+ * (addDataForTemplate()) : jamais couvert par une suite automatisee jusqu'ici
  * (seulement verifie a la main, par reception reelle d'e-mails, cf.
  * TROUBLESHOOTING.md).
  *
@@ -18,7 +18,7 @@ use Notification;
  * destinataire (addUserFieldByEmail()/addToRecipientsList()) : cette derniere
  * etape traverse une bonne partie de la tuyauterie interne de
  * NotificationTarget (setEvent(), addAdditionnalUserInfo()...) qui n'est pas
- * du code du plugin — la couverture s'arrete a la frontiere de ce que ce
+ * du code du plugin : la couverture s'arrete a la frontiere de ce que ce
  * plugin controle reellement.
  */
 class NotificationTargetAssetsignTest extends AssetsignTestCase

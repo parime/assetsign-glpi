@@ -6,7 +6,7 @@ use Migration;
 
 /**
  * Marqueur de dommage depose sur l'une des 3 vues de reference generiques
- * (public/images/damage-views/, illustrations fournies par l'utilisateur —
+ * (public/images/damage-views/, illustrations fournies par l'utilisateur -
  * pas des croquis maison) : "etat des lieux visuel". Coordonnees stockees en
  * POURCENTAGE de l'image (pas en pixels) : independant de la taille
  * d'affichage a l'ecran ET de la taille de rendu dans le PDF, qui ne sont
@@ -14,7 +14,7 @@ use Migration;
  *
  * Rattache a EXACTEMENT UNE fiche parente parmi deux possibles (colonnes
  * `plugin_assetsign_assetsigns_id`/`plugin_assetsign_maintenances_id`, toutes deux
- * nullables plutot qu'un couple itemtype/items_id polymorphe generique —
+ * nullables plutot qu'un couple itemtype/items_id polymorphe generique -
  * seulement deux types de parent possibles, un vrai polymorphisme aurait ete
  * une abstraction superflue ici) :
  * - Assetsign (Assetsign/Restitution/Don/Vente) : marqueurs modifiables par AJAX
@@ -50,7 +50,7 @@ class DamageMarker extends Compat\Base\DamageMarkerBase
      * Le materiel gere par defaut le plus visuellement different d'un ordinateur portable
      * (Computer/Monitor/Peripheral partagent tous une silhouette "boitier rectangulaire" pour
      * laquelle les 3 illustrations generiques restent plausibles) est Phone : trouve en verifiant
-     * en conditions reelles la parite fonctionnelle PC/telephone — la fiche de signature d'un
+     * en conditions reelles la parite fonctionnelle PC/telephone : la fiche de signature d'un
      * telephone affichait bien un "Etat des lieux visuel" complet (marqueurs, PDF...), mais avec
      * les 3 memes photos d'ordinateur portable qu'un Computer, jamais un telephone. Nouvelles
      * illustrations dediees (public/images/damage-views/*_telephone.jpg) utilisees uniquement
@@ -175,7 +175,7 @@ class DamageMarker extends Compat\Base\DamageMarkerBase
 
     /**
      * Traite une action d'ajout/modification/suppression de repere a partir
-     * des donnees POST brutes — partage par front/damagemarker.php
+     * des donnees POST brutes : partage par front/damagemarker.php
      * (technicien, droit RIGHT_ASSETSIGN) et les actions de repere de
      * front/sign.php (beneficiaire, jeton de signature) : ces deux points
      * d'entree ne different QUE par la maniere dont $assetsign est autorisee,

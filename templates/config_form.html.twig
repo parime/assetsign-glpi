@@ -14,7 +14,7 @@
        id, type, entite, is_default/is_active) : les champs visibles de
        l'editeur de gabarit integre (macro template_editor plus bas) y sont
        rattaches via l'attribut HTML5 form="...", jamais imbriques dans le
-       formulaire principal ci-dessous — meme motif que assetsign-test-email-form
+       formulaire principal ci-dessous : meme motif que assetsign-test-email-form
        (un <form> ne peut pas en contenir un autre en HTML valide). #}
     {% for type, template in templates %}
       <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/template.form.php" id="assetsign-template-form-{{ type }}" style="display:none;">
@@ -129,7 +129,7 @@
           <div class="mb-3">
             <label class="form-label">{{ __('Lien vers la charte informatique complète', 'assetsign') }}</label>
             <input type="url" name="charter_url" class="form-control" placeholder="https://intranet.exemple.fr/charte-informatique.pdf" value="{{ config.charter_url|default('') }}">
-            <div class="form-text">{{ __('Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit — commun à tous les types.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit : commun à tous les types.', 'assetsign') }}</div>
           </div>
 
           {# Issue #204 : signature periodique de la charte par chaque personne de l'entite. #}
@@ -169,7 +169,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Délais de relance (jours, séparés par des virgules — ex: 3,7,7)', 'assetsign') }}</label>
+            <label class="form-label">{{ __('Délais de relance (jours, séparés par des virgules : ex: 3,7,7)', 'assetsign') }}</label>
             <input type="text" name="reminder_delays" class="form-control" value="{{ config.reminder_delays|default('3,7,7') }}">
           </div>
           <div class="mb-3">
@@ -262,14 +262,14 @@
             <input type="hidden" name="enable_pending_signatures_banner" value="0">
             <input type="checkbox" name="enable_pending_signatures_banner" value="1" class="form-check-input" id="enable_pending_signatures_banner" {{ config.enable_pending_signatures_banner|default(1) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_pending_signatures_banner">{{ __('Signaler les documents à signer sur la page d\'accueil de GLPI', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Un bandeau prévient l\'utilisateur connecté qu\'un document attend sa signature, avec un lien vers la page « Mes documents à signer » — indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent jamais le lien de signature.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Un bandeau prévient l\'utilisateur connecté qu\'un document attend sa signature, avec un lien vers la page « Mes documents à signer » : indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent jamais le lien de signature.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_in_person_signature" value="0">
             <input type="checkbox" name="enable_in_person_signature" value="1" class="form-check-input" id="enable_in_person_signature" {{ config.enable_in_person_signature|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_in_person_signature">{{ __('Autoriser la signature sur place (en présence d\'un technicien)', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire signe sur l\'écran du technicien, sans avoir à se connecter à GLPI — pour les personnes qui n\'ont pas d\'accès à GLPI. Le PDF signé indique que la signature a été recueillie en présence de ce technicien, qui atteste ainsi de l\'identité du signataire.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire signe sur l\'écran du technicien, sans avoir à se connecter à GLPI : pour les personnes qui n\'ont pas d\'accès à GLPI. Le PDF signé indique que la signature a été recueillie en présence de ce technicien, qui atteste ainsi de l\'identité du signataire.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3 form-check">
@@ -282,7 +282,7 @@
             <input type="hidden" name="protect_pdf" value="0">
             <input type="checkbox" name="protect_pdf" value="1" class="form-check-input" id="protect_pdf" {{ config.protect_pdf|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="protect_pdf">{{ __('Protéger le PDF (restreindre la copie et l\'édition)', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur qui respecte cette restriction — n\'affecte jamais la possibilité de le consulter ou de l\'imprimer.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur qui respecte cette restriction : n\'affecte jamais la possibilité de le consulter ou de l\'imprimer.', 'assetsign') }}</div>
           </div>
 
           <hr>
@@ -300,7 +300,7 @@
         <div class="tab-pane fade" id="tab-handover" role="tabpanel">
           {{ _self.template_editor(0, templates[0], entity_id) }}
           <h4>{{ __('Déclenchement par affectation d\'utilisateur', 'assetsign') }}</h4>
-          <p class="text-muted">{{ __('Basé sur le champ "Utilisateur" du matériel — fonctionne dans la plupart des GLPI.', 'assetsign') }}</p>
+          <p class="text-muted">{{ __('Basé sur le champ "Utilisateur" du matériel : fonctionne dans la plupart des GLPI.', 'assetsign') }}</p>
           <div class="mb-3 form-check">
             <input type="hidden" name="sign_on_assignment" value="0">
             <input type="checkbox" name="sign_on_assignment" value="1" class="form-check-input" id="sign_on_assignment" {{ config.sign_on_assignment|default(1) ? 'checked' : '' }}>
@@ -619,7 +619,7 @@
             <input type="hidden" name="show_qr_code" value="0">
             <input type="checkbox" name="show_qr_code" value="1" class="form-check-input" id="show_qr_code" {{ config.show_qr_code|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="show_qr_code">{{ __('Afficher un QR code sur les fiches PDF', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la retrouver depuis un contrôle physique du matériel.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Le QR code renvoie vers la fiche correspondante dans GLPI : pratique pour la retrouver depuis un contrôle physique du matériel.', 'assetsign') }}</div>
           </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_qr_label" value="0">
@@ -750,7 +750,7 @@
             <label class="form-check-label" for="enable_decision_aid">{{ __('Afficher les recommandations sur le Passeport matériel', 'assetsign') }}</label>
           </div>
           <div class="mb-3">
-            <div class="form-text">{{ __('« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l\'onglet Score de santé — pas de second réglage redondant pour la même notion.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l\'onglet Score de santé : pas de second réglage redondant pour la même notion.', 'assetsign') }}</div>
           </div>
           <div class="mb-3">
             <label class="form-label">{{ __('Seuil de valeur résiduelle déclenchant « Réévaluer l\'usage » (% du prix d\'achat)', 'assetsign') }}</label>
@@ -761,7 +761,7 @@
 
         {# ---------------------------------------------------------------- Passeport environnemental #}
         <div class="tab-pane fade" id="tab-environmental" role="tabpanel">
-          <p class="text-muted">{{ __('Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l\'implémentation (cf. issue #80) : l\'API publique Boavizta n\'expose, pour les ordinateurs/portables, que des moyennes de catégorie ("laptop pro/perso"), jamais une valeur propre au modèle réel présent dans GLPI — l\'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement.', 'assetsign') }}</p>
+          <p class="text-muted">{{ __('Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l\'implémentation (cf. issue #80) : l\'API publique Boavizta n\'expose, pour les ordinateurs/portables, que des moyennes de catégorie ("laptop pro/perso"), jamais une valeur propre au modèle réel présent dans GLPI : l\'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement.', 'assetsign') }}</p>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_environmental_passport" value="0">
             <input type="checkbox" name="enable_environmental_passport" value="1" class="form-check-input" id="enable_environmental_passport" {{ config.enable_environmental_passport|default(0) ? 'checked' : '' }}>
@@ -785,7 +785,7 @@
             <input type="hidden" name="enable_passport" value="0">
             <input type="checkbox" name="enable_passport" value="1" class="form-check-input" id="enable_passport" {{ config.enable_passport|default(1) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_passport">{{ __('Activer le Passeport matériel', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Désactivé : l\'onglet disparaît et aucun nouvel événement n\'est enregistré. Les événements déjà enregistrés ne sont jamais supprimés — ils réapparaissent si vous réactivez.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Désactivé : l\'onglet disparaît et aucun nouvel événement n\'est enregistré. Les événements déjà enregistrés ne sont jamais supprimés : ils réapparaissent si vous réactivez.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
@@ -840,7 +840,7 @@
 </div>
 </div>
 
-{# Edition directe du gabarit par defaut de ce type, dans l'onglet lui-meme —
+{# Edition directe du gabarit par defaut de ce type, dans l'onglet lui-meme -
    remplace l'ancien simple lien de renvoi vers front/template.form.php (cf.
    ROADMAP.md, "Rapprocher la gestion des gabarits de l'experience du
    plugin"). Chaque champ est rattache via l'attribut HTML5 form="..." a la
@@ -950,7 +950,7 @@
   }
 
   // live-preview.js remplace ENTIEREMENT frame.srcdoc a chaque apercu en
-  // direct (case cochee, changement d'onglet...) — un logo pas encore
+  // direct (case cochee, changement d'onglet...) : un logo pas encore
   // envoye au serveur (choisi via #assetsign-logo-file, jamais transmis a
   // front/preview.php, cf. son propre commentaire) disparaissait alors du
   // rendu a chaque rafraichissement suivant, quelques centaines de ms apres
@@ -985,7 +985,7 @@
   });
 
   // Delegation de signature (issue #115) : "auto-delegation" (self-service)
-  // n'a de sens que si la delegation technicien/admin est deja active — la
+  // n'a de sens que si la delegation technicien/admin est deja active : la
   // meme regle est de toute facon reappliquee cote serveur dans
   // Config::upsertForEntity() (jamais la seule protection), mais la
   // desactiver/griser ici evite de laisser croire qu'elle est prise en
@@ -1007,7 +1007,7 @@
 <script>
   window.ASSETSIGN_ROOT_DOC = {{ config('root_doc')|json_encode|raw }};
   // Jeton DEDIE au canal d'apercu en direct, jamais partage avec celui du
-  // formulaire (champ _glpi_csrf_token, reserve au vrai bouton Enregistrer) —
+  // formulaire (champ _glpi_csrf_token, reserve au vrai bouton Enregistrer) -
   // cf. commentaire de Config::showConfigForm().
   window.ASSETSIGN_PREVIEW_CSRF_TOKEN = {{ preview_csrf_token|json_encode|raw }};
 </script>

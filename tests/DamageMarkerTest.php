@@ -98,7 +98,7 @@ class DamageMarkerTest extends AssetsignTestCase
     public function testViewLabelsCoverEveryReferenceView(): void
     {
         // Issue #208 : le PDF utilise desormais les libelles traduits, rendus dans la langue du
-        // beneficiaire (cf. PdfLanguageTest) — il en faut un par vue de reference.
+        // beneficiaire (cf. PdfLanguageTest) : il en faut un par vue de reference.
         $this->assertSame(range(0, DamageMarker::VIEW_COUNT - 1), array_keys(DamageMarker::getViewLabels()));
     }
 
@@ -134,7 +134,7 @@ class DamageMarkerTest extends AssetsignTestCase
     {
         // Seul test de ce fichier a passer par createManual() (vrai PDF) : verifie
         // le vrai bug corrige par le passe (un repere ajoute via ce point d'entree
-        // n'apparaissait jamais sur la vraie fiche PDF, cf. TROUBLESHOOTING.md) — a savoir que
+        // n'apparaissait jamais sur la vraie fiche PDF, cf. TROUBLESHOOTING.md) : a savoir que
         // handleMutationRequest() declenche bien refreshDamageAnnotationPdf().
         $entityId = $this->createTestEntity(0, 'PHPUnit DamageMarker Regenerate');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC DamageMarker');

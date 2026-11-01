@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   GLPI Auto, par un formulaire ou à la main), il est rattaché au dossier avec un suivi au lieu d'un
   second ticket. Sans Configuration GLPI Auto, rien ne change. Aucun droit n'est élargi.
 
+### Changed
+
+- Plus aucun tiret cadratin dans les textes affichés, les traductions et la documentation : il est
+  remplacé par « : », une virgule ou « - » selon le cas (même règle que GRC Manager et
+  Configuration GLPI Auto, vérifiée en CI par glpi-plugin-security).
+
 ## [2.17.1] - 2026-10-29
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
@@ -367,7 +373,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   d'un salarié, attestation annuelle) et pour les indicateurs RSE, qui comptaient ces actifs
   plusieurs fois.
 - **Mise à jour depuis la 2.8.0** : une migration ajoutait des colonnes « après » une colonne créée
-  plus loin dans la même mise à jour — l'installation neuve passait, mais la mise à jour d'une
+  plus loin dans la même mise à jour : l'installation neuve passait, mais la mise à jour d'une
   installation existante échouait (« Unknown column 'stock_states' »). Les nouvelles migrations ne
   dépendent plus de l'ordre des colonnes, et la CI GLPI 12 installe désormais la dernière version
   publiée avant d'appliquer le code par-dessus.
@@ -384,8 +390,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   personne. Bouton retiré ; une page ouverte sans numéro de fiche renvoie à la liste en expliquant
   où la créer.
 - Attribuer un poste dont GLPI recopie l'utilisateur vers les éléments connectés (option d'entité
-  « mise à jour automatique de l'utilisateur ») créait une feuille séparée — et, en envoi immédiat, un
-  e-mail — pour chaque écran ou périphérique connecté. Ces éléments sont couverts par la feuille du
+  « mise à jour automatique de l'utilisateur ») créait une feuille séparée : et, en envoi immédiat, un
+  e-mail : pour chaque écran ou périphérique connecté. Ces éléments sont couverts par la feuille du
   poste, où ils sont proposés comme éléments connectés.
 - Les messages techniques de GLPI (« Document copié avec succès », « Fichier … supprimé ») ne
   s'affichent plus quand une modification de la fiche régénère le PDF non signé.
@@ -399,7 +405,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Lien avec les tickets** (issue #183) : onglet « Remise de matériel » sur les tickets — on remet
+- **Lien avec les tickets** (issue #183) : onglet « Remise de matériel » sur les tickets : on remet
   un matériel disponible à un demandeur : attribution dans GLPI, matériel lié au ticket, feuille
   préparée en brouillon et rattachée au ticket. Une feuille peut aussi être rattachée à un ticket
   ouvert du bénéficiaire. À la signature : suivi avec le document signé joint au ticket et, si
@@ -410,17 +416,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   disponible de ce type ; le kit se choisit aussi depuis la fenêtre. À la restitution, les objets
   précis sont contrôlés un par un (#178).
 - **Passeport de l'élément remis avec** (issue #182) : un écran, un casque… remis avec un poste a
-  sa propre trace dans le passeport matériel — « Attribution : remis avec Ordinateur PC-123 » à
+  sa propre trace dans le passeport matériel : « Attribution : remis avec Ordinateur PC-123 » à
   l'envoi, « Restitution : rendu / rendu abîmé / manquant » au contrôle du retour (mis à jour si
   l'état change), lien vers la feuille ; rétro-remplissage depuis les feuilles existantes. Les
   contrôles qualité et le kit du poste ne sont pas affichés sur ces événements.
 - **Restitution qui reprend la remise** (issue #178) : la feuille de restitution reprend les éléments
   du parc remis avec le poste (dernière attribution envoyée ou signée, repérée avant son éventuelle
-  annulation). Contrôle du retour élément par élément — Rendu / Manquant / Abîmé, commentaire —
+  annulation). Contrôle du retour élément par élément : Rendu / Manquant / Abîmé, commentaire -
   repris sur le PDF ; à l'enregistrement, un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI
   et prend le statut configuré, un élément manquant reste à la personne et peut ouvrir un ticket lié.
 - **Matériel disponible proposé en premier** (issue #180) : pour ajouter un élément à une feuille
-  (fiche et fenêtre d'attribution), liste « Matériel disponible » regroupée par type — sans
+  (fiche et fenêtre d'attribution), liste « Matériel disponible » regroupée par type : sans
   utilisateur ou dans un statut « en stock » (nouveau réglage), pas déjà sur une autre feuille en
   attente ; la recherche dans tout le parc reste possible.
 - **Feuilles restées en brouillon** (issue #179) : encadré « Feuilles à envoyer » sur la page
@@ -456,7 +462,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   badge signale un élément affecté à une autre personne que le bénéficiaire.
 
 - **Tableau de bord RSE** (issue #142) : page Outils > Tableau de bord RSE et trois cartes pour le
-  tableau de bord GLPI natif — empreinte de fabrication du parc et couverture, impact évité par le
+  tableau de bord GLPI natif : empreinte de fabrication du parc et couverture, impact évité par le
   réemploi, âge moyen et durée de vie réelle, filières de fin de vie sur 12 mois et taux de seconde
   vie. Données réelles uniquement ; formule de l'impact évité mutualisée avec le passeport
   (`CsrLogic::avoidedImpact()`).
@@ -469,7 +475,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - relances automatiques jusqu'à la date limite (`assetsignCampaigns`), relance manuelle, clôture ;
   - suivi (taux de réponse, écarts, non-répondants), export CSV et PDF ;
   - notifications en 5 langues, traductions FR/EN/DE/ES/IT, tests.
-- **Départ d'un salarié : restitution groupée de tout son matériel** (issue #157) — « dossier groupé » :
+- **Départ d'un salarié : restitution groupée de tout son matériel** (issue #157) : « dossier groupé » :
   - action « Préparer le départ » dans l'onglet Assetsign du compte utilisateur : une fiche de
     restitution ordinaire par matériel affecté (preuve, PDF, passeport, état du matériel inchangés),
     regroupées dans un départ (`glpi_plugin_assetsign_departures`) ; une seule invitation, une seule
@@ -491,7 +497,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Signature sur place, en présence d'un technicien** (issue #152) : pour un bénéficiaire qui
-  ne peut pas se connecter à GLPI (pas de mot de passe, pas de poste) — la page de signature
+  ne peut pas se connecter à GLPI (pas de mot de passe, pas de poste) : la page de signature
   exige une session GLPI, un simple lien ou QR code ne l'aurait donc pas aidé. Sur la fiche, le
   bouton « Faire signer sur place » ouvre la page de signature habituelle sur l'écran du
   technicien ; le bénéficiaire (ou son délégué) relit et signe :
@@ -508,7 +514,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     du signataire).
 
 - **Documents à signer sans adresse e-mail** (issue #150) : jusqu'ici, un utilisateur n'apprenait
-  qu'un document attendait sa signature que par l'e-mail contenant le lien — un utilisateur sans
+  qu'un document attendait sa signature que par l'e-mail contenant le lien : un utilisateur sans
   adresse e-mail n'en était jamais informé. Désormais :
   - un bandeau « Vous avez N documents à signer » s'affiche sur la page d'accueil de GLPI,
     interface standard comme simplifiée (`Hooks::DISPLAY_CENTRAL`), uniquement quand un document
@@ -517,7 +523,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     « Signer » qui ouvre la page de signature habituelle ; aussi accessible depuis le menu
     Plugins de l'interface simplifiée ;
   - qui voit quoi : le bénéficiaire, ou son délégué si la signature a été déléguée, et le
-    responsable à l'étape de contre-signature — mêmes règles que la page de signature, qui reste
+    responsable à l'étape de contre-signature : mêmes règles que la page de signature, qui reste
     le contrôle final ;
   - le lien de l'e-mail ne pouvant pas être réaffiché (seul son hash est stocké), le bouton
     « Signer » émet un nouveau jeton, valable jusqu'à l'échéance de la fiche (pas un nouveau délai
@@ -534,7 +540,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Compatibilité GLPI 12** (en plus de GLPI 11, depuis un seul et même paquet). Trois
   incompatibilités réelles corrigées, identifiées en faisant tourner la suite complète sur un vrai
   GLPI 12.0.0-rc2 :
-  - GLPI 12 type `CommonGLPI::$rightname` (`string`), GLPI 11 non — et PHP impose à une
+  - GLPI 12 type `CommonGLPI::$rightname` (`string`), GLPI 11 non : et PHP impose à une
     sous-classe de reprendre exactement le type du parent, donc aucune déclaration unique ne
     fonctionne sur les deux. Les 17 classes concernées héritent désormais d'une classe
     intermédiaire (`Compat\Base\…Base`) déclarée selon la version installée (propriété typée en 12,
@@ -556,13 +562,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Signatures multiples (issue #143)** : une Attribution peut désormais exiger, en plus de la
   signature du bénéficiaire, la contre-signature de son responsable hiérarchique
-  (`User::users_id_supervisor`, déjà renseigné par l'annuaire) — réglage par entité
+  (`User::users_id_supervisor`, déjà renseigné par l'annuaire) : réglage par entité
   `Config::enable_co_signature`, désactivé par défaut. Le bénéficiaire signe d'abord (flux
   inchangé) ; le document, déjà signé une fois, est ensuite transmis au responsable pour
   contre-signature (nouveau statut `STATUS_AWAITING_COSIGNATURE`, nouveau lien/jeton dédié,
   nouvelle notification « Contre-signature requise ») avant d'être considéré comme définitivement
   signé (`document_id_cosigned`, PDF final à deux blocs de signature). Sans responsable renseigné
-  pour le bénéficiaire, l'attribution reste mono-signataire, comme aujourd'hui — aucun changement
+  pour le bénéficiaire, l'attribution reste mono-signataire, comme aujourd'hui : aucun changement
   de comportement pour les entités qui n'activent pas ce réglage. Limité aux Attributions (pas aux
   restitutions, dons, ventes, destructions, maintenances ou mouvements) pour cette première
   version.
@@ -570,9 +576,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Bénéfice du réemploi / « impact évité »** (issue #81) : nouvelle section du Passeport matériel
   valorisant la prolongation d'usage au-delà de la durée d'amortissement comptable du matériel
   (`Infocom::sink_time`, champ natif GLPI déjà saisi, en années). Calcul « évitement proportionnel »
-  standard (économie circulaire) à partir de trois données réelles obligatoires — durée
+  standard (économie circulaire) à partir de trois données réelles obligatoires : durée
   d'amortissement prévue, dates de mise en service/réforme, empreinte carbone de fabrication déjà
-  saisie (issue #80) — jamais une moyenne sectorielle inventée : reste `null` (aucun affichage) tant
+  saisie (issue #80) : jamais une moyenne sectorielle inventée : reste `null` (aucun affichage) tant
   que la durée réelle n'a pas dépassé la durée prévue, ou si l'un des trois prérequis manque, dans le
   droit fil du principe fondateur du plugin (`EnvironmentalData`, ne jamais estimer). Désactivé par
   défaut (case à cocher dédiée dans le paramétrage Environnement de l'entité), pour la même raison que
@@ -582,12 +588,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Parenthèses vides « () » après le nom du signataire** sur le PDF signé et sur les fiches
-  Assetsign/Maintenance/Mouvement quand le signataire n'a pas d'adresse e-mail — cas désormais
+  Assetsign/Maintenance/Mouvement quand le signataire n'a pas d'adresse e-mail : cas désormais
   courant avec #150/#152. L'e-mail n'est plus affiché que s'il existe.
 
 - **La délégation d'auto-signature (page reçue par e-mail par le bénéficiaire lui-même) était
   totalement non fonctionnelle** : `sign_page.html.twig` est une page volontairement autonome, sans
-  jQuery (JS moderne fetch/module uniquement) — le widget `User::dropdown()` y génère du JS qui
+  jQuery (JS moderne fetch/module uniquement) : le widget `User::dropdown()` y génère du JS qui
   suppose jQuery disponible et ne s'initialisait donc jamais, laissant un menu « Déléguer à » bloqué
   sur « ----- », quel que soit le profil ou la version. Bug distinct et plus ancien que celui déjà
   corrigé sur les deux menus techniciens/admin (`right='id'` vs `'all'`), découvert en retestant
@@ -598,26 +604,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Le menu « Destinataire » du formulaire de création manuelle (Don/Vente/Destruction,
   `assetsign_tab.html.twig`) ne proposait que le compte actuellement connecté**, quel que soit son
-  profil — exactement le même bug que celui déjà corrigé pour les deux menus de délégation de
+  profil : exactement le même bug que celui déjà corrigé pour les deux menus de délégation de
   signature (`right => 'id'`, le défaut de `User::dropdown()`, jamais aligné sur `'all'` dans #122
   quand ce correctif avait été appliqué aux deux autres menus). Rapporté à nouveau sur l'issue #115
   après la sortie de ce correctif, ce qui a permis de découvrir ce troisième site jamais traité.
 
 - **`plugin_init_assetsign()` plantait en erreur fatale PHP sur une version de GLPI incompatible**
-  au lieu de laisser GLPI afficher son propre refus de version — confirmé en testant en direct
+  au lieu de laisser GLPI afficher son propre refus de version : confirmé en testant en direct
   contre un vrai conteneur GLPI 12.0.0-rc2 : `Type of GlpiPlugin\Assetsign\Assetsign::$rightname
   must be string, as in class CommonGLPI` (GLPI 12 type désormais cette propriété). Le correctif du
   même type sur `Hooks::CSRF_COMPLIANT` (plus haut dans ce fichier) n'avait traité qu'un symptôme :
   toute la fonction référence de vraies classes du plugin (`WorkflowTypeRegistry`,
   `Assetsign::class`...) sans aucun garde-fou de version. Ajout d'un `version_compare(GLPI_VERSION,
-  PLUGIN_ASSETSIGN_MAX_GLPI, '>')` explicite en tête de fonction — pas un
+  PLUGIN_ASSETSIGN_MAX_GLPI, '>')` explicite en tête de fonction : pas un
   `Plugin::isPluginActive('assetsign')` : cette même fonction est aussi nécessaire *pendant*
   `plugin:install` lui-même, avant que le plugin soit actif (une première version de ce correctif,
   basée sur `isPluginActive()`, cassait l'installation sur GLPI 11 avec « type de workflow inconnu
   (id=0) », `WorkflowTypeRegistry` n'étant alors jamais peuplée pendant l'installation).
 
 - **L'« état des lieux visuel » (repères de dommage) affichait toujours les 3 photos d'un
-  ordinateur portable, même pour un Téléphone** — trouvé en vérifiant en conditions réelles la
+  ordinateur portable, même pour un Téléphone** - trouvé en vérifiant en conditions réelles la
   parité fonctionnelle PC/téléphone (attribution complète avec signature électronique réelle sur
   un vrai Téléphone). La fiche affichait bien « Type : Téléphone » et l'onglet fonctionnait
   entièrement (marqueurs, signature, PDF), mais `DamageMarker::getViewImageFilenames()` renvoyait
@@ -631,25 +637,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests de rendu confirmant que les 3 menus `User::dropdown()` du plugin (délégation
   technicien/admin, auto-délégation bénéficiaire, destinataire de création manuelle) proposent
   effectivement d'autres comptes que celui connecté (`"right":"all"` dans le JSON de configuration
-  du widget, présent dans le HTML rendu) — aucun des trois n'était couvert jusqu'ici, ce qui a
+  du widget, présent dans le HTML rendu) : aucun des trois n'était couvert jusqu'ici, ce qui a
   laissé ce troisième site du même bug passer inaperçu depuis #122.
-- Tests de contenu pour `Pdf\MaintenancePdfBuilder::renderHtml()` — jusqu'ici seulement exercée
+- Tests de contenu pour `Pdf\MaintenancePdfBuilder::renderHtml()` - jusqu'ici seulement exercée
   indirectement via `Maintenance::createWithChecklist()` (qui vérifie qu'un `Document` est bien
   attaché, jamais ce que le HTML rendu contient réellement). Vérifie, à la même granularité que
   `AssetsignTest` pour `HandoverPdfBuilder::renderHtml()`, la présence conditionnelle des points de
   contrôle renseignés, du bloc QR code (`show_qr_code`), de la section état des lieux visuel
   (`enable_damage_annotation`) et de la zone de signature (`enable_maintenance_signature`).
 - `Security\AssetAssignmentGuard`, extraite de `front/assign_user_asset.php` pour rendre testable en
-  PHPUnit contre de vraies fixtures (entité/matériel/session) la logique de garde de ce front —
+  PHPUnit contre de vraies fixtures (entité/matériel/session) la logique de garde de ce front -
   itemtype restreint à la famille `CommonDBTM` (faux positif tainted-object-instantiation déjà revu,
   cf. ARCHITECTURE.md) puis `can($items_id, UPDATE)` (même garde-fou de ségrégation par entité que
   `Assetsign::createManual()`). Même motif que `Security\OpcacheResetGuard`, comportement du front
   inchangé, purement une extraction.
-- Tests pour `Profile::install()`/`uninstall()` — aucun test dédié jusqu'ici. Couvre la nuance
+- Tests pour `Profile::install()`/`uninstall()` - aucun test dédié jusqu'ici. Couvre la nuance
   documentée directement dans la classe : un droit opérationnel (Admin/Technician) n'est écrit qu'à
   la création de la ligne et respecte une révocation manuelle sur une réinstallation ultérieure,
   alors que Super-Admin est toujours réinitialisé à tous les droits à chaque exécution.
-- Tests pour `Pdf\SignatureStamper::apply()` — aucun test direct jusqu'ici (`SignControllerTest` ne
+- Tests pour `Pdf\SignatureStamper::apply()` - aucun test direct jusqu'ici (`SignControllerTest` ne
   couvre que la garde d'autorisation, jamais le flux de signature réel ; les assertions de contenu
   PDF existantes passent toutes par `HandoverPdfBuilder::renderHtml()` directement). Vérifie
   l'écriture réelle du fichier signé dans `GLPI_TMP_DIR`, la correspondance du hash SHA-256 avec le
@@ -661,7 +667,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 - **Rapport de sécurité 2.6.0, traité intégralement** : correctifs sur la délégation de signature
-  (validation serveur du délégué — entité/statut actif — jusque-là vérifiée seulement côté Twig ;
+  (validation serveur du délégué : entité/statut actif : jusque-là vérifiée seulement côté Twig ;
   interdiction de re-délégation en chaîne B→C→D en auto-délégation) et 10 failles MEDIUM + 2 LOW
   héritées de la 2.5.0 jamais corrigées : contrôles de droit READ manquants sur les onglets
   Attributions/Maintenance/Passeport/Config/Mouvements, restriction d'entité manquante sur
@@ -669,7 +675,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `Assetsign::showForUser()`/`PassportEvent::showForUser()`, XSS stocké potentiel via le contrat/la
   charte non purifiés avant rendu PDF (`RichText::getSafeHtml()`), schéma d'URL non validé sur
   `charter_url`, et une possibilité de déni de service sur le jeton de signature (un tiers
-  authentifié pouvait épuiser la limite de tentatives d'un lien qui ne lui appartenait pas —
+  authentifié pouvait épuiser la limite de tentatives d'un lien qui ne lui appartenait pas -
   `Token::recordAttempt()` séparé de `Token::validate()`, ne compte plus que les accès réellement
   autorisés).
 
@@ -686,21 +692,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Passeport environnemental (empreinte de fabrication)** (issue #80, cf. ROADMAP.md V3) : amorce du
   volet RSE sur le Passeport matériel, activable par entité (`enable_environmental_passport`, défaut
-  désactivé — nouvel onglet « Passeport environnemental » de la configuration). Nouvelle table dédiée
+  désactivé : nouvel onglet « Passeport environnemental » de la configuration). Nouvelle table dédiée
   `glpi_plugin_assetsign_environmentaldatas` (1-vers-1 `itemtype`/`items_id`, même patron que
   `ResidualValue`/`Movement`) : empreinte de fabrication en kg CO2-eq, source (constructeur / API
-  externe dédiée / saisie manuelle) et niveau de confiance (élevé/moyen/faible, badge coloré — même
+  externe dédiée / saisie manuelle) et niveau de confiance (élevé/moyen/faible, badge coloré : même
   convention que `Movement::getStatusColor()`), tous nullable, jamais de valeur par défaut. Formulaire
   de saisie manuelle sur l'onglet Passeport matériel (droit `UPDATE`), absence explicite tant que rien
   n'est saisi. **Recherche menée avant l'implémentation** (commentaire posté sur l'issue #80) : l'API
   publique Boavizta (piste notée dans ROADMAP.md, section « Envisagé ») n'expose, pour les
   ordinateurs/portables, que 2 « archétypes » génériques par catégorie (moyennes "pro"/"perso"),
   jamais une valeur propre à un modèle réel, et rien dans GLPI ne permet de choisir objectivement
-  entre les deux — l'afficher comme la donnée de fabrication de CE matériel aurait été une donnée
+  entre les deux : l'afficher comme la donnée de fabrication de CE matériel aurait été une donnée
   inventée, contraire au principe fondateur du plugin. **Scope réduit à la saisie manuelle uniquement
   dans cette version** en conséquence : le champ `source` garde ses 3 valeurs (pour ne pas fermer la
   porte à une vraie intégration future par modèle exact), mais aucun appel réseau ni bouton
-  « Rechercher automatiquement » dans cette version — la source trace d'où le technicien tient le
+  « Rechercher automatiquement » dans cette version : la source trace d'où le technicien tient le
   chiffre (fiche constructeur, outil externe consulté à la main, estimation propre), pas un mécanisme
   d'automatisation.
 
@@ -708,19 +714,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Tests pour `Api\MovementFormController` et `Api\PassportBackfillController` — c'étaient les
+- Tests pour `Api\MovementFormController` et `Api\PassportBackfillController` - c'étaient les
   deux seuls contrôleurs de la famille `Api\*Controller` (aux côtés d'`AssetsignFormController`,
   `MaintenanceFormController`, `ResidualValueFormController`, `QrLabelController`,
   `SignController`, tous déjà testés) sans test dédié couvrant leur propre logique de garde
   (itemtype valide, matériel/utilisateur trouvable et lisible par l'utilisateur courant).
 - `Security\OpcacheResetGuard`, extraite de `front/opcache_reset.php` pour rendre testable en
   PHPUnit la logique d'autorisation (liste blanche d'IP + comparaison de jeton en temps constant)
-  de ce point d'entrée — le seul déjà visé par une faille réelle (revue de sécurité marketplace
+  de ce point d'entrée : le seul déjà visé par une faille réelle (revue de sécurité marketplace
   GLPI, low, #98) et qui n'avait jusqu'ici aucun test de non-régression. Comportement du front
   inchangé, purement une extraction.
 
 - **Délégation de la signature de restitution** (issue #115) : un document en attente de signature
-  (Attribution/Restitution/Don/Vente/Destruction, bénéficiaire **interne** uniquement — un
+  (Attribution/Restitution/Don/Vente/Destruction, bénéficiaire **interne** uniquement : un
   bénéficiaire externe n'a de toute façon aucun flux de signature à distance, cf.
   `Assetsign::launchWorkflow()`) peut désormais être délégué à un autre compte GLPI existant, pour
   ne plus bloquer le processus en cas d'absence prolongée (congés, arrêt maladie, départ...). Deux
@@ -735,7 +741,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   bénéficiaire d'origine (`users_id`) n'est jamais modifié, l'historique natif GLPI capture chaque
   délégation (`Assetsign::delegateSignatureTo()`, même mécanisme que `cancelRequest()`). La
   délégation régénère systématiquement le jeton de signature : l'ancien lien (déjà envoyé au
-  bénéficiaire d'origine) devient invalide dans le même mouvement — c'est le seul mécanisme de
+  bénéficiaire d'origine) devient invalide dans le même mouvement : c'est le seul mécanisme de
   « révocation » retenu (plus simple qu'un état actif/inactif vérifié à chaque accès), un
   administrateur pouvant rendre la main au bénéficiaire d'origine via `Assetsign::revokeDelegation()`
   (bouton « Révoquer » sur la fiche). `SignController::assertCurrentUserIsAuthorizedSigner()`
@@ -748,11 +754,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   lien de signature par e-mail, dans les 5 langues déjà supportées par le plugin.
 
 - **Kits/accessoires avec contrôle automatique au retour** (issue #83, cf. ROADMAP.md tableau V3
-  et `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` — un GROUPE nommé et réutilisable
+  et `docs/design/ADR-passeport-v1.md`) : nouveau catalogue `Kit` - un GROUPE nommé et réutilisable
   d'accessoires censés voyager ensemble avec une remise (ex: « Kit ordinateur portable standard » =
   Chargeur + Sacoche + Souris). Même motif exact que `ChecklistItem` (issue #74) plutôt qu'un
   mécanisme parallèle : dropdown standard GLPI (CRUD/recherche/droits génériques gratuits), la
-  composition du kit (`accessories_id`) stockée en JSON directement sur la ligne du catalogue —
+  composition du kit (`accessories_id`) stockée en JSON directement sur la ligne du catalogue -
   volontairement **pas** une nouvelle table pivot, un Kit n'ayant qu'une seule caractéristique
   propre (sa composition), contrairement à `AssetsignAccessory` qui porte en plus une quantité et
   un commentaire PROPRES À CHAQUE remise. Nouveau champ `plugin_assetsign_kits_id` sur `Assetsign`
@@ -761,19 +767,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   tant que la fiche reste modifiable (`Assetsign::updateKit()`, même garde `isStillEditable()` que
   `addAccessory()`/`updateVenteDetails()`). Le kit assigné à l'Attribution est reporté
   **automatiquement** sur la Restitution créée ensuite pour le même matériel
-  (`Assetsign::resolveKitForAutomaticCreation()`, appelée depuis `createAssetsign()`) — un simple
+  (`Assetsign::resolveKitForAutomaticCreation()`, appelée depuis `createAssetsign()`) : un simple
   report d'une donnée déjà réellement saisie, jamais une invention, même principe que
-  `writeDecommissionDateIfMissing()` (date de réforme automatique) — reste corrigeable ensuite par
+  `writeDecommissionDateIfMissing()` (date de réforme automatique) : reste corrigeable ensuite par
   un technicien. Cœur de la détection automatique : `Kit::computeCompleteness()`, une comparaison
   PURE (aucun accès base, testée unitairement pour les cas complet/un manquant/tout manquant/aucun
   kit assigné) entre les accessoires ATTENDUS par le kit et ceux RÉELLEMENT enregistrés sur la
-  Restitution (`AssetsignAccessory`, déjà existant — aucune nouvelle saisie requise), par simple
+  Restitution (`AssetsignAccessory`, déjà existant : aucune nouvelle saisie requise), par simple
   PRÉSENCE d'accessoire, jamais par quantité. Affiché à deux endroits : sur la fiche Assetsign
   elle-même (section « Kit d'accessoires », à côté des accessoires) et, PUREMENT calculé à
   l'affichage comme le résumé de checklist qualité (`PassportEvent::attachChecklistSummaries()`),
   en badge coloré fusionné dans la frise du Passeport matériel/utilisateur sur l'événement de
   Restitution (`PassportEvent::attachKitSummaries()`, batché en 4 requêtes au total pour toute la
-  frise, jamais une par événement affiché — même souci de performance documenté dans l'ADR) : vert
+  frise, jamais une par événement affiché : même souci de performance documenté dans l'ADR) : vert
   si complet, orange si un ou plusieurs accessoires manquent, rouge si aucun accessoire du kit
   n'est revenu (perte totale, sévérité volontairement distincte du gris « pas encore rempli » de la
   checklist qualité). Absent (aucun badge) si aucun kit n'est assigné à la Restitution, ou si le
@@ -784,28 +790,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `docs/design/ADR-passeport-v1.md`) : troisième indicateur en tête du Passeport matériel,
   après le score de santé et la valeur résiduelle dont il dépend explicitement. Moteur de
   RÈGLES SIMPLE à seuils, explicitement PAS du machine learning (la roadmap le précise :
-  "architecture prête pour de l'IA plus tard sans y aller maintenant") — deux règles
+  "architecture prête pour de l'IA plus tard sans y aller maintenant") : deux règles
   indépendantes, chacune avec son libellé et sa raison explicite, calculées à l'affichage
   (`PassportEvent::getDecisionAidRecommendations()`), jamais persistées ni mises en cache,
   exactement comme le score de santé et la valeur résiduelle : « Prévoir un remplacement »
   (score de santé sous le seuil « Vigilance » déjà réglable,
-  `Config::health_score_warning_threshold` — réutilisé tel quel, aucun second réglage
+  `Config::health_score_warning_threshold` - réutilisé tel quel, aucun second réglage
   redondant) et « Réévaluer l'usage » (valeur résiduelle sous un pourcentage réglable du prix
   d'achat d'origine, nouveau réglage `Config::residual_value_low_threshold_percent`, seul
   nouveau seuil introduit par cette PR). Chaque règle exige que sa propre donnée source soit
   réellement disponible (score de santé calculable, valeur résiduelle ET prix d'achat
-  d'origine tous deux connus) — jamais une recommandation inventée à partir d'une donnée
+  d'origine tous deux connus) : jamais une recommandation inventée à partir d'une donnée
   manquante ou d'une fonctionnalité désactivée. Plusieurs règles déclenchées simultanément :
-  toutes affichées, jamais une seule masquant les autres — un vrai outil d'aide à la décision
+  toutes affichées, jamais une seule masquant les autres : un vrai outil d'aide à la décision
   ne doit jamais cacher un facteur contributif. Nouvel onglet dédié « Aide à la décision » de
   la page de configuration (`Config::enable_decision_aid`, activé par défaut), nouveau bloc
   d'alertes colorées (Tabler `alert-danger`/`alert-warning`) sur l'onglet Passeport matériel,
-  sibling visuel du score de santé et de la valeur résiduelle — silencieux (aucun bloc
+  sibling visuel du score de santé et de la valeur résiduelle : silencieux (aucun bloc
   affiché) quand rien n'est à signaler ou que les deux indicateurs sources sont indisponibles,
   même convention que ces deux blocs. Aucune nouvelle table : `getDecisionAidRecommendations()`
   reste le seul point d'entrée consulté par `showForItem()`, de sorte qu'un futur moteur
   différent (modèle entraîné, appel à un service externe...) pourrait la remplacer sans
-  toucher à l'affichage ni aux deux indicateurs sources — "architecture prête pour l'IA" au
+  toucher à l'affichage ni aux deux indicateurs sources - "architecture prête pour l'IA" au
   sens de la roadmap, sans construire d'abstraction supplémentaire par anticipation.
 
 ## [2.5.0] - 2026-08-30
@@ -813,7 +819,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Fin de vie structurée : destruction (prestataire/certificat) et don (organisme/justificatif)**
-  (issue #78, dernière partie de "fin de vie structurée" — la date de réforme automatique était déjà
+  (issue #78, dernière partie de "fin de vie structurée" - la date de réforme automatique était déjà
   livrée le 2026-08-19, cf. entrée correspondante ci-dessous dans l'historique) : nouveau type
   `Assetsign::TYPE_DESTRUCTION` (5), avec le même traitement complet que Don/Vente (déclenchement
   manuel via `createManual()`, déclenchement automatique par changement d'État configurable
@@ -823,12 +829,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   dédiée. Prestataire (Destruction) et organisme (Don) stockés dans deux nouvelles tables dédiées
   1-vers-1 avec `Assetsign` (`DestructionDetails`/`DonDetails`, même motif exact que `VenteDetails`
   déjà en place pour le prix de vente), éditables après coup via `Assetsign::updateDestructionDetails()`/
-  `updateDonDetails()` — nécessaire pour une fiche déclenchée automatiquement par changement d'État,
+  `updateDonDetails()` - nécessaire pour une fiche déclenchée automatiquement par changement d'État,
   où ni le prestataire ni l'organisme ne sont connus au moment de la création (même logique déjà
   appliquée au prix de la Vente). Certificat de destruction et justificatif de don : upload de fichier
   simple (`<input type="file">`), attaché en tant que Document natif GLPI directement sur la fiche
   Assetsign elle-même (`Assetsign::attachUploadedDocument()`, nouvelle méthode reprenant exactement le motif
-  déjà utilisé par `Movement::attachDocument()`) — visible depuis l'onglet Documents natif de la fiche,
+  déjà utilisé par `Movement::attachDocument()`) : visible depuis l'onglet Documents natif de la fiche,
   sans nouvelle table de stockage de fichiers. Le prix/acheteur/documents de la Vente n'étaient PAS
   dans le périmètre de cette PR : déjà couverts (prix via `VenteDetails`, acheteur via `users_id`),
   cf. ROADMAP.md qui avait explicitement restreint le périmètre restant de l'issue #78 à
@@ -998,43 +1004,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Termine le nettoyage d'affichage « remise » → « Attribution »** amorcé par la v2.2.1 : cette dernière avait renommé le mot « Assetsign » en « Attribution », mais avait délibérément laissé de côté plusieurs chaînes utilisant encore le mot français « remise » pour ce même concept (dette d'une migration `remise` → `assetsign` incomplète depuis la v2.0.0), pour rester strictement dans le périmètre du mot « Assetsign » et ne pas risquer de collision avec le renommage de classe `Assetsign` → `Remise` en cours sur la branche `dev` (toujours non fusionné, toujours non impacté par ce correctif). « Attribution » étant désormais le mot établi pour ce concept côté utilisateur, ce correctif aligne les chaînes restantes sur la même convention. **Renommage d'affichage uniquement** — aucun identifiant de code touché (classes, namespace, méthodes, tables, clé de domaine gettext).
+- **Termine le nettoyage d'affichage « remise » → « Attribution »** amorcé par la v2.2.1 : cette dernière avait renommé le mot « Assetsign » en « Attribution », mais avait délibérément laissé de côté plusieurs chaînes utilisant encore le mot français « remise » pour ce même concept (dette d'une migration `remise` → `assetsign` incomplète depuis la v2.0.0), pour rester strictement dans le périmètre du mot « Assetsign » et ne pas risquer de collision avec le renommage de classe `Assetsign` → `Remise` en cours sur la branche `dev` (toujours non fusionné, toujours non impacté par ce correctif). « Attribution » étant désormais le mot établi pour ce concept côté utilisateur, ce correctif aligne les chaînes restantes sur la même convention. **Renommage d'affichage uniquement** - aucun identifiant de code touché (classes, namespace, méthodes, tables, clé de domaine gettext).
   - Libellés de type (`Accessory::getTypeName()`, `Template::getTypeName()`, recherche « Type d'attribution » sur `Assetsign`/`Template`/`NotificationTargetAssetsign`), texte semé à l'installation d'un gabarit par défaut.
   - Message d'erreur (matériel sans utilisateur assigné), description des 2 CronTask et des 2 commandes CLI équivalentes, message de relance impossible sur une fiche déjà signée/expirée.
   - Nom de l'événement de notification « Nouvelle attribution de matériel » (Administration > Notifications) et libellé du tag `##assetsign.type##`.
-  - Libellé de type et en-têtes du PDF de la fiche d'Attribution (`Workflow\HandoverType`) — `getCanonicalLabel()` reste volontairement non traduit (utilisé comme nom de Document GLPI, indépendant de la langue de qui a déclenché l'action, cf. le commentaire de `Assetsign::getCanonicalTypeLabel()`), mais suit la même convention de mot.
+  - Libellé de type et en-têtes du PDF de la fiche d'Attribution (`Workflow\HandoverType`) - `getCanonicalLabel()` reste volontairement non traduit (utilisé comme nom de Document GLPI, indépendant de la langue de qui a déclenché l'action, cf. le commentaire de `Assetsign::getCanonicalTypeLabel()`), mais suit la même convention de mot.
   - Titre de la page de signature, textes d'aide de la page de Configuration (x4 : durée de validité, champ Observations, fiche de maintenance, rétention Passeport matériel), message de création automatique sur la fiche utilisateur, message « aucune attribution » sur l'onglet matériel.
-  - `locales/*.po` (5 langues) + `assetsign.pot`, recompilés en `.mo` — plusieurs de ces chaînes n'avaient en réalité **jamais été traduites dans aucune langue** (msgid orphelins d'une étape de nommage encore plus ancienne, « assetsign » au lieu de « remise » ou « attribution » — dette antérieure à ce correctif, qui faisait retomber silencieusement l'affichage sur le texte français brut dans les 4 langues non françaises), corrigé au passage en réutilisant le mot « Attribution » déjà établi par langue (`Attribution`/`Attributions` en anglais et français, `Zuweisung`/`Zuweisungen` en allemand, `Atribución`/`Atribuciones` en espagnol, `Attribuzione`/`Attribuzioni` en italien). Une entrée orpheline déjà identifiée et volontairement laissée par la v2.2.1 (l'ancien message mentionnant l'onglet « Assetsigns ») n'a pas été retouchée — même raison, nettoyage séparé.
+  - `locales/*.po` (5 langues) + `assetsign.pot`, recompilés en `.mo` - plusieurs de ces chaînes n'avaient en réalité **jamais été traduites dans aucune langue** (msgid orphelins d'une étape de nommage encore plus ancienne, « assetsign » au lieu de « remise » ou « attribution » : dette antérieure à ce correctif, qui faisait retomber silencieusement l'affichage sur le texte français brut dans les 4 langues non françaises), corrigé au passage en réutilisant le mot « Attribution » déjà établi par langue (`Attribution`/`Attributions` en anglais et français, `Zuweisung`/`Zuweisungen` en allemand, `Atribución`/`Atribuciones` en espagnol, `Attribuzione`/`Attribuzioni` en italien). Une entrée orpheline déjà identifiée et volontairement laissée par la v2.2.1 (l'ancien message mentionnant l'onglet « Assetsigns ») n'a pas été retouchée : même raison, nettoyage séparé.
   - **Vérifié en conditions réelles** sur l'environnement Docker de test (GLPI 11.0.8), en français et en anglais : les 10 onglets de la page Configuration (Général/Attribution/Restitution/Don/Vente/Réforme/Compléments/Maintenance/Passeport matériel/Score de santé), un cycle complet attribution → signature → restitution → signature en tant que Technicien (profil non admin), création et signature d'une fiche de don et d'une fiche de vente, changement d'État déclenchant la réforme (`Infocom::decommission_date`) toujours fonctionnel après ce correctif, frise du Passeport matériel et onglet Passeport utilisateur affichant les bons libellés pour les 5 événements. Aucune erreur PHP/SQL dans les journaux GLPI pendant toute la session. Suite PHPUnit (175 tests), phpcs et phpstan au vert.
 
 ## [2.2.1] - 2026-08-19
 
 ### Changed
 
-- **Renommage d'affichage « Assetsign » → « Attribution »** pour le type de fiche (remise/prêt de matériel) : le mot anglais « Assetsign » restait visible tel quel dans une interface par ailleurs en français (ex: l'onglet de la page Configuration, capture d'écran fournie par l'utilisateur — « Général | Assetsign | Restitution | Don | Vente | ... »), sans traduction française pour ce mot forgé. Choix retenu par l'utilisateur parmi trois options proposées (Assignation / Prêt / Attribution). **Renommage d'affichage uniquement** : aucun identifiant de code touché (classes, namespace `GlpiPlugin\Assetsign`, méthodes, tables, clé de domaine gettext `assetsign`) — indépendant du renommage de classe `Assetsign` → `Remise` en cours sur la branche `dev` (non fusionné, non impacté par ce changement).
+- **Renommage d'affichage « Assetsign » → « Attribution »** pour le type de fiche (remise/prêt de matériel) : le mot anglais « Assetsign » restait visible tel quel dans une interface par ailleurs en français (ex: l'onglet de la page Configuration, capture d'écran fournie par l'utilisateur : « Général | Assetsign | Restitution | Don | Vente | ... »), sans traduction française pour ce mot forgé. Choix retenu par l'utilisateur parmi trois options proposées (Assignation / Prêt / Attribution). **Renommage d'affichage uniquement** : aucun identifiant de code touché (classes, namespace `GlpiPlugin\Assetsign`, méthodes, tables, clé de domaine gettext `assetsign`) : indépendant du renommage de classe `Assetsign` → `Remise` en cours sur la branche `dev` (non fusionné, non impacté par ce changement).
   - Onglet de la page Configuration (`config_form.html.twig`), titre de fiche (`assetsign_form.html.twig`), libellé + compteur de l'onglet sur un matériel/utilisateur (`Assetsign::getTypeName()`/`getTabNameForItem()`), message d'erreur de la page de signature (« Attribution introuvable. »), les trois cartes de tableau de bord par statut (`hook.php` : en attente de signature / signées / expirées), texte d'aide de la Configuration (boutons Don/Vente, onglet Réforme, description du Passeport matériel), pied de page du PDF de remise (« Attribution #N »), confirmation de relance groupée, commentaires des deux tâches planifiées concernées (Setup > Actions automatiques).
-  - Traductions mises à jour dans les 5 langues (`locales/*.po` + `.pot`, recompilées en `.mo` via `msgfmt`) — chaque langue traduit désormais proprement le concept d'« Attribution » (ex: `Attribution`/`Attributions` en anglais, `Atribución`/`Atribuciones` en espagnol, `Zuweisung`/`Zuweisungen` en allemand, `Attribuzione`/`Attribuzioni` en italien) plutôt que d'hériter du mot « Handover »/équivalent utilisé jusqu'ici pour ce même concept — les 5 langues convergent maintenant sur un seul mot cohérent.
-  - **Le nom de marque du plugin lui-même, « Assetsign & signature » (et ses variantes, ex: `AssetSign — Signature électronique`, l'objet e-mail de test), est resté volontairement inchangé** : décision produit distincte, non demandée ici.
-  - **Deux entrées de traduction déjà orphelines avant ce changement** (ancien message de création manuelle mentionnant `l'onglet "Assetsigns"`, remplacé depuis par un lien direct — cf. « Réalisé récemment (2026-08-05) » ci-dessous) laissées telles quelles : aucun code ne les produit plus, un nettoyage général des chaînes orphelines reste une tâche à part (déjà menée par le passé, cf. TROUBLESHOOTING.md).
+  - Traductions mises à jour dans les 5 langues (`locales/*.po` + `.pot`, recompilées en `.mo` via `msgfmt`) : chaque langue traduit désormais proprement le concept d'« Attribution » (ex: `Attribution`/`Attributions` en anglais, `Atribución`/`Atribuciones` en espagnol, `Zuweisung`/`Zuweisungen` en allemand, `Attribuzione`/`Attribuzioni` en italien) plutôt que d'hériter du mot « Handover »/équivalent utilisé jusqu'ici pour ce même concept : les 5 langues convergent maintenant sur un seul mot cohérent.
+  - **Le nom de marque du plugin lui-même, « Assetsign & signature » (et ses variantes, ex: `AssetSign : Signature électronique`, l'objet e-mail de test), est resté volontairement inchangé** : décision produit distincte, non demandée ici.
+  - **Deux entrées de traduction déjà orphelines avant ce changement** (ancien message de création manuelle mentionnant `l'onglet "Assetsigns"`, remplacé depuis par un lien direct : cf. « Réalisé récemment (2026-08-05) » ci-dessous) laissées telles quelles : aucun code ne les produit plus, un nettoyage général des chaînes orphelines reste une tâche à part (déjà menée par le passé, cf. TROUBLESHOOTING.md).
   - Vérifié en conditions réelles sur l'environnement Docker de test (GLPI 11.0.8) : onglet de la page Configuration affichant bien « Attribution » à l'emplacement exact de la capture d'écran fournie, onglet d'un matériel affichant « Attributions » avec son compteur, aucune occurrence résiduelle du mot « Assetsign » dans le HTML rendu en dehors de « Assetsign & signature » (marque, volontairement conservée).
 
 ## [2.2.0] - 2026-08-19
 
 ### Added
 
-- **Date de réforme automatique sur changement d'État** (cf. ROADMAP.md, issue #78) : nouveau groupe d'États configurable par entité (`Config::getReformeStates()`, onglet « Réforme » de la configuration), même mécanisme que les déclenchements Assetsign/Restitution/Don/Vente déjà existants. Quand le matériel passe dans l'un de ces États, le plugin écrit désormais automatiquement `Infocom::decommission_date` (champ natif GLPI, libellé « Réforme ») à la date du jour — la frise du Passeport matériel l'affichait déjà en lecture seule (`PassportEvent::getInfocomPseudoEvents()`), elle n'était simplement jamais renseignée sans saisie manuelle jusqu'ici. Effet de bord **pur** sur Infocom : aucune fiche Assetsign créée, aucun nouveau type d'événement Passeport (décision documentée dans le commentaire de l'utilisateur sur l'issue #78 — pas besoin de dupliquer une notion de « fiche » pour une simple date déjà native à GLPI). Une date de réforme déjà renseignée (saisie manuelle ou déclenchement précédent) n'est **jamais écrasée**. `Infocom::canApplyOn()` respecté (aucune écriture pour un itemtype retiré des types compatibles Infocom au niveau du cœur GLPI), Infocom créé s'il n'existait pas encore pour ce matériel. Un même État peut être configuré à la fois pour la réforme et un autre déclenchement (ex: Vente) : les deux mécanismes sont indépendants et se déclenchent tous les deux pour le même changement. Vérifié en conditions réelles sur l'environnement Docker de test : script contre le vrai noyau GLPI (vrai hook `item_update`, pas un appel direct à la logique de déclenchement) **et** flux HTTP complet (login réel, création d'un matériel et changement d'État via `front/computer.form.php` comme un vrai administrateur, confirmation en base et dans la frise du Passeport matériel via `ajax/common.tabs.php`) — les deux confirment l'écriture de la date du jour et la non-altération d'une date déjà saisie manuellement.
+- **Date de réforme automatique sur changement d'État** (cf. ROADMAP.md, issue #78) : nouveau groupe d'États configurable par entité (`Config::getReformeStates()`, onglet « Réforme » de la configuration), même mécanisme que les déclenchements Assetsign/Restitution/Don/Vente déjà existants. Quand le matériel passe dans l'un de ces États, le plugin écrit désormais automatiquement `Infocom::decommission_date` (champ natif GLPI, libellé « Réforme ») à la date du jour : la frise du Passeport matériel l'affichait déjà en lecture seule (`PassportEvent::getInfocomPseudoEvents()`), elle n'était simplement jamais renseignée sans saisie manuelle jusqu'ici. Effet de bord **pur** sur Infocom : aucune fiche Assetsign créée, aucun nouveau type d'événement Passeport (décision documentée dans le commentaire de l'utilisateur sur l'issue #78 : pas besoin de dupliquer une notion de « fiche » pour une simple date déjà native à GLPI). Une date de réforme déjà renseignée (saisie manuelle ou déclenchement précédent) n'est **jamais écrasée**. `Infocom::canApplyOn()` respecté (aucune écriture pour un itemtype retiré des types compatibles Infocom au niveau du cœur GLPI), Infocom créé s'il n'existait pas encore pour ce matériel. Un même État peut être configuré à la fois pour la réforme et un autre déclenchement (ex: Vente) : les deux mécanismes sont indépendants et se déclenchent tous les deux pour le même changement. Vérifié en conditions réelles sur l'environnement Docker de test : script contre le vrai noyau GLPI (vrai hook `item_update`, pas un appel direct à la logique de déclenchement) **et** flux HTTP complet (login réel, création d'un matériel et changement d'État via `front/computer.form.php` comme un vrai administrateur, confirmation en base et dans la frise du Passeport matériel via `ajax/common.tabs.php`) : les deux confirment l'écriture de la date du jour et la non-altération d'une date déjà saisie manuellement.
 
 ## [2.1.0] - 2026-08-17
 
 ### Added
 
-- **Droits par défaut pour Admin et Technician** : une installation fraîche n'accordait de droits sur AssetSign qu'au profil Super-Admin — même Technician, qui traite les remises au quotidien, n'avait aucun accès tant qu'un Super-Admin n'allait pas les accorder manuellement. Admin et Technician reçoivent désormais automatiquement un droit d'usage courant (consulter/créer/modifier des remises et des fiches de maintenance, pas de suppression ni de configuration) à l'installation. Un profil déjà installé n'est jamais modifié rétroactivement — un admin qui personnalise ou révoque ce droit voit son choix conservé lors des futures mises à jour du plugin.
+- **Droits par défaut pour Admin et Technician** : une installation fraîche n'accordait de droits sur AssetSign qu'au profil Super-Admin : même Technician, qui traite les remises au quotidien, n'avait aucun accès tant qu'un Super-Admin n'allait pas les accorder manuellement. Admin et Technician reçoivent désormais automatiquement un droit d'usage courant (consulter/créer/modifier des remises et des fiches de maintenance, pas de suppression ni de configuration) à l'installation. Un profil déjà installé n'est jamais modifié rétroactivement : un admin qui personnalise ou révoque ce droit voit son choix conservé lors des futures mises à jour du plugin.
 - **Habillage des notifications e-mail** : les 5 notifications du plugin (nouveau document, relance, signé, expiré, sur le point d'expirer) étaient en HTML brut sans mise en forme. Elles utilisent désormais un gabarit visuel sobre (bandeau, nom de l'entreprise si renseigné, pied de page), cohérent avec le soin déjà apporté aux fiches PDF. Sans logo (contrairement aux PDF) : les images encodées en data URI sont trop souvent bloquées par les clients de messagerie pour être fiables dans un e-mail.
 - Documentation : nouvelle section « Accorder les droits aux profils qui en ont besoin » dans INSTALLATION.md.
 
 ### Fixed
 
-- **Message trompeur après une signature réussie** : `Token::validate()` vérifiait l'invalidité générique du jeton avant de vérifier s'il avait déjà été utilisé avec succès — un bénéficiaire qui rechargeait la page de signature juste après avoir signé (ou dont la connexion coupait pendant que le traitement serveur se terminait) voyait « Ce lien de signature n'est plus valide » au lieu du message correct « Ce document a déjà été traité ». Ordre des vérifications corrigé.
+- **Message trompeur après une signature réussie** : `Token::validate()` vérifiait l'invalidité générique du jeton avant de vérifier s'il avait déjà été utilisé avec succès : un bénéficiaire qui rechargeait la page de signature juste après avoir signé (ou dont la connexion coupait pendant que le traitement serveur se terminait) voyait « Ce lien de signature n'est plus valide » au lieu du message correct « Ce document a déjà été traité ». Ordre des vérifications corrigé.
 - **Date de vente non formatée** sur la fiche PDF : affichée au format ISO brut (`2026-08-17`) au lieu du format français utilisé partout ailleurs sur le même document (`17/08/2026`).
 
 ## [2.0.2] - 2026-08-17
@@ -1047,7 +1053,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   champs optionnels) : 9 emplacements sur 12 utilisaient un simple
   `trim(firstname . ' ' . realname)` sans repli sur le login, produisant une chaîne vide au lieu du
   nom d'utilisateur. Corrigé en réutilisant partout `formatUserName()` (PHP) ou un repli explicite
-  sur `user.name` (Twig) — le motif déjà utilisé correctement ailleurs dans la base de code
+  sur `user.name` (Twig) : le motif déjà utilisé correctement ailleurs dans la base de code
   (`Assetsign.php`, `Maintenance.php`, `NotificationTargetAssetsign.php`).
   - Découvert et confirmé sur un vrai document signé lors de la vérification exhaustive du plugin
     (fiche PDF affichait « Signataire : (normal@test.local) », nom manquant).
@@ -1064,10 +1070,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   mais renvoyaient tel quel le résultat de `parent::getMenuContent()`, qui peut légitimement valoir
   `false` (aucun menu à afficher pour cet utilisateur). Conséquence : `TypeError` non rattrapée dès le
   rendu du menu (`Html::generateMenuSession()`), qui plantait **toute page GLPI** pour n'importe quel
-  compte sans ces droits — y compris juste après la connexion. Corrigé en retournant `[]` au lieu de
+  compte sans ces droits : y compris juste après la connexion. Corrigé en retournant `[]` au lieu de
   `$menu` dans ce cas (équivalent falsy côté appelant, mais conforme au type déclaré).
   - Découvert lors d'un test de bout en bout avec un compte non-admin (profil « normal ») dans le
-    cadre de la vérification exhaustive post-renommage `assetsign` — non couvert par la suite
+    cadre de la vérification exhaustive post-renommage `assetsign` - non couvert par la suite
     PHPUnit existante (exécutée jusque-là uniquement avec un compte Super-Admin) ni par le premier
     cycle Playwright de la v2.0.0.
   - Suite complète re-vérifiée après correctif : 170 tests / 378 assertions vertes, aucune régression.
@@ -1078,7 +1084,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **BREAKING** : renommage complet de la clé technique du plugin, `remise` → `assetsign`, pour une
   diffusion à un public international ("remise" n'a aucun sens hors français, et peut même se
-  confondre avec "réduction"). Casse toute installation existante — aucune migration fournie
+  confondre avec "réduction"). Casse toute installation existante : aucune migration fournie
   (décision explicite : aucune installation connue en dehors de l'instance de test de ce dépôt).
   Réinstallation propre requise : désinstaller `remise`, installer `assetsign`.
   - Namespace PHP `GlpiPlugin\Remise` → `GlpiPlugin\Assetsign`, classe cœur `Remise` →
@@ -1092,7 +1098,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Manifeste marketplace `remise.xml` → `assetsign.xml`, dépôt GitHub et paquet Composer
     `remise-glpi` → `assetsign-glpi`.
   - Vocabulaire métier français (remise/restitution/don/vente comme types de fiche, distincts les
-    uns des autres) délibérément **non traduit** — seule la clé/marque du plugin change, pas les
+    uns des autres) délibérément **non traduit** - seule la clé/marque du plugin change, pas les
     mots français ordinaires qui décrivent chaque workflow.
   - Vérifié en conditions réelles avant publication : installation et activation propres sur une
     instance GLPI 11 fraîche (zéro erreur PHP), suite complète (170 tests, 378 assertions) verte,
@@ -1104,7 +1110,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - CI : le job `semgrep` tolérait silencieusement tout échec (`continue-on-error: true`), alors
-  qu'il fait partie des status checks requis sur `main` depuis la veille (v1.22.0) — dans les
+  qu'il fait partie des status checks requis sur `main` depuis la veille (v1.22.0) : dans les
   faits, ce statut "requis" ne bloquait rien de réel. Retiré, et les deux findings jusque-là
   masqués par cette tolérance corrigés pour de vrai : le script d'installation Trivy (`curl | sh`)
   remplacé par un téléchargement direct du binaire + vérification de checksum SHA256 officiel ; un
@@ -1115,11 +1121,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - CI : couverture de code réelle sur la suite PHPUnit (`pcov`, résumé affiché dans les logs de la
-  CI via `--coverage-text` — pas d'upload externe, aucun compte Codecov lié à ce dépôt). Nécessite
+  CI via `--coverage-text` - pas d'upload externe, aucun compte Codecov lié à ce dépôt). Nécessite
   `<source><include>` dans `phpunit.xml` (absent jusqu'ici, sans quoi PHPUnit échoue avec
   `failOnWarning="true"` plutôt que de simplement ignorer la couverture).
 
-Suite du rapprochement CI/CD avec le plugin jumeau Configuration-glpi-auto (v1.22.0) — corrige
+Suite du rapprochement CI/CD avec le plugin jumeau Configuration-glpi-auto (v1.22.0) : corrige
 cette fois deux angles morts découverts en creusant plus loin : un check "requis" qui ne l'était
 pas vraiment, et une couverture de tests jamais mesurée. Aucun changement de comportement du
 plugin lui-même. Un test end-to-end du flux de signature (Playwright) a été évalué mais reporté :
@@ -1136,7 +1142,7 @@ temps dédié.
   `docs/remise.xml`...), indépendamment du reste de la CI (ni PHP ni Docker/GLPI requis).
   Configuration yamllint dédiée (`.yamllint.yml`).
 - CI : exécution nocturne planifiée (`schedule: cron`) de `ci.yml`, en plus des déclenchements sur
-  push/PR — détecte une régression qui n'apparaîtrait qu'avec le temps (nouvelle image
+  push/PR : détecte une régression qui n'apparaîtrait qu'avec le temps (nouvelle image
   `glpi/glpi`, avisory de sécurité publié après coup sur une dépendance déjà mergée) sans attendre
   un prochain push.
 - CI : annulation automatique des exécutions en cours de la même branche/PR dès qu'un nouveau push

@@ -23,7 +23,7 @@ namespace GlpiPlugin\Assetsign;
  * anciens signataires (issue #224).
  *
  * Aucune dépendance dure : grcmanager est détecté à l'exécution (plugin actif, table et colonne
- * présentes) et sa table lue directement, en lecture seule, sans charger ses classes — comme
+ * présentes) et sa table lue directement, en lecture seule, sans charger ses classes : comme
  * grcmanager lit les campagnes de charte d'assetsign.
  */
 final class GrcmanagerCharter

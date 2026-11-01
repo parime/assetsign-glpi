@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Issue #142 : tableau de bord RSE du parc (entités actives) — empreinte de fabrication, impact
+ * Issue #142 : tableau de bord RSE du parc (entités actives) : empreinte de fabrication, impact
  * évité par le réemploi, âge et durée de vie, filières de fin de vie. Uniquement des données
  * réellement saisies, avec leur taux de couverture.
  */

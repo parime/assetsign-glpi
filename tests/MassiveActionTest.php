@@ -9,7 +9,7 @@ use MassiveAction;
 /**
  * Couvre les actions groupees "Relancer maintenant"/"Annuler la demande"
  * (getSpecificMassiveActions()/processMassiveActionsForOneItemtype()), cf.
- * TROUBLESHOOTING.md — jusqu'ici verifiees uniquement a la main (curl contre
+ * TROUBLESHOOTING.md : jusqu'ici verifiees uniquement a la main (curl contre
  * une vraie instance), jamais par une suite automatisee.
  *
  * Un MassiveAction est construit directement au stade 'process' (comme le
@@ -63,7 +63,7 @@ class MassiveActionTest extends AssetsignTestCase
         // Meme selection melangeant une remise encore en attente et une deja
         // signee : la seconde doit echouer en KO (sendReminderNow() leve une
         // RuntimeException, cf. Assetsign.php) SANS empecher la premiere de
-        // reussir malgre l'exception levee sur l'autre — c'est precisement le
+        // reussir malgre l'exception levee sur l'autre: c'est precisement le
         // comportement documente dans TROUBLESHOOTING.md.
         $results = $this->runMassiveAction('send_reminder', [$pending->getID(), $signed->getID()]);
 

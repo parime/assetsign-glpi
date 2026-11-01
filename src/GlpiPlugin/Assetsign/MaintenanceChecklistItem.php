@@ -42,7 +42,7 @@ class MaintenanceChecklistItem extends CommonDropdown
 
     /**
      * Rattache au fil d'Ariane de Maintenance (menu 'tools'), pas au secteur
-     * generique 'config' des intitules — meme raison que
+     * generique 'config' des intitules : meme raison que
      * Template::getSectorizedDetails(), mais sous Maintenance plutot que
      * Assetsign (les points de controle sont specifiques a la maintenance).
      */
@@ -162,7 +162,7 @@ class MaintenanceChecklistItem extends CommonDropdown
 
        // Installation existante (mise a jour) : le type 'integer' (et non
        // 'tinyint' brut) est necessaire pour que Migration::addField() pose
-       // vraiment un DEFAULT 0/NOT NULL — piege deja rencontre ailleurs dans
+       // vraiment un DEFAULT 0/NOT NULL : piege deja rencontre ailleurs dans
        // ce plugin (cf. TROUBLESHOOTING.md).
       if (!$DB->fieldExists($table, 'type')) {
           $migration->addField($table, 'type', 'integer', ['value' => self::TYPE_CHECKBOX]);

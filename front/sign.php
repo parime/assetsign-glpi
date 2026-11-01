@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Page de signature — connexion GLPI obligatoire (cf. Firewall::STRATEGY_AUTHENTICATED
+ * Page de signature: connexion GLPI obligatoire (cf. Firewall::STRATEGY_AUTHENTICATED
  * dans setup.php : sans session authentifiée, GLPI redirige vers la page de connexion
  * avant même que ce script ne s'exécute).
  * Une fois connecté, seul le bénéficiaire réel du document peut le consulter/signer
- * (cf. SignController::assertCurrentUserIsBeneficiary()) — la présence du jeton dans
+ * (cf. SignController::assertCurrentUserIsBeneficiary()) : la présence du jeton dans
  * l'URL ne suffit pas à elle seule.
  */
 
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && ($_GET['action'] ?? '') === 'pdf') {
 }
 
 // --- Reperes d'etat des lieux visuel + remarque libre, geres par le BENEFICIAIRE
-// lui-meme depuis cette page (avant de signer) — meme actions que
+// lui-meme depuis cette page (avant de signer) : meme actions que
 // front/damagemarker.php (reserve au technicien via un droit GLPI), mais
 // authentifiees par le jeton de signature + assertCurrentUserIsBeneficiary(),
 // pas par un droit GLPI que le beneficiaire n'a pas forcement. -------------------
@@ -172,7 +172,7 @@ try {
         // car c'est le contenu d'un PDF archive, cf. commentaire sur
         // getCanonicalTypeLabel()) : cette page-ci est une interface consultee en
         // direct par le beneficiaire, deja entierement traduite via __() ailleurs
-        // dans sign_page.html.twig (cf. le titre du navigateur et le <h1>) — y
+        // dans sign_page.html.twig (cf. le titre du navigateur et le <h1>) : y
         // laisser fuiter un texte fixe y aurait ete incoherent avec le reste.
         'page_title' => $data['is_cosigner']
             ? __('Contre-signature d\'attribution de matériel', 'assetsign')

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Issue #157 : tableau de suivi des départs — dossiers en cours (par défaut) ou tous, avec
+ * Issue #157 : tableau de suivi des départs : dossiers en cours (par défaut) ou tous, avec
  * l'avancement des signatures et les relances.
  */
 

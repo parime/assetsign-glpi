@@ -9,7 +9,7 @@ use GlpiPlugin\Assetsign\Maintenance;
  * Logique partagee par l'action "create" de front/maintenance.form.php :
  * validation de l'itemtype/du materiel cible (auparavant inline dans le
  * front, cf. TROUBLESHOOTING.md) puis delegation a
- * Maintenance::createWithChecklist() — meme motivation que
+ * Maintenance::createWithChecklist() : meme motivation que
  * Api\SignController/AssetsignFormController.
  *
  * InvalidArgumentException distinct des exceptions "metier" deja levees par

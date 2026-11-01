@@ -11,7 +11,7 @@ use InvalidArgumentException;
  * AssetsignFormController (cf. ROADMAP.md, point "etendre la couverture de
  * tests aux front/*.php") : chaque action postee par le formulaire, testee
  * directement sans passer par le vrai front/*.php (qui appelle Html::back()/
- * exit(), incompatible avec PHPUnit — cf. TROUBLESHOOTING.md).
+ * exit(), incompatible avec PHPUnit : cf. TROUBLESHOOTING.md).
  */
 class AssetsignFormControllerTest extends AssetsignTestCase
 {

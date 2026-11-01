@@ -7,7 +7,7 @@ use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 
 /**
- * Issue #223 : preparation de poste (masterisation) — points obligatoires, rattachement au
+ * Issue #223 : preparation de poste (masterisation) : points obligatoires, rattachement au
  * ticket du nouvel arrivant (suivi prive, statut inchange) et controle des photos jointes.
  */
 class MaintenancePreparationTest extends AssetsignTestCase

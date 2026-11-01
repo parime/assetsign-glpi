@@ -28,7 +28,7 @@
 {% endif %}
 
 <h1>{{ page_title }}</h1>
-<p class="meta">{{ __('Établie le %1$s — Référence assetsign n°%2$d', 'assetsign')|format(assetsign.date_creation|date('d/m/Y'), assetsign.id) }}</p>
+<p class="meta">{{ __('Établie le %1$s : Référence assetsign n°%2$d', 'assetsign')|format(assetsign.date_creation|date('d/m/Y'), assetsign.id) }}</p>
 
 <h2>{{ beneficiary_is_external|default(false) ? __('Bénéficiaire (externe, sans compte GLPI)', 'assetsign') : __('Bénéficiaire', 'assetsign') }}</h2>
 <table class="info-table">
@@ -57,7 +57,7 @@
 {% if accessories|length %}
 <h2>{{ __('Accessoires remis', 'assetsign') }}</h2>
 <ul class="accessories">
-    {% for a in accessories %}<li>{{ a.name }} &times; {{ a.quantity }}{% if a.comment %} — {{ a.comment }}{% endif %}</li>{% endfor %}
+    {% for a in accessories %}<li>{{ a.name }} &times; {{ a.quantity }}{% if a.comment %} - {{ a.comment }}{% endif %}</li>{% endfor %}
 </ul>
 {% endif %}
 
@@ -75,7 +75,7 @@
         <td>{{ [i.manufacturer, i.model]|filter(v => v)|join(' ')|default('-') }}</td>
         <td>{{ i.serial|default('-') }}</td>
         <td>{{ i.otherserial|default('-') }}</td>
-        {% if is_return_pdf %}<td>{{ return_labels[i.return_state|default(0)] }}{% if i.return_comment|default('') %} — {{ i.return_comment }}{% endif %}</td>{% endif %}
+        {% if is_return_pdf %}<td>{{ return_labels[i.return_state|default(0)] }}{% if i.return_comment|default('') %} - {{ i.return_comment }}{% endif %}</td>{% endif %}
     </tr>
     {% endfor %}
 </table>
@@ -134,7 +134,7 @@
 {# Pas de |raw ici volontairement : contrairement au contrat/charte (rediges par
    un administrateur de confiance via l'editeur riche du gabarit), ce champ est
    saisi librement par n'importe quel technicien ayant le droit de modification
-   sur la fiche — une population moins maitrisee, l'echappement automatique de
+   sur la fiche : une population moins maitrisee, l'echappement automatique de
    Twig s'applique donc normalement. "white-space: pre-line" (plutot qu'un
    filtre nl2br, absent de Twig par defaut) rend les sauts de ligne saisis par
    l'utilisateur sans avoir a produire du HTML depuis du texte brut. #}
@@ -166,18 +166,18 @@
         {% if delegated_users_id %}
         {# Delegation de signature (issue #115) : delegated_users_id>0 sur une
            fiche SIGNEE est ici une preuve suffisante qu'il s'agissait bien
-           d'une signature deleguee — cf. Assetsign::delegateSignatureTo(),
+           d'une signature deleguee : cf. Assetsign::delegateSignatureTo(),
            qui invalide systematiquement l'ancien jeton (celui du beneficiaire
            d'origine) des la delegation : seul le nouveau lien, envoye au
            delegue, peut aboutir a une signature. #}
         <p class="proof">
-            {{ __('Signature déléguée par %1$s le %2$s', 'assetsign')|format(delegated_by_name|default(beneficiary_name), delegation_date|date('d/m/Y')) }}{% if delegation_reason %} — {{ __('motif : %s', 'assetsign')|format(delegation_reason) }}{% endif %}
+            {{ __('Signature déléguée par %1$s le %2$s', 'assetsign')|format(delegated_by_name|default(beneficiary_name), delegation_date|date('d/m/Y')) }}{% if delegation_reason %} - {{ __('motif : %s', 'assetsign')|format(delegation_reason) }}{% endif %}
         </p>
         {% endif %}
     {% elseif beneficiary_is_external|default(false) %}
         {# Beneficiaire externe : aucune signature electronique possible (pas
            de compte GLPI pour se connecter), le document genere EST le
-           document final des sa creation — pas de ligne de signature vide qui
+           document final des sa creation : pas de ligne de signature vide qui
            laisserait croire qu'une signature reste a recueillir. #}
         <p>{{ __('Fait le %s', 'assetsign')|format(_now) }}</p>
     {% else %}
@@ -189,7 +189,7 @@
 {% if cosigner is defined and cosigner %}
 {# Signatures multiples (issue #143) : second bloc de signature, uniquement
    present sur le PDF final produit par SignatureStamper::applyCosignature()
-   une fois la contre-signature du responsable hierarchique obtenue — jamais
+   une fois la contre-signature du responsable hierarchique obtenue : jamais
    sur le PDF intermediaire signe par le seul beneficiaire (document_id_signed),
    ni sur une fiche qui ne requiert pas de contre-signature. #}
 <div class="signature-zone">
@@ -205,7 +205,7 @@
 <div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
 {% endif %}
 
-<div class="footer">{{ __('Attribution #%d — Document généré par GLPI (plugin assetsign)', 'assetsign')|format(assetsign.id) }}</div>
+<div class="footer">{{ __('Attribution #%d : Document généré par GLPI (plugin assetsign)', 'assetsign')|format(assetsign.id) }}</div>
 
 </body>
 </html>

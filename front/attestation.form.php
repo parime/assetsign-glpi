@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Issue #158 : réponse d'une personne à son attestation de détention — confirmer et signer, ou
+ * Issue #158 : réponse d'une personne à son attestation de détention : confirmer et signer, ou
  * signaler un écart (ticket ouvert à son nom). Consultation aussi pour les gestionnaires.
  */
 

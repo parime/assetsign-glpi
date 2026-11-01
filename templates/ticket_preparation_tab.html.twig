@@ -29,7 +29,7 @@
       {% else %}
         <div class="d-flex flex-wrap gap-2">
           {% for i in items %}
-            <a href="{{ i.url }}" class="btn btn-outline-primary"><i class="ti ti-checklist me-1"></i>{{ i.type }} — {{ i.name }}</a>
+            <a href="{{ i.url }}" class="btn btn-outline-primary"><i class="ti ti-checklist me-1"></i>{{ i.type }} - {{ i.name }}</a>
           {% endfor %}
         </div>
       {% endif %}

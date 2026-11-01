@@ -13,7 +13,7 @@ use RuntimeException;
  * de donnees seule ne permet pas de reconstituer un lien de signature valide.
  * Consequence assumee : le jeton brut ne peut jamais etre relu depuis la base.
  * Une relance ne "renvoie" donc pas l'ancien lien, elle en genere un nouveau
- * (l'ancien est invalide dans le meme mouvement) — c'est plus sûr et plus simple
+ * (l'ancien est invalide dans le meme mouvement) : c'est plus sûr et plus simple
  * que de conserver le jeton en clair.
  */
 class Token extends Compat\Base\TokenBase
@@ -61,7 +61,7 @@ class Token extends Compat\Base\TokenBase
            // Signatures multiples (issue #143) : un jeton "responsable" et un
            // jeton "beneficiaire" peuvent coexister pour la meme fiche
            // (l'historique du premier reste consultable) sans jamais
-           // s'authentifier l'un pour l'autre — c'est ce champ, pas
+           // s'authentifier l'un pour l'autre: c'est ce champ, pas
            // l'identite de la session, qui determine le role du signataire
            // courant (cf. SignController::assertCurrentUserIsAuthorizedSigner()).
            'for_cosigner'             => $forCosigner ? 1 : 0,
@@ -82,7 +82,7 @@ class Token extends Compat\Base\TokenBase
 
     /**
      * $forCosigner === null (par defaut) invalide TOUS les jetons de la
-     * fiche, quel que soit leur role — utilise par les transitions
+     * fiche, quel que soit leur role : utilise par les transitions
      * terminales (signature complete, expiration) ou plus aucun jeton ne
      * doit rester utilisable. Un role explicite (true/false) n'invalide que
      * les jetons de ce role, utilise par regenerateForAssetsign() ci-dessus
@@ -112,7 +112,7 @@ class Token extends Compat\Base\TokenBase
       // Verifie AVANT le controle generique is_valid ci-dessous : markUsed()
       // met is_valid a 0 ET date_used en meme temps (meme UPDATE), donc un
       // jeton deja traite avec succes matchait jusqu'ici le controle
-      // generique en premier et affichait "n'est plus valide" — message
+      // generique en premier et affichait "n'est plus valide" - message
       // alarmant a tort si le beneficiaire recharge la page de signature
       // juste apres avoir signe (ou si sa connexion a coupe pendant que le
       // traitement serveur se terminait quand meme en arriere-plan).
@@ -193,7 +193,7 @@ class Token extends Compat\Base\TokenBase
 
     /**
      * Horloge du serveur de base de donnees plutot que celle du processus PHP
-     * courant (time()) — cf. le commentaire detaille sur createForAssetsign().
+     * courant (time()) : cf. le commentaire detaille sur createForAssetsign().
      */
    private static function dbNow(): string {
        global $DB;
@@ -246,7 +246,7 @@ class Token extends Compat\Base\TokenBase
           // le commentaire de createForAssetsign() ci-dessus. 'bool' (pas
           // 'tinyint') : seul un type "logique" reconnu par
           // Migration::fieldFormat() fait que 'value' produise reellement
-          // une clause DEFAULT — meme piege deja documente ailleurs dans ce
+          // une clause DEFAULT : meme piege deja documente ailleurs dans ce
           // plugin (cf. Config::install()).
           $migration->addField($table, 'for_cosigner', 'bool', ['value' => 0]);
           $migration->migrationOneTable($table);

@@ -1,4 +1,4 @@
-{# Issue #142 : tableau de bord RSE — uniquement des données réellement saisies, avec leur couverture. #}
+{# Issue #142 : tableau de bord RSE : uniquement des données réellement saisies, avec leur couverture. #}
 <div class="container-lg my-3">
   <div class="card mb-3">
     <div class="card-body">
@@ -37,14 +37,14 @@
     <div class="col-md-3">
       <div class="card card-sm h-100"><div class="card-body">
         <div class="text-muted small"><i class="ti ti-clock me-1"></i>{{ __('Âge moyen du parc en service', 'assetsign') }}</div>
-        <div class="h1 mb-0">{{ summary.average_age_years is null ? '—' : summary.average_age_years|number_format(1, ',', ' ') ~ ' ' ~ __('ans', 'assetsign') }}</div>
-        <div class="text-muted small">{{ __('Durée de vie réelle des matériels réformés', 'assetsign') }} : {{ summary.average_lifetime_years is null ? '—' : summary.average_lifetime_years|number_format(1, ',', ' ') ~ ' ' ~ __('ans', 'assetsign') }}</div>
+        <div class="h1 mb-0">{{ summary.average_age_years is null ? '-' : summary.average_age_years|number_format(1, ',', ' ') ~ ' ' ~ __('ans', 'assetsign') }}</div>
+        <div class="text-muted small">{{ __('Durée de vie réelle des matériels réformés', 'assetsign') }} : {{ summary.average_lifetime_years is null ? '-' : summary.average_lifetime_years|number_format(1, ',', ' ') ~ ' ' ~ __('ans', 'assetsign') }}</div>
       </div></div>
     </div>
     <div class="col-md-3">
       <div class="card card-sm h-100"><div class="card-body">
         <div class="text-muted small"><i class="ti ti-heart-handshake me-1"></i>{{ __('Seconde vie en fin de vie', 'assetsign') }}</div>
-        <div class="h1 mb-0">{{ summary.second_life_rate is null ? '—' : summary.second_life_rate ~ ' %' }}</div>
+        <div class="h1 mb-0">{{ summary.second_life_rate is null ? '-' : summary.second_life_rate ~ ' %' }}</div>
         <div class="text-muted small">{{ __('Dons et ventes parmi les fins de vie des %d derniers mois', 'assetsign')|format(months) }}</div>
       </div></div>
     </div>

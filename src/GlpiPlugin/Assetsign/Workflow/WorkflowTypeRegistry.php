@@ -18,7 +18,7 @@ final class WorkflowTypeRegistry
    }
 
     /**
-     * @throws \RuntimeException si aucun type n'est enregistre sous cet id —
+     * @throws \RuntimeException si aucun type n'est enregistre sous cet id -
      *     un type inconnu est un vrai bug (donnee corrompue, type retire sans
      *     migration) qui doit remonter immediatement plutot que de se rabattre
      *     silencieusement sur un type par defaut.

@@ -12,7 +12,7 @@ use Session;
  * Complete TemplateRenderingTest (assetsign_tab/assetsign_form) : rendu reel des
  * AUTRES gabarits d'administration du plugin, capture via ob_start()/
  * ob_get_clean() autour de la vraie methode d'affichage (display() echo
- * directement, ces classes n'exposent pas de variante render()) — exercice le
+ * directement, ces classes n'exposent pas de variante render()) : exercice le
  * chemin de code exact utilise en production, pas une reconstruction manuelle
  * du contexte qui pourrait diverger silencieusement de la vraie methode.
  *
@@ -29,7 +29,7 @@ class OtherTemplateRenderingTest extends AssetsignTestCase
      * (CREATE/READ selon le cas, couvert par Session::callAsSystem()) ET un
      * acces a l'entite de l'item (checkEntity() -> Session::
      * haveAccessToEntity(), qui lit directement $_SESSION['glpiactiveentities']
-     * SANS consulter le bypass de callAsSystem()) — sans ce deuxieme volet,
+     * SANS consulter le bypass de callAsSystem()) : sans ce deuxieme volet,
      * check() echoue quand meme avec "no access to entity" malgre le droit
      * accorde. Restaure l'etat de session precedent apres coup : ces tests
      * partagent le meme process PHPUnit que les autres, une session laissee
