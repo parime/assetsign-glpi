@@ -4776,3 +4776,33 @@ msgstr "Copiar un nuevo enlace"
 #, php-format
 msgid "Le logo dépasse %1$d × %2$d pixels : choisissez une image plus petite."
 msgstr "El logotipo supera %1$d × %2$d píxeles: elija una imagen más pequeña."
+
+msgid "Autoriser la signature en tapant son nom"
+msgstr "Permitir firmar escribiendo el nombre"
+
+msgid "En plus du tracé à la souris, au doigt ou au stylet, le signataire peut taper son nom : utile sans écran tactile et pour l'accessibilité. La preuve et le PDF indiquent la méthode utilisée."
+msgstr "Además de trazar con el ratón, el dedo o el lápiz, el firmante puede escribir su nombre: útil sin pantalla táctil y para la accesibilidad. La prueba y el PDF indican el método utilizado."
+
+msgid "La signature en tapant son nom n'est pas autorisée pour cette fiche."
+msgstr "La firma escribiendo el nombre no está permitida para esta ficha."
+
+msgid "Signature saisie en tapant son nom"
+msgstr "Firma introducida escribiendo el nombre"
+
+msgid "Méthode de signature"
+msgstr "Método de firma"
+
+msgid "Nom tapé"
+msgstr "Nombre escrito"
+
+msgid "Tracé à l'écran"
+msgstr "Trazada en pantalla"
+
+msgid "Dessiner"
+msgstr "Dibujar"
+
+msgid "Taper mon nom"
+msgstr "Escribir mi nombre"
+
+msgid "Tapez votre nom complet :"
+msgstr "Escriba su nombre completo:"

@@ -3047,3 +3047,33 @@ msgstr ""
 #, php-format
 msgid "Le logo dépasse %1$d × %2$d pixels : choisissez une image plus petite."
 msgstr ""
+
+msgid "Autoriser la signature en tapant son nom"
+msgstr ""
+
+msgid "En plus du tracé à la souris, au doigt ou au stylet, le signataire peut taper son nom : utile sans écran tactile et pour l'accessibilité. La preuve et le PDF indiquent la méthode utilisée."
+msgstr ""
+
+msgid "La signature en tapant son nom n'est pas autorisée pour cette fiche."
+msgstr ""
+
+msgid "Signature saisie en tapant son nom"
+msgstr ""
+
+msgid "Méthode de signature"
+msgstr ""
+
+msgid "Nom tapé"
+msgstr ""
+
+msgid "Tracé à l'écran"
+msgstr ""
+
+msgid "Dessiner"
+msgstr ""
+
+msgid "Taper mon nom"
+msgstr ""
+
+msgid "Tapez votre nom complet :"
+msgstr ""

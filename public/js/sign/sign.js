@@ -81,14 +81,84 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
+    // --- Signature en tapant son nom (issue #275) ------------------------------------
+    // Présente seulement si l'entité l'autorise. Le nom est rendu en écriture manuscrite
+    // dans un second canevas, envoyé comme une signature tracée (même contrôle serveur),
+    // avec signature_method=typed pour que la preuve et le PDF l'indiquent.
+    var mode = 'drawn';
+    var typedName = document.getElementById('typed-name');
+    var typedCanvas = document.getElementById('typed-canvas');
+    var btnModeDraw = document.getElementById('sig-mode-draw');
+    var btnModeType = document.getElementById('sig-mode-type');
+
+    function renderTypedName() {
+        if (!typedCanvas) {
+            return;
+        }
+        var ratio = Math.max(window.devicePixelRatio || 1, 1);
+        typedCanvas.width = typedCanvas.offsetWidth * ratio;
+        typedCanvas.height = typedCanvas.offsetHeight * ratio;
+        var ctx = typedCanvas.getContext('2d');
+        ctx.clearRect(0, 0, typedCanvas.width, typedCanvas.height);
+        var text = typedName.value.trim();
+        if (text === '') {
+            return;
+        }
+        var size = Math.round(typedCanvas.height * 0.45);
+        var family = '"Segoe Script", "Brush Script MT", "Lucida Handwriting", "URW Chancery L", cursive';
+        ctx.font = 'italic ' + size + 'px ' + family;
+        while (size > 14 && ctx.measureText(text).width > typedCanvas.width * 0.9) {
+            size -= 2;
+            ctx.font = 'italic ' + size + 'px ' + family;
+        }
+        ctx.fillStyle = '#16232f';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, typedCanvas.width / 2, typedCanvas.height / 2);
+    }
+
+    function setMode(newMode) {
+        mode = newMode;
+        document.getElementById('draw-zone').hidden = mode !== 'drawn';
+        document.getElementById('typed-zone').hidden = mode !== 'typed';
+        btnModeDraw.setAttribute('aria-pressed', mode === 'drawn' ? 'true' : 'false');
+        btnModeType.setAttribute('aria-pressed', mode === 'typed' ? 'true' : 'false');
+        if (mode === 'drawn') {
+            resizeCanvas();
+        } else {
+            renderTypedName();
+            typedName.focus();
+        }
+        updateSubmitState();
+    }
+
+    if (btnModeDraw && btnModeType && typedName) {
+        btnModeDraw.addEventListener('click', function () { setMode('drawn'); });
+        btnModeType.addEventListener('click', function () { setMode('typed'); });
+        typedName.addEventListener('input', function () {
+            renderTypedName();
+            updateSubmitState();
+        });
+        window.addEventListener('resize', renderTypedName);
+    }
+
+    function hasSignature() {
+        return mode === 'typed' ? typedName.value.trim().length >= 2 : !signaturePad.isEmpty();
+    }
+
     function updateSubmitState() {
-        btnSubmit.disabled = signaturePad.isEmpty() || !consentBox.checked;
+        btnSubmit.disabled = !hasSignature() || !consentBox.checked;
     }
     consentBox.addEventListener('change', updateSubmitState);
     signaturePad.addEventListener('endStroke', updateSubmitState);
 
     btnClear.addEventListener('click', function () {
-        signaturePad.clear();
+        if (mode === 'typed') {
+            typedName.value = '';
+            renderTypedName();
+        } else {
+            signaturePad.clear();
+        }
         updateSubmitState();
     });
 
@@ -156,7 +226,8 @@
         btnSubmit.disabled = true;
         statusMsg.textContent = window.ASSETSIGN_I18N.sending;
 
-        post('sign', { signature: signaturePad.toDataURL('image/png') }).then(function (data) {
+        var image = mode === 'typed' ? typedCanvas.toDataURL('image/png') : signaturePad.toDataURL('image/png');
+        post('sign', { signature: image, signature_method: mode }).then(function (data) {
             if (data.success && window.ASSETSIGN_KIOSK) {
                 lockKiosk(window.ASSETSIGN_KIOSK);
             } else if (data.success) {

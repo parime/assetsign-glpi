@@ -54,6 +54,7 @@ class Signature extends Compat\Base\SignatureBase
            // Signature sur place (issue #152) : technicien en presence duquel la signature a ete
            // recueillie, vide pour une signature faite par le signataire depuis sa propre session.
            'witness_name'  => $proof['witness_name'] ?? null,
+           'signature_method' => ($proof['signature_method'] ?? 'drawn') === 'typed' ? 'typed' : 'drawn',
            'date_creation' => date('Y-m-d H:i:s'),
        ]) ? $DB->insertId() : 0;
    }
@@ -125,6 +126,7 @@ class Signature extends Compat\Base\SignatureBase
                 `document_hash` char(64) DEFAULT NULL,
                 `signed_at` timestamp NULL DEFAULT NULL,
                 `witness_name` varchar(255) DEFAULT NULL,
+                `signature_method` varchar(20) NOT NULL DEFAULT 'drawn',
                 `date_creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`),
                 KEY `plugin_assetsign_assetsigns_id` (`plugin_assetsign_assetsigns_id`),
@@ -155,6 +157,10 @@ class Signature extends Compat\Base\SignatureBase
           // qui met la modification en FILE D'ATTENTE jusqu'a la toute fin de
           // l'installation, cf. le commentaire equivalent dans DamageMarker::
           // install() pour le piege deja rencontre).
+         // Issue #275 : methode de signature (trace ou nom tape), ajoutee immediatement.
+         if (!$DB->fieldExists($table, 'signature_method')) {
+             $DB->doQuery("ALTER TABLE `$table` ADD `signature_method` varchar(20) NOT NULL DEFAULT 'drawn' AFTER `witness_name`");
+         }
          if (!$DB->fieldExists($table, 'plugin_assetsign_maintenances_id')) {
              $migration->displayMessage("Mise à jour de $table pour les preuves de signature de Maintenance");
              $DB->doQuery("ALTER TABLE `$table` MODIFY `plugin_assetsign_assetsigns_id` int unsigned DEFAULT NULL");

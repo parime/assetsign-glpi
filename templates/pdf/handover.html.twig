@@ -158,6 +158,10 @@
             {% set signer_mail = signer_email|default(user.email|default('')) %}
             {{ __('Signataire : %s', 'assetsign')|format(signer_name|default(beneficiary_name)) }}{% if signer_mail is not empty %} ({{ signer_mail }}){% endif %}
         </p>
+        {% if signature_method|default('drawn') == 'typed' %}
+        {# Issue #275 : signature saisie en tapant son nom (signature electronique simple). #}
+        <p class="proof">{{ __('Signature saisie en tapant son nom', 'assetsign') }}</p>
+        {% endif %}
         {% if witness_name|default('') is not empty %}
         {# Signature sur place (issue #152) : recueillie sur l'ecran d'un technicien, qui atteste
            de l'identite du signataire. Texte fixe en francais, comme le reste du PDF archive. #}

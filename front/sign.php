@@ -105,6 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        $meta = [
            'ip'         => $_SERVER['REMOTE_ADDR'] ?? '',
            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+           // Issue #275 : signature tracee ou nom tape.
+           'signature_method' => ($_POST['signature_method'] ?? '') === 'typed' ? 'typed' : 'drawn',
        ];
 
        $signatureImage = $_POST['signature'] ?? '';
