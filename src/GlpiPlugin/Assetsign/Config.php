@@ -297,6 +297,18 @@ class Config extends Compat\Base\ConfigBase
    private const LOGO_ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
 
     /**
+     * Issue #281 : au-dela, un petit fichier qui declare des dimensions enormes (bombe de
+     * decompression) epuiserait la memoire au rendu du PDF et ferait echouer toutes les fiches de
+     * l'entite. getimagesize() ne lit que l'en-tete, sans decompresser l'image.
+     */
+   public const LOGO_MAX_PIXELS = 3000;
+
+   public static function isLogoTooLarge(string $path): bool {
+       $size = @getimagesize($path);
+       return $size !== false && ((int) $size[0] > self::LOGO_MAX_PIXELS || (int) $size[1] > self::LOGO_MAX_PIXELS);
+   }
+
+    /**
      * @return int L'ID du Document cree, ou 0 si l'upload est absent/invalide
      *             (message d'erreur ajoute a la session dans ce dernier cas).
      */
@@ -313,6 +325,14 @@ class Config extends Compat\Base\ConfigBase
        $extension = strtolower((string) pathinfo($file['name'] ?? '', PATHINFO_EXTENSION));
       if (!in_array($extension, self::LOGO_ALLOWED_EXTENSIONS, true) || @getimagesize($file['tmp_name']) === false) {
           \Session::addMessageAfterRedirect(__('Le logo doit être une image (PNG, JPG, GIF ou WEBP).', 'assetsign'), false, ERROR);
+          return 0;
+      }
+      if (self::isLogoTooLarge($file['tmp_name'])) {
+          \Session::addMessageAfterRedirect(
+              sprintf(__('Le logo dépasse %1$d × %2$d pixels : choisissez une image plus petite.', 'assetsign'), self::LOGO_MAX_PIXELS, self::LOGO_MAX_PIXELS),
+              false,
+              ERROR
+          );
           return 0;
       }
 

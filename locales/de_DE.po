@@ -4808,3 +4808,7 @@ msgstr "Ohne E-Mail: erstellt einen neuen Link, den Sie selbst senden (Teams, Ch
 
 msgid "Copier un nouveau lien"
 msgstr "Neuen Link kopieren"
+
+#, php-format
+msgid "Le logo dépasse %1$d × %2$d pixels : choisissez une image plus petite."
+msgstr "Das Logo überschreitet %1$d × %2$d Pixel: Wählen Sie ein kleineres Bild."

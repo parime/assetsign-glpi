@@ -3043,3 +3043,7 @@ msgstr ""
 
 msgid "Copier un nouveau lien"
 msgstr ""
+
+#, php-format
+msgid "Le logo dépasse %1$d × %2$d pixels : choisissez une image plus petite."
+msgstr ""

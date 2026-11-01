@@ -4752,3 +4752,7 @@ msgstr "Without e-mail: creates a new link for you to send yourself (Teams, chat
 
 msgid "Copier un nouveau lien"
 msgstr "Copy a new link"
+
+#, php-format
+msgid "Le logo dépasse %1$d × %2$d pixels : choisissez une image plus petite."
+msgstr "The logo exceeds %1$d × %2$d pixels: choose a smaller image."

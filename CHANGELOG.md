@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **Logo** (issue #281) : une image déclarant plus de 3000 × 3000 pixels est refusée à l'envoi
+  (un petit fichier piégé pouvait épuiser la mémoire au rendu et bloquer toutes les fiches de
+  l'entité) ; un logo déjà enregistré trop grand est ignoré dans le PDF au lieu de le faire échouer.
+
 ### Added
 
 - **Copier un nouveau lien de signature** (issue #277) : sur une fiche en attente, crée un lien
