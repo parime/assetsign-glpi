@@ -8,11 +8,11 @@ use InvalidArgumentException;
 
 /**
  * Couvre le dispatch de l'action "create" de front/movement.form.php desormais
- * extrait dans MovementFormController — meme motivation et meme patron que
+ * extrait dans MovementFormController : meme motivation et meme patron que
  * MaintenanceFormControllerTest/AssetsignFormControllerTest (cf. ROADMAP.md,
  * point tests des front/*.php). Ce controleur etait le seul de sa famille
  * (AssetsignFormController, MaintenanceFormController, ResidualValueFormController,
- * QrLabelController, SignController — tous testes) a ne pas avoir de test
+ * QrLabelController, SignController : tous testes) a ne pas avoir de test
  * dedie malgre la meme logique de garde (itemtype valide, materiel trouvable
  * et lisible par l'utilisateur courant) avant de deleguer a Movement::create().
  */
@@ -84,7 +84,7 @@ class MovementFormControllerTest extends AssetsignTestCase
         $entityId = $this->createTestEntity(0, 'PHPUnit MovementFormController Dates');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC MovementFormController Dates');
 
-        // Format brut d'un <input type="datetime-local"> (separateur 'T', ISO 8601) —
+        // Format brut d'un <input type="datetime-local"> (separateur 'T', ISO 8601) -
         // le controleur doit le normaliser en ' ' avant l'insertion, voir son propre
         // commentaire sur la compatibilite des colonnes DATETIME/TIMESTAMP.
         $id = (new MovementFormController())->create([
@@ -95,7 +95,7 @@ class MovementFormControllerTest extends AssetsignTestCase
 
         $movement = new Movement();
         $movement->getFromDB($id);
-        // GLPI's own DB layer normalizes a stored DATETIME back with seconds on read —
+        // GLPI's own DB layer normalizes a stored DATETIME back with seconds on read -
         // asserting on the ' ' separator (the actual point of this test) via prefix rather
         // than a full match that would depend on that unrelated round-trip detail.
         $this->assertStringStartsWith('2026-08-25 14:30', $movement->fields['date_from']);

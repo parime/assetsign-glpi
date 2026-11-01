@@ -21,7 +21,7 @@
 
     // window.assetsignQueuedFetch : serialise les appels touchant le jeton CSRF
     // a usage unique (defini par csrf-queue.js, charge avant ce script aussi
-    // bien sur assetsign_form.html.twig que sign_page.html.twig — cf. le
+    // bien sur assetsign_form.html.twig que sign_page.html.twig : cf. le
     // commentaire de csrf-queue.js pour le detail du bug de course qu'il evite).
 
     // Endpoint/parametres additionnels surchargeables : la page de signature
@@ -53,7 +53,7 @@
      * Trois bugs reels corriges dans ce fichier (glisser un repere, en
      * ajouter un, et le panneau d'edition) partageaient la meme cause : post()
      * se contentait de renvoyer la reponse du serveur, laissant chaque appelant
-     * decider s'il verifiait vraiment `data.success` — certains l'ont fait,
+     * decider s'il verifiait vraiment `data.success` - certains l'ont fait,
      * d'autres non, avec pour consequence un echec (jeton perime, fiche plus
      * modifiable...) totalement invisible pour l'utilisateur. Plutot que de
      * compter sur la discipline de chaque futur appel, post() affiche
@@ -272,7 +272,7 @@
             }
             var pos = percentFromEvent(container, evt.clientX, evt.clientY);
             // Affichage optimiste : le repere apparait immediatement au point
-            // clique, sans attendre la reponse serveur — celle-ci regenere le
+            // clique, sans attendre la reponse serveur : celle-ci regenere le
             // PDF non signe en entier (cf. Assetsign::refreshDamageAnnotationPdf()),
             // ce qui peut prendre plusieurs secondes et donnait l'impression
             // d'un clic sans effet, voire d'un repere qui "rate" sa position si

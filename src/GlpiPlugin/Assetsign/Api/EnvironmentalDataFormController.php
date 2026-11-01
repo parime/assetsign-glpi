@@ -6,7 +6,7 @@ use GlpiPlugin\Assetsign\EnvironmentalData;
 
 /**
  * Logique partagée par front/environmentaldata.form.php (saisie manuelle de
- * l'empreinte environnementale sur l'onglet Passeport matériel, issue #80) —
+ * l'empreinte environnementale sur l'onglet Passeport matériel, issue #80) -
  * même motivation/structure que Api\ResidualValueFormController : rendre ce
  * dispatch testable en PHPUnit, sans passer par le vrai front/*.php
  * (Html::back()/exit()).

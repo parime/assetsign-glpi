@@ -4,7 +4,7 @@ namespace GlpiPlugin\Assetsign;
 
 /**
  * Issue #158 (attestation annuelle de détention) : règles pures, sans GLPI, des campagnes
- * d'attestation — statistiques de suivi, types d'écart, échéance. Testées sans base de données
+ * d'attestation: statistiques de suivi, types d'écart, échéance. Testées sans base de données
  * (tests/CampaignLogicTest.php).
  */
 final class CampaignLogic

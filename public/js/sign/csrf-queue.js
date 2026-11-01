@@ -2,7 +2,7 @@
 // usage unique de GLPI (cf. README) : sign.js, damage-annotation.js et le
 // script inline de la Remarque (sign_page.html.twig) l'utilisent tous les
 // trois. Sans elle, deux requetes parties presque en meme temps lisent le
-// meme jeton avant que la premiere n'ait eu le temps de le faire tourner —
+// meme jeton avant que la premiere n'ait eu le temps de le faire tourner -
 // le serveur rejette la seconde en 403. assetsignQueuedFetch() serialise ces
 // appels et ne lit le jeton qu'au moment reel de l'envoi (jamais au clic).
 (function () {

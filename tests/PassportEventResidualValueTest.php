@@ -7,7 +7,7 @@ use GlpiPlugin\Assetsign\PassportEvent;
 use GlpiPlugin\Assetsign\ResidualValue;
 
 /**
- * Couvre la valeur résiduelle (V2, cf. ROADMAP.md — "Valeur résiduelle
+ * Couvre la valeur résiduelle (V2, cf. ROADMAP.md - "Valeur résiduelle
  * (linéaire / durée personnalisable / saisie manuelle)", issue #77) affichée
  * en tête du Passeport matériel : calcul linéaire à partir d'Infocom, durée
  * utile réglable par entité, saisie manuelle toujours prioritaire, aucune

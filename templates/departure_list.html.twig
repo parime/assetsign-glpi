@@ -29,7 +29,7 @@
               {% set status_class = {0: 'bg-blue-lt', 1: 'bg-green-lt', 2: 'bg-secondary-lt'}[row.status]|default('bg-secondary-lt') %}
               <tr>
                 <td><a href="{{ form_url ~ row.id }}">{{ row.user }}</a></td>
-                <td>{{ row.date_departure ? row.date_departure|formatted_date : '—' }}</td>
+                <td>{{ row.date_departure ? row.date_departure|formatted_date : '-' }}</td>
                 <td>{{ row.trigger }}</td>
                 <td>
                   <div class="d-flex align-items-center gap-2">

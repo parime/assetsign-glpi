@@ -13,12 +13,12 @@ class Template extends Compat\Base\TemplateBase
    public const RIGHTNAME = Profile::RIGHT_TEMPLATE;
 
     /**
-     * Texte pre-rempli propose a l'administrateur pour un NOUVEAU gabarit — pas
+     * Texte pre-rempli propose a l'administrateur pour un NOUVEAU gabarit : pas
      * seulement pour le gabarit seme automatiquement a l'installation (cf.
      * install()). Sans cela, un administrateur qui cree son propre gabarit
      * partait d'un champ entierement vide, avec un risque reel de fiche de
      * remise/restitution sans aucune condition generale ni charte affichee au
-     * beneficiaire — constate en conditions reelles. Le texte reste entierement
+     * beneficiaire : constate en conditions reelles. Le texte reste entierement
      * modifiable (ou effaçable) via le formulaire, ce n'est qu'une valeur de
      * depart. Chaque type porte son propre texte par defaut (cf.
      * Workflow\WorkflowTypeInterface::getDefaultTemplateContent()).
@@ -33,7 +33,7 @@ class Template extends Compat\Base\TemplateBase
 
     /**
      * Rattache au fil d'Ariane de Assetsign (menu 'tools'), pas au secteur
-     * generique 'config' des intitules — cf. Assetsign::getSectorizedDetails()/
+     * generique 'config' des intitules : cf. Assetsign::getSectorizedDetails()/
      * getMenuContent() et le commentaire equivalent dans ROADMAP.md.
      */
    public static function getSectorizedDetails(): array {
@@ -68,7 +68,7 @@ class Template extends Compat\Base\TemplateBase
 
        // Pour un NOUVEAU gabarit (pas encore en base), pre-selectionne le type
        // passe en parametre (lien "+ Nouveau gabarit" depuis l'onglet de
-       // configuration d'un type, cf. config_form.html.twig) — a defaut,
+       // configuration d'un type, cf. config_form.html.twig) : a defaut,
        // TYPE_HANDOVER (premiere option du select).
        $newTemplateType = (int) ($_GET['type'] ?? $options['type'] ?? Assetsign::TYPE_HANDOVER);
       if ($this->isNewID($ID)) {
@@ -76,7 +76,7 @@ class Template extends Compat\Base\TemplateBase
       }
 
        // Pre-remplit avec un texte par defaut raisonnable plutot que de laisser
-       // les champs vides — cf. getDefaultContentFor().
+       // les champs vides : cf. getDefaultContentFor().
        $defaultContent = $this->isNewID($ID)
            ? self::getDefaultContentFor($newTemplateType)
            : ['content' => $this->fields['content'] ?? '', 'charter_content' => $this->fields['charter_content'] ?? ''];
@@ -97,7 +97,7 @@ class Template extends Compat\Base\TemplateBase
            'types'           => Assetsign::getTypes(),
            'csrf_token'      => \Session::getNewCSRFToken(),
            // Jeton DEDIE a l'apercu en direct, independant de celui du
-           // formulaire lui-meme — cf. commentaire de Config::showConfigForm().
+           // formulaire lui-meme: cf. commentaire de Config::showConfigForm().
            // `true` (standalone) est OBLIGATOIRE ici : sans lui,
            // getNewCSRFToken() renvoie le meme jeton que l'appel precedent
            // (variable globale $CURRENTCSRFTOKEN du coeur GLPI), pas un jeton
@@ -164,7 +164,7 @@ class Template extends Compat\Base\TemplateBase
           self::seedDefaultTemplate(\GlpiPlugin\Assetsign\Assetsign::TYPE_DESTRUCTION, 'Gabarit de destruction par défaut');
       } else {
           // Montee de version : desactive les gabarits de l'ancien type "Echange"
-          // (valeur 2, retiree — cf. Assetsign::TYPE_EXCHANGE) sans les supprimer,
+          // (valeur 2, retiree : cf. Assetsign::TYPE_EXCHANGE) sans les supprimer,
           // pour ne pas perdre l'historique tout en les sortant de la liste active.
           $DB->update($table, ['is_active' => 0], ['type' => 2]);
 
@@ -229,7 +229,7 @@ class Template extends Compat\Base\TemplateBase
     /**
      * Seme un gabarit par defaut (entite racine, actif, par defaut pour son
      * type) avec le texte fourni par le type lui-meme (cf.
-     * getDefaultContentFor()) — reutilise a l'installation initiale pour
+     * getDefaultContentFor()) : reutilise a l'installation initiale pour
      * chaque type existant, et lors d'une montee de version pour tout type
      * ajoute apres coup (cf. le seed differe du Don ci-dessus).
      */

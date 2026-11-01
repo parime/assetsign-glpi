@@ -9,7 +9,7 @@ use Item_Ticket;
 use Ticket;
 
 /**
- * Issue #194 : « Mon matériel » dans le portail self-service — matériel affecté, feuilles signées,
+ * Issue #194 : « Mon matériel » dans le portail self-service : matériel affecté, feuilles signées,
  * signalement d'un problème par ticket (sans modifier le matériel).
  */
 final class MyEquipmentTest extends AssetsignTestCase

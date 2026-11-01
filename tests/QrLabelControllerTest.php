@@ -10,7 +10,7 @@ use InvalidArgumentException;
  * Couvre Api\QrLabelController (étiquette QR code imprimable du Passeport
  * matériel, cf. ROADMAP.md V3, issue #82) : dispatch de front/qrlabel.php,
  * testé directement sans passer par le vrai front/*.php (qui appelle
- * Html::displayNotFoundError()/exit(), incompatible avec PHPUnit — cf.
+ * Html::displayNotFoundError()/exit(), incompatible avec PHPUnit : cf.
  * TROUBLESHOOTING.md), même motif que AssetsignFormControllerTest.
  */
 class QrLabelControllerTest extends AssetsignTestCase

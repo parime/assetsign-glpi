@@ -10,14 +10,14 @@ use GlpiPlugin\Assetsign\Pdf\SignatureStamper;
  * `SignatureStamper::apply()` had zero direct test: `SignControllerTest` only covers the
  * authorization guard (`loadAuthorizedAssetsign()`), never the actual sign flow that calls
  * `apply()`, and `AssetsignTest`'s PDF-content assertions (placeholders, XSS sanitization,
- * delegation attribution) all go through `HandoverPdfBuilder::renderHtml()` directly — never
+ * delegation attribution) all go through `HandoverPdfBuilder::renderHtml()` directly: never
  * through `SignatureStamper` itself. This suite covers what's uniquely `SignatureStamper`'s own
  * responsibility: writing a real file to `GLPI_TMP_DIR`, hashing it correctly, stamping
  * `signed_at`, and honoring `protect_pdf`.
  */
 final class SignatureStamperTest extends AssetsignTestCase
 {
-    /** 1x1 transparent PNG — real, valid image data, not a placeholder string. */
+    /** 1x1 transparent PNG: real, valid image data, not a placeholder string. */
    private const SIGNATURE_PNG_DATA_URL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
 
     /** @var string[] */

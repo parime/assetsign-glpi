@@ -13,7 +13,7 @@ use Session;
  * (configurables sans code, cf. MaintenanceChecklistItem) + commentaire libre.
  *
  * Sous-systeme VOLONTAIREMENT separe du moteur de fiches signees (Assetsign) :
- * pas de beneficiaire, pas de jeton, pas de notification — juste un technicien
+ * pas de beneficiaire, pas de jeton, pas de notification : juste un technicien
  * qui coche une checklist. Partager la table glpi_plugin_assetsign_assetsigns aurait
  * melange deux cycles de vie tres differents dans le meme enregistrement
  * (decision actee avec l'utilisateur).
@@ -54,7 +54,7 @@ class Maintenance extends Compat\Base\MaintenanceBase
    }
 
     /**
-     * Enregistre sous le secteur 'tools' (Outils), pas 'admin' — meme raison
+     * Enregistre sous le secteur 'tools' (Outils), pas 'admin' - meme raison
      * que Assetsign::getSectorizedDetails().
      */
    public static function getSectorizedDetails(): array {
@@ -62,7 +62,7 @@ class Maintenance extends Compat\Base\MaintenanceBase
    }
 
     /**
-     * Etend le menu par defaut avec une entree pour MaintenanceChecklistItem —
+     * Etend le menu par defaut avec une entree pour MaintenanceChecklistItem -
      * meme raison que Assetsign::getMenuContent() pour Template/Accessory.
      */
    public static function getMenuContent(): array {
@@ -195,7 +195,7 @@ class Maintenance extends Compat\Base\MaintenanceBase
            'damage_images'   => DamageMarker::getViewImageFilenames($item->getType()),
            // Signature du technicien : optionnelle (Config::enable_maintenance_signature,
            // defaut desactivee), capturee cote client (canvas) AVANT la creation
-           // de la fiche et soumise d'un bloc avec le reste du formulaire — meme
+           // de la fiche et soumise d'un bloc avec le reste du formulaire : meme
            // logique que l'etat des lieux visuel ci-dessus, jamais d'AJAX ici.
            'signature_required' => (bool) Config::getForEntity($entities_id)->fields['enable_maintenance_signature'],
            'csrf_token'      => Session::getNewCSRFToken(),
@@ -205,7 +205,7 @@ class Maintenance extends Compat\Base\MaintenanceBase
     /**
      * Fiche en lecture seule : une fois creee, une fiche de maintenance n'est
      * pas destinee a etre modifiee (c'est un constat a un instant donne, pas
-     * un document qui evolue) — meme logique que Assetsign::showForm().
+     * un document qui evolue) : meme logique que Assetsign::showForm().
      */
    public function showForm($ID, array $options = []): bool {
        $this->initForm($ID, $options);
@@ -258,7 +258,7 @@ class Maintenance extends Compat\Base\MaintenanceBase
    }
 
     /**
-     * Materiel concerne, avec marque/modele resolus — meme forme que
+     * Materiel concerne, avec marque/modele resolus : meme forme que
      * Assetsign::getTargetItem() (reutilise ses resolveurs statiques, la
      * resolution ne depend pas du type de fiche parente).
      */
@@ -302,7 +302,7 @@ class Maintenance extends Compat\Base\MaintenanceBase
        $kind = (int) ($this->fields['kind'] ?? self::KIND_MAINTENANCE) === self::KIND_PREPARATION
            ? __('Préparation de poste', 'assetsign')
            : 'Maintenance';
-       return trim(sprintf('%s — %s — %s (%s)', $date, $kind, $itemName ?: $this->fields['itemtype'], $techName ?: '?'));
+       return trim(sprintf('%s - %s - %s (%s)', $date, $kind, $itemName ?: $this->fields['itemtype'], $techName ?: '?'));
    }
 
     /**
@@ -478,13 +478,13 @@ class Maintenance extends Compat\Base\MaintenanceBase
           ],
           'ORDER'      => 'glpi_tickets.id DESC',
       ]) as $row) {
-          $tickets[(int) $row['id']] = sprintf('#%d — %s', $row['id'], $row['name']);
+          $tickets[(int) $row['id']] = sprintf('#%d - %s', $row['id'], $row['name']);
       }
        return $tickets;
    }
 
     /**
-     * Issue #223 : onglet du ticket — fiches de preparation rattachees, et materiels du ticket
+     * Issue #223 : onglet du ticket : fiches de preparation rattachees, et materiels du ticket
      * avec un lien direct vers leur onglet Maintenance, preparation preselectionnee.
      */
    public static function showForTicket(\Ticket $ticket): void {

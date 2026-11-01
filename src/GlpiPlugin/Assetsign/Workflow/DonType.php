@@ -8,7 +8,7 @@ use GlpiPlugin\Assetsign\TwigBlocks;
 /**
  * Don de materiel : contrairement a Assetsign/Restitution, jamais declenche
  * automatiquement par un hook GLPI (rien ne signale naturellement "ce
- * materiel est donne") — toujours cree via Assetsign::createManual(), depuis
+ * materiel est donne") : toujours cree via Assetsign::createManual(), depuis
  * un formulaire sur l'onglet Assetsign du materiel (assetsign_tab.html.twig).
  */
 final class DonType implements WorkflowTypeInterface

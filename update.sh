@@ -18,7 +18,7 @@ php bin/console cache:clear
 # de celui qui sert les vraies requetes web, il ne peut donc pas vider LEUR
 # OPcache directement. front/opcache_reset.php, lui, s'execute dans le pool
 # web ou OPcache est une memoire VRAIMENT partagee entre tous les workers d'un
-# meme hote — une seule requete suffit a la vider pour tous, sans redemarrer
+# meme hote : une seule requete suffit a la vider pour tous, sans redemarrer
 # aucun service. Doit venir APRES plugin:activate ci-dessus (pas avant) : le
 # endpoint n'est routable que si le plugin est actif, or "plugin:install
 # --force" desactive le plugin le temps de la migration. Best-effort (URL
@@ -39,7 +39,7 @@ OPCACHE_RESET_URL="http://localhost/plugins/assetsign/front/opcache_reset.php?to
 # 3 tentatives, avec une courte pause : juste apres cache:clear ci-dessus
 # (qui vide aussi le cache de routage Symfony, cf. CacheManager::
 # resetAllCaches()), constate en conditions reelles un court delai ou GLPI
-# repond encore 404 le temps de reconstruire ce cache — la 2e ou 3e tentative
+# repond encore 404 le temps de reconstruire ce cache : la 2e ou 3e tentative
 # suffit. --fail (curl) / --server-response (wget, verifie manuellement) sont
 # necessaires : sans ca, un 404 compte comme un succes (la requete HTTP a bien
 # abouti, meme si le contenu est une page d'erreur).

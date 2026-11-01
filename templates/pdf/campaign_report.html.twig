@@ -5,7 +5,7 @@
 <html lang="{{ html_lang|default('fr') }}">
 <head>
 <meta charset="UTF-8">
-<title>{{ __('Campagne d\'attestation — %s', 'assetsign')|format(campaign.name) }}</title>
+<title>{{ __('Campagne d\'attestation - %s', 'assetsign')|format(campaign.name) }}</title>
 {% include '@assetsign/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
@@ -15,11 +15,11 @@
 {% endif %}
 
 <h1>{{ __('Campagne d\'attestation de détention', 'assetsign') }}</h1>
-<p class="meta">{{ __('%1$s — rapport généré le %2$s', 'assetsign')|format(campaign.name, generated_at) }}</p>
+<p class="meta">{{ __('%1$s : rapport généré le %2$s', 'assetsign')|format(campaign.name, generated_at) }}</p>
 
 <table class="info-table">
     <tr><th>{{ __('Lancée le', 'assetsign') }}</th><td>{{ campaign.date_creation|date('d/m/Y') }}</td></tr>
-    <tr><th>{{ __('Date limite', 'assetsign') }}</th><td>{{ campaign.date_deadline ? campaign.date_deadline|date('d/m/Y') : '—' }}</td></tr>
+    <tr><th>{{ __('Date limite', 'assetsign') }}</th><td>{{ campaign.date_deadline ? campaign.date_deadline|date('d/m/Y') : '-' }}</td></tr>
     <tr><th>{{ __('Personnes concernées', 'assetsign') }}</th><td>{{ stats.total }}</td></tr>
     <tr><th>{{ __('Attestations confirmées', 'assetsign') }}</th><td>{{ stats.confirmed }}</td></tr>
     <tr><th>{{ __('Écarts signalés', 'assetsign') }}</th><td>{{ stats.discrepancy }}</td></tr>
@@ -35,7 +35,7 @@
         <td>{{ line.user }}</td>
         <td>{{ line.items }}</td>
         <td>{{ status_labels[line.status] }}</td>
-        <td>{{ line.date_answered ? line.date_answered|date('d/m/Y H:i') : '—' }}</td>
+        <td>{{ line.date_answered ? line.date_answered|date('d/m/Y H:i') : '-' }}</td>
         <td>{% for gap in line.gaps %}{{ gap_labels[gap] }}<br>{% endfor %}{{ line.comment }}{% if line.tickets_id > 0 %} {{ __('(ticket n°%d)', 'assetsign')|format(line.tickets_id) }}{% endif %}</td>
     </tr>
     {% endfor %}

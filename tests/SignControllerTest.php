@@ -11,7 +11,7 @@ use RuntimeException;
  * Couvre le controle d'identite de la page de signature
  * (assertCurrentUserIsBeneficiary(), appelee par show()/submit() via
  * loadAuthorizedAssetsign()) : c'est ce qui empeche un utilisateur authentifie
- * mais non concerne de consulter ou signer le document d'un autre — jamais
+ * mais non concerne de consulter ou signer le document d'un autre : jamais
  * teste automatiquement jusqu'ici. Session::getLoginUserID() lit simplement
  * $_SESSION['glpiID'] (cf. src/Session.php du coeur), simulable directement.
  */

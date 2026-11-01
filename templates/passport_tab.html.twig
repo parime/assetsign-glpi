@@ -1,7 +1,7 @@
 <div class="passport-identity-card mb-4">
   <div class="row g-2">
     {% if identity.model or identity.manufacturer %}
-      <div class="col-auto"><strong>{{ __('Modèle', 'assetsign') }} :</strong> {{ identity.manufacturer }}{{ identity.manufacturer and identity.model ? ' — ' : '' }}{{ identity.model }}</div>
+      <div class="col-auto"><strong>{{ __('Modèle', 'assetsign') }} :</strong> {{ identity.manufacturer }}{{ identity.manufacturer and identity.model ? ' - ' : '' }}{{ identity.model }}</div>
     {% endif %}
     {% if identity.serial %}
       <div class="col-auto"><strong>{{ __('N° série', 'assetsign') }} :</strong> {{ identity.serial }}</div>
@@ -266,10 +266,10 @@
           <div class="passport-timeline-content">
             <strong>{{ event.type_label }}</strong>
             {% if event.snapshot_name %}
-              — {{ event.snapshot_name }}
+              - {{ event.snapshot_name }}
               {% if event.snapshot_is_external|default(false) %}<span class="badge bg-secondary-lt">{{ __('externe', 'assetsign') }}</span>{% endif %}
             {% elseif event.is_anonymized %}
-              — <span class="text-muted">{{ __('bénéficiaire anonymisé', 'assetsign') }}</span>
+              - <span class="text-muted">{{ __('bénéficiaire anonymisé', 'assetsign') }}</span>
             {% endif %}
             {% if event.comment %}
               <div class="text-muted small">{{ event.comment }}</div>

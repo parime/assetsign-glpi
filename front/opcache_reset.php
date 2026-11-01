@@ -4,13 +4,13 @@
  * Point d'entree interne, appele automatiquement par plugin_assetsign_install()
  * (hook.php) juste apres CacheManager::resetAllCaches() : ce dernier tourne
  * en CLI (bin/console), un SAPI/process distinct de celui qui sert les
- * vraies requetes web (Apache/PHP-FPM) — il ne peut donc PAS vider LEUR
+ * vraies requetes web (Apache/PHP-FPM) : il ne peut donc PAS vider LEUR
  * OPcache, meme s'il vide bien le cache de gabarits Twig compiles sur
  * disque. opcache_reset() doit s'executer DANS le pool web pour avoir un
  * effet reel (memoire partagee entre tous les workers d'un meme hote) :
  * sans cette requete, le code PHP change (front/sign.php, par exemple)
  * pouvait rester serveur dans son ancienne version compilee jusqu'a un
- * redemarrage manuel du service — contraignant sur un serveur en production
+ * redemarrage manuel du service : contraignant sur un serveur en production
  * avec des utilisateurs actifs.
  *
  * Protege par un jeton partage genere a l'installation (voir plugin_assetsign_install(),

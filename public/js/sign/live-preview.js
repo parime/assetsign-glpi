@@ -3,7 +3,7 @@
  * (config_form.html.twig) et la page de gabarit (template_form.html.twig) :
  * a chaque modification d'un champ pertinent, renvoie le formulaire (tel
  * quel, pas encore enregistre) a front/preview.php et remplace le contenu de
- * l'iframe par le HTML retourne — rendu strictement identique au vrai PDF
+ * l'iframe par le HTML retourne : rendu strictement identique au vrai PDF
  * (meme gabarit Twig cote serveur), avant meme d'avoir cliqué sur Enregistrer.
  *
  * Convention : un formulaire avec [data-assetsign-preview-frame="<id de l'iframe>"]
@@ -15,7 +15,7 @@
  * jamais celui du champ _glpi_csrf_token du formulaire lui-meme. Une premiere
  * version se contentait de serialiser les appels d'apercu ENTRE EUX
  * (window.assetsignQueuedFetch, cf. csrf-queue.js) tout en continuant a lire/
- * ecrire le meme champ que le vrai bouton Enregistrer — insuffisant : la
+ * ecrire le meme champ que le vrai bouton Enregistrer : insuffisant : la
  * vraie soumission du formulaire est une navigation de page classique,
  * entierement hors de ce JS et de sa file d'attente, donc jamais serialisee
  * avec elle. Un appel d'apercu en vol au moment ou l'utilisateur clique
@@ -23,7 +23,7 @@
  * echouer la vraie sauvegarde en "Accès refusé" (bug reel constate meme
  * apres ce premier correctif, cf. TROUBLESHOOTING.md). Un jeton totalement
  * independant, jamais lu ni ecrit dans le DOM du formulaire, elimine cette
- * course a la racine — assetsignQueuedFetch() reste utilisee pour serialiser
+ * course a la racine : assetsignQueuedFetch() reste utilisee pour serialiser
  * les appels d'apercu entre eux (utile independamment de cette course-la),
  * mais seulement le corps de la requete change, jamais le champ du formulaire.
  */
@@ -84,7 +84,7 @@
                     // Le jeton CSRF de ce POST est a usage unique (deja consomme par le
                     // pare-feu GLPI) : sans le remplacer ici par celui renvoye en
                     // en-tete, le PROCHAIN appel serait rejete (403) des la frappe suivante.
-                    // Mis a jour uniquement dans cette variable locale — jamais dans le
+                    // Mis a jour uniquement dans cette variable locale : jamais dans le
                     // DOM du formulaire (cf. commentaire d'en-tete).
                     var freshToken = res.headers.get('X-Assetsign-Csrf-Token');
                     if (freshToken) {

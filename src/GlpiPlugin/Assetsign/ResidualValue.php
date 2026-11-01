@@ -5,14 +5,14 @@ namespace GlpiPlugin\Assetsign;
 use Migration;
 
 /**
- * Saisie manuelle de la valeur résiduelle d'un matériel (V2, cf. ROADMAP.md —
+ * Saisie manuelle de la valeur résiduelle d'un matériel (V2, cf. ROADMAP.md -
  * "Valeur résiduelle (linéaire / durée personnalisable / saisie manuelle)",
  * issue #77) : table dédiée 1-vers-1 avec N'IMPORTE QUEL matériel géré par le
- * plugin (`itemtype`/`items_id`, comme `Movement` — PAS comme `VenteDetails`,
+ * plugin (`itemtype`/`items_id`, comme `Movement` - PAS comme `VenteDetails`,
  * qui référence une `Assetsign`), parce qu'un type natif GLPI (Computer,
  * Monitor...) ne peut pas recevoir de colonne supplémentaire. Une saisie
  * manuelle présente l'emporte TOUJOURS sur le calcul automatique
- * (PassportEvent::getResidualValue()) — jamais un simple repli en cas
+ * (PassportEvent::getResidualValue()) : jamais un simple repli en cas
  * d'échec du calcul, cf. docs/design/ADR-passeport-v1.md section 2.5 (même
  * principe déjà tranché pour le passeport environnemental V3 : la saisie
  * manuelle reste un vrai choix, pas un dégradé).
@@ -31,7 +31,7 @@ class ResidualValue extends Compat\Base\ResidualValueBase
      * Crée ou met à jour la ligne pour ce matériel. `$manualValue` à null
      * repasse le matériel en calcul automatique (jamais une suppression de
      * ligne : conserver la ligne, même vide, évite de recréer un id à chaque
-     * aller-retour manuel/automatique — sans conséquence, `getForItem()` ne
+     * aller-retour manuel/automatique : sans conséquence, `getForItem()` ne
      * lit que `manual_value`).
      */
    public static function upsertForItem(string $itemtype, int $items_id, ?float $manualValue): void {

@@ -5,7 +5,7 @@ namespace GlpiPlugin\Assetsign;
 // Qualifie explicitement (plutot que "Notification\DefaultNotificationContent") :
 // le "use Notification;" ci-dessus fait resoudre tout prefixe "Notification\..."
 // contre la classe globale \Notification importee, pas contre le sous-namespace
-// GlpiPlugin\Assetsign\Notification — constate en conditions reelles (plugin:install
+// GlpiPlugin\Assetsign\Notification: constate en conditions reelles (plugin:install
 // --force echouait avec "Attempted to load class DefaultNotificationContent from
 // namespace Notification").
 use GlpiPlugin\Assetsign\Notification\DefaultNotificationContent;
@@ -33,7 +33,7 @@ class NotificationTargetAssetsign extends NotificationTarget
      * types natifs font un INNER JOIN sur Profile_User (cf.
      * NotificationTarget::getProfileJoinCriteria()) qui exige que l'utilisateur
      * possede un profil GLPI actif dans l'entite, sans quoi GLPI l'ignore
-     * silencieusement — aucune erreur, aucun log, simplement aucun e-mail
+     * silencieusement: aucune erreur, aucun log, simplement aucun e-mail
      * envoye. Verifie en conditions reelles : ITEM_TECH_IN_CHARGE ne notifiait
      * JAMAIS le technicien dans cet environnement de test, malgre un profil
      * actif en base, un e-mail configure et users_id_tech correctement rempli.
@@ -87,7 +87,7 @@ class NotificationTargetAssetsign extends NotificationTarget
        // Signatures multiples (issue #143) : une fois la fiche passee en
        // attente de contre-signature, "reminder" doit relancer le
        // RESPONSABLE (qui doit encore agir), pas le beneficiaire (qui a deja
-       // signe) — meme raisonnement que l'exclusion de "delegated" ci-dessous.
+       // signe) : meme raisonnement que l'exclusion de "delegated" ci-dessous.
        $awaitingCosignature = (int) ($assetsign->fields['status'] ?? 0) === Assetsign::STATUS_AWAITING_COSIGNATURE;
 
        // Le beneficiaire recoit deja des relances periodiques pendant la meme
@@ -109,7 +109,7 @@ class NotificationTargetAssetsign extends NotificationTarget
        // Le technicien qui a declenche la remise (users_id_tech) est notifie sur
        // les evenements qui appellent une action de sa part : une fois signee (pour
        // archivage/suivi), si elle expire sans signature (sans quoi personne cote IT
-       // n'est jamais informe qu'un document est reste sans suite — seul le
+       // n'est jamais informe qu'un document est reste sans suite : seul le
        // beneficiaire, qui n'a justement pas signe, recevait l'e-mail), et surtout
        // AVANT l'expiration reelle (evenement "expiring_soon", cf. Assetsign::
        // runExpiryWarnings()) : sans cette alerte anticipee, le technicien n'apprend
@@ -127,7 +127,7 @@ class NotificationTargetAssetsign extends NotificationTarget
        // initiale a contre-signer, une relance pendant que c'est lui le
        // signataire attendu (ci-dessus), et la confirmation finale une fois
        // la fiche reellement signee (au meme titre que le beneficiaire/
-       // technicien ci-dessus) — mais pas "expiring_soon" (deja recu par le
+       // technicien ci-dessus) : mais pas "expiring_soon" (deja recu par le
        // technicien, meme choix que pour le beneficiaire).
       if ($event === 'cosignature_requested'
           || ($event === 'expired' && $awaitingCosignature)
@@ -139,7 +139,7 @@ class NotificationTargetAssetsign extends NotificationTarget
 
     /**
      * Point d'extension appele par NotificationTarget::addForTarget() pour tout
-     * type de cible non reconnu nativement — ici, nos TARGET_BENEFICIARY/TECHNICIAN.
+     * type de cible non reconnu nativement: ici, nos TARGET_BENEFICIARY/TECHNICIAN.
      */
    public function addSpecificTargets($data, $options) {
        $target = (int) ($data['items_id'] ?? 0);
@@ -211,7 +211,7 @@ class NotificationTargetAssetsign extends NotificationTarget
        $this->data['##assetsign.loan_until##'] = !empty($assetsign->fields['loan_until']) ? (string) \Html::convDate((string) $assetsign->fields['loan_until']) : '';
 
        // Delegation de signature (issue #115) : vide si aucune delegation
-       // active, non seulement pour l'evenement "delegated" — un gabarit
+       // active, non seulement pour l'evenement "delegated" - un gabarit
        // personnalise pourrait vouloir les afficher ailleurs (ex: "signed").
        $delegate = $assetsign->getDelegate();
        $this->data['##assetsign.delegate.name##'] = $delegate
@@ -269,7 +269,7 @@ class NotificationTargetAssetsign extends NotificationTarget
      * (cf. NotificationTemplate::getByLanguage() : `WHERE language IN
      * ($language, '') ORDER BY language DESC LIMIT 1`). Sans une ligne dediee
      * pour chacune, un destinataire dont le compte GLPI est dans une de ces
-     * langues recevrait quand meme l'e-mail en francais — contrairement a
+     * langues recevrait quand meme l'e-mail en francais: contrairement a
      * l'interface web du plugin (deja traduite via locales/<lang>.po).
      */
    private const NOTIFICATION_LANGUAGES = ['en_GB', 'es_ES', 'de_DE', 'it_IT'];
@@ -287,7 +287,7 @@ class NotificationTargetAssetsign extends NotificationTarget
        // fiche (Assetsign, Restitution, et les types a venir) : le mot de type
        // exact est insere via le tag ##assetsign.type## (deja resolu par
        // addDataForTemplate() ci-dessus), pas besoin d'une notification par
-       // type — cf. Notification\DefaultNotificationContent pour le contenu.
+       // type : cf. Notification\DefaultNotificationContent pour le contenu.
       foreach (array_keys((new self())->getEvents()) as $event) {
           $def = DefaultNotificationContent::forEvent($event);
           $existing = new Notification();

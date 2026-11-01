@@ -6,7 +6,7 @@
  * imprimée et collée physiquement sur le matériel. Accès authentifié classique
  * (aucune dérogation de pare-feu ici, contrairement à front/sign.php) : ce
  * plugin ne rend jamais aucune page accessible par un simple lien anonyme (cf.
- * README.md/SECURITY.md) — scanner le QR code une fois imprimé redirige vers
+ * README.md/SECURITY.md) : scanner le QR code une fois imprimé redirige vers
  * l'onglet Passeport matériel, qui exige la connexion GLPI habituelle si la
  * personne qui scanne n'est pas déjà authentifiée sur son téléphone.
  */

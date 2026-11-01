@@ -18,7 +18,7 @@ class Profile extends \CommonGLPI
    public const RIGHT_TEMPLATE    = 'plugin_assetsign_template';
     // Droit dedie (pas RIGHT_ASSETSIGN) : la fiche de maintenance est un sous-systeme
     // structurellement separe du moteur de fiches signees (pas de bureaucratie
-    // partagee, cycle de vie totalement different — cf. Maintenance.php), une
+    // partagee, cycle de vie totalement different : cf. Maintenance.php), une
     // organisation peut vouloir l'ouvrir a des techniciens qui n'ont pas acces
     // aux assetsigns/signatures.
    public const RIGHT_MAINTENANCE = 'plugin_assetsign_maintenance';
@@ -28,7 +28,7 @@ class Profile extends \CommonGLPI
     /**
      * Droits operationnels (utilisation quotidienne : consulter/creer/modifier
      * des remises et des fiches de maintenance) accordes par defaut aux profils
-     * "Admin" et "Technician" — ce sont eux qui traitent les remises/restitutions/
+     * "Admin" et "Technician" - ce sont eux qui traitent les remises/restitutions/
      * maintenances au quotidien, contrairement a RIGHT_CONFIG/RIGHT_TEMPLATE
      * (parametrage du plugin) qui restent reserves a Super-Admin. Sans ce
      * pre-reglage, un technicien fraichement installe n'a acces a AUCUNE
@@ -36,7 +36,7 @@ class Profile extends \CommonGLPI
      * les 4 droits pour tout profil autre que Super-Admin) et un Super-Admin
      * doit deviner qu'il faut aller les accorder a la main dans Administration
      * > Profils avant que qui que ce soit d'autre ne puisse s'en servir.
-     * READ+CREATE+UPDATE (pas DELETE/PURGE, plus prudent par defaut — la
+     * READ+CREATE+UPDATE (pas DELETE/PURGE, plus prudent par defaut : la
      * suppression d'une fiche signee reste une action reservee a Super-Admin).
      */
    private const DEFAULT_OPERATIONAL_PROFILES = ['Admin', 'Technician'];
@@ -55,7 +55,7 @@ class Profile extends \CommonGLPI
        // entry ... for key 'unicity'"), constate en conditions reelles en
        // testant une montee de version. On reconstruit donc ici la meme
        // logique (un droit par profil) mais en ne creant que les couples
-       // profil/droit manquants — ce qui couvre aussi le cas d'un nouveau
+       // profil/droit manquants : ce qui couvre aussi le cas d'un nouveau
        // profil cree apres la premiere installation.
        $existing = [];
       foreach ($DB->request(['FROM' => \ProfileRight::getTable(), 'WHERE' => ['name' => self::ALL_RIGHTS]]) as $row) {

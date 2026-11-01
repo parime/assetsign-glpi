@@ -9,7 +9,7 @@ use GlpiPlugin\Assetsign\Signature;
 use GlpiPlugin\Assetsign\Token;
 
 /**
- * Issue #157 : dossier de départ — une restitution groupée pour tout le matériel d'une personne.
+ * Issue #157 : dossier de départ : une restitution groupée pour tout le matériel d'une personne.
  */
 final class DepartureTest extends AssetsignTestCase
 {

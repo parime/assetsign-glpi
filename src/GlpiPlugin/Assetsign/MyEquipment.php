@@ -15,7 +15,7 @@ use User;
  * L'utilisateur voit le matériel qui lui est affecté dans GLPI, les feuilles qu'il a signées pour
  * ce matériel (PDF servis par le plugin après contrôle : c'est bien lui le bénéficiaire, sans droit
  * sur le matériel ni sur les documents GLPI), et peut signaler un problème : un ticket lié au
- * matériel est créé à son nom. Rien n'est modifié sur le matériel lui-même — c'est l'équipe qui
+ * matériel est créé à son nom. Rien n'est modifié sur le matériel lui-même : c'est l'équipe qui
  * traite le ticket.
  */
 final class MyEquipment
@@ -171,7 +171,7 @@ final class MyEquipment
       ]);
       $content = TwigBlocks::content([
          TwigBlocks::p(sprintf(__('%1$s signalé(e) sur %2$s.', 'assetsign'), $types[$problem], $itemLabel)),
-         $details !== [] ? TwigBlocks::p(implode(' — ', $details)) : null,
+         $details !== [] ? TwigBlocks::p(implode(' - ', $details)) : null,
          trim($description) !== '' ? TwigBlocks::lines(trim($description)) : null,
          in_array($problem, [self::PROBLEM_LOSS, self::PROBLEM_THEFT], true)
             ? TwigBlocks::p(__('Perte ou vol : le service informatique vous indiquera les démarches (déclaration, blocage des accès, remplacement).', 'assetsign'))

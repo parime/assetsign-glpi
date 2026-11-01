@@ -106,7 +106,7 @@ class PassportEventTest extends AssetsignTestCase
     /**
      * Bouton « Imprimer une étiquette QR code » (cf. ROADMAP.md V3, issue #82) :
      * affiché sur l'onglet Passeport matériel uniquement quand Config::enable_qr_label
-     * est actif pour l'entité (réglage par défaut, cf. Config::DEFAULTS) — jamais un
+     * est actif pour l'entité (réglage par défaut, cf. Config::DEFAULTS) : jamais un
      * réglage global, chaque entité peut le désactiver indépendamment.
      */
     public function testShowForItemDisplaysQrLabelButtonWhenEnabled(): void

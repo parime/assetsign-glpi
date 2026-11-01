@@ -9,7 +9,7 @@ use User;
 /**
  * Couvre le dispatch de front/passport_backfill.php (bouton "Forcer la recherche"
  * des onglets Passeport materiel/utilisateur) desormais extrait dans
- * PassportBackfillController — meme motivation que les autres Api\*Controller
+ * PassportBackfillController : meme motivation que les autres Api\*Controller
  * deja testes (AssetsignFormController, MaintenanceFormController,
  * MovementFormController...). PassportEventBackfillTest.php couvre deja
  * PassportEvent::backfillFromLogs()/backfillUserHistoryFromLogs() directement ;

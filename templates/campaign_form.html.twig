@@ -67,7 +67,7 @@
           {% if not is_charter %}<div class="col"><div class="h1 mb-0 text-orange">{{ stats.discrepancy }}</div><div class="text-muted small">{{ __('Écarts signalés', 'assetsign') }}</div></div>{% endif %}
           <div class="col"><div class="h1 mb-0 text-muted">{{ stats.pending }}</div><div class="text-muted small">{{ __('Sans réponse', 'assetsign') }}</div></div>
         </div>
-        <div class="text-muted small mt-2">{{ __('Date limite', 'assetsign') }} : {{ campaign.date_deadline ? campaign.date_deadline|formatted_date : '—' }}</div>
+        <div class="text-muted small mt-2">{{ __('Date limite', 'assetsign') }} : {{ campaign.date_deadline ? campaign.date_deadline|formatted_date : '-' }}</div>
         {% if is_charter and campaign.tickets_id > 0 %}
           <div class="small mt-1"><a href="{{ ticket_url ~ campaign.tickets_id }}"><i class="ti ti-ticket me-1"></i>{{ __('Ticket des non-signataires n°%d', 'assetsign')|format(campaign.tickets_id) }}</a></div>
         {% endif %}
@@ -106,7 +106,7 @@
                 <td><a href="{{ attestation_url ~ line.id }}">{{ line.user }}</a></td>
                 <td>{{ line.items }}</td>
                 <td><span class="badge {{ status_class }}">{{ status_labels[line.status] }}</span></td>
-                <td>{{ line.date_answered ? line.date_answered|formatted_datetime : '—' }}</td>
+                <td>{{ line.date_answered ? line.date_answered|formatted_datetime : '-' }}</td>
                 <td>
                   {% for gap in line.gaps %}<div class="small">{{ gap_labels[gap] }}</div>{% endfor %}
                   {% if line.comment %}<div class="small text-muted">« {{ line.comment }} »</div>{% endif %}

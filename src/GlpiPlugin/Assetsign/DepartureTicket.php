@@ -17,7 +17,7 @@ use User;
  *
  * Le ticket liste et lie chaque matériel du départ ; les étapes suivantes (signature, annulation,
  * jour du départ avec du matériel encore affecté) y ajoutent un suivi. Règle du projet : le plugin
- * ne change jamais un statut, une affectation ou un ticket de lui-même — c'est l'équipe qui traite
+ * ne change jamais un statut, une affectation ou un ticket de lui-même : c'est l'équipe qui traite
  * le ticket. En particulier, aucun suivi n'est ajouté à un ticket résolu ou clos (GLPI pourrait le
  * rouvrir).
  */
@@ -230,7 +230,7 @@ final class DepartureTicket
       foreach ($lines as $line) {
          $label = trim($line['type_label'] . ' « ' . $line['name'] . ' »');
          if ($line['serial'] !== '') {
-            $label .= ' — ' . sprintf(__('N° de série %s', 'assetsign'), $line['serial']);
+            $label .= ' - ' . sprintf(__('N° de série %s', 'assetsign'), $line['serial']);
          }
          $labels[] = $label;
       }

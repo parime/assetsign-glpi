@@ -8,7 +8,7 @@ use ProfileRight;
 
 /**
  * `Profile::install()`/`uninstall()` had no dedicated test. Safe to exercise the real thing here
- * (unlike a plain `DELETE`, a `DROP TABLE` would still need care) — `AssetsignTestCase` wraps every
+ * (unlike a plain `DELETE`, a `DROP TABLE` would still need care) - `AssetsignTestCase` wraps every
  * test in a transaction rolled back in `tearDown()`, and both methods only ever run plain
  * `INSERT`/`UPDATE`/`DELETE` statements against `glpi_profilerights`, never DDL.
  */
@@ -59,13 +59,13 @@ final class ProfileTest extends AssetsignTestCase
       foreach ([Profile::RIGHT_CONFIG, Profile::RIGHT_TEMPLATE] as $right) {
           $row = $this->rightsRow($adminId, $right);
           $this->assertNotNull($row);
-          $this->assertSame(0, (int) $row['rights'], "'$right' is plugin configuration, not day-to-day operation — Admin gets it at 0 by default.");
+          $this->assertSame(0, (int) $row['rights'], "'$right' is plugin configuration, not day-to-day operation: Admin gets it at 0 by default.");
       }
    }
 
     /**
      * Regression guard for the exact behaviour documented in `install()`: an operational right is
-     * only ever set at row *creation* — an admin who revokes it afterward must see that choice
+     * only ever set at row *creation* - an admin who revokes it afterward must see that choice
      * survive a plugin upgrade (which replays `install()`), not get silently re-granted.
      */
    public function testInstallDoesNotReGrantAnOperationalRightThatWasManuallyRevoked(): void {
@@ -83,7 +83,7 @@ final class ProfileTest extends AssetsignTestCase
 
     /**
      * Opposite behaviour, also documented directly in `install()`: Super-Admin's rights are
-     * unconditionally reset on every run — the plugin's own safety net must always stay fully
+     * unconditionally reset on every run: the plugin's own safety net must always stay fully
      * usable by at least one profile, even if someone fat-fingered it away.
      */
    public function testInstallAlwaysResetsSuperAdminToFullRightsEvenIfPreviouslyRevoked(): void {
@@ -107,7 +107,7 @@ final class ProfileTest extends AssetsignTestCase
       foreach ($this->allRights() as $right) {
           $count = $DB->request(['FROM' => ProfileRight::getTable(), 'WHERE' => ['name' => $right]])->count();
           $profileCount = $DB->request(['FROM' => \Profile::getTable()])->count();
-          $this->assertSame($profileCount, $count, "Exactly one '$right' row per real profile — no duplicate from running install() twice.");
+          $this->assertSame($profileCount, $count, "Exactly one '$right' row per real profile: no duplicate from running install() twice.");
       }
    }
 

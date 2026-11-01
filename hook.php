@@ -544,7 +544,7 @@ function plugin_assetsign_install(): bool {
     // renvoie false), meme apres un `git pull` reussi et malgre le bon numero de
     // version sur disque. Bug reel constate : plugin:install --force + cache:clear
     // manuel avaient tous les deux ete faits mais dans un contexte ou "manuel"
-    // signifiait "oublie/mal cible" — l'automatiser ici retire ce risque humain.
+    // signifiait "oublie/mal cible" - l'automatiser ici retire ce risque humain.
     (new CacheManager())->resetAllCaches();
 
     return true;

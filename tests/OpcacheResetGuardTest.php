@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  *
  * Garde de non-regression pour front/opcache_reset.php, le seul point d'entree deja vise par
  * une vraie faille (revue de securite marketplace GLPI, low, #98 : IP seule contournable
- * derriere un reverse-proxy en mode loopback) et qui n'avait jusqu'ici aucun test — une
+ * derriere un reverse-proxy en mode loopback) et qui n'avait jusqu'ici aucun test : une
  * regression future (ex: remplacer hash_equals() par ===, ou oublier la verification d'IP)
  * ne se serait jamais vue autrement qu'a la prochaine revue de securite manuelle.
  */
@@ -49,7 +49,7 @@ class OpcacheResetGuardTest extends TestCase
 
     /**
      * Si le fichier jeton n'a jamais ete cree (installation anterieure au correctif #98, ou
-     * probleme de permissions), $expectedToken vaut '' cote appelant — une chaine vide ne doit
+     * probleme de permissions), $expectedToken vaut '' cote appelant : une chaine vide ne doit
      * JAMAIS etre consideree valide meme si providedToken est aussi vide, sans quoi l'endpoint
      * redeviendrait protege par la seule IP.
      */

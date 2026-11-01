@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
  * Classe de base pour les tests qui ecrivent en base : chaque test s'execute
  * dans une transaction annulee en tearDown, pour ne rien laisser derriere lui.
  * Les tables du plugin (et glpi_entities) sont en InnoDB, ce qui rend cela
- * possible — mais ce n'est pas un filet de securite absolu (une requete qui
+ * possible : mais ce n'est pas un filet de securite absolu (une requete qui
  * ferait un COMMIT implicite, ex: DDL, echapperait au rollback). Ne PAS lancer
  * ces tests contre une base de production.
  */
@@ -20,6 +20,10 @@ abstract class AssetsignTestCase extends TestCase
 
         global $DB;
         $DB->beginTransaction();
+
+        // Les tests ne dependent pas de la presence de Configuration GLPI Auto sur l'instance :
+        // sans lui, arrivee et depart gardent leur liste de taches par defaut.
+        \GlpiPlugin\Assetsign\StaffMovementLink::$forceCgaActive = false;
 
         // tests/bootstrap.php ne simule aucune connexion : $_SESSION reste
         // entierement vide (verifie en conditions reelles - Kernel::boot()
@@ -65,6 +69,7 @@ abstract class AssetsignTestCase extends TestCase
         $CFG_GLPI['language'] = $this->defaultLanguage;
         $CFG_GLPI['auto_create_infocoms'] = $this->autoCreateInfocoms;
         $DB->rollBack();
+        \GlpiPlugin\Assetsign\StaffMovementLink::$forceCgaActive = null;
 
         parent::tearDown();
     }
@@ -131,7 +136,7 @@ abstract class AssetsignTestCase extends TestCase
      * Cree un Etat GLPI (glpi_states) directement en base, meme motif et
      * meme raison que createTestEntity() : State est aussi un CommonTreeDropdown
      * (level/ancestors_cache), mais rien dans ce plugin ne parcourt la
-     * hierarchie des Etats — seul un id valide a referencer dans states_id
+     * hierarchie des Etats : seul un id valide a referencer dans states_id
      * est necessaire ici.
      */
     protected function createTestState(string $name): int
@@ -192,7 +197,7 @@ abstract class AssetsignTestCase extends TestCase
     /**
      * Utilisateur de test avec prenom/nom garantis (contrairement au compte
      * 'glpi' du jeu de test, dont le prenom/nom ne sont pas forcement remplis
-     * sur une instance fraichement installee — constate en CI, absent en local
+     * sur une instance fraichement installee : constate en CI, absent en local
      * sur une instance deja manipulee manuellement).
      */
     protected function createTestUser(string $firstname, string $realname, array $extra = []): int
@@ -241,7 +246,7 @@ abstract class AssetsignTestCase extends TestCase
 
     /**
      * Verifie l'absence d'un entier isole de 5+ chiffres entre deux balises
-     * dans un HTML rendu — la signature d'un {{ call(...) }} Twig qui aurait
+     * dans un HTML rendu : la signature d'un {{ call(...) }} Twig qui aurait
      * imprime par erreur la valeur de retour d'un Dropdown::show() sous-jacent
      * (cf. TemplateRenderingTest/OtherTemplateRenderingTest, bug reel corrige
      * en {% do call(...) %}, documente dans TROUBLESHOOTING.md). Partagee par
@@ -262,7 +267,7 @@ abstract class AssetsignTestCase extends TestCase
      * a l'interieur de la transaction du test en cours (donc sans effet reel,
      * annule au tearDown) : necessaire avant de tester runReminders()/
      * runExpiration()/runExpiryWarnings(), qui parcourent TOUTE la table sans
-     * filtre d'entite — sans ce nettoyage, d'anciennes assetsigns de tests
+     * filtre d'entite : sans ce nettoyage, d'anciennes assetsigns de tests
      * manuels deja presentes fausseraient le compte retourne.
      */
     protected function clearAwaitingSignatureAssetsigns(): void

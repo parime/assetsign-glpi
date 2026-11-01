@@ -11,7 +11,7 @@ use User;
  * declenche sa generation. Un meme document est re-rendu par plusieurs personnes (PDF non signe
  * pendant l'affectation par le technicien, PDF signe pendant la signature du beneficiaire, PDF
  * contre-signe par le responsable) : sans langue fixee ici, ses versions successives changeraient
- * de langue selon qui agit — la raison pour laquelle les textes des PDF etaient jusqu'ici figes
+ * de langue selon qui agit : la raison pour laquelle les textes des PDF etaient jusqu'ici figes
  * en francais.
  */
 final class PdfLanguage

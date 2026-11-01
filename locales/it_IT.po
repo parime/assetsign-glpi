@@ -753,11 +753,11 @@ msgstr "Link al regolamento informatico completo"
 msgid ""
 "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà "
 "en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en "
-"plus du texte de la charte défini dans le gabarit — commun à tous les types."
+"plus du texte de la charte défini dans le gabarit : commun à tous les types."
 msgstr ""
 "Facoltativo: URL verso un documento o una pagina esistente (intranet, PDF "
 "già online...). Se indicato, sulla scheda PDF appare un link cliccabile, in "
-"aggiunta al testo del regolamento definito nel modello — comune a tutti i "
+"aggiunta al testo del regolamento definito nel modello: comune a tutti i "
 "tipi."
 
 #: templates/config_form.html.twig
@@ -765,8 +765,8 @@ msgid "Fournisseur de signature"
 msgstr "Fornitore della firma"
 
 #: templates/config_form.html.twig
-msgid "Délais de relance (jours, séparés par des virgules — ex: 3,7,7)"
-msgstr "Termini di sollecito (giorni, separati da virgole — es: 3,7,7)"
+msgid "Délais de relance (jours, séparés par des virgules : ex: 3,7,7)"
+msgstr "Termini di sollecito (giorni, separati da virgole: es: 3,7,7)"
 
 #: templates/config_form.html.twig
 msgid "Nombre maximum de relances (0 = illimité)"
@@ -802,11 +802,11 @@ msgstr "Proteggere il PDF (limitare la copia e la modifica)"
 #: templates/config_form.html.twig
 msgid ""
 "Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur "
-"qui respecte cette restriction — n'affecte jamais la possibilité de le "
+"qui respecte cette restriction : n'affecte jamais la possibilité de le "
 "consulter ou de l'imprimer."
 msgstr ""
 "Cifra il PDF generato per impedirne la copia/modifica in un lettore che "
-"rispetta questa restrizione — non influisce mai sulla possibilità di "
+"rispetta questa restrizione : non influisce mai sulla possibilità di "
 "consultarlo o stamparlo."
 
 #: templates/config_form.html.twig
@@ -827,10 +827,10 @@ msgstr "Attivazione tramite assegnazione utente"
 
 #: templates/config_form.html.twig
 msgid ""
-"Basé sur le champ \"Utilisateur\" du matériel — fonctionne dans la plupart "
+"Basé sur le champ \"Utilisateur\" du matériel : fonctionne dans la plupart "
 "des GLPI."
 msgstr ""
-"Basato sul campo \"Utente\" del dispositivo — funziona nella maggior parte "
+"Basato sul campo \"Utente\" del dispositivo: funziona nella maggior parte "
 "delle installazioni GLPI."
 
 #: templates/config_form.html.twig
@@ -982,10 +982,10 @@ msgstr "Mostra un codice QR sulle schede PDF"
 
 #: templates/config_form.html.twig
 msgid ""
-"Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la "
+"Le QR code renvoie vers la fiche correspondante dans GLPI : pratique pour la "
 "retrouver depuis un contrôle physique du matériel."
 msgstr ""
-"Il codice QR rimanda alla scheda corrispondente in GLPI — comodo per "
+"Il codice QR rimanda alla scheda corrispondente in GLPI: comodo per "
 "ritrovarla durante un controllo fisico del dispositivo."
 
 #: templates/config_form.html.twig
@@ -1234,11 +1234,11 @@ msgstr "Attivare il Passaporto del dispositivo"
 #: templates/config_form.html.twig
 msgid ""
 "Désactivé : l'onglet disparaît et aucun nouvel événement n'est enregistré. "
-"Les événements déjà enregistrés ne sont jamais supprimés — ils "
+"Les événements déjà enregistrés ne sont jamais supprimés : ils "
 "réapparaissent si vous réactivez."
 msgstr ""
 "Disattivato: la scheda scompare e non viene registrato alcun nuovo evento. "
-"Gli eventi già registrati non vengono mai eliminati — riappaiono se si "
+"Gli eventi già registrati non vengono mai eliminati : riappaiono se si "
 "riattiva."
 
 #: templates/config_form.html.twig
@@ -2004,8 +2004,8 @@ msgstr ""
 "Questa attribuzione non può più essere sollecitata (già firmata o scaduta)."
 
 #: src/GlpiPlugin/Assetsign/Config.php:79
-msgid "AssetSign — Signature électronique"
-msgstr "AssetSign — Firma elettronica"
+msgid "AssetSign : Signature électronique"
+msgstr "AssetSign: Firma elettronica"
 
 #: src/GlpiPlugin/Assetsign/Config.php:151
 msgid "Signature intégrée (canvas)"
@@ -2025,8 +2025,8 @@ msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
 msgstr "Il vostro account GLPI non ha un indirizzo e-mail registrato."
 
 #: src/GlpiPlugin/Assetsign/Config.php:269
-msgid "E-mail de test — Assetsign & signature"
-msgstr "E-mail di prova — Consegna e firma"
+msgid "E-mail de test: Assetsign & signature"
+msgstr "E-mail di prova: Consegna e firma"
 
 #: src/GlpiPlugin/Assetsign/Config.php:270
 msgid ""
@@ -2274,8 +2274,8 @@ msgstr "Motore di regole semplice (senza machine learning) che combina il punteg
 msgid "Afficher les recommandations sur le Passeport matériel"
 msgstr "Mostra le raccomandazioni nel Passaporto del dispositivo"
 
-msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
-msgstr "«Prevedere una sostituzione» si attiva al di sotto della soglia «Attenzione» già impostata nella scheda Punteggio di salute — nessuna seconda impostazione ridondante per la stessa nozione."
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé : pas de second réglage redondant pour la même notion."
+msgstr "«Prevedere una sostituzione» si attiva al di sotto della soglia «Attenzione» già impostata nella scheda Punteggio di salute : nessuna seconda impostazione ridondante per la stessa nozione."
 
 msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
 msgstr "Soglia di valore residuo che attiva «Rivalutare l'utilizzo» (% del prezzo di acquisto)"
@@ -2627,8 +2627,8 @@ msgid "Passeport environnemental"
 msgstr "Passaporto ambientale"
 
 #: templates/config_form.html.twig
-msgid "Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l'implémentation (cf. issue #80) : l'API publique Boavizta n'expose, pour les ordinateurs/portables, que des moyennes de catégorie (\"laptop pro/perso\"), jamais une valeur propre au modèle réel présent dans GLPI — l'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement."
-msgstr "Avvio della componente RSE del Passaporto del dispositivo (impronta di fabbricazione, in kg CO2-eq). Ricerca condotta prima dell'implementazione (cfr. issue #80): l'API pubblica Boavizta espone, per computer/portatili, solo medie di categoria (\"laptop pro/personale\"), mai un valore specifico del modello reale presente in GLPI — mostrarlo come il dato di QUESTO dispositivo sarebbe un dato inventato. Questa versione resta quindi solo a inserimento manuale: la fonte (costruttore / API esterna dedicata / inserimento manuale) e il livello di affidabilità sono dichiarati da chi inserisce il valore, mai calcolati automaticamente."
+msgid "Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l'implémentation (cf. issue #80) : l'API publique Boavizta n'expose, pour les ordinateurs/portables, que des moyennes de catégorie (\"laptop pro/perso\"), jamais une valeur propre au modèle réel présent dans GLPI : l'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement."
+msgstr "Avvio della componente RSE del Passaporto del dispositivo (impronta di fabbricazione, in kg CO2-eq). Ricerca condotta prima dell'implementazione (cfr. issue #80): l'API pubblica Boavizta espone, per computer/portatili, solo medie di categoria (\"laptop pro/personale\"), mai un valore specifico del modello reale presente in GLPI : mostrarlo come il dato di QUESTO dispositivo sarebbe un dato inventato. Questa versione resta quindi solo a inserimento manuale: la fonte (costruttore / API esterna dedicata / inserimento manuale) e il livello di affidabilità sono dichiarati da chi inserisce il valore, mai calcolati automaticamente."
 
 #: templates/config_form.html.twig
 msgid "Afficher le passeport environnemental sur le Passeport matériel"
@@ -2746,12 +2746,12 @@ msgstr "Segnalare i documenti da firmare nella pagina iniziale di GLPI"
 
 msgid ""
 "Un bandeau prévient l'utilisateur connecté qu'un document attend sa "
-"signature, avec un lien vers la page « Mes documents à signer » — "
+"signature, avec un lien vers la page « Mes documents à signer » : "
 "indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
 "jamais le lien de signature."
 msgstr ""
 "Un banner avvisa l'utente connesso che un documento attende la sua firma, con"
-" un collegamento alla pagina «I miei documenti da firmare» — indispensabile "
+" un collegamento alla pagina «I miei documenti da firmare» : indispensabile "
 "per gli utenti senza indirizzo e-mail, che non ricevono mai il link di firma."
 
 msgid ""
@@ -2849,13 +2849,13 @@ msgstr "Consentire la firma sul posto (in presenza di un tecnico)"
 
 msgid ""
 "Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
-"signe sur l'écran du technicien, sans avoir à se connecter à GLPI — pour les "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI : pour les "
 "personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
 " a été recueillie en présence de ce technicien, qui atteste ainsi de "
 "l'identité du signataire."
 msgstr ""
 "Aggiunge un pulsante «Far firmare sul posto» alla scheda: il beneficiario "
-"firma sullo schermo del tecnico, senza dover accedere a GLPI — per le persone"
+"firma sullo schermo del tecnico, senza dover accedere a GLPI : per le persone"
 " che non hanno accesso a GLPI. Il PDF firmato indica che la firma è stata "
 "raccolta in presenza di questo tecnico, che attesta così l'identità del "
 "firmatario."
@@ -4015,8 +4015,8 @@ msgstr "Le attrezzature in uno di questi stati vengono proposte per prime quando
 msgid "majeure"
 msgstr "grave"
 
-msgid "Établie le %1$s — Référence assetsign n°%2$d"
-msgstr "Redatta il %1$s — Riferimento assetsign n. %2$d"
+msgid "Établie le %1$s : Référence assetsign n°%2$d"
+msgstr "Redatta il %1$s: Riferimento assetsign n. %2$d"
 
 msgid "Bénéficiaire (externe, sans compte GLPI)"
 msgstr "Beneficiario (esterno, senza account GLPI)"
@@ -4078,17 +4078,17 @@ msgstr "Controfirmato elettronicamente il %1$s alle %2$s"
 msgid "Responsable hiérarchique : %s"
 msgstr "Responsabile gerarchico: %s"
 
-msgid "Attribution #%d — Document généré par GLPI (plugin assetsign)"
-msgstr "Attribuzione #%d — Documento generato da GLPI (plugin assetsign)"
+msgid "Attribution #%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Attribuzione #%d: Documento generato da GLPI (plugin assetsign)"
 
-msgid "Attestation de détention — %s"
-msgstr "Attestazione di detenzione — %s"
+msgid "Attestation de détention - %s"
+msgstr "Attestazione di detenzione - %s"
 
 msgid "Attestation de détention de matériel"
 msgstr "Attestazione di detenzione di materiale"
 
-msgid "%1$s — signée le %2$s"
-msgstr "%1$s — firmata il %2$s"
+msgid "%1$s : signée le %2$s"
+msgstr "%1$s: firmata il %2$s"
 
 msgid "Je soussigné(e) %s atteste détenir l'ensemble du matériel listé ci-dessous, et seulement celui-ci."
 msgstr "Il/La sottoscritto/a %s attesta di detenere tutto il materiale elencato di seguito, e soltanto questo."
@@ -4099,14 +4099,14 @@ msgstr "Firma"
 msgid "Date et heure"
 msgstr "Data e ora"
 
-msgid "Campagne d'attestation — %s"
-msgstr "Campagna di attestazione — %s"
+msgid "Campagne d'attestation - %s"
+msgstr "Campagna di attestazione - %s"
 
 msgid "Campagne d'attestation de détention"
 msgstr "Campagna di attestazione di detenzione"
 
-msgid "%1$s — rapport généré le %2$s"
-msgstr "%1$s — rapporto generato il %2$s"
+msgid "%1$s : rapport généré le %2$s"
+msgstr "%1$s: rapporto generato il %2$s"
 
 msgid "Lancée le"
 msgstr "Avviata il"
@@ -4126,8 +4126,8 @@ msgstr "Risposta"
 msgid "(ticket n°%d)"
 msgstr "(ticket n. %d)"
 
-msgid "Établie le %1$s — Référence fiche n°%2$d"
-msgstr "Redatta il %1$s — Riferimento scheda n. %2$d"
+msgid "Établie le %1$s : Référence fiche n°%2$d"
+msgstr "Redatta il %1$s: Riferimento scheda n. %2$d"
 
 msgid "Points de contrôle"
 msgstr "Punti di controllo"
@@ -4135,14 +4135,14 @@ msgstr "Punti di controllo"
 msgid "Signature du technicien :"
 msgstr "Firma del tecnico:"
 
-msgid "Fiche de maintenance #%d — Document généré par GLPI (plugin assetsign)"
-msgstr "Scheda di manutenzione #%d — Documento generato da GLPI (plugin assetsign)"
+msgid "Fiche de maintenance #%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Scheda di manutenzione #%d: Documento generato da GLPI (plugin assetsign)"
 
-msgid "Restitution de départ — %s"
-msgstr "Restituzione per uscita — %s"
+msgid "Restitution de départ - %s"
+msgstr "Restituzione per uscita - %s"
 
-msgid "Restitution du matériel — départ"
-msgstr "Restituzione del materiale — uscita"
+msgid "Restitution du matériel : départ"
+msgstr "Restituzione del materiale: uscita"
 
 msgid "Signée le %s"
 msgstr "Firmata il %s"
@@ -4231,8 +4231,8 @@ msgstr "Nessun regolamento informatico è configurato per questa entità: compil
 msgid "Ticket des non-signataires n°%d"
 msgstr "Ticket dei non firmatari n. %d"
 
-msgid "Charte informatique — %s"
-msgstr "Regolamento informatico — %s"
+msgid "Charte informatique - %s"
+msgstr "Regolamento informatico - %s"
 
 msgid "Je soussigné(e) %s déclare avoir pris connaissance de la charte informatique ci-dessous et m'engage à la respecter."
 msgstr "Il/La sottoscritto/a %s dichiara di aver preso visione del regolamento informatico riportato di seguito e si impegna a rispettarlo."

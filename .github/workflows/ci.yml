@@ -68,7 +68,7 @@ jobs:
       - name: Récupère le code du plugin
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
 
-      - name: Analyse de sécurité du dépôt (Trivy — secrets, mauvaises configurations et vulnérabilités)
+      - name: Analyse de sécurité du dépôt (Trivy : secrets, mauvaises configurations et vulnérabilités)
         # --scanners vuln,secret,misconfig : le scan de vulnerabilites fait ici
         # double emploi avec composer/npm audit plus bas (meme source de
         # donnees pour la partie dependances), mais volontairement conserve -
@@ -177,7 +177,7 @@ jobs:
           # GLPI_DB_PORT manquant faisait considerer la config DB comme
           # "incomplete" par l'entrypoint de l'image, qui desactivait alors
           # silencieusement l'auto-installation (GLPI_SKIP_AUTOINSTALL force
-          # a true) — le noyau GLPI demarre quand meme sans DB configuree,
+          # a true) : le noyau GLPI demarre quand meme sans DB configuree,
           # donc une simple verification "le noyau demarre" ne suffit pas a
           # detecter ce cas : on attend explicitement le fichier que
           # l'auto-installation cree en dernier (config_db.php), avec un

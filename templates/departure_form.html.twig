@@ -1,4 +1,4 @@
-{# Issue #157 : dossier de départ — restitution groupée de tout le matériel, signée en une fois. #}
+{# Issue #157 : dossier de départ : restitution groupée de tout le matériel, signée en une fois. #}
 <div class="container-lg my-3">
   <div class="card mb-3">
     <div class="card-header d-flex align-items-center gap-2">
@@ -9,9 +9,9 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-md-3"><div class="text-muted small">{{ __('Date de départ', 'assetsign') }}</div>{{ departure.date_departure ? departure.date_departure|formatted_date : '—' }}</div>
+        <div class="col-md-3"><div class="text-muted small">{{ __('Date de départ', 'assetsign') }}</div>{{ departure.date_departure ? departure.date_departure|formatted_date : '-' }}</div>
         <div class="col-md-3"><div class="text-muted small">{{ __('Déclencheur', 'assetsign') }}</div>{{ trigger_label }}</div>
-        <div class="col-md-3"><div class="text-muted small">{{ __('Préparé par', 'assetsign') }}</div>{{ tech_name ?: '—' }}</div>
+        <div class="col-md-3"><div class="text-muted small">{{ __('Préparé par', 'assetsign') }}</div>{{ tech_name ?: '-' }}</div>
         <div class="col-md-3"><div class="text-muted small">{{ __('Matériels signés', 'assetsign') }}</div>{{ signed_count }} / {{ lines|length }}</div>
       </div>
       {# Issue #195 : ticket de recuperation du materiel, visible seulement par l'equipe. #}

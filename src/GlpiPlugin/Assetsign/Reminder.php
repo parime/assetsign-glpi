@@ -7,7 +7,7 @@ use Migration;
 /**
  * Journal des relances envoyees pour une remise : une ligne par relance,
  * uniquement pour en compter le nombre (affiche sur sa fiche, cf.
- * assetsign_form.html.twig) — le compteur faisant foi pour la logique metier
+ * assetsign_form.html.twig) : le compteur faisant foi pour la logique metier
  * (limite max_reminders) est Assetsign.reminder_count, pas ce journal.
  */
 class Reminder extends Compat\Base\ReminderBase
@@ -40,7 +40,7 @@ class Reminder extends Compat\Base\ReminderBase
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
       } else {
           // Audit code mort : 'reminder_number'/'date_sent'/'channel' n'etaient
-          // jamais relus (countForAssetsign() ne fait qu'un COUNT(*)) — 'channel'
+          // jamais relus (countForAssetsign() ne fait qu'un COUNT(*)) - 'channel'
           // valait d'ailleurs toujours 'email', log() n'etant jamais appele
           // avec un 3e argument.
          foreach (['reminder_number', 'date_sent', 'channel'] as $obsoleteField) {

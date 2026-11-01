@@ -4,7 +4,7 @@ namespace GlpiPlugin\Assetsign\Security;
 
 /**
  * Logique d'autorisation de front/opcache_reset.php, extraite pour la rendre testable en
- * PHPUnit sans dependre de $_SERVER/$_GET ni d'une vraie installation GLPI — voir le
+ * PHPUnit sans dependre de $_SERVER/$_GET ni d'une vraie installation GLPI : voir le
  * commentaire de ce front pour le contexte complet (endpoint interne, appele par
  * plugin_assetsign_install() juste apres une mise a jour, protege par jeton partage suite a
  * la revue de securite marketplace GLPI #98).

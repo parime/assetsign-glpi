@@ -742,19 +742,19 @@ msgstr "Link to the full IT charter"
 msgid ""
 "Optionnel : URL vers un document ou une page existante (intranet, PDF déjà "
 "en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en "
-"plus du texte de la charte défini dans le gabarit — commun à tous les types."
+"plus du texte de la charte défini dans le gabarit : commun à tous les types."
 msgstr ""
 "Optional: URL to an existing document or page (intranet, PDF already "
 "online...). If set, a clickable link appears on the PDF, in addition to the "
-"charter text set in the template — shared by all types."
+"charter text set in the template: shared by all types."
 
 #: templates/config_form.html.twig
 msgid "Fournisseur de signature"
 msgstr "Signature provider"
 
 #: templates/config_form.html.twig
-msgid "Délais de relance (jours, séparés par des virgules — ex: 3,7,7)"
-msgstr "Reminder delays (days, comma-separated — e.g. 3,7,7)"
+msgid "Délais de relance (jours, séparés par des virgules : ex: 3,7,7)"
+msgstr "Reminder delays (days, comma-separated: e.g. 3,7,7)"
 
 #: templates/config_form.html.twig
 msgid "Nombre maximum de relances (0 = illimité)"
@@ -790,11 +790,11 @@ msgstr "Protect the PDF (restrict copying and editing)"
 #: templates/config_form.html.twig
 msgid ""
 "Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur "
-"qui respecte cette restriction — n'affecte jamais la possibilité de le "
+"qui respecte cette restriction : n'affecte jamais la possibilité de le "
 "consulter ou de l'imprimer."
 msgstr ""
 "Encrypts the generated PDF to prevent copying/editing in a reader that "
-"honours this restriction — never affects the ability to view or print it."
+"honours this restriction: never affects the ability to view or print it."
 
 #: templates/config_form.html.twig
 msgid "Types de matériel gérés par le plugin"
@@ -814,9 +814,9 @@ msgstr "Triggered by user assignment"
 
 #: templates/config_form.html.twig
 msgid ""
-"Basé sur le champ \"Utilisateur\" du matériel — fonctionne dans la plupart "
+"Basé sur le champ \"Utilisateur\" du matériel : fonctionne dans la plupart "
 "des GLPI."
-msgstr "Based on the asset's \"User\" field — works in most GLPI setups."
+msgstr "Based on the asset's \"User\" field: works in most GLPI setups."
 
 #: templates/config_form.html.twig
 msgid "Signature à la première affectation"
@@ -964,10 +964,10 @@ msgstr "Show a QR code on PDF sheets"
 
 #: templates/config_form.html.twig
 msgid ""
-"Le QR code renvoie vers la fiche correspondante dans GLPI — pratique pour la "
+"Le QR code renvoie vers la fiche correspondante dans GLPI : pratique pour la "
 "retrouver depuis un contrôle physique du matériel."
 msgstr ""
-"The QR code links back to the corresponding record in GLPI — handy for "
+"The QR code links back to the corresponding record in GLPI: handy for "
 "finding it during a physical asset check."
 
 #: templates/config_form.html.twig
@@ -1210,11 +1210,11 @@ msgstr "Enable the Equipment Passport"
 #: templates/config_form.html.twig
 msgid ""
 "Désactivé : l'onglet disparaît et aucun nouvel événement n'est enregistré. "
-"Les événements déjà enregistrés ne sont jamais supprimés — ils "
+"Les événements déjà enregistrés ne sont jamais supprimés : ils "
 "réapparaissent si vous réactivez."
 msgstr ""
 "Disabled: the tab disappears and no new event is recorded. Events already "
-"recorded are never deleted — they reappear if you re-enable it."
+"recorded are never deleted: they reappear if you re-enable it."
 
 #: templates/config_form.html.twig
 msgid "Anonymiser l'identité des bénéficiaires après (années, 0 = jamais)"
@@ -1979,8 +1979,8 @@ msgstr ""
 "This handover can no longer be reminded (already signed or expired)."
 
 #: src/GlpiPlugin/Assetsign/Config.php:79
-msgid "AssetSign — Signature électronique"
-msgstr "AssetSign — Electronic signature"
+msgid "AssetSign : Signature électronique"
+msgstr "AssetSign: Electronic signature"
 
 #: src/GlpiPlugin/Assetsign/Config.php:151
 msgid "Signature intégrée (canvas)"
@@ -2000,8 +2000,8 @@ msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
 msgstr "Your GLPI account has no registered email address."
 
 #: src/GlpiPlugin/Assetsign/Config.php:269
-msgid "E-mail de test — Assetsign & signature"
-msgstr "Test email — Handover & signature"
+msgid "E-mail de test: Assetsign & signature"
+msgstr "Test email: Handover & signature"
 
 #: src/GlpiPlugin/Assetsign/Config.php:270
 msgid ""
@@ -2249,8 +2249,8 @@ msgstr "Simple rule engine (no machine learning) combining the health score and 
 msgid "Afficher les recommandations sur le Passeport matériel"
 msgstr "Show recommendations on the Equipment Passport"
 
-msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé — pas de second réglage redondant pour la même notion."
-msgstr "\"Plan a replacement\" triggers below the \"Warning\" threshold already set in the Health score tab — no second, redundant setting for the same notion."
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé : pas de second réglage redondant pour la même notion."
+msgstr "\"Plan a replacement\" triggers below the \"Warning\" threshold already set in the Health score tab: no second, redundant setting for the same notion."
 
 msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
 msgstr "Residual value threshold triggering \"Reassess usage\" (% of purchase price)"
@@ -2599,8 +2599,8 @@ msgid "Passeport environnemental"
 msgstr "Environmental passport"
 
 #: templates/config_form.html.twig
-msgid "Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l'implémentation (cf. issue #80) : l'API publique Boavizta n'expose, pour les ordinateurs/portables, que des moyennes de catégorie (\"laptop pro/perso\"), jamais une valeur propre au modèle réel présent dans GLPI — l'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement."
-msgstr "Bootstraps the CSR component of the Hardware Passport (manufacturing footprint, in kg CO2-eq). Research carried out before implementation (see issue #80): the public Boavizta API only exposes category averages (\"pro/personal laptop\") for computers/laptops, never a value specific to the real model present in GLPI — displaying it as the data for THIS piece of hardware would be an invented figure. This version therefore remains manual-entry only: the source (manufacturer / dedicated external API / manual entry) and the confidence level are declared by the person entering the value, never computed automatically."
+msgid "Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l'implémentation (cf. issue #80) : l'API publique Boavizta n'expose, pour les ordinateurs/portables, que des moyennes de catégorie (\"laptop pro/perso\"), jamais une valeur propre au modèle réel présent dans GLPI : l'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement."
+msgstr "Bootstraps the CSR component of the Hardware Passport (manufacturing footprint, in kg CO2-eq). Research carried out before implementation (see issue #80): the public Boavizta API only exposes category averages (\"pro/personal laptop\") for computers/laptops, never a value specific to the real model present in GLPI: displaying it as the data for THIS piece of hardware would be an invented figure. This version therefore remains manual-entry only: the source (manufacturer / dedicated external API / manual entry) and the confidence level are declared by the person entering the value, never computed automatically."
 
 #: templates/config_form.html.twig
 msgid "Afficher le passeport environnemental sur le Passeport matériel"
@@ -2717,12 +2717,12 @@ msgstr "Show documents to sign on the GLPI home page"
 
 msgid ""
 "Un bandeau prévient l'utilisateur connecté qu'un document attend sa "
-"signature, avec un lien vers la page « Mes documents à signer » — "
+"signature, avec un lien vers la page « Mes documents à signer » : "
 "indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
 "jamais le lien de signature."
 msgstr ""
 "A banner tells the logged-in user that a document is waiting for their "
-"signature, with a link to the \"My documents to sign\" page — essential for "
+"signature, with a link to the \"My documents to sign\" page: essential for "
 "users without an email address, who never receive the signing link."
 
 msgid ""
@@ -2819,13 +2819,13 @@ msgstr "Allow on-site signature (in the presence of a technician)"
 
 msgid ""
 "Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
-"signe sur l'écran du technicien, sans avoir à se connecter à GLPI — pour les "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI : pour les "
 "personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
 " a été recueillie en présence de ce technicien, qui atteste ainsi de "
 "l'identité du signataire."
 msgstr ""
 "Adds a \"Have it signed on site\" button to the record: the beneficiary signs"
-" on the technician's screen without having to log in to GLPI — for people who"
+" on the technician's screen without having to log in to GLPI: for people who"
 " have no access to GLPI. The signed PDF states that the signature was "
 "collected in the presence of this technician, who thereby vouches for the "
 "signer's identity."
@@ -3985,8 +3985,8 @@ msgstr "Equipment in one of these states is offered first when adding an item to
 msgid "majeure"
 msgstr "major"
 
-msgid "Établie le %1$s — Référence assetsign n°%2$d"
-msgstr "Issued on %1$s — assetsign reference no. %2$d"
+msgid "Établie le %1$s : Référence assetsign n°%2$d"
+msgstr "Issued on %1$s: assetsign reference no. %2$d"
 
 msgid "Bénéficiaire (externe, sans compte GLPI)"
 msgstr "Beneficiary (external, no GLPI account)"
@@ -4048,17 +4048,17 @@ msgstr "Countersigned electronically on %1$s at %2$s"
 msgid "Responsable hiérarchique : %s"
 msgstr "Line manager: %s"
 
-msgid "Attribution #%d — Document généré par GLPI (plugin assetsign)"
-msgstr "Handover #%d — Document generated by GLPI (assetsign plugin)"
+msgid "Attribution #%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Handover #%d: Document generated by GLPI (assetsign plugin)"
 
-msgid "Attestation de détention — %s"
-msgstr "Holding attestation — %s"
+msgid "Attestation de détention - %s"
+msgstr "Holding attestation - %s"
 
 msgid "Attestation de détention de matériel"
 msgstr "Asset holding attestation"
 
-msgid "%1$s — signée le %2$s"
-msgstr "%1$s — signed on %2$s"
+msgid "%1$s : signée le %2$s"
+msgstr "%1$s: signed on %2$s"
 
 msgid "Je soussigné(e) %s atteste détenir l'ensemble du matériel listé ci-dessous, et seulement celui-ci."
 msgstr "I, the undersigned %s, certify that I hold all of the equipment listed below, and only that equipment."
@@ -4069,14 +4069,14 @@ msgstr "Signature"
 msgid "Date et heure"
 msgstr "Date and time"
 
-msgid "Campagne d'attestation — %s"
-msgstr "Attestation campaign — %s"
+msgid "Campagne d'attestation - %s"
+msgstr "Attestation campaign - %s"
 
 msgid "Campagne d'attestation de détention"
 msgstr "Holding attestation campaign"
 
-msgid "%1$s — rapport généré le %2$s"
-msgstr "%1$s — report generated on %2$s"
+msgid "%1$s : rapport généré le %2$s"
+msgstr "%1$s: report generated on %2$s"
 
 msgid "Lancée le"
 msgstr "Launched on"
@@ -4096,8 +4096,8 @@ msgstr "Answer"
 msgid "(ticket n°%d)"
 msgstr "(ticket no. %d)"
 
-msgid "Établie le %1$s — Référence fiche n°%2$d"
-msgstr "Issued on %1$s — form reference no. %2$d"
+msgid "Établie le %1$s : Référence fiche n°%2$d"
+msgstr "Issued on %1$s: form reference no. %2$d"
 
 msgid "Points de contrôle"
 msgstr "Checkpoints"
@@ -4105,14 +4105,14 @@ msgstr "Checkpoints"
 msgid "Signature du technicien :"
 msgstr "Technician's signature:"
 
-msgid "Fiche de maintenance #%d — Document généré par GLPI (plugin assetsign)"
-msgstr "Maintenance form #%d — Document generated by GLPI (assetsign plugin)"
+msgid "Fiche de maintenance #%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Maintenance form #%d: Document generated by GLPI (assetsign plugin)"
 
-msgid "Restitution de départ — %s"
-msgstr "Departure return — %s"
+msgid "Restitution de départ - %s"
+msgstr "Departure return - %s"
 
-msgid "Restitution du matériel — départ"
-msgstr "Equipment return — departure"
+msgid "Restitution du matériel : départ"
+msgstr "Equipment return: departure"
 
 msgid "Signée le %s"
 msgstr "Signed on %s"
@@ -4201,8 +4201,8 @@ msgstr "No IT charter is configured for this entity: fill in the charter of the 
 msgid "Ticket des non-signataires n°%d"
 msgstr "Ticket for non-signers no. %d"
 
-msgid "Charte informatique — %s"
-msgstr "IT charter — %s"
+msgid "Charte informatique - %s"
+msgstr "IT charter - %s"
 
 msgid "Je soussigné(e) %s déclare avoir pris connaissance de la charte informatique ci-dessous et m'engage à la respecter."
 msgstr "I, the undersigned %s, declare that I have read the IT charter below and undertake to comply with it."

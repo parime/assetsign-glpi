@@ -13,7 +13,7 @@ use Ticket_User;
 use User;
 
 /**
- * Issue #221 : dossier d'arrivée d'un salarié — un ticket « Arrivée de … » avec une tâche par
+ * Issue #221 : dossier d'arrivée d'un salarié : un ticket « Arrivée de … » avec une tâche par
  * étape, la personne demandeuse (pour lui remettre du matériel depuis le ticket). Déclencheurs :
  * manuel, création du compte, réactivation, date de début. Jamais de doublon tant qu'un dossier
  * est en cours.

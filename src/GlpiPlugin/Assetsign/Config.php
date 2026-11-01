@@ -173,7 +173,7 @@ class Config extends Compat\Base\ConfigBase
     ];
 
    public static function getTypeName($nb = 0): string {
-       return __('AssetSign — Signature électronique', 'assetsign');
+       return __('AssetSign : Signature électronique', 'assetsign');
    }
 
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
@@ -229,7 +229,7 @@ class Config extends Compat\Base\ConfigBase
            // usage unique : les faire cohabiter dans le MEME champ DOM fait
            // echouer l'un des deux en "Accès refusé" des qu'un appel
            // d'apercu en vol (case cochee, logo choisi...) consomme le jeton
-           // juste avant que l'utilisateur ne clique Enregistrer — bug reel
+           // juste avant que l'utilisateur ne clique Enregistrer : bug reel
            // persistant (constate encore apres une premiere tentative de
            // correctif qui se contentait de serialiser les appels d'apercu
            // ENTRE EUX sans les decoupler du vrai formulaire, cf.
@@ -239,12 +239,12 @@ class Config extends Compat\Base\ConfigBase
            // IMPORTANT : Session::getNewCSRFToken() SANS argument reutilise en
            // realite le meme jeton deja genere dans la requete en cours
            // (variable globale $CURRENTCSRFTOKEN, cf. src/Session.php du
-           // coeur GLPI) — un premier appel a getNewCSRFToken() (ci-dessus,
+           // coeur GLPI) : un premier appel a getNewCSRFToken() (ci-dessus,
            // pour csrf_token) l'initialise, et un second appel SANS le
            // parametre $standalone=true renvoie EXACTEMENT LE MEME jeton, pas
            // un jeton independant. Le premier essai de decouplage ci-dessus
            // etait donc inoperant en pratique (les deux jetons etaient
-           // silencieusement identiques) — bug confirme encore present par
+           // silencieusement identiques): bug confirme encore present par
            // l'utilisateur apres ce premier essai. `true` genere un jeton
            // reellement standalone (non partage avec $CURRENTCSRFTOKEN).
            'preview_csrf_token' => \Session::getNewCSRFToken(true),
@@ -271,7 +271,7 @@ class Config extends Compat\Base\ConfigBase
            // Gabarit par defaut de chaque type, edite directement dans l'onglet
            // correspondant plutot que sur l'ecran separe front/template.form.php
            // (cf. ROADMAP.md, "Rapprocher la gestion des gabarits de
-           // l'experience du plugin") — la sauvegarde elle-meme reste
+           // l'experience du plugin") : la sauvegarde elle-meme reste
            // entierement geree par Template::showForm()/CommonDBTM, ce bloc ne
            // fait que rapatrier l'affichage.
            'templates' => [
@@ -291,7 +291,7 @@ class Config extends Compat\Base\ConfigBase
      * poste de l'admin (input type="file" classique, pas le composant de
      * televersement JS de GLPI) : traite ici comme n'importe quel fichier
      * genere par du code (meme convention que HandoverPdfBuilder::
-     * storeAsDocument()) — deplace dans GLPI_TMP_DIR puis attache via
+     * storeAsDocument()) : deplace dans GLPI_TMP_DIR puis attache via
      * Document::add()/_filename, sans dependre du widget de televersement natif.
      */
    private const LOGO_ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
@@ -320,11 +320,11 @@ class Config extends Compat\Base\ConfigBase
        // copy() (pas move_uploaded_file()) : GLPI 11 reconstruit en interne un
        // objet Symfony Request depuis $_FILES a certains points de la requete
        // (Session::isCron(), appele entre autres par Session::addMessageAfterRedirect()
-       // plus loin dans Document::add()) — cette reconstruction tardive tente de
+       // plus loin dans Document::add()) : cette reconstruction tardive tente de
        // revalider le fichier a son chemin ORIGINAL ($file['tmp_name']). Le
        // deplacer avec move_uploaded_file() le fait disparaitre de ce chemin
        // avant cette revalidation, provoquant une exception fatale non rattrapee
-       // ("The file ... does not exist") — bug reel signale par l'utilisateur
+       // ("The file ... does not exist"): bug reel signale par l'utilisateur
        // (page d'erreur generique sans trace, 500 a l'enregistrement du logo).
        // copy() laisse le fichier original en place (purge normalement par PHP
        // en fin de requete) : is_uploaded_file() a deja valide juste au-dessus
@@ -372,7 +372,7 @@ class Config extends Compat\Base\ConfigBase
              $mail->from(new \Symfony\Component\Mime\Address($senderEmail, $senderName));
          }
           $mail->to($email);
-          $mail->subject(__('E-mail de test — Assetsign & signature', 'assetsign'));
+          $mail->subject(__('E-mail de test: Assetsign & signature', 'assetsign'));
           $mail->html(TwigBlocks::content([
               TwigBlocks::p(__('Cet e-mail confirme que la configuration d\'envoi du plugin Assetsign & signature fonctionne.', 'assetsign')),
           ]));
@@ -390,7 +390,7 @@ class Config extends Compat\Base\ConfigBase
     /**
      * Derniere version publiee sur GitHub (release la plus recente, hors
      * pre-release), pour affichage a cote de la version installee en
-     * configuration — permet de detecter immediatement qu'un environnement
+     * configuration : permet de detecter immediatement qu'un environnement
      * tourne sur une version anterieure a celle publiee, sans avoir a
      * comparer des fichiers un par un (piege deja rencontre, cf.
      * TROUBLESHOOTING.md : deux environnements affichant le meme numero mais
@@ -404,7 +404,7 @@ class Config extends Compat\Base\ConfigBase
      * par le cœur GLPI pour ce type d'appel.
      * Opt-in : aucun appel sortant tant que l'action automatique native
      * "checkupdate" de GLPI (Configuration > Actions automatiques, desactivee
-     * par defaut) n'est pas activee — refuser la verification de mise a jour
+     * par defaut) n'est pas activee : refuser la verification de mise a jour
      * de GLPI lui-meme refuse aussi celle-ci, sans reglage propre au plugin.
      * @return string|null Numero de version (sans le "v" du tag), ou null si
      *         l'appel a echoue (pas de connexion, API GitHub indisponible...)
@@ -546,12 +546,12 @@ class Config extends Compat\Base\ConfigBase
     /**
      * Renvoie l'ID du Document a utiliser comme logo pour cette entite, en
      * tenant compte d'un logo impose par une entite ANCETRE (champ
-     * `logo_force_children`) — qui l'emporte meme si l'entite elle-meme a deja
+     * `logo_force_children`) : qui l'emporte meme si l'entite elle-meme a deja
      * son propre logo configure. getForEntity() n'hérite le logo (comme le
      * reste de la config) que pour une entite qui n'a AUCUNE ligne propre :
      * une entite qui a deja personnalise autre chose (ex: son propre e-mail
-     * d'expediteur) resterait sinon bloquee sur son propre logo — ou l'absence
-     * de logo — sans moyen pour une entite parente d'imposer malgre tout le
+     * d'expediteur) resterait sinon bloquee sur son propre logo : ou l'absence
+     * de logo : sans moyen pour une entite parente d'imposer malgre tout le
      * sien a l'ensemble de ses filiales, quel que soit leur niveau de
      * profondeur (`getAncestorsOf()` remonte toute la chaine, pas seulement le
      * parent direct).
@@ -592,7 +592,7 @@ class Config extends Compat\Base\ConfigBase
     /**
      * Parmi des lignes candidates portant chacune un champ 'entities_id', renvoie
      * celle de l'entite la plus profonde (le "level" GLPI le plus eleve = la plus
-     * proche) — algorithme partage par getForEntity() (heritage ligne entiere) et
+     * proche) : algorithme partage par getForEntity() (heritage ligne entiere) et
      * getEffectiveLogoDocumentId() (imposition d'un champ precis), qui ont toutes
      * deux besoin de departager plusieurs ancetres candidats de la meme facon.
      */
@@ -686,7 +686,7 @@ class Config extends Compat\Base\ConfigBase
            'enable_movement_signature' => (int) ($input['enable_movement_signature'] ?? 0),
            'enable_signature_delegation'    => (int) ($input['enable_signature_delegation'] ?? 0),
            // Force a 0 si le reglage parent est desactive, meme si le formulaire
-           // (JS defaillant, appel direct...) soumettait quand meme la case a 1 —
+           // (JS defaillant, appel direct...) soumettait quand meme la case a 1 -
            // la garde JS du formulaire (cf. config_form.html.twig) n'est qu'un
            // confort visuel, jamais la seule protection.
            'enable_self_service_delegation' => ((int) ($input['enable_signature_delegation'] ?? 0) === 1)
@@ -837,7 +837,7 @@ class Config extends Compat\Base\ConfigBase
      * États GLPI (glpi_states) qui, une fois atteints, marquent le matériel comme
      * réformé : déclenche l'écriture automatique de `Infocom::decommission_date`
      * (cf. Assetsign::handleStateBasedTrigger()), effet de bord pur sur un champ
-     * natif GLPI — n'a jamais créé de fiche Assetsign ni de nouveau type
+     * natif GLPI : n'a jamais créé de fiche Assetsign ni de nouveau type
      * d'événement Passeport (cf. ROADMAP.md, issue #78).
      */
    public function getReformeStates(): array {
@@ -1029,7 +1029,7 @@ class Config extends Compat\Base\ConfigBase
          if (!$DB->fieldExists($table, 'logo_force_children')) {
              // 'bool' (pas 'tinyint') : c'est un des rares types "logiques" reconnus
              // par Migration::fieldFormat() pour lesquels 'value' construit reellement
-             // une clause DEFAULT — un type SQL brut passe tel quel sans NOT NULL ni
+             // une clause DEFAULT : un type SQL brut passe tel quel sans NOT NULL ni
              // DEFAULT, ce qui rendrait la colonne NULL par defaut (constate en
              // conditions reelles : WHERE champ => 0 n'egale jamais NULL en SQL).
              $migration->addField($table, 'logo_force_children', 'bool', ['value' => 0, 'after' => 'logo_documents_id']);
@@ -1318,7 +1318,7 @@ class Config extends Compat\Base\ConfigBase
              $migration->migrationOneTable($table);
          }
           // Audit code mort : jamais branchee (aucun formulaire ne la soumet,
-          // upsertForEntity() ne l'ecrit jamais) — le mecanisme de gabarit par
+          // upsertForEntity() ne l'ecrit jamais) : le mecanisme de gabarit par
           // defaut reellement utilise est Template::getDefaultFor(), base sur
           // la colonne is_default de glpi_plugin_assetsign_templates.
          if ($DB->fieldExists($table, 'default_plugin_assetsign_templates_id')) {

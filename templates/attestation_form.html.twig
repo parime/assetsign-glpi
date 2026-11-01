@@ -8,7 +8,7 @@
       <span class="badge {{ status_class }}">{{ status_label }}</span>
     </div>
     <div class="card-body">
-      <div class="text-muted">{{ campaign_name }}{% if deadline %} — {{ __('à rendre avant le %s', 'assetsign')|format(deadline|formatted_date) }}{% endif %}</div>
+      <div class="text-muted">{{ campaign_name }}{% if deadline %} - {{ __('à rendre avant le %s', 'assetsign')|format(deadline|formatted_date) }}{% endif %}</div>
     </div>
     {% if is_charter %}
     <div class="card-body border-top" style="max-height: 60vh; overflow-y: auto;">{{ charter_safe_html|raw }}</div>

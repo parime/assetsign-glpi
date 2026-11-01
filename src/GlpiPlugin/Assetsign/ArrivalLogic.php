@@ -3,7 +3,7 @@
 namespace GlpiPlugin\Assetsign;
 
 /**
- * Issue #221 (arrivée d'un salarié) : règles pures, sans GLPI, du dossier d'arrivée Arrival —
+ * Issue #221 (arrivée d'un salarié) : règles pures, sans GLPI, du dossier d'arrivée Arrival -
  * détection des déclencheurs et liste des tâches du ticket. Testées sans base de données
  * (tests/ArrivalLogicTest.php).
  *

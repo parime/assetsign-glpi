@@ -21,7 +21,7 @@
               <div class="col-auto">
                 <select name="available_item" class="form-select form-select-sm" style="min-width: 280px;" aria-label="{{ line.label }}">
                   {% for r in line.available %}
-                    <option value="{{ r.value }}">{{ r.name|default('#' ~ r.items_id) }}{% if r.serial %} — {{ __('N° de série', 'assetsign') }} {{ r.serial }}{% endif %}</option>
+                    <option value="{{ r.value }}">{{ r.name|default('#' ~ r.items_id) }}{% if r.serial %} - {{ __('N° de série', 'assetsign') }} {{ r.serial }}{% endif %}</option>
                   {% endfor %}
                 </select>
               </div>

@@ -6,7 +6,7 @@ use GlpiPlugin\Assetsign\Config;
 
 /**
  * Contenu (sujet + corps HTML, dans les 5 langues supportees par l'interface
- * du plugin) seme a l'installation pour chaque evenement de notification —
+ * du plugin) seme a l'installation pour chaque evenement de notification -
  * extrait de NotificationTargetAssetsign::install() pour que cette derniere
  * reste une pure orchestration (creation/idempotence/ciblage) sans aucune
  * chaine HTML en dur.
@@ -57,7 +57,7 @@ final class DefaultNotificationContent
        // couleur, nom de l'entreprise si renseigne), cf. _branded.html.twig. Genere une
        // seule fois a l'installation (comme le reste de ce fichier, cf.
        // docblock de la classe) a partir du nom d'entreprise de l'entite
-       // racine — une organisation multi-entites avec un nom different par
+       // racine : une organisation multi-entites avec un nom different par
        // entite peut toujours personnaliser le contenu ensuite depuis
        // Configuration > Notifications, comme n'importe quel gabarit natif.
        $companyName = trim((string) (Config::getForEntity(0)->fields['company_name'] ?? ''));

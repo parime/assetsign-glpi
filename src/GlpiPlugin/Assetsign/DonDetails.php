@@ -33,7 +33,7 @@ class DonDetails extends Compat\Base\DonDetailsBase
     /**
      * Cree la ligne si elle n'existe pas encore (cas d'un Don declenche
      * automatiquement par changement d'Etat, cf. Assetsign::handleStateBasedTrigger()
-     * — aucun organisme connu au moment de la creation), sinon la met a jour.
+     * - aucun organisme connu au moment de la creation), sinon la met a jour.
      */
    public static function upsertForAssetsign(int $assetsigns_id, string $organizationName): void {
        $existing = self::getForAssetsign($assetsigns_id);

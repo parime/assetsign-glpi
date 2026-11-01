@@ -8,7 +8,7 @@ use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Pdf\MaintenancePdfBuilder;
 
 /**
- * `MaintenancePdfBuilder::renderHtml()` had no direct content assertion of its own —
+ * `MaintenancePdfBuilder::renderHtml()` had no direct content assertion of its own -
  * `MaintenanceTest`'s PDF-related tests all go through the full `Maintenance::createWithChecklist()`
  * workflow and only check that a `Document` got attached (real PDF produced), never what the
  * rendered HTML actually contains. This suite mirrors the granularity `AssetsignTest` already
@@ -96,7 +96,7 @@ final class MaintenancePdfBuilderTest extends AssetsignTestCase
 
     /**
      * Les 3 vues de reference sont toujours incluses des que le reglage est actif, meme sans aucun
-     * repere encore depose (cf. PdfRenderingHelpers::getDamageViewsForPdf() sa propre docblock) —
+     * repere encore depose (cf. PdfRenderingHelpers::getDamageViewsForPdf() sa propre docblock) -
      * pas besoin de creer un vrai DamageMarker pour verifier que la section apparait.
      */
    public function testRenderHtmlIncludesDamageViewsSectionOnlyWhenAnnotationIsEnabled(): void {

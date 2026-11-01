@@ -16,7 +16,7 @@ use TicketTask;
 use User;
 
 /**
- * Issue #221 : arrivée d'un salarié — le pendant du départ (Departure, issue #157).
+ * Issue #221 : arrivée d'un salarié : le pendant du départ (Departure, issue #157).
  *
  * Un dossier d'arrivée ouvre UN ticket « Arrivée de [personne] » pour l'équipe, avec une tâche par
  * étape configurée (poste, licences, accès, remise du matériel). La personne est demandeuse du
@@ -315,7 +315,7 @@ class Arrival extends Compat\Base\ArrivalBase
 
    /**
     * Ajoute la personne comme demandeur (sans notification) du ticket de son arrivée en cours dès
-    * que son compte devient valide dans l'entité du ticket (date de début atteinte, profil créé) —
+    * que son compte devient valide dans l'entité du ticket (date de début atteinte, profil créé) -
     * le contrôle même que GLPI applique, cf. openTicket().
     *
     * @return int nombre de tickets complétés

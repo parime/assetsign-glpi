@@ -5,10 +5,10 @@ namespace GlpiPlugin\Assetsign;
 use Migration;
 
 /**
- * Passeport environnemental (V3, cf. ROADMAP.md — "Passeport environnemental
+ * Passeport environnemental (V3, cf. ROADMAP.md - "Passeport environnemental
  * (empreinte fabrication, source, niveau de confiance)", issue #80) : table
  * dédiée 1-vers-1 avec N'IMPORTE QUEL matériel géré par le plugin
- * (`itemtype`/`items_id`, même patron que `Movement`/`ResidualValue` — PAS
+ * (`itemtype`/`items_id`, même patron que `Movement`/`ResidualValue` - PAS
  * `plugin_assetsign_assetsigns_id` comme `VenteDetails`, un matériel peut
  * avoir une empreinte environnementale sans jamais avoir eu de fiche
  * Assetsign).
@@ -17,21 +17,21 @@ use Migration;
  * l'issue #80 avant ce code)** : l'API publique Boavizta n'expose, pour les
  * types de matériel gérés par ce plugin (laptop/desktop), que 2 "archétypes"
  * génériques par catégorie (moyennes "pro"/"perso"), jamais une valeur propre
- * à un modèle réel — rien dans GLPI ne permet de trancher objectivement entre
+ * à un modèle réel : rien dans GLPI ne permet de trancher objectivement entre
  * les deux. Afficher un tel chiffre comme "l'empreinte de CE matériel"
  * reviendrait à inventer une donnée, même étiqueté "source : API externe" et
- * "confiance : faible" — ça contredirait le principe fondateur du plugin.
+ * "confiance : faible" - ça contredirait le principe fondateur du plugin.
  * **Scope réduit à la saisie manuelle uniquement dans cette version** :
  * `source` garde ses 3 valeurs (constructeur/API externe dédiée/saisie
  * manuelle) pour ne pas fermer la porte à une vraie intégration future (base
  * de données par modèle exact), mais la valeur est TOUJOURS tapée par un
- * technicien dans cette version — `source` trace alors d'où il/elle tient le
+ * technicien dans cette version - `source` trace alors d'où il/elle tient le
  * chiffre (fiche constructeur, outil externe consulté à la main, estimation
  * propre), pas un mécanisme d'automatisation.
  *
  * Aucune valeur par défaut : `carbon_footprint_manufacturing` reste `null`
  * (rien affiché, jamais un 0 ni une estimation) tant qu'aucune saisie n'a eu
- * lieu — même principe que `ResidualValue::manual_value`.
+ * lieu : même principe que `ResidualValue::manual_value`.
  *
  * Table : `glpi_plugin_assetsign_environmentaldatas` (convention de
  * pluralisation GLPI standard, cf. `glpi_plugin_assetsign_residualvalues`).
@@ -77,7 +77,7 @@ class EnvironmentalData extends Compat\Base\EnvironmentalDataBase
        ];
    }
 
-    /** Couleur de badge par niveau de confiance — même convention que Movement::getStatusColor(). */
+    /** Couleur de badge par niveau de confiance : même convention que Movement::getStatusColor(). */
    public static function getConfidenceColor(?string $confidence): string {
        return match ($confidence) {
            self::CONFIDENCE_HIGH   => '#2fb344',
@@ -90,7 +90,7 @@ class EnvironmentalData extends Compat\Base\EnvironmentalDataBase
     /**
      * Crée, met à jour, ou efface la ligne pour ce matériel. `$carbonFootprint`
      * à `null` efface explicitement les 3 champs (jamais un état incohérent
-     * genre "source renseignée mais aucune valeur") — même convention que
+     * genre "source renseignée mais aucune valeur") : même convention que
      * `ResidualValue::upsertForItem()` : la ligne reste (pas de suppression),
      * seules les valeurs sont vidées.
      */

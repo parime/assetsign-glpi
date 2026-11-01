@@ -18,7 +18,7 @@ use Session;
 use User;
 
 /**
- * Issue #157 : départ d'un salarié — « dossier groupé » (choix du mainteneur) qui rassemble une
+ * Issue #157 : départ d'un salarié : « dossier groupé » (choix du mainteneur) qui rassemble une
  * fiche de Restitution ORDINAIRE par matériel affecté à la personne qui part. Chaque fiche garde
  * tout son comportement existant (PDF, preuve de signature, passeport, état du matériel,
  * compteurs de preuves A.5.11 côté grcmanager) ; le dossier ajoute :
@@ -144,7 +144,7 @@ class Departure extends Compat\Base\DepartureBase
    /**
     * Pas de doublon : un matériel dont la dernière fiche signée de cette personne est une
     * restitution a déjà été rendu (ex. départ signé, puis compte désactivé le dernier jour avant
-    * que le technicien ait retiré l'affectation dans GLPI) — il n'est pas redemandé.
+    * que le technicien ait retiré l'affectation dans GLPI) : il n'est pas redemandé.
     */
    private static function alreadyReturnedBy(CommonDBTM $item, int $usersId): bool {
       global $DB;

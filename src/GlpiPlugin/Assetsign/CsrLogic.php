@@ -3,7 +3,7 @@
 namespace GlpiPlugin\Assetsign;
 
 /**
- * Issue #142 (tableau de bord RSE) : calculs purs, sans GLPI, des indicateurs RSE du parc — à
+ * Issue #142 (tableau de bord RSE) : calculs purs, sans GLPI, des indicateurs RSE du parc : à
  * partir UNIQUEMENT de données réelles déjà saisies (principe fondateur du plugin, cf.
  * EnvironmentalData) : empreinte de fabrication saisie, dates Infocom, fiches de fin de vie
  * signées. Une donnée absente n'est jamais remplacée par une estimation : elle fait baisser le

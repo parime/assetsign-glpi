@@ -9,7 +9,7 @@ use InvalidArgumentException;
 /**
  * Couvre le dispatch de front/residualvalue.form.php (saisie manuelle de la
  * valeur résiduelle, issue #77) désormais extrait dans
- * ResidualValueFormController — même motivation que
+ * ResidualValueFormController : même motivation que
  * MaintenanceFormControllerTest/MovementFormControllerTest.
  */
 class ResidualValueFormControllerTest extends AssetsignTestCase

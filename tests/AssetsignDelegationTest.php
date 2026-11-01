@@ -23,7 +23,7 @@ class AssetsignDelegationTest extends AssetsignTestCase
 
     /**
      * `Assetsign::getDelegateCandidates()` backs the plain `<select>` on `sign_page.html.twig`
-     * (see its own docblock — that page loads no jQuery, so the `User::dropdown()` AJAX widget the
+     * (see its own docblock: that page loads no jQuery, so the `User::dropdown()` AJAX widget the
      * other two delegation dropdowns use never initializes there). Confirms it resolves the same
      * `right => 'all'` + entity scope those two other dropdowns use, sorted for display.
      */
@@ -362,7 +362,7 @@ class AssetsignDelegationTest extends AssetsignTestCase
     /**
      * Revue de securite marketplace 2.6.0 : une delegation decidee par un
      * technicien ne doit jamais etre invisible pour le beneficiaire d'origine
-     * (son lien est invalide) — il recoit "delegated_beneficiary". Rien quand
+     * (son lien est invalide) : il recoit "delegated_beneficiary". Rien quand
      * il a delegue lui-meme.
      */
    public function testBeneficiaryIsNotifiedOnlyWhenSomeoneElseDelegates(): void {

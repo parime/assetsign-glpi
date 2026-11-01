@@ -6,7 +6,7 @@
 <html lang="{{ html_lang|default('fr') }}">
 <head>
 <meta charset="UTF-8">
-<title>{{ __('Restitution de départ — %s', 'assetsign')|format(user_name) }}</title>
+<title>{{ __('Restitution de départ - %s', 'assetsign')|format(user_name) }}</title>
 {% include '@assetsign/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
@@ -15,13 +15,13 @@
 <div class="header-logo"><div class="company-name">{{ company_name }}</div></div>
 {% endif %}
 
-<h1>{{ __('Restitution du matériel — départ', 'assetsign') }}</h1>
+<h1>{{ __('Restitution du matériel : départ', 'assetsign') }}</h1>
 <p class="meta">{{ __('Signée le %s', 'assetsign')|format(signed_at) }}</p>
 
 <h2>{{ __('Personne qui part', 'assetsign') }}</h2>
 <table class="info-table">
     <tr><th>{{ __('Nom', 'assetsign') }}</th><td>{{ user_name }}</td></tr>
-    <tr><th>{{ __('Date de départ', 'assetsign') }}</th><td>{{ departure_date ?: '—' }}</td></tr>
+    <tr><th>{{ __('Date de départ', 'assetsign') }}</th><td>{{ departure_date ?: '-' }}</td></tr>
 </table>
 
 <h2>{{ __('Matériel restitué', 'assetsign') }}</h2>
@@ -38,7 +38,7 @@
     {% endfor %}
 </table>
 <p style="font-size: 8px;">{{ __('Chaque matériel dispose de sa propre fiche de restitution signée (PDF joint à la fiche). Empreintes SHA-256 de ces PDF :', 'assetsign') }}
-{% for line in lines %}<br>{{ __('Fiche n°%1$d : %2$s', 'assetsign')|format(line.assetsign_id, hashes[line.assetsign_id]|default('—')) }}{% endfor %}</p>
+{% for line in lines %}<br>{{ __('Fiche n°%1$d : %2$s', 'assetsign')|format(line.assetsign_id, hashes[line.assetsign_id]|default('-')) }}{% endfor %}</p>
 
 <h2>{{ __('Signature', 'assetsign') }}</h2>
 <p>{{ __('Je confirme restituer l\'ensemble du matériel listé ci-dessus.', 'assetsign') }}</p>

@@ -18,7 +18,7 @@
           <summary class="card-header d-flex flex-wrap align-items-center gap-2" style="cursor: pointer;">
             <strong>{{ __('Version du %s', 'assetsign')|format(v.first_date|formatted_date) }}</strong>
             {% if v.is_current %}<span class="badge bg-green-lt">{{ __('En vigueur', 'assetsign') }}</span>{% else %}<span class="badge bg-secondary-lt">{{ __('Ancienne version', 'assetsign') }}</span>{% endif %}
-            <span class="text-muted small ms-auto">{{ __('%d signataire(s)', 'assetsign')|format(v.signers) }} — {{ v.campaigns|join(', ') }}</span>
+            <span class="text-muted small ms-auto">{{ __('%d signataire(s)', 'assetsign')|format(v.signers) }} - {{ v.campaigns|join(', ') }}</span>
           </summary>
           <div class="card-body">
             <div class="text-muted small mb-2">{{ __('Empreinte', 'assetsign') }} : <code>{{ v.hash[:12] }}</code></div>

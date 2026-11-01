@@ -9,7 +9,7 @@ use Migration;
  * Catalogue de KITS reutilisables (cf. ROADMAP.md V3, issue #83, "Kits/accessoires
  * avec controle automatique au retour") : un kit est un GROUPE nomme d'accessoires
  * (cf. Accessory) censes voyager ensemble avec une remise (ex: "Kit ordinateur
- * portable standard" = Chargeur + Sacoche + Souris) — permet de detecter
+ * portable standard" = Chargeur + Sacoche + Souris): permet de detecter
  * automatiquement, a la Restitution, qu'un des accessoires attendus n'est pas
  * revenu (cf. Assetsign::getKitCompleteness()), sans avoir a ressaisir a la main
  * la liste attendue a chaque remise.
@@ -17,11 +17,11 @@ use Migration;
  * Meme motif que ChecklistItem (issue #74) : dropdown standard GLPI (CRUD/
  * recherche/droits generiques gratuits), une liste stockee en JSON directement
  * sur la ligne du catalogue (`accessories_id`, meme convention que
- * ChecklistItem::movement_types) — VOLONTAIREMENT pas une nouvelle table pivot :
+ * ChecklistItem::movement_types) : VOLONTAIREMENT pas une nouvelle table pivot :
  * un Kit n'a qu'une seule caracteristique propre (SA composition, une simple
  * liste d'identifiants Accessory), contrairement a AssetsignAccessory qui doit
  * en plus porter une quantite et un commentaire PAR REMISE (deux besoins
- * differents — cf. Kit::computeCompleteness(), la comparaison se fait par
+ * differents : cf. Kit::computeCompleteness(), la comparaison se fait par
  * simple PRESENCE d'un accessoire, jamais par quantite).
  */
 class Kit extends CommonDropdown
@@ -31,7 +31,7 @@ class Kit extends CommonDropdown
    }
 
     /**
-     * Rattache au fil d'Ariane de Assetsign (menu 'tools') — meme raison que
+     * Rattache au fil d'Ariane de Assetsign (menu 'tools') : meme raison que
      * Accessory::getSectorizedDetails()/ChecklistItem::getSectorizedDetails().
      */
    public static function getSectorizedDetails(): array {
@@ -65,7 +65,7 @@ class Kit extends CommonDropdown
    }
 
     /**
-     * Extrait, sans instancier de Kit ni faire de requete supplementaire — la
+     * Extrait, sans instancier de Kit ni faire de requete supplementaire : la
      * meme forme (JSON -> tableau d'entiers uniques) que getExpectedAccessoryIds(),
      * mais utilisable directement sur une ligne brute deja chargee en lot (cf.
      * PassportEvent::attachKitSummaries(), qui lit plusieurs kits en UNE requete
@@ -89,7 +89,7 @@ class Kit extends CommonDropdown
 
     /**
      * Comparaison PURE (aucun acces base) entre les accessoires ATTENDUS par un
-     * kit et ceux REELLEMENT restitues sur une fiche donnee — coeur de la
+     * kit et ceux REELLEMENT restitues sur une fiche donnee : coeur de la
      * detection automatique du V3 "Kits/accessoires avec controle automatique au
      * retour" (issue #83), volontairement extrait en fonction pure pour rester
      * facilement testable sans base de donnees (meme esprit que
@@ -119,7 +119,7 @@ class Kit extends CommonDropdown
     /**
      * Couleur de badge associee a un resultat de computeCompleteness() : vert si
      * complet, orange si partiellement revenu, rouge si RIEN n'est revenu (perte
-     * totale) — severite volontairement distincte du gris "configure mais pas
+     * totale) : severite volontairement distincte du gris "configure mais pas
      * encore rempli" utilise par ChecklistItem (cf.
      * PassportEvent::attachChecklistSummaries()) : une Restitution sans AUCUN
      * accessoire du kit revenu est un signal reel de perte de materiel, pas un
@@ -141,7 +141,7 @@ class Kit extends CommonDropdown
     // volontairement en dehors des types reconnus nativement par
     // templates/dropdown_form.html.twig : tombe sur l'unique point d'extension
     // prevu par le coeur GLPI pour un champ personnalise, displaySpecificTypeField()
-    // ci-dessous — meme mecanisme exact que ChecklistItem::movement_types.
+    // ci-dessous : meme mecanisme exact que ChecklistItem::movement_types.
    public function getAdditionalFields(): array {
        return [
            [

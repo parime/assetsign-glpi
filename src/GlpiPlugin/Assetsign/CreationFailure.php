@@ -9,13 +9,13 @@ use Migration;
  * createAssetsign() echouant a l'insertion en base (rare, ex. probleme DB), soit
  * une exception levee pendant launchWorkflow() (generation PDF, jeton,
  * notification) et interceptee par le garde-fou de hook.php
- * (plugin_assetsign_item_assignment()) — ces echecs sont deja isoles pour ne
+ * (plugin_assetsign_item_assignment()) : ces echecs sont deja isoles pour ne
  * JAMAIS faire planter la sauvegarde du materiel lui-meme (cf.
  * TROUBLESHOOTING.md), mais restaient jusqu'ici invisibles sans consulter
  * files/_log/assetsign.log a la main : aucune trace en base, donc aucun moyen de
  * les compter/afficher. Compte affiche sur une carte dediee du tableau de
  * bord (cf. Dashboard\CardProvider::failures()) plutot qu'une notification
- * e-mail, a dessein (demande explicite) — un echec de CE mecanisme est
+ * e-mail, a dessein (demande explicite) : un echec de CE mecanisme est
  * justement le moment ou compter sur un e-mail serait le moins fiable.
  */
 class CreationFailure extends Compat\Base\CreationFailureBase

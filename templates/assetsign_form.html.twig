@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-body">
-    <h2>{{ _n('Attribution', 'Attributions', 1, 'assetsign') }} #{{ item.fields.id }} — {{ types[item.fields.type] }}</h2>
+    <h2>{{ _n('Attribution', 'Attributions', 1, 'assetsign') }} #{{ item.fields.id }} - {{ types[item.fields.type] }}</h2>
 
     {# Issue #170 : brouillon pas encore envoye (attribution confirmee plus tard) #}
     {% if item.fields.status == 0 and can_edit_accessories %}
@@ -54,7 +54,7 @@
         <i class="ti ti-clock-share fs-2"></i>
         <div class="flex-fill">
           {% if loan_until %}
-            <strong>{{ __('Prêt temporaire', 'assetsign') }}</strong> — {{ __('retour prévu le %s', 'assetsign')|format(loan_until|formatted_date) }}
+            <strong>{{ __('Prêt temporaire', 'assetsign') }}</strong> - {{ __('retour prévu le %s', 'assetsign')|format(loan_until|formatted_date) }}
             {% if loan_is_returned %}
               <span class="badge bg-green-lt ms-1"><i class="ti ti-check"></i> {{ __('Rendu', 'assetsign') }}</span>
             {% elseif loan_overdue %}
@@ -107,7 +107,7 @@
       </tr>
       <tr>
         <th>{{ __('Matériel', 'assetsign') }}</th>
-        <td>{{ item.fields.itemtype }} — {{ target_item.name|default('') }}</td>
+        <td>{{ item.fields.itemtype }} - {{ target_item.name|default('') }}</td>
       </tr>
       <tr>
         <th>{{ __('Bénéficiaire', 'assetsign') }}</th>
@@ -149,7 +149,7 @@
             <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_signed }}" target="_blank">{{ __('Télécharger (signé)', 'assetsign') }}{{ cosigner_pending ? ' ' ~ __('(bénéficiaire uniquement)', 'assetsign') : '' }}</a>
           {% endif %}
           {% if item.fields.document_id_unsigned %}
-            {% if item.fields.document_id_signed or item.fields.document_id_cosigned %} — {% endif %}
+            {% if item.fields.document_id_signed or item.fields.document_id_cosigned %} - {% endif %}
             <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_unsigned }}" target="_blank">{{ __('Télécharger (non signé)', 'assetsign') }}</a>
           {% endif %}
         </td>
@@ -192,7 +192,7 @@
         {{ __('Signature déléguée à', 'assetsign') }} <strong>{{ delegate_name is empty ? delegate.name|default('') : delegate_name }}</strong>
         {{ __('le', 'assetsign') }} {{ item.fields.delegation_date|default('') }}
         {% if item.fields.delegation_reason is defined and item.fields.delegation_reason %}
-          — {{ __('motif', 'assetsign') }} : {{ item.fields.delegation_reason }}
+          - {{ __('motif', 'assetsign') }} : {{ item.fields.delegation_reason }}
         {% endif %}
         {% if can_delegate|default(false) %}
           <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">
@@ -245,7 +245,7 @@
       <h3 class="mt-4">{{ __('Preuve de signature', 'assetsign') }}</h3>
       {% for proof in signature_proofs %}
         {# Signatures multiples (issue #143) : plusieurs preuves possibles
-           (beneficiaire puis responsable) — libelle uniquement affiche quand
+           (beneficiaire puis responsable): libelle uniquement affiche quand
            il y en a plus d'une, pour ne rien changer visuellement au cas
            mono-signataire habituel. #}
         {% if signature_proofs|length > 1 %}
@@ -621,7 +621,7 @@
               <tbody>
                 {% for i in inventoried_items %}
                   <tr>
-                    <td>{{ i.type_label }} — {{ i.name|default('#' ~ i.items_id) }}{% if i.serial %} <span class="text-muted small">({{ i.serial }})</span>{% endif %}</td>
+                    <td>{{ i.type_label }} - {{ i.name|default('#' ~ i.items_id) }}{% if i.serial %} <span class="text-muted small">({{ i.serial }})</span>{% endif %}</td>
                     <td>
                       {% if can_edit_accessories %}
                         <select name="return_state[{{ i.id }}]" class="form-select form-select-sm">
@@ -660,7 +660,7 @@
             <strong>{{ __('Connecté à ce matériel dans GLPI', 'assetsign') }}</strong>
             <ul class="mb-2">
               {% for s in suggested_items %}
-                <li>{{ s.type_label }} — {{ s.name|default('#' ~ s.items_id) }}{% if s.serial %} ({{ __('N° de série', 'assetsign') }} {{ s.serial }}){% endif %}</li>
+                <li>{{ s.type_label }} - {{ s.name|default('#' ~ s.items_id) }}{% if s.serial %} ({{ __('N° de série', 'assetsign') }} {{ s.serial }}){% endif %}</li>
               {% endfor %}
             </ul>
             <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">

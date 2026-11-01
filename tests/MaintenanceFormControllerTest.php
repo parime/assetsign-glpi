@@ -8,7 +8,7 @@ use InvalidArgumentException;
 
 /**
  * Couvre le dispatch de l'action "create" de front/maintenance.form.php
- * desormais extrait dans MaintenanceFormController — meme motivation que
+ * desormais extrait dans MaintenanceFormController : meme motivation que
  * AssetsignFormControllerTest (cf. ROADMAP.md, point tests des front/*.php).
  * Couvre en particulier la validation d'itemtype/de materiel cible, seule
  * vraie logique inline qui existait auparavant dans le front (le reste
