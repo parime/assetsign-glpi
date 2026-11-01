@@ -4790,3 +4790,21 @@ msgstr "Neue Übergabe"
 
 msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
 msgstr "Wählen Sie den Empfänger und das Gerät: Das Übergabeformular wird wie bei einer Zuweisung über den Gerätedatensatz vorbereitet."
+
+msgid "Nouveau lien de signature"
+msgstr "Neuer Signaturlink"
+
+msgid "Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page."
+msgstr "Senden Sie ihn per Teams, Chat oder SMS. Er ersetzt den zuvor gesendeten Link, der nicht mehr funktioniert. Nach dem Verlassen dieser Seite wird er nicht mehr angezeigt."
+
+msgid "Copier"
+msgstr "Kopieren"
+
+msgid "Copié"
+msgstr "Kopiert"
+
+msgid "Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L'ancien lien cesse de fonctionner."
+msgstr "Ohne E-Mail: erstellt einen neuen Link, den Sie selbst senden (Teams, Chat, SMS). Der alte Link funktioniert nicht mehr."
+
+msgid "Copier un nouveau lien"
+msgstr "Neuen Link kopieren"

@@ -157,12 +157,45 @@
       {% endif %}
     </table>
 
+    {# Issue #277 : lien créé à l'instant, affiché une seule fois (le jeton n'est pas relisible). #}
+    {% if shared_link|default('') %}
+      <div class="alert alert-info mb-3" role="status"><div class="w-100">
+        <div class="fw-bold mb-1"><i class="ti ti-link me-1"></i>{{ __('Nouveau lien de signature', 'assetsign') }}</div>
+        <div class="small mb-2">{{ __('Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page.', 'assetsign') }}</div>
+        <div class="input-group">
+          <input type="text" class="form-control" id="assetsign-shared-link" value="{{ shared_link }}" readonly aria-label="{{ __('Nouveau lien de signature', 'assetsign') }}">
+          <button type="button" class="btn btn-primary" id="assetsign-copy-link-btn"><i class="ti ti-copy me-1"></i>{{ __('Copier', 'assetsign') }}</button>
+        </div>
+      </div></div>
+      <script>
+        document.getElementById('assetsign-copy-link-btn').addEventListener('click', function () {
+          var field = document.getElementById('assetsign-shared-link');
+          var btn = this;
+          var done = function () { btn.innerHTML = '<i class="ti ti-check me-1"></i>{{ __('Copié', 'assetsign')|e('js') }}'; };
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(field.value).then(done);
+          } else {
+            field.select();
+            document.execCommand('copy');
+            done();
+          }
+        });
+      </script>
+    {% endif %}
+
     <div class="d-flex gap-2">
       {% if can_remind %}
         <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
           <input type="hidden" name="id" value="{{ item.fields.id }}">
           <button type="submit" name="relance" class="btn btn-primary">{{ __('Relancer maintenant', 'assetsign') }}</button>
+        </form>
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item.fields.id }}">
+          <button type="submit" name="copy_link" class="btn btn-outline-primary" title="{{ __('Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L\'ancien lien cesse de fonctionner.', 'assetsign') }}">
+            <i class="ti ti-link me-1"></i>{{ __('Copier un nouveau lien', 'assetsign') }}
+          </button>
         </form>
       {% endif %}
       {% if can_sign_in_person|default(false) %}

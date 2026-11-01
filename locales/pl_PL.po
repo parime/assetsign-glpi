@@ -5324,3 +5324,21 @@ msgstr "Nowe przekazanie"
 
 msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
 msgstr "Wybierz adresata i sprzęt: formularz przekazania zostanie przygotowany tak jak przy przypisaniu z rekordu sprzętu."
+
+msgid "Nouveau lien de signature"
+msgstr "Nowy link do podpisu"
+
+msgid "Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page."
+msgstr "Wyślij go przez Teams, czat lub SMS. Zastępuje wcześniej wysłany link, który już nie działa. Po opuszczeniu tej strony nie będzie ponownie wyświetlany."
+
+msgid "Copier"
+msgstr "Kopiuj"
+
+msgid "Copié"
+msgstr "Skopiowano"
+
+msgid "Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L'ancien lien cesse de fonctionner."
+msgstr "Bez e-maila: tworzy nowy link do samodzielnego wysłania (Teams, czat, SMS). Stary link przestaje działać."
+
+msgid "Copier un nouveau lien"
+msgstr "Skopiuj nowy link"

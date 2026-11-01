@@ -3025,3 +3025,21 @@ msgstr ""
 
 msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
 msgstr ""
+
+msgid "Nouveau lien de signature"
+msgstr ""
+
+msgid "Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page."
+msgstr ""
+
+msgid "Copier"
+msgstr ""
+
+msgid "Copié"
+msgstr ""
+
+msgid "Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L'ancien lien cesse de fonctionner."
+msgstr ""
+
+msgid "Copier un nouveau lien"
+msgstr ""
