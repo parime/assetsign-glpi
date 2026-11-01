@@ -169,6 +169,8 @@ try {
         'cosigner'               => $data['cosigner'],
         // Signature sur place (issue #152) : bandeau "en presence de", cf. sign_page.html.twig.
         'in_person_witness'      => $data['in_person_witness'],
+        // Issue #275 : onglet « Taper mon nom ».
+        'allow_typed_signature'  => $data['allow_typed_signature'],
         'in_person_signer'       => $data['in_person_signer'],
         // Volontairement DIFFERENT de Assetsign::getPdfHeadings() (fixe en francais,
         // car c'est le contenu d'un PDF archive, cf. commentaire sur

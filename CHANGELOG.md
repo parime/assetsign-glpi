@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Signer en tapant son nom** (issue #275) : sur la page de signature, un onglet « Taper mon nom »
+  complète le tracé à l'écran (utile sans écran tactile, accessibilité). Le nom est rendu en
+  écriture manuscrite ; la preuve et le PDF indiquent la méthode utilisée. Option par entité,
+  activée par défaut.
 - **Copier un nouveau lien de signature** (issue #277) : sur une fiche en attente, crée un lien
   à envoyer soi-même par Teams, chat ou SMS (utile sans e-mail). Le lien s'affiche une seule
   fois avec un bouton Copier ; l'ancien lien cesse de fonctionner. Aucun e-mail n'est envoyé.
