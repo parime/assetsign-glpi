@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.18.0] - 2026-11-01
+
 ### Security
 
 - **Logo** (issue #281) : une image déclarant plus de 3000 × 3000 pixels est refusée à l'envoi
