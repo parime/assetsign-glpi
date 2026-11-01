@@ -4781,3 +4781,12 @@ msgstr "Kein Benutzer"
 
 msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
 msgstr "Übergabe- und Rückgabeformulare werden automatisch erstellt, wenn diesem Gerät ein Benutzer zugewiesen oder entzogen wird."
+
+msgid "Brouillons à envoyer"
+msgstr "Zu sendende Entwürfe"
+
+msgid "Nouvelle attribution"
+msgstr "Neue Übergabe"
+
+msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
+msgstr "Wählen Sie den Empfänger und das Gerät: Das Übergabeformular wird wie bei einer Zuweisung über den Gerätedatensatz vorbereitet."

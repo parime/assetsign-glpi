@@ -5302,3 +5302,12 @@ msgstr "Nenhum usuário"
 
 msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
 msgstr "Os termos de entrega e de devolução são criados automaticamente quando um usuário é atribuído a este equipamento ou removido dele."
+
+msgid "Brouillons à envoyer"
+msgstr "Rascunhos a enviar"
+
+msgid "Nouvelle attribution"
+msgstr "Nova entrega"
+
+msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
+msgstr "Escolha o destinatário e o equipamento: o termo de entrega é preparado como em uma atribuição feita pela ficha do equipamento."

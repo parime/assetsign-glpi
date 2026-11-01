@@ -155,8 +155,8 @@
 
         <div class="col-auto">
           {% for value, label in manual_types %}
-            <button type="button" class="btn btn-secondary assetsign-manual-type-btn" data-type="{{ value }}">
-              {{ __('Créer une fiche de %s', 'assetsign')|format(label|lower) }}
+            <button type="button" class="btn btn-outline-secondary assetsign-manual-type-btn" data-type="{{ value }}">
+              <i class="{{ type_icons[value]|default('ti ti-file') }} me-1"></i>{{ __('Créer une fiche de %s', 'assetsign')|format(label|lower) }}
             </button>
           {% endfor %}
           <button type="submit" class="btn btn-primary assetsign-manual-submit-btn" style="display: none;">
