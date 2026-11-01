@@ -1,0 +1,4730 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: assetsign\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 23:05+0000\n"
+"Language: es_MX\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: templates/sign_page.html.twig front/sign.php:130
+msgid "Signature d'attribution de matériel"
+msgstr "Firma de atribución de equipo"
+
+#: templates/sign_page.html.twig templates/movement_form.html.twig
+#: templates/qr_label.html.twig templates/assetsign_form.html.twig
+#: templates/movement_create.html.twig templates/maintenance_create.html.twig
+#: templates/maintenance_form.html.twig templates/assetsign_tab.html.twig
+#: src/GlpiPlugin/Assetsign/Assetsign.php:225
+#: src/GlpiPlugin/Assetsign/Movement.php:121
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:158
+#: src/GlpiPlugin/Assetsign/Maintenance.php:86
+msgid "Matériel"
+msgstr "Equipo"
+
+#: templates/sign_page.html.twig templates/assetsign_form.html.twig
+#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:234
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:64
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:159
+msgid "Bénéficiaire"
+msgstr "Beneficiario"
+
+#: templates/sign_page.html.twig
+msgid "Impossible d'afficher ce document"
+msgstr "No se puede mostrar este documento"
+
+#: templates/sign_page.html.twig
+msgid "Retour à l'accueil GLPI"
+msgstr "Volver al inicio de GLPI"
+
+#: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
+#: templates/assetsign_form.html.twig templates/maintenance_form.html.twig
+msgid "État des lieux visuel"
+msgstr "Estado del equipo visual"
+
+#: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
+#: templates/assetsign_form.html.twig
+msgid ""
+"Cliquez sur une vue pour y déposer un repère de dommage ; cliquez sur un "
+"repère existant pour le décrire ou le supprimer, glissez-le pour le "
+"repositionner."
+msgstr ""
+"Haga clic en una vista para colocar una marca de daño; haga clic en una "
+"marca existente para describirla o eliminarla, arrástrela para "
+"reposicionarla."
+
+#: templates/sign_page.html.twig
+msgid "Remarque"
+msgstr "Observación"
+
+#: templates/sign_page.html.twig
+msgid "Une précision à ajouter avant de signer (optionnel)."
+msgstr "Una aclaración que añadir antes de firmar (opcional)."
+
+#: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
+#: templates/assetsign_form.html.twig templates/template_form.html.twig
+#: templates/config_form.html.twig templates/passport_tab.html.twig
+msgid "Enregistrer"
+msgstr "Guardar"
+
+#: templates/sign_page.html.twig
+msgid ""
+"J'ai lu et j'accepte les conditions générales et la charte informatique "
+"présentées dans le document ci-dessus."
+msgstr ""
+"He leído y acepto las condiciones generales y la normativa informática "
+"presentadas en el documento anterior."
+
+#: templates/sign_page.html.twig
+msgid "Signez ci-dessous à la souris, au doigt ou au stylet :"
+msgstr "Firme a continuación con el ratón, el dedo o el lápiz óptico:"
+
+#: templates/sign_page.html.twig templates/technician_signature_edit.html.twig
+msgid "Effacer"
+msgstr "Borrar"
+
+#: templates/sign_page.html.twig
+msgid "Valider ma signature"
+msgstr "Confirmar mi firma"
+
+#: templates/sign_page.html.twig
+msgid "Ce lien est valable jusqu'au"
+msgstr "Este enlace es válido hasta el"
+
+#: templates/sign_page.html.twig
+msgid "et deviendra invalide dès la signature."
+msgstr "y quedará invalidado en cuanto se firme."
+
+#: templates/sign_page.html.twig
+msgid "Impossible de charger le document"
+msgstr "No se ha podido cargar el documento"
+
+#: templates/sign_page.html.twig
+msgid "Envoi en cours…"
+msgstr "Enviando…"
+
+#: templates/sign_page.html.twig templates/assetsign_form.html.twig
+msgid "Erreur"
+msgstr "Error"
+
+#: templates/sign_page.html.twig
+msgid "Merci, votre signature a bien été enregistrée."
+msgstr "Gracias, su firma se ha registrado correctamente."
+
+#: templates/sign_page.html.twig templates/assetsign_form.html.twig
+msgid "Erreur réseau, merci de réessayer."
+msgstr "Error de red, inténtelo de nuevo."
+
+#: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
+#: templates/assetsign_form.html.twig
+msgid "Description"
+msgstr "Descripción"
+
+#: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
+#: templates/assetsign_form.html.twig
+msgid "Gravité"
+msgstr "Gravedad"
+
+#: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
+#: templates/assetsign_form.html.twig
+msgid "Mineure"
+msgstr "Leve"
+
+#: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
+#: templates/assetsign_form.html.twig
+msgid "Majeure"
+msgstr "Grave"
+
+#: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
+#: templates/assetsign_form.html.twig templates/template_form.html.twig
+msgid "Supprimer"
+msgstr "Eliminar"
+
+#: templates/sign_page.html.twig
+msgid "Remarque enregistrée."
+msgstr "Observación guardada."
+
+#: templates/movement_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:60
+#: src/GlpiPlugin/Assetsign/Movement.php:56
+msgid "Mouvement"
+msgid_plural "Mouvements"
+msgstr[0] "Movimiento"
+msgstr[1] "Movimientos"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:130
+msgid "Lieu de départ"
+msgstr "Lugar de origen"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:145
+msgid "Date de départ"
+msgstr "Fecha de salida"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:138
+msgid "Lieu de destination"
+msgstr "Lugar de destino"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/movement_create.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:152
+msgid "Date de destination"
+msgstr "Fecha de destino"
+
+#: templates/movement_form.html.twig
+msgid "Créé le"
+msgstr "Creado el"
+
+#: templates/movement_form.html.twig templates/movement_tab.html.twig
+#: templates/assetsign_form.html.twig templates/maintenance_tab.html.twig
+#: templates/movement_create.html.twig templates/maintenance_create.html.twig
+#: templates/maintenance_form.html.twig
+#: src/GlpiPlugin/Assetsign/Movement.php:183
+msgid "Commentaire"
+msgstr "Comentario"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Preuve de signature"
+msgstr "Prueba de firma"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Signataire"
+msgstr "Firmante"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Adresse IP"
+msgstr "Dirección IP"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Navigateur / appareil"
+msgstr "Navegador / dispositivo"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Empreinte du document (SHA-256)"
+msgstr "Huella del documento (SHA-256)"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_form.html.twig
+msgid "Horodatage"
+msgstr "Marca de tiempo"
+
+#: templates/movement_form.html.twig templates/assetsign_form.html.twig
+msgid "Documents joints"
+msgstr "Documentos adjuntos"
+
+#: templates/movement_form.html.twig
+msgid "Aucun document joint (bulletin de livraison, document de transport...)."
+msgstr "Ningún documento adjunto (albarán, documento de transporte...)."
+
+#: templates/movement_form.html.twig
+msgid "Joindre le document"
+msgstr "Adjuntar documento"
+
+#: templates/movement_form.html.twig
+msgid "Actions"
+msgstr "Acciones"
+
+#: templates/movement_form.html.twig
+msgid "Marquer comme en cours (départ effectif)"
+msgstr "Marcar como en curso (salida efectiva)"
+
+#: templates/movement_form.html.twig
+msgid "Date d'arrivée"
+msgstr "Fecha de llegada"
+
+#: templates/movement_form.html.twig
+msgid "Marquer comme terminé (arrivée effective)"
+msgstr "Marcar como finalizado (llegada efectiva)"
+
+#: templates/movement_form.html.twig
+msgid "Annuler ce mouvement ?"
+msgstr "¿Cancelar este movimiento?"
+
+#: templates/movement_form.html.twig
+msgid "Annuler le mouvement"
+msgstr "Cancelar el movimiento"
+
+#: templates/qr_label.html.twig
+msgid "Étiquette QR code"
+msgstr "Etiqueta con código QR"
+
+#: templates/qr_label.html.twig templates/passport_tab.html.twig
+msgid "N° série"
+msgstr "N.º de serie"
+
+#: templates/qr_label.html.twig
+msgid "QR code du matériel"
+msgstr "Código QR del equipo"
+
+#: templates/qr_label.html.twig
+msgid "QR code indisponible sur cet environnement."
+msgstr "Código QR no disponible en este entorno."
+
+#: templates/qr_label.html.twig
+msgid "Imprimer"
+msgstr "Imprimir"
+
+#: templates/movement_tab.html.twig
+msgid "Aucun mouvement enregistré pour ce matériel."
+msgstr "No hay ningún movimiento registrado para este equipo."
+
+#: templates/movement_tab.html.twig
+msgid "Départ"
+msgid_plural "Départs"
+msgstr[0] "Salida"
+msgstr[1] "Salidas"
+
+#: templates/movement_tab.html.twig
+msgid "Destination"
+msgstr "Destino"
+
+#: templates/movement_tab.html.twig templates/assetsign_form.html.twig
+#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:242
+#: src/GlpiPlugin/Assetsign/Movement.php:159
+msgid "Statut"
+msgstr "Estado"
+
+#: templates/movement_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:685
+#: src/GlpiPlugin/Assetsign/Movement.php:176
+msgid "Signé"
+msgstr "Firmado"
+
+#: templates/movement_tab.html.twig templates/maintenance_tab.html.twig
+#: templates/assetsign_tab.html.twig
+msgid "Voir"
+msgstr "Ver"
+
+#: templates/movement_tab.html.twig templates/movement_create.html.twig
+msgid "Nouveau mouvement"
+msgstr "Nuevo movimiento"
+
+#: templates/movement_tab.html.twig templates/movement_create.html.twig
+msgid "Créer le mouvement"
+msgstr "Crear el movimiento"
+
+#: templates/assetsign_form.html.twig templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:55
+#: src/GlpiPlugin/Assetsign/Assetsign.php:107
+#: src/GlpiPlugin/Assetsign/Workflow/HandoverType.php:21
+msgid "Attribution"
+msgid_plural "Attributions"
+msgstr[0] "Atribución"
+msgstr[1] "Atribuciones"
+
+#: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
+msgid "Externe"
+msgstr "Externo"
+
+#: templates/assetsign_form.html.twig
+msgid "Envoyé le"
+msgstr "Enviada el"
+
+#: templates/assetsign_form.html.twig
+msgid "Consulté le"
+msgstr "Consultada el"
+
+#: templates/assetsign_form.html.twig
+msgid "Signé le"
+msgstr "Firmado el"
+
+#: templates/assetsign_form.html.twig
+#: src/GlpiPlugin/Assetsign/Assetsign.php:272
+msgid "Nombre de relances"
+msgstr "Número de recordatorios"
+
+#: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
+#: src/GlpiPlugin/Assetsign/Maintenance.php:93
+msgid "PDF"
+msgstr "PDF"
+
+#: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
+#: src/GlpiPlugin/Assetsign/Assetsign.php:327
+msgid "Télécharger (signé)"
+msgstr "Descargar (firmado)"
+
+#: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
+#: src/GlpiPlugin/Assetsign/Assetsign.php:327
+msgid "Télécharger (non signé)"
+msgstr "Descargar (sin firmar)"
+
+#: templates/assetsign_form.html.twig
+#: src/GlpiPlugin/Assetsign/Assetsign.php:433
+msgid "Relancer maintenant"
+msgstr "Enviar recordatorio ahora"
+
+#: templates/assetsign_form.html.twig
+msgid "Annuler cette demande de signature ?"
+msgstr "¿Cancelar esta solicitud de firma?"
+
+#: templates/assetsign_form.html.twig
+#: src/GlpiPlugin/Assetsign/Assetsign.php:435
+msgid "Annuler la demande"
+msgstr "Cancelar la solicitud"
+
+#: templates/assetsign_form.html.twig
+msgid ""
+"Ces informations sont enregistrées au moment de la signature et permettent, "
+"en cas de litige, de vérifier que le PDF signé n'a pas été modifié depuis "
+"(l'empreinte ci-dessus doit correspondre à celle du fichier)."
+msgstr ""
+"Esta información se registra en el momento de la firma y permite, en caso de "
+"litigio, comprobar que el PDF firmado no se ha modificado desde entonces (la "
+"huella anterior debe coincidir con la del archivo)."
+
+#: templates/assetsign_form.html.twig
+msgid "Détails de la vente"
+msgstr "Detalles de la venta"
+
+#: templates/assetsign_form.html.twig
+msgid ""
+"Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF "
+"ne mentionne pas encore la vente tant que ce prix n'est pas saisi."
+msgstr ""
+"Ningún precio indicado por el momento (ficha creada automáticamente): el PDF "
+"no menciona aún la venta mientras no se introduzca este precio."
+
+#: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
+msgid "Prix"
+msgstr "Precio"
+
+#: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
+msgid "Date de vente"
+msgstr "Fecha de venta"
+
+#: templates/assetsign_form.html.twig
+msgid "Détails du don"
+msgstr "Detalles de la donación"
+
+#: templates/assetsign_form.html.twig
+msgid ""
+"Aucun organisme bénéficiaire renseigné pour le moment (fiche créée "
+"automatiquement) : le PDF ne le mentionne pas encore tant qu'il n'est pas "
+"saisi."
+msgstr ""
+"Todavía no se ha indicado ningún organismo beneficiario (ficha creada "
+"automáticamente): el PDF no lo menciona hasta que se indique."
+
+#: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
+msgid "Organisme bénéficiaire"
+msgstr "Organismo beneficiario"
+
+#: templates/assetsign_form.html.twig
+msgid "Détails de la destruction"
+msgstr "Detalles de la destrucción"
+
+#: templates/assetsign_form.html.twig
+msgid ""
+"Aucun prestataire renseigné pour le moment (fiche créée automatiquement) : "
+"le PDF ne le mentionne pas encore tant qu'il n'est pas saisi."
+msgstr ""
+"Todavía no se ha indicado ningún proveedor (ficha creada automáticamente): "
+"el PDF no lo menciona hasta que se indique."
+
+#: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
+msgid "Prestataire"
+msgstr "Proveedor"
+
+#: templates/assetsign_form.html.twig
+msgid "Observations"
+msgstr "Observaciones"
+
+#: templates/assetsign_form.html.twig
+msgid "Remarque du bénéficiaire"
+msgstr "Observación del beneficiario"
+
+#: templates/assetsign_form.html.twig
+msgid "Contrôle qualité"
+msgstr "Control de calidad"
+
+#: templates/assetsign_form.html.twig
+msgid ""
+"Aucun point de contrôle configuré pour ce type de mouvement (Configuration > "
+"Intitulés > Points de contrôle qualité)."
+msgstr ""
+"Ningún punto de control configurado para este tipo de movimiento "
+"(Configuración > Listas desplegables > Puntos de control de calidad)."
+
+#: templates/assetsign_form.html.twig src/GlpiPlugin/Assetsign/Kit.php:30
+msgid "Kit d'accessoires"
+msgid_plural "Kits d'accessoires"
+msgstr[0] "Kit de accesorios"
+msgstr[1] "Kits de accesorios"
+
+#: templates/assetsign_form.html.twig
+msgid "Kit assigné :"
+msgstr "Kit asignado:"
+
+#: templates/assetsign_form.html.twig
+msgid "Aucun kit assigné pour le moment."
+msgstr "Ningún kit asignado por el momento."
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "accessoires du kit restitués"
+msgstr "accesorios del kit devueltos"
+
+#: templates/assetsign_form.html.twig templates/passport_tab.html.twig
+#: templates/passport_user_tab.html.twig
+msgid "Accessoire(s) manquant(s) :"
+msgstr "Accesorio(s) faltante(s):"
+
+#: templates/assetsign_form.html.twig
+msgid "Assigner / changer le kit"
+msgstr "Asignar / cambiar el kit"
+
+#: templates/assetsign_form.html.twig
+msgid "Accessoires remis"
+msgstr "Accesorios entregados"
+
+#: templates/assetsign_form.html.twig
+msgid "Accessoire"
+msgstr "Accesorio"
+
+#: templates/assetsign_form.html.twig
+msgid "Quantité"
+msgstr "Cantidad"
+
+#: templates/assetsign_form.html.twig
+msgid "Retirer"
+msgstr "Quitar"
+
+#: templates/assetsign_form.html.twig
+msgid "Aucun accessoire remis pour le moment."
+msgstr "Ningún accesorio entregado por el momento."
+
+#: templates/assetsign_form.html.twig
+msgid "Ajouter un accessoire"
+msgstr "Añadir un accesorio"
+
+#: templates/assetsign_form.html.twig
+msgid "Ajouter"
+msgstr "Añadir"
+
+#: templates/template_form.html.twig templates/config_form.html.twig
+msgid "Nom du gabarit"
+msgstr "Nombre de la plantilla"
+
+#: templates/template_form.html.twig
+msgid "Type d'attribution concerné"
+msgstr "Tipo de atribución correspondiente"
+
+#: templates/template_form.html.twig templates/config_form.html.twig
+msgid "Inclure les conditions générales dans le PDF"
+msgstr "Incluir las condiciones generales en el PDF"
+
+#: templates/template_form.html.twig templates/config_form.html.twig
+msgid "Conditions générales (contrat)"
+msgstr "Condiciones generales (contrato)"
+
+#: templates/template_form.html.twig
+msgid ""
+"Texte de départ pré-rempli à titre d'exemple : modifiez-le ou effacez-le "
+"librement."
+msgstr ""
+"Texto inicial precargado a modo de ejemplo: modifíquelo o bórrelo libremente."
+
+#: templates/template_form.html.twig templates/config_form.html.twig
+msgid "Variables disponibles, remplacées automatiquement sur le PDF :"
+msgstr "Variables disponibles, sustituidas automáticamente en el PDF:"
+
+#: templates/template_form.html.twig templates/config_form.html.twig
+msgid "Inclure la charte informatique dans le PDF"
+msgstr "Incluir la normativa informática en el PDF"
+
+#: templates/template_form.html.twig
+msgid ""
+"Décochez pour ne jamais afficher cette section, y compris le lien vers la "
+"charte complète configuré au niveau de l'entité."
+msgstr ""
+"Desmarque para no mostrar nunca esta sección, incluido el enlace a la "
+"normativa completa configurado a nivel de entidad."
+
+#: templates/template_form.html.twig templates/config_form.html.twig
+msgid "Charte informatique"
+msgstr "Normativa informática"
+
+#: templates/template_form.html.twig
+msgid ""
+"Utilisez le bouton \"lien\" de la barre d'outils pour renvoyer vers un "
+"document existant (ex: la charte informatique complète), plutôt que de tout "
+"retaper ici."
+msgstr ""
+"Use el botón \"enlace\" de la barra de herramientas para remitir a un "
+"documento existente (ej: la normativa informática completa), en lugar de "
+"volver a escribirlo todo aquí."
+
+#: templates/template_form.html.twig
+msgid "Gabarit par défaut pour ce type"
+msgstr "Plantilla predeterminada para este tipo"
+
+#: templates/template_form.html.twig
+msgid "Actif"
+msgstr "Activo"
+
+#: templates/template_form.html.twig
+msgid "Supprimer ce gabarit ?"
+msgstr "¿Eliminar esta plantilla?"
+
+#: templates/template_form.html.twig
+msgid "Créer"
+msgstr "Crear"
+
+#: templates/template_form.html.twig templates/config_form.html.twig
+msgid "Aperçu de la fiche générée"
+msgstr "Vista previa de la ficha generada"
+
+#: templates/template_form.html.twig
+msgid ""
+"Exemple avec des données fictives. L'aperçu se met à jour automatiquement "
+"dès que vous modifiez le texte ou une case à cocher, avant même "
+"d'enregistrer."
+msgstr ""
+"Ejemplo con datos ficticios. La vista previa se actualiza automáticamente en "
+"cuanto modifica el texto o una casilla, incluso antes de guardar."
+
+#: templates/config_form.html.twig
+msgid "Général"
+msgstr "General"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:56
+#: src/GlpiPlugin/Assetsign/Workflow/ReturnType.php:16
+msgid "Restitution"
+msgstr "Restitución"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:57
+#: src/GlpiPlugin/Assetsign/Workflow/DonType.php:23
+msgid "Don"
+msgstr "Donación"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:58
+#: src/GlpiPlugin/Assetsign/Workflow/VenteType.php:23
+msgid "Vente"
+msgstr "Venta"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:61
+#: src/GlpiPlugin/Assetsign/Workflow/DestructionType.php:25
+msgid "Destruction"
+msgstr "Destrucción"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:568
+msgid "Réforme"
+msgstr "Desmantelamiento"
+
+#: templates/config_form.html.twig
+msgid "Compléments"
+msgstr "Complementos"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:59
+#: src/GlpiPlugin/Assetsign/Maintenance.php:117
+msgid "Maintenance"
+msgstr "Mantenimiento"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:524
+#: src/GlpiPlugin/Assetsign/Movement.php:207
+msgid "Mouvements"
+msgstr "Movimientos"
+
+#: templates/config_form.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:174
+msgid "Passeport matériel"
+msgstr "Pasaporte del equipo"
+
+#: templates/config_form.html.twig templates/passport_tab.html.twig
+msgid "Score de santé"
+msgstr "Puntuación de estado"
+
+#: templates/config_form.html.twig
+msgid "Valeur résiduelle"
+msgstr "Valor residual"
+
+#: templates/config_form.html.twig
+msgid "Version du plugin"
+msgstr "Versión del plugin"
+
+#: templates/config_form.html.twig
+msgid "Version installée"
+msgstr "Versión instalada"
+
+#: templates/config_form.html.twig
+msgid "Dernière version sur GitHub"
+msgstr "Última versión en GitHub"
+
+#: templates/config_form.html.twig
+msgid "Nom de l'expéditeur"
+msgstr "Nombre del remitente"
+
+#: templates/config_form.html.twig
+msgid "E-mail de l'expéditeur"
+msgstr "Correo del remitente"
+
+#: templates/config_form.html.twig
+msgid "Envoyer un e-mail de test"
+msgstr "Enviar un correo de prueba"
+
+#: templates/config_form.html.twig
+msgid ""
+"Envoie un e-mail à votre propre adresse GLPI, pour vérifier que l'envoi "
+"fonctionne."
+msgstr ""
+"Envía un correo a su propia dirección GLPI, para comprobar que el envío "
+"funciona."
+
+#: templates/config_form.html.twig
+msgid "Logo à afficher sur les fiches PDF"
+msgstr "Logotipo a mostrar en las fichas PDF"
+
+#: templates/config_form.html.twig
+msgid ""
+"Le logo affiché ci-dessous est actuellement imposé par une entité parente "
+"(voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition "
+"est retirée."
+msgstr ""
+"El logotipo mostrado abajo está actualmente impuesto por una entidad "
+"superior (ver más abajo). Un logotipo enviado aquí solo se usará si se "
+"retira dicha imposición."
+
+#: templates/config_form.html.twig
+msgid "Retirer le logo actuel"
+msgstr "Quitar el logotipo actual"
+
+#: templates/config_form.html.twig
+msgid ""
+"Image PNG, JPG, GIF ou WEBP. Choisissez un fichier pour remplacer le logo "
+"actuel."
+msgstr ""
+"Imagen PNG, JPG, GIF o WEBP. Elija un archivo para reemplazar el logotipo "
+"actual."
+
+#: templates/config_form.html.twig
+msgid ""
+"Imposer ce logo à toutes les entités enfants (et leurs propres sous-entités)"
+msgstr ""
+"Imponer este logotipo a todas las entidades hijas (y sus propias "
+"subentidades)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Utile si plusieurs entités doivent afficher le même logo : cette entité "
+"impose alors le sien à toute sa descendance, même si une entité enfant a "
+"déjà envoyé son propre logo."
+msgstr ""
+"Útil si varias entidades deben mostrar el mismo logotipo: esta entidad "
+"impone entonces el suyo a toda su descendencia, incluso si una entidad hija "
+"ya ha enviado su propio logotipo."
+
+#: templates/config_form.html.twig
+msgid "Nom de l'entreprise"
+msgstr "Nombre de la empresa"
+
+#: templates/config_form.html.twig
+msgid ""
+"Optionnel : affiché à côté du logo sur les fiches PDF, en complément (pas en "
+"remplacement) du logo."
+msgstr ""
+"Opcional: se muestra junto al logotipo en los formularios PDF, además del "
+"logotipo (no en su lugar)."
+
+#: templates/config_form.html.twig
+msgid "Lien vers la charte informatique complète"
+msgstr "Enlace a la normativa informática completa"
+
+#: templates/config_form.html.twig
+msgid ""
+"Optionnel : URL vers un document ou une page existante (intranet, PDF déjà "
+"en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en "
+"plus du texte de la charte défini dans le gabarit : commun à tous les types."
+msgstr ""
+"Opcional: URL a un documento o página existente (intranet, PDF ya "
+"publicado...). Si se indica, aparece un enlace en la ficha PDF, además del "
+"texto de la normativa definido en la plantilla : común a todos los tipos."
+
+#: templates/config_form.html.twig
+msgid "Fournisseur de signature"
+msgstr "Proveedor de firma"
+
+#: templates/config_form.html.twig
+msgid "Délais de relance (jours, séparés par des virgules : ex: 3,7,7)"
+msgstr "Plazos de recordatorio (días, separados por comas: ej: 3,7,7)"
+
+#: templates/config_form.html.twig
+msgid "Nombre maximum de relances (0 = illimité)"
+msgstr "Número máximo de recordatorios (0 = ilimitado)"
+
+#: templates/config_form.html.twig
+msgid "Durée de validité du lien de signature (jours)"
+msgstr "Duración de validez del enlace de firma (días)"
+
+#: templates/config_form.html.twig
+msgid "Alerter le technicien avant expiration (jours avant, 0 = désactivé)"
+msgstr "Avisar al técnico antes de la caducidad (días antes, 0 = desactivado)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Le technicien à l'origine de l'attribution reçoit un e-mail quand il reste "
+"ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le "
+"bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop "
+"tard."
+msgstr ""
+"El técnico que originó la atribución recibe un correo cuando quedan estos "
+"días antes de que caduque el enlace, para poder contactar de otra forma con "
+"el beneficiario (llamada, visita presencial) antes de que sea demasiado "
+"tarde."
+
+#: templates/config_form.html.twig
+msgid "Signature obligatoire"
+msgstr "Firma obligatoria"
+
+#: templates/config_form.html.twig
+msgid "Protéger le PDF (restreindre la copie et l'édition)"
+msgstr "Proteger el PDF (restringir la copia y la edición)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur "
+"qui respecte cette restriction : n'affecte jamais la possibilité de le "
+"consulter ou de l'imprimer."
+msgstr ""
+"Cifra el PDF generado para impedir su copia/modificación en un lector que "
+"respete esta restricción : nunca afecta a la posibilidad de consultarlo o "
+"imprimirlo."
+
+#: templates/config_form.html.twig
+msgid "Types de matériel gérés par le plugin"
+msgstr "Tipos de equipo gestionados por el plugin"
+
+#: templates/config_form.html.twig
+msgid ""
+"Décochez un type pour que le plugin n'agisse jamais dessus, quelle que soit "
+"l'affectation ou l'État."
+msgstr ""
+"Desmarque un tipo para que el plugin nunca actúe sobre él, sea cual sea la "
+"asignación o el Estado."
+
+#: templates/config_form.html.twig
+msgid "Déclenchement par affectation d'utilisateur"
+msgstr "Activación por asignación de usuario"
+
+#: templates/config_form.html.twig
+msgid ""
+"Basé sur le champ \"Utilisateur\" du matériel : fonctionne dans la plupart "
+"des GLPI."
+msgstr ""
+"Basado en el campo \"Usuario\" del equipo : funciona en la mayoría de los "
+"GLPI."
+
+#: templates/config_form.html.twig
+msgid "Signature à la première affectation"
+msgstr "Firma en la primera asignación"
+
+#: templates/config_form.html.twig
+msgid "Signature à chaque changement d'utilisateur"
+msgstr "Firma en cada cambio de usuario"
+
+#: templates/config_form.html.twig
+msgid "Déclenchement par État du matériel (optionnel)"
+msgstr "Activación por Estado del equipo (opcional)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Tous les GLPI n'utilisent pas les mêmes États : choisissez parmi VOS États "
+"existants (Configuration > Listes déroulantes > États)."
+msgstr ""
+"No todos los GLPI usan los mismos Estados: elija entre SUS Estados "
+"existentes (Configuración > Listas desplegables > Estados)."
+
+#: templates/config_form.html.twig
+msgid "Signature lors de la restitution (désaffectation)"
+msgstr "Firma al restituir (desasignación)"
+
+#: templates/config_form.html.twig
+msgid "Autoriser la création de fiches de don de matériel"
+msgstr "Permitir la creación de fichas de donación de equipo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Ajoute un bouton « Créer une fiche de don » sur l'onglet Attribution de "
+"chaque matériel géré par le plugin."
+msgstr ""
+"Añade un botón «Crear una ficha de donación» en la pestaña Atribución de "
+"cada equipo gestionado por el plugin."
+
+#: templates/config_form.html.twig
+msgid "Autoriser la création de fiches de vente de matériel"
+msgstr "Permitir la creación de fichas de venta de equipo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Ajoute un bouton « Créer une fiche de vente » (avec prix et date) sur "
+"l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr ""
+"Añade un botón «Crear una ficha de venta» (con precio y fecha) en la pestaña "
+"Atribución de cada equipo gestionado por el plugin."
+
+#: templates/config_form.html.twig
+msgid "Symbole monétaire"
+msgstr "Símbolo de moneda"
+
+#: templates/config_form.html.twig
+msgid "Affiché après le prix sur la fiche PDF (ex: €, $, CHF)."
+msgstr "Se muestra después del precio en la ficha PDF (ej: €, $, CHF)."
+
+#: templates/config_form.html.twig
+msgid ""
+"Le prix et la date ne sont pas connus automatiquement : à compléter ensuite "
+"sur la fiche créée."
+msgstr ""
+"El precio y la fecha no se conocen automáticamente: complételos después en "
+"la ficha creada."
+
+#: templates/config_form.html.twig
+msgid "Autoriser la création de fiches de destruction de matériel"
+msgstr "Permitir la creación de fichas de destrucción de equipo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Ajoute un bouton « Créer une fiche de destruction » (avec prestataire et "
+"certificat) sur l'onglet Attribution de chaque matériel géré par le plugin."
+msgstr ""
+"Añade un botón «Crear una ficha de destrucción» (con proveedor y "
+"certificado) en la pestaña Atribución de cada equipo gestionado por el "
+"plugin."
+
+#: templates/config_form.html.twig
+msgid ""
+"Le prestataire et le certificat ne sont pas connus automatiquement : à "
+"compléter ensuite sur la fiche créée."
+msgstr ""
+"El proveedor y el certificado no se conocen automáticamente: se completan "
+"después en la ficha creada."
+
+#: templates/config_form.html.twig
+msgid ""
+"Aucune fiche Attribution n'est créée ici : ce réglage ne fait qu'écrire "
+"automatiquement la date de réforme (champ natif GLPI « Réforme » de l'onglet "
+"Infocom) quand le matériel passe dans l'un des États ci-dessous, au lieu de "
+"la saisir à la main."
+msgstr ""
+"Aquí no se crea ningún formulario de Atribución: este ajuste solo escribe "
+"automáticamente la fecha de desmantelamiento (campo nativo de GLPI "
+"\"Desmantelamiento\" en la pestaña de información financiera y "
+"administrativa) cuando el equipo pasa a uno de los estados siguientes, en "
+"lugar de introducirla manualmente."
+
+#: templates/config_form.html.twig
+msgid ""
+"Une date de réforme déjà renseignée (saisie manuelle ou déclenchement "
+"précédent) n'est jamais écrasée."
+msgstr ""
+"Una fecha de desmantelamiento ya rellenada (introducida manualmente o por un "
+"disparo anterior) nunca se sobrescribe."
+
+#: templates/config_form.html.twig
+msgid "Déclenchement par État du matériel"
+msgstr "Disparo según el estado del equipo"
+
+#: templates/config_form.html.twig
+msgid "Réglages transverses, applicables à tous les types de fiche signée."
+msgstr "Ajustes transversales, aplicables a todos los tipos de ficha firmada."
+
+#: templates/config_form.html.twig
+msgid "Champ « Observations » libre sur chaque fiche"
+msgstr "Campo «Observaciones» libre en cada ficha"
+
+#: templates/config_form.html.twig
+msgid ""
+"Si activé, un champ de texte libre devient disponible sur chaque fiche "
+"d'attribution (ex: état constaté du matériel) et apparaît sur le PDF tant "
+"que la fiche n'est pas encore signée."
+msgstr ""
+"Si está activado, un campo de texto libre está disponible en cada ficha de "
+"atribución (ej: estado observado del equipo) y aparece en el PDF mientras la "
+"ficha no esté aún firmada."
+
+#: templates/config_form.html.twig
+msgid "État des lieux visuel (annotation de dommages)"
+msgstr "Estado del equipo visual (anotación de daños)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Permet de repérer des dommages sur 3 vues génériques (arrière, avant, "
+"dessous) : reportés sur le PDF pour les fiches signées, et affichés "
+"directement sur la fiche pour les fiches de maintenance."
+msgstr ""
+"Permite señalar daños en 3 vistas genéricas (trasera, delantera, inferior): "
+"se reflejan en el PDF para las fichas firmadas, y se muestran directamente "
+"en la ficha para las fichas de mantenimiento."
+
+#: templates/config_form.html.twig
+msgid "Afficher un QR code sur les fiches PDF"
+msgstr "Mostrar un código QR en las fichas PDF"
+
+#: templates/config_form.html.twig
+msgid ""
+"Le QR code renvoie vers la fiche correspondante dans GLPI : pratique pour la "
+"retrouver depuis un contrôle physique du matériel."
+msgstr ""
+"El código QR remite a la ficha correspondiente en GLPI : práctico para "
+"localizarla durante un control físico del equipo."
+
+#: templates/config_form.html.twig
+msgid "Autoriser l'impression d'une étiquette QR code sur le matériel"
+msgstr "Permitir la impresión de una etiqueta con código QR en el equipo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Différent du réglage ci-dessus (celui-ci concerne les fiches PDF) : ajoute "
+"un bouton sur l'onglet Passeport matériel pour imprimer une étiquette à "
+"coller physiquement sur le matériel. Scannée, elle ouvre directement son "
+"Passeport matériel dans GLPI (connexion requise, comme n'importe quel lien "
+"GLPI)."
+msgstr ""
+"Distinto del ajuste anterior (que se refiere a las fichas PDF): añade un "
+"botón en la pestaña Pasaporte del equipo para imprimir una etiqueta que se "
+"pega físicamente en el equipo. Al escanearla, abre directamente ese mismo "
+"Pasaporte del equipo en GLPI (requiere inicio de sesión, como cualquier "
+"enlace de GLPI)."
+
+#: templates/config_form.html.twig
+msgid "Texte du filigrane sur l'aperçu"
+msgstr "Texto de la marca de agua en la vista previa"
+
+#: templates/config_form.html.twig
+msgid "Opacité du filigrane (%)"
+msgstr "Opacidad de la marca de agua (%)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Affiché uniquement sur l'aperçu en direct (jamais sur le vrai PDF), pour "
+"éviter toute confusion entre les deux."
+msgstr ""
+"Se muestra solo en la vista previa en directo (nunca en el PDF real), para "
+"evitar cualquier confusión entre ambos."
+
+#: templates/config_form.html.twig
+msgid ""
+"La fiche de maintenance est un sous-système séparé de celui des fiches "
+"signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère "
+"toujours un PDF (même mise en page que les fiches attribution/don/vente, "
+"avec le logo), et peut en plus faire signer le technicien directement sur le "
+"formulaire de création si l'option ci-dessous est activée. L'accès se gère "
+"par le droit dédié (Administration > Profils)."
+msgstr ""
+"La ficha de mantenimiento es un subsistema separado del de las fichas "
+"firmadas (sin beneficiario, sin token, sin correo): siempre genera un PDF "
+"(mismo diseño que las fichas de atribución/donación/venta, con el logotipo), "
+"y además puede hacer firmar al técnico directamente en el formulario de "
+"creación si la opción de abajo está activada. El acceso se gestiona mediante "
+"el permiso dedicado (Administración > Perfiles)."
+
+#: templates/config_form.html.twig
+msgid "Faire signer le technicien sur la fiche de maintenance"
+msgstr "Hacer firmar al técnico en la ficha de mantenimiento"
+
+#: templates/config_form.html.twig
+msgid ""
+"Si activé, un pavé de signature (identique à celui d'une vente) apparaît sur "
+"le formulaire de création : la fiche ne peut pas être créée sans signature. "
+"Le technicien est déjà connecté, aucun e-mail ni page séparée n'est utilisé."
+msgstr ""
+"Si está activado, aparece un panel de firma (idéntico al de una venta) en el "
+"formulario de creación: la ficha no puede crearse sin firma. El técnico ya "
+"ha iniciado sesión, no se usa ningún correo ni página separada."
+
+#: templates/config_form.html.twig
+msgid "Gérer les points de contrôle"
+msgstr "Gestionar los puntos de control"
+
+#: templates/config_form.html.twig
+msgid "Voir les fiches de maintenance"
+msgstr "Ver las fichas de mantenimiento"
+
+#: templates/config_form.html.twig
+msgid ""
+"Un mouvement structuré généralise la notion de remise à n'importe quel "
+"déplacement physique de matériel (transfert inter-site, retour au stock, "
+"envoi vers un centre de réparation...) : lieu et date de départ, lieu et "
+"date de destination, document(s) joint(s) (onglet Documents natif), "
+"signature optionnelle. Alimente la même frise que le Passeport matériel."
+msgstr ""
+"Un movimiento estructurado generaliza el concepto de entrega a cualquier "
+"desplazamiento físico de material (transferencia entre sedes, devolución al "
+"almacén, envío a un centro de reparación...): lugar y fecha de salida, lugar "
+"y fecha de destino, documento(s) adjunto(s) (pestaña Documentos nativa), "
+"firma opcional. Alimenta la misma cronología que el Pasaporte del equipo."
+
+#: templates/config_form.html.twig
+msgid "Activer les mouvements structurés"
+msgstr "Activar los movimientos estructurados"
+
+#: templates/config_form.html.twig
+msgid ""
+"Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, "
+"ainsi qu'une entrée dédiée dans le menu Outils."
+msgstr ""
+"Añade una pestaña «Movimientos» a cada equipo gestionado por el plugin, así "
+"como una entrada dedicada en el menú Herramientas."
+
+#: templates/config_form.html.twig
+msgid "Faire signer le mouvement (pavé de signature)"
+msgstr "Solicitar firma del movimiento (panel de firma)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Si activé, un pavé de signature (identique à celui de la fiche de "
+"maintenance) apparaît sur le formulaire de création : le mouvement ne peut "
+"pas être créé sans signature. La personne présente est déjà connectée, aucun "
+"e-mail ni page séparée n'est utilisé."
+msgstr ""
+"Si está activado, aparece un panel de firma (idéntico al de la ficha de "
+"mantenimiento) en el formulario de creación: el movimiento no puede crearse "
+"sin firma. La persona presente ya ha iniciado sesión, no se utiliza ningún "
+"correo electrónico ni página aparte."
+
+#: templates/config_form.html.twig
+msgid "Voir les mouvements"
+msgstr "Ver los movimientos"
+
+#: templates/config_form.html.twig
+msgid ""
+"Le score de santé synthétise l’âge, les incidents, l’état physique et les "
+"mouvements du matériel. Les réglages sont propres à l’entité sélectionnée."
+msgstr ""
+"La puntuación de estado resume la antigüedad, las incidencias, el estado "
+"físico y los movimientos del equipo. Los ajustes son propios de la entidad "
+"seleccionada."
+
+#: templates/config_form.html.twig
+msgid "Afficher un score de santé (0-100)"
+msgstr "Mostrar una puntuación de estado (0-100)"
+
+#: templates/config_form.html.twig
+msgid "Calcul du score"
+msgstr "Cálculo de la puntuación"
+
+#: templates/config_form.html.twig
+msgid ""
+"Les poids sont relatifs : ils n’ont pas à totaliser 100. Un facteur à 0 est "
+"ignoré."
+msgstr ""
+"Los pesos son relativos: no es necesario que sumen 100. Un factor en 0 se "
+"ignora."
+
+#: templates/config_form.html.twig
+msgid "Poids : Âge"
+msgstr "Peso: Antigüedad"
+
+#: templates/config_form.html.twig
+msgid "Poids : Incidents"
+msgstr "Peso: Incidencias"
+
+#: templates/config_form.html.twig
+msgid "Poids : État physique"
+msgstr "Peso: Estado físico"
+
+#: templates/config_form.html.twig
+msgid "Poids : Mouvements"
+msgstr "Peso: Movimientos"
+
+#: templates/config_form.html.twig
+msgid "Couleurs et seuils"
+msgstr "Colores y umbrales"
+
+#: templates/config_form.html.twig
+msgid ""
+"Le score utilise la couleur « Bon » à partir de son seuil, « Vigilance » "
+"entre les deux seuils et « Critique » en dessous. Les seuils sont inclusifs."
+msgstr ""
+"La puntuación utiliza el color \"Bueno\" a partir de su umbral, \"Atención\" "
+"entre los dos umbrales y \"Crítico\" por debajo. Los umbrales son inclusivos."
+
+#: templates/config_form.html.twig
+msgid "Bon"
+msgstr "Bueno"
+
+#: templates/config_form.html.twig
+msgid "Vigilance"
+msgstr "Atención"
+
+#: templates/config_form.html.twig
+msgid "Critique"
+msgstr "Crítico"
+
+#: templates/config_form.html.twig
+msgid "En dessous du seuil Vigilance."
+msgstr "Por debajo del umbral de Atención."
+
+#: templates/config_form.html.twig
+msgid ""
+"Estimation simple de la valeur restante d'un matériel (pas un module "
+"comptable complet) : aide à trancher entre réemploi et sortie de parc. "
+"Calcul linéaire à partir du prix d'achat Infocom, sur une durée de vie utile "
+"réglable ci-dessous. Une saisie manuelle, disponible sur l'onglet Passeport "
+"matériel de chaque matériel, l'emporte toujours sur ce calcul."
+msgstr ""
+"Estimación simple del valor restante de un equipo (no un módulo contable "
+"completo): ayuda a decidir entre la reutilización y la baja. Cálculo lineal "
+"a partir del precio de compra de Infocom, sobre una vida útil ajustable a "
+"continuación. Una entrada manual, disponible en la pestaña Pasaporte del "
+"equipo de cada equipo, siempre prevalece sobre este cálculo."
+
+#: templates/config_form.html.twig
+msgid "Afficher la valeur résiduelle sur le Passeport matériel"
+msgstr "Mostrar el valor residual en el Pasaporte del equipo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Rien n'est affiché tant que le prix d'achat n'est pas connu (onglet Infocom "
+"du matériel) : jamais une estimation inventée."
+msgstr ""
+"No se muestra nada mientras no se conozca el precio de compra (pestaña "
+"Infocom del equipo): nunca una estimación inventada."
+
+#: templates/config_form.html.twig
+msgid "Durée de vie utile (mois)"
+msgstr "Vida útil (meses)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Durée sur laquelle la valeur d'achat est amortie de façon linéaire jusqu'à 0 "
+"- la \"durée personnalisable\" du calcul, propre à cette entité."
+msgstr ""
+"Período durante el cual el valor de compra se amortiza de forma lineal hasta "
+"0 - la \"duración personalizable\" del cálculo, propia de esta entidad."
+
+#: templates/config_form.html.twig
+msgid ""
+"Le Passeport matériel agrège en lecture seule les événements des onglets "
+"Attribution/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel "
+"onglet du matériel concerné."
+msgstr ""
+"El Pasaporte del equipo agrupa en modo solo lectura los eventos de las "
+"pestañas Atribución/Restitución/Donación/Venta/Mantenimiento anteriores, en "
+"una nueva pestaña del equipo correspondiente."
+
+#: templates/config_form.html.twig
+msgid "Activer le Passeport matériel"
+msgstr "Activar el Pasaporte del equipo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Désactivé : l'onglet disparaît et aucun nouvel événement n'est enregistré. "
+"Les événements déjà enregistrés ne sont jamais supprimés : ils "
+"réapparaissent si vous réactivez."
+msgstr ""
+"Desactivado: la pestaña desaparece y no se registra ningún evento nuevo. Los "
+"eventos ya registrados nunca se eliminan: reaparecen si vuelve a activarlo."
+
+#: templates/config_form.html.twig
+msgid "Anonymiser l'identité des bénéficiaires après (années, 0 = jamais)"
+msgstr "Anonimizar la identidad de los beneficiarios tras (años, 0 = nunca)"
+
+#: templates/config_form.html.twig
+msgid ""
+"Passé ce délai, le nom et l'e-mail du bénéficiaire sont retirés des "
+"événements du Passeport matériel (l'événement et sa date restent visibles). "
+"N'affecte jamais les fiches d'attribution/restitution elles-mêmes."
+msgstr ""
+"Pasado este plazo, el nombre y el correo electrónico del beneficiario se "
+"retiran de los eventos del Pasaporte del equipo (el evento y su fecha siguen "
+"siendo visibles). Nunca afecta a los propios formularios de atribución/"
+"restitución."
+
+#: templates/config_form.html.twig
+msgid "Types d'événement affichés dans la frise"
+msgstr "Tipos de evento mostrados en la línea de tiempo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Décocher un type ne supprime rien : il n'est plus qu'affiché dans la frise, "
+"tant qu'il reste décoché."
+msgstr ""
+"Desmarcar un tipo no elimina nada: simplemente deja de mostrarse en la línea "
+"de tiempo mientras permanezca desmarcado."
+
+#: templates/config_form.html.twig
+msgid "Afficher les dates Infocom dans la frise"
+msgstr "Mostrar las fechas financieras y administrativas en la línea de tiempo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Achat, commande, livraison, mise en service, garantie, réforme : lues "
+"directement depuis l'onglet Infocom du matériel, jamais copiées ni "
+"modifiables depuis ici."
+msgstr ""
+"Compra, pedido, entrega, puesta en servicio, garantía, desmantelamiento: "
+"leídas directamente de la pestaña de información financiera y administrativa "
+"del equipo, nunca copiadas ni editables desde aquí."
+
+#: templates/config_form.html.twig
+msgid "Afficher les tickets liés dans la frise"
+msgstr "Mostrar los tickets relacionados en la línea de tiempo"
+
+#: templates/config_form.html.twig
+msgid ""
+"Lecture seule : chaque technicien ne voit que les tickets auxquels il a "
+"réellement accès, exactement comme sur l'onglet Tickets du matériel."
+msgstr ""
+"Solo lectura: cada técnico solo ve los tickets a los que realmente tiene "
+"acceso, exactamente igual que en la pestaña Tickets del equipo."
+
+#: templates/config_form.html.twig
+msgid ""
+"Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. "
+"L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou "
+"changez d'onglet, avant même d'enregistrer."
+msgstr ""
+"Ejemplo con datos ficticios, mismas plantillas Twig que el PDF real. La "
+"vista previa se actualiza automáticamente en cuanto modifica un ajuste o "
+"cambia de pestaña, incluso antes de guardar."
+
+#: templates/config_form.html.twig
+msgid ""
+"Ce gabarit est hérité d'une entité parente : l'enregistrer ici le modifie "
+"pour toutes les entités qui en héritent, pas seulement celle-ci."
+msgstr ""
+"Esta plantilla se hereda de una entidad superior: guardarla aquí la modifica "
+"para todas las entidades que heredan de ella, no solo esta."
+
+#: templates/config_form.html.twig
+msgid "Enregistrer le gabarit"
+msgstr "Guardar la plantilla"
+
+#: templates/config_form.html.twig
+msgid "Gérer tous les gabarits de ce type"
+msgstr "Gestionar todas las plantillas de este tipo"
+
+#: templates/maintenance_tab.html.twig
+msgid "Aucune fiche de maintenance enregistrée pour ce matériel."
+msgstr "Ninguna ficha de mantenimiento registrada para este equipo."
+
+#: templates/maintenance_tab.html.twig templates/maintenance_form.html.twig
+msgid "Date"
+msgstr "Fecha"
+
+#: templates/maintenance_tab.html.twig templates/maintenance_form.html.twig
+msgid "Télécharger en PDF"
+msgstr "Descargar en PDF"
+
+#: templates/maintenance_tab.html.twig templates/maintenance_create.html.twig
+msgid "Nouvelle fiche de maintenance"
+msgstr "Nueva ficha de mantenimiento"
+
+#: templates/maintenance_tab.html.twig templates/maintenance_create.html.twig
+msgid ""
+"Aucun point de contrôle configuré (Configuration > Intitulés > Points de "
+"contrôle de maintenance)."
+msgstr ""
+"Ningún punto de control configurado (Configuración > Listas desplegables > "
+"Puntos de control de mantenimiento)."
+
+#: templates/maintenance_tab.html.twig templates/maintenance_create.html.twig
+msgid "Créer la fiche"
+msgstr "Crear la ficha"
+
+#: templates/movement_create.html.twig templates/maintenance_create.html.twig
+#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:218
+#: src/GlpiPlugin/Assetsign/Movement.php:114
+#: src/GlpiPlugin/Assetsign/Maintenance.php:85
+msgid "Type de matériel"
+msgstr "Tipo de equipo"
+
+#: templates/technician_signature_edit.html.twig
+msgid "Signature du technicien"
+msgstr "Firma del técnico"
+
+#: templates/technician_signature_edit.html.twig
+msgid "Signez ci-dessous avant de créer la fiche."
+msgstr "Firme a continuación antes de crear la ficha."
+
+#: templates/technician_signature_edit.html.twig
+msgid "Merci de signer avant de créer la fiche."
+msgstr "Firme antes de crear la ficha."
+
+#: templates/passport_tab.html.twig
+msgid "Modèle"
+msgstr "Modelo"
+
+#: templates/passport_tab.html.twig
+msgid "État"
+msgstr "Estado"
+
+#: templates/passport_tab.html.twig
+msgid "Utilisateur actuel"
+msgstr "Usuario actual"
+
+#: templates/passport_tab.html.twig
+msgid "Entité"
+msgstr "Entidad"
+
+#: templates/passport_tab.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:565
+msgid "Achat"
+msgstr "Compra"
+
+#: templates/passport_tab.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:598
+msgid "Fin de garantie"
+msgstr "Fin de garantía"
+
+#: templates/passport_tab.html.twig
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:493
+msgid "Âge"
+msgstr "Antigüedad"
+
+#: templates/passport_tab.html.twig
+msgid "Temps utilisé"
+msgstr "Tiempo en uso"
+
+#: templates/passport_tab.html.twig
+msgid "Temps en stock"
+msgstr "Tiempo en almacén"
+
+#: templates/passport_tab.html.twig
+msgid "Valeur résiduelle (saisie manuelle)"
+msgstr "Valor residual (entrada manual)"
+
+#: templates/passport_tab.html.twig
+msgid "Valeur résiduelle (estimée)"
+msgstr "Valor residual (estimado)"
+
+#: templates/passport_tab.html.twig
+msgid "Valeur résiduelle manuelle"
+msgstr "Valor residual manual"
+
+#: templates/passport_tab.html.twig
+msgid "Revenir au calcul automatique"
+msgstr "Volver al cálculo automático"
+
+#: templates/passport_tab.html.twig
+msgid "Une valeur saisie ici l'emporte toujours sur le calcul automatique."
+msgstr ""
+"Un valor introducido aquí siempre prevalece sobre el cálculo automático."
+
+#: templates/passport_tab.html.twig
+msgid "de dégradation"
+msgstr "de desgaste"
+
+#: templates/passport_tab.html.twig
+msgid "poids"
+msgstr "peso"
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "Forcer la recherche dans l'historique"
+msgstr "Forzar la búsqueda en el historial"
+
+#: templates/passport_tab.html.twig
+msgid "Imprimer une étiquette QR code"
+msgstr "Imprimir una etiqueta con código QR"
+
+#: templates/passport_tab.html.twig
+msgid "Vies du matériel"
+msgstr "Ciclos de vida del equipo"
+
+#: templates/passport_tab.html.twig
+msgid "externe"
+msgstr "externo"
+
+#: templates/passport_tab.html.twig
+msgid "aujourd'hui"
+msgstr "hoy"
+
+#: templates/passport_tab.html.twig
+msgid "Aucune attribution enregistrée pour le moment."
+msgstr "Ninguna atribución registrada por el momento."
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "Historique"
+msgstr "Historial"
+
+#: templates/passport_tab.html.twig
+msgid "bénéficiaire anonymisé"
+msgstr "beneficiario anonimizado"
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "contrôles qualité"
+msgstr "controles de calidad"
+
+#: templates/passport_tab.html.twig
+msgid "lieu inconnu"
+msgstr "lugar desconocido"
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "Voir la fiche"
+msgstr "Ver el formulario"
+
+#: templates/passport_tab.html.twig templates/passport_user_tab.html.twig
+msgid "Aucun événement enregistré pour le moment."
+msgstr "Ningún evento registrado por el momento."
+
+#: templates/maintenance_form.html.twig
+#: src/GlpiPlugin/Assetsign/Maintenance.php:34
+msgid "Fiche de maintenance"
+msgid_plural "Fiches de maintenance"
+msgstr[0] "Ficha de mantenimiento"
+msgstr[1] "Fichas de mantenimiento"
+
+#: templates/maintenance_form.html.twig
+msgid "Fiche PDF"
+msgstr "Ficha PDF"
+
+#: templates/maintenance_form.html.twig
+msgid ""
+"Ces informations sont enregistrées au moment de la signature et permettent, "
+"en cas de litige, de vérifier que le PDF n'a pas été modifié depuis "
+"(l'empreinte ci-dessus doit correspondre à celle du fichier)."
+msgstr ""
+"Esta información se registra en el momento de la firma y permite, en caso de "
+"litigio, comprobar que el PDF no se ha modificado desde entonces (la huella "
+"anterior debe coincidir con la del archivo)."
+
+#: templates/maintenance_form.html.twig
+msgid "Points de contrôle validés"
+msgstr "Puntos de control validados"
+
+#: templates/maintenance_form.html.twig
+msgid "Aucun point de contrôle validé."
+msgstr "Ningún punto de control validado."
+
+#: templates/passport_user_tab.html.twig
+msgid "Compte"
+msgstr "Cuenta"
+
+#: templates/passport_user_tab.html.twig
+msgid "Entrée"
+msgstr "Entrada"
+
+#: templates/passport_user_tab.html.twig
+msgid "inconnue"
+msgstr "desconocida"
+
+#: templates/passport_user_tab.html.twig
+msgid "compte supprimé le"
+msgstr "cuenta eliminada el"
+
+#: templates/passport_user_tab.html.twig
+msgid "compte désactivé le"
+msgstr "cuenta desactivada el"
+
+#: templates/passport_user_tab.html.twig
+msgid "compte actif"
+msgstr "cuenta activa"
+
+#: templates/passport_user_tab.html.twig
+msgid "matériel supprimé"
+msgstr "equipo eliminado"
+
+#: templates/assetsign_tab.html.twig
+msgid "Aucune attribution enregistrée pour ce matériel."
+msgstr "Ninguna atribución registrada para este equipo."
+
+#: templates/assetsign_tab.html.twig
+msgid "Créée le"
+msgstr "Creada el"
+
+#: templates/assetsign_tab.html.twig
+msgid "Signée le"
+msgstr "Firmada el"
+
+#: templates/assetsign_tab.html.twig
+msgid "Interne (compte GLPI)"
+msgstr "Interno (cuenta GLPI)"
+
+#: templates/assetsign_tab.html.twig
+msgid "Destinataire"
+msgstr "Destinatario"
+
+#: templates/assetsign_tab.html.twig
+msgid "Nom du bénéficiaire externe"
+msgstr "Nombre del beneficiario externo"
+
+#: templates/assetsign_tab.html.twig
+msgid "Ex. Association Locale, Jean Dupont..."
+msgstr "Ej. Asociación Local, Juan Pérez..."
+
+#: templates/assetsign_tab.html.twig
+msgid "Contact (facultatif)"
+msgstr "Contacto (opcional)"
+
+#: templates/assetsign_tab.html.twig
+msgid "E-mail ou téléphone"
+msgstr "Correo o teléfono"
+
+#: templates/assetsign_tab.html.twig
+msgid "Ex. Association Locale..."
+msgstr "Ej. Asociación Local..."
+
+#: templates/assetsign_tab.html.twig
+msgid "Justificatif (facultatif)"
+msgstr "Justificante (opcional)"
+
+#: templates/assetsign_tab.html.twig
+msgid "Ex. Prestataire Exemple SAS..."
+msgstr "Ej. Proveedor Ejemplo S.L..."
+
+#: templates/assetsign_tab.html.twig
+msgid "Certificat de destruction (facultatif)"
+msgstr "Certificado de destrucción (opcional)"
+
+#: templates/assetsign_tab.html.twig
+#, php-format
+msgid "Créer une fiche de %s"
+msgstr "Crear una ficha de %s"
+
+#: templates/assetsign_tab.html.twig
+msgid "Valider"
+msgstr "Validar"
+
+#: templates/assetsign_tab.html.twig
+msgid "Assigner un matériel à cet utilisateur"
+msgstr "Asignar un equipo a este usuario"
+
+#: templates/assetsign_tab.html.twig
+msgid ""
+"L'affectation déclenche automatiquement la création d'une attribution, comme "
+"depuis la fiche du matériel."
+msgstr ""
+"La asignación desencadena automáticamente la creación de una atribución, "
+"igual que desde la ficha del equipo."
+
+#: templates/assetsign_tab.html.twig
+msgid "Assigner"
+msgstr "Asignar"
+
+#: hook.php:111 src/GlpiPlugin/Assetsign/Config.php:84
+msgid "Assetsign & signature"
+msgstr "Entrega y firma"
+
+#: hook.php:117
+msgid "Attributions en attente de signature"
+msgstr "Atribuciones pendientes de firma"
+
+#: hook.php:124
+msgid "Attributions signées"
+msgstr "Atribuciones firmadas"
+
+#: hook.php:131
+msgid "Attributions expirées"
+msgstr "Atribuciones caducadas"
+
+#: hook.php:138 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
+msgid "Échecs de création (30 derniers jours)"
+msgstr "Fallos de creación (últimos 30 días)"
+
+#: front/damagemarker.php:14 front/sign.php:52
+msgid "Cette fiche ne peut plus être modifiée."
+msgstr "Esta ficha ya no puede modificarse."
+
+#: front/sign.php:89
+msgid "Signature manquante."
+msgstr "Falta la firma."
+
+#: front/sign.php:129
+msgid "Signature de restitution de matériel"
+msgstr "Firma de restitución de equipo"
+
+#: front/assign_user_asset.php:40
+msgid "Matériel assigné."
+msgstr "Equipo asignado."
+
+#: front/config.php:31
+msgid "Configuration enregistrée."
+msgstr "Configuración guardada."
+
+#: front/config.php:40
+msgid "E-mail de test envoyé."
+msgstr "Correo de prueba enviado."
+
+#: front/maintenance.form.php:11
+msgid "Fiche de maintenance créée."
+msgstr "Ficha de mantenimiento creada."
+
+#: front/movement.form.php:14
+msgid "Mouvement créé."
+msgstr "Movimiento creado."
+
+#: setup.php:232
+msgid "Aucune verification de configuration bloquante."
+msgstr "Ninguna verificación de configuración bloqueante."
+
+#: src/GlpiPlugin/Assetsign/Kit.php:128
+msgid "Accessoires attendus dans ce kit"
+msgstr "Accesorios esperados en este kit"
+
+#: src/GlpiPlugin/Assetsign/Kit.php:151
+msgid ""
+"Ces accessoires seront automatiquement vérifiés à la restitution si ce kit "
+"est assigné à une remise."
+msgstr ""
+"Estos accesorios se verificarán automáticamente en la devolución si este "
+"kit está asignado a una entrega."
+
+#: src/GlpiPlugin/Assetsign/Accessory.php:17
+msgid "Accessoire d'attribution"
+msgid_plural "Accessoires d'attribution"
+msgstr[0] "Accesorio de atribución"
+msgstr[1] "Accesorios de atribución"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:45
+msgid "Événement du passeport matériel"
+msgid_plural "Événements du passeport matériel"
+msgstr[0] "Evento del pasaporte del equipo"
+msgstr[1] "Eventos del pasaporte del equipo"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:171
+msgid "Passeport utilisateur"
+msgstr "Pasaporte del usuario"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:339
+msgid "depuis l'achat"
+msgstr "desde la compra"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:339
+msgid "depuis l'entrée dans GLPI"
+msgstr "desde el alta en GLPI"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:503
+msgid "Incidents"
+msgstr "Incidencias"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:520
+msgid "État physique"
+msgstr "Estado físico"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:563
+msgid "Commande"
+msgstr "Pedido"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:564
+msgid "Livraison"
+msgstr "Entrega"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:566
+msgid "Mise en service"
+msgstr "Puesta en servicio"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:567
+msgid "Début de garantie"
+msgstr "Inicio de garantía"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:587
+#, php-format
+msgid "Prix d'achat : %s %s"
+msgstr "Precio de compra: %s %s"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:646
+msgid "Ticket"
+msgstr "Ticket"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:794
+msgid "Reconstitué automatiquement depuis l'historique GLPI."
+msgstr "Reconstruido automáticamente a partir del historial de GLPI."
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1084
+msgid "Utilisateur retiré"
+msgstr "Usuario retirado"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1113
+#, php-format
+msgid "%d jour"
+msgid_plural "%d jours"
+msgstr[0] "%d día"
+msgstr[1] "%d días"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1118
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1128
+#, php-format
+msgid "%d mois"
+msgid_plural "%d mois"
+msgstr[0] "%d mes"
+msgstr[1] "%d meses"
+
+#: src/GlpiPlugin/Assetsign/PassportEvent.php:1123
+#, php-format
+msgid "%d an"
+msgid_plural "%d ans"
+msgstr[0] "%d año"
+msgstr[1] "%d años"
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:25
+msgid "Point de contrôle de maintenance"
+msgid_plural "Points de contrôle de maintenance"
+msgstr[0] "Punto de control de mantenimiento"
+msgstr[1] "Puntos de control de mantenimiento"
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:41
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:53
+msgid "Case à cocher"
+msgstr "Casilla de verificación"
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:42
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:54
+msgid "Texte libre"
+msgstr "Texto libre"
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:43
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:55
+msgid "Menu déroulant"
+msgstr "Lista desplegable"
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:63
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:86
+msgid "Type de saisie"
+msgstr "Tipo de campo"
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:68
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:91
+msgid "Options du menu déroulant (une par ligne)"
+msgstr "Opciones de la lista desplegable (una por línea)"
+
+#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:87
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:115
+msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
+msgstr "Usado únicamente si el tipo de campo es \"Lista desplegable\"."
+
+#: src/GlpiPlugin/Assetsign/DamageMarker.php:44
+msgid "Vue arrière"
+msgstr "Vista trasera"
+
+#: src/GlpiPlugin/Assetsign/DamageMarker.php:45
+msgid "Vue de face"
+msgstr "Vista frontal"
+
+#: src/GlpiPlugin/Assetsign/DamageMarker.php:46
+msgid "Dessous"
+msgstr "Parte inferior"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:250
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:157
+#: src/GlpiPlugin/Assetsign/Template.php:51
+msgid "Type d'attribution"
+msgstr "Tipo de atribución"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:258
+msgid "Date d'envoi"
+msgstr "Fecha de envío"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:265
+msgid "Date de signature"
+msgstr "Fecha de firma"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:283
+msgid "PDF non signé"
+msgstr "PDF sin firmar"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:291
+msgid "PDF signé"
+msgstr "PDF firmado"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:304
+msgid "Bénéficiaire externe"
+msgstr "Beneficiario externo"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:444
+msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
+msgstr "¿Enviar un recordatorio de firma a las atribuciones seleccionadas?"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:448
+msgid ""
+"Annuler les demandes de signature sélectionnées ? Le lien envoyé au "
+"bénéficiaire deviendra invalide."
+msgstr ""
+"¿Cancelar las solicitudes de firma seleccionadas? El enlace enviado al "
+"beneficiario dejará de ser válido."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:514
+#: src/GlpiPlugin/Assetsign/Assetsign.php:523
+msgid "Attributions"
+msgstr "Atribuciones"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:634
+#: src/GlpiPlugin/Assetsign/Movement.php:294
+#: src/GlpiPlugin/Assetsign/Maintenance.php:299
+msgid "Choisissez d'abord un type de matériel ci-dessus."
+msgstr "Elija primero un tipo de equipo arriba."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:681
+msgid "Brouillon"
+msgstr "Borrador"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:682
+msgid "En attente"
+msgstr "Pendiente"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:683
+msgid "Envoyé"
+msgstr "Enviado"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:684
+msgid "Consulté"
+msgstr "Consultado"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:686
+msgid "Expiré"
+msgstr "Caducado"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:687
+#: src/GlpiPlugin/Assetsign/Movement.php:74
+msgid "Annulé"
+msgstr "Cancelado"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:688
+msgid "Remis (bénéficiaire externe, sans signature)"
+msgstr "Entregado (beneficiario externo, sin firma)"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:862
+msgid "don"
+msgstr "donación"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:862
+msgid "vente"
+msgstr "venta"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:862
+msgid "destruction"
+msgstr "destrucción"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:868
+#, php-format
+msgid ""
+"Ce matériel n'a pas d'utilisateur assigné : <a href=\"%s\">créez maintenant "
+"la fiche de %s</a> (bénéficiaire interne ou externe)."
+msgstr ""
+"Este equipo no tiene ningún usuario asignado: <a href=\"%s\">cree ahora el "
+"formulario de %s</a> (beneficiario interno o externo)."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:890
+msgid ""
+"Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut "
+"donc pas générer de fiche d'attribution ou de restitution. Assignez un "
+"utilisateur sur la fiche du matériel si une signature est attendue."
+msgstr ""
+"Este equipo no tiene usuario asignado: este cambio de Estado no puede, por "
+"tanto, generar una ficha de atribución o de restitución. Asigne un usuario "
+"en la ficha del equipo si se espera una firma."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1057
+msgid "Ce type de fiche ne peut pas être créé manuellement."
+msgstr "Este tipo de ficha no puede crearse manualmente."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1066
+msgid "Le nom du bénéficiaire externe est obligatoire."
+msgstr "El nombre del beneficiario externo es obligatorio."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1070
+msgid "Le bénéficiaire (utilisateur GLPI) est obligatoire."
+msgstr "El beneficiario (usuario GLPI) es obligatorio."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1074
+#, php-format
+msgid "Type de matériel invalide : %s"
+msgstr "Tipo de equipo no válido: %s"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1089
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:25
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:25
+#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:41
+msgid "Matériel introuvable."
+msgstr "Equipo no encontrado."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1111
+msgid "Échec de la création de la fiche."
+msgstr "Error al crear la ficha."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1199
+#, php-format
+msgid ""
+"État mis à jour automatiquement (%s) suite à la création d'une fiche par le "
+"plugin Assetsign & signature."
+msgstr ""
+"Estado actualizado automáticamente (%s) tras la creación de un formulario "
+"por el plugin Assetsign & signature."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1238
+msgid "Annulée automatiquement (matériel réaffecté avant signature)"
+msgstr "Cancelada automáticamente (equipo reasignado antes de la firma)"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1258
+msgid ""
+"Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà "
+"annulée)."
+msgstr ""
+"Esta solicitud ya no puede cancelarse (ya firmada, caducada o ya cancelada)."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1627
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1633
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1645
+#: src/GlpiPlugin/Assetsign/Movement.php:396
+#: src/GlpiPlugin/Assetsign/Movement.php:402
+#: src/GlpiPlugin/Assetsign/Movement.php:414
+msgid "Échec de l'envoi du document."
+msgstr "Error al enviar el documento."
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1899
+msgid "Envoie les relances de signature dues"
+msgstr "Envía los recordatorios de firma pendientes"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1900
+msgid "Marque comme expirées les attributions hors délai"
+msgstr "Marca como caducadas las atribuciones fuera de plazo"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1901
+msgid "Alerte le technicien des attributions sur le point d'expirer"
+msgstr "Avisa al técnico de las atribuciones a punto de caducar"
+
+#: src/GlpiPlugin/Assetsign/Assetsign.php:1915
+msgid "Cette attribution ne peut plus être relancée (déjà signée ou expirée)."
+msgstr ""
+"A esta atribución ya no se le puede enviar un recordatorio (ya firmada o "
+"caducada)."
+
+#: src/GlpiPlugin/Assetsign/Config.php:79
+msgid "AssetSign : Signature électronique"
+msgstr "AssetSign: Firma electrónica"
+
+#: src/GlpiPlugin/Assetsign/Config.php:151
+msgid "Signature intégrée (canvas)"
+msgstr "Firma integrada (lienzo)"
+
+#: src/GlpiPlugin/Assetsign/Config.php:203
+#: src/GlpiPlugin/Assetsign/Config.php:228
+msgid "Échec de l'envoi du logo."
+msgstr "Error al enviar el logotipo."
+
+#: src/GlpiPlugin/Assetsign/Config.php:209
+msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
+msgstr "El logotipo debe ser una imagen (PNG, JPG, GIF o WEBP)."
+
+#: src/GlpiPlugin/Assetsign/Config.php:255
+msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
+msgstr "Su cuenta GLPI no tiene una dirección de correo registrada."
+
+#: src/GlpiPlugin/Assetsign/Config.php:269
+msgid "E-mail de test: Assetsign & signature"
+msgstr "Correo de prueba: Entrega y firma"
+
+#: src/GlpiPlugin/Assetsign/Config.php:270
+msgid ""
+"Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & "
+"signature fonctionne."
+msgstr ""
+"Este correo confirma que la configuración de envío del plugin Entrega y "
+"firma funciona."
+
+#: src/GlpiPlugin/Assetsign/Config.php:273
+msgid "Le serveur de messagerie a refusé l'envoi."
+msgstr "El servidor de correo ha rechazado el envío."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:71
+msgid "Prévu"
+msgstr "Previsto"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:72
+msgid "En cours"
+msgstr "En curso"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:73
+msgid "Terminé"
+msgstr "Finalizado"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:168
+msgid "Déclaré par"
+msgstr "Declarado por"
+
+#: src/GlpiPlugin/Assetsign/Movement.php:276
+msgid ""
+"La fonctionnalité « Mouvements » n'est pas activée pour cette entité "
+"(Configuration > Mouvements)."
+msgstr ""
+"La funcionalidad «Movimientos» no está activada para esta entidad "
+"(Configuración > Movimientos)."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:460
+msgid "Échec de la création du mouvement."
+msgstr "Error al crear el movimiento."
+
+#: src/GlpiPlugin/Assetsign/Movement.php:514
+#, php-format
+msgid "Signature du mouvement #%d"
+msgstr "Firma del movimiento n.º %d"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:50
+msgid "Nouvelle attribution de matériel"
+msgstr "Nueva atribución de equipo"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:51
+msgid "Relance de signature"
+msgstr "Recordatorio de firma"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:52
+msgid "Document signé"
+msgstr "Documento firmado"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:53
+msgid "Document expiré"
+msgstr "Documento caducado"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:54
+msgid "Document sur le point d'expirer"
+msgstr "Documento a punto de caducar"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:77
+#: src/GlpiPlugin/Assetsign/Maintenance.php:87
+msgid "Technicien"
+msgstr "Técnico"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:155
+msgid "Événement"
+msgstr "Evento"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:156
+msgid "Identifiant"
+msgstr "Identificador"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:160
+msgid "Lien de signature"
+msgstr "Enlace de firma"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:161
+msgid "Date limite de signature"
+msgstr "Fecha límite de firma"
+
+#: src/GlpiPlugin/Assetsign/Template.php:32
+msgid "Gabarit d'attribution"
+msgid_plural "Gabarits d'attribution"
+msgstr[0] "Plantilla de atribución"
+msgstr[1] "Plantillas de atribución"
+
+#: src/GlpiPlugin/Assetsign/Template.php:52
+msgid "Par défaut"
+msgstr "Predeterminado"
+
+#: src/GlpiPlugin/Assetsign/Pdf/PdfRenderingHelpers.php:145
+#: src/GlpiPlugin/Assetsign/Pdf/HandoverPdfBuilder.php:185
+msgid "Exemple : petite rayure sur le capot, sans gravité."
+msgstr "Ejemplo: pequeño rasguño en la carcasa, sin gravedad."
+
+#: src/GlpiPlugin/Assetsign/Pdf/PdfRenderingHelpers.php:146
+msgid "Exemple : touche cassée."
+msgstr "Ejemplo: tecla rota."
+
+#: src/GlpiPlugin/Assetsign/Pdf/PdfRenderingHelpers.php:147
+msgid "Exemple : pied manquant."
+msgstr "Ejemplo: falta una pata."
+
+#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:28
+msgid "Format de signature invalide."
+msgstr "Formato de firma no válido."
+
+#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:33
+#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:38
+msgid "Signature illisible."
+msgstr "Firma ilegible."
+
+#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:45
+msgid "Signature trop petite, merci de recommencer."
+msgstr "Firma demasiado pequeña, inténtelo de nuevo."
+
+#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:52
+msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
+msgstr "Firma vacía o insuficientemente trazada, vuelva a firmar."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:20
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:20
+#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:31
+msgid "Type de matériel invalide."
+msgstr "Tipo de equipo no válido."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:34
+msgid "La valeur résiduelle ne peut pas être négative."
+msgstr "El valor residual no puede ser negativo."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:40
+msgid "Valeur résiduelle repassée en calcul automatique."
+msgstr "Valor residual devuelto al cálculo automático."
+
+#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:41
+msgid "Valeur résiduelle manuelle enregistrée."
+msgstr "Valor residual manual guardado."
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:37
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:54
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:80
+msgid "Attribution introuvable."
+msgstr "Atribución no encontrada."
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:113
+msgid "Vous devez être connecté pour accéder à ce document."
+msgstr "Debe iniciar sesión para acceder a este documento."
+
+#: src/GlpiPlugin/Assetsign/Api/SignController.php:117
+msgid "Ce document ne correspond pas à votre compte utilisateur."
+msgstr "Este documento no corresponde a su cuenta de usuario."
+
+
+msgid "Seul le bénéficiaire d'origine peut déléguer la signature depuis cette page."
+msgstr "Solo el beneficiario original puede delegar la firma desde esta página."
+
+#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:44
+msgid "Fiche créée."
+msgstr "Ficha creada."
+
+#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:50
+msgid "Relance envoyée."
+msgstr "Recordatorio enviado."
+
+#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:56
+msgid "Demande annulée."
+msgstr "Solicitud cancelada."
+
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:36
+msgid "Utilisateur introuvable."
+msgstr "Usuario no encontrado."
+
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:44
+msgid "Aucun nouvel événement trouvé dans l'historique."
+msgstr "No se ha encontrado ningún evento nuevo en el historial."
+
+#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:48
+#, php-format
+msgid "%d événement retrouvé dans l'historique."
+msgid_plural "%d événements retrouvés dans l'historique."
+msgstr[0] "%d evento encontrado en el historial."
+msgstr[1] "%d eventos encontrados en el historial."
+
+#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:46
+msgid "Étiquette QR code désactivée pour cette entité."
+msgstr "Etiqueta con código QR desactivada para esta entidad."
+
+#: src/GlpiPlugin/Assetsign/Maintenance.php:107
+msgid "Télécharger"
+msgstr "Descargar"
+
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:36
+msgid "Point de contrôle qualité"
+msgid_plural "Points de contrôle qualité"
+msgstr[0] "Punto de control de calidad"
+msgstr[1] "Puntos de control de calidad"
+
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:96
+msgid "S'applique aux mouvements"
+msgstr "Se aplica a los movimientos"
+
+#: src/GlpiPlugin/Assetsign/ChecklistItem.php:131
+msgid ""
+"Un point non rattaché à aucun mouvement n'apparaît jamais sur aucune fiche."
+msgstr ""
+"Un punto no vinculado a ningún movimiento nunca aparece en ninguna ficha."
+
+#: src/GlpiPlugin/Assetsign/Token.php:85
+msgid "Lien de signature inconnu."
+msgstr "Enlace de firma desconocido."
+
+#: src/GlpiPlugin/Assetsign/Token.php:95
+msgid "Ce document a déjà été traité."
+msgstr "Este documento ya ha sido procesado."
+
+#: src/GlpiPlugin/Assetsign/Token.php:98
+msgid "Ce lien de signature n'est plus valide."
+msgstr "Este enlace de firma ya no es válido."
+
+#: src/GlpiPlugin/Assetsign/Token.php:103
+msgid "Ce lien de signature a expiré."
+msgstr "Este enlace de firma ha caducado."
+
+#: src/GlpiPlugin/Assetsign/Token.php:113
+msgid "Trop de tentatives, lien désactivé par sécurité."
+msgstr "Demasiados intentos, enlace desactivado por seguridad."
+
+#: src/GlpiPlugin/Assetsign/Token.php:139
+msgid "Purge les jetons de signature expirés ou invalides"
+msgstr "Purga los tokens de firma caducados o no válidos"
+
+msgid "Aide à la décision"
+msgstr "Ayuda a la decisión"
+
+msgid "Moteur de règles simple (pas de machine learning) qui combine le score de santé et la valeur résiduelle ci-dessus pour recommander une action sur le Passeport matériel, toujours avec sa ou ses raisons affichées. Aucune recommandation n'est jamais affichée si l'indicateur correspondant est lui-même indisponible (score de santé désactivé, prix d'achat inconnu...)."
+msgstr "Motor de reglas simple (sin aprendizaje automático) que combina la puntuación de salud y el valor residual anteriores para recomendar una acción en el Pasaporte del equipo, siempre mostrando su(s) motivo(s). Nunca se muestra ninguna recomendación si el indicador correspondiente no está disponible (puntuación de salud desactivada, precio de compra desconocido...)."
+
+msgid "Afficher les recommandations sur le Passeport matériel"
+msgstr "Mostrar las recomendaciones en el Pasaporte del equipo"
+
+msgid "« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l'onglet Score de santé : pas de second réglage redondant pour la même notion."
+msgstr "«Prever una sustitución» se activa por debajo del umbral «Alerta» ya configurado en la pestaña Puntuación de salud : sin un segundo ajuste redundante para la misma noción."
+
+msgid "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix d'achat)"
+msgstr "Umbral de valor residual que activa «Reevaluar el uso» (% del precio de compra)"
+
+msgid "En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « Réévaluer l'usage » est affichée."
+msgstr "Por debajo de este porcentaje del precio de compra original, se muestra la recomendación «Reevaluar el uso»."
+
+msgid "Prévoir un remplacement"
+msgstr "Prever una sustitución"
+
+msgid "score de santé faible : %d/100"
+msgstr "puntuación de salud baja: %d/100"
+
+msgid "Réévaluer l'usage"
+msgstr "Reevaluar el uso"
+
+msgid "valeur résiduelle faible : %d %% du prix d'achat"
+msgstr "valor residual bajo: %d%% del precio de compra"
+
+#~ msgid "Configuration assetsign & signature"
+#~ msgstr "Configuración de entrega y firma"
+
+#~ msgid "+ Nouveau gabarit"
+#~ msgstr "+ Nueva plantilla"
+
+#~ msgid "Gérer les gabarits de ce type"
+#~ msgstr "Gestionar las plantillas de este tipo"
+
+#~ msgid "Accessoires d'attribution"
+#~ msgstr "Accesorios de atribución"
+
+#~ msgid ""
+#~ "Ce matériel n'a pas d'utilisateur assigné : créez manuellement une fiche "
+#~ "de %s depuis l'onglet \"Assetsigns\" ci-dessous (bénéficiaire interne ou "
+#~ "externe)."
+#~ msgstr ""
+#~ "Este equipo no tiene usuario asignado: cree manualmente una ficha de %s "
+#~ "desde la pestaña \"Entregas\" de abajo (beneficiario interno o externo)."
+
+#~ msgid "Fiches de maintenance"
+#~ msgstr "Fichas de mantenimiento"
+
+#~ msgid "Gabarits d'attribution"
+#~ msgstr "Plantillas de atribución"
+
+#~ msgid "Points de contrôle de maintenance"
+#~ msgstr "Puntos de control de mantenimiento"
+
+msgid "Vous signez en tant que délégué de"
+msgstr "Está firmando como delegado de"
+
+
+msgid "Vous n'êtes pas disponible ?"
+msgstr "¿No está disponible?"
+
+
+msgid ""
+"Vous pouvez déléguer la signature à un autre compte GLPI (manager, RH, "
+"collègue...). Ce lien deviendra invalide dès la délégation confirmée : la "
+"personne désignée recevra son propre lien par e-mail."
+msgstr ""
+"Puede delegar la firma a otra cuenta GLPI (responsable, RRHH, compañero...)."
+" Este enlace dejará de ser válido en cuanto se confirme la delegación: la "
+"persona designada recibirá su propio enlace por correo electrónico."
+
+
+msgid "Je ne suis pas disponible, déléguer la signature à quelqu'un d'autre"
+msgstr "No estoy disponible, delegar la firma a otra persona"
+
+
+msgid "Déléguer à"
+msgstr "Delegar a"
+
+
+msgid "Motif (obligatoire)"
+msgstr "Motivo (obligatorio)"
+
+
+msgid "Confirmer la délégation"
+msgstr "Confirmar la delegación"
+
+
+msgid "Merci de choisir un compte utilisateur."
+msgstr "Por favor, elija una cuenta de usuario."
+
+
+msgid "Le motif de la délégation est obligatoire."
+msgstr "El motivo de la delegación es obligatorio."
+
+
+msgid ""
+"La signature a été déléguée. La personne désignée va recevoir son propre "
+"lien par e-mail."
+msgstr ""
+"La firma se ha delegado. La persona designada recibirá su propio enlace por "
+"correo electrónico."
+
+
+msgid "Signature déléguée à"
+msgstr "Firma delegada a"
+
+
+msgid "le"
+msgstr "el"
+
+
+msgid "motif"
+msgstr "motivo"
+
+
+msgid "Révoquer la délégation et rendre la main au bénéficiaire d'origine ?"
+msgstr ""
+"¿Revocar la delegación y devolver el control al beneficiario original?"
+
+
+msgid "Révoquer"
+msgstr "Revocar"
+
+
+msgid "Déléguer la signature"
+msgstr "Delegar la firma"
+
+
+msgid ""
+"Désigne un autre compte GLPI pour signer à la place du bénéficiaire "
+"d'origine (absence prolongée, congés, départ...). Le lien de signature "
+"envoyé au bénéficiaire d'origine devient invalide dès la délégation."
+msgstr ""
+"Designa otra cuenta GLPI para firmar en lugar del beneficiario original "
+"(ausencia prolongada, vacaciones, baja...). El enlace de firma enviado al "
+"beneficiario original deja de ser válido en cuanto se realiza la delegación."
+
+
+msgid "Motif"
+msgstr "Motivo"
+
+
+msgid "Déléguer"
+msgstr "Delegar"
+
+
+msgid "Délégation de signature"
+msgstr "Delegación de la firma"
+
+
+msgid ""
+"Permet de continuer une restitution/remise bloquée par l'absence prolongée "
+"du bénéficiaire désigné (congés, arrêt maladie, départ...), en confiant la "
+"signature à un autre compte GLPI. Le bénéficiaire d'origine reste tracé "
+"comme signataire prévu ; la personne qui signe réellement, la date et le "
+"motif de la délégation sont conservés (historique de la fiche, PDF signé)."
+msgstr ""
+"Permite continuar una restitución/entrega bloqueada por la ausencia "
+"prolongada del beneficiario designado (vacaciones, baja médica, salida...), "
+"confiando la firma a otra cuenta GLPI. El beneficiario original sigue "
+"registrado como firmante previsto; la persona que realmente firma, la fecha "
+"y el motivo de la delegación se conservan (historial de la ficha, PDF "
+"firmado)."
+
+
+msgid "Autoriser un technicien/administrateur à déléguer la signature"
+msgstr "Permitir que un técnico/administrador delegue la firma"
+
+
+msgid ""
+"Ajoute un bouton « Déléguer la signature » sur la fiche Assetsign (droit de "
+"modification requis), pour un bénéficiaire interne (compte GLPI) uniquement."
+msgstr ""
+"Añade un botón «Delegar la firma» en la ficha Assetsign (se requiere el "
+"derecho de modificación), solo para un beneficiario interno (cuenta GLPI)."
+
+
+msgid ""
+"Autoriser le bénéficiaire à se déléguer lui-même depuis la page de signature"
+msgstr ""
+"Permitir que el beneficiario se delegue a sí mismo desde la página de firma"
+
+
+msgid ""
+"Nécessite le réglage ci-dessus. Le bénéficiaire choisit lui-même un autre "
+"compte GLPI (motif obligatoire) depuis son lien de signature ; ce lien "
+"devient alors invalide, seul le nouveau lien envoyé au délégué fonctionne."
+msgstr ""
+"Requiere el ajuste anterior. El propio beneficiario elige otra cuenta GLPI "
+"(motivo obligatorio) desde su enlace de firma; ese enlace deja entonces de "
+"ser válido, solo funciona el nuevo enlace enviado al delegado."
+
+
+msgid "Signature déléguée."
+msgstr "Firma delegada."
+
+
+msgid ""
+"Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
+msgstr "Delegación revocada: el beneficiario original puede volver a firmar."
+
+
+msgid "La délégation n'est pas activée pour cette entité."
+msgstr "La delegación no está activada para esta entidad."
+
+
+msgid ""
+"Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée)."
+msgstr ""
+"Esta solicitud ya no puede delegarse (ya firmada, caducada o cancelada)."
+
+
+msgid ""
+"La délégation n'est possible que pour un bénéficiaire interne (compte GLPI)."
+msgstr ""
+"La delegación solo es posible para un beneficiario interno (cuenta GLPI)."
+
+
+msgid "Le compte délégué doit être différent du bénéficiaire d'origine."
+msgstr "La cuenta delegada debe ser distinta del beneficiario original."
+
+
+msgid "La délégation de signature est désactivée pour cette entité."
+msgstr "La delegación de firma está desactivada para esta entidad."
+
+
+msgid "Compte utilisateur délégué introuvable."
+msgstr "No se encontró la cuenta de usuario delegada."
+
+
+msgid "Le compte délégué est désactivé ou supprimé."
+msgstr "La cuenta delegada está desactivada o eliminada."
+
+
+msgid "Le compte délégué n'a pas accès à l'entité de ce dossier."
+msgstr "La cuenta delegada no tiene acceso a la entidad de este expediente."
+
+
+msgid "Signature déléguée à %s (motif : %s)"
+msgstr "Firma delegada a %s (motivo: %s)"
+
+
+msgid "Cette demande n'est pas déléguée."
+msgstr "Esta solicitud no está delegada."
+
+
+msgid ""
+"Cette délégation ne peut plus être révoquée (déjà signée, expirée ou "
+"annulée)."
+msgstr ""
+"Esta delegación ya no puede revocarse (ya firmada, caducada o cancelada)."
+
+
+msgid "Délégation de signature révoquée"
+msgstr "Delegación de firma revocada"
+
+
+msgid "Signature déléguée"
+msgstr "Firma delegada"
+
+
+msgid "Délégué"
+msgstr "Delegado"
+
+
+msgid "Signataire délégué"
+msgstr "Firmante delegado"
+
+
+msgid "Motif de la délégation"
+msgstr "Motivo de la delegación"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Constructeur"
+msgstr "Fabricante"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "API externe dédiée"
+msgstr "API externa dedicada"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Saisie manuelle"
+msgstr "Entrada manual"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Élevé"
+msgstr "Alto"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Moyen"
+msgstr "Medio"
+
+#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+msgid "Faible"
+msgstr "Bajo"
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "L'empreinte de fabrication ne peut pas être négative."
+msgstr "La huella de fabricación no puede ser negativa."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Source invalide."
+msgstr "Fuente no válida."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Niveau de confiance invalide."
+msgstr "Nivel de confianza no válido."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Empreinte environnementale effacée."
+msgstr "Huella ambiental borrada."
+
+#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+msgid "Empreinte environnementale enregistrée."
+msgstr "Huella ambiental guardada."
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte environnementale (fabrication)"
+msgstr "Huella ambiental (fabricación)"
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication"
+msgstr "Huella de fabricación"
+
+#: templates/passport_tab.html.twig
+msgid "Source"
+msgstr "Fuente"
+
+#: templates/passport_tab.html.twig
+msgid "Niveau de confiance"
+msgstr "Nivel de confianza"
+
+#: templates/passport_tab.html.twig
+msgid "Dernière mise à jour"
+msgstr "Última actualización"
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication non renseignée."
+msgstr "Huella de fabricación no indicada."
+
+#: templates/passport_tab.html.twig
+msgid "Empreinte de fabrication (kg CO2-eq)"
+msgstr "Huella de fabricación (kg CO2-eq)"
+
+#: templates/passport_tab.html.twig
+msgid "Toujours une saisie manuelle dans cette version : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre), jamais une recherche automatique."
+msgstr "Siempre una entrada manual en esta versión: la fuente precisa de dónde proviene la cifra (ficha del fabricante, una herramienta externa consultada, una estimación propia), nunca una búsqueda automática."
+
+#: templates/config_form.html.twig
+msgid "Passeport environnemental"
+msgstr "Pasaporte ambiental"
+
+#: templates/config_form.html.twig
+msgid "Amorce du volet RSE du Passeport matériel (empreinte de fabrication, en kg CO2-eq). Recherche menée avant l'implémentation (cf. issue #80) : l'API publique Boavizta n'expose, pour les ordinateurs/portables, que des moyennes de catégorie (\"laptop pro/perso\"), jamais une valeur propre au modèle réel présent dans GLPI : l'afficher comme la donnée de CE matériel serait une donnée inventée. Cette version reste donc en saisie manuelle uniquement : la source (constructeur / API externe dédiée / saisie manuelle) et le niveau de confiance sont déclarés par la personne qui saisit la valeur, pas calculés automatiquement."
+msgstr "Punto de partida del componente RSE del Pasaporte del equipo (huella de fabricación, en kg CO2-eq). Investigación realizada antes de la implementación (véase la incidencia #80): la API pública de Boavizta solo expone promedios de categoría (\"portátil profesional/personal\") para ordenadores/portátiles, nunca un valor propio del modelo real presente en GLPI : mostrarlo como el dato de ESTE equipo sería un dato inventado. Por eso esta versión se limita a la entrada manual: la fuente (fabricante / API externa dedicada / entrada manual) y el nivel de confianza los declara la persona que introduce el valor, nunca se calculan automáticamente."
+
+#: templates/config_form.html.twig
+msgid "Afficher le passeport environnemental sur le Passeport matériel"
+msgstr "Mostrar el pasaporte ambiental en el Pasaporte del equipo"
+
+#: templates/config_form.html.twig
+msgid "Rien n'est affiché tant qu'aucune valeur n'a été saisie manuellement : jamais une estimation par défaut."
+msgstr "No se muestra nada hasta que se haya introducido un valor manualmente: nunca una estimación por defecto."
+
+#: templates/config_form.html.twig:480
+msgid "Afficher le bénéfice du réemploi (impact évité)"
+msgstr "Mostrar el beneficio de la reutilización (impacto evitado)"
+
+#: templates/config_form.html.twig:481
+msgid "Valorise la prolongation d'usage au-delà de la durée d'amortissement du matériel (champ natif GLPI \"Durée d'amortissement\", en années). N'affiche rien tant que cette durée n'est pas dépassée, ou si l'empreinte carbone ci-dessus n'a pas été saisie : jamais une estimation."
+msgstr "Valora la prolongación de uso más allá de la duración de amortización del equipo (campo nativo de GLPI \"Duración de amortización\", en años). No muestra nada mientras esta duración no se supere, o si la huella de carbono anterior no se ha introducido: nunca una estimación."
+
+#: templates/passport_tab.html.twig:135
+msgid "Bénéfice du réemploi"
+msgstr "Beneficio de la reutilización"
+
+#: templates/passport_tab.html.twig:138
+msgid "Impact évité"
+msgstr "Impacto evitado"
+
+#: templates/passport_tab.html.twig:143
+msgid "Encore en service"
+msgstr "Aún en servicio"
+
+#: templates/passport_tab.html.twig:144
+msgid "Réformé"
+msgstr "Dado de baja"
+
+#: templates/passport_tab.html.twig:145
+msgid "après"
+msgstr "después de"
+
+#: templates/passport_tab.html.twig:145 templates/passport_tab.html.twig:146
+msgid "an(s)"
+msgstr "año(s)"
+
+#: templates/passport_tab.html.twig:146
+msgid "durée d'amortissement prévue"
+msgstr "duración de amortización prevista"
+
+#: templates/passport_tab.html.twig:149
+msgid "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
+msgstr "Impacto de fabricación evitado gracias a la prolongación de uso más allá de la duración de amortización prevista (duración nativa de Infocom de GLPI). No se muestra nada mientras esta duración no se supere."
+
+
+msgid "Ce document a déjà été signé par"
+msgstr "Este documento ya ha sido firmado por"
+
+msgid "Télécharger (signé et contre-signé)"
+msgstr "Descargar (firmado y contrafirmado)"
+
+msgid "(bénéficiaire uniquement)"
+msgstr "(solo beneficiario)"
+
+msgid "En attente de la contre-signature de"
+msgstr "Esperando la contrafirma de"
+
+msgid "responsable hiérarchique"
+msgstr "responsable jerárquico"
+
+msgid "Contre-signé par"
+msgstr "Contrafirmado por"
+
+msgid "Responsable hiérarchique"
+msgstr "Responsable jerárquico"
+
+msgid "Contre-signature"
+msgstr "Contrafirma"
+
+msgid "Exiger la contre-signature du responsable hiérarchique"
+msgstr "Exigir la contrafirma del responsable jerárquico"
+
+msgid "Contre-signature d'attribution de matériel"
+msgstr "Contrafirma de la entrega de equipo"
+
+msgid "La signature du bénéficiaire est introuvable pour cette fiche."
+msgstr "No se ha encontrado la firma del beneficiario para esta ficha."
+
+msgid "La délégation n'est pas disponible pour le rôle de contre-signataire."
+msgstr "La delegación no está disponible para el rol de contrafirmante."
+
+msgid "Signé par le bénéficiaire, en attente du responsable"
+msgstr "Firmado por el beneficiario, a la espera del responsable jerárquico"
+
+msgid "Contre-signature requise"
+msgstr "Contrafirma requerida"
+
+msgid "Responsable hiérarchique (contre-signataire)"
+msgstr "Responsable jerárquico (contrafirmante)"
+
+msgid ""
+"Votre signature, en tant que responsable hiérarchique, est requise pour "
+"finaliser cette attribution."
+msgstr ""
+"Como responsable jerárquico, se requiere su firma para finalizar esta "
+"asignación."
+
+msgid ""
+"Remise, restitution ou autre document de matériel : il attend votre signature"
+" pour être finalisé."
+msgstr ""
+"Entrega, devolución u otro documento de material: espera su firma para "
+"finalizarse."
+
+msgid "Voir mes documents à signer"
+msgstr "Ver mis documentos por firmar"
+
+msgid "Signaler les documents à signer sur la page d'accueil de GLPI"
+msgstr "Indicar los documentos por firmar en la página de inicio de GLPI"
+
+msgid ""
+"Un bandeau prévient l'utilisateur connecté qu'un document attend sa "
+"signature, avec un lien vers la page « Mes documents à signer » : "
+"indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
+"jamais le lien de signature."
+msgstr ""
+"Un aviso informa al usuario conectado de que un documento espera su firma, "
+"con un enlace a la página «Mis documentos por firmar»: imprescindible para "
+"los usuarios sin dirección de correo electrónico, que nunca reciben el enlace"
+" de firma."
+
+msgid ""
+"Exige, en plus de la signature du bénéficiaire, celle de son responsable "
+"hiérarchique (renseigné dans sa fiche utilisateur) pour une Attribution. Le "
+"bénéficiaire signe d'abord ; le document lui est ensuite transmis au "
+"responsable pour contre-signature avant d'être considéré comme définitivement"
+" signé. Sans responsable renseigné pour le bénéficiaire, l'attribution reste "
+"mono-signataire, comme aujourd'hui."
+msgstr ""
+"Exige, además de la firma del beneficiario, la de su responsable jerárquico "
+"(indicado en su ficha de usuario) para una Asignación. El beneficiario firma "
+"primero; el documento se envía después al responsable para su refrendo antes "
+"de considerarse definitivamente firmado. Si el beneficiario no tiene "
+"responsable indicado, la asignación sigue con una sola firma, como hasta "
+"ahora."
+
+msgid ""
+"Limité aux Attributions (pas aux restitutions, dons, ventes, destructions, "
+"maintenances ou mouvements)."
+msgstr ""
+"Limitado a las Asignaciones (no a devoluciones, donaciones, ventas, "
+"destrucciones, mantenimientos ni movimientos)."
+
+msgid "Aucun document à signer"
+msgstr "Ningún documento por firmar"
+
+msgid ""
+"Quand un document (remise, restitution, don...) attendra votre signature, il "
+"apparaîtra ici."
+msgstr ""
+"Cuando un documento (entrega, devolución, donación...) espere su firma, "
+"aparecerá aquí."
+
+msgid ""
+"Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le "
+"document puis le signer."
+msgstr ""
+"Estos documentos esperan su firma. Haga clic en «Firmar» para leer el "
+"documento y después firmarlo."
+
+msgid "Document"
+msgstr "Documento"
+
+msgid "Contre-signature (responsable)"
+msgstr "Refrendo (responsable)"
+
+msgid "Bénéficiaire : %s"
+msgstr "Beneficiario: %s"
+
+msgid "Pour le compte de %s"
+msgstr "En nombre de %s"
+
+msgid "N° de série : %s"
+msgstr "N.º de serie: %s"
+
+msgid "Signer"
+msgstr "Firmar"
+
+msgid "Mes documents à signer"
+msgstr "Mis documentos por firmar"
+
+msgid "Ce document n'attend pas votre signature."
+msgstr "Este documento no espera su firma."
+
+msgid "Vous avez %d document à signer"
+msgid_plural "Vous avez %d documents à signer"
+msgstr[0] "Tiene %d documento por firmar"
+msgstr[1] "Tiene %d documentos por firmar"
+
+msgid "Signature sur place : ce document doit être relu puis signé par"
+msgstr "Firma presencial: este documento debe ser leído y después firmado por"
+
+msgid "en présence de"
+msgstr "en presencia de"
+
+msgid "Le document signé mentionnera ce technicien comme témoin."
+msgstr "El documento firmado mencionará a este técnico como testigo."
+
+msgid ""
+"Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet "
+"écran, en votre présence."
+msgstr ""
+"Para una persona que no puede conectarse a GLPI: firma en esta pantalla, en "
+"su presencia."
+
+msgid "Faire signer sur place"
+msgstr "Firmar en presencia"
+
+msgid "Recueillie sur place, en présence de"
+msgstr "Recogida en presencia de"
+
+msgid "Autoriser la signature sur place (en présence d'un technicien)"
+msgstr "Permitir la firma presencial (en presencia de un técnico)"
+
+msgid ""
+"Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
+"signe sur l'écran du technicien, sans avoir à se connecter à GLPI : pour les "
+"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
+" a été recueillie en présence de ce technicien, qui atteste ainsi de "
+"l'identité du signataire."
+msgstr ""
+"Añade un botón «Firmar en presencia» a la ficha: el beneficiario firma en la "
+"pantalla del técnico sin tener que conectarse a GLPI, para las personas que "
+"no tienen acceso a GLPI. El PDF firmado indica que la firma se recogió en "
+"presencia de este técnico, que da así fe de la identidad del firmante."
+
+msgid "Vous n'avez pas le droit de faire signer cette fiche."
+msgstr "No tiene permiso para hacer firmar esta ficha."
+
+msgid "La signature sur place n'est pas possible pour cette fiche."
+msgstr "La firma presencial no es posible para esta ficha."
+
+msgid "La délégation n'est pas disponible pour une signature sur place."
+msgstr "La delegación no está disponible para una firma presencial."
+
+msgid "Manuel"
+msgstr "Manual"
+
+msgid "Désactivation du compte"
+msgstr "Desactivación de la cuenta"
+
+msgid "Date de fin du compte"
+msgstr "Fecha de fin de la cuenta"
+
+msgid "Ce départ n'attend plus de signature."
+msgstr "Esta salida ya no espera ninguna firma."
+
+#, php-format
+msgid "Restitution de départ - %s"
+msgstr "Devolución por salida - %s"
+
+#, php-format
+msgid "Départ préparé : %d matériel(s) à restituer, l'utilisateur est invité à signer."
+msgstr "Salida preparada: %d elemento(s) que devolver, se ha invitado al usuario a firmar."
+
+msgid "Prépare les départs à date de fin de compte et relance les départs non signés"
+msgstr "Prepara las salidas en la fecha de fin de cuenta y recuerda las salidas no firmadas"
+
+msgid "Départ : restitution du matériel à signer"
+msgstr "Salida: devolución de material por firmar"
+
+msgid "Départ : relance de signature"
+msgstr "Salida: recordatorio de firma"
+
+msgid "Départ : restitution signée"
+msgstr "Salida: devolución firmada"
+
+msgid "Personne qui part"
+msgstr "Persona que se va"
+
+msgid "Technicien ayant préparé le départ"
+msgstr "Técnico que preparó la salida"
+
+msgid "Nombre de matériels"
+msgstr "Número de elementos"
+
+msgid "Déclencheur"
+msgstr "Disparador"
+
+msgid "N° de série"
+msgstr "N.º de serie"
+
+msgid "Matériel à restituer"
+msgstr "Material que devolver"
+
+msgid "Départ de la personne"
+msgstr "Salida de la persona"
+
+#, php-format
+msgid "Départ en cours : %d matériel(s) à restituer."
+msgstr "Salida en curso: %d elemento(s) que devolver."
+
+msgid "Voir le départ"
+msgstr "Ver la salida"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté, signée en une fois."
+msgstr "Una única ficha de devolución agrupada para todo el material asignado, firmada de una vez."
+
+msgid "Préparer le départ"
+msgstr "Preparar la salida"
+
+msgid "Aucun matériel géré par assetsign n'est affecté à cette personne : rien à restituer."
+msgstr "Esta persona no tiene asignado ningún material gestionado por assetsign: nada que devolver."
+
+msgid "Merci de cocher la case de confirmation avant de signer."
+msgstr "Marque la casilla de confirmación antes de firmar."
+
+msgid "Vous n'êtes pas autorisé à signer ce départ."
+msgstr "No está autorizado a firmar esta salida."
+
+msgid "Restitution signée. Merci !"
+msgstr "Devolución firmada. ¡Gracias!"
+
+msgid "Départ annulé, ses fiches en attente aussi."
+msgstr "Salida anulada, junto con sus fichas pendientes."
+
+msgid "Restitution de départ"
+msgstr "Devolución por salida"
+
+#, php-format
+msgid "Départ de %s"
+msgstr "Salida de %s"
+
+msgid "Tous les départs"
+msgstr "Todas las salidas"
+
+msgid "Préparé par"
+msgstr "Preparado por"
+
+msgid "Matériels signés"
+msgstr "Elementos firmados"
+
+msgid "N° d'inventaire"
+msgstr "N.º de inventario"
+
+#, php-format
+msgid "Restitution signée le %s."
+msgstr "Devolución firmada el %s."
+
+msgid "PDF récapitulatif"
+msgstr "PDF de resumen"
+
+msgid "Signer la restitution"
+msgstr "Firmar la devolución"
+
+#, php-format
+msgid "Signature sur place : %s signe sur votre écran. Le PDF indiquera que la signature a été recueillie en votre présence."
+msgstr "Firma presencial: %s firma en su pantalla. El PDF indicará que la firma se recogió en su presencia."
+
+msgid "Je confirme restituer l'ensemble du matériel listé ci-dessus."
+msgstr "Confirmo que devuelvo todo el material indicado arriba."
+
+msgid "Annuler ce départ et ses fiches en attente ?"
+msgstr "¿Anular esta salida y sus fichas pendientes?"
+
+msgid "Annuler le départ"
+msgstr "Anular la salida"
+
+#, php-format
+msgid "%d relance(s) envoyée(s)"
+msgstr "%d recordatorio(s) enviado(s)"
+
+msgid "Départs en cours"
+msgstr "Salidas en curso"
+
+msgid "Voir seulement les départs en cours"
+msgstr "Ver solo las salidas en curso"
+
+msgid "Voir tous les départs"
+msgstr "Ver todas las salidas"
+
+msgid "Pour préparer un départ, ouvrez la fiche de l'utilisateur, onglet Assetsign, puis « Préparer le départ » : une seule fiche de restitution groupée est envoyée pour tout son matériel."
+msgstr "Para preparar una salida, abra la ficha del usuario, pestaña Assetsign, y luego «Preparar la salida»: se envía una única ficha de devolución agrupada para todo su material."
+
+msgid "Aucun départ en cours"
+msgstr "Ninguna salida en curso"
+
+msgid "Relances"
+msgstr "Recordatorios"
+
+msgid "Départ d'un salarié"
+msgstr "Salida de un empleado"
+
+msgid "Une seule fiche de restitution groupée pour tout le matériel affecté à la personne qui part, signée en une fois. L'action « Préparer le départ » est toujours disponible dans l'onglet Assetsign de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "Una única ficha de devolución agrupada para todo el material asignado a la persona que se va, firmada de una vez. La acción «Preparar la salida» siempre está disponible en la pestaña Assetsign de la ficha del usuario; los disparadores automáticos siguientes son opcionales."
+
+msgid "Préparer le départ quand le compte GLPI est désactivé"
+msgstr "Preparar la salida cuando se desactiva la cuenta GLPI"
+
+msgid "Préparer le départ à l'approche de la date de fin du compte"
+msgstr "Preparar la salida al acercarse la fecha de fin de la cuenta"
+
+msgid "Nombre de jours avant la date de fin"
+msgstr "Número de días antes de la fecha de fin"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignDepartures », qui envoie aussi les relances des départs non signés."
+msgstr "Comprobado cada día por la acción automática «assetsignDepartures», que también envía los recordatorios de las salidas no firmadas."
+
+#, php-format
+msgid "%d matériel"
+msgid_plural "%d matériels"
+msgstr[0] "%d elemento"
+msgstr[1] "%d elementos"
+
+#, php-format
+msgid "Attestation de détention %s"
+msgstr "Certificación de tenencia %s"
+
+msgid "Relance les attestations de détention en attente jusqu'à la date limite de leur campagne"
+msgstr "Recuerda las certificaciones de tenencia pendientes hasta la fecha límite de su campaña"
+
+msgid "Confirmée"
+msgstr "Confirmada"
+
+msgid "Écart signalé"
+msgstr "Discrepancia indicada"
+
+msgid "Je n'ai plus un matériel de la liste"
+msgstr "Ya no tengo un elemento de la lista"
+
+msgid "Je détiens un matériel absent de la liste"
+msgstr "Tengo un elemento que no está en la lista"
+
+msgid "Je ne reconnais pas un matériel de la liste"
+msgstr "No reconozco un elemento de la lista"
+
+msgid "Cette attestation n'attend plus de réponse."
+msgstr "Esta certificación ya no espera respuesta."
+
+msgid "Décrivez l'écart constaté : quel matériel, et ce qui ne correspond pas."
+msgstr "Describa la discrepancia: qué elemento y qué no coincide."
+
+#, php-format
+msgid "Écart d'inventaire signalé lors de la campagne « %s »."
+msgstr "Discrepancia de inventario indicada durante la campaña «%s»."
+
+msgid "Matériel listé :"
+msgstr "Material listado:"
+
+#, php-format
+msgid "Écart d'inventaire : %s"
+msgstr "Discrepancia de inventario: %s"
+
+#, php-format
+msgid "Attestation de détention - %s"
+msgstr "Certificación de tenencia - %s"
+
+msgid "Attestation de détention à signer"
+msgstr "Certificación de tenencia por firmar"
+
+msgid "Attestation de détention : relance"
+msgstr "Certificación de tenencia: recordatorio"
+
+msgid "Attestation de détention : écart signalé"
+msgstr "Certificación de tenencia: discrepancia indicada"
+
+msgid "Personne qui atteste"
+msgstr "Persona que certifica"
+
+msgid "Auteur de la campagne"
+msgstr "Autor de la campaña"
+
+msgid "Campagne"
+msgstr "Campaña"
+
+msgid "Date limite"
+msgstr "Fecha límite"
+
+msgid "Matériel détenu"
+msgstr "Material en posesión"
+
+msgid "La campagne n'a pas pu être créée."
+msgstr "No se pudo crear la campaña."
+
+#, php-format
+msgid "Campagne lancée : %d personne(s) invitée(s) à attester leur matériel."
+msgstr "Campaña lanzada: %d persona(s) invitada(s) a certificar su material."
+
+#, php-format
+msgid "%d relance(s) envoyée(s)."
+msgstr "%d recordatorio(s) enviado(s)."
+
+msgid "Campagne clôturée : les attestations ne peuvent plus être modifiées."
+msgstr "Campaña cerrada: las certificaciones ya no se pueden modificar."
+
+msgid "Personne"
+msgstr "Persona"
+
+msgid "Matériels"
+msgstr "Elementos"
+
+msgid "Date de réponse"
+msgstr "Fecha de respuesta"
+
+msgid "Écart"
+msgstr "Discrepancia"
+
+msgid "Attestation signée. Merci !"
+msgstr "Certificación firmada. ¡Gracias!"
+
+msgid "Écart signalé : un ticket a été ouvert, le gestionnaire du parc va vous recontacter."
+msgstr "Discrepancia indicada: se ha abierto un ticket y el gestor del parque se pondrá en contacto con usted."
+
+msgid "Campagnes d'attestation de détention"
+msgstr "Campañas de certificación de tenencia"
+
+msgid "Nouvelle campagne"
+msgstr "Nueva campaña"
+
+msgid "Inventaire contradictoire : chaque personne confirme en signant la liste du matériel qu'elle détient, ou signale un écart. Preuve attendue en audit (ISO 27001 A.5.9, inventaire des actifs)."
+msgstr "Inventario contradictorio: cada persona confirma firmando la lista del material que posee, o indica una discrepancia. Prueba esperada en auditoría (ISO 27001 A.5.9, inventario de activos)."
+
+msgid "Aucune campagne pour l'instant"
+msgstr "Ninguna campaña por ahora"
+
+msgid "Taux de réponse"
+msgstr "Tasa de respuesta"
+
+msgid "Écarts"
+msgstr "Discrepancias"
+
+msgid "Ouverte"
+msgstr "Abierta"
+
+msgid "Clôturée"
+msgstr "Cerrada"
+
+msgid "Nouvelle campagne d'attestation de détention"
+msgstr "Nueva campaña de certificación de tenencia"
+
+msgid "Chaque personne du périmètre qui détient au moins un matériel géré reçoit sa liste (figée à la date du lancement) à confirmer en signant, ou sur laquelle signaler un écart. Les personnes sans e-mail la retrouvent dans « Mes documents à signer »."
+msgstr "Cada persona del ámbito que posee al menos un elemento gestionado recibe su lista (congelada en la fecha de lanzamiento) para confirmarla firmando o indicar una discrepancia. Las personas sin correo la encuentran en «Mis documentos por firmar»."
+
+msgid "Nom de la campagne"
+msgstr "Nombre de la campaña"
+
+msgid "Inclure les sous-entités"
+msgstr "Incluir las subentidades"
+
+msgid "Groupe (facultatif)"
+msgstr "Grupo (opcional)"
+
+msgid "Profil (facultatif)"
+msgstr "Perfil (opcional)"
+
+msgid "Lancer la campagne"
+msgstr "Lanzar la campaña"
+
+msgid "Retour aux campagnes"
+msgstr "Volver a las campañas"
+
+msgid "Date limite dépassée"
+msgstr "Fecha límite superada"
+
+msgid "Toutes les campagnes"
+msgstr "Todas las campañas"
+
+msgid "Confirmées"
+msgstr "Confirmadas"
+
+msgid "Écarts signalés"
+msgstr "Discrepancias indicadas"
+
+msgid "Sans réponse"
+msgstr "Sin respuesta"
+
+msgid "Export CSV"
+msgstr "Exportar CSV"
+
+msgid "Export PDF"
+msgstr "Exportar PDF"
+
+msgid "Relancer les non-répondants"
+msgstr "Recordar a quienes no han respondido"
+
+msgid "Clôturer la campagne ? Les personnes sans réponse ne pourront plus attester."
+msgstr "¿Cerrar la campaña? Las personas sin respuesta ya no podrán certificar."
+
+msgid "Clôturer"
+msgstr "Cerrar"
+
+#, php-format
+msgid "Ticket n°%d"
+msgstr "Ticket n.º %d"
+
+msgid "Aucune personne du périmètre ne détient de matériel géré."
+msgstr "Nadie del ámbito posee material gestionado."
+
+#, php-format
+msgid "Attestation de détention de %s"
+msgstr "Certificación de tenencia de %s"
+
+#, php-format
+msgid "à rendre avant le %s"
+msgstr "a entregar antes del %s"
+
+#, php-format
+msgid "Attestation signée le %s."
+msgstr "Certificación firmada el %s."
+
+msgid "La liste est exacte : je confirme et je signe"
+msgstr "La lista es correcta: confirmo y firmo"
+
+msgid "J'atteste détenir l'ensemble du matériel listé ci-dessus, et seulement celui-ci."
+msgstr "Certifico que poseo todo el material indicado arriba, y solo ese material."
+
+msgid "La liste n'est pas exacte : je signale un écart"
+msgstr "La lista no es correcta: indico una discrepancia"
+
+msgid "Précisez (quel matériel, ce qui ne correspond pas)"
+msgstr "Precise (qué elemento, qué no coincide)"
+
+msgid "Signaler l'écart"
+msgstr "Indicar la discrepancia"
+
+msgid "Un ticket est ouvert à votre nom et le gestionnaire du parc est prévenu."
+msgstr "Se abre un ticket a su nombre y se avisa al gestor del parque."
+
+msgid "Campagne d'attestation"
+msgid_plural "Campagnes d'attestation"
+msgstr[0] "Campaña de certificación"
+msgstr[1] "Campañas de certificación"
+
+msgid "Attestation de détention"
+msgid_plural "Attestations de détention"
+msgstr[0] "Certificación de tenencia"
+msgstr[1] "Certificaciones de tenencia"
+
+msgid "Tableau de bord RSE"
+msgstr "Panel de RSC"
+
+#, php-format
+msgid "kg CO2-eq de fabrication (%d %% du parc renseigné)"
+msgstr "kg CO2-eq de fabricación (%d %% del parque informado)"
+
+#, php-format
+msgid "kg CO2-eq évités par le réemploi (%d matériel(s) prolongé(s))"
+msgstr "kg CO2-eq evitados por la reutilización (%d elemento(s) prolongado(s))"
+
+msgid "Taux de seconde vie en pourcentage (dons et ventes, 12 mois)"
+msgstr "Tasa de segunda vida en porcentaje (donaciones y ventas, 12 meses)"
+
+msgid "RSE : empreinte de fabrication du parc"
+msgstr "RSC: huella de fabricación del parque"
+
+msgid "RSE : impact évité par le réemploi"
+msgstr "RSC: impacto evitado por la reutilización"
+
+msgid "RSE : taux de seconde vie"
+msgstr "RSC: tasa de segunda vida"
+
+msgid "Tableau de bord RSE du parc"
+msgstr "Panel de RSC del parque"
+
+msgid "Calculé sur les entités actives, à partir des seules données saisies dans GLPI (passeport environnemental, informations financières, fiches de fin de vie) : aucune moyenne ni estimation n'est ajoutée. Une donnée manquante fait baisser la couverture affichée sous chaque indicateur."
+msgstr "Calculado sobre las entidades activas, solo con los datos introducidos en GLPI (pasaporte medioambiental, información financiera, fichas de fin de vida): no se añade ninguna media ni estimación. Un dato ausente reduce la cobertura mostrada bajo cada indicador."
+
+msgid "Le passeport environnemental est désactivé : l'empreinte de fabrication ne peut pas être saisie sur les matériels."
+msgstr "El pasaporte medioambiental está desactivado: la huella de fabricación no se puede introducir en los elementos."
+
+msgid "Le bénéfice du réemploi n'est pas affiché sur les passeports matériels."
+msgstr "El beneficio de la reutilización no se muestra en los pasaportes de material."
+
+msgid "Configuration"
+msgstr "Configuración"
+
+#, php-format
+msgid "%1$d / %2$d matériels renseignés (%3$d %%)"
+msgstr "%1$d / %2$d elementos informados (%3$d %%)"
+
+msgid "Impact évité par le réemploi"
+msgstr "Impacto evitado por la reutilización"
+
+#, php-format
+msgid "%d matériel(s) utilisé(s) au-delà de leur durée d'amortissement"
+msgstr "%d elemento(s) utilizado(s) más allá de su periodo de amortización"
+
+msgid "Âge moyen du parc en service"
+msgstr "Edad media del parque en servicio"
+
+msgid "ans"
+msgstr "años"
+
+msgid "Durée de vie réelle des matériels réformés"
+msgstr "Vida útil real de los elementos dados de baja"
+
+msgid "Seconde vie en fin de vie"
+msgstr "Segunda vida al final de la vida útil"
+
+#, php-format
+msgid "Dons et ventes parmi les fins de vie des %d derniers mois"
+msgstr "Donaciones y ventas entre los fines de vida de los últimos %d meses"
+
+#, php-format
+msgid "Filières de fin de vie (%d derniers mois)"
+msgstr "Vías de fin de vida (últimos %d meses)"
+
+msgid "Dons"
+msgstr "Donaciones"
+
+msgid "Ventes"
+msgstr "Ventas"
+
+msgid "Destructions"
+msgstr "Destrucciones"
+
+msgid "Aucune fiche de don, vente ou destruction finalisée sur la période."
+msgstr "Ninguna ficha de donación, venta o destrucción finalizada en el periodo."
+
+#, php-format
+msgid "Affecté à %s"
+msgstr "Asignado a %s"
+
+msgid "Ajouter d'office le matériel connecté au document"
+msgstr "Añadir automáticamente al documento el material conectado"
+
+msgid "Ajouter les éléments connectés"
+msgstr "Añadir los elementos conectados"
+
+msgid "Ajouter un élément du parc"
+msgstr "Añadir un elemento del inventario"
+
+msgid "Ajouté automatiquement : connecté au matériel dans GLPI"
+msgstr "Añadido automáticamente: conectado al material en GLPI"
+
+msgid "Aucun matériel inventorié ajouté pour le moment."
+msgstr "Todavía no se ha añadido material inventariado."
+
+msgid "C'est déjà le matériel principal de cette fiche."
+msgstr "Ya es el material principal de esta ficha."
+
+msgid "Cet élément figure déjà sur cette fiche."
+msgstr "Este elemento ya figura en esta ficha."
+
+msgid "Cet élément figure déjà sur une autre fiche en attente de signature."
+msgstr "Este elemento ya figura en otra ficha pendiente de firma."
+
+msgid "Cette fiche est déjà signée : sa liste de matériel ne peut plus changer."
+msgstr "Esta ficha ya está firmada: su lista de material ya no puede cambiar."
+
+msgid "Connecté à ce matériel dans GLPI"
+msgstr "Conectado a este material en GLPI"
+
+msgid "Connecté"
+msgstr "Conectado"
+
+msgid "Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire."
+msgstr "En GLPI, este elemento está asignado a una persona distinta del beneficiario."
+
+msgid "Marque / modèle"
+msgstr "Marca / modelo"
+
+msgid "Matériel inventorié remis avec"
+msgstr "Material inventariado entregado con él"
+
+msgid "Nom"
+msgstr "Nombre"
+
+msgid "Si activé, les écrans, périphériques et téléphones connectés au matériel dans GLPI (onglet Connexions) sont ajoutés automatiquement aux fiches créées par une affectation, avec leur n° de série et leur modèle. Sinon, ils sont seulement proposés sur la fiche."
+msgstr "Si se activa, las pantallas, periféricos y teléfonos conectados al material en GLPI (pestaña Conexiones) se añaden automáticamente a las fichas creadas por una asignación, con su n.º de serie y su modelo. Si no, solo se proponen en la ficha."
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Écrans, stations d'accueil, téléphones… déjà inventoriés dans GLPI : leur modèle, leur n° de série et leur n° d'inventaire sont repris sur le document, sans ressaisie."
+msgstr "Pantallas, bases de conexión, teléfonos… ya inventariados en GLPI: su modelo, su n.º de serie y su n.º de inventario se recogen en el documento, sin volver a escribirlos."
+
+msgid "Élément ajouté : il apparaît sur le document."
+msgstr "Elemento añadido: aparece en el documento."
+
+msgid "Élément introuvable ou non visible avec vos droits."
+msgstr "Elemento no encontrado o no visible con sus permisos."
+
+#, php-format
+msgid "%d élément connecté ajouté."
+msgid_plural "%d éléments connectés ajoutés."
+msgstr[0] "%d elemento conectado añadido."
+msgstr[1] "%d elementos conectados añadidos."
+
+msgid "Aucune feuille ne sera envoyée pour cette attribution."
+msgstr "No se enviará ninguna ficha para esta asignación."
+
+msgid "Aucune feuille ne sera envoyée pour cette attribution. Continuer ?"
+msgstr "No se enviará ninguna ficha para esta asignación. ¿Continuar?"
+
+msgid "Brouillon : cette feuille n'a pas encore été envoyée au bénéficiaire. Complétez-la si besoin, puis envoyez-la."
+msgstr "Borrador: esta ficha aún no se ha enviado al beneficiario. Complétela si es necesario y envíela."
+
+msgid "Cette feuille a déjà été envoyée."
+msgstr "Esta ficha ya se ha enviado."
+
+msgid "Demander confirmation avant d'envoyer la feuille d'attribution"
+msgstr "Pedir confirmación antes de enviar la ficha de asignación"
+
+msgid "Envoyer pour signature"
+msgstr "Enviar para firma"
+
+msgid "Feuille d'attribution envoyée pour signature."
+msgstr "Ficha de asignación enviada para firma."
+
+msgid "Feuille d'attribution à envoyer"
+msgstr "Ficha de asignación por enviar"
+
+msgid "Ne pas faire signer"
+msgstr "No solicitar firma"
+
+msgid "Si activé, attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout. Les attributions faites sans technicien devant l'écran (inventaire automatique, actions massives) sont envoyées directement."
+msgstr "Si se activa, asignar un material desde su ficha abre una ventana para completar la ficha (pantallas, periféricos, teléfonos…) y elegir enviarla ahora, más tarde o no enviarla. Las asignaciones hechas sin un técnico ante la pantalla (inventario automático, acciones masivas) se envían directamente."
+
+#, php-format
+msgid "%1$s « %2$s » vient d'être attribué à %3$s."
+msgstr "%1$s «%2$s» acaba de asignarse a %3$s."
+
+msgid "Accessoire non inventorié (catalogue)"
+msgstr "Accesorio no inventariado (catálogo)"
+
+msgid "Ajouter un écran, un périphérique, un téléphone…"
+msgstr "Añadir una pantalla, un periférico, un teléfono…"
+
+msgid "Décochez un élément pour le retirer de la feuille."
+msgstr "Desmarque un elemento para quitarlo de la ficha."
+
+msgid "Plus tard"
+msgstr "Más tarde"
+
+msgid "Remis avec le matériel"
+msgstr "Entregado con el material"
+
+msgid "Vérifiez ce qui est remis avec, puis envoyez la feuille pour signature."
+msgstr "Compruebe lo que se entrega con él y envíe la ficha para firma."
+
+msgid "Élément déjà inventorié dans GLPI"
+msgstr "Elemento ya inventariado en GLPI"
+
+msgid "Feuille préparée en brouillon : rien n'a été envoyé. Envoyez-la depuis l'onglet Attributions du matériel quand vous le souhaitez."
+msgstr "Ficha preparada como borrador: no se ha enviado nada. Envíela desde la pestaña Asignaciones del material cuando lo desee."
+
+msgid "Envoi des feuilles déclenchées automatiquement"
+msgstr "Envío de las fichas activadas automáticamente"
+
+msgid "Demander confirmation à l'attribution (recommandé)"
+msgstr "Pedir confirmación en la asignación (recomendado)"
+
+msgid "Manuel : préparer en brouillon, envoi par bouton"
+msgstr "Manual: preparar como borrador, envío con un botón"
+
+msgid "Immédiat : envoyer sans rien demander"
+msgstr "Inmediato: enviar sin preguntar"
+
+msgid "Confirmation : attribuer un matériel depuis sa fiche ouvre une fenêtre pour compléter la feuille (écrans, périphériques, téléphones…) et choisir de l'envoyer maintenant, plus tard ou pas du tout ; sans technicien devant l'écran (inventaire automatique, actions massives), elle part directement."
+msgstr "Confirmación: asignar un material desde su ficha abre una ventana para completar la ficha (pantallas, periféricos, teléfonos…) y elegir enviarla ahora, más tarde o no enviarla; sin un técnico ante la pantalla (inventario automático, acciones masivas), se envía directamente."
+
+msgid "Manuel : aucune feuille ne part toute seule ; elles attendent en brouillon, avec un bouton « Envoyer pour signature » dans l'onglet Attributions du matériel."
+msgstr "Manual: ninguna ficha se envía sola; esperan como borrador, con un botón «Enviar para firma» en la pestaña Asignaciones del material."
+
+msgid "Ignorer les changements faits par l'inventaire automatique"
+msgstr "Ignorar los cambios realizados por el inventario automático"
+
+msgid "Si activé, quand l'inventaire automatique vide ou change le champ Utilisateur d'un matériel (agent qui ne remonte plus l'utilisateur, mouvement interne…), aucune feuille n'est créée ni envoyée. Seules les attributions faites par une personne déclenchent une feuille."
+msgstr "Si se activa, cuando el inventario automático vacía o cambia el campo Usuario de un material (agente que ya no informa del usuario, movimiento interno…), no se crea ni se envía ninguna ficha. Solo las asignaciones hechas por una persona activan una ficha."
+
+msgid "Bénéficiaire introuvable ou inactif."
+msgstr "Beneficiario no encontrado o inactivo."
+
+msgid "Ce modèle de document ne correspond pas à ce type de fiche."
+msgstr "Esta plantilla de documento no corresponde a este tipo de ficha."
+
+msgid "Feuille modifiée."
+msgstr "Ficha modificada."
+
+msgid "Préparer la feuille avant l'envoi"
+msgstr "Preparar la ficha antes del envío"
+
+msgid "Modèle de document"
+msgstr "Plantilla de documento"
+
+msgid "Aperçu du document"
+msgstr "Vista previa del documento"
+
+msgid "Modifier la feuille"
+msgstr "Modificar la ficha"
+
+msgid "Le matériel remis avec, les accessoires, les observations, le kit et l'état des lieux se complètent plus bas sur cette page. Rien n'est envoyé tant que vous n'avez pas cliqué sur « Envoyer pour signature »."
+msgstr "El material entregado con él, los accesorios, las observaciones, el kit y el estado se completan más abajo en esta página. No se envía nada hasta que haga clic en «Enviar para firma»."
+
+msgid "Une feuille se crée depuis le matériel : en lui attribuant un utilisateur, ou depuis son onglet Attributions (don, vente, destruction)."
+msgstr "Una ficha se crea desde el material: asignándole un usuario, o desde su pestaña Asignaciones (donación, venta, destrucción)."
+
+msgid "Une fiche de maintenance se crée depuis l'onglet Maintenance du matériel concerné."
+msgstr "Una ficha de mantenimiento se crea desde la pestaña Mantenimiento del material correspondiente."
+
+msgid "Un mouvement se crée depuis l'onglet Mouvements du matériel concerné."
+msgstr "Un movimiento se crea desde la pestaña Movimientos del material correspondiente."
+
+msgid "Un départ se prépare depuis la fiche de la personne, onglet Attributions (bouton « Départ de la personne »)."
+msgstr "Una salida se prepara desde la ficha de la persona, pestaña Asignaciones (botón «Salida de la persona»)."
+
+msgid "Attribuer aussi dans GLPI le matériel remis avec"
+msgstr "Asignar también en GLPI el material entregado con él"
+
+msgid "Si activé, chaque écran, périphérique, téléphone… ajouté à une feuille d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et statut ci-dessous) : à l'envoi de la feuille, ou dès l'ajout si elle est déjà envoyée. Un élément déjà attribué au bénéficiaire n'est pas modifié."
+msgstr "Si se activa, cada pantalla, periférico, teléfono… añadido a una ficha de asignación se asigna al beneficiario en GLPI (campo Usuario y estado abajo): al enviar la ficha, o en cuanto se añade si ya se ha enviado. Un elemento ya asignado al beneficiario no se modifica."
+
+msgid "Statut à donner au matériel remis avec"
+msgstr "Estado que se dará al material entregado con él"
+
+msgid "Le même que le matériel principal"
+msgstr "El mismo que el material principal"
+
+msgid "Ne pas changer le statut"
+msgstr "No cambiar el estado"
+
+#, php-format
+msgid "À l'envoi, les éléments cochés sont aussi attribués à %s dans GLPI."
+msgstr "Al enviar, los elementos marcados también se asignan a %s en GLPI."
+
+msgid "Rappelle au technicien les feuilles restées en brouillon"
+msgstr "Recuerda al técnico las fichas que siguen en borrador"
+
+msgid "Feuille restée en brouillon"
+msgstr "Ficha que sigue en borrador"
+
+msgid "Lien vers la fiche"
+msgstr "Enlace a la ficha"
+
+msgid "Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)"
+msgstr "Recordar al técnico una ficha que sigue en borrador tras (días, 0 = desactivado)"
+
+msgid "Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d'accueil."
+msgstr "Una ficha preparada pero nunca enviada (botón «Más tarde», modo de envío manual) se recuerda al técnico por correo y luego cada semana mientras siga en borrador. Los borradores también aparecen en la página de inicio."
+
+msgid "Voir toutes les feuilles à envoyer"
+msgstr "Ver todas las fichas por enviar"
+
+msgid "Ces feuilles sont prêtes mais n'ont pas été envoyées : le bénéficiaire ne les a pas reçues."
+msgstr "Estas fichas están listas pero no se han enviado: el beneficiario no las ha recibido."
+
+msgid "Préparée automatiquement, sans technicien"
+msgstr "Preparada automáticamente, sin técnico"
+
+msgid "Automatique"
+msgstr "Automática"
+
+#, php-format
+msgid "%d feuille à envoyer"
+msgid_plural "%d feuilles à envoyer"
+msgstr[0] "%d ficha por enviar"
+msgstr[1] "%d fichas por enviar"
+
+msgid "Matériel disponible"
+msgstr "Material disponible"
+
+msgid "Sans utilisateur ou au statut « en stock », pas déjà sur une autre feuille en attente."
+msgstr "Sin usuario o con estado «en stock», que no esté ya en otra ficha pendiente."
+
+msgid "Chercher dans tout le parc"
+msgstr "Buscar en todo el inventario"
+
+msgid "Statuts considérés comme « en stock »"
+msgstr "Estados considerados «en stock»"
+
+msgid "Le matériel sans utilisateur, ou dans l'un de ces statuts, est proposé en premier quand on ajoute un élément à une feuille."
+msgstr "El material sin usuario, o en uno de estos estados, se propone primero al añadir un elemento a una ficha."
+
+msgid "À contrôler"
+msgstr "Por comprobar"
+
+msgid "Rendu"
+msgstr "Devuelto"
+
+msgid "Manquant"
+msgstr "Falta"
+
+msgid "Abîmé"
+msgstr "Dañado"
+
+msgid "Le contrôle du retour n'est plus modifiable sur cette feuille."
+msgstr "El control de la devolución ya no se puede modificar en esta ficha."
+
+#, php-format
+msgid "%1$s « %2$s » n'a pas été rendu avec %3$s par %4$s (feuille de restitution n° %5$d)."
+msgstr "%1$s «%2$s» no fue devuelto con %3$s por %4$s (ficha de devolución n.º %5$d)."
+
+#, php-format
+msgid "Matériel non rendu : %s"
+msgstr "Material no devuelto: %s"
+
+msgid "Contrôle du retour enregistré."
+msgstr "Control de la devolución guardado."
+
+msgid "Contrôle du retour"
+msgstr "Control de la devolución"
+
+msgid "Indiquez pour chaque élément s'il est rendu, manquant ou abîmé : l'état figure sur le document, et GLPI est mis à jour à l'enregistrement (élément rendu ou abîmé : plus d'utilisateur et statut configuré ; élément manquant : ticket si l'option est active)."
+msgstr "Indique para cada elemento si está devuelto, falta o está dañado: el estado figura en el documento, y GLPI se actualiza al guardar (elemento devuelto o dañado: sin usuario y estado configurado; elemento que falta: ticket si la opción está activa)."
+
+msgid "Élément"
+msgstr "Elemento"
+
+msgid "État au retour"
+msgstr "Estado en la devolución"
+
+msgid "Enregistrer le contrôle du retour"
+msgstr "Guardar el control de la devolución"
+
+msgid "Statut d'un élément rendu"
+msgstr "Estado de un elemento devuelto"
+
+msgid "Statut d'un élément rendu abîmé"
+msgstr "Estado de un elemento devuelto dañado"
+
+msgid "À la restitution, le matériel remis avec le poste est repris sur la feuille : un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI et prend le statut choisi ci-dessus."
+msgstr "En la devolución, el material entregado con el equipo se recoge en la ficha: un elemento devuelto o dañado deja de tener usuario en GLPI y recibe el estado elegido arriba."
+
+msgid "Ouvrir un ticket pour un élément manquant au retour"
+msgstr "Abrir un ticket para un elemento que falta en la devolución"
+
+#, php-format
+msgid "%d élément remis en stock dans GLPI."
+msgid_plural "%d éléments remis en stock dans GLPI."
+msgstr[0] "%d elemento devuelto al stock en GLPI."
+msgstr[1] "%d elementos devueltos al stock en GLPI."
+
+#, php-format
+msgid "%d ticket ouvert pour un élément manquant."
+msgid_plural "%d tickets ouverts pour des éléments manquants."
+msgstr[0] "%d ticket abierto para un elemento que falta."
+msgstr[1] "%d tickets abiertos para elementos que faltan."
+
+#, php-format
+msgid "Remis avec %1$s « %2$s »"
+msgstr "Entregado con %1$s «%2$s»"
+
+#, php-format
+msgid "Rendu avec %s"
+msgstr "Devuelto con %s"
+
+#, php-format
+msgid "Rendu abîmé avec %s"
+msgstr "Devuelto dañado con %s"
+
+#, php-format
+msgid "Manquant à la restitution de %s"
+msgstr "Falta en la devolución de %s"
+
+msgid "Éléments du parc attendus dans ce kit"
+msgstr "Elementos del inventario esperados en este kit"
+
+msgid "Nombre d'éléments inventoriés de chaque type attendus (0 = aucun). À l'attribution, on choisit l'écran, le dock, le casque… réels ; ils sont ensuite contrôlés un par un à la restitution."
+msgstr "Número de elementos inventariados de cada tipo esperados (0 = ninguno). En la asignación se eligen la pantalla, la base, los auriculares… reales; luego se comprueban uno a uno en la devolución."
+
+msgid "Ajouter au kit"
+msgstr "Añadir al kit"
+
+msgid "Aucun élément de ce type disponible : cherchez dans tout le parc ci-dessous."
+msgstr "No hay ningún elemento de este tipo disponible: busque en todo el inventario abajo."
+
+msgid "Changer le kit"
+msgstr "Cambiar el kit"
+
+msgid "Appliquer ce kit"
+msgstr "Aplicar este kit"
+
+msgid "Remise de matériel"
+msgstr "Entrega de material"
+
+msgid "Ce type de matériel ne déclenche pas de feuille d'attribution (Configuration > Général)."
+msgstr "Este tipo de material no activa ninguna ficha de asignación (Configuración > General)."
+
+msgid "Le bénéficiaire doit être un demandeur du ticket."
+msgstr "El beneficiario debe ser un solicitante del ticket."
+
+msgid "Ce matériel est déjà attribué à cette personne."
+msgstr "Este material ya está asignado a esta persona."
+
+msgid "La feuille n'a pas pu être créée : vérifiez que l'attribution déclenche une feuille pour cette entité (Configuration > Général)."
+msgstr "No se pudo crear la ficha: compruebe que la asignación activa una ficha para esta entidad (Configuración > General)."
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket."
+msgstr "La ficha n.º %1$d (%2$s) para %3$s «%4$s» ha sido firmada. El documento firmado se adjunta al ticket."
+
+msgid "Le ticket n'a pas pu être résolu automatiquement après la signature (un champ obligatoire du ticket n'est sans doute pas renseigné, comme la catégorie) : résolvez-le manuellement."
+msgstr "El ticket no se pudo resolver automáticamente tras la firma (probablemente falta un campo obligatorio del ticket, como la categoría): resuélvalo manualmente."
+
+msgid "Feuille rattachée au ticket."
+msgstr "Ficha vinculada al ticket."
+
+msgid "Feuille détachée du ticket."
+msgstr "Ficha desvinculada del ticket."
+
+msgid "Feuille préparée en brouillon et rattachée au ticket : complétez-la puis envoyez-la."
+msgstr "Ficha preparada como borrador y vinculada al ticket: complétela y envíela."
+
+msgid "Compléter et envoyer"
+msgstr "Completar y enviar"
+
+msgid "Aucune feuille de remise rattachée à ce ticket."
+msgstr "Ninguna ficha de entrega vinculada a este ticket."
+
+msgid "Remettre du matériel au demandeur"
+msgstr "Entregar material al solicitante"
+
+msgid "Préparer la feuille"
+msgstr "Preparar la ficha"
+
+msgid "Le matériel est attribué au bénéficiaire dans GLPI et lié au ticket ; la feuille est préparée en brouillon : vous la complétez (écran, accessoires…) puis l'envoyez. À la signature, un suivi avec le document signé est ajouté au ticket."
+msgstr "El material se asigna al beneficiario en GLPI y se vincula al ticket; la ficha se prepara como borrador: la completa (pantalla, accesorios…) y la envía. Al firmar, se añade al ticket un seguimiento con el documento firmado."
+
+msgid "Aucun matériel disponible (sans utilisateur ou « en stock ») dans les types qui déclenchent une feuille."
+msgstr "No hay material disponible (sin usuario o «en stock») entre los tipos que activan una ficha."
+
+msgid "Ticket lié :"
+msgstr "Ticket vinculado:"
+
+msgid "Rattacher à un ticket ouvert du bénéficiaire"
+msgstr "Vincular a un ticket abierto del beneficiario"
+
+msgid "Rattacher"
+msgstr "Vincular"
+
+msgid "Résoudre le ticket lié quand la feuille est signée"
+msgstr "Resolver el ticket vinculado cuando se firma la ficha"
+
+msgid "Une feuille préparée depuis un ticket (onglet « Remise de matériel ») ajoute toujours un suivi au ticket avec le document signé ; si cette case est cochée, le ticket est aussi résolu."
+msgstr "Una ficha preparada desde un ticket (pestaña «Entrega de material») siempre añade al ticket un seguimiento con el documento firmado; si esta casilla está marcada, el ticket también se resuelve."
+
+#, php-format
+msgid "Récupération du matériel de %1$s (départ le %2$s)"
+msgstr "Recuperación del material de %1$s (salida el %2$s)"
+
+#, php-format
+msgid "Récupération du matériel de %s"
+msgstr "Recuperación del material de %s"
+
+#, php-format
+msgid "Le départ de %s est préparé : le matériel ci-dessous est à récupérer. La personne a reçu la fiche de restitution à signer."
+msgstr "La salida de %s está preparada: hay que recuperar el material indicado abajo. La persona ha recibido la ficha de devolución para firmar."
+
+#, php-format
+msgid "%1$s a signé la restitution de son matériel le %2$s. Le document signé est joint au départ."
+msgstr "%1$s firmó la devolución de su material el %2$s. El documento firmado está adjunto a la salida."
+
+msgid "Le départ a été annulé dans assetsign : les fiches de restitution en attente sont annulées."
+msgstr "La salida se ha anulado en assetsign: las fichas de devolución pendientes quedan anuladas."
+
+msgid "Jour du départ : plus aucun matériel n'est affecté à la personne dans GLPI."
+msgstr "Día de la salida: la persona ya no tiene ningún material asignado en GLPI."
+
+#, php-format
+msgid "N° de série %s"
+msgstr "N.º de serie %s"
+
+#, php-format
+msgid "Voir le départ n° %d dans assetsign"
+msgstr "Ver la salida n.º %d en assetsign"
+
+#, php-format
+msgid "Ticket de récupération du matériel n° %d"
+msgstr "Ticket de recuperación del material n.º %d"
+
+msgid "Ouvrir un ticket « Récupération du matériel » pour l'équipe"
+msgstr "Abrir un ticket «Recuperación del material» para el equipo"
+
+msgid "Le ticket liste et lie le matériel à récupérer. Il est complété par un suivi à la signature, à l'annulation, et le jour du départ si du matériel est encore affecté. Le plugin ne change jamais un statut ni une affectation : c'est l'équipe qui traite le ticket."
+msgstr "El ticket lista y vincula el material que hay que recuperar. Se completa con un seguimiento en la firma, en la anulación y el día de la salida si aún queda material asignado. El plugin nunca cambia un estado ni una asignación: es el equipo quien gestiona el ticket."
+
+#, php-format
+msgid "Jour du départ : %d matériel est encore affecté à la personne dans GLPI."
+msgid_plural "Jour du départ : %d matériels sont encore affectés à la personne dans GLPI."
+msgstr[0] "Día de la salida: %d material sigue asignado a la persona en GLPI."
+msgstr[1] "Día de la salida: %d materiales siguen asignados a la persona en GLPI."
+
+msgid "Seule une attribution peut être un prêt."
+msgstr "Solo una asignación puede ser un préstamo."
+
+msgid "Cette feuille est annulée ou expirée."
+msgstr "Esta ficha está anulada o caducada."
+
+msgid "Date de retour invalide."
+msgstr "Fecha de devolución no válida."
+
+msgid "La date de retour prévue ne peut pas être dans le passé."
+msgstr "La fecha de devolución prevista no puede estar en el pasado."
+
+msgid "Rappelle les prêts arrivant à échéance et ouvre un ticket pour les retours en retard"
+msgstr "Recuerda los préstamos que vencen y abre un ticket para las devoluciones con retraso"
+
+#, php-format
+msgid "%1$s « %2$s » prêté à %3$s devait être rendu le %4$s. Le matériel est toujours affecté à cette personne."
+msgstr "%1$s «%2$s» prestado a %3$s debía devolverse el %4$s. El material sigue asignado a esta persona."
+
+msgid "Récupérez le matériel puis faites signer la restitution, ou prolongez le prêt depuis la feuille."
+msgstr "Recupere el material y haga firmar la devolución, o prolongue el préstamo desde la ficha."
+
+#, php-format
+msgid "Feuille de prêt n° %d"
+msgstr "Ficha de préstamo n.º %d"
+
+#, php-format
+msgid "Retour de prêt en retard : %1$s (%2$s)"
+msgstr "Devolución de préstamo con retraso: %1$s (%2$s)"
+
+msgid "Prêts en cours"
+msgstr "Préstamos en curso"
+
+msgid "Voir tous les prêts"
+msgstr "Ver todos los préstamos"
+
+msgid "Emprunteur"
+msgstr "Prestatario"
+
+msgid "Retour prévu"
+msgstr "Devolución prevista"
+
+msgid "En retard"
+msgstr "Con retraso"
+
+#, php-format
+msgid "Ticket n° %d"
+msgstr "Ticket n.º %d"
+
+msgid "Ouvrir la feuille"
+msgstr "Abrir la ficha"
+
+msgid "Prêt arrivant à échéance"
+msgstr "Préstamo próximo a vencer"
+
+msgid "Date de retour prévue (prêt)"
+msgstr "Fecha de devolución prevista (préstamo)"
+
+msgid "Retour prévu (prêt)"
+msgstr "Devolución prevista (préstamo)"
+
+msgid "Attribution définitive : aucune date de retour."
+msgstr "Asignación definitiva: sin fecha de devolución."
+
+#, php-format
+msgid "Prêt : retour prévu le %s."
+msgstr "Préstamo: devolución prevista el %s."
+
+msgid "Prêt temporaire"
+msgstr "Préstamo temporal"
+
+#, php-format
+msgid "retour prévu le %s"
+msgstr "devolución prevista el %s"
+
+msgid "Attribution définitive. Indiquez une date de retour pour en faire un prêt temporaire : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Asignación definitiva. Indique una fecha de devolución para convertirla en préstamo temporal: recordatorio antes del vencimiento y ticket en caso de retraso."
+
+msgid "Modifier"
+msgstr "Modificar"
+
+msgid "En faire un prêt"
+msgstr "Convertir en préstamo"
+
+msgid "Prêt temporaire : retour prévu le"
+msgstr "Préstamo temporal: devolución prevista el"
+
+msgid "Laissez vide pour une attribution définitive. Avec une date, la feuille devient un prêt : rappel avant l'échéance, puis ticket en cas de retard."
+msgstr "Déjelo vacío para una asignación definitiva. Con una fecha, la ficha se convierte en préstamo: recordatorio antes del vencimiento y ticket en caso de retraso."
+
+msgid "Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)"
+msgstr "Préstamo temporal: recordar la devolución prevista (días antes, 0 = desactivado)"
+
+msgid "Une attribution avec une date de retour prévue est un prêt. Le bénéficiaire et le technicien reçoivent un e-mail ce nombre de jours avant l'échéance."
+msgstr "Una asignación con fecha de devolución prevista es un préstamo. El beneficiario y el técnico reciben un correo este número de días antes del vencimiento."
+
+msgid "Ouvrir un ticket « Retour de prêt en retard » une fois l'échéance passée"
+msgstr "Abrir un ticket «Devolución de préstamo con retraso» una vez pasada la fecha"
+
+msgid "Un ticket par prêt, lié au matériel, assigné au technicien. Le matériel n'est jamais désaffecté ni changé de statut automatiquement : le retour passe par la restitution habituelle."
+msgstr "Un ticket por préstamo, vinculado al material y asignado al técnico. El material nunca se desasigna ni cambia de estado automáticamente: la devolución pasa por la ficha de devolución habitual."
+
+#, php-format
+msgid "%d en retard"
+msgid_plural "%d en retard"
+msgstr[0] "%d con retraso"
+msgstr[1] "%d con retraso"
+
+msgid "Panne"
+msgstr "Avería"
+
+msgid "Casse"
+msgstr "Rotura"
+
+msgid "Perte"
+msgstr "Pérdida"
+
+msgid "Vol"
+msgstr "Robo"
+
+msgid "Choisissez le type de problème."
+msgstr "Elija el tipo de problema."
+
+msgid "Ce matériel ne vous est pas affecté."
+msgstr "Este material no le está asignado."
+
+msgid "Votre profil ne permet pas de créer un ticket : contactez le service informatique."
+msgstr "Su perfil no permite crear tickets: contacte con el servicio informático."
+
+#, php-format
+msgid "N° d'inventaire %s"
+msgstr "N.º de inventario %s"
+
+#, php-format
+msgid "%1$s signalé(e) sur %2$s."
+msgstr "%1$s notificado(a) en %2$s."
+
+msgid "Perte ou vol : le service informatique vous indiquera les démarches (déclaration, blocage des accès, remplacement)."
+msgstr "Pérdida o robo: el servicio informático le indicará los pasos (declaración, bloqueo de accesos, sustitución)."
+
+#, php-format
+msgid "%1$s : %2$s"
+msgstr "%1$s: %2$s"
+
+msgid "Le ticket n'a pas pu être créé : contactez le service informatique."
+msgstr "No se pudo crear el ticket: contacte con el servicio informático."
+
+#, php-format
+msgid "Votre signalement est enregistré (ticket n° %d). Le service informatique va vous recontacter."
+msgstr "Su notificación se ha registrado (ticket n.º %d). El servicio informático se pondrá en contacto con usted."
+
+msgid "Mon matériel et mes documents"
+msgstr "Mi material y mis documentos"
+
+msgid "Mon matériel"
+msgstr "Mi material"
+
+msgid "Aucun matériel ne vous est affecté"
+msgstr "No tiene ningún material asignado"
+
+msgid "Le matériel que le service informatique vous remet apparaîtra ici, avec les documents que vous avez signés."
+msgstr "El material que le entregue el servicio informático aparecerá aquí, con los documentos que ha firmado."
+
+msgid "Le matériel qui vous est confié et les documents que vous avez signés. Un problème (panne, casse, perte, vol) ? Signalez-le ici : le service informatique reçoit un ticket avec le matériel concerné."
+msgstr "El material que se le ha confiado y los documentos que ha firmado. ¿Un problema (avería, rotura, pérdida, robo)? Notifíquelo aquí: el servicio informático recibe un ticket con el material afectado."
+
+#, php-format
+msgid "N° d'inventaire : %s"
+msgstr "N.º de inventario: %s"
+
+#, php-format
+msgid "%1$s signée le %2$s"
+msgstr "%1$s firmada el %2$s"
+
+msgid "Signaler un problème"
+msgstr "Notificar un problema"
+
+msgid "Quel est le problème ?"
+msgstr "¿Cuál es el problema?"
+
+msgid "Décrivez ce qui se passe (facultatif)"
+msgstr "Describa lo que ocurre (opcional)"
+
+msgid "Ex. : l'écran ne s'allume plus depuis ce matin."
+msgstr "P. ej.: la pantalla no se enciende desde esta mañana."
+
+msgid "Envoyer le signalement"
+msgstr "Enviar la notificación"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
+msgid "Votre signature a été déléguée"
+msgstr "Su firma ha sido delegada"
+
+#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
+msgid "Délégation faite par"
+msgstr "Delegado por"
+
+#: templates/_available_item_picker.html.twig
+msgid "Au statut « en stock » configuré (à défaut, sans utilisateur), pas déjà sur une autre feuille en attente."
+msgstr "Con un estado «en stock» configurado (en su defecto, sin usuario), que no esté ya en otra ficha pendiente."
+
+#: templates/config_form.html.twig
+msgid "Le matériel dans l'un de ces statuts est proposé en premier quand on ajoute un élément à une feuille. Si aucun statut n'est choisi, c'est le matériel sans utilisateur qui est proposé."
+msgstr "El material en uno de estos estados se propone primero al añadir un elemento a una ficha. Si no se elige ningún estado, se propone el material sin usuario."
+
+msgid "majeure"
+msgstr "importante"
+
+msgid "Établie le %1$s : Référence assetsign n°%2$d"
+msgstr "Emitida el %1$s: Referencia assetsign n.º %2$d"
+
+msgid "Bénéficiaire (externe, sans compte GLPI)"
+msgstr "Beneficiario (externo, sin cuenta GLPI)"
+
+msgid "Contact"
+msgstr "Contacto"
+
+msgid "E-mail"
+msgstr "Correo electrónico"
+
+msgid "Nom GLPI"
+msgstr "Nombre en GLPI"
+
+msgid "Marque"
+msgstr "Marca"
+
+msgid "Matériel rendu avec"
+msgstr "Equipo devuelto con"
+
+msgid "Désignation"
+msgstr "Designación"
+
+msgid "Retour prévu au plus tard le"
+msgstr "Restitución prevista a más tardar el"
+
+msgid "Le matériel ci-dessus est prêté pour une durée limitée. Le bénéficiaire s'engage à le restituer au service informatique au plus tard à cette date, avec les accessoires remis."
+msgstr "El equipo anterior se presta por un periodo limitado. El beneficiario se compromete a devolverlo al servicio informático a más tardar en esta fecha, junto con los accesorios entregados."
+
+msgid "Conditions générales"
+msgstr "Condiciones generales"
+
+msgid "Charte informatique complète :"
+msgstr "Política informática completa:"
+
+msgid "Document signé électroniquement le %1$s à %2$s"
+msgstr "Documento firmado electrónicamente el %1$s a las %2$s"
+
+msgid "Signataire : %s"
+msgstr "Firmante: %s"
+
+msgid "Signature recueillie sur place, en présence de : %s"
+msgstr "Firma recogida in situ, en presencia de: %s"
+
+msgid "Signature déléguée par %1$s le %2$s"
+msgstr "Firma delegada por %1$s el %2$s"
+
+msgid "motif : %s"
+msgstr "motivo: %s"
+
+msgid "Fait le %s"
+msgstr "Hecho el %s"
+
+msgid "Signature de l'utilisateur :"
+msgstr "Firma del usuario:"
+
+msgid "Contre-signé électroniquement le %1$s à %2$s"
+msgstr "Refrendado electrónicamente el %1$s a las %2$s"
+
+msgid "Responsable hiérarchique : %s"
+msgstr "Responsable jerárquico: %s"
+
+msgid "Attribution #%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Atribución #%d: Documento generado por GLPI (plugin assetsign)"
+
+msgid "Attestation de détention - %s"
+msgstr "Certificación de tenencia - %s"
+
+msgid "Attestation de détention de matériel"
+msgstr "Certificación de tenencia de equipos"
+
+msgid "%1$s : signée le %2$s"
+msgstr "%1$s: firmado el %2$s"
+
+msgid "Je soussigné(e) %s atteste détenir l'ensemble du matériel listé ci-dessous, et seulement celui-ci."
+msgstr "El/la abajo firmante %s certifica tener todo el equipo indicado a continuación, y solo este."
+
+msgid "Signature"
+msgstr "Firma"
+
+msgid "Date et heure"
+msgstr "Fecha y hora"
+
+msgid "Campagne d'attestation - %s"
+msgstr "Campaña de certificación - %s"
+
+msgid "Campagne d'attestation de détention"
+msgstr "Campaña de certificación de tenencia"
+
+msgid "%1$s : rapport généré le %2$s"
+msgstr "%1$s: informe generado el %2$s"
+
+msgid "Lancée le"
+msgstr "Iniciada el"
+
+msgid "Personnes concernées"
+msgstr "Personas afectadas"
+
+msgid "Attestations confirmées"
+msgstr "Certificaciones confirmadas"
+
+msgid "Détail"
+msgstr "Detalle"
+
+msgid "Réponse"
+msgstr "Respuesta"
+
+msgid "(ticket n°%d)"
+msgstr "(ticket n.º %d)"
+
+msgid "Établie le %1$s : Référence fiche n°%2$d"
+msgstr "Emitida el %1$s: Referencia de ficha n.º %2$d"
+
+msgid "Points de contrôle"
+msgstr "Puntos de control"
+
+msgid "Signature du technicien :"
+msgstr "Firma del técnico:"
+
+msgid "Fiche de maintenance #%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Ficha de mantenimiento #%d: Documento generado por GLPI (plugin assetsign)"
+
+msgid "Restitution de départ - %s"
+msgstr "Restitución por salida - %s"
+
+msgid "Restitution du matériel : départ"
+msgstr "Restitución del equipo: salida"
+
+msgid "Signée le %s"
+msgstr "Firmada el %s"
+
+msgid "Matériel restitué"
+msgstr "Equipo devuelto"
+
+msgid "Fiche n°"
+msgstr "Ficha n.º"
+
+msgid "Chaque matériel dispose de sa propre fiche de restitution signée (PDF joint à la fiche). Empreintes SHA-256 de ces PDF :"
+msgstr "Cada equipo tiene su propia ficha de restitución firmada (PDF adjunto a la ficha). Huellas SHA-256 de estos PDF:"
+
+msgid "Fiche n°%1$d : %2$s"
+msgstr "Ficha n.º %1$d: %2$s"
+
+msgid "Recueillie en présence de"
+msgstr "Recogida en presencia de"
+
+msgid "Ordinateur"
+msgstr "Ordenador"
+
+msgid "Écran"
+msgstr "Monitor"
+
+msgid "Périphérique"
+msgstr "Periférico"
+
+msgid "Téléphone"
+msgstr "Teléfono"
+
+msgid "Fiche de vente de matériel"
+msgstr "Ficha de venta de equipo"
+
+msgid "Matériel vendu"
+msgstr "Equipo vendido"
+
+msgid "Fiche de don de matériel"
+msgstr "Ficha de donación de equipo"
+
+msgid "Matériel donné"
+msgstr "Equipo donado"
+
+msgid "Fiche d'attribution de matériel"
+msgstr "Ficha de atribución de equipo"
+
+msgid "Matériel attribué"
+msgstr "Equipo atribuido"
+
+msgid "Fiche de restitution de matériel"
+msgstr "Ficha de restitución de equipo"
+
+msgid "Fiche de destruction de matériel"
+msgstr "Ficha de destrucción de equipo"
+
+msgid "Matériel détruit"
+msgstr "Equipo destruido"
+
+msgid "Faire signer la charte informatique périodiquement"
+msgstr "Hacer firmar la normativa informática periódicamente"
+
+msgid "Renouvellement (mois)"
+msgstr "Renovación (meses)"
+
+msgid "Délai pour signer (jours)"
+msgstr "Plazo para firmar (días)"
+
+msgid "Une campagne de charte est lancée pour cette entité et ses sous-entités à chaque période (tâche planifiée assetsignCampaigns), avec les relances habituelles. À la date limite, un ticket liste les personnes qui ne l'ont pas signée ; aucun compte n'est bloqué."
+msgstr "Se lanza una campaña de normativa para esta entidad y sus subentidades en cada periodo (acción automática assetsignCampaigns), con los recordatorios habituales. En la fecha límite, un ticket enumera a las personas que no la han firmado; no se bloquea ninguna cuenta."
+
+msgid "Charte informatique : chaque personne signe la charte, renouvelable automatiquement chaque année (Configuration). Preuve de sensibilisation (ISO 27001 A.5.10 et A.6.3)."
+msgstr "Normativa informática: cada persona firma la normativa, renovable automáticamente cada año (Configuración). Prueba de concienciación (ISO 27001 A.5.10 y A.6.3)."
+
+msgid "Attestation de détention du matériel"
+msgstr "Certificación de tenencia del material"
+
+msgid "Signature de la charte informatique"
+msgstr "Firma de la normativa informática"
+
+msgid "Chaque personne du périmètre signe la charte informatique (charte du gabarit d'attribution par défaut et lien vers la charte complète, figés au lancement). À la date limite, un ticket liste les personnes qui ne l'ont pas signée."
+msgstr "Cada persona del ámbito firma la normativa informática (normativa de la plantilla de atribución por defecto y enlace a la normativa completa, fijados al lanzamiento). En la fecha límite, un ticket enumera a las personas que no la han firmado."
+
+msgid "Aucune charte informatique n'est configurée pour cette entité : renseignez la charte du gabarit d'attribution par défaut ou le lien vers la charte dans la Configuration."
+msgstr "No hay ninguna normativa informática configurada para esta entidad: indique la normativa de la plantilla de atribución por defecto o el enlace a la normativa en la Configuración."
+
+msgid "Ticket des non-signataires n°%d"
+msgstr "Ticket de los no firmantes n.º %d"
+
+msgid "Charte informatique - %s"
+msgstr "Normativa informática - %s"
+
+msgid "Je soussigné(e) %s déclare avoir pris connaissance de la charte informatique ci-dessous et m'engage à la respecter."
+msgstr "El/la abajo firmante %s declara haber leído la normativa informática que figura a continuación y se compromete a respetarla."
+
+msgid "Charte informatique de %s"
+msgstr "Normativa informática de %s"
+
+msgid "Charte signée le %s."
+msgstr "Normativa firmada el %s."
+
+msgid "J'ai lu la charte : je signe"
+msgstr "He leído la normativa: firmo"
+
+msgid "J'ai pris connaissance de la charte informatique ci-dessus et je m'engage à la respecter."
+msgstr "He leído la normativa informática anterior y me comprometo a respetarla."
+
+msgid "Charte informatique %s"
+msgstr "Normativa informática %s"
+
+msgid "Campagnes d'attestation et de charte : relances jusqu'à la date limite, ticket des chartes non signées, renouvellement annuel de la charte"
+msgstr "Campañas de certificación y de normativa: recordatorios hasta la fecha límite, ticket de normativas no firmadas, renovación anual de la normativa"
+
+msgid "La charte informatique de la campagne « %1$s » n'a pas été signée avant le %2$s par :"
+msgstr "La normativa informática de la campaña «%1$s» no fue firmada antes del %2$s por:"
+
+msgid "Charte informatique non signée : %1$d personne(s) (%2$s)"
+msgstr "Normativa informática no firmada: %1$d persona(s) (%2$s)"
+
+msgid "Une charte informatique ne permet pas de signaler un écart."
+msgstr "Una normativa informática no permite indicar una discrepancia."
+
+msgid "Charte informatique signée - %s"
+msgstr "Normativa informática firmada - %s"
+
+msgid "Charte informatique à signer"
+msgstr "Normativa informática por firmar"
+
+msgid "Charte informatique : relance"
+msgstr "Normativa informática: recordatorio"
+
+msgid "Campagne lancée : %d personne(s) invitée(s) à signer la charte informatique."
+msgstr "Campaña lanzada: %d persona(s) invitada(s) a firmar la normativa informática."
+
+msgid "Charte informatique signée. Merci !"
+msgstr "Normativa informática firmada. ¡Gracias!"
+
+#, php-format
+msgid "La campagne de charte « %s » est encore en cours pour cette entité : attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
+msgstr "La campaña de carta informática «%s» sigue en curso para esta entidad: espere a su fecha límite o ciérrela antes de lanzar una nueva."
+
+msgid "Arrivée"
+msgid_plural "Arrivées"
+msgstr[0] "Incorporación"
+msgstr[1] "Incorporaciones"
+
+msgid "Création du compte"
+msgstr "Creación de la cuenta"
+
+msgid "Réactivation du compte"
+msgstr "Reactivación de la cuenta"
+
+msgid "Date de début du compte"
+msgstr "Fecha de inicio de la cuenta"
+
+msgid "Commander ou préparer le poste de travail"
+msgstr "Pedir o preparar el puesto de trabajo"
+
+msgid "Attribuer les licences logicielles"
+msgstr "Asignar las licencias de software"
+
+msgid "Créer les accès (badge, comptes applicatifs, messagerie)"
+msgstr "Crear los accesos (tarjeta, cuentas de aplicaciones, correo)"
+
+msgid "Remettre le matériel et faire signer la fiche d'attribution"
+msgstr "Entregar el material y hacer firmar la hoja de asignación"
+
+#, php-format
+msgid "Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel."
+msgstr "%1$s se incorpora el %2$s: prepare su puesto, sus accesos y su material."
+
+#, php-format
+msgid "Arrivée de %s : préparez son poste, ses accès et son matériel."
+msgstr "Incorporación de %s: prepare su puesto, sus accesos y su material."
+
+msgid "Le matériel se remet depuis l'onglet « Remise de matériel » de ce ticket : la fiche d'attribution est envoyée à la personne pour signature."
+msgstr "El material se entrega desde la pestaña «Entrega de material» de este ticket: la hoja de asignación se envía a la persona para su firma."
+
+#, php-format
+msgid "Arrivée de %1$s (le %2$s)"
+msgstr "Incorporación de %1$s (el %2$s)"
+
+#, php-format
+msgid "Arrivée de %s"
+msgstr "Incorporación de %s"
+
+#, php-format
+msgid "Le compte de %1$s ne sera valide qu'à partir du %2$s : la personne sera ajoutée automatiquement comme demandeur de ce ticket ce jour-là. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "La cuenta de %1$s solo será válida a partir del %2$s: la persona se añadirá automáticamente como solicitante de este ticket ese día. Entonces se le podrá entregar el material desde la pestaña «Entrega de material»."
+
+#, php-format
+msgid "%s n'a pas encore de profil dans cette entité : la personne sera ajoutée automatiquement comme demandeur de ce ticket dès que ses habilitations seront créées. Le matériel pourra alors lui être remis depuis l'onglet « Remise de matériel »."
+msgstr "%s aún no tiene perfil en esta entidad: la persona se añadirá automáticamente como solicitante de este ticket en cuanto se creen sus autorizaciones. Entonces se le podrá entregar el material desde la pestaña «Entrega de material»."
+
+msgid "Prépare les arrivées à l'approche de la date de début du compte"
+msgstr "Prepara las incorporaciones al acercarse la fecha de inicio de la cuenta"
+
+msgid "Le ticket d'arrivée n'a pas pu être créé. Vérifiez vos droits de création de tickets dans l'entité de la personne."
+msgstr "No se pudo crear el ticket de incorporación. Compruebe sus derechos de creación de tickets en la entidad de la persona."
+
+msgid "Une arrivée est déjà en cours pour cette personne : voici son ticket."
+msgstr "Ya hay una incorporación en curso para esta persona: aquí está su ticket."
+
+msgid "Arrivée préparée : le ticket liste les étapes, le matériel se remet depuis son onglet « Remise de matériel »."
+msgstr "Incorporación preparada: el ticket enumera los pasos, el material se entrega desde su pestaña «Entrega de material»."
+
+msgid "Arrivée de la personne"
+msgstr "Incorporación de la persona"
+
+#, php-format
+msgid "Arrivée en cours : ticket n°%d."
+msgstr "Incorporación en curso: ticket n.º %d."
+
+msgid "Voir le ticket d'arrivée"
+msgstr "Ver el ticket de incorporación"
+
+msgid "Un ticket pour l'équipe avec les étapes à suivre (poste, licences, accès) ; le matériel se remet ensuite depuis ce ticket."
+msgstr "Un ticket para el equipo con los pasos a seguir (puesto, licencias, accesos); el material se entrega después desde este ticket."
+
+msgid "Préparer l'arrivée"
+msgstr "Preparar la incorporación"
+
+msgid "Arrivée d'un salarié"
+msgstr "Incorporación de un empleado"
+
+msgid "Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-dessous ; le matériel se remet ensuite depuis l'onglet « Remise de matériel » du ticket. L'action « Préparer l'arrivée » est toujours disponible dans l'onglet « Attributions » de la fiche utilisateur ; les déclencheurs automatiques ci-dessous sont facultatifs."
+msgstr "Un ticket «Incorporación de …» para el equipo, con una tarea por paso a continuación; el material se entrega después desde la pestaña «Entrega de material» del ticket. La acción «Preparar la incorporación» está siempre disponible en la pestaña «Atribuciones» de la ficha del usuario; los disparadores automáticos siguientes son opcionales."
+
+msgid "Préparer l'arrivée quand un compte GLPI est créé"
+msgstr "Preparar la incorporación cuando se crea una cuenta GLPI"
+
+msgid "À activer après le premier import de l'annuaire : sinon chaque compte importé ouvrirait un ticket. Un compte dont la date de début est passée de plus de 30 jours est ignoré."
+msgstr "Activar después de la primera importación del directorio: si no, cada cuenta importada abriría un ticket. Se ignora una cuenta cuya fecha de inicio pasó hace más de 30 días."
+
+msgid "Préparer l'arrivée quand un compte GLPI est réactivé (retour d'un salarié)"
+msgstr "Preparar la incorporación cuando se reactiva una cuenta GLPI (regreso de un empleado)"
+
+msgid "Préparer l'arrivée à l'approche de la date de début du compte"
+msgstr "Preparar la incorporación al acercarse la fecha de inicio de la cuenta"
+
+msgid "Nombre de jours avant la date de début"
+msgstr "Número de días antes de la fecha de inicio"
+
+msgid "Vérifié chaque jour par l'action automatique « assetsignArrivals »."
+msgstr "Lo comprueba cada día la acción automática «assetsignArrivals»."
+
+msgid "Tâches du ticket d'arrivée (une par ligne)"
+msgstr "Tareas del ticket de incorporación (una por línea)"
+
+msgid "Vide : liste proposée par défaut. 20 tâches au plus."
+msgstr "Vacío: lista por defecto. Como máximo 20 tareas."
+
+msgid "Oui"
+msgstr "Sí"
+
+msgid "Non"
+msgstr "No"
+
+msgid "Champs du plugin Fields sur la fiche"
+msgstr "Campos del plugin Fields en la ficha"
+
+msgid "Le plugin Fields n'est pas actif : rien à configurer."
+msgstr "El plugin Fields no está activo: nada que configurar."
+
+msgid "Aucun bloc de champs actif dans le plugin Fields."
+msgstr "Ningún bloque de campos activo en el plugin Fields."
+
+msgid "La fiche est remise au bénéficiaire : ne cochez pas un bloc qui contient des informations internes (prix d'achat, code analytique…)."
+msgstr "La ficha se entrega al beneficiario: no marque un bloque que contenga información interna (precio de compra, código analítico…)."
+
+msgid "Les champs renseignés des blocs cochés s'ajoutent au tableau du matériel sur la fiche. Dans le texte du gabarit, un champ s'insère avec {champ:nom_du_champ} (nom système du champ dans Fields)."
+msgstr "Los campos rellenados de los bloques marcados se añaden a la tabla del equipo en la ficha. En el texto de la plantilla, un campo se inserta con {champ:nombre_campo} (nombre de sistema del campo en Fields)."
+
+msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
+msgstr "(campo del plugin Fields, si su bloque está seleccionado en la configuración)"
+
+msgid "Plein écran (tablette)"
+msgstr "Pantalla completa (tableta)"
+
+#, php-format
+msgid "Merci, votre signature a bien été enregistrée. Vous pouvez rendre l'appareil à %s."
+msgstr "Gracias, su firma se ha registrado. Puede devolver el dispositivo a %s."
+
+msgid "Reprendre la main (technicien)"
+msgstr "Retomar el control (técnico)"
+
+msgid "Rappel : signature en attente"
+msgstr "Recordatorio: firma pendiente"
+
+#, php-format
+msgid "La fiche « %1$s » de %2$s attend sa signature depuis le %3$s."
+msgstr "La ficha «%1$s» de %2$s espera su firma desde el %3$s."
+
+msgid "Nouvelle fiche à signer"
+msgstr "Nueva ficha para firmar"
+
+#, php-format
+msgid "La fiche « %1$s » attend la signature de %2$s."
+msgstr "La ficha «%1$s» espera la firma de %2$s."
+
+msgid "Ouvrir mes signatures"
+msgstr "Abrir mis firmas"
+
+msgid "Message de test AssetSign"
+msgstr "Mensaje de prueba de AssetSign"
+
+msgid "Les avis de signature de cette entité arriveront dans ce canal."
+msgstr "Los avisos de firma de esta entidad llegarán a este canal."
+
+msgid "Message de test envoyé."
+msgstr "Mensaje de prueba enviado."
+
+msgid "Échec de l'envoi : vérifiez l'outil choisi et l'adresse du webhook, enregistrez, puis réessayez (détail dans le journal assetsign)."
+msgstr "Error en el envío: compruebe la herramienta elegida y la dirección del webhook, guarde y vuelva a intentarlo (detalle en el registro de assetsign)."
+
+msgid "Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même."
+msgstr "Dirección del webhook rechazada: debe empezar por https:// y no apuntar al propio servidor."
+
+msgid "Avis dans un outil de messagerie"
+msgstr "Avisos en una herramienta de mensajería"
+
+msgid "Un message est publié dans un canal Teams, Slack ou Mattermost (webhook entrant) quand une fiche est envoyée et à chaque relance. Il ne contient jamais le lien de signature personnel : seulement un lien vers « Mes signatures », qui demande la connexion du bénéficiaire."
+msgstr "Se publica un mensaje en un canal de Teams, Slack o Mattermost (webhook entrante) cuando se envía una ficha y en cada recordatorio. Nunca contiene el enlace de firma personal: solo un enlace a «Mis firmas», que requiere que el beneficiario inicie sesión."
+
+msgid "Outil"
+msgstr "Herramienta"
+
+msgid "Aucun (e-mails seulement)"
+msgstr "Ninguna (solo correos)"
+
+msgid "Adresse du webhook entrant"
+msgstr "Dirección del webhook entrante"
+
+msgid "Adresse enregistrée : laissez vide pour la conserver"
+msgstr "Dirección guardada: déjela vacía para conservarla"
+
+msgid "Elle vaut mot de passe : elle est chiffrée en base et n'est jamais réaffichée. Adresse en https uniquement."
+msgstr "Equivale a una contraseña: se cifra en la base de datos y nunca se vuelve a mostrar. Solo direcciones https."
+
+msgid "Supprimer l'adresse enregistrée"
+msgstr "Eliminar la dirección guardada"
+
+msgid "Quand une fiche est envoyée"
+msgstr "Cuando se envía una ficha"
+
+msgid "À chaque relance"
+msgstr "En cada recordatorio"
+
+msgid "Envoyer un message de test"
+msgstr "Enviar un mensaje de prueba"
+
+msgid "Utilise les réglages déjà enregistrés : enregistrez d'abord."
+msgstr "Usa los ajustes ya guardados: guarde primero."
+
+msgid "Personne n'a signé une ancienne version de la charte : aucune re-signature à lancer."
+msgstr "Nadie firmó una versión anterior de la carta: no hay nueva firma que lanzar."
+
+#, php-format
+msgid "Charte informatique, nouvelle version du %s"
+msgstr "Carta informática, nueva versión del %s"
+
+msgid "Historique des versions de la charte"
+msgstr "Historial de versiones de la carta"
+
+msgid "Campagnes"
+msgstr "Campañas"
+
+msgid "Chaque modification du texte de la charte crée une nouvelle version. Les fiches et les campagnes déjà signées gardent la version en vigueur au moment de la signature."
+msgstr "Cada modificación del texto de la carta crea una nueva versión. Las fichas y campañas ya firmadas conservan la versión vigente en el momento de la firma."
+
+msgid "La charte en vigueur n'a encore été diffusée par aucune campagne."
+msgstr "La carta vigente aún no se ha difundido en ninguna campaña."
+
+msgid "Aucune campagne de charte pour l'instant"
+msgstr "Ninguna campaña de carta por ahora"
+
+#, php-format
+msgid "Version du %s"
+msgstr "Versión del %s"
+
+msgid "En vigueur"
+msgstr "Vigente"
+
+msgid "Ancienne version"
+msgstr "Versión anterior"
+
+#, php-format
+msgid "%d signataire(s)"
+msgstr "%d firmante(s)"
+
+msgid "Empreinte"
+msgstr "Huella"
+
+#, php-format
+msgid "La charte informatique a changé : %d personne(s) ont signé une ancienne version."
+msgstr "La carta informática ha cambiado: %d persona(s) firmaron una versión anterior."
+
+msgid "Leur faire signer la nouvelle version"
+msgstr "Hacerles firmar la nueva versión"
+
+msgid "Faire re-signer automatiquement quand la charte change"
+msgstr "Pedir automáticamente una nueva firma cuando cambie la carta"
+
+msgid "Quand le texte de la charte est modifié, une campagne est lancée pour les seules personnes qui ont signé une ancienne version. Sinon, elle est proposée sur la page des campagnes."
+msgstr "Cuando se modifica el texto de la carta, se lanza una campaña solo para las personas que firmaron una versión anterior. Si no, se propone en la página de campañas."
+
+msgid "Renouvellement du parc"
+msgstr "Renovación del parque"
+
+#, php-format
+msgid "Renouvellement du parc : %1$d matériel(s), budget estimé %2$s"
+msgstr "Renovación del parque: %1$d equipo(s), presupuesto estimado %2$s"
+
+msgid "Utilisateur"
+msgstr "Usuario"
+
+msgid "Fin d'amortissement"
+msgstr "Fin de amortización"
+
+msgid "Valeur d'achat"
+msgstr "Valor de compra"
+
+msgid "Renouvellement du parc : un ticket de changement mensuel listant les matériels en fin d'amortissement (si activé)"
+msgstr "Renovación del parque: un cambio mensual con los equipos al final de su amortización (si está activado)"
+
+#, php-format
+msgid "Ticket de changement n°%d créé."
+msgstr "Cambio n.º %d creado."
+
+msgid "Aucun matériel à renouveler sur cette période."
+msgstr "Ningún equipo que renovar en este período."
+
+msgid "Matériels dont l'amortissement se termine dans la période choisie (fins déjà passées comprises), d'après leur fiche financière : mise en service, ou à défaut achat, et durée d'amortissement, ou à défaut celle de la Configuration. Rien n'est modifié sur les matériels."
+msgstr "Equipos cuya amortización termina en el período elegido (finales ya pasados incluidos), según su ficha financiera: puesta en servicio, o si no compra, y duración de amortización, o si no la de la Configuración. No se modifica nada en los equipos."
+
+#, php-format
+msgid "Déjà amortis (%s)"
+msgstr "Ya amortizados (%s)"
+
+#, php-format
+msgid "%d matériel(s)"
+msgstr "%d equipo(s)"
+
+msgid "Budget estimé d'après la valeur d'achat ; un matériel sans valeur compte zéro."
+msgstr "Presupuesto estimado según el valor de compra; un equipo sin valor cuenta como cero."
+
+msgid "Exporter (CSV)"
+msgstr "Exportar (CSV)"
+
+msgid "Créer le ticket de changement"
+msgstr "Crear el cambio"
+
+msgid "Durée par défaut et changement mensuel : Configuration"
+msgstr "Duración predeterminada y cambio mensual: Configuración"
+
+msgid "Les matériels sans date de mise en service ni d'achat dans leur fiche financière ne sont pas comptés."
+msgstr "No se cuentan los equipos sin fecha de puesta en servicio ni de compra en su ficha financiera."
+
+#, php-format
+msgid "Matériels dont l'amortissement se termine dans les %d prochains mois (fins déjà passées comprises). Aucune donnée des matériels n'a été modifiée."
+msgstr "Equipos cuya amortización termina en los próximos %d meses (finales ya pasados incluidos). No se modificó ningún dato de los equipos."
+
+msgid "Budget estimé par année"
+msgstr "Presupuesto estimado por año"
+
+#, php-format
+msgid "fin d'amortissement le %s"
+msgstr "fin de amortización el %s"
+
+msgid "Durée d'amortissement par défaut (années)"
+msgstr "Duración de amortización predeterminada (años)"
+
+msgid "Utilisée quand la fiche financière du matériel ne précise pas de durée d'amortissement."
+msgstr "Se usa cuando la ficha financiera del equipo no indica una duración de amortización."
+
+msgid "Créer chaque mois un ticket de changement listant les matériels à renouveler dans les 12 mois"
+msgstr "Crear cada mes un cambio con los equipos que renovar en 12 meses"
+
+msgid "Préparation de poste"
+msgstr "Preparación del puesto"
+
+msgid "Nature"
+msgstr "Naturaleza"
+
+#, php-format
+msgid "Points obligatoires non renseignés : %s"
+msgstr "Puntos obligatorios sin completar: %s"
+
+msgid "Seules des photos (JPEG, PNG, WebP) peuvent être jointes."
+msgstr "Solo se pueden adjuntar fotos (JPEG, PNG, WebP)."
+
+msgid "Maintenance et préparation de poste"
+msgstr "Mantenimiento y preparación del puesto"
+
+msgid "Utilisé pour"
+msgstr "Usado para"
+
+msgid "Obligatoire"
+msgstr "Obligatorio"
+
+msgid "Nouvelle fiche"
+msgstr "Nueva ficha"
+
+msgid "Préparation d'un poste pour un nouvel arrivant : les points marqués * sont obligatoires pour valider la fiche."
+msgstr "Preparación de un puesto para una nueva incorporación: los puntos marcados con * son obligatorios para validar la ficha."
+
+msgid "Photos du matériel"
+msgstr "Fotos del equipo"
+
+msgid "Sur smartphone, ouvre directement l'appareil photo. Les photos sont jointes au matériel, à la fiche et au ticket."
+msgstr "En un smartphone, abre directamente la cámara. Las fotos se adjuntan al equipo, a la ficha y al ticket."
+
+msgid "Aucun ticket ouvert lié à ce matériel"
+msgstr "Ningún ticket abierto vinculado a este equipo"
+
+msgid "La fiche PDF et les photos y sont jointes, avec un suivi privé. Le ticket n'est jamais fermé automatiquement."
+msgstr "La ficha PDF y las fotos se adjuntan, con un seguimiento privado. El ticket nunca se cierra automáticamente."
+
+msgid "Aucune fiche rattachée à ce ticket."
+msgstr "Ninguna ficha vinculada a este ticket."
+
+msgid "Préparer un poste"
+msgstr "Preparar un puesto"
+
+msgid "Liez d'abord le matériel à préparer à ce ticket (onglet « Éléments »)."
+msgstr "Vincule primero el equipo a preparar con este ticket (pestaña «Elementos»)."
+
+#, php-format
+msgid "Points de contrôle renseignés : %d"
+msgstr "Puntos de control completados: %d"
+
+#, php-format
+msgid "Photos jointes : %d"
+msgstr "Fotos adjuntas: %d"
+
+msgid "Fiche de préparation de poste créée."
+msgstr "Ficha de preparación del puesto creada."
+
+#, php-format
+msgid "%1$s, version %2$s approuvée le %3$s"
+msgstr "%1$s, versión %2$s aprobada el %3$s"
+
+msgid "Pilotage du parc"
+msgstr "Gestión del parque"
+
+msgid "Consommation d'énergie"
+msgstr "Consumo de energía"
+
+msgid "Poids : Consommation d'énergie"
+msgstr "Peso: Consumo de energía"
+
+msgid "Consommation d'énergie : moyenne journalière sur 12 mois calculée par le plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si le plugin Carbon n'est pas actif ou n'a rien calculé pour le matériel."
+msgstr "Consumo de energía: media diaria en 12 meses calculada por el plugin Carbon (degradación completa a partir de 1 kWh al día). Se ignora si el plugin Carbon no está activo o no ha calculado nada para el equipo."
+
+#, php-format
+msgid "dont %d calculés par le plugin Carbon (sans saisie manuelle)"
+msgstr "de ellos %d calculados por el plugin Carbon (sin entrada manual)"
+
+msgid "Plugin Carbon"
+msgstr "Plugin Carbon"
+
+msgid "Fabrication (scope 3)"
+msgstr "Fabricación (alcance 3)"
+
+msgid "la saisie manuelle ci-dessus est retenue"
+msgstr "se utiliza la entrada manual anterior"
+
+msgid "Usage (scope 2)"
+msgstr "Uso (alcance 2)"
+
+msgid "12 derniers mois"
+msgstr "Últimos 12 meses"
+
+#, php-format
+msgid "%d jour(s) calculé(s)"
+msgstr "%d día(s) calculado(s)"
+
+msgid "empreinte de fabrication du plugin Carbon"
+msgstr "huella de fabricación del plugin Carbon"
+
+msgid "Saisie manuelle : la source précise d'où vous tenez le chiffre (fiche constructeur, outil externe consulté, estimation propre). Elle l'emporte sur l'empreinte calculée par le plugin Carbon, utilisée seulement à défaut."
+msgstr "Entrada manual: la fuente indica de dónde procede la cifra (ficha del fabricante, herramienta externa consultada, estimación propia). Prevalece sobre la huella calculada por el plugin Carbon, que solo se usa en su defecto."
+
+msgid "Ce matériel n'a pas d'utilisateur assigné :"
+msgstr "Este equipo no tiene ningún usuario asignado:"
+
+#, php-format
+msgid "créez maintenant la fiche de %s"
+msgstr "cree ahora el formulario de %s"
+
+msgid "(bénéficiaire interne ou externe)."
+msgstr "(beneficiario interno o externo)."
+
+#, php-format
+msgid "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."
+msgstr "Expediente de llegada de %s vinculado a este ticket: el equipo se entrega desde la pestaña «Entrega de material»."

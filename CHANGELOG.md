@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Portugais du Brésil (pt_BR)**, et le portugais du Portugal (pt_PT) qui le reprend.
+- **Variantes régionales** : en_US, es_MX et les espagnols d'Amérique latine, fr_CA, fr_BE. GLPI
+  ne se replie pas d'une variante vers sa langue de base : un utilisateur réglé en es_MX voyait le
+  plugin en anglais. Copies tenues à jour par `tools/sync-locale-variants.sh`, vérifiées en CI.
+
+### Added
+
 - **Arrivées et départs avec Configuration GLPI Auto** (issue grcmanager #362) : quand ce plugin est
   actif, le ticket d'arrivée ou de départ reprend sa catégorie (« Onboarding / Création de compte »,
   « Offboarding / Suppression ») et une tâche avec la liste de contrôle de son gabarit (arrivée ou
