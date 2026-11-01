@@ -4725,3 +4725,12 @@ msgstr "No user"
 
 msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
 msgstr "Handover and return forms are created automatically when a user is assigned to this equipment or removed from it."
+
+msgid "Brouillons à envoyer"
+msgstr "Drafts to send"
+
+msgid "Nouvelle attribution"
+msgstr "New handover"
+
+msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
+msgstr "Choose the recipient and the equipment: the handover form is prepared just as when assigning from the equipment's record."

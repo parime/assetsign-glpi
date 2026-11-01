@@ -4745,3 +4745,12 @@ msgstr "Aucun utilisateur"
 
 msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
 msgstr "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
+
+msgid "Brouillons à envoyer"
+msgstr "Brouillons à envoyer"
+
+msgid "Nouvelle attribution"
+msgstr "Nouvelle attribution"
+
+msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
+msgstr "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."

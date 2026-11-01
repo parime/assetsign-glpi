@@ -29,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Liste des attributions** (issue #282) : compteurs cliquables en tête (brouillons à envoyer,
+  en attente de signature, signées, expirées) et « Nouvelle attribution » : choisir le
+  destinataire et le matériel prépare la feuille sans ouvrir la fiche du matériel. Les boutons
+  de création manuelle (don, vente, destruction) portent l'icône de leur type.
 - **Onglets plus lisibles** (issue #282) : l'onglet Attributions d'un matériel s'ouvre sur un
   bandeau récapitulatif (statut et utilisateur en pastilles, marque et modèle, numéros) ; chaque
   fiche affiche son type avec une icône et son statut en couleur ; un onglet vide explique quand

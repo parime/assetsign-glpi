@@ -5315,3 +5315,12 @@ msgstr "Brak użytkownika"
 
 msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
 msgstr "Formularze przekazania i zwrotu są tworzone automatycznie, gdy użytkownik zostaje przypisany do tego sprzętu lub z niego usunięty."
+
+msgid "Brouillons à envoyer"
+msgstr "Szkice do wysłania"
+
+msgid "Nouvelle attribution"
+msgstr "Nowe przekazanie"
+
+msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
+msgstr "Wybierz adresata i sprzęt: formularz przekazania zostanie przygotowany tak jak przy przypisaniu z rekordu sprzętu."

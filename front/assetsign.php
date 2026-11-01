@@ -17,6 +17,9 @@ unset($_GET['as_map'], $_POST['as_map'], $_REQUEST['as_map']);
 Html::header(Assetsign::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', Assetsign::class);
 \GlpiPlugin\Assetsign\MenuSection::showSection(\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Assetsign::class);
 
+// Issue #282 : compteurs cliquables et nouvelle attribution, au-dessus de la liste.
+Assetsign::showHome();
+
 Search::show(Assetsign::class);
 
 Html::footer();

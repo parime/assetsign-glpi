@@ -763,6 +763,85 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
+     * Listes « type de matériel » puis « matériel » (la seconde se remplit selon le type choisi),
+     * pour affecter un matériel : onglet d'un utilisateur et en-tête de la liste des attributions.
+     *
+     * @return array{0: string, 1: string} HTML des deux listes
+     */
+   public static function assignDropdowns(string $containerId): array {
+       global $CFG_GLPI;
+
+       $rand = mt_rand();
+       ob_start();
+       \Dropdown::showFromArray('itemtype', Config::getItemtypeLabels(), [
+           'display_emptychoice' => true,
+           'rand'                => $rand,
+       ]);
+       $itemtypeHtml = (string) ob_get_clean();
+
+       ob_start();
+       echo TwigBlocks::fragment('components/items_container.html.twig', ['id' => $containerId]);
+       \Ajax::updateItemOnSelectEvent(
+           "dropdown_itemtype$rand",
+           $containerId,
+           $CFG_GLPI['root_doc'] . '/ajax/dropdownAllItems.php',
+           [
+               'idtable' => '__VALUE__',
+               'name'    => 'items_id',
+               'rand'    => $rand,
+           ]
+       );
+       return [$itemtypeHtml, (string) ob_get_clean()];
+   }
+
+    /**
+     * Issue #282 : en-tête de la liste des attributions : compteurs cliquables (brouillons, en
+     * attente, signées, expirées) et création d'une attribution sans passer par la fiche du
+     * matériel (affecter le matériel déclenche la feuille, comme depuis sa fiche).
+     */
+   public static function showHome(): void {
+       $base = ['is_deleted' => 0] + getEntitiesRestrictCriteria(self::getTable(), '', '', true);
+       $groups = [
+           ['statuses' => [self::STATUS_DRAFT], 'label' => __('Brouillons à envoyer', 'assetsign'), 'icon' => 'ti ti-pencil', 'color' => 'bg-secondary-lt'],
+           ['statuses' => [self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED, self::STATUS_AWAITING_COSIGNATURE], 'label' => __('Attributions en attente de signature', 'assetsign'), 'icon' => 'ti ti-clock', 'color' => 'bg-azure-lt'],
+           ['statuses' => [self::STATUS_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE], 'label' => __('Attributions signées', 'assetsign'), 'icon' => 'ti ti-circle-check', 'color' => 'bg-green-lt'],
+           ['statuses' => [self::STATUS_EXPIRED], 'label' => __('Attributions expirées', 'assetsign'), 'icon' => 'ti ti-alert-triangle', 'color' => 'bg-red-lt'],
+       ];
+       $counters = [];
+      foreach ($groups as $group) {
+          $criteria = [];
+         foreach ($group['statuses'] as $k => $status) {
+             $criteria[] = ['link' => $k === 0 ? 'AND' : 'OR', 'field' => 5, 'searchtype' => 'equals', 'value' => $status];
+         }
+          $counters[] = [
+              'label' => $group['label'],
+              'icon'  => $group['icon'],
+              'color' => $group['color'],
+              'count' => countElementsInTable(self::getTable(), $base + ['status' => $group['statuses']]),
+              'url'   => self::getSearchURL() . '?' . http_build_query(['criteria' => $criteria, 'reset' => 'reset']),
+          ];
+      }
+
+       $canAssign = Session::haveRight(self::$rightname, UPDATE);
+       [$itemtypeHtml, $itemHtml] = $canAssign ? self::assignDropdowns('assetsign-home-items-container') : ['', ''];
+       $userHtml = '';
+      if ($canAssign) {
+          ob_start();
+          \User::dropdown(['name' => 'users_id', 'right' => 'all', 'entity' => $_SESSION['glpiactiveentities'] ?? 0]);
+          $userHtml = (string) ob_get_clean();
+      }
+
+       \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/attributions_home.html.twig', [
+           'counters'      => $counters,
+           'can_assign'    => $canAssign,
+           'user_html'     => $userHtml,
+           'itemtype_html' => $itemtypeHtml,
+           'item_html'     => $itemHtml,
+           'csrf_token'    => Session::getNewCSRFToken(),
+       ]);
+   }
+
+    /**
      * Onglet Assetsigns cote beneficiaire (fiche d'un compte GLPI, Administration >
      * Utilisateurs) : filtre par `users_id` (le beneficiaire) plutot que par
      * itemtype/items_id (le materiel cible, sens inverse de showForItem()) -
@@ -796,28 +875,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        $itemtypeDropdownHtml = '';
        $itemDropdownHtml = '';
       if ($canAssign) {
-          $rand = mt_rand();
-
-          ob_start();
-          \Dropdown::showFromArray('itemtype', Config::getItemtypeLabels(), [
-              'display_emptychoice' => true,
-              'rand'                => $rand,
-          ]);
-          $itemtypeDropdownHtml = ob_get_clean();
-
-          ob_start();
-          echo TwigBlocks::fragment('components/items_container.html.twig', ['id' => 'assetsign-assign-items-container']);
-          \Ajax::updateItemOnSelectEvent(
-              "dropdown_itemtype$rand",
-              'assetsign-assign-items-container',
-              $CFG_GLPI['root_doc'] . '/ajax/dropdownAllItems.php',
-              [
-                  'idtable' => '__VALUE__',
-                  'name'    => 'items_id',
-                  'rand'    => $rand,
-              ]
-          );
-          $itemDropdownHtml = ob_get_clean();
+          [$itemtypeDropdownHtml, $itemDropdownHtml] = self::assignDropdowns('assetsign-assign-items-container');
       }
 
        // Issue #157 : depart de la personne : restitution groupee de tout son materiel.

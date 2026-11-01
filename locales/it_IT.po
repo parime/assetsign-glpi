@@ -4755,3 +4755,12 @@ msgstr "Nessun utente"
 
 msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
 msgstr "Le schede di consegna e di restituzione vengono create automaticamente quando un utente viene assegnato a questa apparecchiatura o rimosso da essa."
+
+msgid "Brouillons à envoyer"
+msgstr "Bozze da inviare"
+
+msgid "Nouvelle attribution"
+msgstr "Nuova consegna"
+
+msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
+msgstr "Scegli il destinatario e l'apparecchiatura: la scheda di consegna viene preparata come per un'assegnazione dalla scheda dell'apparecchiatura."
