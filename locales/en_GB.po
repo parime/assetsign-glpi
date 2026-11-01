@@ -4708,3 +4708,20 @@ msgstr "(internal or external beneficiary)."
 #, php-format
 msgid "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."
 msgstr "Arrival file for %s linked to this ticket: equipment is handed over from the \"Equipment handover\" tab."
+
+#, php-format
+msgid "Statut : %s"
+msgstr "Status: %s"
+
+msgid "Sans statut"
+msgstr "No status"
+
+#, php-format
+msgid "Utilisateur : %s"
+msgstr "User: %s"
+
+msgid "Aucun utilisateur"
+msgstr "No user"
+
+msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
+msgstr "Handover and return forms are created automatically when a user is assigned to this equipment or removed from it."

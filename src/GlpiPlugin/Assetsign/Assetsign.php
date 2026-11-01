@@ -702,7 +702,64 @@ class Assetsign extends Compat\Base\AssetsignBase
            'prefill_type'  => $prefillType,
            // Issue #170 : bouton d'envoi des brouillons d'attribution.
            'can_send_drafts' => Session::haveRight(self::$rightname, UPDATE),
+           // Issue #282 : bandeau recapitulatif du materiel, statuts en pastilles de couleur.
+           'summary'       => self::itemSummary($item),
+           'types'         => self::getTypes(),
+           'status_badges' => self::getStatusBadgeClasses(),
+           'type_icons'    => self::getTypeIcons(),
        ]);
+   }
+
+    /**
+     * Issue #282 : ce que le technicien doit voir d'un coup d'oeil en ouvrant l'onglet (materiel,
+     * statut, utilisateur, numeros) : avant, un onglet vide n'affichait qu'une phrase.
+     *
+     * @return array<string, string|int>
+     */
+   public static function itemSummary(CommonDBTM $item): array {
+       $usersId = (int) ($item->fields['users_id'] ?? 0);
+       $statesId = (int) ($item->fields['states_id'] ?? 0);
+       return [
+           'icon'        => $item::getIcon(),
+           'type'        => $item::getTypeName(1),
+           'name'        => (string) ($item->fields['name'] ?? ''),
+           'maker'       => trim(self::resolveManufacturerName($item) . ' ' . self::resolveModelName($item)),
+           'serial'      => (string) ($item->fields['serial'] ?? ''),
+           'otherserial' => (string) ($item->fields['otherserial'] ?? ''),
+           'state'       => $statesId > 0 ? (string) \Dropdown::getDropdownName('glpi_states', $statesId, false, true, false) : '',
+           'user'        => $usersId > 0 ? (string) \User::getFriendlyNameById($usersId) : '',
+           'users_id'    => $usersId,
+       ];
+   }
+
+    /**
+     * @return array<int, string> statut => classe de pastille Tabler
+     */
+   public static function getStatusBadgeClasses(): array {
+       return [
+           self::STATUS_DRAFT                  => 'bg-secondary-lt',
+           self::STATUS_PENDING                => 'bg-yellow-lt',
+           self::STATUS_SENT                   => 'bg-azure-lt',
+           self::STATUS_VIEWED                 => 'bg-azure-lt',
+           self::STATUS_SIGNED                 => 'bg-green-lt',
+           self::STATUS_EXPIRED                => 'bg-red-lt',
+           self::STATUS_CANCELLED              => 'bg-secondary-lt',
+           self::STATUS_COMPLETED_NO_SIGNATURE => 'bg-green-lt',
+           self::STATUS_AWAITING_COSIGNATURE   => 'bg-orange-lt',
+       ];
+   }
+
+    /**
+     * @return array<int, string> type de fiche => icone Tabler
+     */
+   public static function getTypeIcons(): array {
+       return [
+           self::TYPE_HANDOVER    => 'ti ti-user-check',
+           self::TYPE_RETURN      => 'ti ti-arrow-back-up',
+           self::TYPE_DON         => 'ti ti-heart-handshake',
+           self::TYPE_VENTE       => 'ti ti-coin',
+           self::TYPE_DESTRUCTION => 'ti ti-recycle',
+       ];
    }
 
     /**

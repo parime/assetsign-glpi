@@ -29,6 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Onglets plus lisibles** (issue #282) : l'onglet Attributions d'un matériel s'ouvre sur un
+  bandeau récapitulatif (statut et utilisateur en pastilles, marque et modèle, numéros) ; chaque
+  fiche affiche son type avec une icône et son statut en couleur ; un onglet vide explique quand
+  les fiches sont créées. Le Passeport matériel présente l'identité en tuiles et le score de santé
+  en grand, avec une barre par facteur.
 - Plus aucun tiret cadratin dans les textes affichés, les traductions et la documentation : il est
   remplacé par « : », une virgule ou « - » selon le cas (même règle que GRC Manager et
   Configuration GLPI Auto, vérifiée en CI par glpi-plugin-security).

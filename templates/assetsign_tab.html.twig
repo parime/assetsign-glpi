@@ -1,12 +1,48 @@
 <div class="card">
+  {# Issue #282 : bandeau recapitulatif du materiel (statut, utilisateur, numeros) : le technicien
+     voit tout d'un coup d'oeil. Absent sur l'onglet d'un utilisateur (summary non fourni). #}
+  {% if summary is defined %}
+    <div class="card-header" style="border-left: 4px solid var(--tblr-primary);">
+      <div class="d-flex align-items-start gap-3 w-100">
+        <span class="avatar avatar-md bg-primary-lt"><i class="{{ summary.icon }} fs-2"></i></span>
+        <div class="flex-fill">
+          <h3 class="card-title mb-1">{{ summary.name ?: '-' }} <span class="text-secondary fw-normal">· {{ summary.type }}</span></h3>
+          <div class="d-flex flex-wrap gap-2 mb-2">
+            {% if summary.state %}
+              <span class="badge bg-blue-lt"><i class="ti ti-activity me-1"></i>{{ __('Statut : %s', 'assetsign')|format(summary.state) }}</span>
+            {% else %}
+              <span class="badge bg-secondary-lt"><i class="ti ti-activity me-1"></i>{{ __('Sans statut', 'assetsign') }}</span>
+            {% endif %}
+            {% if summary.user %}
+              <span class="badge bg-purple-lt"><i class="ti ti-user me-1"></i>{{ __('Utilisateur : %s', 'assetsign')|format(summary.user) }}</span>
+            {% else %}
+              <span class="badge bg-secondary-lt"><i class="ti ti-user-off me-1"></i>{{ __('Aucun utilisateur', 'assetsign') }}</span>
+            {% endif %}
+          </div>
+          <div class="row g-2 small">
+            <div class="col-sm-4"><div class="text-secondary">{{ __('Marque / modèle', 'assetsign') }}</div><div class="fw-bold">{{ summary.maker ?: '-' }}</div></div>
+            <div class="col-sm-4"><div class="text-secondary">{{ __('N° de série', 'assetsign') }}</div><div class="fw-bold">{{ summary.serial ?: '-' }}</div></div>
+            <div class="col-sm-4"><div class="text-secondary">{{ __('N° d\'inventaire', 'assetsign') }}</div><div class="fw-bold">{{ summary.otherserial ?: '-' }}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
   <div class="card-body">
     {% if assetsigns|length == 0 %}
-      <p>{{ __('Aucune attribution enregistrée pour ce matériel.', 'assetsign') }}</p>
+      <div class="empty py-4">
+        <div class="empty-icon"><i class="ti ti-file-text fs-1 text-secondary"></i></div>
+        <p class="empty-title">{{ __('Aucune attribution enregistrée pour ce matériel.', 'assetsign') }}</p>
+        {% if summary is defined %}
+          <p class="empty-subtitle text-secondary">{{ __('Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré.', 'assetsign') }}</p>
+        {% endif %}
+      </div>
     {% else %}
-      <table class="table table-striped">
+      <table class="table table-striped table-vcenter">
         <thead>
           <tr>
             {% if show_item_column %}<th>{{ __('Matériel', 'assetsign') }}</th>{% endif %}
+            {% if types is defined %}<th>{{ __('Type', 'assetsign') }}</th>{% endif %}
             <th>{{ __('Statut', 'assetsign') }}</th>
             <th>{{ __('Créée le', 'assetsign') }}</th>
             <th>{{ __('Signée le', 'assetsign') }}</th>
@@ -18,11 +54,20 @@
           {% for r in assetsigns %}
           <tr>
             {% if show_item_column %}<td>{{ r.item_display|default('') }}</td>{% endif %}
-            <td>{{ statuses[r.status] }}</td>
+            {% if types is defined %}
+              <td><i class="{{ type_icons[r.type]|default('ti ti-file') }} me-1 text-secondary"></i>{{ types[r.type]|default('') }}</td>
+            {% endif %}
+            <td>
+              {% if status_badges is defined %}
+                <span class="badge {{ status_badges[r.status]|default('bg-secondary-lt') }}">{{ statuses[r.status] }}</span>
+              {% else %}
+                {{ statuses[r.status] }}
+              {% endif %}
+            </td>
             <td>{{ r.date_creation }}</td>
             <td>{{ r.date_signed|default('-') }}</td>
             <td>
-              <a href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ r.id }}">{{ __('Voir', 'assetsign') }}</a>
+              <a href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ r.id }}" class="btn btn-sm btn-outline-secondary"><i class="ti ti-eye me-1"></i>{{ __('Voir', 'assetsign') }}</a>
               {# Issues #170 et #163 : brouillon pas encore envoye (tous types de fiche) #}
               {% if r.status == 0 and can_send_drafts|default(false) %}
                 <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline ms-2">
