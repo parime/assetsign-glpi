@@ -390,6 +390,8 @@ class Assetsign extends Compat\Base\AssetsignBase
            'beneficiary'  => $this->isNewID($ID) ? [] : $this->getBeneficiary(),
            'target_item'  => $this->isNewID($ID) ? [] : $this->getTargetItem(),
            'reminders'    => $this->isNewID($ID) ? 0 : Reminder::countForAssetsign((int) $ID),
+           // Issue #277 : lien de signature à copier, affiché une seule fois après sa création.
+           'shared_link'  => $this->isNewID($ID) ? '' : self::pullSharedLink((int) $ID),
            'can_remind'   => !$this->isNewID($ID)
                && in_array((int) $this->fields['status'], self::STATUSES_AWAITING_SIGNATURE, true)
                && \Session::haveRight(self::$rightname, UPDATE),
@@ -3698,6 +3700,38 @@ class Assetsign extends Compat\Base\AssetsignBase
        $newCount = (int) $this->fields['reminder_count'] + 1;
        Reminder::log($this);
        $this->update(['id' => $this->getID(), 'reminder_count' => $newCount]);
+   }
+
+    /**
+     * Issue #277 : nouveau lien de signature à copier (Teams, chat, SMS), utile quand l'e-mail
+     * n'est pas disponible. Le jeton n'est jamais relisible en base : un nouveau est créé et
+     * l'ancien lien cesse de fonctionner. Aucun e-mail n'est envoyé. Le lien est gardé en
+     * session pour être affiché une seule fois sur la fiche (cf. pullSharedLink()).
+     *
+     * @throws \RuntimeException si la fiche n'attend plus de signature
+     */
+   public function createShareableLink(): string {
+      if (!in_array((int) $this->fields['status'], self::STATUSES_AWAITING_SIGNATURE, true)) {
+          throw new \RuntimeException(__('Cette attribution ne peut plus être relancée (déjà signée ou expirée).', 'assetsign'));
+      }
+       $config = Config::getForEntity((int) $this->fields['entities_id']);
+       $raw = Token::regenerateForAssetsign(
+           $this,
+           (int) $config->fields['link_validity_days'],
+           forCosigner: (int) $this->fields['status'] === self::STATUS_AWAITING_COSIGNATURE
+       );
+       $url = $this->getSignUrl($raw);
+       $_SESSION['assetsign_shared_link'][$this->getID()] = $url;
+       return $url;
+   }
+
+    /**
+     * Lien créé par createShareableLink(), rendu une seule fois puis oublié.
+     */
+   public static function pullSharedLink(int $id): string {
+       $url = (string) ($_SESSION['assetsign_shared_link'][$id] ?? '');
+       unset($_SESSION['assetsign_shared_link'][$id]);
+       return $url;
    }
 
     /**

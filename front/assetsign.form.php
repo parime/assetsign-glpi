@@ -58,6 +58,17 @@ if (isset($_POST['relance'])) {
     Html::back();
 }
 
+// Issue #277 : nouveau lien de signature à copier (Teams, chat), affiché une fois sur la fiche.
+if (isset($_POST['copy_link'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       $assetsign->createShareableLink();
+   } catch (\RuntimeException $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
+}
+
 // Signature sur place (issue #152) : emet un jeton lie au technicien connecte et ouvre la page
 // de signature sur son ecran, qu'il remet a la personne qui signe. Redirection HORS du try :
 // seul l'echec de startInPersonSignature() doit ramener a la fiche avec un message.

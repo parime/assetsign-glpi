@@ -4754,3 +4754,21 @@ msgstr "Nouvelle attribution"
 
 msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
 msgstr "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
+
+msgid "Nouveau lien de signature"
+msgstr "Nouveau lien de signature"
+
+msgid "Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page."
+msgstr "Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page."
+
+msgid "Copier"
+msgstr "Copier"
+
+msgid "Copié"
+msgstr "Copié"
+
+msgid "Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L'ancien lien cesse de fonctionner."
+msgstr "Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L'ancien lien cesse de fonctionner."
+
+msgid "Copier un nouveau lien"
+msgstr "Copier un nouveau lien"

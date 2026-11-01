@@ -5311,3 +5311,21 @@ msgstr "Nova entrega"
 
 msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
 msgstr "Escolha o destinatário e o equipamento: o termo de entrega é preparado como em uma atribuição feita pela ficha do equipamento."
+
+msgid "Nouveau lien de signature"
+msgstr "Novo link de assinatura"
+
+msgid "Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page."
+msgstr "Envie-o pelo Teams, chat ou SMS. Ele substitui o link enviado anteriormente, que não funciona mais. Não será exibido novamente depois que você sair desta página."
+
+msgid "Copier"
+msgstr "Copiar"
+
+msgid "Copié"
+msgstr "Copiado"
+
+msgid "Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L'ancien lien cesse de fonctionner."
+msgstr "Sem e-mail: cria um novo link para você mesmo enviar (Teams, chat, SMS). O link antigo deixa de funcionar."
+
+msgid "Copier un nouveau lien"
+msgstr "Copiar um novo link"

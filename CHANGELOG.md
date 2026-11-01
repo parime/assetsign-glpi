@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Copier un nouveau lien de signature** (issue #277) : sur une fiche en attente, crée un lien
+  à envoyer soi-même par Teams, chat ou SMS (utile sans e-mail). Le lien s'affiche une seule
+  fois avec un bouton Copier ; l'ancien lien cesse de fonctionner. Aucun e-mail n'est envoyé.
 - **Polonais (pl_PL)** : interface, e-mails et documents PDF.
 - **Portugais du Brésil (pt_BR)**, et le portugais du Portugal (pt_PT) qui le reprend.
 - **Variantes régionales** : en_US, es_MX et les espagnols d'Amérique latine, fr_CA, fr_BE. GLPI

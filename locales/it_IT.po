@@ -4764,3 +4764,21 @@ msgstr "Nuova consegna"
 
 msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
 msgstr "Scegli il destinatario e l'apparecchiatura: la scheda di consegna viene preparata come per un'assegnazione dalla scheda dell'apparecchiatura."
+
+msgid "Nouveau lien de signature"
+msgstr "Nuovo link di firma"
+
+msgid "Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page."
+msgstr "Invialo tramite Teams, chat o SMS. Sostituisce il link inviato in precedenza, che non funziona più. Non verrà più mostrato dopo aver lasciato questa pagina."
+
+msgid "Copier"
+msgstr "Copia"
+
+msgid "Copié"
+msgstr "Copiato"
+
+msgid "Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L'ancien lien cesse de fonctionner."
+msgstr "Senza e-mail: crea un nuovo link da inviare tu stesso (Teams, chat, SMS). Il vecchio link smette di funzionare."
+
+msgid "Copier un nouveau lien"
+msgstr "Copia un nuovo link"

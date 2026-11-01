@@ -4734,3 +4734,21 @@ msgstr "New handover"
 
 msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
 msgstr "Choose the recipient and the equipment: the handover form is prepared just as when assigning from the equipment's record."
+
+msgid "Nouveau lien de signature"
+msgstr "New signature link"
+
+msgid "Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page."
+msgstr "Send it via Teams, chat or text message. It replaces the link sent previously, which no longer works. It will not be shown again once you leave this page."
+
+msgid "Copier"
+msgstr "Copy"
+
+msgid "Copié"
+msgstr "Copied"
+
+msgid "Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L'ancien lien cesse de fonctionner."
+msgstr "Without e-mail: creates a new link for you to send yourself (Teams, chat, text message). The old link stops working."
+
+msgid "Copier un nouveau lien"
+msgstr "Copy a new link"
