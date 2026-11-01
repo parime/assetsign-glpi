@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.18.0] - 2026-11-01
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Security
 
 - **Logo** (issue #281) : une image déclarant plus de 3000 × 3000 pixels est refusée à l'envoi
