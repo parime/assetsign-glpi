@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Polonais (pl_PL)** : interface, e-mails et documents PDF.
 - **Portugais du Brésil (pt_BR)**, et le portugais du Portugal (pt_PT) qui le reprend.
 - **Variantes régionales** : en_US, es_MX et les espagnols d'Amérique latine, fr_CA, fr_BE. GLPI
   ne se replie pas d'une variante vers sa langue de base : un utilisateur réglé en es_MX voyait le
