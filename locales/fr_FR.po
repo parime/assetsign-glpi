@@ -4724,3 +4724,7 @@ msgstr "créez maintenant la fiche de %s"
 
 msgid "(bénéficiaire interne ou externe)."
 msgstr "(bénéficiaire interne ou externe)."
+
+#, php-format
+msgid "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."
+msgstr "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."

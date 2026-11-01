@@ -159,13 +159,38 @@ class Arrival extends Compat\Base\ArrivalBase
       $name = getUserName($usersId);
       // convDate(null) renvoie null : sans date de début, titre « Arrivée de X » sans « (le ) ».
       $date = (string) Html::convDate($this->fields['date_arrival'] ?? null);
-      $tasks = self::effectiveTasks((string) (Config::getForEntity($entitiesId)->fields['arrival_tasks'] ?? ''));
+      $configuredTasks = (string) (Config::getForEntity($entitiesId)->fields['arrival_tasks'] ?? '');
+      $tasks = self::effectiveTasks($configuredTasks);
+      // grcmanager #362 : catégorie et gabarit de tâche d'arrivée de Configuration GLPI Auto.
+      // Le gabarit remplace les tâches par défaut, jamais une liste configurée par l'administrateur.
+      $cga = StaffMovementLink::forEvent('arrival');
+      $templateTask = $cga['tasktemplates_id'] > 0 && trim($configuredTasks) === ''
+         ? StaffMovementLink::templateContent($cga['tasktemplates_id'])
+         : '';
+
+      // Ticket déjà ouvert pour cette arrivée (Configuration, formulaire ou saisie manuelle) :
+      // on le rattache au dossier avec un suivi plutôt que d'en créer un second.
+      $existing = StaffMovementLink::findOpenTicket($usersId, $cga['itilcategories_id']);
+      if ($existing > 0) {
+         (new ITILFollowup())->add([
+            'itemtype'   => Ticket::class,
+            'items_id'   => $existing,
+            'is_private' => 1,
+            'content'    => TwigBlocks::content([
+               TwigBlocks::p(sprintf(__('Dossier d\'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l\'onglet « Remise de matériel ».', 'assetsign'), $name)),
+               TwigBlocks::list($templateTask !== '' ? [] : $tasks),
+            ]),
+         ]);
+         $this->update(['id' => $this->getID(), 'tickets_id' => $existing]);
+
+         return $existing;
+      }
 
       $content = TwigBlocks::content([
          TwigBlocks::p($date !== ''
             ? sprintf(__('Arrivée de %1$s le %2$s : préparez son poste, ses accès et son matériel.', 'assetsign'), $name, $date)
             : sprintf(__('Arrivée de %s : préparez son poste, ses accès et son matériel.', 'assetsign'), $name)),
-         TwigBlocks::list($tasks),
+         TwigBlocks::list($templateTask !== '' ? [] : $tasks),
          TwigBlocks::p(__('Le matériel se remet depuis l\'onglet « Remise de matériel » de ce ticket : la fiche d\'attribution est envoyée à la personne pour signature.', 'assetsign')),
       ]);
 
@@ -182,6 +207,9 @@ class Arrival extends Compat\Base\ArrivalBase
             'requester' => [['itemtype' => User::class, 'items_id' => $usersId, 'use_notification' => 0, 'alternative_email' => '']],
          ],
       ];
+      if ($cga['itilcategories_id'] > 0) {
+         $input['itilcategories_id'] = $cga['itilcategories_id'];
+      }
       $tech = (int) ($this->fields['users_id_tech'] ?? 0);
       if ($tech > 0 && $tech !== $usersId) {
          $input['_actors']['observer'] = [['itemtype' => User::class, 'items_id' => $tech, 'use_notification' => 1, 'alternative_email' => '']];
@@ -189,7 +217,16 @@ class Arrival extends Compat\Base\ArrivalBase
 
       $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
       $ticketsId = (int) (new Ticket())->add($input);
-      foreach ($ticketsId > 0 ? $tasks : [] as $task) {
+      if ($ticketsId > 0 && $templateTask !== '') {
+         // Une tâche reprenant la liste de contrôle du gabarit de Configuration GLPI Auto.
+         (new TicketTask())->add([
+            'tickets_id'       => $ticketsId,
+            'content'          => TwigBlocks::content([TwigBlocks::lines($templateTask)]),
+            'tasktemplates_id' => $cga['tasktemplates_id'],
+            'state'            => Planning::TODO,
+         ]);
+      }
+      foreach ($ticketsId > 0 && $templateTask === '' ? $tasks : [] as $task) {
          (new TicketTask())->add([
             'tickets_id' => $ticketsId,
             'content'    => TwigBlocks::content([TwigBlocks::p($task)]),

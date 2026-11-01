@@ -4760,3 +4760,7 @@ msgstr "erstellen Sie jetzt das Formular für %s"
 
 msgid "(bénéficiaire interne ou externe)."
 msgstr "(interner oder externer Begünstigter)."
+
+#, php-format
+msgid "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."
+msgstr "Ankunftsvorgang von %s mit diesem Ticket verknüpft: Die Ausrüstung wird über die Registerkarte „Geräteübergabe“ übergeben."

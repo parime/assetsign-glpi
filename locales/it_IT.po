@@ -4734,3 +4734,7 @@ msgstr "create ora il modulo di %s"
 
 msgid "(bénéficiaire interne ou externe)."
 msgstr "(beneficiario interno o esterno)."
+
+#, php-format
+msgid "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."
+msgstr "Pratica di arrivo di %s collegata a questo ticket: il materiale si consegna dalla scheda «Consegna di attrezzatura»."
