@@ -678,10 +678,13 @@ jobs:
           # contre le .pot frais, pas regenere a l'aveugle.
           git checkout -- locales/en_GB.po
 
+      - name: Vérifie que les variantes régionales (es_MX, fr_CA, en_US...) suivent leur langue
+        run: sh tools/sync-locale-variants.sh --check
+
       - name: Vérifie que chaque langue traduit chaque chaîne extraite
         run: |
           status=0
-          for lang in fr_FR en_GB de_DE es_ES it_IT; do
+          for lang in fr_FR en_GB de_DE es_ES it_IT pt_BR; do
             msgmerge --no-fuzzy-matching --quiet -o /tmp/merged_${lang}.po locales/${lang}.po locales/assetsign.pot
             missing=$(msgattrib --untranslated /tmp/merged_${lang}.po | grep -c '^msgid "[^"]' || true)
             if [ "$missing" -gt 0 ]; then
