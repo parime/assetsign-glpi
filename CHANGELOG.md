@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Arrivées et départs avec Configuration GLPI Auto** (issue grcmanager #362) : quand ce plugin est
+  actif, le ticket d'arrivée ou de départ reprend sa catégorie (« Onboarding / Création de compte »,
+  « Offboarding / Suppression ») et une tâche avec la liste de contrôle de son gabarit (arrivée ou
+  départ d'un collaborateur). Pour l'arrivée, le gabarit remplace les tâches proposées par défaut,
+  jamais une liste saisie par l'administrateur. Les objets sont repérés par identifiant, pas par
+  leur nom.
+- Si un ticket ouvert existe déjà pour la même personne et le même mouvement (créé par Configuration
+  GLPI Auto, par un formulaire ou à la main), il est rattaché au dossier avec un suivi au lieu d'un
+  second ticket. Sans Configuration GLPI Auto, rien ne change. Aucun droit n'est élargi.
+
 ## [2.17.1] - 2026-10-29
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

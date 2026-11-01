@@ -4704,3 +4704,7 @@ msgstr "create the %s form now"
 
 msgid "(bénéficiaire interne ou externe)."
 msgstr "(internal or external beneficiary)."
+
+#, php-format
+msgid "Dossier d'arrivée de %s rattaché à ce ticket : le matériel se remet depuis l'onglet « Remise de matériel »."
+msgstr "Arrival file for %s linked to this ticket: equipment is handed over from the \"Equipment handover\" tab."
