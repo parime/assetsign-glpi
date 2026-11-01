@@ -5329,3 +5329,7 @@ msgstr "Sem e-mail: cria um novo link para você mesmo enviar (Teams, chat, SMS)
 
 msgid "Copier un nouveau lien"
 msgstr "Copiar um novo link"
+
+#, php-format
+msgid "Le logo dépasse %1$d × %2$d pixels : choisissez une image plus petite."
+msgstr "O logotipo excede %1$d × %2$d pixels: escolha uma imagem menor."

@@ -76,7 +76,9 @@ trait PdfRenderingHelpers
       }
 
        $fullpath = GLPI_DOC_DIR . '/' . $document->fields['filepath'];
-      if (!is_readable($fullpath)) {
+      // Issue #281 : un logo enregistre avant la limite et trop grand est ignore plutot que de
+      // faire echouer le PDF.
+      if (!is_readable($fullpath) || Config::isLogoTooLarge($fullpath)) {
           return null;
       }
 
