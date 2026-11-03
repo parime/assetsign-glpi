@@ -3102,3 +3102,81 @@ msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son ent
 msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 msgstr[0] ""
 msgstr[1] ""
+
+msgid "1. Choisir le matériel"
+msgstr ""
+
+msgid "2. Choisir l'action"
+msgstr ""
+
+msgid "Annuler"
+msgstr ""
+
+msgid "Aucun matériel trouvé."
+msgstr ""
+
+msgid "Aucun utilisateur n'a ce matériel."
+msgstr ""
+
+msgid "Céder le matériel à une personne ou un organisme."
+msgstr ""
+
+msgid "Choisir un autre matériel"
+msgstr ""
+
+msgid "Choisissez le matériel, puis l'action : remise, restitution, don, vente ou destruction."
+msgstr ""
+
+msgid "Désactivé dans la configuration de l'entité."
+msgstr ""
+
+msgid "Faire détruire le matériel par un prestataire."
+msgstr ""
+
+msgid "Le matériel est retiré à %s, qui signera la restitution."
+msgstr ""
+
+msgid "Matériel repris à son utilisateur."
+msgstr ""
+
+msgid "Nom, n° de série ou n° d'inventaire"
+msgstr ""
+
+msgid "Ouvrir la fiche du matériel"
+msgstr ""
+
+msgid "Préparer la feuille"
+msgstr ""
+
+msgid "Rechercher"
+msgstr ""
+
+msgid "Rechercher le matériel"
+msgstr ""
+
+msgid "Relancer"
+msgstr ""
+
+msgid "Remettre le matériel à un utilisateur : il le signe à réception."
+msgstr ""
+
+msgid "Remise"
+msgstr ""
+
+msgid "Reprendre le matériel à son utilisateur actuel : il signe la restitution."
+msgstr ""
+
+msgid "Retour à la liste"
+msgstr ""
+
+msgid "Saisissez au moins deux caractères du nom, du n° de série ou du n° d'inventaire."
+msgstr ""
+
+msgid "Vendre le matériel, avec son prix et sa date de vente."
+msgstr ""
+
+msgid "Voir toute la liste"
+msgstr ""
+
+msgid "Vous n'avez pas le droit de modifier ce matériel."
+msgstr ""

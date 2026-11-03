@@ -1,4 +1,12 @@
-{# Issue #282 : en-tête de la liste des attributions (compteurs cliquables, nouvelle attribution). #}
+{# Issue #282 : en-tête de la liste des attributions (compteurs cliquables, nouvelle attribution,
+   fiches en attente de signature). Compteurs et fiches limités aux entités actives. #}
+{% if can_create %}
+  <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+    <a href="{{ new_url }}" class="btn btn-primary"><i class="ti ti-file-plus me-1"></i>{{ __('Nouvelle attribution', 'assetsign') }}</a>
+    <span class="text-secondary small">{{ __('Choisissez le matériel, puis l\'action : remise, restitution, don, vente ou destruction.', 'assetsign') }}</span>
+  </div>
+{% endif %}
+
 <div class="row row-cards mb-3">
   {% for c in counters %}
     <div class="col-6 col-lg-3">
@@ -15,31 +23,67 @@
   {% endfor %}
 </div>
 
-{% if can_assign %}
-  <div class="card mb-3" style="border-left: 4px solid var(--tblr-primary);">
+{% if pending|length %}
+  <div class="card mb-3" id="assetsign-pending-sheets">
     <div class="card-header">
-      <h3 class="card-title"><i class="ti ti-file-plus me-2"></i>{{ __('Nouvelle attribution', 'assetsign') }}</h3>
+      <h3 class="card-title"><i class="ti ti-clock me-2"></i>{{ __('Attributions en attente de signature', 'assetsign') }}</h3>
+      {% if pending|length >= pending_limit %}
+        <div class="card-actions"><a href="{{ pending_url }}">{{ __('Voir toute la liste', 'assetsign') }}</a></div>
+      {% endif %}
     </div>
-    <div class="card-body">
-      <p class="text-secondary small">{{ __('Choisissez le destinataire et le matériel : la feuille d\'attribution est préparée comme lors d\'une affectation depuis la fiche du matériel.', 'assetsign') }}</p>
-      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assign_user_asset.php" class="row g-2 align-items-end">
-        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
-        <div class="col-md-4">
-          <label class="form-label">{{ __('Destinataire', 'assetsign') }}</label>
-          {{ user_html|raw }}
+    <div class="list-group list-group-flush">
+      {% for p in pending %}
+        <div class="list-group-item">
+          <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="avatar avatar-sm bg-secondary-lt"><i class="{{ type_icons[p.type]|default('ti ti-file') }}"></i></span>
+            <div class="flex-fill" style="min-width: 12rem;">
+              <a href="{{ new_url }}?id={{ p.id }}" class="fw-bold">{{ p.item }}</a>
+              <div class="small text-secondary">
+                {{ types[p.type]|default('') }}{% if p.beneficiary %} · {{ p.beneficiary }}{% endif %}{% if p.date_sent %} · {{ __('Envoyé le', 'assetsign') }} {{ p.date_sent|formatted_datetime }}{% endif %}
+              </div>
+            </div>
+            <span class="badge {{ status_badges[p.status]|default('bg-secondary-lt') }}">{{ statuses[p.status] }}</span>
+            {% if can_update %}
+              <div class="d-flex flex-wrap gap-1">
+                <form method="post" action="{{ new_url }}" class="d-inline">
+                  <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+                  <input type="hidden" name="id" value="{{ p.id }}">
+                  <button type="submit" name="copy_link" class="btn btn-sm btn-outline-primary" title="{{ __('Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L\'ancien lien cesse de fonctionner.', 'assetsign') }}"><i class="ti ti-link me-1"></i>{{ __('Copier un nouveau lien', 'assetsign') }}</button>
+                  <button type="submit" name="relance" class="btn btn-sm btn-outline-secondary"><i class="ti ti-bell-ringing me-1"></i>{{ __('Relancer', 'assetsign') }}</button>
+                  {% if p.can_cancel %}
+                    <button type="submit" name="cancel_request" class="btn btn-sm btn-outline-danger" onclick="return confirm('{{ __('Annuler cette demande de signature ?', 'assetsign')|e('js') }}');"><i class="ti ti-x me-1"></i>{{ __('Annuler', 'assetsign') }}</button>
+                  {% endif %}
+                </form>
+              </div>
+            {% endif %}
+          </div>
+          {# Issue #277 : lien créé à l'instant, affiché une seule fois (le jeton n'est pas relisible). #}
+          {% if p.shared_link %}
+            <div class="mt-2">
+              <div class="small text-secondary mb-1">{{ __('Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page.', 'assetsign') }}</div>
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control assetsign-shared-link" value="{{ p.shared_link }}" readonly aria-label="{{ __('Nouveau lien de signature', 'assetsign') }}">
+                <button type="button" class="btn btn-primary assetsign-copy-link-btn"><i class="ti ti-copy me-1"></i>{{ __('Copier', 'assetsign') }}</button>
+              </div>
+            </div>
+          {% endif %}
         </div>
-        <div class="col-md-3">
-          <label class="form-label">{{ __('Type de matériel', 'assetsign') }}</label>
-          {{ itemtype_html|raw }}
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">{{ __('Matériel', 'assetsign') }}</label>
-          {{ item_html|raw }}
-        </div>
-        <div class="col-md-2">
-          <button type="submit" name="assign" class="btn btn-primary w-100"><i class="ti ti-user-check me-1"></i>{{ __('Assigner', 'assetsign') }}</button>
-        </div>
-      </form>
+      {% endfor %}
     </div>
   </div>
+  <script>
+    document.querySelectorAll('#assetsign-pending-sheets .assetsign-copy-link-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var field = btn.parentNode.querySelector('.assetsign-shared-link');
+        var done = function () { btn.innerHTML = '<i class="ti ti-check me-1"></i>{{ __('Copié', 'assetsign')|e('js') }}'; };
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(field.value).then(done);
+        } else {
+          field.select();
+          document.execCommand('copy');
+          done();
+        }
+      });
+    });
+  </script>
 {% endif %}

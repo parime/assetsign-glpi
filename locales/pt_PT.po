@@ -5383,6 +5383,81 @@ msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée po
 msgstr[0] "%d equipamento ignorado (não visível ou etiqueta desativada para sua entidade)"
 msgstr[1] "%d equipamentos ignorados (não visíveis ou etiqueta desativada para sua entidade)"
 
+msgid "1. Choisir le matériel"
+msgstr "1. Escolher o equipamento"
+
+msgid "2. Choisir l'action"
+msgstr "2. Escolher a ação"
+
+msgid "Annuler"
+msgstr "Cancelar"
+
+msgid "Aucun matériel trouvé."
+msgstr "Nenhum equipamento encontrado."
+
+msgid "Aucun utilisateur n'a ce matériel."
+msgstr "Nenhum usuário tem este equipamento."
+
+msgid "Céder le matériel à une personne ou un organisme."
+msgstr "Ceder o equipamento a uma pessoa ou organização."
+
+msgid "Choisir un autre matériel"
+msgstr "Escolher outro equipamento"
+
+msgid "Choisissez le matériel, puis l'action : remise, restitution, don, vente ou destruction."
+msgstr "Escolha o equipamento e depois a ação: entrega, devolução, doação, venda ou destruição."
+
+msgid "Désactivé dans la configuration de l'entité."
+msgstr "Desativado na configuração da entidade."
+
+msgid "Faire détruire le matériel par un prestataire."
+msgstr "Mandar destruir o equipamento por um prestador."
+
+msgid "Le matériel est retiré à %s, qui signera la restitution."
+msgstr "O equipamento é retirado de %s, que assinará a devolução."
+
+msgid "Matériel repris à son utilisateur."
+msgstr "Equipamento retirado do seu usuário."
+
+msgid "Nom, n° de série ou n° d'inventaire"
+msgstr "Nome, n.º de série ou n.º de inventário"
+
+msgid "Ouvrir la fiche du matériel"
+msgstr "Abrir a ficha do equipamento"
+
+msgid "Rechercher"
+msgstr "Pesquisar"
+
+msgid "Rechercher le matériel"
+msgstr "Pesquisar o equipamento"
+
+msgid "Relancer"
+msgstr "Lembrar"
+
+msgid "Remettre le matériel à un utilisateur : il le signe à réception."
+msgstr "Entregar o equipamento a um usuário: ele assina no recebimento."
+
+msgid "Remise"
+msgstr "Entrega"
+
+msgid "Reprendre le matériel à son utilisateur actuel : il signe la restitution."
+msgstr "Retirar o equipamento do usuário atual: ele assina a devolução."
+
+msgid "Retour à la liste"
+msgstr "Voltar à lista"
+
+msgid "Saisissez au moins deux caractères du nom, du n° de série ou du n° d'inventaire."
+msgstr "Digite pelo menos dois caracteres do nome, do n.º de série ou do n.º de inventário."
+
+msgid "Vendre le matériel, avec son prix et sa date de vente."
+msgstr "Vender o equipamento, com o preço e a data de venda."
+
+msgid "Voir toute la liste"
+msgstr "Ver a lista completa"
+
+msgid "Vous n'avez pas le droit de modifier ce matériel."
+msgstr "Você não tem permissão para modificar este equipamento."
+
 msgid "Référence"
 msgstr "Referência"
 

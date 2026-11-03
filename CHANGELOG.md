@@ -9,7 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Nouvelle attribution depuis la liste** (issue #282) : le bouton « Nouvelle attribution » de
+  Outils > Attributions ouvre une recherche du matériel (nom, n° de série ou n° d'inventaire),
+  puis un bandeau récapitulatif (statut et utilisateur en pastilles, marque et modèle, numéros,
+  lien « Ouvrir la fiche du matériel ») et le choix de l'action en cartes : remise, restitution,
+  don, vente, destruction. Une carte indisponible dit pourquoi. La fiche créée s'ouvre
+  directement. Seul le matériel lisible par l'utilisateur (droit du type, entités) est proposé ;
+  bouton et page réservés au droit de modification des attributions.
+- **Fiches en attente de signature** en tête de la liste (entités actives seulement), avec Copier
+  un nouveau lien, Relancer et Annuler.
+- Le bandeau récapitulatif du matériel figure aussi en tête de la fiche d'attribution, si le
+  matériel est lisible par l'utilisateur.
 - **Référence de document paramétrable** (#273) : chaque fiche reçoit à sa création une référence lisible au format de l'entité (Configuration > Compléments), par exemple `RM-2026-000124`. Marqueurs `{prefixe}`, `{annee}`, `{mois}`, `{jour}`, `{seq}`, `{type}` (REM, RES, DON, VEN, DES), `{aleatoire}` ; nombre de chiffres du numéro, prochain numéro modifiable, remise à 1 chaque année ; exemple affiché en direct. La référence figure sur le PDF, dans le commentaire du document GLPI, dans l'historique du matériel et dans la liste des attributions (colonne recherchable). Format vide par défaut : la référence reste l'identifiant interne, comme avant, et les fiches existantes gardent la leur. Numérotation sûre en concurrence (mise à jour conditionnelle du compteur et clé unique au registre des références) ; compteurs et registre archivés à la désinstallation (fichier dans `files/_plugins`) puis restaurés à la réinstallation, un numéro émis n'est jamais réémis. Format filtré à l'enregistrement : lettres sans accent, chiffres, tiret et souligné seulement (ni balise, ni chemin, ni formule).
+
+### Changed
+
+- La carte « Nouvelle attribution » (destinataire, type, matériel) de la liste est remplacée par
+  le bouton ci-dessus ; l'affectation depuis l'onglet d'un utilisateur ne change pas.
+- Zones de signature : fond blanc forcé, y compris avec une palette sombre de GLPI.
 
 ## [2.19.0] - 2026-11-03
 
