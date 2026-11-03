@@ -66,6 +66,9 @@ expect "front/accessory.form.php : accessoire de B"           $DENY "$(code "$P/
 expect "front/checklistitem.form.php : point de B"            $DENY "$(code "$P/checklistitem.form.php?id=$(id checklistitems_B)")"
 expect "front/maintenancechecklistitem.form.php : point de B" $DENY "$(code "$P/maintenancechecklistitem.form.php?id=$(id maintenancechecklistitems_B)")"
 expect "front/qrlabel.php : etiquette d'un PC de B"           $NF   "$(code "$P/qrlabel.php?itemtype=Computer&items_id=$(id computer_B)")"
+# Issue #278 : un lot d'étiquettes n'existe que dans la session qui l'a créé ; jeton inconnu ou forgé : introuvable.
+expect "front/qrlabels.php : lot d'une autre session"          404   "$(code "$P/qrlabels.php?batch=0123456789abcdef0123456789abcdef")"
+expect "front/qrlabels.php : jeton forgé"                     404   "$(code "$P/qrlabels.php?batch=..%2F..%2Fetc")"
 expect "front/config.php : configuration de B"                $DENY "$(code "$P/config.php?entities_id=$(id b)")"
 # Ni technicien ni super-admin ne sont beneficiaires : le PDF d'une feuille d'autrui n'est jamais servi.
 expect "front/mysignatures.php : PDF de la feuille d'autrui"  404   "$(code "$P/mysignatures.php?pdf=$(id assetsign_B)")"
