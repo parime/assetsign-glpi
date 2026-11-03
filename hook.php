@@ -23,6 +23,7 @@ use GlpiPlugin\Assetsign\Dashboard\CardProvider;
 use GlpiPlugin\Assetsign\Dashboard\CsrIndicators;
 use GlpiPlugin\Assetsign\Departure;
 use GlpiPlugin\Assetsign\DestructionDetails;
+use GlpiPlugin\Assetsign\DocumentReference;
 use GlpiPlugin\Assetsign\DonDetails;
 use GlpiPlugin\Assetsign\EnvironmentalData;
 use GlpiPlugin\Assetsign\Kit;
@@ -375,6 +376,8 @@ function plugin_assetsign_install(): bool {
     $migration = new Migration(str_replace('.', '', PLUGIN_ASSETSIGN_VERSION));
 
     Config::install($migration);
+    // Issue #273 : compteurs et registre des references de document (conserves a la desinstallation).
+    DocumentReference::install($migration);
     Template::install($migration);
     Accessory::install($migration);
     // Apres Accessory::install() (le kit d'exemple seme ci-dessous reference des
@@ -611,6 +614,8 @@ function plugin_assetsign_uninstall(): bool {
     ] as $table) {
        $migration->dropTable($table);
    }
+    // Issue #273 : DocumentReference::COUNTERS_TABLE et REGISTRY_TABLE sont volontairement
+    // conservees : apres une reinstallation, aucune reference deja emise ne doit etre reemise.
 
     Profile::uninstall();
     NotificationTargetAssetsign::uninstall();

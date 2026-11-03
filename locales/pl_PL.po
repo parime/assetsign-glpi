@@ -4348,8 +4348,8 @@ msgstr ""
 msgid "majeure"
 msgstr "poważne"
 
-msgid "Établie le %1$s : Référence assetsign n°%2$d"
-msgstr "Wydano dnia %1$s: numer referencyjny assetsign %2$d"
+msgid "Établie le %1$s : Référence assetsign n°%2$s"
+msgstr "Wydano dnia %1$s: numer referencyjny assetsign %2$s"
 
 msgid "Bénéficiaire (externe, sans compte GLPI)"
 msgstr "Odbiorca (zewnętrzny, bez konta GLPI)"
@@ -5397,3 +5397,78 @@ msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée po
 msgstr[0] "%d urządzenie pominięte (niewidoczne lub etykieta wyłączona dla jego jednostki)"
 msgstr[1] "%d urządzenia pominięte (niewidoczne lub etykieta wyłączona dla ich jednostki)"
 msgstr[2] "%d urządzeń pominiętych (niewidoczne lub etykieta wyłączona dla ich jednostki)"
+
+msgid "Référence"
+msgstr "Numer referencyjny"
+
+#, php-format
+msgid "Fiche %1$s créée par AssetSign, référence %2$s"
+msgstr "Formularz %1$s utworzony przez AssetSign, numer referencyjny %2$s"
+
+msgid "Les réglages de référence précédents sont conservés."
+msgstr "Poprzednie ustawienia numeru referencyjnego zostają zachowane."
+
+#, php-format
+msgid "Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret ou souligné, en commençant par une lettre ou un chiffre."
+msgstr "Prefiks odrzucony: najwyżej %d znaków, litery bez znaków diakrytycznych, cyfry, łącznik lub podkreślenie, zaczynając od litery lub cyfry."
+
+#, php-format
+msgid "Format de référence refusé : %d caractères au plus."
+msgstr "Format numeru referencyjnego odrzucony: najwyżej %d znaków."
+
+#, php-format
+msgid "Format de référence refusé : marqueur inconnu. Marqueurs admis : %s."
+msgstr "Format numeru referencyjnego odrzucony: nieznany znacznik. Dozwolone znaczniki: %s."
+
+msgid "Format de référence refusé : il doit contenir {seq} ou {aleatoire}."
+msgstr "Format numeru referencyjnego odrzucony: musi zawierać {seq} lub {aleatoire}."
+
+msgid "Format de référence refusé : pour recommencer à 1 chaque année, le format doit contenir {annee}."
+msgstr "Format numeru referencyjnego odrzucony: aby zaczynać od 1 co roku, format musi zawierać {annee}."
+
+msgid "Format de référence refusé : en dehors des marqueurs, seuls les lettres sans accent, les chiffres, le tiret et le souligné sont admis."
+msgstr "Format numeru referencyjnego odrzucony: poza znacznikami dozwolone są tylko litery bez znaków diakrytycznych, cyfry, łącznik i podkreślenie."
+
+msgid "Référence de document"
+msgstr "Numer referencyjny dokumentu"
+
+msgid "Format de la référence"
+msgstr "Format numeru referencyjnego"
+
+msgid "Préfixe"
+msgstr "Prefiks"
+
+msgid "Chiffres du numéro"
+msgstr "Liczba cyfr numeru"
+
+msgid "Prochain numéro"
+msgstr "Następny numer"
+
+msgid "Recommencer à 1 chaque année"
+msgstr "Zaczynaj od 1 co roku"
+
+#, php-format
+msgid "Exemple : %s"
+msgstr "Przykład: %s"
+
+msgid "Format vide : la référence est l'identifiant interne de la fiche (comportement actuel)."
+msgstr "Pusty format: numerem referencyjnym jest wewnętrzny identyfikator formularza (obecne działanie)."
+
+msgid "Ce format sera refusé à l'enregistrement : il doit contenir {seq} ou {aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, des chiffres, le tiret et le souligné."
+msgstr "Ten format zostanie odrzucony przy zapisie: musi zawierać {seq} lub {aleatoire}, a poza znacznikami tylko litery bez znaków diakrytycznych, cyfry, łącznik i podkreślenie."
+
+msgid "Marqueurs :"
+msgstr "Znaczniki:"
+
+msgid "(numéro séquentiel)"
+msgstr "(numer kolejny)"
+
+msgid "(6 caractères au hasard)"
+msgstr "(6 losowych znaków)"
+
+msgid "La référence est attribuée à la création de la fiche et ne change plus : elle figure sur le PDF, dans le commentaire du document GLPI, dans l'historique du matériel et dans la liste des attributions. Les fiches existantes gardent leur référence actuelle. Un numéro déjà attribué n'est jamais réattribué, même si le prochain numéro est abaissé : il est sauté."
+msgstr "Numer referencyjny jest nadawany przy tworzeniu formularza i już się nie zmienia: widnieje w pliku PDF, w komentarzu dokumentu GLPI, w historii sprzętu i na liście przypisań. Istniejące formularze zachowują obecny numer. Raz nadany numer nigdy nie jest nadawany ponownie, nawet jeśli następny numer zostanie obniżony: zostaje pominięty."
+
+#, php-format
+msgid "Référence : %s"
+msgstr "Numer referencyjny: %s"

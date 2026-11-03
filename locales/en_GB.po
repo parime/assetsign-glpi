@@ -3941,8 +3941,8 @@ msgstr "Equipment in one of these states is offered first when adding an item to
 msgid "majeure"
 msgstr "major"
 
-msgid "Établie le %1$s : Référence assetsign n°%2$d"
-msgstr "Issued on %1$s: assetsign reference no. %2$d"
+msgid "Établie le %1$s : Référence assetsign n°%2$s"
+msgstr "Issued on %1$s: assetsign reference no. %2$s"
 
 msgid "Bénéficiaire (externe, sans compte GLPI)"
 msgstr "Beneficiary (external, no GLPI account)"
@@ -4761,3 +4761,78 @@ msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son ent
 msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 msgstr[0] "%d item skipped (not visible or label disabled for its entity)"
 msgstr[1] "%d items skipped (not visible or label disabled for their entity)"
+
+msgid "Référence"
+msgstr "Reference"
+
+#, php-format
+msgid "Fiche %1$s créée par AssetSign, référence %2$s"
+msgstr "%1$s form created by AssetSign, reference %2$s"
+
+msgid "Les réglages de référence précédents sont conservés."
+msgstr "The previous reference settings are kept."
+
+#, php-format
+msgid "Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret ou souligné, en commençant par une lettre ou un chiffre."
+msgstr "Prefix rejected: at most %d characters, unaccented letters, digits, hyphen or underscore, starting with a letter or a digit."
+
+#, php-format
+msgid "Format de référence refusé : %d caractères au plus."
+msgstr "Reference format rejected: at most %d characters."
+
+#, php-format
+msgid "Format de référence refusé : marqueur inconnu. Marqueurs admis : %s."
+msgstr "Reference format rejected: unknown marker. Allowed markers: %s."
+
+msgid "Format de référence refusé : il doit contenir {seq} ou {aleatoire}."
+msgstr "Reference format rejected: it must contain {seq} or {aleatoire}."
+
+msgid "Format de référence refusé : pour recommencer à 1 chaque année, le format doit contenir {annee}."
+msgstr "Reference format rejected: to restart at 1 every year, the format must contain {annee}."
+
+msgid "Format de référence refusé : en dehors des marqueurs, seuls les lettres sans accent, les chiffres, le tiret et le souligné sont admis."
+msgstr "Reference format rejected: apart from the markers, only unaccented letters, digits, hyphen and underscore are allowed."
+
+msgid "Référence de document"
+msgstr "Document reference"
+
+msgid "Format de la référence"
+msgstr "Reference format"
+
+msgid "Préfixe"
+msgstr "Prefix"
+
+msgid "Chiffres du numéro"
+msgstr "Number digits"
+
+msgid "Prochain numéro"
+msgstr "Next number"
+
+msgid "Recommencer à 1 chaque année"
+msgstr "Restart at 1 every year"
+
+#, php-format
+msgid "Exemple : %s"
+msgstr "Example: %s"
+
+msgid "Format vide : la référence est l'identifiant interne de la fiche (comportement actuel)."
+msgstr "Empty format: the reference is the internal ID of the form (current behaviour)."
+
+msgid "Ce format sera refusé à l'enregistrement : il doit contenir {seq} ou {aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, des chiffres, le tiret et le souligné."
+msgstr "This format will be rejected when saving: it must contain {seq} or {aleatoire}, and apart from the markers only unaccented letters, digits, hyphen and underscore."
+
+msgid "Marqueurs :"
+msgstr "Markers:"
+
+msgid "(numéro séquentiel)"
+msgstr "(sequential number)"
+
+msgid "(6 caractères au hasard)"
+msgstr "(6 random characters)"
+
+msgid "La référence est attribuée à la création de la fiche et ne change plus : elle figure sur le PDF, dans le commentaire du document GLPI, dans l'historique du matériel et dans la liste des attributions. Les fiches existantes gardent leur référence actuelle. Un numéro déjà attribué n'est jamais réattribué, même si le prochain numéro est abaissé : il est sauté."
+msgstr "The reference is assigned when the form is created and never changes: it appears on the PDF, in the comment of the GLPI document, in the asset history and in the list of assignments. Existing forms keep their current reference. A number already assigned is never assigned again, even if the next number is lowered: it is skipped."
+
+#, php-format
+msgid "Référence : %s"
+msgstr "Reference: %s"
