@@ -160,10 +160,10 @@ final class SignController
        SignatureImageValidator::assertValid($signatureImagePng);
 
        // Issue #275 : la signature par nom tape doit etre autorisee pour l'entite.
-       if (($meta['signature_method'] ?? 'drawn') === 'typed'
+      if (($meta['signature_method'] ?? 'drawn') === 'typed'
            && !(int) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['allow_typed_signature']) {
-           throw new RuntimeException(__('La signature en tapant son nom n\'est pas autorisée pour cette fiche.', 'assetsign'));
-       }
+          throw new \RuntimeException(__('La signature en tapant son nom n\'est pas autorisée pour cette fiche.', 'assetsign'));
+      }
 
        $newCosignerToken = null;
       if ($token->fields['for_cosigner']) {
