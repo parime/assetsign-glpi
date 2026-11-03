@@ -810,11 +810,11 @@ class Assetsign extends Compat\Base\AssetsignBase
            ['statuses' => [self::STATUS_EXPIRED], 'label' => __('Attributions expirées', 'assetsign'), 'icon' => 'ti ti-alert-triangle', 'color' => 'bg-red-lt'],
        ];
        $counters = [];
-      foreach ($groups as $group) {
+       foreach ($groups as $group) {
           $criteria = [];
-         foreach ($group['statuses'] as $k => $status) {
+          foreach ($group['statuses'] as $k => $status) {
              $criteria[] = ['link' => $k === 0 ? 'AND' : 'OR', 'field' => 5, 'searchtype' => 'equals', 'value' => $status];
-         }
+          }
           $counters[] = [
               'label' => $group['label'],
               'icon'  => $group['icon'],
@@ -822,16 +822,16 @@ class Assetsign extends Compat\Base\AssetsignBase
               'count' => countElementsInTable(self::getTable(), $base + ['status' => $group['statuses']]),
               'url'   => self::getSearchURL() . '?' . http_build_query(['criteria' => $criteria, 'reset' => 'reset']),
           ];
-      }
+       }
 
        $canAssign = Session::haveRight(self::$rightname, UPDATE);
        [$itemtypeHtml, $itemHtml] = $canAssign ? self::assignDropdowns('assetsign-home-items-container') : ['', ''];
        $userHtml = '';
-      if ($canAssign) {
+       if ($canAssign) {
           ob_start();
           \User::dropdown(['name' => 'users_id', 'right' => 'all', 'entity' => $_SESSION['glpiactiveentities'] ?? 0]);
           $userHtml = (string) ob_get_clean();
-      }
+       }
 
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/attributions_home.html.twig', [
            'counters'      => $counters,
