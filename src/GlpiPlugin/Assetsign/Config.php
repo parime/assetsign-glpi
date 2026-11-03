@@ -172,6 +172,12 @@ class Config extends Compat\Base\ConfigBase
         // fiche financiere ne la precise pas, et changement groupe mensuel (desactive par defaut).
         'renewal_default_years'               => 4,
         'renewal_monthly_change'              => 0,
+        // Issue #273 : reference de document. Format vide = identifiant interne de la fiche
+        // (comportement historique) ; regles du format dans DocumentReferenceFormat.
+        'reference_format'                    => '',
+        'reference_prefix'                    => '',
+        'reference_seq_digits'                => DocumentReferenceFormat::DEFAULT_SEQ_DIGITS,
+        'reference_yearly_reset'              => 0,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -223,6 +229,9 @@ class Config extends Compat\Base\ConfigBase
            'fields_selected'   => FieldsPluginLogic::decodeContainerIds($config->fields['fields_containers'] ?? '[]'),
            // Issue #231 : seule la presence d'une adresse est transmise, jamais l'adresse elle-meme.
            'chat_webhook_configured' => ($config->fields['chat_webhook_url'] ?? '') !== '',
+           // Issue #273 : prochain numero et exemple de reference.
+           'reference_preview'    => $config->getReferencePreview(),
+           'reference_type_codes' => array_values(array_unique(DocumentReferenceFormat::TYPE_CODES)),
            'entity_id'       => $entities_id,
            'csrf_token'      => \Session::getNewCSRFToken(),
            // Jeton CSRF DEDIE au canal d'apercu en direct (live-preview.js),
@@ -798,13 +807,103 @@ class Config extends Compat\Base\ConfigBase
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
 
-       $config = new self();
-       if ($config->getFromDBByCrit(['entities_id' => $entities_id])) {
-           $config->update(['id' => $config->getID()] + $data);
-           return;
+       // Issue #273 : reference de document. Un format refuse n'est pas enregistre (le reglage
+       // precedent reste en vigueur) : il finirait sur le PDF et dans les noms de documents.
+       $reference = null;
+       if (array_key_exists('reference_format', $input)) {
+          $reference = [
+              'reference_format'       => trim((string) $input['reference_format']),
+              'reference_prefix'       => trim((string) ($input['reference_prefix'] ?? '')),
+              'reference_seq_digits'   => DocumentReferenceFormat::normalizeSeqDigits((int) ($input['reference_seq_digits'] ?? DocumentReferenceFormat::DEFAULT_SEQ_DIGITS)),
+              'reference_yearly_reset' => (int) !empty($input['reference_yearly_reset']),
+          ];
+          $error = DocumentReferenceFormat::validate(
+              $reference['reference_format'],
+              $reference['reference_prefix'],
+              (bool) $reference['reference_yearly_reset']
+           );
+          if ($error === null) {
+              $data += $reference;
+          } else {
+             $reference = null;
+             \Session::addMessageAfterRedirect(
+                 self::getReferenceErrorMessage($error) . ' ' . __('Les réglages de référence précédents sont conservés.', 'assetsign'),
+                 false,
+                 ERROR
+             );
+          }
        }
 
-       $config->add(['entities_id' => $entities_id, 'is_recursive' => 1] + $data);
+       $config = new self();
+       $isNewRow = !$config->getFromDBByCrit(['entities_id' => $entities_id]);
+       if ($isNewRow) {
+          $config->add(['entities_id' => $entities_id, 'is_recursive' => 1] + $data);
+       } else {
+          $config->update(['id' => $config->getID()] + $data);
+       }
+
+       // « Prochain numero » : applique s'il a ete modifie, ou a la premiere configuration propre
+       // de l'entite (qui prend alors la suite du compteur herite affiche dans le formulaire).
+       if ($reference !== null && DocumentReferenceFormat::usesSequence($reference['reference_format']) && isset($input['reference_next_number'])) {
+          $next = (int) $input['reference_next_number'];
+          if ($next >= 1 && ($isNewRow || $next !== (int) ($input['reference_next_number_orig'] ?? 0))) {
+             DocumentReference::setNextNumber(
+                 $entities_id,
+                 DocumentReferenceFormat::period((bool) $reference['reference_yearly_reset'], time()),
+                 $next
+              );
+          }
+       }
+   }
+
+   public static function getReferenceErrorMessage(string $error): string {
+       return match ($error) {
+           DocumentReferenceFormat::ERROR_PREFIX => sprintf(
+               __('Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret ou souligné, en commençant par une lettre ou un chiffre.', 'assetsign'),
+               DocumentReferenceFormat::MAX_PREFIX_LENGTH
+           ),
+           DocumentReferenceFormat::ERROR_LENGTH => sprintf(
+               __('Format de référence refusé : %d caractères au plus.', 'assetsign'),
+               DocumentReferenceFormat::MAX_FORMAT_LENGTH
+           ),
+           DocumentReferenceFormat::ERROR_UNKNOWN_MARKER => sprintf(
+               __('Format de référence refusé : marqueur inconnu. Marqueurs admis : %s.', 'assetsign'),
+               implode(', ', array_map(static fn (string $m): string => '{' . $m . '}', DocumentReferenceFormat::MARKERS))
+           ),
+           DocumentReferenceFormat::ERROR_NO_UNIQUE_PART => __('Format de référence refusé : il doit contenir {seq} ou {aleatoire}.', 'assetsign'),
+           DocumentReferenceFormat::ERROR_YEARLY_RESET_WITHOUT_YEAR => __('Format de référence refusé : pour recommencer à 1 chaque année, le format doit contenir {annee}.', 'assetsign'),
+           default => __('Format de référence refusé : en dehors des marqueurs, seuls les lettres sans accent, les chiffres, le tiret et le souligné sont admis.', 'assetsign'),
+       };
+   }
+
+   /**
+    * Issue #273 : compteur du formulaire (prochain numero) et exemple de reference, pour l'entite
+    * qui porte le reglage (l'entite elle-meme, ou l'ancetre dont elle herite).
+    *
+    * @return array{next_number: int, example: string}
+    */
+   public function getReferencePreview(): array {
+       $format = (string) ($this->fields['reference_format'] ?? '');
+       $yearlyReset = (bool) ($this->fields['reference_yearly_reset'] ?? 0);
+       $next = DocumentReference::peekNextNumber(
+           (int) ($this->fields['entities_id'] ?? 0),
+           DocumentReferenceFormat::period($yearlyReset, time())
+       );
+      if (DocumentReferenceFormat::isDefault($format)) {
+          return ['next_number' => $next, 'example' => ''];
+      }
+       return [
+           'next_number' => $next,
+           'example'     => DocumentReferenceFormat::render(
+               $format,
+               (string) ($this->fields['reference_prefix'] ?? ''),
+               Assetsign::TYPE_HANDOVER,
+               $next,
+               (int) ($this->fields['reference_seq_digits'] ?? DocumentReferenceFormat::DEFAULT_SEQ_DIGITS),
+               time(),
+               str_repeat('X', DocumentReferenceFormat::RANDOM_LENGTH)
+           ),
+       ];
    }
 
    public function getSendingMode(): int {
@@ -1002,6 +1101,10 @@ class Config extends Compat\Base\ConfigBase
                 `renewal_default_years` int unsigned NOT NULL DEFAULT 4,
                 `renewal_monthly_change` tinyint NOT NULL DEFAULT 0,
                 `renewal_last_change` date DEFAULT NULL,
+                `reference_format` varchar(255) NOT NULL DEFAULT '',
+                `reference_prefix` varchar(255) NOT NULL DEFAULT '',
+                `reference_seq_digits` int unsigned NOT NULL DEFAULT 6,
+                `reference_yearly_reset` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -1106,6 +1209,14 @@ class Config extends Compat\Base\ConfigBase
              $migration->addField($table, 'renewal_default_years', 'integer', ['value' => 4]);
              $migration->addField($table, 'renewal_monthly_change', 'bool', ['value' => 0]);
              $migration->addField($table, 'renewal_last_change', 'date', []);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #273 : reference de document (format vide = identifiant interne, comme avant).
+         if (!$DB->fieldExists($table, 'reference_format')) {
+             $migration->addField($table, 'reference_format', 'string', ['value' => '']);
+             $migration->addField($table, 'reference_prefix', 'string', ['value' => '']);
+             $migration->addField($table, 'reference_seq_digits', 'integer', ['value' => DocumentReferenceFormat::DEFAULT_SEQ_DIGITS]);
+             $migration->addField($table, 'reference_yearly_reset', 'bool', ['value' => 0]);
              $migration->migrationOneTable($table);
          }
          // Issue #224 : re-signature quand la charte change.
