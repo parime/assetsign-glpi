@@ -36,7 +36,9 @@ final class ArrivalTest extends AssetsignTestCase
 
    public function testManualPreparationOpensATicketWithOneTaskPerStepAndTheNewcomerAsRequester(): void {
        $entityId = $this->entityWithConfig('Manuel', ['arrival_tasks' => "Préparer le poste\nCréer le badge"]);
-       $usersId = $this->createTestUser('Alice', 'Arrivante', ['entities_id' => $entityId, 'begin_date' => '2026-11-02 00:00:00']);
+       // Date d'arrivée toujours à venir (une date fixe finit par passer et fausse le test).
+       $arrivalDate = date('Y-m-d', strtotime('+10 days'));
+       $usersId = $this->createTestUser('Alice', 'Arrivante', ['entities_id' => $entityId, 'begin_date' => $arrivalDate . ' 00:00:00']);
        $this->grantProfile($usersId, $entityId);
 
        $arrival = Arrival::prepareFor($usersId, ArrivalLogic::TRIGGER_MANUAL);
@@ -48,7 +50,7 @@ final class ArrivalTest extends AssetsignTestCase
        $this->assertStringContainsString('Alice', $ticket->fields['name']);
        $this->assertSame($entityId, (int) $ticket->fields['entities_id']);
        $this->assertSame(2, $this->taskCount($ticketsId));
-       $this->assertSame('2026-11-02', $arrival->fields['date_arrival']);
+       $this->assertSame($arrivalDate, $arrival->fields['date_arrival']);
        // Compte pas encore valide (date de début à venir) : GLPI refuse le demandeur, l'équipe est
        // prévenue, et la tâche planifiée l'ajoute le jour venu.
        $this->assertSame(0, $this->requesterCount($ticketsId, $usersId));

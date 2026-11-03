@@ -4406,9 +4406,6 @@ msgstr "Gestor imediato: %s"
 msgid "Attribution #%d : Document généré par GLPI (plugin assetsign)"
 msgstr "Termo de entrega nº %d: documento gerado pelo GLPI (plugin assetsign)"
 
-msgid "Attestation de détention - %s"
-msgstr "Declaração de posse - %s"
-
 msgid "Attestation de détention de matériel"
 msgstr "Declaração de posse de ativos"
 
@@ -4467,9 +4464,6 @@ msgstr "Assinatura do técnico:"
 msgid "Fiche de maintenance #%d : Document généré par GLPI (plugin assetsign)"
 msgstr ""
 "Formulário de manutenção nº %d: documento gerado pelo GLPI (plugin assetsign)"
-
-msgid "Restitution de départ - %s"
-msgstr "Devolução por desligamento - %s"
 
 msgid "Restitution du matériel : départ"
 msgstr "Devolução de equipamento: desligamento"
@@ -5363,3 +5357,28 @@ msgstr "Digitar meu nome"
 
 msgid "Tapez votre nom complet :"
 msgstr "Digite seu nome completo:"
+
+msgid "Étiquettes QR"
+msgstr "Etiquetas QR"
+
+msgid "Imprimer les étiquettes QR"
+msgstr "Imprimir etiquetas QR"
+
+#, php-format
+msgid "Une planche d'étiquettes s'ouvrira pour les matériels sélectionnés (%d au maximum)."
+msgstr "Uma folha de etiquetas será aberta para os equipamentos selecionados (no máximo %d)."
+
+msgid "Aucune étiquette à imprimer."
+msgstr "Nenhuma etiqueta para imprimir."
+
+#, php-format
+msgid "%d étiquette"
+msgid_plural "%d étiquettes"
+msgstr[0] "%d etiqueta"
+msgstr[1] "%d etiquetas"
+
+#, php-format
+msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son entité)"
+msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
+msgstr[0] "%d equipamento ignorado (não visível ou etiqueta desativada para sua entidade)"
+msgstr[1] "%d equipamentos ignorados (não visíveis ou etiqueta desativada para sua entidade)"

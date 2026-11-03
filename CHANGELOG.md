@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Étiquettes QR en lot** (#278) : action de masse « Imprimer les étiquettes QR » dans les listes de matériel gérées, planche A4 de 3 étiquettes par ligne (QR code, type, nom, n° de série). Même droit que l'étiquette unitaire ; chaque matériel est revérifié (droit de lecture GLPI, entité, étiquette activée), un matériel refusé est ignoré et compté ; 500 matériels au plus ; sélection gardée en session derrière un jeton aléatoire, jamais dans l'URL.
+
+### Fixed
+
+- **CI** : le workflow principal (`ci.yml`) ne démarrait plus depuis le 01/11/2026 : un « : » dans un nom d'étape non cité rendait le YAML invalide. Nom cité ; style (phpcs) et test des arrivées à date fixe rattrapés.
+- Traductions : deux phrases (« Attestation de détention - %s », « Restitution de départ - %s ») étaient définies deux fois dans chaque catalogue, ce qui empêchait `msgfmt` de les compiler.
+
 ## [2.18.0] - 2026-11-01
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
