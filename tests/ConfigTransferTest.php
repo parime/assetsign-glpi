@@ -79,6 +79,8 @@ class ConfigTransferTest extends AssetsignTestCase
             'manage_Monitor'        => 1,
             'enable_signature_delegation'    => 1,
             'enable_self_service_delegation' => 1,
+            'reference_format'      => '{prefixe}-{annee}-{seq}',
+            'reference_prefix'      => 'RM',
         ]);
 
         $export = ConfigTransfer::export($source, false, false);
@@ -102,6 +104,8 @@ class ConfigTransferTest extends AssetsignTestCase
         $this->assertSame($returned, (int) $config->fields['return_returned_state']);
         $this->assertEqualsCanonicalizing(['Computer', 'Monitor'], $config->getManagedItemtypes());
         $this->assertSame(1, (int) $config->fields['enable_self_service_delegation']);
+        $this->assertSame('{prefixe}-{annee}-{seq}', $config->fields['reference_format']);
+        $this->assertSame('RM', $config->fields['reference_prefix']);
 
         // Réimporter le même fichier ne change plus rien.
         $this->assertSame([], ConfigTransfer::plan($payload, $target, self::NO_OPTIONS)['changes']);
@@ -169,6 +173,7 @@ class ConfigTransferTest extends AssetsignTestCase
             'statuts par identifiant'  => [$with(['stock_states' => [12]])],
             'liste trop longue'        => [$with(['stock_states' => array_map('strval', range(1, 201))])],
             'énumération'              => [$with(['confirm_before_sending' => 7])],
+            'référence avec balise'    => [$with(['reference_format' => '<b>{seq}</b>'])],
             'gabarit clé inconnue'     => [(string) json_encode($base + ['templates' => [['type' => 0, 'name' => 'x', 'entities_id' => 3]]])],
             'gabarit type inconnu'     => [(string) json_encode($base + ['templates' => [['type' => 99, 'name' => 'x']]])],
             'gabarit en double'        => [(string) json_encode($base + ['templates' => [['type' => 0, 'name' => 'x'], ['type' => 0, 'name' => 'y']]])],

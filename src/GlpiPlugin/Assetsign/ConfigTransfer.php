@@ -166,6 +166,12 @@ final class ConfigTransfer
       'charter_resign_on_change'             => ['bool'],
       'renewal_default_years'                => ['int', 1, 15],
       'renewal_monthly_change'               => ['bool'],
+      // Issue #273 : format de la référence de document (les compteurs, propres à l'instance, ne
+      // sont jamais exportés : la numérotation repart de celle de l'entité cible).
+      'reference_format'                     => ['string', DocumentReferenceFormat::MAX_FORMAT_LENGTH],
+      'reference_prefix'                     => ['string', DocumentReferenceFormat::MAX_PREFIX_LENGTH],
+      'reference_seq_digits'                 => ['int', 1, DocumentReferenceFormat::MAX_SEQ_DIGITS],
+      'reference_yearly_reset'               => ['bool'],
    ];
 
    /** @return array<string, array<int, mixed>> */
@@ -355,6 +361,15 @@ final class ConfigTransfer
             throw self::invalid($key);
          }
          $normalized[$key] = self::validateValue($key, self::SCHEMA[$key], $value);
+      }
+      // Issue #273 : mêmes règles que l'écran de configuration (marqueurs connus, caractères sûrs).
+      $referenceError = isset($normalized['reference_format']) ? DocumentReferenceFormat::validate(
+         $normalized['reference_format'],
+         (string) ($normalized['reference_prefix'] ?? ''),
+         (bool) ($normalized['reference_yearly_reset'] ?? 0)
+      ) : null;
+      if ($referenceError !== null) {
+         throw self::invalid('reference_format');
       }
 
       return [

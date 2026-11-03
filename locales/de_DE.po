@@ -3997,8 +3997,8 @@ msgstr "Geräte mit einem dieser Status werden beim Hinzufügen eines Elements z
 msgid "majeure"
 msgstr "schwerwiegend"
 
-msgid "Établie le %1$s : Référence assetsign n°%2$d"
-msgstr "Erstellt am %1$s: assetsign-Referenz Nr. %2$d"
+msgid "Établie le %1$s : Référence assetsign n°%2$s"
+msgstr "Erstellt am %1$s: assetsign-Referenz Nr. %2$s"
 
 msgid "Bénéficiaire (externe, sans compte GLPI)"
 msgstr "Empfänger (extern, ohne GLPI-Konto)"
@@ -4817,6 +4817,85 @@ msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son ent
 msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 msgstr[0] "%d Gerät übersprungen (nicht sichtbar oder Etikett für seine Entität deaktiviert)"
 msgstr[1] "%d Geräte übersprungen (nicht sichtbar oder Etikett für ihre Entität deaktiviert)"
+
+msgid "Référence"
+msgstr "Referenz"
+
+#, php-format
+msgid "Fiche %1$s créée par AssetSign, référence %2$s"
+msgstr "Formular %1$s von AssetSign erstellt, Referenz %2$s"
+
+msgid "Les réglages de référence précédents sont conservés."
+msgstr "Die bisherigen Referenzeinstellungen werden beibehalten."
+
+#, php-format
+msgid "Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret ou souligné, en commençant par une lettre ou un chiffre."
+msgstr "Präfix abgelehnt: höchstens %d Zeichen, Buchstaben ohne Akzent, Ziffern, Bindestrich oder Unterstrich, beginnend mit einem Buchstaben oder einer Ziffer."
+
+#, php-format
+msgid "Format de référence refusé : %d caractères au plus."
+msgstr "Referenzformat abgelehnt: höchstens %d Zeichen."
+
+#, php-format
+msgid "Format de référence refusé : marqueur inconnu. Marqueurs admis : %s."
+msgstr "Referenzformat abgelehnt: unbekannter Platzhalter. Zulässige Platzhalter: %s."
+
+msgid "Format de référence refusé : il doit contenir {seq} ou {aleatoire}."
+msgstr "Referenzformat abgelehnt: es muss {seq} oder {aleatoire} enthalten."
+
+msgid "Format de référence refusé : pour recommencer à 1 chaque année, le format doit contenir {annee}."
+msgstr "Referenzformat abgelehnt: um jedes Jahr wieder bei 1 zu beginnen, muss das Format {annee} enthalten."
+
+msgid "Format de référence refusé : en dehors des marqueurs, seuls les lettres sans accent, les chiffres, le tiret et le souligné sont admis."
+msgstr "Referenzformat abgelehnt: außer den Platzhaltern sind nur Buchstaben ohne Akzent, Ziffern, Bindestrich und Unterstrich zulässig."
+
+msgid "Référence de document"
+msgstr "Dokumentreferenz"
+
+msgid "Format de la référence"
+msgstr "Referenzformat"
+
+msgid "Préfixe"
+msgstr "Präfix"
+
+msgid "Chiffres du numéro"
+msgstr "Stellen der Nummer"
+
+msgid "Prochain numéro"
+msgstr "Nächste Nummer"
+
+msgid "Recommencer à 1 chaque année"
+msgstr "Jedes Jahr wieder bei 1 beginnen"
+
+#, php-format
+msgid "Exemple : %s"
+msgstr "Beispiel: %s"
+
+msgid "Format vide : la référence est l'identifiant interne de la fiche (comportement actuel)."
+msgstr "Leeres Format: die Referenz ist die interne ID des Formulars (bisheriges Verhalten)."
+
+msgid "Ce format sera refusé à l'enregistrement : il doit contenir {seq} ou {aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, des chiffres, le tiret et le souligné."
+msgstr "Dieses Format wird beim Speichern abgelehnt: es muss {seq} oder {aleatoire} enthalten und außer den Platzhaltern nur Buchstaben ohne Akzent, Ziffern, Bindestrich und Unterstrich."
+
+msgid "Marqueurs :"
+msgstr "Platzhalter:"
+
+msgid "(numéro séquentiel)"
+msgstr "(fortlaufende Nummer)"
+
+msgid "(6 caractères au hasard)"
+msgstr "(6 zufällige Zeichen)"
+
+msgid "La référence est attribuée à la création de la fiche et ne change plus : elle figure sur le PDF, dans le commentaire du document GLPI, dans l'historique du matériel et dans la liste des attributions. Les fiches existantes gardent leur référence actuelle. Un numéro déjà attribué n'est jamais réattribué, même si le prochain numéro est abaissé : il est sauté."
+msgstr "Die Referenz wird beim Erstellen des Formulars vergeben und ändert sich danach nicht mehr: sie steht im PDF, im Kommentar des GLPI-Dokuments, in der Historie des Geräts und in der Liste der Zuweisungen. Bestehende Formulare behalten ihre aktuelle Referenz. Eine bereits vergebene Nummer wird nie erneut vergeben, auch wenn die nächste Nummer gesenkt wird: sie wird übersprungen."
+
+#, php-format
+msgid "Référence : %s"
+msgstr "Referenz: %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Deinstallation abgebrochen: die Dokumentreferenzen konnten nicht in %s archiviert werden."
 
 msgid "Simulation de l'import dans « %s »"
 msgstr "Importsimulation in „%s“"

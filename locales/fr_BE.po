@@ -3961,8 +3961,8 @@ msgstr "Le matériel dans l'un de ces statuts est proposé en premier quand on a
 msgid "majeure"
 msgstr "majeure"
 
-msgid "Établie le %1$s : Référence assetsign n°%2$d"
-msgstr "Établie le %1$s : Référence assetsign n°%2$d"
+msgid "Établie le %1$s : Référence assetsign n°%2$s"
+msgstr "Établie le %1$s : Référence assetsign n°%2$s"
 
 msgid "Bénéficiaire (externe, sans compte GLPI)"
 msgstr "Bénéficiaire (externe, sans compte GLPI)"
@@ -4781,6 +4781,85 @@ msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son ent
 msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 msgstr[0] "%d matériel ignoré (non visible ou étiquette désactivée pour son entité)"
 msgstr[1] "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
+
+msgid "Référence"
+msgstr "Référence"
+
+#, php-format
+msgid "Fiche %1$s créée par AssetSign, référence %2$s"
+msgstr "Fiche %1$s créée par AssetSign, référence %2$s"
+
+msgid "Les réglages de référence précédents sont conservés."
+msgstr "Les réglages de référence précédents sont conservés."
+
+#, php-format
+msgid "Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret ou souligné, en commençant par une lettre ou un chiffre."
+msgstr "Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret ou souligné, en commençant par une lettre ou un chiffre."
+
+#, php-format
+msgid "Format de référence refusé : %d caractères au plus."
+msgstr "Format de référence refusé : %d caractères au plus."
+
+#, php-format
+msgid "Format de référence refusé : marqueur inconnu. Marqueurs admis : %s."
+msgstr "Format de référence refusé : marqueur inconnu. Marqueurs admis : %s."
+
+msgid "Format de référence refusé : il doit contenir {seq} ou {aleatoire}."
+msgstr "Format de référence refusé : il doit contenir {seq} ou {aleatoire}."
+
+msgid "Format de référence refusé : pour recommencer à 1 chaque année, le format doit contenir {annee}."
+msgstr "Format de référence refusé : pour recommencer à 1 chaque année, le format doit contenir {annee}."
+
+msgid "Format de référence refusé : en dehors des marqueurs, seuls les lettres sans accent, les chiffres, le tiret et le souligné sont admis."
+msgstr "Format de référence refusé : en dehors des marqueurs, seuls les lettres sans accent, les chiffres, le tiret et le souligné sont admis."
+
+msgid "Référence de document"
+msgstr "Référence de document"
+
+msgid "Format de la référence"
+msgstr "Format de la référence"
+
+msgid "Préfixe"
+msgstr "Préfixe"
+
+msgid "Chiffres du numéro"
+msgstr "Chiffres du numéro"
+
+msgid "Prochain numéro"
+msgstr "Prochain numéro"
+
+msgid "Recommencer à 1 chaque année"
+msgstr "Recommencer à 1 chaque année"
+
+#, php-format
+msgid "Exemple : %s"
+msgstr "Exemple : %s"
+
+msgid "Format vide : la référence est l'identifiant interne de la fiche (comportement actuel)."
+msgstr "Format vide : la référence est l'identifiant interne de la fiche (comportement actuel)."
+
+msgid "Ce format sera refusé à l'enregistrement : il doit contenir {seq} ou {aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, des chiffres, le tiret et le souligné."
+msgstr "Ce format sera refusé à l'enregistrement : il doit contenir {seq} ou {aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, des chiffres, le tiret et le souligné."
+
+msgid "Marqueurs :"
+msgstr "Marqueurs :"
+
+msgid "(numéro séquentiel)"
+msgstr "(numéro séquentiel)"
+
+msgid "(6 caractères au hasard)"
+msgstr "(6 caractères au hasard)"
+
+msgid "La référence est attribuée à la création de la fiche et ne change plus : elle figure sur le PDF, dans le commentaire du document GLPI, dans l'historique du matériel et dans la liste des attributions. Les fiches existantes gardent leur référence actuelle. Un numéro déjà attribué n'est jamais réattribué, même si le prochain numéro est abaissé : il est sauté."
+msgstr "La référence est attribuée à la création de la fiche et ne change plus : elle figure sur le PDF, dans le commentaire du document GLPI, dans l'historique du matériel et dans la liste des attributions. Les fiches existantes gardent leur référence actuelle. Un numéro déjà attribué n'est jamais réattribué, même si le prochain numéro est abaissé : il est sauté."
+
+#, php-format
+msgid "Référence : %s"
+msgstr "Référence : %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
 
 msgid "Simulation de l'import dans « %s »"
 msgstr "Simulation de l'import dans « %s »"

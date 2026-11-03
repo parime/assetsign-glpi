@@ -503,6 +503,45 @@
         {# ---------------------------------------------------------------- Compléments #}
         <div class="tab-pane fade" id="tab-complements" role="tabpanel">
           <p class="text-muted">{{ __('Réglages transverses, applicables à tous les types de fiche signée.', 'assetsign') }}</p>
+          {# Issue #273 : reference de document (numerotation sequentielle) #}
+          <h4><i class="ti ti-hash me-1"></i>{{ __('Référence de document', 'assetsign') }}</h4>
+          <div class="row g-3 mb-2" style="max-width: 900px;">
+            <div class="col-md-6">
+              <label class="form-label" for="reference_format">{{ __('Format de la référence', 'assetsign') }}</label>
+              <input type="text" name="reference_format" id="reference_format" class="form-control" maxlength="64" value="{{ config.reference_format|default('') }}" placeholder="{prefixe}-{annee}-{seq}" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="reference_prefix">{{ __('Préfixe', 'assetsign') }}</label>
+              <input type="text" name="reference_prefix" id="reference_prefix" class="form-control" maxlength="20" value="{{ config.reference_prefix|default('') }}" placeholder="RM" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="reference_seq_digits">{{ __('Chiffres du numéro', 'assetsign') }}</label>
+              <input type="number" name="reference_seq_digits" id="reference_seq_digits" class="form-control" min="1" max="12" value="{{ config.reference_seq_digits|default(6) }}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="reference_next_number">{{ __('Prochain numéro', 'assetsign') }}</label>
+              <input type="number" name="reference_next_number" id="reference_next_number" class="form-control" min="1" value="{{ reference_preview.next_number }}">
+              <input type="hidden" name="reference_next_number_orig" value="{{ reference_preview.next_number }}">
+            </div>
+            <div class="col-md-9 d-flex align-items-end">
+              <div class="form-check mb-2">
+                <input type="hidden" name="reference_yearly_reset" value="0">
+                <input type="checkbox" name="reference_yearly_reset" value="1" class="form-check-input" id="reference_yearly_reset" {{ config.reference_yearly_reset|default(0) ? 'checked' : '' }}>
+                <label class="form-check-label" for="reference_yearly_reset">{{ __('Recommencer à 1 chaque année', 'assetsign') }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1" id="reference_example"
+               data-label="{{ __('Exemple : %s', 'assetsign') }}"
+               data-default="{{ __('Format vide : la référence est l\'identifiant interne de la fiche (comportement actuel).', 'assetsign') }}"
+               data-invalid="{{ __('Ce format sera refusé à l\'enregistrement : il doit contenir {seq} ou {aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, des chiffres, le tiret et le souligné.', 'assetsign') }}"
+               data-server-example="{{ reference_preview.example }}">
+            <strong class="reference-example-text">{{ reference_preview.example is empty ? __('Format vide : la référence est l\'identifiant interne de la fiche (comportement actuel).', 'assetsign') : __('Exemple : %s', 'assetsign')|format(reference_preview.example) }}</strong>
+          </div>
+          <div class="form-text mb-3" style="max-width: 900px;">
+            {{ __('Marqueurs :', 'assetsign') }} <code>{prefixe}</code>, <code>{annee}</code>, <code>{mois}</code>, <code>{jour}</code>, <code>{seq}</code> {{ __('(numéro séquentiel)', 'assetsign') }}, <code>{type}</code> ({% for code in reference_type_codes %}{{ code }}{{ not loop.last ? ', ' : '' }}{% endfor %}), <code>{aleatoire}</code> {{ __('(6 caractères au hasard)', 'assetsign') }}.
+            {{ __('La référence est attribuée à la création de la fiche et ne change plus : elle figure sur le PDF, dans le commentaire du document GLPI, dans l\'historique du matériel et dans la liste des attributions. Les fiches existantes gardent leur référence actuelle. Un numéro déjà attribué n\'est jamais réattribué, même si le prochain numéro est abaissé : il est sauté.', 'assetsign') }}
+          </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_observations" value="0">
             <input type="checkbox" name="enable_observations" value="1" class="form-check-input" id="enable_observations" {{ config.enable_observations|default(0) ? 'checked' : '' }}>
@@ -1014,6 +1053,55 @@
     };
     delegationParent.addEventListener('change', syncSelfServiceDelegation);
     syncSelfServiceDelegation();
+  }
+
+  // Issue #273 : exemple de reference en direct sous le champ. Simple confort : les memes regles
+  // sont reappliquees cote serveur (DocumentReferenceFormat::validate()) a l'enregistrement.
+  // Affiche par textContent, jamais en HTML.
+  var referenceFormat = document.getElementById('reference_format');
+  var referenceExample = document.getElementById('reference_example');
+  if (referenceFormat && referenceExample) {
+    var referenceInputs = ['reference_format', 'reference_prefix', 'reference_seq_digits', 'reference_next_number'];
+    var renderReferenceExample = function () {
+      var target = referenceExample.querySelector('.reference-example-text');
+      var format = referenceFormat.value.trim();
+      if (format === '') {
+        target.textContent = referenceExample.dataset.default;
+        return;
+      }
+      var literal = format.replace(/\{(prefixe|annee|mois|jour|seq|type|aleatoire)\}/g, '');
+      if (!/^[A-Za-z0-9_-]*$/.test(literal) || (format.indexOf('{seq}') === -1 && format.indexOf('{aleatoire}') === -1)) {
+        target.textContent = referenceExample.dataset.invalid;
+        return;
+      }
+      var now = new Date();
+      var two = function (n) { return (n < 10 ? '0' : '') + n; };
+      var digits = Math.max(1, Math.min(12, parseInt(document.getElementById('reference_seq_digits').value, 10) || 6));
+      var seq = String(Math.max(1, parseInt(document.getElementById('reference_next_number').value, 10) || 1));
+      while (seq.length < digits) {
+        seq = '0' + seq;
+      }
+      var values = {
+        prefixe: document.getElementById('reference_prefix').value.trim(),
+        annee: String(now.getFullYear()),
+        mois: two(now.getMonth() + 1),
+        jour: two(now.getDate()),
+        seq: seq,
+        type: 'REM',
+        aleatoire: 'XXXXXX'
+      };
+      var reference = format.replace(/\{(prefixe|annee|mois|jour|seq|type|aleatoire)\}/g, function (m, key) { return values[key]; })
+        .replace(/[^A-Za-z0-9_-]/g, '')
+        .replace(/^[-_]+/, '');
+      target.textContent = referenceExample.dataset.label.replace('%s', reference);
+    };
+    referenceInputs.forEach(function (id) {
+      var input = document.getElementById(id);
+      if (input) {
+        input.addEventListener('input', renderReferenceExample);
+      }
+    });
+    renderReferenceExample();
   }
 })();
 </script>

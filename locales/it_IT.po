@@ -3971,8 +3971,8 @@ msgstr "Le attrezzature in uno di questi stati vengono proposte per prime quando
 msgid "majeure"
 msgstr "grave"
 
-msgid "Établie le %1$s : Référence assetsign n°%2$d"
-msgstr "Redatta il %1$s: Riferimento assetsign n. %2$d"
+msgid "Établie le %1$s : Référence assetsign n°%2$s"
+msgstr "Redatta il %1$s: Riferimento assetsign n. %2$s"
 
 msgid "Bénéficiaire (externe, sans compte GLPI)"
 msgstr "Beneficiario (esterno, senza account GLPI)"
@@ -4791,6 +4791,85 @@ msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son ent
 msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 msgstr[0] "%d apparecchiatura ignorata (non visibile o etichetta disattivata per la sua entità)"
 msgstr[1] "%d apparecchiature ignorate (non visibili o etichetta disattivata per la loro entità)"
+
+msgid "Référence"
+msgstr "Riferimento"
+
+#, php-format
+msgid "Fiche %1$s créée par AssetSign, référence %2$s"
+msgstr "Scheda %1$s creata da AssetSign, riferimento %2$s"
+
+msgid "Les réglages de référence précédents sont conservés."
+msgstr "Le impostazioni di riferimento precedenti vengono mantenute."
+
+#, php-format
+msgid "Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret ou souligné, en commençant par une lettre ou un chiffre."
+msgstr "Prefisso rifiutato: al massimo %d caratteri, lettere non accentate, cifre, trattino o trattino basso, iniziando con una lettera o una cifra."
+
+#, php-format
+msgid "Format de référence refusé : %d caractères au plus."
+msgstr "Formato di riferimento rifiutato: al massimo %d caratteri."
+
+#, php-format
+msgid "Format de référence refusé : marqueur inconnu. Marqueurs admis : %s."
+msgstr "Formato di riferimento rifiutato: segnaposto sconosciuto. Segnaposto ammessi: %s."
+
+msgid "Format de référence refusé : il doit contenir {seq} ou {aleatoire}."
+msgstr "Formato di riferimento rifiutato: deve contenere {seq} o {aleatoire}."
+
+msgid "Format de référence refusé : pour recommencer à 1 chaque année, le format doit contenir {annee}."
+msgstr "Formato di riferimento rifiutato: per ripartire da 1 ogni anno, il formato deve contenere {annee}."
+
+msgid "Format de référence refusé : en dehors des marqueurs, seuls les lettres sans accent, les chiffres, le tiret et le souligné sont admis."
+msgstr "Formato di riferimento rifiutato: oltre ai segnaposto, sono ammessi solo lettere non accentate, cifre, trattino e trattino basso."
+
+msgid "Référence de document"
+msgstr "Riferimento del documento"
+
+msgid "Format de la référence"
+msgstr "Formato del riferimento"
+
+msgid "Préfixe"
+msgstr "Prefisso"
+
+msgid "Chiffres du numéro"
+msgstr "Cifre del numero"
+
+msgid "Prochain numéro"
+msgstr "Prossimo numero"
+
+msgid "Recommencer à 1 chaque année"
+msgstr "Ripartire da 1 ogni anno"
+
+#, php-format
+msgid "Exemple : %s"
+msgstr "Esempio: %s"
+
+msgid "Format vide : la référence est l'identifiant interne de la fiche (comportement actuel)."
+msgstr "Formato vuoto: il riferimento è l'identificativo interno della scheda (comportamento attuale)."
+
+msgid "Ce format sera refusé à l'enregistrement : il doit contenir {seq} ou {aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, des chiffres, le tiret et le souligné."
+msgstr "Questo formato verrà rifiutato al salvataggio: deve contenere {seq} o {aleatoire} e, oltre ai segnaposto, solo lettere non accentate, cifre, trattino e trattino basso."
+
+msgid "Marqueurs :"
+msgstr "Segnaposto:"
+
+msgid "(numéro séquentiel)"
+msgstr "(numero sequenziale)"
+
+msgid "(6 caractères au hasard)"
+msgstr "(6 caratteri casuali)"
+
+msgid "La référence est attribuée à la création de la fiche et ne change plus : elle figure sur le PDF, dans le commentaire du document GLPI, dans l'historique du matériel et dans la liste des attributions. Les fiches existantes gardent leur référence actuelle. Un numéro déjà attribué n'est jamais réattribué, même si le prochain numéro est abaissé : il est sauté."
+msgstr "Il riferimento viene assegnato alla creazione della scheda e non cambia più: compare sul PDF, nel commento del documento GLPI, nella cronologia del materiale e nell'elenco delle assegnazioni. Le schede esistenti mantengono il loro riferimento attuale. Un numero già assegnato non viene mai riassegnato, anche se il prossimo numero viene abbassato: viene saltato."
+
+#, php-format
+msgid "Référence : %s"
+msgstr "Riferimento: %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Disinstallazione interrotta: impossibile archiviare i riferimenti dei documenti in %s."
 
 msgid "Simulation de l'import dans « %s »"
 msgstr "Simulazione dell'importazione in «%s»"

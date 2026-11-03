@@ -28,7 +28,7 @@
 {% endif %}
 
 <h1>{{ page_title }}</h1>
-<p class="meta">{{ __('Établie le %1$s : Référence assetsign n°%2$d', 'assetsign')|format(assetsign.date_creation|date('d/m/Y'), assetsign.id) }}</p>
+<p class="meta">{{ __('Établie le %1$s : Référence assetsign n°%2$s', 'assetsign')|format(assetsign.date_creation|date('d/m/Y'), assetsign.reference|default(assetsign.id)) }}</p>
 
 <h2>{{ beneficiary_is_external|default(false) ? __('Bénéficiaire (externe, sans compte GLPI)', 'assetsign') : __('Bénéficiaire', 'assetsign') }}</h2>
 <table class="info-table">

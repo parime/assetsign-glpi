@@ -74,7 +74,7 @@ if (($argv[1] ?? '') === 'xss') {
     $sheet = ['id' => $ids['assetsign_A']];
     $set('assetsigns', [
         'observations' => $canary, 'beneficiary_comment' => $canary, 'delegation_reason' => $canary,
-        'external_beneficiary_name' => $canary, 'external_beneficiary_contact' => $canary,
+        'external_beneficiary_name' => $canary, 'external_beneficiary_contact' => $canary, 'reference' => $canary,
     ], $sheet);
     $DB->insert('glpi_plugin_assetsign_assetsignitems', [
         'plugin_assetsign_assetsigns_id' => $ids['assetsign_A'], 'itemtype' => 'Monitor', 'items_id' => 0,
@@ -101,6 +101,7 @@ if (($argv[1] ?? '') === 'xss') {
     $set('configs', [
         'company_name' => $canary, 'sender_name' => $canary, 'preview_watermark_text' => $canary,
         'currency_symbol' => $canary, 'default_provider' => $canary,
+        'reference_format' => $canary, 'reference_prefix' => $canary,
     ], ['entities_id' => $ids['a']]);
     $DB->update('glpi_computers', ['name' => $canary, 'serial' => $canary], ['id' => $ids['computer_A']]);
     $DB->update('glpi_users', ['realname' => $canary, 'firstname' => $canary], ['id' => $ids['partant_A']]);
