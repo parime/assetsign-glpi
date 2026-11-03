@@ -5382,3 +5382,150 @@ msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son ent
 msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 msgstr[0] "%d equipamento ignorado (não visível ou etiqueta desativada para sua entidade)"
 msgstr[1] "%d equipamentos ignorados (não visíveis ou etiqueta desativada para sua entidade)"
+
+msgid "Simulation de l'import dans « %s »"
+msgstr "Simulação da importação em «%s»"
+
+msgid "Fichier exporté depuis « %1$s » (AssetSign %2$s)."
+msgstr "Arquivo exportado de «%1$s» (AssetSign %2$s)."
+
+msgid "Cette entité hérite aujourd'hui de la configuration d'une entité parente : l'import lui créera sa propre configuration."
+msgstr "Esta entidade herda atualmente a configuração de uma entidade pai: a importação criará sua própria configuração."
+
+msgid "Compte rendu"
+msgstr "Relatório"
+
+msgid "Réglages"
+msgstr "Configurações"
+
+msgid "Aucun réglage ne change."
+msgstr "Nenhuma configuração muda."
+
+msgid "Réglage"
+msgstr "Configuração"
+
+msgid "Valeur actuelle"
+msgstr "Valor atual"
+
+msgid "Nouvelle valeur"
+msgstr "Novo valor"
+
+msgid "Gabarits par défaut"
+msgstr "Modelos padrão"
+
+msgid "Le fichier ne contient aucun gabarit."
+msgstr "O arquivo não contém nenhum modelo."
+
+msgid "nouveau gabarit dans cette entité"
+msgstr "novo modelo nesta entidade"
+
+msgid "modifié (%s)"
+msgstr "modificado (%s)"
+
+msgid "ignoré (droit insuffisant)"
+msgstr "ignorado (permissão insuficiente)"
+
+msgid "inchangé"
+msgstr "inalterado"
+
+msgid "Logo"
+msgstr "Logotipo"
+
+msgid "Le logo sera remplacé par celui du fichier."
+msgstr "O logotipo será substituído pelo do arquivo."
+
+msgid "Le logo du fichier est identique au logo actuel."
+msgstr "O logotipo do arquivo é idêntico ao atual."
+
+msgid "Le fichier ne contient pas de logo : le logo actuel est conservé."
+msgstr "O arquivo não contém logotipo: o atual é mantido."
+
+msgid "Appliquer l'import"
+msgstr "Aplicar a importação"
+
+msgid "Exporter ou importer la configuration"
+msgstr "Exportar ou importar a configuração"
+
+msgid "Exporter la configuration"
+msgstr "Exportar a configuração"
+
+msgid "Inclure les gabarits par défaut"
+msgstr "Incluir os modelos padrão"
+
+msgid "Inclure le logo"
+msgstr "Incluir o logotipo"
+
+msgid "Jamais exportés (secrets, à ressaisir sur l'instance de destination) :"
+msgstr "Nunca exportados (segredos, a serem digitados novamente na instância de destino):"
+
+msgid "Télécharger le fichier JSON"
+msgstr "Baixar o arquivo JSON"
+
+msgid "Importer une configuration"
+msgstr "Importar uma configuração"
+
+msgid "Fichier exporté par AssetSign"
+msgstr "Arquivo exportado pelo AssetSign"
+
+msgid "%d Mo au maximum."
+msgstr "%d MB no máximo."
+
+msgid "Entité cible"
+msgstr "Entidade de destino"
+
+msgid "Importer les gabarits par défaut"
+msgstr "Importar os modelos padrão"
+
+msgid "Importer le logo"
+msgstr "Importar o logotipo"
+
+msgid "Rien n'est modifié à cette étape : les différences s'affichent d'abord, à confirmer."
+msgstr "Nada é alterado nesta etapa: as diferenças são exibidas primeiro, para confirmação."
+
+msgid "Simuler l'import"
+msgstr "Simular a importação"
+
+msgid "Choisissez un fichier de configuration (.json)."
+msgstr "Escolha um arquivo de configuração (.json)."
+
+msgid "Le fichier dépasse la taille maximale (%d Mo)."
+msgstr "O arquivo excede o tamanho máximo (%d MB)."
+
+msgid "Ce fichier n'est pas un JSON valide."
+msgstr "Este arquivo não é um JSON válido."
+
+msgid "Ce fichier n'est pas une configuration AssetSign."
+msgstr "Este arquivo não é uma configuração do AssetSign."
+
+msgid "Ce fichier n'est pas une configuration AssetSign dans un format reconnu."
+msgstr "Este arquivo não é uma configuração do AssetSign em um formato reconhecido."
+
+msgid "Fichier refusé : la valeur « %s » est inconnue ou invalide."
+msgstr "Arquivo recusado: o valor «%s» é desconhecido ou inválido."
+
+msgid "Logo refusé : image PNG, JPG, GIF ou WEBP attendue, de %1$d Ko et %2$d × %3$d pixels au plus."
+msgstr "Logotipo recusado: é esperada uma imagem PNG, JPG, GIF ou WEBP de no máximo %1$d KB e %2$d × %3$d pixels."
+
+msgid "« %s » n'est jamais importé (secret ou propre à l'instance d'origine) : à ressaisir si besoin."
+msgstr "«%s» nunca é importado (segredo ou próprio da instância de origem): digite-o novamente se necessário."
+
+msgid "%1$s : « %2$s » n'existe pas sur cette instance, ignoré."
+msgstr "%1$s: «%2$s» não existe nesta instância, ignorado."
+
+msgid "Gabarit « %s » ignoré : vous n'avez pas le droit de le modifier."
+msgstr "Modelo «%s» ignorado: você não tem permissão para modificá-lo."
+
+msgid "Gabarit « %s » ignoré : vous n'avez pas le droit d'en créer dans cette entité."
+msgstr "Modelo «%s» ignorado: você não tem permissão para criar modelos nesta entidade."
+
+msgid "%1$s : « %2$s » est introuvable dans l'entité cible, ignoré."
+msgstr "%1$s: «%2$s» não foi encontrado na entidade de destino, ignorado."
+
+msgid "Simulation expirée : relancez l'import."
+msgstr "Simulação expirada: reinicie a importação."
+
+msgid "Import appliqué : %1$d réglage(s) et %2$d gabarit(s) modifiés%3$s."
+msgstr "Importação aplicada: %1$d configuração(ões) e %2$d modelo(s) alterados%3$s."
+
+msgid ", logo remplacé"
+msgstr ", logotipo substituído"

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Export et import de la configuration** (#279) : depuis l'onglet Général de la configuration, page « Exporter ou importer la configuration ». Fichier JSON (format repris des Blueprints de Configuration GLPI Auto : `format_version`, `plugin_version`, `exported_at`, section `config`) avec les réglages de l'entité, ses gabarits par défaut et son logo. Import en deux temps : simulation (différences réglage par réglage, gabarits, logo, compte rendu de ce qui est ignoré) puis confirmation ; chaque import appliqué est consigné dans le journal des événements GLPI et `files/_log/assetsign.log`.
+
+### Security
+
+- Import de configuration (#279) : export réservé au droit de lecture de la configuration, import au droit de modification, entité vérifiée, CSRF sur chaque action (POST). Schéma strict (clé inconnue = fichier refusé, types, bornes et longueurs contrôlés), 3 Mo au plus, aucun chemin de fichier lu dans le fichier. Statuts et blocs Fields désignés par leur nom et recherchés parmi ceux visibles depuis l'entité cible, jamais par identifiant ; gabarits importés seulement avec le droit sur les gabarits. Secrets (adresse du webhook, configuration du fournisseur) jamais exportés et ignorés à l'import. Logo contrôlé sur son contenu réel (signature d'image et type MIME détecté concordants, SVG refusé, 1 Mo et 3000 × 3000 pixels au plus). Simulation gardée en session derrière un jeton aléatoire à usage unique.
+
 ## [2.19.0] - 2026-11-03
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

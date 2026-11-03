@@ -357,6 +357,15 @@ class Config extends Compat\Base\ConfigBase
           return 0;
       }
 
+       return self::addLogoDocument($tmpName, $entities_id);
+   }
+
+    /**
+     * Cree le Document du logo a partir d'un fichier deja controle et place dans GLPI_TMP_DIR sous
+     * un nom genere par le plugin (jamais un nom venant de l'utilisateur) : partage par l'envoi du
+     * formulaire et par l'import de configuration (issue #279).
+     */
+   public static function addLogoDocument(string $tmpName, int $entities_id): int {
        $document = new \Document();
        $documents_id = $document->add([
            'name'          => 'Logo assetsign & signature',
@@ -646,6 +655,42 @@ class Config extends Compat\Base\ConfigBase
    }
 
    public static function upsertForEntity(int $entities_id, array $input): void {
+       $data = self::buildRow($input);
+
+       // Issue #231 : adresse du webhook chiffree ; un champ vide conserve l'adresse enregistree.
+       $chatUrl = trim((string) ($input['chat_webhook_url'] ?? ''));
+      if (!empty($input['chat_webhook_remove'])) {
+          $data['chat_webhook_url'] = '';
+      } else if ($chatUrl !== '') {
+         if (Notification\ChatWebhook::validateUrl($chatUrl) === null) {
+            $data['chat_webhook_url'] = Notification\ChatWebhook::encryptUrl($chatUrl);
+         } else {
+             \Session::addMessageAfterRedirect(
+                 __('Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même.', 'assetsign'),
+                 false,
+                 ERROR
+             );
+         }
+      }
+
+       $config = new self();
+      if ($config->getFromDBByCrit(['entities_id' => $entities_id])) {
+          $config->update(['id' => $config->getID()] + $data);
+          return;
+      }
+
+       $config->add(['entities_id' => $entities_id, 'is_recursive' => 1] + $data);
+   }
+
+   /**
+    * Ligne de configuration (colonne => valeur nettoyee) que produirait l'enregistrement du
+    * formulaire $input, sans rien ecrire : partagee par upsertForEntity() et par la simulation de
+    * l'import (issue #279, ConfigTransfer), qui compare ce resultat a la configuration actuelle.
+    * L'adresse du webhook (chiffree, message d'erreur en session) reste traitee par upsertForEntity().
+    *
+    * @return array<string, mixed>
+    */
+   public static function buildRow(array $input): array {
        $managedItemtypes = [];
       foreach (self::getAllManageableItemtypes() as $itemtype) {
          if (!empty($input['manage_' . $itemtype])) {
@@ -772,22 +817,6 @@ class Config extends Compat\Base\ConfigBase
            'renewal_monthly_change' => (int) ($input['renewal_monthly_change'] ?? 0),
        ];
 
-       // Issue #231 : adresse du webhook chiffree ; un champ vide conserve l'adresse enregistree.
-       $chatUrl = trim((string) ($input['chat_webhook_url'] ?? ''));
-       if (!empty($input['chat_webhook_remove'])) {
-          $data['chat_webhook_url'] = '';
-       } else if ($chatUrl !== '') {
-          if (Notification\ChatWebhook::validateUrl($chatUrl) === null) {
-             $data['chat_webhook_url'] = Notification\ChatWebhook::encryptUrl($chatUrl);
-          } else {
-             \Session::addMessageAfterRedirect(
-                 __('Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même.', 'assetsign'),
-                 false,
-                 ERROR
-             );
-          }
-       }
-
        // Issue #229 : sans le plugin Fields (desactive un temps), le choix enregistre est conserve.
        if (FieldsPluginValues::isAvailable()) {
            $data['fields_containers'] = FieldsPluginLogic::normalizeContainerIds(
@@ -798,13 +827,7 @@ class Config extends Compat\Base\ConfigBase
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
 
-       $config = new self();
-       if ($config->getFromDBByCrit(['entities_id' => $entities_id])) {
-           $config->update(['id' => $config->getID()] + $data);
-           return;
-       }
-
-       $config->add(['entities_id' => $entities_id, 'is_recursive' => 1] + $data);
+       return $data;
    }
 
    public function getSendingMode(): int {
