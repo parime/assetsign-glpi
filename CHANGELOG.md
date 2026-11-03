@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **CI** : le workflow principal (`ci.yml`) ne démarrait plus depuis le 01/11/2026 : un « : » dans un nom d'étape non cité rendait le YAML invalide. Nom cité ; style (phpcs) et test des arrivées à date fixe rattrapés.
+- Traductions : deux phrases (« Attestation de détention - %s », « Restitution de départ - %s ») étaient définies deux fois dans chaque catalogue, ce qui empêchait `msgfmt` de les compiler.
+
 ## [2.18.0] - 2026-11-01
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

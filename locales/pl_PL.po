@@ -4421,9 +4421,6 @@ msgid "Attribution #%d : Document généré par GLPI (plugin assetsign)"
 msgstr ""
 "Przekazanie nr %d: dokument wygenerowany przez GLPI (wtyczka assetsign)"
 
-msgid "Attestation de détention - %s"
-msgstr "Oświadczenie o posiadaniu - %s"
-
 msgid "Attestation de détention de matériel"
 msgstr "Oświadczenie o posiadaniu aktywów"
 
@@ -4483,9 +4480,6 @@ msgid "Fiche de maintenance #%d : Document généré par GLPI (plugin assetsign)
 msgstr ""
 "Formularz konserwacji nr %d: dokument wygenerowany przez GLPI (wtyczka "
 "assetsign)"
-
-msgid "Restitution de départ - %s"
-msgstr "Zwrot przy odejściu - %s"
 
 msgid "Restitution du matériel : départ"
 msgstr "Zwrot sprzętu: odejście"

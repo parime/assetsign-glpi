@@ -2179,7 +2179,6 @@ msgstr "Debe iniciar sesión para acceder a este documento."
 msgid "Ce document ne correspond pas à votre compte utilisateur."
 msgstr "Este documento no corresponde a su cuenta de usuario."
 
-
 msgid "Seul le bénéficiaire d'origine peut déléguer la signature depuis cette page."
 msgstr "Solo el beneficiario original puede delegar la firma desde esta página."
 
@@ -2320,10 +2319,8 @@ msgstr "valor residual bajo: %d%% del precio de compra"
 msgid "Vous signez en tant que délégué de"
 msgstr "Está firmando como delegado de"
 
-
 msgid "Vous n'êtes pas disponible ?"
 msgstr "¿No está disponible?"
-
 
 msgid ""
 "Vous pouvez déléguer la signature à un autre compte GLPI (manager, RH, "
@@ -2334,30 +2331,23 @@ msgstr ""
 " Este enlace dejará de ser válido en cuanto se confirme la delegación: la "
 "persona designada recibirá su propio enlace por correo electrónico."
 
-
 msgid "Je ne suis pas disponible, déléguer la signature à quelqu'un d'autre"
 msgstr "No estoy disponible, delegar la firma a otra persona"
-
 
 msgid "Déléguer à"
 msgstr "Delegar a"
 
-
 msgid "Motif (obligatoire)"
 msgstr "Motivo (obligatorio)"
-
 
 msgid "Confirmer la délégation"
 msgstr "Confirmar la delegación"
 
-
 msgid "Merci de choisir un compte utilisateur."
 msgstr "Por favor, elija una cuenta de usuario."
 
-
 msgid "Le motif de la délégation est obligatoire."
 msgstr "El motivo de la delegación es obligatorio."
-
 
 msgid ""
 "La signature a été déléguée. La personne désignée va recevoir son propre "
@@ -2366,31 +2356,24 @@ msgstr ""
 "La firma se ha delegado. La persona designada recibirá su propio enlace por "
 "correo electrónico."
 
-
 msgid "Signature déléguée à"
 msgstr "Firma delegada a"
-
 
 msgid "le"
 msgstr "el"
 
-
 msgid "motif"
 msgstr "motivo"
-
 
 msgid "Révoquer la délégation et rendre la main au bénéficiaire d'origine ?"
 msgstr ""
 "¿Revocar la delegación y devolver el control al beneficiario original?"
 
-
 msgid "Révoquer"
 msgstr "Revocar"
 
-
 msgid "Déléguer la signature"
 msgstr "Delegar la firma"
-
 
 msgid ""
 "Désigne un autre compte GLPI pour signer à la place du bénéficiaire "
@@ -2401,18 +2384,14 @@ msgstr ""
 "(ausencia prolongada, vacaciones, baja...). El enlace de firma enviado al "
 "beneficiario original deja de ser válido en cuanto se realiza la delegación."
 
-
 msgid "Motif"
 msgstr "Motivo"
-
 
 msgid "Déléguer"
 msgstr "Delegar"
 
-
 msgid "Délégation de signature"
 msgstr "Delegación de la firma"
-
 
 msgid ""
 "Permet de continuer une restitution/remise bloquée par l'absence prolongée "
@@ -2428,10 +2407,8 @@ msgstr ""
 "y el motivo de la delegación se conservan (historial de la ficha, PDF "
 "firmado)."
 
-
 msgid "Autoriser un technicien/administrateur à déléguer la signature"
 msgstr "Permitir que un técnico/administrador delegue la firma"
-
 
 msgid ""
 "Ajoute un bouton « Déléguer la signature » sur la fiche Assetsign (droit de "
@@ -2440,12 +2417,10 @@ msgstr ""
 "Añade un botón «Delegar la firma» en la ficha Assetsign (se requiere el "
 "derecho de modificación), solo para un beneficiario interno (cuenta GLPI)."
 
-
 msgid ""
 "Autoriser le bénéficiaire à se déléguer lui-même depuis la page de signature"
 msgstr ""
 "Permitir que el beneficiario se delegue a sí mismo desde la página de firma"
-
 
 msgid ""
 "Nécessite le réglage ci-dessus. Le bénéficiaire choisit lui-même un autre "
@@ -2456,59 +2431,46 @@ msgstr ""
 "(motivo obligatorio) desde su enlace de firma; ese enlace deja entonces de "
 "ser válido, solo funciona el nuevo enlace enviado al delegado."
 
-
 msgid "Signature déléguée."
 msgstr "Firma delegada."
-
 
 msgid ""
 "Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
 msgstr "Delegación revocada: el beneficiario original puede volver a firmar."
 
-
 msgid "La délégation n'est pas activée pour cette entité."
 msgstr "La delegación no está activada para esta entidad."
-
 
 msgid ""
 "Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée)."
 msgstr ""
 "Esta solicitud ya no puede delegarse (ya firmada, caducada o cancelada)."
 
-
 msgid ""
 "La délégation n'est possible que pour un bénéficiaire interne (compte GLPI)."
 msgstr ""
 "La delegación solo es posible para un beneficiario interno (cuenta GLPI)."
 
-
 msgid "Le compte délégué doit être différent du bénéficiaire d'origine."
 msgstr "La cuenta delegada debe ser distinta del beneficiario original."
-
 
 msgid "La délégation de signature est désactivée pour cette entité."
 msgstr "La delegación de firma está desactivada para esta entidad."
 
-
 msgid "Compte utilisateur délégué introuvable."
 msgstr "No se encontró la cuenta de usuario delegada."
-
 
 msgid "Le compte délégué est désactivé ou supprimé."
 msgstr "La cuenta delegada está desactivada o eliminada."
 
-
 msgid "Le compte délégué n'a pas accès à l'entité de ce dossier."
 msgstr "La cuenta delegada no tiene acceso a la entidad de este expediente."
-
 
 msgid "Signature déléguée à %s (motif : %s)"
 msgstr "Firma delegada a %s (motivo: %s)"
 
-
 msgid "Cette demande n'est pas déléguée."
 msgstr "Esta solicitud no está delegada."
-
 
 msgid ""
 "Cette délégation ne peut plus être révoquée (déjà signée, expirée ou "
@@ -2516,22 +2478,17 @@ msgid ""
 msgstr ""
 "Esta delegación ya no puede revocarse (ya firmada, caducada o cancelada)."
 
-
 msgid "Délégation de signature révoquée"
 msgstr "Delegación de firma revocada"
-
 
 msgid "Signature déléguée"
 msgstr "Firma delegada"
 
-
 msgid "Délégué"
 msgstr "Delegado"
 
-
 msgid "Signataire délégué"
 msgstr "Firmante delegado"
-
 
 msgid "Motif de la délégation"
 msgstr "Motivo de la delegación"
@@ -2667,7 +2624,6 @@ msgstr "duración de amortización prevista"
 #: templates/passport_tab.html.twig:149
 msgid "Impact de fabrication évité grâce à la prolongation d'usage au-delà de la durée d'amortissement prévue (durée native GLPI de l'Infocom). Rien ne s'affiche tant que cette durée n'est pas dépassée."
 msgstr "Impacto de fabricación evitado gracias a la prolongación de uso más allá de la duración de amortización prevista (duración nativa de Infocom de GLPI). No se muestra nada mientras esta duración no se supere."
-
 
 msgid "Ce document a déjà été signé par"
 msgstr "Este documento ya ha sido firmado por"
@@ -4071,9 +4027,6 @@ msgstr "Responsable jerárquico: %s"
 msgid "Attribution #%d : Document généré par GLPI (plugin assetsign)"
 msgstr "Atribución #%d: Documento generado por GLPI (plugin assetsign)"
 
-msgid "Attestation de détention - %s"
-msgstr "Certificación de tenencia - %s"
-
 msgid "Attestation de détention de matériel"
 msgstr "Certificación de tenencia de equipos"
 
@@ -4127,9 +4080,6 @@ msgstr "Firma del técnico:"
 
 msgid "Fiche de maintenance #%d : Document généré par GLPI (plugin assetsign)"
 msgstr "Ficha de mantenimiento #%d: Documento generado por GLPI (plugin assetsign)"
-
-msgid "Restitution de départ - %s"
-msgstr "Restitución por salida - %s"
 
 msgid "Restitution du matériel : départ"
 msgstr "Restitución del equipo: salida"
