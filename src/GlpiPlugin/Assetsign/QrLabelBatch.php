@@ -45,7 +45,7 @@ final class QrLabelBatch extends CommonGLPI
 
        return [
            self::class . MassiveAction::CLASS_ACTION_SEPARATOR . self::ACTION
-               => '<i class="ti ti-qrcode"></i>' . __('Imprimer les étiquettes QR', 'assetsign'),
+               => __('Imprimer les étiquettes QR', 'assetsign'),
        ];
    }
 
