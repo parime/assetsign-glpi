@@ -51,7 +51,8 @@ for url in \
   "checklistitem.form.php?id=$(id checklistitems_A)" "maintenancechecklistitem.form.php?id=$(id maintenancechecklistitems_A)" \
   "config.php?entities_id=$(id a)" "qrlabel.php?itemtype=Computer&items_id=$(id computer_A)" \
   assetsign.php maintenance.php movement.php departure.php campaign.php template.php kit.php accessory.php \
-  checklistitem.php maintenancechecklistitem.php csr.php; do
+  checklistitem.php maintenancechecklistitem.php csr.php \
+  "assetsign.form.php?itemtype=Computer&items_id=$(id computer_A)" "assetsign.form.php?q=onload"; do
   check "front/$url" "$P/$url"
 done
 for t in 'GlpiPlugin\Assetsign\Assetsign' 'GlpiPlugin\Assetsign\PassportEvent' 'GlpiPlugin\Assetsign\Maintenance' 'GlpiPlugin\Assetsign\Movement'; do

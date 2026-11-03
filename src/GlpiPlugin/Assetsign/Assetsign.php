@@ -112,6 +112,9 @@ class Assetsign extends Compat\Base\AssetsignBase
      */
    public const STATUSES_AWAITING_SIGNATURE = [self::STATUS_SENT, self::STATUS_VIEWED, self::STATUS_AWAITING_COSIGNATURE];
 
+    /** Issue #282 : fiches en attente affichees en tete de la liste (les autres : liste filtree). */
+   public const HOME_PENDING_LIMIT = 20;
+
     /**
      * Statuts pour lesquels le PDF non signe peut encore etre modifie (accessoires,
      * regeneration...) : tout ce qui precede une vraie signature. Une fois
@@ -392,6 +395,8 @@ class Assetsign extends Compat\Base\AssetsignBase
            'reminders'    => $this->isNewID($ID) ? 0 : Reminder::countForAssetsign((int) $ID),
            // Issue #277 : lien de signature à copier, affiché une seule fois après sa création.
            'shared_link'  => $this->isNewID($ID) ? '' : self::pullSharedLink((int) $ID),
+           // Issue #282 : bandeau recapitulatif du materiel en tete de la fiche, s'il est lisible.
+           'item_summary' => $this->isNewID($ID) ? null : $this->getReadableTargetSummary(),
            'can_remind'   => !$this->isNewID($ID)
                && in_array((int) $this->fields['status'], self::STATUSES_AWAITING_SIGNATURE, true)
                && \Session::haveRight(self::$rightname, UPDATE),
@@ -666,17 +671,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        // Vente...), chacun derriere son propre reglage d'entite : un technicien
        // ne voit le formulaire que si au moins un type est active ET qu'il a le
        // droit de modification. Cf. Assetsign::createManual().
-       $config = Config::getForEntity((int) $item->fields['entities_id']);
-       $manualTypes = [];
-      if ($config->fields['enable_don']) {
-          $manualTypes[self::TYPE_DON] = Workflow\WorkflowTypeRegistry::get(self::TYPE_DON)->getLabel();
-      }
-      if ($config->fields['enable_vente']) {
-          $manualTypes[self::TYPE_VENTE] = Workflow\WorkflowTypeRegistry::get(self::TYPE_VENTE)->getLabel();
-      }
-      if ($config->fields['enable_destruction']) {
-          $manualTypes[self::TYPE_DESTRUCTION] = Workflow\WorkflowTypeRegistry::get(self::TYPE_DESTRUCTION)->getLabel();
-      }
+       $manualTypes = self::manualTypesFor($item);
 
        // Pre-selection du type (Don/Vente) et ouverture immediate du formulaire,
        // quand on arrive ici via le lien "creez maintenant la fiche" propose par
@@ -731,7 +726,26 @@ class Assetsign extends Compat\Base\AssetsignBase
            'state'       => $statesId > 0 ? (string) \Dropdown::getDropdownName('glpi_states', $statesId, false, true, false) : '',
            'user'        => $usersId > 0 ? (string) \User::getFriendlyNameById($usersId) : '',
            'users_id'    => $usersId,
+           // Lien « Ouvrir la fiche du matériel » : seulement si l'utilisateur peut la lire.
+           'url'         => !$item->isNewItem() && $item->canViewItem() ? (string) $item->getLinkURL() : '',
        ];
+   }
+
+    /**
+     * Types de fiche a declenchement manuel (don, vente, destruction) proposes pour ce materiel,
+     * chacun derriere son propre reglage d'entite. Cf. Assetsign::createManual().
+     *
+     * @return array<int, string> type => libelle
+     */
+   public static function manualTypesFor(CommonDBTM $item): array {
+       $config = Config::getForEntity((int) $item->fields['entities_id']);
+       $manualTypes = [];
+      foreach (['enable_don' => self::TYPE_DON, 'enable_vente' => self::TYPE_VENTE, 'enable_destruction' => self::TYPE_DESTRUCTION] as $field => $type) {
+         if (!empty($config->fields[$field])) {
+             $manualTypes[$type] = Workflow\WorkflowTypeRegistry::get($type)->getLabel();
+         }
+      }
+       return $manualTypes;
    }
 
     /**
@@ -824,23 +838,277 @@ class Assetsign extends Compat\Base\AssetsignBase
           ];
        }
 
-       $canAssign = Session::haveRight(self::$rightname, UPDATE);
-       [$itemtypeHtml, $itemHtml] = $canAssign ? self::assignDropdowns('assetsign-home-items-container') : ['', ''];
-       $userHtml = '';
-       if ($canAssign) {
-          ob_start();
-          \User::dropdown(['name' => 'users_id', 'right' => 'all', 'entity' => $_SESSION['glpiactiveentities'] ?? 0]);
-          $userHtml = (string) ob_get_clean();
+       $canUpdate = Session::haveRight(self::$rightname, UPDATE);
+       $pending = [];
+       foreach (self::getPendingSheets() as $sheet) {
+          $id = (int) $sheet->getID();
+          $pending[] = [
+              'id'          => $id,
+              'type'        => (int) $sheet->fields['type'],
+              'status'      => (int) $sheet->fields['status'],
+              'item'        => self::resolveItemDisplayName((string) $sheet->fields['itemtype'], (int) $sheet->fields['items_id']),
+              'beneficiary' => $sheet->getBeneficiaryDisplayName(),
+              'date_sent'   => (string) ($sheet->fields['date_sent'] ?? ''),
+              'can_cancel'  => $canUpdate && $sheet->isStillEditable(),
+              // Issue #277 : lien créé depuis cette liste, affiché une seule fois sur sa ligne.
+              'shared_link' => $canUpdate ? self::pullSharedLink($id) : '',
+          ];
        }
 
        \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/attributions_home.html.twig', [
            'counters'      => $counters,
-           'can_assign'    => $canAssign,
-           'user_html'     => $userHtml,
-           'itemtype_html' => $itemtypeHtml,
-           'item_html'     => $itemHtml,
+           'can_create'    => $canUpdate,
+           'new_url'       => self::getFormURL(),
+           'pending'       => $pending,
+           'pending_limit' => self::HOME_PENDING_LIMIT,
+           'pending_url'   => $counters[1]['url'],
+           'can_update'    => $canUpdate,
+           'statuses'      => self::getStatuses(),
+           'types'         => self::getTypes(),
+           'type_icons'    => self::getTypeIcons(),
+           'status_badges' => self::getStatusBadgeClasses(),
            'csrf_token'    => Session::getNewCSRFToken(),
        ]);
+   }
+
+    /**
+     * Issue #282 : fiches en attente de signature de tout le parc visible (entites actives de
+     * l'utilisateur), de la plus ancienne a la plus recente. Les fiches d'un dossier de depart sont
+     * exclues : elles se relancent et se signent depuis le dossier (cf. runReminders()).
+     *
+     * @return list<self>
+     */
+   public static function getPendingSheets(int $limit = self::HOME_PENDING_LIMIT): array {
+       global $DB;
+
+       $sheets = [];
+      foreach ($DB->request([
+          'FROM'  => self::getTable(),
+          'WHERE' => [
+              'is_deleted'                     => 0,
+              'status'                         => self::STATUSES_AWAITING_SIGNATURE,
+              'plugin_assetsign_departures_id' => 0,
+          ] + getEntitiesRestrictCriteria(self::getTable(), '', '', true),
+          'ORDER' => ['date_sent ASC', 'id ASC'],
+          'LIMIT' => $limit,
+      ]) as $row) {
+          $sheet = new self();
+          $sheet->fields = $row;
+          $sheets[] = $sheet;
+      }
+       return $sheets;
+   }
+
+    /**
+     * Nom affiche du beneficiaire : compte GLPI (prenom nom) ou nom saisi pour un externe.
+     */
+   public function getBeneficiaryDisplayName(): string {
+      if ((int) ($this->fields['beneficiary_type'] ?? 0) === self::BENEFICIARY_EXTERNAL) {
+          return (string) ($this->fields['external_beneficiary_name'] ?? '');
+      }
+       $usersId = (int) ($this->fields['users_id'] ?? 0);
+       return $usersId > 0 ? (string) \User::getFriendlyNameById($usersId) : '';
+   }
+
+    /**
+     * Issue #282 : materiels dont le nom, le numero de serie ou le numero d'inventaire contient
+     * $search, parmi les types geres par le plugin. Seuls les materiels que l'utilisateur peut lire
+     * sont renvoyes : droit GLPI du type (canView), entites actives dans la requete, puis
+     * can($id, READ) sur chaque resultat (controle final, comme createManual()).
+     *
+     * @return list<array<string, string|int>> resume de chaque materiel (itemSummary()) + itemtype et id
+     */
+   public static function searchItems(string $search, int $limit = 20): array {
+       global $DB;
+
+       $search = trim($search);
+      if (mb_strlen($search) < 2) {
+          return [];
+      }
+
+       $results = [];
+      foreach (Config::getAllManageableItemtypes() as $itemtype) {
+         if (!is_subclass_of($itemtype, CommonDBTM::class) || !$itemtype::canView()) {
+             continue;
+         }
+          $item = new $itemtype();
+          $table = $itemtype::getTable();
+          $like = ['LIKE', '%' . $search . '%'];
+          $or = [];
+         foreach (['name', 'serial', 'otherserial'] as $field) {
+            if ($item->isField($field)) {
+                $or[] = [$table . '.' . $field => $like];
+            }
+         }
+         if ($or === []) {
+             continue;
+         }
+          $where = [['OR' => $or]] + getEntitiesRestrictCriteria($table, '', '', $item->maybeRecursive());
+         if ($item->maybeDeleted()) {
+             $where[$table . '.is_deleted'] = 0;
+         }
+         if ($item->maybeTemplate()) {
+             $where[$table . '.is_template'] = 0;
+         }
+          // Actifs personnalises : une seule table pour toutes les definitions.
+          $where += $itemtype::getSystemSQLCriteria();
+
+         foreach ($DB->request(['SELECT' => [$table . '.id'], 'FROM' => $table, 'WHERE' => $where, 'ORDER' => $table . '.name', 'LIMIT' => $limit]) as $row) {
+             $found = new $itemtype();
+            if (!$found->can((int) $row['id'], READ)) {
+                continue;
+            }
+             $results[] = ['itemtype' => $itemtype, 'id' => (int) $row['id']] + self::itemSummary($found);
+            if (count($results) >= $limit) {
+                return $results;
+            }
+         }
+      }
+       return $results;
+   }
+
+    /**
+     * Issue #282 : page « Nouvelle attribution » (formulaire sans numero de fiche) : recherche du
+     * materiel, puis bandeau recapitulatif et choix de l'action en cartes (remise, restitution,
+     * don, vente, destruction). L'appelant a verifie le droit de modification des attributions ;
+     * $item, deja choisi, vient de resolveReadableItem() (lisible par l'utilisateur).
+     */
+   public static function showNewAttribution(string $search, ?CommonDBTM $item = null): void {
+       $search = trim($search);
+       $params = [
+           'form_url'   => self::getFormURL(),
+           'list_url'   => self::getSearchURL(),
+           'q'          => $search,
+           'results'    => $search !== '' ? self::searchItems($search) : [],
+           'csrf_token' => Session::getNewCSRFToken(),
+       ];
+
+       if ($item !== null) {
+          $params +=self::actionCards($item) + [
+              'item'         => $item,
+              'summary'      => self::itemSummary($item),
+              'manual_types' => self::manualTypesFor($item),
+              'type_icons'   => self::getTypeIcons(),
+              'type_vente'       => self::TYPE_VENTE,
+              'type_don'         => self::TYPE_DON,
+              'type_destruction' => self::TYPE_DESTRUCTION,
+          ];
+       }
+
+       \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/assetsign_new.html.twig', $params);
+   }
+
+    /**
+     * Resume du materiel de cette fiche (itemSummary()), ou null si l'utilisateur ne peut pas le
+     * lire (droit du type, entite) ou s'il n'existe plus.
+     *
+     * @return array<string, string|int>|null
+     */
+   public function getReadableTargetSummary(): ?array {
+       $item = self::resolveReadableItem((string) ($this->fields['itemtype'] ?? ''), (int) ($this->fields['items_id'] ?? 0));
+       return $item === null ? null : self::itemSummary($item);
+   }
+
+    /**
+     * Materiel d'un type gere par le plugin, lisible par l'utilisateur courant (droit et entite),
+     * ou null : meme reponse qu'il n'existe pas ou soit hors de portee.
+     */
+   public static function resolveReadableItem(string $itemtype, int $itemsId): ?CommonDBTM {
+      if ($itemsId <= 0 || !in_array($itemtype, Config::getAllManageableItemtypes(), true) || !is_subclass_of($itemtype, CommonDBTM::class)) {
+          return null;
+      }
+       $item = new $itemtype();
+      if (!$item->can($itemsId, READ) || $item->isTemplate() || $item->isDeleted()) {
+          return null;
+      }
+       return $item;
+   }
+
+    /**
+     * Cartes de la page « Nouvelle attribution » : une par action, disponible ou non (avec la
+     * raison). Remise et restitution passent par l'affectation de l'utilisateur du materiel
+     * (front/assign_user_asset.php, droit de modification du materiel) ; don, vente et destruction
+     * par la creation manuelle (reglage de l'entite).
+     *
+     * @return array{cards: list<array<string, mixed>>}
+     */
+   public static function actionCards(CommonDBTM $item): array {
+       $config = Config::getForEntity((int) $item->fields['entities_id']);
+       $hasUser = (int) ($item->fields['users_id'] ?? 0) > 0;
+       $canUpdateItem = $item->canUpdateItem();
+       $manualTypes = self::manualTypesFor($item);
+       $noRight = __('Vous n\'avez pas le droit de modifier ce matériel.', 'assetsign');
+       $disabled = __('Désactivé dans la configuration de l\'entité.', 'assetsign');
+       $icons = self::getTypeIcons();
+       $types = self::getTypes();
+
+       $handoverReason = '';
+      if (!$canUpdateItem) {
+          $handoverReason = $noRight;
+      } else if (empty($config->fields[$hasUser ? 'sign_on_reassignment' : 'sign_on_assignment'])) {
+          $handoverReason = $disabled;
+      }
+       $returnReason = '';
+      if (!$hasUser) {
+          $returnReason = __('Aucun utilisateur n\'a ce matériel.', 'assetsign');
+      } else if (!$canUpdateItem) {
+          $returnReason = $noRight;
+      } else if (empty($config->fields['sign_on_return'])) {
+          $returnReason = $disabled;
+      }
+
+       $cards = [
+           ['action' => 'handover', 'type' => self::TYPE_HANDOVER, 'reason' => $handoverReason,
+               'help' => __('Remettre le matériel à un utilisateur : il le signe à réception.', 'assetsign')],
+           ['action' => 'return', 'type' => self::TYPE_RETURN, 'reason' => $returnReason,
+               'help' => __('Reprendre le matériel à son utilisateur actuel : il signe la restitution.', 'assetsign')],
+       ];
+       foreach ([
+          self::TYPE_DON         => __('Céder le matériel à une personne ou un organisme.', 'assetsign'),
+          self::TYPE_VENTE       => __('Vendre le matériel, avec son prix et sa date de vente.', 'assetsign'),
+          self::TYPE_DESTRUCTION => __('Faire détruire le matériel par un prestataire.', 'assetsign'),
+       ] as $type => $help) {
+          $cards[] = ['action' => 'manual', 'type' => $type, 'help' => $help,
+              'reason' => array_key_exists($type, $manualTypes) ? '' : $disabled];
+       }
+       foreach ($cards as &$card) {
+          // « Remise » plutot que le nom generique du type (« Attribution »), face a « Restitution ».
+          $card['label'] = $card['type'] === self::TYPE_HANDOVER ? __('Remise', 'assetsign') : ($types[$card['type']] ?? '');
+          $card['icon'] = $icons[$card['type']] ?? 'ti ti-file';
+       }
+       unset($card);
+
+       return ['cards' => $cards];
+   }
+
+    /**
+     * Plus grand numero de fiche d'un materiel (0 si aucune) : compare avant et apres une action,
+     * il designe la fiche qu'elle vient de creer (ouverture directe, issue #282).
+     */
+   public static function latestIdFor(string $itemtype, int $itemsId): int {
+       global $DB;
+
+       $row = $DB->request([
+           'SELECT' => ['id'],
+           'FROM'   => self::getTable(),
+           'WHERE'  => ['itemtype' => $itemtype, 'items_id' => $itemsId],
+           'ORDER'  => 'id DESC',
+           'LIMIT'  => 1,
+       ])->current();
+       return (int) ($row['id'] ?? 0);
+   }
+
+    /**
+     * Ouvre la fiche creee pour ce materiel depuis $before (cf. latestIdFor()), si l'utilisateur
+     * peut la lire. Sans nouvelle fiche (action refusee, reglage desactive), ne fait rien :
+     * l'appelant revient a la page precedente avec le message deja pose.
+     */
+   public static function redirectToNewSheet(string $itemtype, int $itemsId, int $before): void {
+       $after = self::latestIdFor($itemtype, $itemsId);
+       $sheet = new self();
+      if ($after > $before && $sheet->can($after, READ)) {
+          \Html::redirect($sheet->getLinkURL());
+      }
    }
 
     /**

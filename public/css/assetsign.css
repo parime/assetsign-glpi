@@ -183,3 +183,35 @@
     white-space: nowrap;
     margin-bottom: 2px;
 }
+
+/* Issue #282 : page Nouvelle attribution, choix de l'action en cartes (la carte choisie est
+   surlignee, une carte indisponible est grisee). */
+.assetsign-action-card {
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.btn-check:checked + .assetsign-action-card {
+    border-color: var(--tblr-primary);
+    box-shadow: 0 0 0 2px var(--tblr-primary);
+    background: var(--tblr-primary-lt);
+}
+
+.btn-check:focus-visible + .assetsign-action-card {
+    outline: 2px solid var(--tblr-primary);
+    outline-offset: 2px;
+}
+
+.btn-check:disabled + .assetsign-action-card {
+    cursor: not-allowed;
+    opacity: .55;
+}
+
+/* Issue #282 : zones de signature toujours sur fond blanc, y compris avec une palette sombre de
+   GLPI : le trace (encre foncee) reste visible et l'image enregistree garde un fond clair. */
+.assetsign-signature-pad,
+#departure-signature-pad,
+#attestation-signature-pad {
+    background: #fff !important;
+    color-scheme: light;
+}

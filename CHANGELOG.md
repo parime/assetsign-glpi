@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Nouvelle attribution depuis la liste** (issue #282) : le bouton « Nouvelle attribution » de
+  Outils > Attributions ouvre une recherche du matériel (nom, n° de série ou n° d'inventaire),
+  puis un bandeau récapitulatif (statut et utilisateur en pastilles, marque et modèle, numéros,
+  lien « Ouvrir la fiche du matériel ») et le choix de l'action en cartes : remise, restitution,
+  don, vente, destruction. Une carte indisponible dit pourquoi. La fiche créée s'ouvre
+  directement. Seul le matériel lisible par l'utilisateur (droit du type, entités) est proposé ;
+  bouton et page réservés au droit de modification des attributions.
+- **Fiches en attente de signature** en tête de la liste (entités actives seulement), avec Copier
+  un nouveau lien, Relancer et Annuler.
+- Le bandeau récapitulatif du matériel figure aussi en tête de la fiche d'attribution, si le
+  matériel est lisible par l'utilisateur.
+
+### Changed
+
+- La carte « Nouvelle attribution » (destinataire, type, matériel) de la liste est remplacée par
+  le bouton ci-dessus ; l'affectation depuis l'onglet d'un utilisateur ne change pas.
+- Zones de signature : fond blanc forcé, y compris avec une palette sombre de GLPI.
+
 ## [2.19.0] - 2026-11-03
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

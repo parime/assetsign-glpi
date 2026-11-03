@@ -28,7 +28,13 @@ if ($item === null) {
 // assetsign. Si users_id ne change pas reellement (deja assigne a cette
 // personne), le hook ne cree rien (il ne reagit qu'a un changement reel de
 // valeur, cf. Assetsign::handleUserBasedTrigger()).
+$before = Assetsign::latestIdFor($itemtype, $items_id);
 $item->update(['id' => $items_id, 'users_id' => $users_id]);
 
-Session::addMessageAfterRedirect(__('Matériel assigné.', 'assetsign'));
+Session::addMessageAfterRedirect($users_id > 0 ? __('Matériel assigné.', 'assetsign') : __('Matériel repris à son utilisateur.', 'assetsign'));
+// Issue #282 : depuis la page Nouvelle attribution, la fiche creee (remise ou restitution) s'ouvre
+// directement.
+if (isset($_POST['open_sheet'])) {
+    Assetsign::redirectToNewSheet($itemtype, $items_id, $before);
+}
 Html::back();

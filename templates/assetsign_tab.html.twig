@@ -3,29 +3,7 @@
      voit tout d'un coup d'oeil. Absent sur l'onglet d'un utilisateur (summary non fourni). #}
   {% if summary is defined %}
     <div class="card-header" style="border-left: 4px solid var(--tblr-primary);">
-      <div class="d-flex align-items-start gap-3 w-100">
-        <span class="avatar avatar-md bg-primary-lt"><i class="{{ summary.icon }} fs-2"></i></span>
-        <div class="flex-fill">
-          <h3 class="card-title mb-1">{{ summary.name ?: '-' }} <span class="text-secondary fw-normal">· {{ summary.type }}</span></h3>
-          <div class="d-flex flex-wrap gap-2 mb-2">
-            {% if summary.state %}
-              <span class="badge bg-blue-lt"><i class="ti ti-activity me-1"></i>{{ __('Statut : %s', 'assetsign')|format(summary.state) }}</span>
-            {% else %}
-              <span class="badge bg-secondary-lt"><i class="ti ti-activity me-1"></i>{{ __('Sans statut', 'assetsign') }}</span>
-            {% endif %}
-            {% if summary.user %}
-              <span class="badge bg-purple-lt"><i class="ti ti-user me-1"></i>{{ __('Utilisateur : %s', 'assetsign')|format(summary.user) }}</span>
-            {% else %}
-              <span class="badge bg-secondary-lt"><i class="ti ti-user-off me-1"></i>{{ __('Aucun utilisateur', 'assetsign') }}</span>
-            {% endif %}
-          </div>
-          <div class="row g-2 small">
-            <div class="col-sm-4"><div class="text-secondary">{{ __('Marque / modèle', 'assetsign') }}</div><div class="fw-bold">{{ summary.maker ?: '-' }}</div></div>
-            <div class="col-sm-4"><div class="text-secondary">{{ __('N° de série', 'assetsign') }}</div><div class="fw-bold">{{ summary.serial ?: '-' }}</div></div>
-            <div class="col-sm-4"><div class="text-secondary">{{ __('N° d\'inventaire', 'assetsign') }}</div><div class="fw-bold">{{ summary.otherserial ?: '-' }}</div></div>
-          </div>
-        </div>
-      </div>
+      {% include '@assetsign/_item_summary.html.twig' with {summary: summary, show_link: false} %}
     </div>
   {% endif %}
   <div class="card-body">
@@ -99,59 +77,7 @@
         <input type="hidden" name="create_manual" value="1">
         <input type="hidden" name="type" id="assetsign-manual-type" value="{{ manual_types|keys|first }}">
 
-        <div class="col-12">
-          <label class="form-label">{{ __('Bénéficiaire', 'assetsign') }}</label>
-          <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" name="beneficiary_type" id="assetsign-beneficiary-internal" value="0" checked autocomplete="off">
-            <label class="btn btn-outline-secondary" for="assetsign-beneficiary-internal">{{ __('Interne (compte GLPI)', 'assetsign') }}</label>
-            <input type="radio" class="btn-check" name="beneficiary_type" id="assetsign-beneficiary-external" value="1" autocomplete="off">
-            <label class="btn btn-outline-secondary" for="assetsign-beneficiary-external">{{ __('Externe', 'assetsign') }}</label>
-          </div>
-        </div>
-
-        <div class="col-auto assetsign-manual-internal-field">
-          <label class="form-label">{{ __('Destinataire', 'assetsign') }}</label>
-          {# 'right': 'all' (pas le defaut 'id', qui ne liste QUE l'utilisateur
-             courant - meme bug/correctif que la delegation de signature,
-             cf. assetsign_form.html.twig/sign_page.html.twig et issue #115)
-             + 'entity' scope au materiel concerne. #}
-          {% do call('User::dropdown', [{'name': 'users_id', 'right': 'all', 'entity': item.fields.entities_id}]) %}
-        </div>
-        <div class="col-auto assetsign-manual-external-field" style="display: none;">
-          <label class="form-label">{{ __('Nom du bénéficiaire externe', 'assetsign') }}</label>
-          <input type="text" name="external_name" class="form-control" placeholder="{{ __('Ex. Association Locale, Jean Dupont...', 'assetsign') }}">
-        </div>
-        <div class="col-auto assetsign-manual-external-field" style="display: none;">
-          <label class="form-label">{{ __('Contact (facultatif)', 'assetsign') }}</label>
-          <input type="text" name="external_contact" class="form-control" placeholder="{{ __('E-mail ou téléphone', 'assetsign') }}">
-        </div>
-
-        <div class="col-auto assetsign-manual-type-field assetsign-manual-vente-field" style="display: none;">
-          <label class="form-label">{{ __('Prix', 'assetsign') }}</label>
-          <input type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;">
-        </div>
-        <div class="col-auto assetsign-manual-type-field assetsign-manual-vente-field" style="display: none;">
-          <label class="form-label">{{ __('Date de vente', 'assetsign') }}</label>
-          <input type="date" name="sale_date" class="form-control">
-        </div>
-
-        <div class="col-auto assetsign-manual-type-field assetsign-manual-don-field" style="display: none;">
-          <label class="form-label">{{ __('Organisme bénéficiaire', 'assetsign') }}</label>
-          <input type="text" name="organization_name" class="form-control" placeholder="{{ __('Ex. Association Locale...', 'assetsign') }}">
-        </div>
-        <div class="col-auto assetsign-manual-type-field assetsign-manual-don-field" style="display: none;">
-          <label class="form-label">{{ __('Justificatif (facultatif)', 'assetsign') }}</label>
-          <input type="file" name="justificatif" class="form-control">
-        </div>
-
-        <div class="col-auto assetsign-manual-type-field assetsign-manual-destruction-field" style="display: none;">
-          <label class="form-label">{{ __('Prestataire', 'assetsign') }}</label>
-          <input type="text" name="provider_name" class="form-control" placeholder="{{ __('Ex. Prestataire Exemple SAS...', 'assetsign') }}">
-        </div>
-        <div class="col-auto assetsign-manual-type-field assetsign-manual-destruction-field" style="display: none;">
-          <label class="form-label">{{ __('Certificat de destruction (facultatif)', 'assetsign') }}</label>
-          <input type="file" name="certificat" class="form-control">
-        </div>
+        {% include '@assetsign/_manual_sheet_fields.html.twig' with {entities_id: item.fields.entities_id} %}
 
         <div class="col-auto">
           {% for value, label in manual_types %}

@@ -4817,3 +4817,78 @@ msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son ent
 msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 msgstr[0] "%d Gerät übersprungen (nicht sichtbar oder Etikett für seine Entität deaktiviert)"
 msgstr[1] "%d Geräte übersprungen (nicht sichtbar oder Etikett für ihre Entität deaktiviert)"
+
+msgid "1. Choisir le matériel"
+msgstr "1. Gerät auswählen"
+
+msgid "2. Choisir l'action"
+msgstr "2. Aktion auswählen"
+
+msgid "Annuler"
+msgstr "Abbrechen"
+
+msgid "Aucun matériel trouvé."
+msgstr "Kein Gerät gefunden."
+
+msgid "Aucun utilisateur n'a ce matériel."
+msgstr "Kein Benutzer hat dieses Gerät."
+
+msgid "Céder le matériel à une personne ou un organisme."
+msgstr "Das Gerät an eine Person oder Organisation abgeben."
+
+msgid "Choisir un autre matériel"
+msgstr "Anderes Gerät auswählen"
+
+msgid "Choisissez le matériel, puis l'action : remise, restitution, don, vente ou destruction."
+msgstr "Wählen Sie das Gerät und dann die Aktion: Übergabe, Rückgabe, Spende, Verkauf oder Vernichtung."
+
+msgid "Désactivé dans la configuration de l'entité."
+msgstr "In der Konfiguration der Einheit deaktiviert."
+
+msgid "Faire détruire le matériel par un prestataire."
+msgstr "Das Gerät von einem Dienstleister vernichten lassen."
+
+msgid "Le matériel est retiré à %s, qui signera la restitution."
+msgstr "Das Gerät wird %s entzogen; diese Person unterschreibt die Rückgabe."
+
+msgid "Matériel repris à son utilisateur."
+msgstr "Gerät von seinem Benutzer zurückgenommen."
+
+msgid "Nom, n° de série ou n° d'inventaire"
+msgstr "Name, Seriennummer oder Inventarnummer"
+
+msgid "Ouvrir la fiche du matériel"
+msgstr "Gerätedatensatz öffnen"
+
+msgid "Rechercher"
+msgstr "Suchen"
+
+msgid "Rechercher le matériel"
+msgstr "Gerät suchen"
+
+msgid "Relancer"
+msgstr "Erinnern"
+
+msgid "Remettre le matériel à un utilisateur : il le signe à réception."
+msgstr "Das Gerät einem Benutzer übergeben: Er unterschreibt bei Erhalt."
+
+msgid "Remise"
+msgstr "Übergabe"
+
+msgid "Reprendre le matériel à son utilisateur actuel : il signe la restitution."
+msgstr "Das Gerät vom aktuellen Benutzer zurücknehmen: Er unterschreibt die Rückgabe."
+
+msgid "Retour à la liste"
+msgstr "Zurück zur Liste"
+
+msgid "Saisissez au moins deux caractères du nom, du n° de série ou du n° d'inventaire."
+msgstr "Geben Sie mindestens zwei Zeichen des Namens, der Seriennummer oder der Inventarnummer ein."
+
+msgid "Vendre le matériel, avec son prix et sa date de vente."
+msgstr "Das Gerät verkaufen, mit Preis und Verkaufsdatum."
+
+msgid "Voir toute la liste"
+msgstr "Ganze Liste anzeigen"
+
+msgid "Vous n'avez pas le droit de modifier ce matériel."
+msgstr "Sie sind nicht berechtigt, dieses Gerät zu ändern."

@@ -4761,3 +4761,78 @@ msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son ent
 msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 msgstr[0] "%d item skipped (not visible or label disabled for its entity)"
 msgstr[1] "%d items skipped (not visible or label disabled for their entity)"
+
+msgid "1. Choisir le matériel"
+msgstr "1. Choose the equipment"
+
+msgid "2. Choisir l'action"
+msgstr "2. Choose the action"
+
+msgid "Annuler"
+msgstr "Cancel"
+
+msgid "Aucun matériel trouvé."
+msgstr "No equipment found."
+
+msgid "Aucun utilisateur n'a ce matériel."
+msgstr "No user has this equipment."
+
+msgid "Céder le matériel à une personne ou un organisme."
+msgstr "Give the equipment to a person or an organisation."
+
+msgid "Choisir un autre matériel"
+msgstr "Choose other equipment"
+
+msgid "Choisissez le matériel, puis l'action : remise, restitution, don, vente ou destruction."
+msgstr "Choose the equipment, then the action: handover, return, donation, sale or destruction."
+
+msgid "Désactivé dans la configuration de l'entité."
+msgstr "Disabled in the entity's configuration."
+
+msgid "Faire détruire le matériel par un prestataire."
+msgstr "Have the equipment destroyed by a provider."
+
+msgid "Le matériel est retiré à %s, qui signera la restitution."
+msgstr "The equipment is taken back from %s, who will sign the return."
+
+msgid "Matériel repris à son utilisateur."
+msgstr "Equipment taken back from its user."
+
+msgid "Nom, n° de série ou n° d'inventaire"
+msgstr "Name, serial number or inventory number"
+
+msgid "Ouvrir la fiche du matériel"
+msgstr "Open the equipment record"
+
+msgid "Rechercher"
+msgstr "Search"
+
+msgid "Rechercher le matériel"
+msgstr "Search for equipment"
+
+msgid "Relancer"
+msgstr "Send reminder"
+
+msgid "Remettre le matériel à un utilisateur : il le signe à réception."
+msgstr "Hand the equipment over to a user: they sign on receipt."
+
+msgid "Remise"
+msgstr "Handover"
+
+msgid "Reprendre le matériel à son utilisateur actuel : il signe la restitution."
+msgstr "Take the equipment back from its current user: they sign the return."
+
+msgid "Retour à la liste"
+msgstr "Back to the list"
+
+msgid "Saisissez au moins deux caractères du nom, du n° de série ou du n° d'inventaire."
+msgstr "Enter at least two characters of the name, serial number or inventory number."
+
+msgid "Vendre le matériel, avec son prix et sa date de vente."
+msgstr "Sell the equipment, with its price and sale date."
+
+msgid "Voir toute la liste"
+msgstr "See the full list"
+
+msgid "Vous n'avez pas le droit de modifier ce matériel."
+msgstr "You are not allowed to modify this equipment."

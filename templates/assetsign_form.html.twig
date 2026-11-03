@@ -2,6 +2,15 @@
   <div class="card-body">
     <h2>{{ _n('Attribution', 'Attributions', 1, 'assetsign') }} #{{ item.fields.id }} - {{ types[item.fields.type] }}</h2>
 
+    {# Issue #282 : bandeau récapitulatif du matériel (seulement s'il est lisible par l'utilisateur). #}
+    {% if item_summary|default(null) %}
+      <div class="card mb-3" style="border-left: 4px solid var(--tblr-primary);">
+        <div class="card-body">
+          {% include '@assetsign/_item_summary.html.twig' with {summary: item_summary, show_link: true} %}
+        </div>
+      </div>
+    {% endif %}
+
     {# Issue #170 : brouillon pas encore envoye (attribution confirmee plus tard) #}
     {% if item.fields.status == 0 and can_edit_accessories %}
       <div class="alert alert-warning d-flex align-items-center gap-2">
