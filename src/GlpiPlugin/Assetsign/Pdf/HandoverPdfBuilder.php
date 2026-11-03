@@ -234,7 +234,8 @@ final class HandoverPdfBuilder
 
        return TemplateRenderer::getInstance()->render('@assetsign/pdf/handover.html.twig', [
            'html_lang'           => PdfLanguage::htmlLang(),
-           'assetsign'              => ['id' => 0, 'date_creation' => date('Y-m-d H:i:s')],
+           // Issue #273 : exemple de reference au format de l'entite (vide : identifiant, comme avant).
+           'assetsign'              => ['id' => 0, 'date_creation' => date('Y-m-d H:i:s'), 'reference' => $config->getReferencePreview()['example']],
            'user'                => ['firstname' => 'Alex', 'realname' => 'Dupont', 'name' => 'adupont', 'email' => 'alex.dupont@exemple.fr'],
            'item'                => ['name' => 'PC-EXEMPLE-001', 'serial' => 'SN-EXEMPLE-042', 'otherserial' => 'INV-1234', 'manufacturer_name' => 'Dell', 'model_name' => 'Latitude 5440'],
            'itemtype'            => Assetsign::getItemtypeLabel('Computer'),
@@ -307,6 +308,7 @@ final class HandoverPdfBuilder
        $document = new Document();
        $documents_id = $document->add([
            'name'          => $assetsign->getDocumentTitle() . ' [non signée]',
+           'comment'       => $assetsign->getDocumentComment(),
            'entities_id'   => $assetsign->fields['entities_id'],
            '_filename'     => [basename($tmpPath)],
            '_tag_filename' => [basename($tmpPath)],

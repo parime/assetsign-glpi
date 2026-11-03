@@ -3961,8 +3961,8 @@ msgstr "El material en uno de estos estados se propone primero al añadir un ele
 msgid "majeure"
 msgstr "importante"
 
-msgid "Établie le %1$s : Référence assetsign n°%2$d"
-msgstr "Emitida el %1$s: Referencia assetsign n.º %2$d"
+msgid "Établie le %1$s : Référence assetsign n°%2$s"
+msgstr "Emitida el %1$s: Referencia assetsign n.º %2$s"
 
 msgid "Bénéficiaire (externe, sans compte GLPI)"
 msgstr "Beneficiario (externo, sin cuenta GLPI)"
@@ -4781,3 +4781,82 @@ msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son ent
 msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 msgstr[0] "%d equipo omitido (no visible o etiqueta desactivada para su entidad)"
 msgstr[1] "%d equipos omitidos (no visibles o etiqueta desactivada para su entidad)"
+
+msgid "Référence"
+msgstr "Referencia"
+
+#, php-format
+msgid "Fiche %1$s créée par AssetSign, référence %2$s"
+msgstr "Ficha %1$s creada por AssetSign, referencia %2$s"
+
+msgid "Les réglages de référence précédents sont conservés."
+msgstr "Se conservan los ajustes de referencia anteriores."
+
+#, php-format
+msgid "Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret ou souligné, en commençant par une lettre ou un chiffre."
+msgstr "Prefijo rechazado: %d caracteres como máximo, letras sin tilde, cifras, guion o guion bajo, empezando por una letra o una cifra."
+
+#, php-format
+msgid "Format de référence refusé : %d caractères au plus."
+msgstr "Formato de referencia rechazado: %d caracteres como máximo."
+
+#, php-format
+msgid "Format de référence refusé : marqueur inconnu. Marqueurs admis : %s."
+msgstr "Formato de referencia rechazado: marcador desconocido. Marcadores admitidos: %s."
+
+msgid "Format de référence refusé : il doit contenir {seq} ou {aleatoire}."
+msgstr "Formato de referencia rechazado: debe contener {seq} o {aleatoire}."
+
+msgid "Format de référence refusé : pour recommencer à 1 chaque année, le format doit contenir {annee}."
+msgstr "Formato de referencia rechazado: para volver a empezar en 1 cada año, el formato debe contener {annee}."
+
+msgid "Format de référence refusé : en dehors des marqueurs, seuls les lettres sans accent, les chiffres, le tiret et le souligné sont admis."
+msgstr "Formato de referencia rechazado: fuera de los marcadores, solo se admiten letras sin tilde, cifras, guion y guion bajo."
+
+msgid "Référence de document"
+msgstr "Referencia del documento"
+
+msgid "Format de la référence"
+msgstr "Formato de la referencia"
+
+msgid "Préfixe"
+msgstr "Prefijo"
+
+msgid "Chiffres du numéro"
+msgstr "Cifras del número"
+
+msgid "Prochain numéro"
+msgstr "Próximo número"
+
+msgid "Recommencer à 1 chaque année"
+msgstr "Volver a empezar en 1 cada año"
+
+#, php-format
+msgid "Exemple : %s"
+msgstr "Ejemplo: %s"
+
+msgid "Format vide : la référence est l'identifiant interne de la fiche (comportement actuel)."
+msgstr "Formato vacío: la referencia es el identificador interno de la ficha (comportamiento actual)."
+
+msgid "Ce format sera refusé à l'enregistrement : il doit contenir {seq} ou {aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, des chiffres, le tiret et le souligné."
+msgstr "Este formato se rechazará al guardar: debe contener {seq} o {aleatoire} y, fuera de los marcadores, solo letras sin tilde, cifras, guion y guion bajo."
+
+msgid "Marqueurs :"
+msgstr "Marcadores:"
+
+msgid "(numéro séquentiel)"
+msgstr "(número secuencial)"
+
+msgid "(6 caractères au hasard)"
+msgstr "(6 caracteres aleatorios)"
+
+msgid "La référence est attribuée à la création de la fiche et ne change plus : elle figure sur le PDF, dans le commentaire du document GLPI, dans l'historique du matériel et dans la liste des attributions. Les fiches existantes gardent leur référence actuelle. Un numéro déjà attribué n'est jamais réattribué, même si le prochain numéro est abaissé : il est sauté."
+msgstr "La referencia se asigna al crear la ficha y ya no cambia: figura en el PDF, en el comentario del documento GLPI, en el historial del equipo y en la lista de asignaciones. Las fichas existentes conservan su referencia actual. Un número ya asignado nunca se vuelve a asignar, aunque se reduzca el próximo número: se salta."
+
+#, php-format
+msgid "Référence : %s"
+msgstr "Referencia: %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Desinstalación interrumpida: no se pudieron archivar las referencias de documento en %s."

@@ -346,7 +346,49 @@ class Assetsign extends Compat\Base\AssetsignBase
            'datatype' => 'date',
        ];
 
+       // Issue #273 : reference de document (format de l'entite), recherchable. Jamais modifiable
+       // par une action de masse : elle est attribuee une fois pour toutes a la creation.
+       $tab[] = [
+           'id'            => 15,
+           'table'         => self::getTable(),
+           'field'         => 'reference',
+           'name'          => __('Référence', 'assetsign'),
+           'datatype'      => 'string',
+           'massiveaction' => false,
+       ];
+
        return $tab;
+   }
+
+    /**
+     * Issue #273 : reference reservee des la creation, quel que soit le chemin (affectation,
+     * dossier de depart, ticket, creation manuelle) : un numero reserve par une fiche jamais
+     * signee reste ainsi trace sur la fiche et au registre (DocumentReference).
+     */
+   public function post_addItem() {
+       parent::post_addItem();
+      try {
+          DocumentReference::assign($this);
+      } catch (\Throwable $e) {
+          // Jamais bloquant pour la fiche (meme regle que les hooks de hook.php) : elle garde son
+          // identifiant interne comme reference, et l'echec est journalise.
+          \Toolbox::logInFile('assetsign', sprintf("Reference de document de la fiche #%d : %s\n", $this->getID(), $e->getMessage()), true);
+          global $DB;
+          $DB->update(self::getTable(), ['reference' => (string) $this->getID()], ['id' => $this->getID()]);
+          $this->fields['reference'] = (string) $this->getID();
+      }
+   }
+
+    /** Issue #273 : la reference est figee a la creation, aucune mise a jour ne peut la changer. */
+   public function prepareInputForUpdate($input) {
+       unset($input['reference']);
+       return parent::prepareInputForUpdate($input);
+   }
+
+    /** Reference affichee : celle de la fiche, a defaut son identifiant (fiche anterieure, apercu). */
+   public static function displayReference(array $fields): string {
+       $reference = trim((string) ($fields['reference'] ?? ''));
+       return $reference !== '' ? $reference : (string) (int) ($fields['id'] ?? 0);
    }
 
    public static function getSpecificValueToDisplay($field, $values, array $options = []) {
@@ -2436,6 +2478,14 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
+     * Issue #273 : commentaire du Document GLPI (PDF non signe et signe), qui porte la reference.
+     * Fixe en francais, comme le nom du document (cf. getCanonicalTypeLabel()).
+     */
+   public function getDocumentComment(): string {
+       return 'Référence : ' . self::displayReference($this->fields);
+   }
+
+    /**
      * Libelle de type dans UNE SEULE langue fixe, volontairement independant de
      * getTypes() (traduit via __(), donc dependant de la session active).
      *
@@ -3629,6 +3679,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        $document = new Document();
        $documents_id = $document->add([
            'name'          => $name,
+           'comment'       => $this->getDocumentComment(),
            'entities_id'   => $this->fields['entities_id'],
            '_filename'     => [basename($filePath)],
            '_tag_filename' => [basename($filePath)],
@@ -4100,6 +4151,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                 `loan_tickets_id` int unsigned NOT NULL DEFAULT 0,
                 `observations` text,
                 `beneficiary_comment` text,
+                `reference` varchar(255) NOT NULL DEFAULT '',
                 `is_deleted` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
@@ -4117,6 +4169,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                 KEY `plugin_assetsign_templates_id` (`plugin_assetsign_templates_id`),
                 KEY `plugin_assetsign_kits_id` (`plugin_assetsign_kits_id`),
                 KEY `plugin_assetsign_departures_id` (`plugin_assetsign_departures_id`),
+                KEY `reference` (`reference`),
                 KEY `is_deleted` (`is_deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
           $DB->doQuery($query);
@@ -4237,6 +4290,14 @@ class Assetsign extends Compat\Base\AssetsignBase
              $migration->migrationOneTable($table);
              $migration->addKey($table, 'cosigner_users_id');
          }
+         // Issue #273 : reference de document. Les fiches existantes gardent leur reference
+         // actuelle : leur identifiant interne, celui deja imprime sur leur PDF.
+         if (!$DB->fieldExists($table, 'reference')) {
+             $migration->addField($table, 'reference', 'string', ['value' => '', 'after' => 'beneficiary_comment']);
+             $migration->addKey($table, 'reference');
+             $migration->migrationOneTable($table);
+         }
+          $DB->update($table, ['reference' => new \Glpi\DBAL\QueryExpression('CAST(`id` AS CHAR)')], ['reference' => '']);
       }
 
        // Resultats de checklist qualite (cf. ROADMAP.md V1, issue #74, ChecklistItem) :
@@ -4292,7 +4353,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        $rank = 1;
-      foreach ([4, 5, 6, 7, 10, 11, 12] as $searchOptionId) {
+      foreach ([15, 4, 5, 6, 7, 10, 11, 12] as $searchOptionId) {
           $DB->insert('glpi_displaypreferences', [
               'itemtype'  => self::class,
               'num'       => $searchOptionId,

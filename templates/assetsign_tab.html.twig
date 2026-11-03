@@ -42,6 +42,7 @@
         <thead>
           <tr>
             {% if show_item_column %}<th>{{ __('Matériel', 'assetsign') }}</th>{% endif %}
+            <th>{{ __('Référence', 'assetsign') }}</th>
             {% if types is defined %}<th>{{ __('Type', 'assetsign') }}</th>{% endif %}
             <th>{{ __('Statut', 'assetsign') }}</th>
             <th>{{ __('Créée le', 'assetsign') }}</th>
@@ -54,6 +55,7 @@
           {% for r in assetsigns %}
           <tr>
             {% if show_item_column %}<td>{{ r.item_display|default('') }}</td>{% endif %}
+            <td>{{ r.reference|default(r.id) }}</td>
             {% if types is defined %}
               <td><i class="{{ type_icons[r.type]|default('ti ti-file') }} me-1 text-secondary"></i>{{ types[r.type]|default('') }}</td>
             {% endif %}
