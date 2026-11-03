@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.19.0] - 2026-11-03
+
 ### Added
 
 - **Étiquettes QR en lot** (#278) : action de masse « Imprimer les étiquettes QR » dans les listes de matériel gérées, planche A4 de 3 étiquettes par ligne (QR code, type, nom, n° de série). Même droit que l'étiquette unitaire ; chaque matériel est revérifié (droit de lecture GLPI, entité, étiquette activée), un matériel refusé est ignoré et compté ; 500 matériels au plus ; sélection gardée en session derrière un jeton aléatoire, jamais dans l'URL.
