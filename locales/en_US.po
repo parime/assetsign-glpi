@@ -4836,3 +4836,7 @@ msgstr "The reference is assigned when the form is created and never changes: it
 #, php-format
 msgid "Référence : %s"
 msgstr "Reference: %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Uninstallation stopped: the document references could not be archived in %s."

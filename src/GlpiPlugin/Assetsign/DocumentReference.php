@@ -8,12 +8,16 @@ use Migration;
  * Issue #273 : reference de document lisible (ex. RM-2026-000124), reservee a la creation de la
  * fiche selon le format de l'entite (Config::reference_*, regles dans DocumentReferenceFormat).
  *
- * Deux tables, volontairement conservees a la desinstallation du plugin (cf. hook.php) :
+ * Deux tables :
  * - les compteurs, un par entite qui porte le reglage et par periode (annee, ou 0 sans remise a
  *   zero annuelle) ;
  * - le registre des references emises, avec la fiche qui l'a recue : un numero reserve par une
- *   fiche jamais signee, annulee ou purgee y reste trace, et aucune reference n'est reemise, meme
- *   apres une reinstallation.
+ *   fiche jamais signee, annulee ou purgee y reste trace.
+ *
+ * Aucune reference n'est reemise, meme apres une reinstallation : la desinstallation ne doit
+ * laisser aucune table (exigence du Marketplace GLPI), elle archive donc compteurs et registre
+ * dans GLPI_PLUGIN_DOC_DIR (hors racine web, comme le jeton de front/opcache_reset.php) avant de
+ * supprimer les tables, et l'installation suivante les restaure (archive(), install()).
  *
  * Concurrence : le numero est pris par une mise a jour conditionnelle du compteur (compare et
  * echange : UPDATE ... WHERE next_number = valeur lue), qui ne reussit que pour une seule des
@@ -24,6 +28,9 @@ final class DocumentReference
 {
    public const COUNTERS_TABLE = 'glpi_plugin_assetsign_referencecounters';
    public const REGISTRY_TABLE = 'glpi_plugin_assetsign_documentreferences';
+
+   /** Archive des compteurs et du registre entre une desinstallation et une reinstallation. */
+   public const ARCHIVE_FILE = 'assetsign_document_references.json';
 
    /** Tentatives avant d'abandonner (concurrence extreme ou numeros deja pris en serie). */
    private const MAX_ATTEMPTS = 200;
@@ -248,5 +255,91 @@ final class DocumentReference
                 KEY `item` (`itemtype`, `items_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
       }
+       self::restoreArchive($migration);
+   }
+
+   public static function getArchivePath(): string {
+       return GLPI_PLUGIN_DOC_DIR . '/' . self::ARCHIVE_FILE;
+   }
+
+   /**
+    * Desinstallation : ecrit compteurs et registre dans l'archive. Faux si l'ecriture echoue :
+    * la desinstallation est alors refusee plutot que de perdre les numeros deja emis.
+    */
+   public static function archive(): bool {
+       global $DB;
+
+       $data = ['counters' => [], 'registry' => []];
+      if ($DB->tableExists(self::COUNTERS_TABLE)) {
+         foreach ($DB->request(['FROM' => self::COUNTERS_TABLE]) as $row) {
+            $data['counters'][] = [
+                'entities_id' => (int) $row['entities_id'],
+                'period'      => (int) $row['period'],
+                'next_number' => (int) $row['next_number'],
+            ];
+         }
+      }
+      if ($DB->tableExists(self::REGISTRY_TABLE)) {
+         foreach ($DB->request(['FROM' => self::REGISTRY_TABLE]) as $row) {
+             unset($row['id']);
+             $data['registry'][] = $row;
+         }
+      }
+      if ($data['counters'] === [] && $data['registry'] === []) {
+          return true;
+      }
+
+       $path = self::getArchivePath();
+       @mkdir(dirname($path), 0700, true);
+       $tmp = $path . '.tmp';
+      if (file_put_contents($tmp, json_encode($data, JSON_THROW_ON_ERROR)) === false || !rename($tmp, $path)) {
+          return false;
+      }
+       @chmod($path, 0600);
+       return true;
+   }
+
+   /** Installation : restaure l'archive laissee par une desinstallation, puis la supprime. */
+   private static function restoreArchive(Migration $migration): void {
+       global $DB;
+
+       $path = self::getArchivePath();
+      if (!is_file($path)) {
+          return;
+      }
+       $data = json_decode((string) file_get_contents($path), true);
+      if (!is_array($data)) {
+          $migration->displayWarning('Archive des références de document illisible : ' . $path);
+          return;
+      }
+       $migration->displayMessage('Restauration des références de document déjà émises');
+      foreach ($data['counters'] ?? [] as $row) {
+          $counter = self::getCounter((int) ($row['entities_id'] ?? 0), (int) ($row['period'] ?? 0));
+          $next = max(1, (int) ($row['next_number'] ?? 1));
+         if ($counter === null) {
+             $DB->insert(self::COUNTERS_TABLE, [
+                 'entities_id' => (int) ($row['entities_id'] ?? 0),
+                 'period'      => (int) ($row['period'] ?? 0),
+                 'next_number' => $next,
+                 'date_mod'    => date('Y-m-d H:i:s'),
+             ]);
+         } else if ((int) $counter['next_number'] < $next) {
+             $DB->update(self::COUNTERS_TABLE, ['next_number' => $next], ['id' => $counter['id']]);
+         }
+      }
+      foreach ($data['registry'] ?? [] as $row) {
+         if (!is_array($row) || (string) ($row['reference'] ?? '') === '' || self::findInRegistry((string) $row['reference']) !== null) {
+             continue;
+         }
+          $DB->insert(self::REGISTRY_TABLE, [
+              'reference'                      => (string) $row['reference'],
+              'entities_id'                    => (int) ($row['entities_id'] ?? 0),
+              'plugin_assetsign_assetsigns_id' => (int) ($row['plugin_assetsign_assetsigns_id'] ?? 0),
+              'itemtype'                       => (string) ($row['itemtype'] ?? ''),
+              'items_id'                       => (int) ($row['items_id'] ?? 0),
+              'date_creation'                  => $row['date_creation'] ?? null,
+          ]);
+      }
+       @unlink($path);
    }
 }

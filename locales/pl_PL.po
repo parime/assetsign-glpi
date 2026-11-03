@@ -5472,3 +5472,7 @@ msgstr "Numer referencyjny jest nadawany przy tworzeniu formularza i już się n
 #, php-format
 msgid "Référence : %s"
 msgstr "Numer referencyjny: %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Odinstalowanie przerwane: nie można zarchiwizować numerów referencyjnych dokumentów w %s."

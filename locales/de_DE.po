@@ -4892,3 +4892,7 @@ msgstr "Die Referenz wird beim Erstellen des Formulars vergeben und ändert sich
 #, php-format
 msgid "Référence : %s"
 msgstr "Referenz: %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Deinstallation abgebrochen: die Dokumentreferenzen konnten nicht in %s archiviert werden."

@@ -125,6 +125,25 @@ final class DocumentReferenceTest extends AssetsignTestCase
        $this->assertSame('000125', Config::getForEntity($entityId)->getReferencePreview()['example']);
    }
 
+   /** Desinstallation : compteurs et registre archives hors base, pour la reinstallation. */
+   public function testArchiveKeepsCountersAndRegistryOutsideTheDatabase(): void {
+       $entityId = $this->createTestEntity(0, 'PHPUnit Reference Archive');
+       $this->configureReference($entityId, 'ARC{seq}', '');
+       $reference = $this->createBareAssetsign($entityId)->fields['reference'];
+
+       $path = DocumentReference::getArchivePath();
+       $this->assertFileDoesNotExist($path, 'Aucune archive ne doit trainer sur l\'instance de test.');
+      try {
+          $this->assertTrue(DocumentReference::archive());
+          $data = json_decode((string) file_get_contents($path), true);
+          $this->assertContains($reference, array_column($data['registry'], 'reference'));
+          $counters = array_values(array_filter($data['counters'], static fn (array $c): bool => $c['entities_id'] === $entityId));
+          $this->assertSame([['entities_id' => $entityId, 'period' => 0, 'next_number' => 2]], $counters);
+      } finally {
+          @unlink($path);
+      }
+   }
+
    public function testReferenceCannotBeChangedAfterCreation(): void {
        $entityId = $this->createTestEntity(0, 'PHPUnit Reference Figee');
        $this->configureReference($entityId, 'F{seq}', '');

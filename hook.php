@@ -565,6 +565,17 @@ function plugin_assetsign_install(): bool {
 function plugin_assetsign_uninstall(): bool {
     global $DB;
 
+    // Issue #273 : compteurs et registre des references de document archives avant toute
+    // suppression (restaures a la reinstallation) ; sans archive, la desinstallation est refusee.
+   if (!DocumentReference::archive()) {
+       Session::addMessageAfterRedirect(
+           sprintf(__('Désinstallation interrompue : impossible d\'archiver les références de document dans %s.', 'assetsign'), DocumentReference::getArchivePath()),
+           false,
+           ERROR
+       );
+       return false;
+   }
+
     $migration = new Migration(str_replace('.', '', PLUGIN_ASSETSIGN_VERSION));
 
     // Lignes des tables du cœur rattachées aux objets du plugin, qui disparaissent avec lui
@@ -611,11 +622,11 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_templates',
         'glpi_plugin_assetsign_configs',
         'glpi_plugin_assetsign_creationfailures',
+        DocumentReference::COUNTERS_TABLE,
+        DocumentReference::REGISTRY_TABLE,
     ] as $table) {
        $migration->dropTable($table);
    }
-    // Issue #273 : DocumentReference::COUNTERS_TABLE et REGISTRY_TABLE sont volontairement
-    // conservees : apres une reinstallation, aucune reference deja emise ne doit etre reemise.
 
     Profile::uninstall();
     NotificationTargetAssetsign::uninstall();

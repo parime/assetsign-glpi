@@ -4856,3 +4856,7 @@ msgstr "La référence est attribuée à la création de la fiche et ne change p
 #, php-format
 msgid "Référence : %s"
 msgstr "Référence : %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Désinstallation interrompue : impossible d'archiver les références de document dans %s."

@@ -4866,3 +4866,7 @@ msgstr "Il riferimento viene assegnato alla creazione della scheda e non cambia 
 #, php-format
 msgid "Référence : %s"
 msgstr "Riferimento: %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Disinstallazione interrotta: impossibile archiviare i riferimenti dei documenti in %s."

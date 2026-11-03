@@ -4856,3 +4856,7 @@ msgstr "La referencia se asigna al crear la ficha y ya no cambia: figura en el P
 #, php-format
 msgid "Référence : %s"
 msgstr "Referencia: %s"
+
+#, php-format
+msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
+msgstr "Desinstalación interrumpida: no se pudieron archivar las referencias de documento en %s."
