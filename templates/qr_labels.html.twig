@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ __('Étiquettes QR', 'assetsign') }}</title>
+{# Issue #278 : planche A4, 3 étiquettes par ligne, découpe le long du cadre pointillé. #}
+<style>
+  :root{ --ink:#16232f; --ink-soft:#5a6b78; --accent:#0d7a6e; --line:#d6dbd4; --paper:#f5f7f5; }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--paper); color:var(--ink); }
+  .toolbar{ max-width:210mm; margin:0 auto; padding:16px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+  .toolbar p{ margin:0; color:var(--ink-soft); font-size:.9rem; }
+  button{ font:inherit; padding:10px 20px; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; margin-left:auto; }
+  .sheet{ width:210mm; margin:0 auto 32px; background:#fff; padding:8mm; display:grid; grid-template-columns:repeat(3, 1fr); gap:4mm; }
+  .label{ border:1px dashed var(--line); padding:3mm; text-align:center; break-inside:avoid; page-break-inside:avoid; }
+  .label img{ width:30mm; height:30mm; }
+  .label .type{ font-size:7pt; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin:0; }
+  .label .name{ font-size:9pt; font-weight:600; margin:1mm 0 0; word-break:break-word; }
+  .label .serial{ font-size:7.5pt; color:var(--ink-soft); margin:0; }
+  .missing{ color:#b7472a; font-size:8pt; padding:10mm 0; }
+  .empty{ max-width:210mm; margin:0 auto; padding:16px; }
+  @media print {
+    body{ background:#fff; }
+    .no-print{ display:none !important; }
+    .sheet{ margin:0; padding:0; width:auto; }
+  }
+</style>
+</head>
+<body>
+<div class="toolbar no-print">
+  <p>{{ _n('%d étiquette', '%d étiquettes', labels|length, 'assetsign')|format(labels|length) }}{% if skipped > 0 %} · {{ _n('%d matériel ignoré (non visible ou étiquette désactivée pour son entité)', '%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)', skipped, 'assetsign')|format(skipped) }}{% endif %}</p>
+  {% if labels is not empty %}<button type="button" onclick="window.print()">{{ __('Imprimer', 'assetsign') }}</button>{% endif %}
+</div>
+{% if labels is empty %}
+  <p class="empty">{{ __('Aucune étiquette à imprimer.', 'assetsign') }}</p>
+{% else %}
+  <div class="sheet">
+    {% for label in labels %}
+      <div class="label">
+        <p class="type">{{ label.itemtype_label }}</p>
+        {% if label.qr_data_uri %}
+          <img src="{{ label.qr_data_uri }}" alt="{{ __('QR code du matériel', 'assetsign') }}">
+        {% else %}
+          <p class="missing">{{ __('QR code indisponible sur cet environnement.', 'assetsign') }}</p>
+        {% endif %}
+        <p class="name">{{ label.item_name|default(__('Matériel', 'assetsign')) }}</p>
+        {% if label.item_serial %}<p class="serial">{{ __('N° série', 'assetsign') }} : {{ label.item_serial }}</p>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+</body>
+</html>

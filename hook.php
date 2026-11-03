@@ -139,6 +139,15 @@ function plugin_assetsign_item_assignment(CommonDBTM $item): void {
 }
 
 /**
+ * Issue #278 : action de masse « Imprimer les étiquettes QR » sur les listes de matériel gérées.
+ *
+ * @return array<string, string>
+ */
+function plugin_assetsign_MassiveActions(string $itemtype): array {
+   return \GlpiPlugin\Assetsign\QrLabelBatch::massiveActionsFor($itemtype);
+}
+
+/**
  * Issue #170 : sur la fiche du materiel qui vient d'etre attribue, ouvre la fenetre de confirmation
  * de la feuille d'attribution (brouillon). Le hook est appele a l'interieur du <form> du materiel :
  * la fenetre (qui contient ses propres formulaires) est donc inseree a la fin du <body> par JS.

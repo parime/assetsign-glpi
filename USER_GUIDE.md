@@ -96,6 +96,8 @@ L'importance de chaque facteur se règle dans Configuration > AssetSign > Passep
 
 Un bouton **« Imprimer une étiquette QR code »** (désactivable par entité, Configuration > AssetSign > Compléments : réglage distinct du QR code des fiches PDF) ouvre une page dédiée, pensée pour l'impression, avec le nom/n° de série du matériel, le QR code et un bouton « Imprimer ». Une fois l'étiquette collée sur le matériel, la scanner avec un téléphone ouvre directement cet onglet Passeport matériel dans GLPI (connexion habituelle requise si nécessaire, comme n'importe quel lien GLPI : aucun accès anonyme).
 
+**Plusieurs étiquettes d'un coup** : dans la liste d'un type de matériel (ordinateurs, moniteurs, téléphones, actifs personnalisés…), cochez les matériels puis choisissez l'action de masse **« Imprimer les étiquettes QR »** : une planche A4 (3 étiquettes par ligne, cadre de découpe) s'ouvre avec un bouton « Imprimer ». Jusqu'à 500 matériels ; un matériel que vous ne pouvez pas voir, ou dont l'entité a désactivé l'étiquette, est ignoré et compté. Aucun identifiant ne passe dans l'adresse de la page : la sélection reste dans votre session.
+
 #### L'onglet « Assetsigns » sur la fiche d'un utilisateur
 
 Le même onglet Assetsigns existe aussi côté utilisateur (fiche d'un compte GLPI, Administration > Utilisateurs) : filtré cette fois par bénéficiaire plutôt que par matériel, avec une colonne supplémentaire indiquant à quel matériel chaque ligne correspond (une même personne ayant pu recevoir plusieurs matériels différents dans le temps) : pratique pour retrouver d'un coup d'œil tout ce qu'une personne a reçu, télécharger directement chaque PDF, sans avoir à connaître à l'avance sur quel matériel chercher. Un raccourci **"Assigner un matériel à cet utilisateur"** permet en plus d'affecter directement un matériel depuis cet écran (choix du type puis du matériel) : l'affectation déclenche automatiquement la création d'une remise, exactement comme changer le champ "Utilisateur" depuis la fiche du matériel :
@@ -321,6 +323,8 @@ How much each factor matters is set in Configuration > AssetSign > Asset Passpor
 ![Réglages des poids du score de santé dans la configuration](docs/screenshots/passeport-reglages-poids.png)
 
 A **"Print a QR code label"** button (can be disabled per entity, Configuration > AssetSign > Extras: a setting separate from the PDF QR code) opens a dedicated, print-friendly page with the equipment's name/serial number, the QR code, and a "Print" button. Once the label is stuck onto the equipment, scanning it with a phone opens this same Asset Passport tab directly in GLPI (the usual GLPI login is required if needed, like any GLPI link: no anonymous access).
+
+**Several labels at once**: in the list of an equipment type (computers, monitors, phones, custom assets…), tick the items and choose the **"Print QR labels"** massive action: an A4 sheet (3 labels per row, cutting frame) opens with a "Print" button. Up to 500 items; an item you cannot see, or whose entity has disabled the label, is skipped and counted. No identifier goes into the page address: the selection stays in your session.
 
 #### The "Assetsigns" tab on a user's record
 

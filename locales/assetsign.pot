@@ -3077,3 +3077,28 @@ msgstr ""
 
 msgid "Tapez votre nom complet :"
 msgstr ""
+
+msgid "Étiquettes QR"
+msgstr ""
+
+msgid "Imprimer les étiquettes QR"
+msgstr ""
+
+#, php-format
+msgid "Une planche d'étiquettes s'ouvrira pour les matériels sélectionnés (%d au maximum)."
+msgstr ""
+
+msgid "Aucune étiquette à imprimer."
+msgstr ""
+
+#, php-format
+msgid "%d étiquette"
+msgid_plural "%d étiquettes"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son entité)"
+msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
+msgstr[0] ""
+msgstr[1] ""
