@@ -309,7 +309,7 @@ final class DocumentReference
       }
        $data = json_decode((string) file_get_contents($path), true);
       if (!is_array($data)) {
-          $migration->displayWarning('Archive des références de document illisible : ' . $path);
+          $migration->displayMessage('Archive des références de document illisible, conservée telle quelle : ' . $path);
           return;
       }
        $migration->displayMessage('Restauration des références de document déjà émises');
@@ -340,6 +340,7 @@ final class DocumentReference
               'date_creation'                  => $row['date_creation'] ?? null,
           ]);
       }
-       @unlink($path);
+       // Chemin fixe (GLPI_PLUGIN_DOC_DIR + constante), jamais issu d'une saisie.
+       @unlink($path); // nosemgrep: php.lang.security.unlink-use.unlink-use
    }
 }
