@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.20.0] - 2026-11-04
+
 ### Added
 
 - **Export et import de la configuration** (#279) : depuis l'onglet Général de la configuration, page « Exporter ou importer la configuration ». Fichier JSON (format repris des Blueprints de Configuration GLPI Auto : `format_version`, `plugin_version`, `exported_at`, section `config`) avec les réglages de l'entité, ses gabarits par défaut et son logo. Import en deux temps : simulation (différences réglage par réglage, gabarits, logo, compte rendu de ce qui est ignoré) puis confirmation ; chaque import appliqué est consigné dans le journal des événements GLPI et `files/_log/assetsign.log`.
