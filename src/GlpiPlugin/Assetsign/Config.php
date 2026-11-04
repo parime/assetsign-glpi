@@ -865,9 +865,9 @@ class Config extends Compat\Base\ConfigBase
        // d'erreur est ajoute par upsertForEntity()) : sinon le reglage precedent reste en vigueur, un
        // format refuse finirait sur le PDF et dans les noms de documents.
        $reference = self::referenceInput($input);
-      if ($reference !== null && self::validateReference($reference) === null) {
+       if ($reference !== null && self::validateReference($reference) === null) {
           $data += $reference;
-      }
+       }
 
        return $data;
    }
