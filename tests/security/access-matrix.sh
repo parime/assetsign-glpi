@@ -76,6 +76,14 @@ expect "front/mysignatures.php : PDF de la feuille d'autrui"  404   "$(code "$P/
 shows "front/sign.php : lien de signature d'autrui (contenu)" "PC securite A" non "$(page "$P/sign.php?t=$(id token_A)")"
 expect "front/sign.php : PDF via le lien d'autrui"            404   "$(code "$P/sign.php?t=$(id token_A)&action=pdf")"
 expect "front/opcache_reset.php : sans jeton de deploiement"  403   "$(code "$P/opcache_reset.php")"
+# Issue #282 : page Nouvelle attribution (formulaire sans numero) : recherche du materiel limitee aux
+# entites de l'utilisateur, materiel d'une autre entite introuvable.
+expect "front/assetsign.form.php : nouvelle attribution"      200   "$(code "$P/assetsign.form.php")"
+new_search=$(page "$P/assetsign.form.php?q=securite")
+shows "front/assetsign.form.php : recherche, PC de A"         "PC securite A" oui "$new_search"
+shows "front/assetsign.form.php : recherche, PC de B"         "PC securite B" "$SEE_B" "$new_search"
+expect "front/assetsign.form.php : nouvelle attribution, PC de A" 200 "$(code "$P/assetsign.form.php?itemtype=Computer&items_id=$(id computer_A)")"
+expect "front/assetsign.form.php : nouvelle attribution, PC de B" $NF "$(code "$P/assetsign.form.php?itemtype=Computer&items_id=$(id computer_B)")"
 
 # --- Listes et tableaux : objets de A seulement (et la page ne plante pas) ---
 for list in front/assetsign.php front/maintenance.php front/movement.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php; do
@@ -84,7 +92,7 @@ for list in front/assetsign.php front/maintenance.php front/movement.php front/d
   # Ces listes nomment les objets : le super-admin y voit B, le technicien jamais. Les autres ne
   # nomment pas les objets : elles doivent seulement s'afficher sans erreur et sans B.
   case "$list" in
-    front/maintenance.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php)
+    front/assetsign.php|front/maintenance.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php)
       shows "$list : objets de B" "securite B" "$SEE_B" "$body" ;;
     *)
       shows "$list : aucun objet de B" "securite B" non "$body" ;;
@@ -128,6 +136,10 @@ if [ "$ROLE" = limited ]; then
   post residualvalue.form.php "itemtype=Computer&items_id=$(id computer_B)&manual_value=1" > /dev/null
   post environmentaldata.form.php "itemtype=Computer&items_id=$(id computer_B)&carbon_footprint_manufacturing=1" > /dev/null
   post passport_backfill.php "itemtype=Computer&items_id=$(id computer_B)" > /dev/null
+  # Issue #282 : actions de la page Nouvelle attribution (ouverture directe de la fiche creee).
+  expect "front/assign_user_asset.php : restitution d'un PC de B (nouvelle attribution)" 404 "$(post assign_user_asset.php "assign=1&open_sheet=1&itemtype=Computer&items_id=$(id computer_B)&users_id=0")"
+  post assetsign.form.php "create_manual=1&open_sheet=1&type=3&itemtype=Computer&items_id=$(id computer_B)&users_id=$(id partant_A)" > /dev/null
+  echo "    front/assetsign.form.php (create_manual sur un PC de B) : verifie en base par la CI"
   echo "    front/residualvalue.form.php, front/environmentaldata.form.php, front/passport_backfill.php : verifies en base par la CI"
 fi
 

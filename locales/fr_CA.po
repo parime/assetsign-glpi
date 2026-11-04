@@ -4782,6 +4782,81 @@ msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée po
 msgstr[0] "%d matériel ignoré (non visible ou étiquette désactivée pour son entité)"
 msgstr[1] "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
 
+msgid "1. Choisir le matériel"
+msgstr "1. Choisir le matériel"
+
+msgid "2. Choisir l'action"
+msgstr "2. Choisir l'action"
+
+msgid "Annuler"
+msgstr "Annuler"
+
+msgid "Aucun matériel trouvé."
+msgstr "Aucun matériel trouvé."
+
+msgid "Aucun utilisateur n'a ce matériel."
+msgstr "Aucun utilisateur n'a ce matériel."
+
+msgid "Céder le matériel à une personne ou un organisme."
+msgstr "Céder le matériel à une personne ou un organisme."
+
+msgid "Choisir un autre matériel"
+msgstr "Choisir un autre matériel"
+
+msgid "Choisissez le matériel, puis l'action : remise, restitution, don, vente ou destruction."
+msgstr "Choisissez le matériel, puis l'action : remise, restitution, don, vente ou destruction."
+
+msgid "Désactivé dans la configuration de l'entité."
+msgstr "Désactivé dans la configuration de l'entité."
+
+msgid "Faire détruire le matériel par un prestataire."
+msgstr "Faire détruire le matériel par un prestataire."
+
+msgid "Le matériel est retiré à %s, qui signera la restitution."
+msgstr "Le matériel est retiré à %s, qui signera la restitution."
+
+msgid "Matériel repris à son utilisateur."
+msgstr "Matériel repris à son utilisateur."
+
+msgid "Nom, n° de série ou n° d'inventaire"
+msgstr "Nom, n° de série ou n° d'inventaire"
+
+msgid "Ouvrir la fiche du matériel"
+msgstr "Ouvrir la fiche du matériel"
+
+msgid "Rechercher"
+msgstr "Rechercher"
+
+msgid "Rechercher le matériel"
+msgstr "Rechercher le matériel"
+
+msgid "Relancer"
+msgstr "Relancer"
+
+msgid "Remettre le matériel à un utilisateur : il le signe à réception."
+msgstr "Remettre le matériel à un utilisateur : il le signe à réception."
+
+msgid "Remise"
+msgstr "Remise"
+
+msgid "Reprendre le matériel à son utilisateur actuel : il signe la restitution."
+msgstr "Reprendre le matériel à son utilisateur actuel : il signe la restitution."
+
+msgid "Retour à la liste"
+msgstr "Retour à la liste"
+
+msgid "Saisissez au moins deux caractères du nom, du n° de série ou du n° d'inventaire."
+msgstr "Saisissez au moins deux caractères du nom, du n° de série ou du n° d'inventaire."
+
+msgid "Vendre le matériel, avec son prix et sa date de vente."
+msgstr "Vendre le matériel, avec son prix et sa date de vente."
+
+msgid "Voir toute la liste"
+msgstr "Voir toute la liste"
+
+msgid "Vous n'avez pas le droit de modifier ce matériel."
+msgstr "Vous n'avez pas le droit de modifier ce matériel."
+
 msgid "Référence"
 msgstr "Référence"
 

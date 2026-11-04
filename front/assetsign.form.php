@@ -10,16 +10,40 @@ $controller = new AssetsignFormController();
 // sinon avec displayNotFoundError() pour id=0).
 if (isset($_POST['create_manual'])) {
     Session::checkRight(Assetsign::$rightname, UPDATE);
+    $itemtype = (string) ($_POST['itemtype'] ?? '');
+    $itemsId = (int) ($_POST['items_id'] ?? 0);
+    $before = Assetsign::latestIdFor($itemtype, $itemsId);
    try {
        Session::addMessageAfterRedirect($controller->createManual($_POST, $_FILES));
    } catch (\Throwable $e) {
        Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    // Issue #282 : depuis la page Nouvelle attribution, la fiche creee s'ouvre directement.
+   if (isset($_POST['open_sheet'])) {
+       Assetsign::redirectToNewSheet($itemtype, $itemsId, $before);
    }
     Html::back();
 }
 
 $id = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
 $assetsign = new Assetsign();
+
+// Issue #282 : sans numero de fiche, page Nouvelle attribution (recherche du materiel, bandeau
+// recapitulatif, choix de l'action) pour qui peut creer une attribution.
+if ($id <= 0 && $_POST === [] && Session::haveRight(Assetsign::$rightname, UPDATE)) {
+    $newItem = null;
+   if (isset($_GET['itemtype']) || isset($_GET['items_id'])) {
+       // Materiel hors de portee (droit, entite) : introuvable, comme s'il n'existait pas.
+       $newItem = Assetsign::resolveReadableItem((string) ($_GET['itemtype'] ?? ''), (int) ($_GET['items_id'] ?? 0));
+      if ($newItem === null) {
+          throw new \Glpi\Exception\Http\NotFoundHttpException();
+      }
+   }
+    Html::header(Assetsign::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Assetsign::class);
+    Assetsign::showNewAttribution((string) ($_GET['q'] ?? ''), $newItem);
+    Html::footer();
+    return;
+}
 
 if ($id <= 0 && $_POST === []) {
     Assetsign::redirectToListWithHint(Assetsign::class, __('Une feuille se crée depuis le matériel : en lui attribuant un utilisateur, ou depuis son onglet Attributions (don, vente, destruction).', 'assetsign'));

@@ -1,0 +1,29 @@
+{# Issue #282 : bandeau récapitulatif d'un matériel (statut et utilisateur en pastilles, marque et
+   modèle, numéros). Paramètres : summary (Assetsign::itemSummary()), show_link (lien vers la fiche
+   du matériel, absent sur l'onglet du matériel lui-même). #}
+<div class="d-flex flex-wrap align-items-start gap-3 w-100">
+  <span class="avatar avatar-md bg-primary-lt"><i class="{{ summary.icon }} fs-2"></i></span>
+  <div class="flex-fill">
+    <h3 class="card-title mb-1">{{ summary.name ?: '-' }} <span class="text-secondary fw-normal">· {{ summary.type }}</span></h3>
+    <div class="d-flex flex-wrap gap-2 mb-2">
+      {% if summary.state %}
+        <span class="badge bg-blue-lt"><i class="ti ti-activity me-1"></i>{{ __('Statut : %s', 'assetsign')|format(summary.state) }}</span>
+      {% else %}
+        <span class="badge bg-secondary-lt"><i class="ti ti-activity me-1"></i>{{ __('Sans statut', 'assetsign') }}</span>
+      {% endif %}
+      {% if summary.user %}
+        <span class="badge bg-purple-lt"><i class="ti ti-user me-1"></i>{{ __('Utilisateur : %s', 'assetsign')|format(summary.user) }}</span>
+      {% else %}
+        <span class="badge bg-secondary-lt"><i class="ti ti-user-off me-1"></i>{{ __('Aucun utilisateur', 'assetsign') }}</span>
+      {% endif %}
+    </div>
+    <div class="row g-2 small">
+      <div class="col-sm-4"><div class="text-secondary">{{ __('Marque / modèle', 'assetsign') }}</div><div class="fw-bold">{{ summary.maker ?: '-' }}</div></div>
+      <div class="col-sm-4"><div class="text-secondary">{{ __('N° de série', 'assetsign') }}</div><div class="fw-bold">{{ summary.serial ?: '-' }}</div></div>
+      <div class="col-sm-4"><div class="text-secondary">{{ __('N° d\'inventaire', 'assetsign') }}</div><div class="fw-bold">{{ summary.otherserial ?: '-' }}</div></div>
+    </div>
+  </div>
+  {% if show_link|default(false) and summary.url|default('') %}
+    <a href="{{ summary.url }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-external-link me-1"></i>{{ __('Ouvrir la fiche du matériel', 'assetsign') }}</a>
+  {% endif %}
+</div>

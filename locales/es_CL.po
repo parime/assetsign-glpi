@@ -4782,6 +4782,81 @@ msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée po
 msgstr[0] "%d equipo omitido (no visible o etiqueta desactivada para su entidad)"
 msgstr[1] "%d equipos omitidos (no visibles o etiqueta desactivada para su entidad)"
 
+msgid "1. Choisir le matériel"
+msgstr "1. Elegir el equipo"
+
+msgid "2. Choisir l'action"
+msgstr "2. Elegir la acción"
+
+msgid "Annuler"
+msgstr "Cancelar"
+
+msgid "Aucun matériel trouvé."
+msgstr "No se ha encontrado ningún equipo."
+
+msgid "Aucun utilisateur n'a ce matériel."
+msgstr "Ningún usuario tiene este equipo."
+
+msgid "Céder le matériel à une personne ou un organisme."
+msgstr "Ceder el equipo a una persona o una organización."
+
+msgid "Choisir un autre matériel"
+msgstr "Elegir otro equipo"
+
+msgid "Choisissez le matériel, puis l'action : remise, restitution, don, vente ou destruction."
+msgstr "Elija el equipo y luego la acción: entrega, devolución, donación, venta o destrucción."
+
+msgid "Désactivé dans la configuration de l'entité."
+msgstr "Desactivado en la configuración de la entidad."
+
+msgid "Faire détruire le matériel par un prestataire."
+msgstr "Hacer destruir el equipo por un proveedor."
+
+msgid "Le matériel est retiré à %s, qui signera la restitution."
+msgstr "El equipo se retira a %s, que firmará la devolución."
+
+msgid "Matériel repris à son utilisateur."
+msgstr "Equipo retirado a su usuario."
+
+msgid "Nom, n° de série ou n° d'inventaire"
+msgstr "Nombre, n.º de serie o n.º de inventario"
+
+msgid "Ouvrir la fiche du matériel"
+msgstr "Abrir la ficha del equipo"
+
+msgid "Rechercher"
+msgstr "Buscar"
+
+msgid "Rechercher le matériel"
+msgstr "Buscar el equipo"
+
+msgid "Relancer"
+msgstr "Recordar"
+
+msgid "Remettre le matériel à un utilisateur : il le signe à réception."
+msgstr "Entregar el equipo a un usuario: lo firma al recibirlo."
+
+msgid "Remise"
+msgstr "Entrega"
+
+msgid "Reprendre le matériel à son utilisateur actuel : il signe la restitution."
+msgstr "Retirar el equipo a su usuario actual: firma la devolución."
+
+msgid "Retour à la liste"
+msgstr "Volver a la lista"
+
+msgid "Saisissez au moins deux caractères du nom, du n° de série ou du n° d'inventaire."
+msgstr "Introduzca al menos dos caracteres del nombre, del n.º de serie o del n.º de inventario."
+
+msgid "Vendre le matériel, avec son prix et sa date de vente."
+msgstr "Vender el equipo, con su precio y su fecha de venta."
+
+msgid "Voir toute la liste"
+msgstr "Ver toda la lista"
+
+msgid "Vous n'avez pas le droit de modifier ce matériel."
+msgstr "No tiene permiso para modificar este equipo."
+
 msgid "Référence"
 msgstr "Referencia"
 
