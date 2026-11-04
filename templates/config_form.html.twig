@@ -71,6 +71,12 @@
               </div>
             </div>
           </div>
+          {# Issue #279 : export et import de cette configuration (page dediee, droits verifies la-bas). #}
+          <div class="mb-3">
+            <a href="{{ config('root_doc') }}/plugins/assetsign/front/configtransfer.php?entities_id={{ entity_id }}" class="btn btn-outline-secondary btn-sm">
+              <i class="ti ti-file-export me-1"></i>{{ __('Exporter ou importer la configuration', 'assetsign') }}
+            </a>
+          </div>
           <div class="mb-3">
             <label class="form-label">{{ __('Nom de l\'expéditeur', 'assetsign') }}</label>
             <input type="text" name="sender_name" class="form-control" value="{{ config.sender_name|default('') }}">

@@ -1,0 +1,70 @@
+{# Issue #279 : export et import de la configuration d'une entité (cf. front/configtransfer.php). #}
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header"><h3 class="card-title"><i class="ti ti-download me-2"></i>{{ __('Exporter la configuration', 'assetsign') }}</h3></div>
+      <div class="card-body">
+        <form method="post" action="{{ action }}">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <div class="mb-3">
+            <label class="form-label" for="assetsign-export-entity">{{ _n('Entity', 'Entities', 1) }}</label>
+            <select name="entities_id" id="assetsign-export-entity" class="form-select">
+              {% for id, name in entities %}
+                <option value="{{ id }}" {{ id == entity_id ? 'selected' : '' }}>{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" name="with_templates" value="1" class="form-check-input" id="assetsign-export-templates" checked>
+            <label class="form-check-label" for="assetsign-export-templates">{{ __('Inclure les gabarits par défaut', 'assetsign') }}</label>
+          </div>
+          <div class="form-check mb-3">
+            <input type="checkbox" name="with_logo" value="1" class="form-check-input" id="assetsign-export-logo" checked>
+            <label class="form-check-label" for="assetsign-export-logo">{{ __('Inclure le logo', 'assetsign') }}</label>
+          </div>
+          <div class="form-text mb-3">
+            {{ __('Jamais exportés (secrets, à ressaisir sur l\'instance de destination) :', 'assetsign') }}
+            {{ secret_fields|join(', ') }}
+          </div>
+          <button type="submit" name="export" value="1" class="btn btn-primary"><i class="ti ti-download me-1"></i>{{ __('Télécharger le fichier JSON', 'assetsign') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% if can_import %}
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header"><h3 class="card-title"><i class="ti ti-upload me-2"></i>{{ __('Importer une configuration', 'assetsign') }}</h3></div>
+      <div class="card-body">
+        <form method="post" action="{{ action }}" enctype="multipart/form-data">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <div class="mb-3">
+            <label class="form-label" for="assetsign-import-file">{{ __('Fichier exporté par AssetSign', 'assetsign') }}</label>
+            <input type="file" name="config_file" id="assetsign-import-file" class="form-control" accept=".json,application/json" required>
+            <div class="form-text">{{ __('%d Mo au maximum.', 'assetsign')|format(max_file_mb) }}</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="assetsign-import-entity">{{ __('Entité cible', 'assetsign') }}</label>
+            <select name="entities_id" id="assetsign-import-entity" class="form-select">
+              {% for id, name in entities %}
+                <option value="{{ id }}" {{ id == entity_id ? 'selected' : '' }}>{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" name="with_templates" value="1" class="form-check-input" id="assetsign-import-templates" checked>
+            <label class="form-check-label" for="assetsign-import-templates">{{ __('Importer les gabarits par défaut', 'assetsign') }}</label>
+          </div>
+          <div class="form-check mb-3">
+            <input type="checkbox" name="with_logo" value="1" class="form-check-input" id="assetsign-import-logo" checked>
+            <label class="form-check-label" for="assetsign-import-logo">{{ __('Importer le logo', 'assetsign') }}</label>
+          </div>
+          <div class="form-text mb-3">{{ __('Rien n\'est modifié à cette étape : les différences s\'affichent d\'abord, à confirmer.', 'assetsign') }}</div>
+          <button type="submit" name="preview" value="1" class="btn btn-primary"><i class="ti ti-eye me-1"></i>{{ __('Simuler l\'import', 'assetsign') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>

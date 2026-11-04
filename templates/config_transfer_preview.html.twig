@@ -1,0 +1,80 @@
+{# Issue #279 : simulation d'un import de configuration, avant confirmation (cf. ConfigTransfer::plan()). #}
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">{{ __('Simulation de l\'import dans « %s »', 'assetsign')|format(entity_name) }}</h3>
+  </div>
+  <div class="card-body">
+    {% if payload.entity_name or payload.plugin_version %}
+      <p class="text-muted">
+        {{ __('Fichier exporté depuis « %1$s » (AssetSign %2$s).', 'assetsign')|format(payload.entity_name, payload.plugin_version) }}
+      </p>
+    {% endif %}
+    {% if not plan.own_row %}
+      <div class="alert alert-info">{{ __('Cette entité hérite aujourd\'hui de la configuration d\'une entité parente : l\'import lui créera sa propre configuration.', 'assetsign') }}</div>
+    {% endif %}
+
+    {% if plan.report is not empty %}
+      <div class="alert alert-warning">
+        <div class="fw-bold mb-1">{{ __('Compte rendu', 'assetsign') }}</div>
+        <ul class="mb-0">
+          {% for line in plan.report %}<li>{{ line }}</li>{% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <h4>{{ __('Réglages', 'assetsign') }}</h4>
+    {% if plan.changes is empty %}
+      <p class="text-muted">{{ __('Aucun réglage ne change.', 'assetsign') }}</p>
+    {% else %}
+      <div class="table-responsive">
+        <table class="table table-sm table-striped">
+          <thead><tr><th>{{ __('Réglage', 'assetsign') }}</th><th>{{ __('Valeur actuelle', 'assetsign') }}</th><th>{{ __('Nouvelle valeur', 'assetsign') }}</th></tr></thead>
+          <tbody>
+            {% for change in plan.changes %}
+              <tr>
+                <td><code>{{ change.key }}</code></td>
+                <td class="text-break" style="white-space: pre-line;">{{ change.current }}</td>
+                <td class="text-break" style="white-space: pre-line;">{{ change.new }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+
+    {% if options.templates %}
+      <h4>{{ __('Gabarits par défaut', 'assetsign') }}</h4>
+      {% if plan.templates is empty %}
+        <p class="text-muted">{{ __('Le fichier ne contient aucun gabarit.', 'assetsign') }}</p>
+      {% else %}
+        <ul>
+          {% for template in plan.templates %}
+            <li>
+              {{ template.label }} :
+              {% if template.action == 'create' %}{{ __('nouveau gabarit dans cette entité', 'assetsign') }}
+              {% elseif template.action == 'update' %}{{ __('modifié (%s)', 'assetsign')|format(template.changed|join(', ')) }}
+              {% elseif template.action == 'denied' %}{{ __('ignoré (droit insuffisant)', 'assetsign') }}
+              {% else %}{{ __('inchangé', 'assetsign') }}{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endif %}
+
+    {% if options.logo %}
+      <h4>{{ __('Logo', 'assetsign') }}</h4>
+      <p>
+        {% if plan.logo == 'replace' %}{{ __('Le logo sera remplacé par celui du fichier.', 'assetsign') }}
+        {% elseif plan.logo == 'unchanged' %}{{ __('Le logo du fichier est identique au logo actuel.', 'assetsign') }}
+        {% else %}{{ __('Le fichier ne contient pas de logo : le logo actuel est conservé.', 'assetsign') }}{% endif %}
+      </p>
+    {% endif %}
+
+    <form method="post" action="{{ action }}" class="d-flex gap-2 mt-3">
+      <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="import_token" value="{{ import_token }}">
+      <button type="submit" name="apply" value="1" class="btn btn-primary"><i class="ti ti-check me-1"></i>{{ __('Appliquer l\'import', 'assetsign') }}</button>
+      <a href="{{ action }}?entities_id={{ entity_id }}" class="btn btn-outline-secondary">{{ __('Cancel') }}</a>
+    </form>
+  </div>
+</div>

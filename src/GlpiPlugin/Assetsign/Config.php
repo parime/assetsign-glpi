@@ -366,6 +366,15 @@ class Config extends Compat\Base\ConfigBase
           return 0;
       }
 
+       return self::addLogoDocument($tmpName, $entities_id);
+   }
+
+    /**
+     * Cree le Document du logo a partir d'un fichier deja controle et place dans GLPI_TMP_DIR sous
+     * un nom genere par le plugin (jamais un nom venant de l'utilisateur) : partage par l'envoi du
+     * formulaire et par l'import de configuration (issue #279).
+     */
+   public static function addLogoDocument(string $tmpName, int $entities_id): int {
        $document = new \Document();
        $documents_id = $document->add([
            'name'          => 'Logo assetsign & signature',
@@ -655,6 +664,67 @@ class Config extends Compat\Base\ConfigBase
    }
 
    public static function upsertForEntity(int $entities_id, array $input): void {
+       $data = self::buildRow($input);
+
+       // Issue #231 : adresse du webhook chiffree ; un champ vide conserve l'adresse enregistree.
+       $chatUrl = trim((string) ($input['chat_webhook_url'] ?? ''));
+      if (!empty($input['chat_webhook_remove'])) {
+          $data['chat_webhook_url'] = '';
+      } else if ($chatUrl !== '') {
+         if (Notification\ChatWebhook::validateUrl($chatUrl) === null) {
+            $data['chat_webhook_url'] = Notification\ChatWebhook::encryptUrl($chatUrl);
+         } else {
+             \Session::addMessageAfterRedirect(
+                 __('Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même.', 'assetsign'),
+                 false,
+                 ERROR
+             );
+         }
+      }
+
+       // Issue #273 : un format de reference refuse n'est pas enregistre (cf. buildRow()).
+       $reference = self::referenceInput($input);
+       $referenceError = $reference !== null ? self::validateReference($reference) : null;
+      if ($referenceError !== null) {
+          $reference = null;
+          \Session::addMessageAfterRedirect(
+              self::getReferenceErrorMessage($referenceError) . ' ' . __('Les réglages de référence précédents sont conservés.', 'assetsign'),
+              false,
+              ERROR
+          );
+      }
+
+       $config = new self();
+       $isNewRow = !$config->getFromDBByCrit(['entities_id' => $entities_id]);
+      if ($isNewRow) {
+          $config->add(['entities_id' => $entities_id, 'is_recursive' => 1] + $data);
+      } else {
+          $config->update(['id' => $config->getID()] + $data);
+      }
+
+       // « Prochain numero » : applique s'il a ete modifie, ou a la premiere configuration propre
+       // de l'entite (qui prend alors la suite du compteur herite affiche dans le formulaire).
+      if ($reference !== null && DocumentReferenceFormat::usesSequence($reference['reference_format']) && isset($input['reference_next_number'])) {
+          $next = (int) $input['reference_next_number'];
+         if ($next >= 1 && ($isNewRow || $next !== (int) ($input['reference_next_number_orig'] ?? 0))) {
+            DocumentReference::setNextNumber(
+                $entities_id,
+                DocumentReferenceFormat::period((bool) $reference['reference_yearly_reset'], time()),
+                $next
+            );
+         }
+      }
+   }
+
+   /**
+    * Ligne de configuration (colonne => valeur nettoyee) que produirait l'enregistrement du
+    * formulaire $input, sans rien ecrire : partagee par upsertForEntity() et par la simulation de
+    * l'import (issue #279, ConfigTransfer), qui compare ce resultat a la configuration actuelle.
+    * L'adresse du webhook (chiffree, message d'erreur en session) reste traitee par upsertForEntity().
+    *
+    * @return array<string, mixed>
+    */
+   public static function buildRow(array $input): array {
        $managedItemtypes = [];
       foreach (self::getAllManageableItemtypes() as $itemtype) {
          if (!empty($input['manage_' . $itemtype])) {
@@ -781,22 +851,6 @@ class Config extends Compat\Base\ConfigBase
            'renewal_monthly_change' => (int) ($input['renewal_monthly_change'] ?? 0),
        ];
 
-       // Issue #231 : adresse du webhook chiffree ; un champ vide conserve l'adresse enregistree.
-       $chatUrl = trim((string) ($input['chat_webhook_url'] ?? ''));
-       if (!empty($input['chat_webhook_remove'])) {
-          $data['chat_webhook_url'] = '';
-       } else if ($chatUrl !== '') {
-          if (Notification\ChatWebhook::validateUrl($chatUrl) === null) {
-             $data['chat_webhook_url'] = Notification\ChatWebhook::encryptUrl($chatUrl);
-          } else {
-             \Session::addMessageAfterRedirect(
-                 __('Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même.', 'assetsign'),
-                 false,
-                 ERROR
-             );
-          }
-       }
-
        // Issue #229 : sans le plugin Fields (desactive un temps), le choix enregistre est conserve.
        if (FieldsPluginValues::isAvailable()) {
            $data['fields_containers'] = FieldsPluginLogic::normalizeContainerIds(
@@ -807,53 +861,44 @@ class Config extends Compat\Base\ConfigBase
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
 
-       // Issue #273 : reference de document. Un format refuse n'est pas enregistre (le reglage
-       // precedent reste en vigueur) : il finirait sur le PDF et dans les noms de documents.
-       $reference = null;
-       if (array_key_exists('reference_format', $input)) {
-          $reference = [
-              'reference_format'       => trim((string) $input['reference_format']),
-              'reference_prefix'       => trim((string) ($input['reference_prefix'] ?? '')),
-              'reference_seq_digits'   => DocumentReferenceFormat::normalizeSeqDigits((int) ($input['reference_seq_digits'] ?? DocumentReferenceFormat::DEFAULT_SEQ_DIGITS)),
-              'reference_yearly_reset' => (int) !empty($input['reference_yearly_reset']),
-          ];
-          $error = DocumentReferenceFormat::validate(
-              $reference['reference_format'],
-              $reference['reference_prefix'],
-              (bool) $reference['reference_yearly_reset']
-           );
-          if ($error === null) {
-              $data += $reference;
-          } else {
-             $reference = null;
-             \Session::addMessageAfterRedirect(
-                 self::getReferenceErrorMessage($error) . ' ' . __('Les réglages de référence précédents sont conservés.', 'assetsign'),
-                 false,
-                 ERROR
-             );
-          }
+       // Issue #273 : reference de document, retenue seulement si le format est valide (le message
+       // d'erreur est ajoute par upsertForEntity()) : sinon le reglage precedent reste en vigueur, un
+       // format refuse finirait sur le PDF et dans les noms de documents.
+       $reference = self::referenceInput($input);
+       if ($reference !== null && self::validateReference($reference) === null) {
+          $data += $reference;
        }
 
-       $config = new self();
-       $isNewRow = !$config->getFromDBByCrit(['entities_id' => $entities_id]);
-       if ($isNewRow) {
-          $config->add(['entities_id' => $entities_id, 'is_recursive' => 1] + $data);
-       } else {
-          $config->update(['id' => $config->getID()] + $data);
-       }
+       return $data;
+   }
 
-       // « Prochain numero » : applique s'il a ete modifie, ou a la premiere configuration propre
-       // de l'entite (qui prend alors la suite du compteur herite affiche dans le formulaire).
-       if ($reference !== null && DocumentReferenceFormat::usesSequence($reference['reference_format']) && isset($input['reference_next_number'])) {
-          $next = (int) $input['reference_next_number'];
-          if ($next >= 1 && ($isNewRow || $next !== (int) ($input['reference_next_number_orig'] ?? 0))) {
-             DocumentReference::setNextNumber(
-                 $entities_id,
-                 DocumentReferenceFormat::period((bool) $reference['reference_yearly_reset'], time()),
-                 $next
-              );
-          }
-       }
+   /**
+    * Issue #273 : reglages de reference saisis, ou null s'ils ne figurent pas dans le formulaire.
+    *
+    * @return array{reference_format: string, reference_prefix: string, reference_seq_digits: int, reference_yearly_reset: int}|null
+    */
+   private static function referenceInput(array $input): ?array {
+      if (!array_key_exists('reference_format', $input)) {
+          return null;
+      }
+       return [
+           'reference_format'       => trim((string) $input['reference_format']),
+           'reference_prefix'       => trim((string) ($input['reference_prefix'] ?? '')),
+           'reference_seq_digits'   => DocumentReferenceFormat::normalizeSeqDigits((int) ($input['reference_seq_digits'] ?? DocumentReferenceFormat::DEFAULT_SEQ_DIGITS)),
+           'reference_yearly_reset' => (int) !empty($input['reference_yearly_reset']),
+       ];
+   }
+
+   /**
+    * @param array{reference_format: string, reference_prefix: string, reference_seq_digits: int, reference_yearly_reset: int} $reference
+    * @return string|null code d'erreur (DocumentReferenceFormat::ERROR_*), null si valide
+    */
+   private static function validateReference(array $reference): ?string {
+       return DocumentReferenceFormat::validate(
+           $reference['reference_format'],
+           $reference['reference_prefix'],
+           (bool) $reference['reference_yearly_reset']
+       );
    }
 
    public static function getReferenceErrorMessage(string $error): string {

@@ -6,6 +6,8 @@
 #   - une image polyglotte (GIF valide suivi de code PHP) acceptee comme logo est servie telle
 #     quelle par document.send.php, jamais executee ;
 #   - un technicien limite a l'entite A ne peut rien joindre a un mouvement de l'entite B ;
+#   - un logo importe avec une configuration (issue #279) est controle sur son contenu reel (SVG,
+#     PHP, type annonce faux refuses) et n'est enregistre qu'apres confirmation de la simulation ;
 #   - les televersements legitimes passent (sinon le test ne prouverait rien).
 #
 # Usage : upload-check.sh <url GLPI> <json de setup.php> <commande affichant `setup.php uploads`>
@@ -98,6 +100,45 @@ expect "technicien de A : rien joint au mouvement de B" "$(field "$s3" movement_
 attach "$(id movement_A)" "$DIR/note" note.txt > /dev/null
 s5=$(state)
 expect "technicien de A : joindre a un mouvement de A" $(($(field "$s4" movement_links) + 1)) "$(field "$s5" movement_links)"
+
+# --- Import de configuration (issue #279) : le logo du fichier est controle sur son contenu reel ---
+import_preview() { # fichier JSON local -> corps de la reponse
+  curl -s -c "$JAR" -b "$JAR" -F preview=1 -F entities_id=0 -F with_logo=1 -F "_glpi_csrf_token=$(csrf)" \
+    -F "config_file=@$1;filename=config.json;type=application/json" "$P/configtransfer.php"
+}
+import_apply() { # jeton de simulation
+  curl -s -o /dev/null -w '%{http_code}' -c "$JAR" -b "$JAR" -d apply=1 -d "import_token=$1" \
+    -d "_glpi_csrf_token=$(csrf)" "$P/configtransfer.php"
+}
+config_with_logo() { # type annonce, contenu en base64
+  printf '{"format_version":1,"plugin":"assetsign","config":{},"logo":{"mime_type":"%s","data":"%s"}}' "$1" "$2"
+}
+token_of() { grep -o 'name="import_token" value="[0-9a-f]*"' <<< "$1" | sed 's/.*value="//;s/"//'; }
+
+login glpi glpi
+config_with_logo image/svg+xml "$(printf '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>' | base64 -w0)" > "$DIR/svg.json"
+config_with_logo image/png "$(base64 -w0 < "$DIR/script")" > "$DIR/php.json"
+config_with_logo image/png "$(base64 -w0 < "$DIR/polyglot")" > "$DIR/mismatch.json"
+s6=$(state)
+for f in svg php mismatch; do
+  expect "import d'un logo « $f » : refuse avant toute simulation" "" "$(token_of "$(import_preview "$DIR/$f.json")")"
+done
+s7=$(state)
+expect "import refuse : aucun document cree" "$(field "$s6" documents)" "$(field "$s7" documents)"
+expect "import refuse : logo inchange" "$(field "$s6" logo)" "$(field "$s7" logo)"
+
+config_with_logo image/png 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=' > "$DIR/png.json"
+token=$(token_of "$(import_preview "$DIR/png.json")")
+expect "import d'un logo PNG : simulation proposee" oui "$([ -n "$token" ] && echo oui || echo non)"
+s8=$(state)
+expect "simulation : aucun document cree" "$(field "$s7" documents)" "$(field "$s8" documents)"
+import_apply "$token" > /dev/null
+s9=$(state)
+expect "import confirme : un document cree" $(($(field "$s8" documents) + 1)) "$(field "$s9" documents)"
+expect "import confirme : logo remplace" oui "$([ "$(field "$s9" logo)" != "$(field "$s8" logo)" ] && echo oui || echo non)"
+import_apply "$token" > /dev/null
+expect "jeton de simulation a usage unique" "$(field "$s9" documents)" "$(field "$(state)" documents)"
+expect "aucun fichier executable stocke apres import" 0 "$(field "$(state)" executable)"
 
 rm -rf "$JAR" "$DIR"
 exit $FAIL

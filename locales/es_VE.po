@@ -4935,3 +4935,150 @@ msgstr "Referencia: %s"
 #, php-format
 msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
 msgstr "Desinstalación interrumpida: no se pudieron archivar las referencias de documento en %s."
+
+msgid "Simulation de l'import dans « %s »"
+msgstr "Simulación de la importación en «%s»"
+
+msgid "Fichier exporté depuis « %1$s » (AssetSign %2$s)."
+msgstr "Archivo exportado desde «%1$s» (AssetSign %2$s)."
+
+msgid "Cette entité hérite aujourd'hui de la configuration d'une entité parente : l'import lui créera sa propre configuration."
+msgstr "Esta entidad hereda actualmente la configuración de una entidad padre: la importación le creará su propia configuración."
+
+msgid "Compte rendu"
+msgstr "Informe"
+
+msgid "Réglages"
+msgstr "Ajustes"
+
+msgid "Aucun réglage ne change."
+msgstr "Ningún ajuste cambia."
+
+msgid "Réglage"
+msgstr "Ajuste"
+
+msgid "Valeur actuelle"
+msgstr "Valor actual"
+
+msgid "Nouvelle valeur"
+msgstr "Nuevo valor"
+
+msgid "Gabarits par défaut"
+msgstr "Plantillas predeterminadas"
+
+msgid "Le fichier ne contient aucun gabarit."
+msgstr "El archivo no contiene ninguna plantilla."
+
+msgid "nouveau gabarit dans cette entité"
+msgstr "nueva plantilla en esta entidad"
+
+msgid "modifié (%s)"
+msgstr "modificada (%s)"
+
+msgid "ignoré (droit insuffisant)"
+msgstr "omitida (permiso insuficiente)"
+
+msgid "inchangé"
+msgstr "sin cambios"
+
+msgid "Logo"
+msgstr "Logotipo"
+
+msgid "Le logo sera remplacé par celui du fichier."
+msgstr "El logotipo se sustituirá por el del archivo."
+
+msgid "Le logo du fichier est identique au logo actuel."
+msgstr "El logotipo del archivo es idéntico al actual."
+
+msgid "Le fichier ne contient pas de logo : le logo actuel est conservé."
+msgstr "El archivo no contiene logotipo: se conserva el actual."
+
+msgid "Appliquer l'import"
+msgstr "Aplicar la importación"
+
+msgid "Exporter ou importer la configuration"
+msgstr "Exportar o importar la configuración"
+
+msgid "Exporter la configuration"
+msgstr "Exportar la configuración"
+
+msgid "Inclure les gabarits par défaut"
+msgstr "Incluir las plantillas predeterminadas"
+
+msgid "Inclure le logo"
+msgstr "Incluir el logotipo"
+
+msgid "Jamais exportés (secrets, à ressaisir sur l'instance de destination) :"
+msgstr "Nunca exportados (secretos, que deben volver a introducirse en la instancia de destino):"
+
+msgid "Télécharger le fichier JSON"
+msgstr "Descargar el archivo JSON"
+
+msgid "Importer une configuration"
+msgstr "Importar una configuración"
+
+msgid "Fichier exporté par AssetSign"
+msgstr "Archivo exportado por AssetSign"
+
+msgid "%d Mo au maximum."
+msgstr "%d MB como máximo."
+
+msgid "Entité cible"
+msgstr "Entidad de destino"
+
+msgid "Importer les gabarits par défaut"
+msgstr "Importar las plantillas predeterminadas"
+
+msgid "Importer le logo"
+msgstr "Importar el logotipo"
+
+msgid "Rien n'est modifié à cette étape : les différences s'affichent d'abord, à confirmer."
+msgstr "En este paso no se modifica nada: primero se muestran las diferencias, que deberá confirmar."
+
+msgid "Simuler l'import"
+msgstr "Simular la importación"
+
+msgid "Choisissez un fichier de configuration (.json)."
+msgstr "Elija un archivo de configuración (.json)."
+
+msgid "Le fichier dépasse la taille maximale (%d Mo)."
+msgstr "El archivo supera el tamaño máximo (%d MB)."
+
+msgid "Ce fichier n'est pas un JSON valide."
+msgstr "Este archivo no es un JSON válido."
+
+msgid "Ce fichier n'est pas une configuration AssetSign."
+msgstr "Este archivo no es una configuración de AssetSign."
+
+msgid "Ce fichier n'est pas une configuration AssetSign dans un format reconnu."
+msgstr "Este archivo no es una configuración de AssetSign en un formato reconocido."
+
+msgid "Fichier refusé : la valeur « %s » est inconnue ou invalide."
+msgstr "Archivo rechazado: el valor «%s» es desconocido o no válido."
+
+msgid "Logo refusé : image PNG, JPG, GIF ou WEBP attendue, de %1$d Ko et %2$d × %3$d pixels au plus."
+msgstr "Logotipo rechazado: se espera una imagen PNG, JPG, GIF o WEBP de %1$d KB y %2$d × %3$d píxeles como máximo."
+
+msgid "« %s » n'est jamais importé (secret ou propre à l'instance d'origine) : à ressaisir si besoin."
+msgstr "«%s» nunca se importa (secreto o propio de la instancia de origen): vuelva a introducirlo si es necesario."
+
+msgid "%1$s : « %2$s » n'existe pas sur cette instance, ignoré."
+msgstr "%1$s: «%2$s» no existe en esta instancia, omitido."
+
+msgid "Gabarit « %s » ignoré : vous n'avez pas le droit de le modifier."
+msgstr "Plantilla «%s» omitida: no tiene permiso para modificarla."
+
+msgid "Gabarit « %s » ignoré : vous n'avez pas le droit d'en créer dans cette entité."
+msgstr "Plantilla «%s» omitida: no tiene permiso para crear plantillas en esta entidad."
+
+msgid "%1$s : « %2$s » est introuvable dans l'entité cible, ignoré."
+msgstr "%1$s: «%2$s» no se encuentra en la entidad de destino, omitido."
+
+msgid "Simulation expirée : relancez l'import."
+msgstr "Simulación caducada: vuelva a iniciar la importación."
+
+msgid "Import appliqué : %1$d réglage(s) et %2$d gabarit(s) modifiés%3$s."
+msgstr "Importación aplicada: %1$d ajuste(s) y %2$d plantilla(s) modificados%3$s."
+
+msgid ", logo remplacé"
+msgstr ", logotipo sustituido"

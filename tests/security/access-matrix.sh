@@ -119,6 +119,12 @@ fi
 expect "front/ticket_handover.php : ticket de B"             $NF_POST "$(post ticket_handover.php "handover=1&tickets_id=$(id ticket_B)&available_item=Computer:$(id computer_B)&users_id=$(id partant_B)")"
 expect "front/preview.php : apercu avec la configuration de B" $DENY "$(post preview.php "entities_id=$(id b)&type=0")"
 expect "front/config.php : modifier la configuration de B"   $DENY_W "$(post config.php "update=1&entities_id=$(id b)&link_validity_days=1")"
+# Issue #279 : export et import de la configuration de B (page, telechargement, simulation).
+expect "front/configtransfer.php : page pour l'entite B"        $DENY   "$(code "$P/configtransfer.php?entities_id=$(id b)")"
+expect "front/configtransfer.php : exporter la configuration de B" $DENY "$(post configtransfer.php "export=1&entities_id=$(id b)&with_templates=1&with_logo=1")"
+expect "front/configtransfer.php : simuler un import dans B"    $DENY_W "$(post configtransfer.php "preview=1&entities_id=$(id b)")"
+# Jeton de simulation inconnu : rien n'est applique, retour au formulaire.
+expect "front/configtransfer.php : appliquer avec un jeton forge" 302  "$(post configtransfer.php "apply=1&import_token=0123456789abcdef0123456789abcdef")"
 expect "front/campaign.form.php : lancer une campagne en B"  $DENY_POST "$(post campaign.form.php "launch=1&name=securite&entities_id=$(id b)&date_deadline=2099-01-01")"
 # Issue #224 : re-signature de la charte de B.
 expect "front/campaign.form.php : re-signature de la charte de B" $DENY_POST "$(post campaign.form.php "launch_resign=1&entities_id=$(id b)")"
