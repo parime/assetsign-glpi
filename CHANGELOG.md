@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.21.0] - 2026-11-08
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Added
 
 - **Mise en page des étiquettes QR** (#278) : format de planche (A4 2 x 4, 3 x 7, 3 x 8, 2 x 7, 4 x 10 ou personnalisé : largeur, hauteur, marge, espacement), taille du QR code et du texte, texte sous le QR, à côté ou absent, cadre de découpe. Réglage par entité (Configuration > Compléments), ajustable sur la planche pour une impression. La planche est découpée en pages A4 (une page imprimée = une planche d'étiquettes, marges d'impression à zéro) ; l'étiquette unitaire s'imprime à sa taille réelle.
