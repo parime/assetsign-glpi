@@ -5062,3 +5062,88 @@ msgstr "Import applied: %1$d setting(s) and %2$d template(s) changed%3$s."
 
 msgid ", logo remplacé"
 msgstr ", logo replaced"
+
+#, php-format
+msgid "%d page"
+msgid_plural "%d pages"
+msgstr[0] "%d page"
+msgstr[1] "%d pages"
+
+msgid "Personnalisé"
+msgstr "Custom"
+
+msgid "Sous le QR code"
+msgstr "Below the QR code"
+
+msgid "À côté du QR code"
+msgstr "Beside the QR code"
+
+msgid "Aucun texte"
+msgstr "No text"
+
+msgid "Format de la planche"
+msgstr "Label sheet format"
+
+msgid "Largeur de l'étiquette (mm)"
+msgstr "Label width (mm)"
+
+msgid "Hauteur de l'étiquette (mm)"
+msgstr "Label height (mm)"
+
+msgid "Marge de la page (mm)"
+msgstr "Page margin (mm)"
+
+msgid "Espacement entre étiquettes (mm)"
+msgstr "Spacing between labels (mm)"
+
+msgid "Choisir un format de planche remplit la largeur et la hauteur ; modifier une dimension passe au format personnalisé. La marge et l'espacement ne servent qu'au format personnalisé."
+msgstr "Choosing a sheet format fills in the width and height; changing a dimension switches to the custom format. The margin and spacing only apply to the custom format."
+
+msgid "Taille du QR code (mm)"
+msgstr "QR code size (mm)"
+
+msgid "Taille du texte (pt)"
+msgstr "Text size (pt)"
+
+msgid "Position du texte"
+msgstr "Text position"
+
+msgid "Cadre de découpe"
+msgstr "Cutting frame"
+
+msgid "Texte de l'étiquette"
+msgstr "Label text"
+
+msgid "Une ligne de ce texte = une ligne sur l'étiquette. Marqueurs remplacés par la valeur du matériel :"
+msgstr "One line of this text = one line on the label. Markers replaced by the asset's value:"
+
+msgid "{manufacturers_id} donne le nom du fabricant, {entity} celui de l'entité. Une ligne dont tous les marqueurs sont vides n'est pas imprimée."
+msgstr "{manufacturers_id} gives the manufacturer's name, {entity} the entity's name. A line whose markers are all empty is not printed."
+
+msgid "Mise en page des étiquettes QR"
+msgstr "QR label layout"
+
+msgid "Utilisée par l'étiquette d'un matériel (onglet Passeport matériel) et par la planche de l'action de masse « Imprimer les étiquettes QR », qui peut l'ajuster pour une impression."
+msgstr "Used by an asset's label (Equipment Passport tab) and by the sheet of the \"Print QR labels\" bulk action, which can adjust it for one print."
+
+#, php-format
+msgid "Taille réelle à l'impression : %1$s x %2$s mm. Mise en page et texte réglables dans la configuration du plugin (onglet Compléments)."
+msgstr "Actual printed size: %1$s x %2$s mm. Layout and text can be set in the plugin configuration (Extras tab)."
+
+msgid "Télécharger en PNG"
+msgstr "Download as PNG"
+
+msgid "Réglages de la planche"
+msgstr "Sheet settings"
+
+msgid "Appliquer"
+msgstr "Apply"
+
+msgid "Revenir aux réglages de l'entité"
+msgstr "Back to the entity settings"
+
+msgid "Ces réglages ne valent que pour cette impression. Les réglages par défaut se changent dans la configuration du plugin (onglet Compléments)."
+msgstr "These settings only apply to this print. The default settings are changed in the plugin configuration (Extras tab)."
+
+msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
+msgstr "In the print dialog, choose actual size (no scaling) and no margins so that the labels line up with the sheet."

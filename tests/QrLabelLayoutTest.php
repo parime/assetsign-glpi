@@ -73,7 +73,8 @@ final class QrLabelLayoutTest extends TestCase
    }
 
    public function testEmptyTemplateUsesDefaultText(): void {
-       $lines = QrLabelLayout::lines('', ['item_name' => 'PC-FICTIF-02', 'item_serial' => 'SN-1', 'itemtype_label' => 'Ordinateur']);
+       $label = ['item_name' => 'PC-FICTIF-02', 'item_serial' => 'SN-1', 'itemtype_label' => 'Ordinateur'];
+       $lines = QrLabelLayout::lines('', $label);
        $this->assertCount(3, $lines);
        $this->assertSame('PC-FICTIF-02', $lines[1]);
        $this->assertStringEndsWith('SN-1', $lines[2]);

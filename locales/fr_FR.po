@@ -5082,3 +5082,88 @@ msgstr "Import appliqué : %1$d réglage(s) et %2$d gabarit(s) modifiés%3$s."
 
 msgid ", logo remplacé"
 msgstr ", logo remplacé"
+
+#, php-format
+msgid "%d page"
+msgid_plural "%d pages"
+msgstr[0] "%d page"
+msgstr[1] "%d pages"
+
+msgid "Personnalisé"
+msgstr "Personnalisé"
+
+msgid "Sous le QR code"
+msgstr "Sous le QR code"
+
+msgid "À côté du QR code"
+msgstr "À côté du QR code"
+
+msgid "Aucun texte"
+msgstr "Aucun texte"
+
+msgid "Format de la planche"
+msgstr "Format de la planche"
+
+msgid "Largeur de l'étiquette (mm)"
+msgstr "Largeur de l'étiquette (mm)"
+
+msgid "Hauteur de l'étiquette (mm)"
+msgstr "Hauteur de l'étiquette (mm)"
+
+msgid "Marge de la page (mm)"
+msgstr "Marge de la page (mm)"
+
+msgid "Espacement entre étiquettes (mm)"
+msgstr "Espacement entre étiquettes (mm)"
+
+msgid "Choisir un format de planche remplit la largeur et la hauteur ; modifier une dimension passe au format personnalisé. La marge et l'espacement ne servent qu'au format personnalisé."
+msgstr "Choisir un format de planche remplit la largeur et la hauteur ; modifier une dimension passe au format personnalisé. La marge et l'espacement ne servent qu'au format personnalisé."
+
+msgid "Taille du QR code (mm)"
+msgstr "Taille du QR code (mm)"
+
+msgid "Taille du texte (pt)"
+msgstr "Taille du texte (pt)"
+
+msgid "Position du texte"
+msgstr "Position du texte"
+
+msgid "Cadre de découpe"
+msgstr "Cadre de découpe"
+
+msgid "Texte de l'étiquette"
+msgstr "Texte de l'étiquette"
+
+msgid "Une ligne de ce texte = une ligne sur l'étiquette. Marqueurs remplacés par la valeur du matériel :"
+msgstr "Une ligne de ce texte = une ligne sur l'étiquette. Marqueurs remplacés par la valeur du matériel :"
+
+msgid "{manufacturers_id} donne le nom du fabricant, {entity} celui de l'entité. Une ligne dont tous les marqueurs sont vides n'est pas imprimée."
+msgstr "{manufacturers_id} donne le nom du fabricant, {entity} celui de l'entité. Une ligne dont tous les marqueurs sont vides n'est pas imprimée."
+
+msgid "Mise en page des étiquettes QR"
+msgstr "Mise en page des étiquettes QR"
+
+msgid "Utilisée par l'étiquette d'un matériel (onglet Passeport matériel) et par la planche de l'action de masse « Imprimer les étiquettes QR », qui peut l'ajuster pour une impression."
+msgstr "Utilisée par l'étiquette d'un matériel (onglet Passeport matériel) et par la planche de l'action de masse « Imprimer les étiquettes QR », qui peut l'ajuster pour une impression."
+
+#, php-format
+msgid "Taille réelle à l'impression : %1$s x %2$s mm. Mise en page et texte réglables dans la configuration du plugin (onglet Compléments)."
+msgstr "Taille réelle à l'impression : %1$s x %2$s mm. Mise en page et texte réglables dans la configuration du plugin (onglet Compléments)."
+
+msgid "Télécharger en PNG"
+msgstr "Télécharger en PNG"
+
+msgid "Réglages de la planche"
+msgstr "Réglages de la planche"
+
+msgid "Appliquer"
+msgstr "Appliquer"
+
+msgid "Revenir aux réglages de l'entité"
+msgstr "Revenir aux réglages de l'entité"
+
+msgid "Ces réglages ne valent que pour cette impression. Les réglages par défaut se changent dans la configuration du plugin (onglet Compléments)."
+msgstr "Ces réglages ne valent que pour cette impression. Les réglages par défaut se changent dans la configuration du plugin (onglet Compléments)."
+
+msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
+msgstr "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."

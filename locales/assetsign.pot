@@ -3180,3 +3180,88 @@ msgstr ""
 
 msgid "Vous n'avez pas le droit de modifier ce matériel."
 msgstr ""
+
+#, php-format
+msgid "%d page"
+msgid_plural "%d pages"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Personnalisé"
+msgstr ""
+
+msgid "Sous le QR code"
+msgstr ""
+
+msgid "À côté du QR code"
+msgstr ""
+
+msgid "Aucun texte"
+msgstr ""
+
+msgid "Format de la planche"
+msgstr ""
+
+msgid "Largeur de l'étiquette (mm)"
+msgstr ""
+
+msgid "Hauteur de l'étiquette (mm)"
+msgstr ""
+
+msgid "Marge de la page (mm)"
+msgstr ""
+
+msgid "Espacement entre étiquettes (mm)"
+msgstr ""
+
+msgid "Choisir un format de planche remplit la largeur et la hauteur ; modifier une dimension passe au format personnalisé. La marge et l'espacement ne servent qu'au format personnalisé."
+msgstr ""
+
+msgid "Taille du QR code (mm)"
+msgstr ""
+
+msgid "Taille du texte (pt)"
+msgstr ""
+
+msgid "Position du texte"
+msgstr ""
+
+msgid "Cadre de découpe"
+msgstr ""
+
+msgid "Texte de l'étiquette"
+msgstr ""
+
+msgid "Une ligne de ce texte = une ligne sur l'étiquette. Marqueurs remplacés par la valeur du matériel :"
+msgstr ""
+
+msgid "{manufacturers_id} donne le nom du fabricant, {entity} celui de l'entité. Une ligne dont tous les marqueurs sont vides n'est pas imprimée."
+msgstr ""
+
+msgid "Mise en page des étiquettes QR"
+msgstr ""
+
+msgid "Utilisée par l'étiquette d'un matériel (onglet Passeport matériel) et par la planche de l'action de masse « Imprimer les étiquettes QR », qui peut l'ajuster pour une impression."
+msgstr ""
+
+#, php-format
+msgid "Taille réelle à l'impression : %1$s x %2$s mm. Mise en page et texte réglables dans la configuration du plugin (onglet Compléments)."
+msgstr ""
+
+msgid "Télécharger en PNG"
+msgstr ""
+
+msgid "Réglages de la planche"
+msgstr ""
+
+msgid "Appliquer"
+msgstr ""
+
+msgid "Revenir aux réglages de l'entité"
+msgstr ""
+
+msgid "Ces réglages ne valent que pour cette impression. Les réglages par défaut se changent dans la configuration du plugin (onglet Compléments)."
+msgstr ""
+
+msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
+msgstr ""
