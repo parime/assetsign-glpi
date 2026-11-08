@@ -1,0 +1,11 @@
+{# Issue #278 : styles d'une étiquette QR, en mm pour l'impression (layout = QrLabelLayout::geometry()). #}
+  .qr-label{ width:{{ layout.label_width }}mm; height:{{ layout.label_height }}mm; padding:{{ layout.padding }}mm; overflow:hidden; display:flex; align-items:center; justify-content:center; gap:{{ layout.text_gap }}mm; background:#fff; color:#000; font-family:Arial,Helvetica,sans-serif; font-size:{{ layout.font_size }}pt; line-height:1.2; break-inside:avoid; page-break-inside:avoid; }
+  .qr-label--frame{ outline:.2mm dashed #9aa5ad; outline-offset:-.1mm; }
+  .qr-label--below{ flex-direction:column; text-align:center; }
+  .qr-label--beside{ flex-direction:row; text-align:left; }
+  .qr-label--none{ flex-direction:column; }
+  .qr-label__qr{ width:{{ layout.qr_size }}mm; height:{{ layout.qr_size }}mm; flex:none; image-rendering:pixelated; }
+  .qr-label__text{ min-width:0; max-width:100%; max-height:100%; overflow:hidden; }
+  .qr-label--beside .qr-label__text{ flex:1; }
+  .qr-label__text p{ margin:0; overflow-wrap:anywhere; }
+  .qr-label__missing{ margin:0; color:#b7472a; font-size:7pt; }

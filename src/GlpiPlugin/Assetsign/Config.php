@@ -178,6 +178,18 @@ class Config extends Compat\Base\ConfigBase
         'reference_prefix'                    => '',
         'reference_seq_digits'                => DocumentReferenceFormat::DEFAULT_SEQ_DIGITS,
         'reference_yearly_reset'              => 0,
+        // Issue #278 : mise en page des etiquettes QR (cf. QrLabelLayout). Texte vide = texte par
+        // defaut (type, nom, numero de serie).
+        'qr_label_preset'                     => 'a4_3x8',
+        'qr_label_width'                      => 70,
+        'qr_label_height'                     => 37,
+        'qr_label_qr_size'                    => 30,
+        'qr_label_font_size'                  => 8,
+        'qr_label_spacing'                    => 0,
+        'qr_label_margin'                     => 8,
+        'qr_label_text_position'              => 'beside',
+        'qr_label_cut_frame'                  => 1,
+        'qr_label_text'                       => '',
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -232,6 +244,8 @@ class Config extends Compat\Base\ConfigBase
            // Issue #273 : prochain numero et exemple de reference.
            'reference_preview'    => $config->getReferencePreview(),
            'reference_type_codes' => array_values(array_unique(DocumentReferenceFormat::TYPE_CODES)),
+           // Issue #278 : mise en page des etiquettes QR.
+           'qr_label_form'        => QrLabelLayout::formData(QrLabelLayout::normalize($config->fields)),
            'entity_id'       => $entities_id,
            'csrf_token'      => \Session::getNewCSRFToken(),
            // Jeton CSRF DEDIE au canal d'apercu en direct (live-preview.js),
@@ -861,6 +875,9 @@ class Config extends Compat\Base\ConfigBase
 
        $data['health_score_warning_threshold'] = min($data['health_score_warning_threshold'], $data['health_score_good_threshold']);
 
+       // Issue #278 : mise en page des etiquettes QR, bornee par QrLabelLayout.
+       $data += QrLabelLayout::normalize($input);
+
        // Issue #273 : reference de document, retenue seulement si le format est valide (le message
        // d'erreur est ajoute par upsertForEntity()) : sinon le reglage precedent reste en vigueur, un
        // format refuse finirait sur le PDF et dans les noms de documents.
@@ -1150,6 +1167,16 @@ class Config extends Compat\Base\ConfigBase
                 `reference_prefix` varchar(255) NOT NULL DEFAULT '',
                 `reference_seq_digits` int unsigned NOT NULL DEFAULT 6,
                 `reference_yearly_reset` tinyint NOT NULL DEFAULT 0,
+                `qr_label_preset` varchar(255) NOT NULL DEFAULT 'a4_3x8',
+                `qr_label_width` int unsigned NOT NULL DEFAULT 70,
+                `qr_label_height` int unsigned NOT NULL DEFAULT 37,
+                `qr_label_qr_size` int unsigned NOT NULL DEFAULT 30,
+                `qr_label_font_size` int unsigned NOT NULL DEFAULT 8,
+                `qr_label_spacing` int unsigned NOT NULL DEFAULT 0,
+                `qr_label_margin` int unsigned NOT NULL DEFAULT 8,
+                `qr_label_text_position` varchar(255) NOT NULL DEFAULT 'beside',
+                `qr_label_cut_frame` tinyint NOT NULL DEFAULT 1,
+                `qr_label_text` text,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -1262,6 +1289,20 @@ class Config extends Compat\Base\ConfigBase
              $migration->addField($table, 'reference_prefix', 'string', ['value' => '']);
              $migration->addField($table, 'reference_seq_digits', 'integer', ['value' => DocumentReferenceFormat::DEFAULT_SEQ_DIGITS]);
              $migration->addField($table, 'reference_yearly_reset', 'bool', ['value' => 0]);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #278 : mise en page des etiquettes QR (valeurs par defaut de QrLabelLayout).
+         if (!$DB->fieldExists($table, 'qr_label_preset')) {
+             $migration->addField($table, 'qr_label_preset', 'string', ['value' => 'a4_3x8']);
+             $migration->addField($table, 'qr_label_width', 'integer', ['value' => 70]);
+             $migration->addField($table, 'qr_label_height', 'integer', ['value' => 37]);
+             $migration->addField($table, 'qr_label_qr_size', 'integer', ['value' => 30]);
+             $migration->addField($table, 'qr_label_font_size', 'integer', ['value' => 8]);
+             $migration->addField($table, 'qr_label_spacing', 'integer', ['value' => 0]);
+             $migration->addField($table, 'qr_label_margin', 'integer', ['value' => 8]);
+             $migration->addField($table, 'qr_label_text_position', 'string', ['value' => 'beside']);
+             $migration->addField($table, 'qr_label_cut_frame', 'bool', ['value' => 1]);
+             $migration->addField($table, 'qr_label_text', 'text', []);
              $migration->migrationOneTable($table);
          }
          // Issue #224 : re-signature quand la charte change.

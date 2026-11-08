@@ -5118,3 +5118,88 @@ msgstr "Import angewendet: %1$d Einstellung(en) und %2$d Vorlage(n) geändert%3$
 
 msgid ", logo remplacé"
 msgstr ", Logo ersetzt"
+
+#, php-format
+msgid "%d page"
+msgid_plural "%d pages"
+msgstr[0] "%d Seite"
+msgstr[1] "%d Seiten"
+
+msgid "Personnalisé"
+msgstr "Benutzerdefiniert"
+
+msgid "Sous le QR code"
+msgstr "Unter dem QR-Code"
+
+msgid "À côté du QR code"
+msgstr "Neben dem QR-Code"
+
+msgid "Aucun texte"
+msgstr "Kein Text"
+
+msgid "Format de la planche"
+msgstr "Etikettenbogen-Format"
+
+msgid "Largeur de l'étiquette (mm)"
+msgstr "Etikettenbreite (mm)"
+
+msgid "Hauteur de l'étiquette (mm)"
+msgstr "Etikettenhöhe (mm)"
+
+msgid "Marge de la page (mm)"
+msgstr "Seitenrand (mm)"
+
+msgid "Espacement entre étiquettes (mm)"
+msgstr "Abstand zwischen Etiketten (mm)"
+
+msgid "Choisir un format de planche remplit la largeur et la hauteur ; modifier une dimension passe au format personnalisé. La marge et l'espacement ne servent qu'au format personnalisé."
+msgstr "Die Wahl eines Bogenformats füllt Breite und Höhe aus; das Ändern eines Maßes wechselt zum benutzerdefinierten Format. Rand und Abstand gelten nur für das benutzerdefinierte Format."
+
+msgid "Taille du QR code (mm)"
+msgstr "QR-Code-Größe (mm)"
+
+msgid "Taille du texte (pt)"
+msgstr "Textgröße (pt)"
+
+msgid "Position du texte"
+msgstr "Textposition"
+
+msgid "Cadre de découpe"
+msgstr "Schnittrahmen"
+
+msgid "Texte de l'étiquette"
+msgstr "Etikettentext"
+
+msgid "Une ligne de ce texte = une ligne sur l'étiquette. Marqueurs remplacés par la valeur du matériel :"
+msgstr "Eine Zeile dieses Textes = eine Zeile auf dem Etikett. Platzhalter, die durch den Wert des Geräts ersetzt werden:"
+
+msgid "{manufacturers_id} donne le nom du fabricant, {entity} celui de l'entité. Une ligne dont tous les marqueurs sont vides n'est pas imprimée."
+msgstr "{manufacturers_id} ergibt den Namen des Herstellers, {entity} den der Einheit. Eine Zeile, deren Platzhalter alle leer sind, wird nicht gedruckt."
+
+msgid "Mise en page des étiquettes QR"
+msgstr "Layout der QR-Etiketten"
+
+msgid "Utilisée par l'étiquette d'un matériel (onglet Passeport matériel) et par la planche de l'action de masse « Imprimer les étiquettes QR », qui peut l'ajuster pour une impression."
+msgstr "Wird vom Etikett eines Geräts (Registerkarte Gerätepass) und vom Bogen der Massenaktion „QR-Etiketten drucken“ verwendet, der es für einen Druck anpassen kann."
+
+#, php-format
+msgid "Taille réelle à l'impression : %1$s x %2$s mm. Mise en page et texte réglables dans la configuration du plugin (onglet Compléments)."
+msgstr "Tatsächliche Druckgröße: %1$s x %2$s mm. Layout und Text sind in der Plugin-Konfiguration einstellbar (Registerkarte Ergänzungen)."
+
+msgid "Télécharger en PNG"
+msgstr "Als PNG herunterladen"
+
+msgid "Réglages de la planche"
+msgstr "Bogeneinstellungen"
+
+msgid "Appliquer"
+msgstr "Anwenden"
+
+msgid "Revenir aux réglages de l'entité"
+msgstr "Zurück zu den Einstellungen der Einheit"
+
+msgid "Ces réglages ne valent que pour cette impression. Les réglages par défaut se changent dans la configuration du plugin (onglet Compléments)."
+msgstr "Diese Einstellungen gelten nur für diesen Druck. Die Standardeinstellungen werden in der Plugin-Konfiguration geändert (Registerkarte Ergänzungen)."
+
+msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
+msgstr "Wählen Sie im Druckdialog die tatsächliche Größe (ohne Skalierung) und keine Ränder, damit die Etiketten genau auf den Bogen passen."

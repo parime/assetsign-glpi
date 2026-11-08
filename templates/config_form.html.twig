@@ -679,6 +679,12 @@
             <label class="form-check-label" for="enable_qr_label">{{ __('Autoriser l\'impression d\'une étiquette QR code sur le matériel', 'assetsign') }}</label>
             <div class="form-text">{{ __('Différent du réglage ci-dessus (celui-ci concerne les fiches PDF) : ajoute un bouton sur l\'onglet Passeport matériel pour imprimer une étiquette à coller physiquement sur le matériel. Scannée, elle ouvre directement son Passeport matériel dans GLPI (connexion requise, comme n\'importe quel lien GLPI).', 'assetsign') }}</div>
           </div>
+          {# Issue #278 : mise en page des etiquettes QR (etiquette unitaire et planche en lot). #}
+          <fieldset class="border rounded p-3 mb-3">
+            <legend class="float-none w-auto px-2 fs-5"><i class="ti ti-qrcode me-1"></i>{{ __('Mise en page des étiquettes QR', 'assetsign') }}</legend>
+            <p class="text-muted">{{ __('Utilisée par l\'étiquette d\'un matériel (onglet Passeport matériel) et par la planche de l\'action de masse « Imprimer les étiquettes QR », qui peut l\'ajuster pour une impression.', 'assetsign') }}</p>
+            {% include '@assetsign/_qr_label_settings_fields.html.twig' with {form: qr_label_form} %}
+          </fieldset>
           <div class="row">
             <div class="col-auto mb-3">
               <label class="form-label">{{ __('Texte du filigrane sur l\'aperçu', 'assetsign') }}</label>

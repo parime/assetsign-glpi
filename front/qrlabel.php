@@ -12,7 +12,9 @@
  */
 
 use GlpiPlugin\Assetsign\Api\QrLabelController;
+use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\PassportEvent;
+use GlpiPlugin\Assetsign\QrLabelLayout;
 
 Session::checkRight(PassportEvent::$rightname, READ);
 
@@ -36,6 +38,11 @@ try {
 // une page destinee a etre imprimee telle quelle, et devrait sinon etre masque au complet
 // en @media print au lieu d'etre simplement absent - plus fragile (depend de la structure
 // DOM interne de GLPI, hors du controle de ce plugin) que de ne jamais le generer.
+// Issue #278 : mise en page et texte de l'étiquette, réglés pour l'entité du matériel.
+$settings = QrLabelLayout::normalize(Config::getForEntity($data['entities_id'])->fields);
+$data['layout'] = QrLabelLayout::geometry($settings);
+$data['lines'] = QrLabelLayout::lines((string) $settings['qr_label_text'], $data);
+
 header('Content-Type: text/html; charset=UTF-8');
 
 \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/qr_label.html.twig', $data);
