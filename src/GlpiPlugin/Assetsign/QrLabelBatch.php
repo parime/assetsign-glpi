@@ -134,4 +134,43 @@ final class QrLabelBatch extends CommonGLPI
 
        return ['labels' => $labels, 'skipped' => $skipped];
    }
+
+    /**
+     * Variables de la planche (templates/qr_labels.html.twig) : étiquettes du lot avec leur texte,
+     * mise en page de l'entité ou, si la planche a été ajustée ($query['apply']), celle demandée
+     * (toujours bornée par QrLabelLayout). Lot inconnu : null.
+     *
+     * @param array<string, mixed> $query paramètres de l'URL
+     * @param array<string, mixed> $entityConfig configuration de l'entité active
+     * @return array<string, mixed>|null
+     */
+   public static function sheet(string $token, array $query, array $entityConfig): ?array {
+       $batch = self::resolve($token);
+      if ($batch === null) {
+          return null;
+      }
+
+       $settings = QrLabelLayout::normalize($entityConfig);
+       $customized = !empty($query['apply']);
+      if ($customized) {
+          $settings = QrLabelLayout::normalize(array_intersect_key($query, QrLabelLayout::DEFAULTS), $settings);
+      }
+       $layout = QrLabelLayout::geometry($settings);
+
+       $labels = [];
+      foreach ($batch['labels'] as $label) {
+          $label['lines'] = QrLabelLayout::lines((string) $settings['qr_label_text'], $label);
+          $labels[] = $label;
+      }
+
+       return [
+           'labels'        => $labels,
+           'skipped'       => $batch['skipped'],
+           'layout'        => $layout,
+           'pages'         => (int) ceil(count($labels) / max(1, (int) $layout['per_page'])),
+           'settings_form' => QrLabelLayout::formData($settings),
+           'customized'    => $customized,
+           'batch_token'   => $token,
+       ];
+   }
 }

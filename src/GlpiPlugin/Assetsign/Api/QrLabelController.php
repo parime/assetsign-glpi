@@ -16,7 +16,16 @@ use GlpiPlugin\Assetsign\QrCode;
 final class QrLabelController
 {
     /**
-     * @return array{item_name: string, item_serial: string, itemtype_label: string, qr_data_uri: ?string, target_url: string}
+     * Issue #278 : noms des fabricants et entites deja lus (une planche peut compter 500 materiels).
+     *
+     * @var array<string, string>
+     */
+   private array $names = [];
+
+    /**
+     * @return array{item_name: string, item_serial: string, item_otherserial: string,
+     *     manufacturer_name: string, entity_name: string, entities_id: int, itemtype_label: string,
+     *     qr_data_uri: ?string, target_url: string}
      * @throws \InvalidArgumentException si l'itemtype n'est pas geré par le plugin, si le matériel
      *         est introuvable/hors de portée (droit READ natif GLPI, entité comprise), ou si
      *         l'étiquette QR code est désactivée pour l'entité de ce matériel.
@@ -61,9 +70,30 @@ final class QrLabelController
        return [
            'item_name'      => (string) ($item->fields['name'] ?? ''),
            'item_serial'    => (string) ($item->fields['serial'] ?? ''),
+           // Issue #278 : marqueurs du texte de l'etiquette ({otherserial}, {manufacturers_id}, {entity}).
+           'item_otherserial'  => (string) ($item->fields['otherserial'] ?? ''),
+           'manufacturer_name' => $this->nameOf('glpi_manufacturers', (int) ($item->fields['manufacturers_id'] ?? 0)),
+           'entity_name'       => $this->nameOf('glpi_entities', (int) $item->fields['entities_id']),
+           'entities_id'       => (int) $item->fields['entities_id'],
            'itemtype_label' => $itemtype::getTypeName(1),
            'qr_data_uri'    => QrCode::toDataUri($targetUrl),
            'target_url'     => $targetUrl,
        ];
+   }
+
+    /** Nom d'un fabricant ou d'une entite (vide si absent). */
+   private function nameOf(string $table, int $id): string {
+       global $DB;
+
+      if ($id <= 0 && $table !== 'glpi_entities') {
+          return '';
+      }
+       $key = $table . ':' . $id;
+      if (!isset($this->names[$key])) {
+          $row = $DB->request(['SELECT' => ['name'], 'FROM' => $table, 'WHERE' => ['id' => $id]])->current();
+          $this->names[$key] = (string) ($row['name'] ?? '');
+      }
+
+       return $this->names[$key];
    }
 }

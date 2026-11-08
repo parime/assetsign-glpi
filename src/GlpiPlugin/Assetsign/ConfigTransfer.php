@@ -172,6 +172,17 @@ final class ConfigTransfer
       'reference_prefix'                     => ['string', DocumentReferenceFormat::MAX_PREFIX_LENGTH],
       'reference_seq_digits'                 => ['int', 1, DocumentReferenceFormat::MAX_SEQ_DIGITS],
       'reference_yearly_reset'               => ['bool'],
+      // Issue #278 : mise en page des étiquettes QR.
+      'qr_label_preset'                      => ['enum', ['custom', 'a4_2x4', 'a4_3x7', 'a4_3x8', 'a4_2x7', 'a4_4x10']],
+      'qr_label_width'                       => ['int', 15, 200],
+      'qr_label_height'                      => ['int', 10, 280],
+      'qr_label_qr_size'                     => ['int', 8, 100],
+      'qr_label_font_size'                   => ['int', 5, 24],
+      'qr_label_spacing'                     => ['int', 0, 20],
+      'qr_label_margin'                      => ['int', 0, 30],
+      'qr_label_text_position'               => ['enum', QrLabelLayout::POSITIONS],
+      'qr_label_cut_frame'                   => ['bool'],
+      'qr_label_text'                        => ['string', QrLabelLayout::TEXT_MAX_LENGTH],
    ];
 
    /** @return array<string, array<int, mixed>> */

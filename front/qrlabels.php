@@ -7,12 +7,18 @@
  * (QrLabelBatch::resolve()).
  */
 
+use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\PassportEvent;
 use GlpiPlugin\Assetsign\QrLabelBatch;
 
 Session::checkRight(PassportEvent::$rightname, READ);
 
-$batch = QrLabelBatch::resolve((string) ($_GET['batch'] ?? ''));
+// Mise en page : réglages de l'entité active, ajustables pour cette impression (paramètres d'URL).
+$batch = QrLabelBatch::sheet(
+    (string) ($_GET['batch'] ?? ''),
+    $_GET,
+    Config::getForEntity(Session::getActiveEntity())->fields
+);
 if ($batch === null) {
     throw new \Glpi\Exception\Http\NotFoundHttpException();
 }

@@ -1,0 +1,15 @@
+{# Issue #278 : une étiquette QR (planche en lot et étiquette unitaire). Variables : label (données
+   de QrLabelController::resolve() + lines), layout (QrLabelLayout::geometry()). Texte toujours
+   échappé par Twig. #}
+<div class="qr-label qr-label--{{ layout.text_position }}{{ layout.cut_frame ? ' qr-label--frame' : '' }}"{% if with_layout|default(false) %} data-layout="{{ layout|json_encode }}"{% endif %}>
+  {% if label.qr_data_uri %}
+    <img class="qr-label__qr" src="{{ label.qr_data_uri }}" alt="{{ __('QR code du matériel', 'assetsign') }}">
+  {% else %}
+    <p class="qr-label__missing">{{ __('QR code indisponible sur cet environnement.', 'assetsign') }}</p>
+  {% endif %}
+  {% if layout.text_position != 'none' and label.lines is not empty %}
+    <div class="qr-label__text">
+      {% for line in label.lines %}<p>{{ line }}</p>{% endfor %}
+    </div>
+  {% endif %}
+</div>

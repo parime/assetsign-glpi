@@ -7,45 +7,146 @@
 <style>
   :root{ --ink:#16232f; --ink-soft:#5a6b78; --accent:#0d7a6e; --line:#d6dbd4; --paper:#f5f7f5; }
   *{box-sizing:border-box;}
-  body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--paper); color:var(--ink); }
-  .wrap{ max-width:420px; margin:0 auto; padding:24px 16px 48px; text-align:center; }
-  .label-card{ background:#fff; border:1px solid var(--line); border-radius:8px; padding:24px; margin:0 auto 20px; }
-  .label-card img{ max-width:220px; width:100%; height:auto; }
+  {# Issue #278 : l'étiquette s'imprime à sa taille réelle (imprimante d'étiquettes ou découpe). #}
+  @page{ size:{{ layout.label_width }}mm {{ layout.label_height }}mm; margin:0; }
+  body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--paper); color:var(--ink); -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .wrap{ max-width:640px; margin:0 auto; padding:24px 16px 48px; text-align:center; }
   .itemtype{ color:var(--ink-soft); font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; margin:0 0 4px; }
-  h1{ font-size:1.15rem; margin:0 0 4px; word-break:break-word; }
-  p.serial{ color:var(--ink-soft); font-size:.9rem; margin:0 0 16px; }
-  .qr-missing{ color:#b7472a; font-size:.9rem; padding:40px 8px; }
-  .actions{ margin-top:4px; }
-  button{ font:inherit; padding:10px 20px; border-radius:6px; border:1px solid var(--line); background:#fff; cursor:pointer; }
-  button.primary{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  h1{ font-size:1.15rem; margin:0 0 16px; word-break:break-word; }
+  .stage{ display:flex; justify-content:center; margin:0 auto 20px; }
+  .stage .qr-label{ zoom:1.6; box-shadow:0 1px 6px rgba(0,0,0,.18); }
+{% include '@assetsign/_qr_label_styles.html.twig' %}
+  .hint{ color:var(--ink-soft); font-size:.8rem; margin:0 0 16px; }
+  .actions{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  button{ font:inherit; padding:10px 20px; border-radius:6px; border:1px solid var(--accent); background:#fff; color:var(--accent); cursor:pointer; }
+  button.primary{ background:var(--accent); color:#fff; }
   .debug-url{ margin-top:14px; font-size:.72rem; color:var(--ink-soft); word-break:break-all; }
   @media print {
     body{ background:#fff; }
     .no-print{ display:none !important; }
     .wrap{ padding:0; max-width:none; }
-    .label-card{ border:none; padding:0; }
+    .stage{ margin:0; display:block; }
+    .stage .qr-label{ zoom:1; box-shadow:none; }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="label-card">
-    <p class="itemtype">{{ itemtype_label }}</p>
-    <h1>{{ item_name|default(__('Matériel', 'assetsign')) }}</h1>
-    {% if item_serial %}<p class="serial">{{ __('N° série', 'assetsign') }} : {{ item_serial }}</p>{% endif %}
-    {% if qr_data_uri %}
-      <img src="{{ qr_data_uri }}" alt="{{ __('QR code du matériel', 'assetsign') }}">
-    {% else %}
-      <p class="qr-missing">{{ __('QR code indisponible sur cet environnement.', 'assetsign') }}</p>
-    {% endif %}
+  <p class="itemtype no-print">{{ itemtype_label }}</p>
+  <h1 class="no-print">{{ item_name|default(__('Matériel', 'assetsign')) }}</h1>
+  <div class="stage">
+    {% include '@assetsign/_qr_label_cell.html.twig' with {label: _context, with_layout: true} %}
   </div>
+  <p class="hint no-print">{{ __('Taille réelle à l\'impression : %1$s x %2$s mm. Mise en page et texte réglables dans la configuration du plugin (onglet Compléments).', 'assetsign')|format(layout.label_width, layout.label_height) }}</p>
   <div class="actions no-print">
     <button type="button" class="primary" onclick="window.print()">{{ __('Imprimer', 'assetsign') }}</button>
+    {% if qr_data_uri %}
+      <button type="button" id="download-png" data-filename="{{ item_name }}">{{ __('Télécharger en PNG', 'assetsign') }}</button>
+    {% endif %}
   </div>
   {# Non imprime : uniquement pour verifier/deboguer le lien reellement encode
      dans le QR code depuis cette page (ex: verification manuelle avant de coller
      l'etiquette), jamais destine a etre lu par la personne qui scanne. #}
   <p class="debug-url no-print">{{ target_url }}</p>
 </div>
+{% if qr_data_uri %}
+<script>
+/* Issue #278 : l'étiquette dessinée dans un canevas à 300 ppp, avec la même mise en page que
+   l'impression (QR déjà présent dans la page en data URI : aucun appel au serveur). */
+(function () {
+  var button = document.getElementById('download-png');
+  button.addEventListener('click', function () {
+    var label = document.querySelector('.stage .qr-label');
+    var layout = JSON.parse(label.dataset.layout);
+    var dpi = 300;
+    var mm = dpi / 25.4;
+    var width = Math.round(layout.label_width * mm);
+    var height = Math.round(layout.label_height * mm);
+    var pad = layout.padding * mm;
+    var gap = layout.text_gap * mm;
+    var qr = layout.qr_size * mm;
+    var fontPx = layout.font_size * dpi / 72;
+    var lineHeight = fontPx * 1.2;
+    var canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, width, height);
+    ctx.font = fontPx + 'px Arial, Helvetica, sans-serif';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = '#000';
+
+    var lines = [];
+    label.querySelectorAll('.qr-label__text p').forEach(function (p) { lines.push(p.textContent); });
+
+    function wrap(text, maxWidth) {
+      var out = [];
+      var current = '';
+      text.split(' ').forEach(function (word) {
+        var candidate = current === '' ? word : current + ' ' + word;
+        if (ctx.measureText(candidate).width <= maxWidth || current === '') {
+          current = candidate;
+        } else {
+          out.push(current);
+          current = word;
+        }
+        while (ctx.measureText(current).width > maxWidth && current.length > 1) {
+          var cut = current.length - 1;
+          while (cut > 1 && ctx.measureText(current.slice(0, cut)).width > maxWidth) { cut--; }
+          out.push(current.slice(0, cut));
+          current = current.slice(cut);
+        }
+      });
+      if (current !== '') { out.push(current); }
+      return out;
+    }
+
+    var image = label.querySelector('.qr-label__qr');
+    ctx.imageSmoothingEnabled = false;
+    var text = [];
+    var textWidth;
+    if (layout.text_position === 'beside') {
+      textWidth = width - 2 * pad - qr - gap;
+    } else {
+      textWidth = width - 2 * pad;
+    }
+    if (layout.text_position !== 'none') {
+      lines.forEach(function (line) { text = text.concat(wrap(line, textWidth)); });
+    }
+    var textHeight = text.length * lineHeight;
+    var i;
+    if (layout.text_position === 'beside' && text.length > 0) {
+      ctx.drawImage(image, pad, (height - qr) / 2, qr, qr);
+      var top = Math.max(pad, (height - textHeight) / 2);
+      ctx.textAlign = 'left';
+      for (i = 0; i < text.length && top + (i + 1) * lineHeight <= height - pad + 1; i++) {
+        ctx.fillText(text[i], pad + qr + gap, top + i * lineHeight);
+      }
+    } else {
+      var total = qr + (text.length > 0 ? gap + textHeight : 0);
+      var y = Math.max(pad, (height - total) / 2);
+      ctx.drawImage(image, (width - qr) / 2, y, qr, qr);
+      ctx.textAlign = 'center';
+      for (i = 0; i < text.length && y + qr + gap + (i + 1) * lineHeight <= height - pad + 1; i++) {
+        ctx.fillText(text[i], width / 2, y + qr + gap + i * lineHeight);
+      }
+    }
+
+    var name = (button.dataset.filename || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^A-Za-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
+    canvas.toBlob(function (blob) {
+      var link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'etiquette-qr' + (name !== '' ? '-' + name : '') + '.png';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(function () { URL.revokeObjectURL(link.href); }, 1000);
+    }, 'image/png');
+  });
+})();
+</script>
+{% endif %}
 </body>
 </html>

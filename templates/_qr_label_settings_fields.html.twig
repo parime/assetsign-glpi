@@ -1,0 +1,82 @@
+{# Issue #278 : réglages de mise en page des étiquettes QR, partagés par la configuration de
+   l'entité et la planche d'impression. Variable : form (QrLabelLayout::formData()). #}
+{% set s = form.settings %}
+<div class="qr-label-settings" data-preset-sizes="{{ form.preset_sizes|json_encode }}">
+  <div class="row">
+    <div class="col-auto mb-3">
+      <label class="form-label" for="qr_label_preset">{{ __('Format de la planche', 'assetsign') }}</label>
+      <select name="qr_label_preset" id="qr_label_preset" class="form-select">
+        {% for key, label in form.preset_labels %}
+          <option value="{{ key }}" {{ s.qr_label_preset == key ? 'selected' : '' }}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% for key, label in {
+        'qr_label_width': __('Largeur de l\'étiquette (mm)', 'assetsign'),
+        'qr_label_height': __('Hauteur de l\'étiquette (mm)', 'assetsign'),
+        'qr_label_margin': __('Marge de la page (mm)', 'assetsign'),
+        'qr_label_spacing': __('Espacement entre étiquettes (mm)', 'assetsign')
+    } %}
+      <div class="col-auto mb-3">
+        <label class="form-label" for="{{ key }}">{{ label }}</label>
+        <input type="number" name="{{ key }}" id="{{ key }}" class="form-control qr-label-size" style="width: 110px;"
+               min="{{ form.bounds[key][0] }}" max="{{ form.bounds[key][1] }}" value="{{ s[key] }}">
+      </div>
+    {% endfor %}
+  </div>
+  <div class="form-text mb-3">{{ __('Choisir un format de planche remplit la largeur et la hauteur ; modifier une dimension passe au format personnalisé. La marge et l\'espacement ne servent qu\'au format personnalisé.', 'assetsign') }}</div>
+  <div class="row">
+    <div class="col-auto mb-3">
+      <label class="form-label" for="qr_label_qr_size">{{ __('Taille du QR code (mm)', 'assetsign') }}</label>
+      <input type="number" name="qr_label_qr_size" id="qr_label_qr_size" class="form-control" style="width: 110px;"
+             min="{{ form.bounds.qr_label_qr_size[0] }}" max="{{ form.bounds.qr_label_qr_size[1] }}" value="{{ s.qr_label_qr_size }}">
+    </div>
+    <div class="col-auto mb-3">
+      <label class="form-label" for="qr_label_font_size">{{ __('Taille du texte (pt)', 'assetsign') }}</label>
+      <input type="number" name="qr_label_font_size" id="qr_label_font_size" class="form-control" style="width: 110px;"
+             min="{{ form.bounds.qr_label_font_size[0] }}" max="{{ form.bounds.qr_label_font_size[1] }}" value="{{ s.qr_label_font_size }}">
+    </div>
+    <div class="col-auto mb-3">
+      <label class="form-label" for="qr_label_text_position">{{ __('Position du texte', 'assetsign') }}</label>
+      <select name="qr_label_text_position" id="qr_label_text_position" class="form-select">
+        {% for key, label in form.position_labels %}
+          <option value="{{ key }}" {{ s.qr_label_text_position == key ? 'selected' : '' }}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-auto mb-3 align-self-end">
+      <div class="form-check">
+        <input type="hidden" name="qr_label_cut_frame" value="0">
+        <input type="checkbox" name="qr_label_cut_frame" value="1" class="form-check-input" id="qr_label_cut_frame" {{ s.qr_label_cut_frame ? 'checked' : '' }}>
+        <label class="form-check-label" for="qr_label_cut_frame">{{ __('Cadre de découpe', 'assetsign') }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="qr_label_text">{{ __('Texte de l\'étiquette', 'assetsign') }}</label>
+    <textarea name="qr_label_text" id="qr_label_text" class="form-control" rows="4" maxlength="500" spellcheck="false" style="max-width: 480px;">{{ form.text }}</textarea>
+    <div class="form-text">
+      {{ __('Une ligne de ce texte = une ligne sur l\'étiquette. Marqueurs remplacés par la valeur du matériel :', 'assetsign') }}
+      {% for placeholder in form.placeholders %}<code>{{ placeholder }}</code>{{ not loop.last ? ', ' : '.' }}{% endfor %}
+      {{ __('{manufacturers_id} donne le nom du fabricant, {entity} celui de l\'entité. Une ligne dont tous les marqueurs sont vides n\'est pas imprimée.', 'assetsign') }}
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var box = document.currentScript.previousElementSibling;
+  var sizes = JSON.parse(box.dataset.presetSizes || '{}');
+  var preset = box.querySelector('[name="qr_label_preset"]');
+  var width = box.querySelector('[name="qr_label_width"]');
+  var height = box.querySelector('[name="qr_label_height"]');
+  preset.addEventListener('change', function () {
+    if (sizes[preset.value]) {
+      width.value = sizes[preset.value].width;
+      height.value = sizes[preset.value].height;
+    }
+  });
+  box.querySelectorAll('.qr-label-size').forEach(function (input) {
+    input.addEventListener('input', function () { preset.value = 'custom'; });
+  });
+})();
+</script>
