@@ -84,10 +84,17 @@ jobs:
         # version taguee est verifiee contre le fichier de checksums SHA256
         # officiellement publie par le projet avant toute extraction/execution,
         # exactement ce que Semgrep recommande dans son propre message.
+        #
+        # Version lue via l'API authentifiee (gh + GITHUB_TOKEN) : sans jeton, le quota anonyme
+        # partage par les runners s'epuise et VERSION restait vide (echec 2026-11-08, PR #306).
+        # Telechargements avec nouvelles tentatives sur les erreurs passageres de GitHub (502/504).
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          VERSION="$(curl -sfL https://api.github.com/repos/aquasecurity/trivy/releases/latest | grep -m1 '"tag_name"' | sed -E 's/.*"v([^"]+)".*/\1/')"
-          curl -sfLO "https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz"
-          curl -sfLO "https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_checksums.txt"
+          VERSION="$(gh api repos/aquasecurity/trivy/releases/latest --jq '.tag_name' | sed 's/^v//')"
+          test -n "$VERSION" || { echo "::error::version de Trivy introuvable"; exit 1; }
+          curl -sfLO --retry 5 --retry-all-errors --retry-delay 3 "https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz"
+          curl -sfLO --retry 5 --retry-all-errors --retry-delay 3 "https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_checksums.txt"
           sha256sum --ignore-missing -c "trivy_${VERSION}_checksums.txt"
           tar xzf "trivy_${VERSION}_Linux-64bit.tar.gz" trivy
           install -m 0755 trivy /usr/local/bin/trivy
