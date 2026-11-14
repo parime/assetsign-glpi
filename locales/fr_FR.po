@@ -5436,3 +5436,346 @@ msgstr "Vérifiez les informations, complétez l'état des lieux en dernière pa
 
 msgid "Observations ou réserves"
 msgstr "Observations ou réserves"
+
+msgid "Attestation d'effacement enregistrée et signée."
+msgstr "Attestation d'effacement enregistrée et signée."
+
+msgid "Une attestation d'effacement se crée depuis l'onglet « Effacement des données » du matériel concerné."
+msgstr "Une attestation d'effacement se crée depuis l'onglet « Effacement des données » du matériel concerné."
+
+msgid "Attestation annulée : elle ne compte plus pour la sortie du matériel."
+msgstr "Attestation annulée : elle ne compte plus pour la sortie du matériel."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : l'entité l'exige avant un don, une vente ou une destruction."
+msgstr "Aucune attestation d'effacement des données valable pour ce matériel : l'entité l'exige avant un don, une vente ou une destruction."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : pensez à l'enregistrer avant un don, une vente ou une destruction."
+msgstr "Aucune attestation d'effacement des données valable pour ce matériel : pensez à l'enregistrer avant un don, une vente ou une destruction."
+
+msgid "Effacement des données"
+msgstr "Effacement des données"
+
+msgid "Attestations d'effacement des données"
+msgstr "Attestations d'effacement des données"
+
+msgid "Attestation d'effacement des données"
+msgstr "Attestation d'effacement des données"
+
+msgid "Effacement logiciel par réécriture (une ou plusieurs passes)"
+msgstr "Effacement logiciel par réécriture (une ou plusieurs passes)"
+
+msgid "Effacement sécurisé intégré au disque (Secure Erase, Sanitize)"
+msgstr "Effacement sécurisé intégré au disque (Secure Erase, Sanitize)"
+
+msgid "Effacement cryptographique (destruction de la clé de chiffrement)"
+msgstr "Effacement cryptographique (destruction de la clé de chiffrement)"
+
+msgid "Réinitialisation d'usine avec chiffrement actif (téléphone, tablette)"
+msgstr "Réinitialisation d'usine avec chiffrement actif (téléphone, tablette)"
+
+msgid "Destruction physique du support (broyage, perçage, démagnétisation)"
+msgstr "Destruction physique du support (broyage, perçage, démagnétisation)"
+
+msgid "Aucune norme suivie"
+msgstr "Aucune norme suivie"
+
+msgid "NIST SP 800-88 : Clear"
+msgstr "NIST SP 800-88 : Clear"
+
+msgid "NIST SP 800-88 : Purge"
+msgstr "NIST SP 800-88 : Purge"
+
+msgid "NIST SP 800-88 : Destroy"
+msgstr "NIST SP 800-88 : Destroy"
+
+msgid "Données irrécupérables avec les outils courants."
+msgstr "Données irrécupérables avec les outils courants."
+
+msgid "Données irrécupérables même avec des moyens de laboratoire."
+msgstr "Données irrécupérables même avec des moyens de laboratoire."
+
+msgid "Support rendu physiquement inutilisable."
+msgstr "Support rendu physiquement inutilisable."
+
+msgid "Vérifié : aucune donnée récupérable"
+msgstr "Vérifié : aucune donnée récupérable"
+
+msgid "Non vérifié"
+msgstr "Non vérifié"
+
+msgid "Échec : des données restent lisibles"
+msgstr "Échec : des données restent lisibles"
+
+msgid "Date de l'effacement"
+msgstr "Date de l'effacement"
+
+msgid "Méthode"
+msgstr "Méthode"
+
+msgid "Norme"
+msgstr "Norme"
+
+msgid "Vérification"
+msgstr "Vérification"
+
+msgid "Outil utilisé"
+msgstr "Outil utilisé"
+
+msgid "Annulée"
+msgstr "Annulée"
+
+msgid "Disque"
+msgstr "Disque"
+
+#, php-format
+msgid "Volume %s"
+msgstr "Volume %s"
+
+msgid "Chiffré"
+msgstr "Chiffré"
+
+msgid "Partiellement chiffré"
+msgstr "Partiellement chiffré"
+
+msgid "Non chiffré"
+msgstr "Non chiffré"
+
+msgid "To"
+msgstr "To"
+
+msgid "Go"
+msgstr "Go"
+
+msgid "Mo"
+msgstr "Mo"
+
+msgid "Choisissez la méthode d'effacement utilisée."
+msgstr "Choisissez la méthode d'effacement utilisée."
+
+msgid "Norme d'effacement inconnue."
+msgstr "Norme d'effacement inconnue."
+
+msgid "Résultat de vérification inconnu."
+msgstr "Résultat de vérification inconnu."
+
+msgid "Indiquez au moins un support effacé : cochez un disque de l'inventaire ou saisissez-le."
+msgstr "Indiquez au moins un support effacé : cochez un disque de l'inventaire ou saisissez-le."
+
+msgid "Échec de la création de l'attestation."
+msgstr "Échec de la création de l'attestation."
+
+msgid "Date de l'effacement invalide."
+msgstr "Date de l'effacement invalide."
+
+msgid "La date de l'effacement ne peut pas être dans le futur."
+msgstr "La date de l'effacement ne peut pas être dans le futur."
+
+msgid "Le rapport joint est vide."
+msgstr "Le rapport joint est vide."
+
+#, php-format
+msgid "Le rapport dépasse la taille maximale (%d Mo)."
+msgstr "Le rapport dépasse la taille maximale (%d Mo)."
+
+#, php-format
+msgid "Type de fichier refusé : le rapport doit être au format %s."
+msgstr "Type de fichier refusé : le rapport doit être au format %s."
+
+msgid "Le contenu du rapport ne correspond pas à son type de fichier."
+msgstr "Le contenu du rapport ne correspond pas à son type de fichier."
+
+#, php-format
+msgid "Rapport d'effacement - %s"
+msgstr "Rapport d'effacement - %s"
+
+msgid "Cette attestation est déjà annulée."
+msgstr "Cette attestation est déjà annulée."
+
+msgid "Indiquez le motif de l'annulation."
+msgstr "Indiquez le motif de l'annulation."
+
+msgid "Désactivé"
+msgstr "Désactivé"
+
+msgid "Avertir (la fiche est créée, avec un avertissement)"
+msgstr "Avertir (la fiche est créée, avec un avertissement)"
+
+msgid "Bloquer (la fiche ne peut pas être envoyée)"
+msgstr "Bloquer (la fiche ne peut pas être envoyée)"
+
+msgid "Réattribution à une autre personne"
+msgstr "Réattribution à une autre personne"
+
+msgid "ce don"
+msgstr "ce don"
+
+msgid "cette vente"
+msgstr "cette vente"
+
+msgid "cette destruction"
+msgstr "cette destruction"
+
+msgid "cette réattribution"
+msgstr "cette réattribution"
+
+#, php-format
+msgid "Attestation d'effacement des données exigée avant %s : enregistrez-la d'abord depuis l'onglet « Effacement des données » du matériel."
+msgstr "Attestation d'effacement des données exigée avant %s : enregistrez-la d'abord depuis l'onglet « Effacement des données » du matériel."
+
+#, php-format
+msgid "Attention : aucune attestation d'effacement des données n'est enregistrée pour ce matériel avant %s. Pensez à l'ajouter depuis l'onglet « Effacement des données »."
+msgstr "Attention : aucune attestation d'effacement des données n'est enregistrée pour ce matériel avant %s. Pensez à l'ajouter depuis l'onglet « Effacement des données »."
+
+msgid "Enregistrer l'attestation"
+msgstr "Enregistrer l'attestation"
+
+msgid "Avant qu'un matériel change de mains, le technicien enregistre une attestation d'effacement des données (onglet « Effacement des données » du matériel) : méthode, supports, outil, vérification, rapport joint, signature. Les fiches de don, de vente et de destruction la mentionnent dans leur PDF. Ce réglage décide si elle est exigée."
+msgstr "Avant qu'un matériel change de mains, le technicien enregistre une attestation d'effacement des données (onglet « Effacement des données » du matériel) : méthode, supports, outil, vérification, rapport joint, signature. Les fiches de don, de vente et de destruction la mentionnent dans leur PDF. Ce réglage décide si elle est exigée."
+
+msgid "Attestation d'effacement exigée"
+msgstr "Attestation d'effacement exigée"
+
+msgid "Avertir : la fiche est créée et envoyée, avec un message au technicien. Bloquer : un don, une vente ou une destruction n'est pas créé, une réattribution reste en brouillon, tant qu'aucune attestation valable n'existe. Une attestation est valable si l'effacement a eu lieu après la dernière remise du matériel à une personne."
+msgstr "Avertir : la fiche est créée et envoyée, avec un message au technicien. Bloquer : un don, une vente ou une destruction n'est pas créé, une réattribution reste en brouillon, tant qu'aucune attestation valable n'existe. Une attestation est valable si l'effacement a eu lieu après la dernière remise du matériel à une personne."
+
+msgid "Fiches concernées"
+msgstr "Fiches concernées"
+
+msgid "Voir les attestations et les matériels sortis sans attestation"
+msgstr "Voir les attestations et les matériels sortis sans attestation"
+
+msgid "Attestation"
+msgstr "Attestation"
+
+#, php-format
+msgid "n°%1$d du %2$s"
+msgstr "n°%1$d du %2$s"
+
+msgid "Réalisé par"
+msgstr "Réalisé par"
+
+msgid "Empreinte de l'attestation (SHA-256)"
+msgstr "Empreinte de l'attestation (SHA-256)"
+
+msgid "Aucune attestation d'effacement des données n'est enregistrée pour ce matériel."
+msgstr "Aucune attestation d'effacement des données n'est enregistrée pour ce matériel."
+
+#, php-format
+msgid "Attestation n°%1$d : effacement réalisé le %2$s"
+msgstr "Attestation n°%1$d : effacement réalisé le %2$s"
+
+msgid "Effacement"
+msgstr "Effacement"
+
+msgid "Rapport de l'outil (SHA-256)"
+msgstr "Rapport de l'outil (SHA-256)"
+
+msgid "Supports effacés"
+msgstr "Supports effacés"
+
+msgid "Support"
+msgstr "Support"
+
+msgid "Capacité"
+msgstr "Capacité"
+
+msgid "Chiffrement"
+msgstr "Chiffrement"
+
+msgid "Je soussigné(e) atteste que les données des supports listés ci-dessus ont été effacées selon la méthode indiquée, avant que ce matériel ne soit donné, vendu, détruit ou réattribué."
+msgstr "Je soussigné(e) atteste que les données des supports listés ci-dessus ont été effacées selon la méthode indiquée, avant que ce matériel ne soit donné, vendu, détruit ou réattribué."
+
+#, php-format
+msgid "Attestation d'effacement n°%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Attestation d'effacement n°%d : Document généré par GLPI (plugin assetsign)"
+
+#, php-format
+msgid "Attestation d'effacement n°%d"
+msgstr "Attestation d'effacement n°%d"
+
+msgid "Valable"
+msgstr "Valable"
+
+msgid "Plus valable (matériel remis depuis, ou échec)"
+msgstr "Plus valable (matériel remis depuis, ou échec)"
+
+msgid "Rapport de l'outil"
+msgstr "Rapport de l'outil"
+
+#, php-format
+msgid "Annulée le %1$s par %2$s"
+msgstr "Annulée le %1$s par %2$s"
+
+msgid "Annuler cette attestation"
+msgstr "Annuler cette attestation"
+
+msgid "Si l'attestation a été saisie par erreur : elle reste consultable mais ne compte plus pour la sortie du matériel."
+msgstr "Si l'attestation a été saisie par erreur : elle reste consultable mais ne compte plus pour la sortie du matériel."
+
+msgid "Motif de l'annulation"
+msgstr "Motif de l'annulation"
+
+msgid "Annuler l'attestation"
+msgstr "Annuler l'attestation"
+
+msgid "Matériels sortis sans attestation d'effacement"
+msgstr "Matériels sortis sans attestation d'effacement"
+
+msgid "Toutes les fiches de don, de vente et de destruction ont une attestation d'effacement valable."
+msgstr "Toutes les fiches de don, de vente et de destruction ont une attestation d'effacement valable."
+
+#, php-format
+msgid "Fiches de don, de vente et de destruction dont le matériel n'avait pas d'attestation valable (les %d plus récentes sont examinées). Ouvrez l'onglet du matériel pour enregistrer l'attestation."
+msgstr "Fiches de don, de vente et de destruction dont le matériel n'avait pas d'attestation valable (les %d plus récentes sont examinées). Ouvrez l'onglet du matériel pour enregistrer l'attestation."
+
+msgid "Attestation valable : ce matériel peut sortir."
+msgstr "Attestation valable : ce matériel peut sortir."
+
+msgid "Attestation exigée avant la sortie de ce matériel."
+msgstr "Attestation exigée avant la sortie de ce matériel."
+
+msgid "Attestation recommandée avant la sortie de ce matériel."
+msgstr "Attestation recommandée avant la sortie de ce matériel."
+
+#, php-format
+msgid "Concerne : %s."
+msgstr "Concerne : %s."
+
+msgid "Aucune attestation d'effacement pour ce matériel."
+msgstr "Aucune attestation d'effacement pour ce matériel."
+
+msgid "Avant de donner, vendre, détruire ou réattribuer ce matériel, effacez ses données puis enregistrez ici comment cela a été fait."
+msgstr "Avant de donner, vendre, détruire ou réattribuer ce matériel, effacez ses données puis enregistrez ici comment cela a été fait."
+
+msgid "Nouvelle attestation d'effacement"
+msgstr "Nouvelle attestation d'effacement"
+
+msgid "Choisissez la méthode utilisée"
+msgstr "Choisissez la méthode utilisée"
+
+msgid "Norme suivie"
+msgstr "Norme suivie"
+
+msgid "Ex. nom et version du logiciel d'effacement"
+msgstr "Ex. nom et version du logiciel d'effacement"
+
+msgid "Aucun disque ni volume dans l'inventaire de ce matériel : décrivez les supports ci-dessous."
+msgstr "Aucun disque ni volume dans l'inventaire de ce matériel : décrivez les supports ci-dessous."
+
+msgid "Autres supports, un par ligne (ex. mémoire interne du téléphone, clé USB n° de série...)"
+msgstr "Autres supports, un par ligne (ex. mémoire interne du téléphone, clé USB n° de série...)"
+
+msgid "Résultat de la vérification"
+msgstr "Résultat de la vérification"
+
+msgid "Une attestation en échec est conservée mais ne permet pas la sortie du matériel."
+msgstr "Une attestation en échec est conservée mais ne permet pas la sortie du matériel."
+
+msgid "Rapport de l'outil (facultatif)"
+msgstr "Rapport de l'outil (facultatif)"
+
+msgid "Joint au matériel ; son empreinte SHA-256 figure sur l'attestation."
+msgstr "Joint au matériel ; son empreinte SHA-256 figure sur l'attestation."
+
+msgid "Signer et enregistrer l'attestation"
+msgstr "Signer et enregistrer l'attestation"

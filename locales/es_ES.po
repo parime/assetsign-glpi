@@ -5436,3 +5436,346 @@ msgstr "Verifique la información, complete el acta de estado en la última pág
 
 msgid "Observations ou réserves"
 msgstr "Observaciones o reservas"
+
+msgid "Attestation d'effacement enregistrée et signée."
+msgstr "Certificado de borrado guardado y firmado."
+
+msgid "Une attestation d'effacement se crée depuis l'onglet « Effacement des données » du matériel concerné."
+msgstr "Un certificado de borrado se crea desde la pestaña «Borrado de datos» del equipo correspondiente."
+
+msgid "Attestation annulée : elle ne compte plus pour la sortie du matériel."
+msgstr "Certificado anulado: ya no cuenta para la salida del equipo."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : l'entité l'exige avant un don, une vente ou une destruction."
+msgstr "Ningún certificado de borrado válido para este equipo: la entidad lo exige antes de una donación, una venta o una destrucción."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : pensez à l'enregistrer avant un don, une vente ou une destruction."
+msgstr "Ningún certificado de borrado válido para este equipo: recuerde registrarlo antes de una donación, una venta o una destrucción."
+
+msgid "Effacement des données"
+msgstr "Borrado de datos"
+
+msgid "Attestations d'effacement des données"
+msgstr "Certificados de borrado de datos"
+
+msgid "Attestation d'effacement des données"
+msgstr "Certificado de borrado de datos"
+
+msgid "Effacement logiciel par réécriture (une ou plusieurs passes)"
+msgstr "Borrado por software mediante sobrescritura (una o varias pasadas)"
+
+msgid "Effacement sécurisé intégré au disque (Secure Erase, Sanitize)"
+msgstr "Borrado seguro integrado en el disco (Secure Erase, Sanitize)"
+
+msgid "Effacement cryptographique (destruction de la clé de chiffrement)"
+msgstr "Borrado criptográfico (destrucción de la clave de cifrado)"
+
+msgid "Réinitialisation d'usine avec chiffrement actif (téléphone, tablette)"
+msgstr "Restablecimiento de fábrica con cifrado activo (teléfono, tableta)"
+
+msgid "Destruction physique du support (broyage, perçage, démagnétisation)"
+msgstr "Destrucción física del soporte (triturado, perforación, desmagnetización)"
+
+msgid "Aucune norme suivie"
+msgstr "Ninguna norma seguida"
+
+msgid "NIST SP 800-88 : Clear"
+msgstr "NIST SP 800-88: Clear"
+
+msgid "NIST SP 800-88 : Purge"
+msgstr "NIST SP 800-88: Purge"
+
+msgid "NIST SP 800-88 : Destroy"
+msgstr "NIST SP 800-88: Destroy"
+
+msgid "Données irrécupérables avec les outils courants."
+msgstr "Datos irrecuperables con herramientas habituales."
+
+msgid "Données irrécupérables même avec des moyens de laboratoire."
+msgstr "Datos irrecuperables incluso con medios de laboratorio."
+
+msgid "Support rendu physiquement inutilisable."
+msgstr "Soporte inutilizado físicamente."
+
+msgid "Vérifié : aucune donnée récupérable"
+msgstr "Verificado: ningún dato recuperable"
+
+msgid "Non vérifié"
+msgstr "No verificado"
+
+msgid "Échec : des données restent lisibles"
+msgstr "Fallo: quedan datos legibles"
+
+msgid "Date de l'effacement"
+msgstr "Fecha del borrado"
+
+msgid "Méthode"
+msgstr "Método"
+
+msgid "Norme"
+msgstr "Norma"
+
+msgid "Vérification"
+msgstr "Verificación"
+
+msgid "Outil utilisé"
+msgstr "Herramienta utilizada"
+
+msgid "Annulée"
+msgstr "Anulado"
+
+msgid "Disque"
+msgstr "Disco"
+
+#, php-format
+msgid "Volume %s"
+msgstr "Volumen %s"
+
+msgid "Chiffré"
+msgstr "Cifrado"
+
+msgid "Partiellement chiffré"
+msgstr "Parcialmente cifrado"
+
+msgid "Non chiffré"
+msgstr "No cifrado"
+
+msgid "To"
+msgstr "TB"
+
+msgid "Go"
+msgstr "GB"
+
+msgid "Mo"
+msgstr "MB"
+
+msgid "Choisissez la méthode d'effacement utilisée."
+msgstr "Elija el método de borrado utilizado."
+
+msgid "Norme d'effacement inconnue."
+msgstr "Norma de borrado desconocida."
+
+msgid "Résultat de vérification inconnu."
+msgstr "Resultado de verificación desconocido."
+
+msgid "Indiquez au moins un support effacé : cochez un disque de l'inventaire ou saisissez-le."
+msgstr "Indique al menos un soporte borrado: marque un disco del inventario o escríbalo."
+
+msgid "Échec de la création de l'attestation."
+msgstr "No se pudo crear el certificado."
+
+msgid "Date de l'effacement invalide."
+msgstr "Fecha de borrado no válida."
+
+msgid "La date de l'effacement ne peut pas être dans le futur."
+msgstr "La fecha del borrado no puede ser futura."
+
+msgid "Le rapport joint est vide."
+msgstr "El informe adjunto está vacío."
+
+#, php-format
+msgid "Le rapport dépasse la taille maximale (%d Mo)."
+msgstr "El informe supera el tamaño máximo (%d MB)."
+
+#, php-format
+msgid "Type de fichier refusé : le rapport doit être au format %s."
+msgstr "Tipo de archivo rechazado: el informe debe estar en formato %s."
+
+msgid "Le contenu du rapport ne correspond pas à son type de fichier."
+msgstr "El contenido del informe no corresponde a su tipo de archivo."
+
+#, php-format
+msgid "Rapport d'effacement - %s"
+msgstr "Informe de borrado - %s"
+
+msgid "Cette attestation est déjà annulée."
+msgstr "Este certificado ya está anulado."
+
+msgid "Indiquez le motif de l'annulation."
+msgstr "Indique el motivo de la anulación."
+
+msgid "Désactivé"
+msgstr "Desactivado"
+
+msgid "Avertir (la fiche est créée, avec un avertissement)"
+msgstr "Advertir (la hoja se crea, con una advertencia)"
+
+msgid "Bloquer (la fiche ne peut pas être envoyée)"
+msgstr "Bloquear (la hoja no se puede enviar)"
+
+msgid "Réattribution à une autre personne"
+msgstr "Reasignación a otra persona"
+
+msgid "ce don"
+msgstr "esta donación"
+
+msgid "cette vente"
+msgstr "esta venta"
+
+msgid "cette destruction"
+msgstr "esta destrucción"
+
+msgid "cette réattribution"
+msgstr "esta reasignación"
+
+#, php-format
+msgid "Attestation d'effacement des données exigée avant %s : enregistrez-la d'abord depuis l'onglet « Effacement des données » du matériel."
+msgstr "Se exige un certificado de borrado antes de %s: regístrelo primero desde la pestaña «Borrado de datos» del equipo."
+
+#, php-format
+msgid "Attention : aucune attestation d'effacement des données n'est enregistrée pour ce matériel avant %s. Pensez à l'ajouter depuis l'onglet « Effacement des données »."
+msgstr "Atención: no hay ningún certificado de borrado registrado para este equipo antes de %s. Recuerde añadirlo desde la pestaña «Borrado de datos»."
+
+msgid "Enregistrer l'attestation"
+msgstr "Registrar el certificado"
+
+msgid "Avant qu'un matériel change de mains, le technicien enregistre une attestation d'effacement des données (onglet « Effacement des données » du matériel) : méthode, supports, outil, vérification, rapport joint, signature. Les fiches de don, de vente et de destruction la mentionnent dans leur PDF. Ce réglage décide si elle est exigée."
+msgstr "Antes de que un equipo cambie de manos, el técnico registra un certificado de borrado (pestaña «Borrado de datos» del equipo): método, soportes, herramienta, verificación, informe adjunto, firma. Las hojas de donación, venta y destrucción lo mencionan en su PDF. Este ajuste decide si es obligatorio."
+
+msgid "Attestation d'effacement exigée"
+msgstr "Certificado de borrado obligatorio"
+
+msgid "Avertir : la fiche est créée et envoyée, avec un message au technicien. Bloquer : un don, une vente ou une destruction n'est pas créé, une réattribution reste en brouillon, tant qu'aucune attestation valable n'existe. Une attestation est valable si l'effacement a eu lieu après la dernière remise du matériel à une personne."
+msgstr "Advertir: la hoja se crea y se envía, con un mensaje al técnico. Bloquear: una donación, una venta o una destrucción no se crea y una reasignación queda en borrador, mientras no exista un certificado válido. Un certificado es válido si el borrado tuvo lugar después de la última entrega del equipo a una persona."
+
+msgid "Fiches concernées"
+msgstr "Hojas afectadas"
+
+msgid "Voir les attestations et les matériels sortis sans attestation"
+msgstr "Ver los certificados y los equipos salidos sin certificado"
+
+msgid "Attestation"
+msgstr "Certificado"
+
+#, php-format
+msgid "n°%1$d du %2$s"
+msgstr "n.º %1$d del %2$s"
+
+msgid "Réalisé par"
+msgstr "Realizado por"
+
+msgid "Empreinte de l'attestation (SHA-256)"
+msgstr "Huella del certificado (SHA-256)"
+
+msgid "Aucune attestation d'effacement des données n'est enregistrée pour ce matériel."
+msgstr "No hay ningún certificado de borrado registrado para este equipo."
+
+#, php-format
+msgid "Attestation n°%1$d : effacement réalisé le %2$s"
+msgstr "Certificado n.º %1$d: borrado realizado el %2$s"
+
+msgid "Effacement"
+msgstr "Borrado"
+
+msgid "Rapport de l'outil (SHA-256)"
+msgstr "Informe de la herramienta (SHA-256)"
+
+msgid "Supports effacés"
+msgstr "Soportes borrados"
+
+msgid "Support"
+msgstr "Soporte"
+
+msgid "Capacité"
+msgstr "Capacidad"
+
+msgid "Chiffrement"
+msgstr "Cifrado"
+
+msgid "Je soussigné(e) atteste que les données des supports listés ci-dessus ont été effacées selon la méthode indiquée, avant que ce matériel ne soit donné, vendu, détruit ou réattribué."
+msgstr "El/la abajo firmante certifica que los datos de los soportes enumerados arriba se han borrado según el método indicado, antes de que este equipo sea donado, vendido, destruido o reasignado."
+
+#, php-format
+msgid "Attestation d'effacement n°%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Certificado de borrado n.º %d: Documento generado por GLPI (plugin assetsign)"
+
+#, php-format
+msgid "Attestation d'effacement n°%d"
+msgstr "Certificado de borrado n.º %d"
+
+msgid "Valable"
+msgstr "Válido"
+
+msgid "Plus valable (matériel remis depuis, ou échec)"
+msgstr "Ya no es válido (equipo entregado desde entonces, o fallo)"
+
+msgid "Rapport de l'outil"
+msgstr "Informe de la herramienta"
+
+#, php-format
+msgid "Annulée le %1$s par %2$s"
+msgstr "Anulado el %1$s por %2$s"
+
+msgid "Annuler cette attestation"
+msgstr "Anular este certificado"
+
+msgid "Si l'attestation a été saisie par erreur : elle reste consultable mais ne compte plus pour la sortie du matériel."
+msgstr "Si el certificado se registró por error: sigue siendo consultable pero ya no cuenta para la salida del equipo."
+
+msgid "Motif de l'annulation"
+msgstr "Motivo de la anulación"
+
+msgid "Annuler l'attestation"
+msgstr "Anular el certificado"
+
+msgid "Matériels sortis sans attestation d'effacement"
+msgstr "Equipos salidos sin certificado de borrado"
+
+msgid "Toutes les fiches de don, de vente et de destruction ont une attestation d'effacement valable."
+msgstr "Todas las hojas de donación, venta y destrucción tienen un certificado de borrado válido."
+
+#, php-format
+msgid "Fiches de don, de vente et de destruction dont le matériel n'avait pas d'attestation valable (les %d plus récentes sont examinées). Ouvrez l'onglet du matériel pour enregistrer l'attestation."
+msgstr "Hojas de donación, venta y destrucción cuyo equipo no tenía certificado válido (se examinan las %d más recientes). Abra la pestaña del equipo para registrar el certificado."
+
+msgid "Attestation valable : ce matériel peut sortir."
+msgstr "Certificado válido: este equipo puede salir."
+
+msgid "Attestation exigée avant la sortie de ce matériel."
+msgstr "Certificado obligatorio antes de la salida de este equipo."
+
+msgid "Attestation recommandée avant la sortie de ce matériel."
+msgstr "Certificado recomendado antes de la salida de este equipo."
+
+#, php-format
+msgid "Concerne : %s."
+msgstr "Afecta a: %s."
+
+msgid "Aucune attestation d'effacement pour ce matériel."
+msgstr "Ningún certificado de borrado para este equipo."
+
+msgid "Avant de donner, vendre, détruire ou réattribuer ce matériel, effacez ses données puis enregistrez ici comment cela a été fait."
+msgstr "Antes de donar, vender, destruir o reasignar este equipo, borre sus datos y registre aquí cómo se hizo."
+
+msgid "Nouvelle attestation d'effacement"
+msgstr "Nuevo certificado de borrado"
+
+msgid "Choisissez la méthode utilisée"
+msgstr "Elija el método utilizado"
+
+msgid "Norme suivie"
+msgstr "Norma seguida"
+
+msgid "Ex. nom et version du logiciel d'effacement"
+msgstr "Ej.: nombre y versión del software de borrado"
+
+msgid "Aucun disque ni volume dans l'inventaire de ce matériel : décrivez les supports ci-dessous."
+msgstr "Ningún disco ni volumen en el inventario de este equipo: describa los soportes a continuación."
+
+msgid "Autres supports, un par ligne (ex. mémoire interne du téléphone, clé USB n° de série...)"
+msgstr "Otros soportes, uno por línea (ej.: memoria interna del teléfono, llave USB n.º de serie...)"
+
+msgid "Résultat de la vérification"
+msgstr "Resultado de la verificación"
+
+msgid "Une attestation en échec est conservée mais ne permet pas la sortie du matériel."
+msgstr "Un certificado fallido se conserva pero no permite la salida del equipo."
+
+msgid "Rapport de l'outil (facultatif)"
+msgstr "Informe de la herramienta (opcional)"
+
+msgid "Joint au matériel ; son empreinte SHA-256 figure sur l'attestation."
+msgstr "Adjunto al equipo; su huella SHA-256 figura en el certificado."
+
+msgid "Signer et enregistrer l'attestation"
+msgstr "Firmar y guardar el certificado"

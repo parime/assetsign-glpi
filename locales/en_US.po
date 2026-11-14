@@ -5416,3 +5416,346 @@ msgstr "Check the information, complete the condition report on the last page, t
 
 msgid "Observations ou réserves"
 msgstr "Comments or reservations"
+
+msgid "Attestation d'effacement enregistrée et signée."
+msgstr "Data wiping attestation saved and signed."
+
+msgid "Une attestation d'effacement se crée depuis l'onglet « Effacement des données » du matériel concerné."
+msgstr "A wiping attestation is created from the \"Data wiping\" tab of the equipment concerned."
+
+msgid "Attestation annulée : elle ne compte plus pour la sortie du matériel."
+msgstr "Attestation cancelled: it no longer counts for the equipment leaving."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : l'entité l'exige avant un don, une vente ou une destruction."
+msgstr "No valid data wiping attestation for this equipment: the entity requires one before a donation, a sale or a destruction."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : pensez à l'enregistrer avant un don, une vente ou une destruction."
+msgstr "No valid data wiping attestation for this equipment: remember to record one before a donation, a sale or a destruction."
+
+msgid "Effacement des données"
+msgstr "Data wiping"
+
+msgid "Attestations d'effacement des données"
+msgstr "Data wiping attestations"
+
+msgid "Attestation d'effacement des données"
+msgstr "Data wiping attestation"
+
+msgid "Effacement logiciel par réécriture (une ou plusieurs passes)"
+msgstr "Software overwrite (one or more passes)"
+
+msgid "Effacement sécurisé intégré au disque (Secure Erase, Sanitize)"
+msgstr "Drive built-in secure erase (Secure Erase, Sanitize)"
+
+msgid "Effacement cryptographique (destruction de la clé de chiffrement)"
+msgstr "Cryptographic erase (encryption key destroyed)"
+
+msgid "Réinitialisation d'usine avec chiffrement actif (téléphone, tablette)"
+msgstr "Factory reset with encryption enabled (phone, tablet)"
+
+msgid "Destruction physique du support (broyage, perçage, démagnétisation)"
+msgstr "Physical destruction of the medium (shredding, drilling, degaussing)"
+
+msgid "Aucune norme suivie"
+msgstr "No standard followed"
+
+msgid "NIST SP 800-88 : Clear"
+msgstr "NIST SP 800-88: Clear"
+
+msgid "NIST SP 800-88 : Purge"
+msgstr "NIST SP 800-88: Purge"
+
+msgid "NIST SP 800-88 : Destroy"
+msgstr "NIST SP 800-88: Destroy"
+
+msgid "Données irrécupérables avec les outils courants."
+msgstr "Data unrecoverable with common tools."
+
+msgid "Données irrécupérables même avec des moyens de laboratoire."
+msgstr "Data unrecoverable even with laboratory means."
+
+msgid "Support rendu physiquement inutilisable."
+msgstr "Medium made physically unusable."
+
+msgid "Vérifié : aucune donnée récupérable"
+msgstr "Verified: no recoverable data"
+
+msgid "Non vérifié"
+msgstr "Not verified"
+
+msgid "Échec : des données restent lisibles"
+msgstr "Failed: some data is still readable"
+
+msgid "Date de l'effacement"
+msgstr "Wiping date"
+
+msgid "Méthode"
+msgstr "Method"
+
+msgid "Norme"
+msgstr "Standard"
+
+msgid "Vérification"
+msgstr "Verification"
+
+msgid "Outil utilisé"
+msgstr "Tool used"
+
+msgid "Annulée"
+msgstr "Cancelled"
+
+msgid "Disque"
+msgstr "Drive"
+
+#, php-format
+msgid "Volume %s"
+msgstr "Volume %s"
+
+msgid "Chiffré"
+msgstr "Encrypted"
+
+msgid "Partiellement chiffré"
+msgstr "Partially encrypted"
+
+msgid "Non chiffré"
+msgstr "Not encrypted"
+
+msgid "To"
+msgstr "TB"
+
+msgid "Go"
+msgstr "GB"
+
+msgid "Mo"
+msgstr "MB"
+
+msgid "Choisissez la méthode d'effacement utilisée."
+msgstr "Choose the wiping method used."
+
+msgid "Norme d'effacement inconnue."
+msgstr "Unknown wiping standard."
+
+msgid "Résultat de vérification inconnu."
+msgstr "Unknown verification result."
+
+msgid "Indiquez au moins un support effacé : cochez un disque de l'inventaire ou saisissez-le."
+msgstr "Give at least one wiped medium: tick a drive from the inventory or type it in."
+
+msgid "Échec de la création de l'attestation."
+msgstr "The attestation could not be created."
+
+msgid "Date de l'effacement invalide."
+msgstr "Invalid wiping date."
+
+msgid "La date de l'effacement ne peut pas être dans le futur."
+msgstr "The wiping date cannot be in the future."
+
+msgid "Le rapport joint est vide."
+msgstr "The attached report is empty."
+
+#, php-format
+msgid "Le rapport dépasse la taille maximale (%d Mo)."
+msgstr "The report exceeds the maximum size (%d MB)."
+
+#, php-format
+msgid "Type de fichier refusé : le rapport doit être au format %s."
+msgstr "File type refused: the report must be in %s format."
+
+msgid "Le contenu du rapport ne correspond pas à son type de fichier."
+msgstr "The report content does not match its file type."
+
+#, php-format
+msgid "Rapport d'effacement - %s"
+msgstr "Wiping report - %s"
+
+msgid "Cette attestation est déjà annulée."
+msgstr "This attestation is already cancelled."
+
+msgid "Indiquez le motif de l'annulation."
+msgstr "Give the reason for the cancellation."
+
+msgid "Désactivé"
+msgstr "Disabled"
+
+msgid "Avertir (la fiche est créée, avec un avertissement)"
+msgstr "Warn (the form is created, with a warning)"
+
+msgid "Bloquer (la fiche ne peut pas être envoyée)"
+msgstr "Block (the form cannot be sent)"
+
+msgid "Réattribution à une autre personne"
+msgstr "Reassignment to another person"
+
+msgid "ce don"
+msgstr "this donation"
+
+msgid "cette vente"
+msgstr "this sale"
+
+msgid "cette destruction"
+msgstr "this destruction"
+
+msgid "cette réattribution"
+msgstr "this reassignment"
+
+#, php-format
+msgid "Attestation d'effacement des données exigée avant %s : enregistrez-la d'abord depuis l'onglet « Effacement des données » du matériel."
+msgstr "A data wiping attestation is required before %s: record it first from the \"Data wiping\" tab of the equipment."
+
+#, php-format
+msgid "Attention : aucune attestation d'effacement des données n'est enregistrée pour ce matériel avant %s. Pensez à l'ajouter depuis l'onglet « Effacement des données »."
+msgstr "Warning: no data wiping attestation is recorded for this equipment before %s. Remember to add one from the \"Data wiping\" tab."
+
+msgid "Enregistrer l'attestation"
+msgstr "Record the attestation"
+
+msgid "Avant qu'un matériel change de mains, le technicien enregistre une attestation d'effacement des données (onglet « Effacement des données » du matériel) : méthode, supports, outil, vérification, rapport joint, signature. Les fiches de don, de vente et de destruction la mentionnent dans leur PDF. Ce réglage décide si elle est exigée."
+msgstr "Before equipment changes hands, the technician records a data wiping attestation (\"Data wiping\" tab of the equipment): method, media, tool, verification, attached report, signature. Donation, sale and destruction forms mention it in their PDF. This setting decides whether it is required."
+
+msgid "Attestation d'effacement exigée"
+msgstr "Wiping attestation required"
+
+msgid "Avertir : la fiche est créée et envoyée, avec un message au technicien. Bloquer : un don, une vente ou une destruction n'est pas créé, une réattribution reste en brouillon, tant qu'aucune attestation valable n'existe. Une attestation est valable si l'effacement a eu lieu après la dernière remise du matériel à une personne."
+msgstr "Warn: the form is created and sent, with a message to the technician. Block: a donation, sale or destruction is not created, and a reassignment stays as a draft, until a valid attestation exists. An attestation is valid if the wiping took place after the equipment was last handed over to someone."
+
+msgid "Fiches concernées"
+msgstr "Forms concerned"
+
+msgid "Voir les attestations et les matériels sortis sans attestation"
+msgstr "See the attestations and equipment that left without one"
+
+msgid "Attestation"
+msgstr "Attestation"
+
+#, php-format
+msgid "n°%1$d du %2$s"
+msgstr "no. %1$d of %2$s"
+
+msgid "Réalisé par"
+msgstr "Performed by"
+
+msgid "Empreinte de l'attestation (SHA-256)"
+msgstr "Attestation fingerprint (SHA-256)"
+
+msgid "Aucune attestation d'effacement des données n'est enregistrée pour ce matériel."
+msgstr "No data wiping attestation is recorded for this equipment."
+
+#, php-format
+msgid "Attestation n°%1$d : effacement réalisé le %2$s"
+msgstr "Attestation no. %1$d: wiping performed on %2$s"
+
+msgid "Effacement"
+msgstr "Wiping"
+
+msgid "Rapport de l'outil (SHA-256)"
+msgstr "Tool report (SHA-256)"
+
+msgid "Supports effacés"
+msgstr "Wiped media"
+
+msgid "Support"
+msgstr "Medium"
+
+msgid "Capacité"
+msgstr "Capacity"
+
+msgid "Chiffrement"
+msgstr "Encryption"
+
+msgid "Je soussigné(e) atteste que les données des supports listés ci-dessus ont été effacées selon la méthode indiquée, avant que ce matériel ne soit donné, vendu, détruit ou réattribué."
+msgstr "I, the undersigned, certify that the data on the media listed above has been wiped using the stated method, before this equipment is donated, sold, destroyed or reassigned."
+
+#, php-format
+msgid "Attestation d'effacement n°%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Wiping attestation no. %d: Document generated by GLPI (assetsign plugin)"
+
+#, php-format
+msgid "Attestation d'effacement n°%d"
+msgstr "Wiping attestation no. %d"
+
+msgid "Valable"
+msgstr "Valid"
+
+msgid "Plus valable (matériel remis depuis, ou échec)"
+msgstr "No longer valid (equipment handed over since, or failed)"
+
+msgid "Rapport de l'outil"
+msgstr "Tool report"
+
+#, php-format
+msgid "Annulée le %1$s par %2$s"
+msgstr "Cancelled on %1$s by %2$s"
+
+msgid "Annuler cette attestation"
+msgstr "Cancel this attestation"
+
+msgid "Si l'attestation a été saisie par erreur : elle reste consultable mais ne compte plus pour la sortie du matériel."
+msgstr "If the attestation was entered by mistake: it remains viewable but no longer counts for the equipment leaving."
+
+msgid "Motif de l'annulation"
+msgstr "Reason for cancellation"
+
+msgid "Annuler l'attestation"
+msgstr "Cancel the attestation"
+
+msgid "Matériels sortis sans attestation d'effacement"
+msgstr "Equipment that left without a wiping attestation"
+
+msgid "Toutes les fiches de don, de vente et de destruction ont une attestation d'effacement valable."
+msgstr "Every donation, sale and destruction form has a valid wiping attestation."
+
+#, php-format
+msgid "Fiches de don, de vente et de destruction dont le matériel n'avait pas d'attestation valable (les %d plus récentes sont examinées). Ouvrez l'onglet du matériel pour enregistrer l'attestation."
+msgstr "Donation, sale and destruction forms whose equipment had no valid attestation (the %d most recent are checked). Open the equipment tab to record the attestation."
+
+msgid "Attestation valable : ce matériel peut sortir."
+msgstr "Valid attestation: this equipment may leave."
+
+msgid "Attestation exigée avant la sortie de ce matériel."
+msgstr "Attestation required before this equipment leaves."
+
+msgid "Attestation recommandée avant la sortie de ce matériel."
+msgstr "Attestation recommended before this equipment leaves."
+
+#, php-format
+msgid "Concerne : %s."
+msgstr "Applies to: %s."
+
+msgid "Aucune attestation d'effacement pour ce matériel."
+msgstr "No wiping attestation for this equipment."
+
+msgid "Avant de donner, vendre, détruire ou réattribuer ce matériel, effacez ses données puis enregistrez ici comment cela a été fait."
+msgstr "Before donating, selling, destroying or reassigning this equipment, wipe its data and then record here how it was done."
+
+msgid "Nouvelle attestation d'effacement"
+msgstr "New wiping attestation"
+
+msgid "Choisissez la méthode utilisée"
+msgstr "Choose the method used"
+
+msgid "Norme suivie"
+msgstr "Standard followed"
+
+msgid "Ex. nom et version du logiciel d'effacement"
+msgstr "E.g. name and version of the wiping software"
+
+msgid "Aucun disque ni volume dans l'inventaire de ce matériel : décrivez les supports ci-dessous."
+msgstr "No drive or volume in this equipment's inventory: describe the media below."
+
+msgid "Autres supports, un par ligne (ex. mémoire interne du téléphone, clé USB n° de série...)"
+msgstr "Other media, one per line (e.g. phone internal memory, USB key serial number...)"
+
+msgid "Résultat de la vérification"
+msgstr "Verification result"
+
+msgid "Une attestation en échec est conservée mais ne permet pas la sortie du matériel."
+msgstr "A failed attestation is kept but does not allow the equipment to leave."
+
+msgid "Rapport de l'outil (facultatif)"
+msgstr "Tool report (optional)"
+
+msgid "Joint au matériel ; son empreinte SHA-256 figure sur l'attestation."
+msgstr "Attached to the equipment; its SHA-256 fingerprint appears on the attestation."
+
+msgid "Signer et enregistrer l'attestation"
+msgstr "Sign and save the attestation"

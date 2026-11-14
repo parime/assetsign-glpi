@@ -6053,3 +6053,346 @@ msgstr "Sprawdź informacje, wypełnij protokół stanu na ostatniej stronie, a 
 
 msgid "Observations ou réserves"
 msgstr "Uwagi lub zastrzeżenia"
+
+msgid "Attestation d'effacement enregistrée et signée."
+msgstr "Zaświadczenie o usunięciu danych zapisane i podpisane."
+
+msgid "Une attestation d'effacement se crée depuis l'onglet « Effacement des données » du matériel concerné."
+msgstr "Zaświadczenie o usunięciu tworzy się w zakładce „Usuwanie danych” danego sprzętu."
+
+msgid "Attestation annulée : elle ne compte plus pour la sortie du matériel."
+msgstr "Zaświadczenie anulowane: nie liczy się już przy wydaniu sprzętu."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : l'entité l'exige avant un don, une vente ou une destruction."
+msgstr "Brak ważnego zaświadczenia o usunięciu danych dla tego sprzętu: jednostka wymaga go przed darowizną, sprzedażą lub zniszczeniem."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : pensez à l'enregistrer avant un don, une vente ou une destruction."
+msgstr "Brak ważnego zaświadczenia o usunięciu danych dla tego sprzętu: pamiętaj, aby je zapisać przed darowizną, sprzedażą lub zniszczeniem."
+
+msgid "Effacement des données"
+msgstr "Usuwanie danych"
+
+msgid "Attestations d'effacement des données"
+msgstr "Zaświadczenia o usunięciu danych"
+
+msgid "Attestation d'effacement des données"
+msgstr "Zaświadczenie o usunięciu danych"
+
+msgid "Effacement logiciel par réécriture (une ou plusieurs passes)"
+msgstr "Programowe nadpisanie (jedno lub kilka przejść)"
+
+msgid "Effacement sécurisé intégré au disque (Secure Erase, Sanitize)"
+msgstr "Wbudowane bezpieczne kasowanie dysku (Secure Erase, Sanitize)"
+
+msgid "Effacement cryptographique (destruction de la clé de chiffrement)"
+msgstr "Kasowanie kryptograficzne (zniszczenie klucza szyfrowania)"
+
+msgid "Réinitialisation d'usine avec chiffrement actif (téléphone, tablette)"
+msgstr "Przywrócenie ustawień fabrycznych przy włączonym szyfrowaniu (telefon, tablet)"
+
+msgid "Destruction physique du support (broyage, perçage, démagnétisation)"
+msgstr "Fizyczne zniszczenie nośnika (rozdrobnienie, przewiercenie, rozmagnesowanie)"
+
+msgid "Aucune norme suivie"
+msgstr "Bez normy"
+
+msgid "NIST SP 800-88 : Clear"
+msgstr "NIST SP 800-88: Clear"
+
+msgid "NIST SP 800-88 : Purge"
+msgstr "NIST SP 800-88: Purge"
+
+msgid "NIST SP 800-88 : Destroy"
+msgstr "NIST SP 800-88: Destroy"
+
+msgid "Données irrécupérables avec les outils courants."
+msgstr "Danych nie da się odzyskać typowymi narzędziami."
+
+msgid "Données irrécupérables même avec des moyens de laboratoire."
+msgstr "Danych nie da się odzyskać nawet w laboratorium."
+
+msgid "Support rendu physiquement inutilisable."
+msgstr "Nośnik fizycznie unieszkodliwiony."
+
+msgid "Vérifié : aucune donnée récupérable"
+msgstr "Zweryfikowano: brak danych do odzyskania"
+
+msgid "Non vérifié"
+msgstr "Niezweryfikowano"
+
+msgid "Échec : des données restent lisibles"
+msgstr "Niepowodzenie: część danych jest nadal czytelna"
+
+msgid "Date de l'effacement"
+msgstr "Data usunięcia"
+
+msgid "Méthode"
+msgstr "Metoda"
+
+msgid "Norme"
+msgstr "Norma"
+
+msgid "Vérification"
+msgstr "Weryfikacja"
+
+msgid "Outil utilisé"
+msgstr "Użyte narzędzie"
+
+msgid "Annulée"
+msgstr "Anulowane"
+
+msgid "Disque"
+msgstr "Dysk"
+
+#, php-format
+msgid "Volume %s"
+msgstr "Wolumin %s"
+
+msgid "Chiffré"
+msgstr "Zaszyfrowany"
+
+msgid "Partiellement chiffré"
+msgstr "Częściowo zaszyfrowany"
+
+msgid "Non chiffré"
+msgstr "Niezaszyfrowany"
+
+msgid "To"
+msgstr "TB"
+
+msgid "Go"
+msgstr "GB"
+
+msgid "Mo"
+msgstr "MB"
+
+msgid "Choisissez la méthode d'effacement utilisée."
+msgstr "Wybierz zastosowaną metodę usuwania."
+
+msgid "Norme d'effacement inconnue."
+msgstr "Nieznana norma usuwania."
+
+msgid "Résultat de vérification inconnu."
+msgstr "Nieznany wynik weryfikacji."
+
+msgid "Indiquez au moins un support effacé : cochez un disque de l'inventaire ou saisissez-le."
+msgstr "Podaj co najmniej jeden usunięty nośnik: zaznacz dysk z inwentarza lub wpisz go."
+
+msgid "Échec de la création de l'attestation."
+msgstr "Nie udało się utworzyć zaświadczenia."
+
+msgid "Date de l'effacement invalide."
+msgstr "Nieprawidłowa data usunięcia."
+
+msgid "La date de l'effacement ne peut pas être dans le futur."
+msgstr "Data usunięcia nie może być w przyszłości."
+
+msgid "Le rapport joint est vide."
+msgstr "Załączony raport jest pusty."
+
+#, php-format
+msgid "Le rapport dépasse la taille maximale (%d Mo)."
+msgstr "Raport przekracza maksymalny rozmiar (%d MB)."
+
+#, php-format
+msgid "Type de fichier refusé : le rapport doit être au format %s."
+msgstr "Odrzucony typ pliku: raport musi być w formacie %s."
+
+msgid "Le contenu du rapport ne correspond pas à son type de fichier."
+msgstr "Zawartość raportu nie odpowiada typowi pliku."
+
+#, php-format
+msgid "Rapport d'effacement - %s"
+msgstr "Raport usunięcia - %s"
+
+msgid "Cette attestation est déjà annulée."
+msgstr "To zaświadczenie jest już anulowane."
+
+msgid "Indiquez le motif de l'annulation."
+msgstr "Podaj powód anulowania."
+
+msgid "Désactivé"
+msgstr "Wyłączone"
+
+msgid "Avertir (la fiche est créée, avec un avertissement)"
+msgstr "Ostrzegaj (formularz jest tworzony z ostrzeżeniem)"
+
+msgid "Bloquer (la fiche ne peut pas être envoyée)"
+msgstr "Blokuj (formularza nie można wysłać)"
+
+msgid "Réattribution à une autre personne"
+msgstr "Ponowne przydzielenie innej osobie"
+
+msgid "ce don"
+msgstr "tą darowizną"
+
+msgid "cette vente"
+msgstr "tą sprzedażą"
+
+msgid "cette destruction"
+msgstr "tym zniszczeniem"
+
+msgid "cette réattribution"
+msgstr "tym ponownym przydzieleniem"
+
+#, php-format
+msgid "Attestation d'effacement des données exigée avant %s : enregistrez-la d'abord depuis l'onglet « Effacement des données » du matériel."
+msgstr "Przed %s wymagane jest zaświadczenie o usunięciu danych: najpierw zapisz je w zakładce „Usuwanie danych” sprzętu."
+
+#, php-format
+msgid "Attention : aucune attestation d'effacement des données n'est enregistrée pour ce matériel avant %s. Pensez à l'ajouter depuis l'onglet « Effacement des données »."
+msgstr "Uwaga: przed %s nie zapisano zaświadczenia o usunięciu danych dla tego sprzętu. Pamiętaj, aby je dodać w zakładce „Usuwanie danych”."
+
+msgid "Enregistrer l'attestation"
+msgstr "Zapisz zaświadczenie"
+
+msgid "Avant qu'un matériel change de mains, le technicien enregistre une attestation d'effacement des données (onglet « Effacement des données » du matériel) : méthode, supports, outil, vérification, rapport joint, signature. Les fiches de don, de vente et de destruction la mentionnent dans leur PDF. Ce réglage décide si elle est exigée."
+msgstr "Zanim sprzęt zmieni właściciela, technik zapisuje zaświadczenie o usunięciu danych (zakładka „Usuwanie danych” sprzętu): metoda, nośniki, narzędzie, weryfikacja, załączony raport, podpis. Formularze darowizny, sprzedaży i zniszczenia wspominają o nim w PDF. To ustawienie decyduje, czy jest wymagane."
+
+msgid "Attestation d'effacement exigée"
+msgstr "Wymagane zaświadczenie o usunięciu"
+
+msgid "Avertir : la fiche est créée et envoyée, avec un message au technicien. Bloquer : un don, une vente ou une destruction n'est pas créé, une réattribution reste en brouillon, tant qu'aucune attestation valable n'existe. Une attestation est valable si l'effacement a eu lieu après la dernière remise du matériel à une personne."
+msgstr "Ostrzegaj: formularz jest tworzony i wysyłany z komunikatem dla technika. Blokuj: darowizna, sprzedaż lub zniszczenie nie są tworzone, a ponowne przydzielenie pozostaje szkicem, dopóki nie istnieje ważne zaświadczenie. Zaświadczenie jest ważne, jeśli usunięcie nastąpiło po ostatnim przekazaniu sprzętu osobie."
+
+msgid "Fiches concernées"
+msgstr "Dotyczy formularzy"
+
+msgid "Voir les attestations et les matériels sortis sans attestation"
+msgstr "Zobacz zaświadczenia i sprzęt wydany bez zaświadczenia"
+
+msgid "Attestation"
+msgstr "Zaświadczenie"
+
+#, php-format
+msgid "n°%1$d du %2$s"
+msgstr "nr %1$d z %2$s"
+
+msgid "Réalisé par"
+msgstr "Wykonał(a)"
+
+msgid "Empreinte de l'attestation (SHA-256)"
+msgstr "Skrót zaświadczenia (SHA-256)"
+
+msgid "Aucune attestation d'effacement des données n'est enregistrée pour ce matériel."
+msgstr "Dla tego sprzętu nie zapisano zaświadczenia o usunięciu danych."
+
+#, php-format
+msgid "Attestation n°%1$d : effacement réalisé le %2$s"
+msgstr "Zaświadczenie nr %1$d: usunięcie wykonane %2$s"
+
+msgid "Effacement"
+msgstr "Usunięcie"
+
+msgid "Rapport de l'outil (SHA-256)"
+msgstr "Raport narzędzia (SHA-256)"
+
+msgid "Supports effacés"
+msgstr "Usunięte nośniki"
+
+msgid "Support"
+msgstr "Nośnik"
+
+msgid "Capacité"
+msgstr "Pojemność"
+
+msgid "Chiffrement"
+msgstr "Szyfrowanie"
+
+msgid "Je soussigné(e) atteste que les données des supports listés ci-dessus ont été effacées selon la méthode indiquée, avant que ce matériel ne soit donné, vendu, détruit ou réattribué."
+msgstr "Ja, niżej podpisany(-a), zaświadczam, że dane z wymienionych powyżej nośników zostały usunięte wskazaną metodą, zanim ten sprzęt zostanie przekazany w darowiźnie, sprzedany, zniszczony lub ponownie przydzielony."
+
+#, php-format
+msgid "Attestation d'effacement n°%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Zaświadczenie o usunięciu nr %d: Dokument wygenerowany przez GLPI (wtyczka assetsign)"
+
+#, php-format
+msgid "Attestation d'effacement n°%d"
+msgstr "Zaświadczenie o usunięciu nr %d"
+
+msgid "Valable"
+msgstr "Ważne"
+
+msgid "Plus valable (matériel remis depuis, ou échec)"
+msgstr "Nieważne (sprzęt od tego czasu przekazany lub niepowodzenie)"
+
+msgid "Rapport de l'outil"
+msgstr "Raport narzędzia"
+
+#, php-format
+msgid "Annulée le %1$s par %2$s"
+msgstr "Anulowane %1$s przez %2$s"
+
+msgid "Annuler cette attestation"
+msgstr "Anuluj to zaświadczenie"
+
+msgid "Si l'attestation a été saisie par erreur : elle reste consultable mais ne compte plus pour la sortie du matériel."
+msgstr "Jeśli zaświadczenie wprowadzono przez pomyłkę: pozostaje dostępne, ale nie liczy się już przy wydaniu sprzętu."
+
+msgid "Motif de l'annulation"
+msgstr "Powód anulowania"
+
+msgid "Annuler l'attestation"
+msgstr "Anuluj zaświadczenie"
+
+msgid "Matériels sortis sans attestation d'effacement"
+msgstr "Sprzęt wydany bez zaświadczenia o usunięciu"
+
+msgid "Toutes les fiches de don, de vente et de destruction ont une attestation d'effacement valable."
+msgstr "Wszystkie formularze darowizny, sprzedaży i zniszczenia mają ważne zaświadczenie o usunięciu."
+
+#, php-format
+msgid "Fiches de don, de vente et de destruction dont le matériel n'avait pas d'attestation valable (les %d plus récentes sont examinées). Ouvrez l'onglet du matériel pour enregistrer l'attestation."
+msgstr "Formularze darowizny, sprzedaży i zniszczenia, których sprzęt nie miał ważnego zaświadczenia (sprawdzane jest %d najnowszych). Otwórz zakładkę sprzętu, aby zapisać zaświadczenie."
+
+msgid "Attestation valable : ce matériel peut sortir."
+msgstr "Ważne zaświadczenie: ten sprzęt może zostać wydany."
+
+msgid "Attestation exigée avant la sortie de ce matériel."
+msgstr "Zaświadczenie wymagane przed wydaniem tego sprzętu."
+
+msgid "Attestation recommandée avant la sortie de ce matériel."
+msgstr "Zaświadczenie zalecane przed wydaniem tego sprzętu."
+
+#, php-format
+msgid "Concerne : %s."
+msgstr "Dotyczy: %s."
+
+msgid "Aucune attestation d'effacement pour ce matériel."
+msgstr "Brak zaświadczenia o usunięciu dla tego sprzętu."
+
+msgid "Avant de donner, vendre, détruire ou réattribuer ce matériel, effacez ses données puis enregistrez ici comment cela a été fait."
+msgstr "Przed przekazaniem, sprzedażą, zniszczeniem lub ponownym przydzieleniem tego sprzętu usuń jego dane, a następnie zapisz tutaj, jak to zrobiono."
+
+msgid "Nouvelle attestation d'effacement"
+msgstr "Nowe zaświadczenie o usunięciu"
+
+msgid "Choisissez la méthode utilisée"
+msgstr "Wybierz zastosowaną metodę"
+
+msgid "Norme suivie"
+msgstr "Zastosowana norma"
+
+msgid "Ex. nom et version du logiciel d'effacement"
+msgstr "Np. nazwa i wersja oprogramowania do usuwania"
+
+msgid "Aucun disque ni volume dans l'inventaire de ce matériel : décrivez les supports ci-dessous."
+msgstr "Brak dysków i woluminów w inwentarzu tego sprzętu: opisz nośniki poniżej."
+
+msgid "Autres supports, un par ligne (ex. mémoire interne du téléphone, clé USB n° de série...)"
+msgstr "Inne nośniki, jeden w wierszu (np. pamięć wewnętrzna telefonu, pendrive nr seryjny...)"
+
+msgid "Résultat de la vérification"
+msgstr "Wynik weryfikacji"
+
+msgid "Une attestation en échec est conservée mais ne permet pas la sortie du matériel."
+msgstr "Zaświadczenie z niepowodzeniem jest zachowywane, ale nie pozwala na wydanie sprzętu."
+
+msgid "Rapport de l'outil (facultatif)"
+msgstr "Raport narzędzia (opcjonalnie)"
+
+msgid "Joint au matériel ; son empreinte SHA-256 figure sur l'attestation."
+msgstr "Dołączony do sprzętu; jego skrót SHA-256 widnieje na zaświadczeniu."
+
+msgid "Signer et enregistrer l'attestation"
+msgstr "Podpisz i zapisz zaświadczenie"
