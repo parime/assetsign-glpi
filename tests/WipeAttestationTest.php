@@ -191,6 +191,8 @@ class WipeAttestationTest extends AssetsignTestCase
 
    public function testRequirementIsDisabledByDefault(): void {
        $entity = $this->createTestEntity(0, 'PHPUnit Effacement defaut');
+       // Ligne propre a l'entite, aux valeurs par defaut (sans heriter de l'instance de test).
+       Config::upsertForEntity($entity, []);
        $computer = $this->computerWithDrive($entity, 'PC-EFFACEMENT-7');
        $this->assertSame(WipeRequirement::MODE_DISABLED, WipeRequirement::check('Computer', $computer->getID(), $entity, Assetsign::TYPE_DON));
 
@@ -305,6 +307,16 @@ class WipeAttestationTest extends AssetsignTestCase
        } finally {
            $_SESSION['glpiactiveprofile']['plugin_assetsign_assetsign'] = $saved;
        }
+   }
+
+   public function testPdfCarriesTheDocumentControlHeaderWhenEnabled(): void {
+       $entity = $this->createTestEntity(0, 'PHPUnit Effacement en-tete');
+       Config::upsertForEntity($entity, ['doc_header_enabled' => 1, 'doc_header_doc_type' => 'Enregistrement fictif']);
+       $attestation = $this->createAttestation($this->computerWithDrive($entity, 'PC-EFFACEMENT-13'));
+
+       $html = (new \GlpiPlugin\Assetsign\Pdf\WipeAttestationPdfBuilder())->renderHtml($attestation);
+       $this->assertStringContainsString('doc-header', $html);
+       $this->assertStringContainsString('Enregistrement fictif', $html);
    }
 
    public function testFormPageRendersWithoutErrors(): void {

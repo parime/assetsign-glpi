@@ -623,7 +623,7 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
       }
        return [
            'reference'  => (int) $row['id'],
-           'date'       => (string) \Html::convDateTime((string) $row['date_wipe']),
+           'date'       => date('d/m/Y H:i', (int) strtotime((string) $row['date_wipe'])),
            'method'     => self::getMethodLabels()[$row['method']] ?? '',
            'level'      => $row['nist_level'] !== '' ? (self::getLevelLabels()[$row['nist_level']] ?? '') : '',
            'technician' => (string) ($row['signer_name'] ?? ''),
@@ -705,7 +705,7 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
    private function getReportName(): string {
        $documentsId = (int) ($this->fields['report_documents_id'] ?? 0);
        $document = new Document();
-       return $documentsId > 0 && $document->getFromDB($documentsId) ? (string) $document->fields['filename'] : '';
+       return $documentsId > 0 && $document->getFromDB($documentsId) ? (string) $document->fields['name'] : '';
    }
 
     /** Technicien qui a réalisé l'effacement, avec son e-mail. */
