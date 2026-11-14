@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: >-
+  If you reuse this project (code, data structures, templates or ideas), please cite it
+  and keep its copyright notices. Si vous réutilisez ce projet (code, structures de données,
+  gabarits ou idées), merci de le citer et de conserver ses mentions de copyright.
+title: "AssetSign for GLPI"
+type: software
+authors:
+  - family-names: GUILLOTTE
+    given-names: Vincent
+repository-code: "https://github.com/parime/assetsign-glpi"
+url: "https://github.com/parime/assetsign-glpi"
+license: GPL-3.0-or-later
+abstract: >-
+  GLPI plugin for equipment handover, return, donation and sale with electronic or handwritten signature, condition report, document-controlled PDFs and IT charter campaigns.
+keywords:
+  - glpi
+  - glpi-plugin
+  - asset-management
+  - electronic-signature
+  - it-asset-handover
