@@ -135,6 +135,8 @@ if (($argv[1] ?? '') === 'snapshot') {
     foreach ($DB->request(['FROM' => 'glpi_plugin_assetsign_assetsigns', 'WHERE' => ['itemtype' => 'Computer', 'items_id' => $computerB]]) as $row) {
         $snapshot['assetsign_B.status'] = (int) $row['status'];
         $snapshot['assetsign_B.markers'] = countElementsInTable('glpi_plugin_assetsign_damagemarkers', ['plugin_assetsign_assetsigns_id' => $row['id']]);
+        // Issue #276 : version papier (impression tracee, scan joint).
+        $snapshot['assetsign_B.paper'] = (string) ($row['paper_printed_at'] ?? '') . '/' . (int) ($row['document_id_paper_scan'] ?? 0);
     }
     // Issue #221 : dossiers d'arrivee et tickets de l'entite B.
     $snapshot['arrivals_B'] = countElementsInTable('glpi_plugin_assetsign_arrivals', ['entities_id' => $b]);
@@ -158,6 +160,8 @@ if (($argv[1] ?? '') === 'uploads') {
         'executable'     => $executable,
         'logo'           => (int) ($DB->request(['SELECT' => ['logo_documents_id'], 'FROM' => 'glpi_plugin_assetsign_configs', 'WHERE' => ['entities_id' => 0]])->current()['logo_documents_id'] ?? 0),
         'movement_links' => countElementsInTable('glpi_documents_items', ['itemtype' => \GlpiPlugin\Assetsign\Movement::class]),
+        // Issue #276 : feuilles signees sur papier (scan joint).
+        'paper_signed'   => countElementsInTable('glpi_plugin_assetsign_assetsigns', ['status' => Assetsign::STATUS_SIGNED_ON_PAPER]),
     ]), "\n";
     exit(0);
 }

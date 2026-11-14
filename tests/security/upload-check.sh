@@ -140,5 +140,26 @@ import_apply "$token" > /dev/null
 expect "jeton de simulation a usage unique" "$(field "$s9" documents)" "$(field "$(state)" documents)"
 expect "aucun fichier executable stocke apres import" 0 "$(field "$(state)" executable)"
 
+# --- Scan signe sur papier (issue #276) : PDF, JPEG ou PNG reels uniquement ---
+paper() { # id de la feuille, fichier local, nom annonce
+  curl -s -o /dev/null -w '%{http_code}' -c "$JAR" -b "$JAR" -F attach_paper_scan=1 -F "id=$1"     -F "_glpi_csrf_token=$(csrf)" -F "paper_scan=@$2;filename=$3" "$P/assetsign.form.php"
+}
+base64 -d <<< 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=' > "$DIR/scan.png"
+s10=$(state)
+for name in scan.php scan.png scan.pdf scan.phtml; do
+  paper "$(id assetsign_A)" "$DIR/script" "$name" > /dev/null
+done
+paper "$(id assetsign_A)" "$DIR/polyglot" scan.gif > /dev/null
+s11=$(state)
+expect "scan papier : script ou image deguisee refuses" "$(field "$s10" paper_signed)" "$(field "$s11" paper_signed)"
+expect "scan papier refuse : aucun document cree" "$(field "$s10" documents)" "$(field "$s11" documents)"
+login securite-tech 'Secrev#2026'
+expect "technicien de A : scan papier sur une feuille de B" 404 "$(paper "$(id assetsign_B)" "$DIR/scan.png" scan.png)"
+expect "technicien de A : feuille de B non signee" "$(field "$s11" paper_signed)" "$(field "$(state)" paper_signed)"
+paper "$(id assetsign_A)" "$DIR/scan.png" scan.png > /dev/null
+s12=$(state)
+expect "technicien de A : vrai scan PNG accepte sur une feuille de A" $(($(field "$s11" paper_signed) + 1)) "$(field "$s12" paper_signed)"
+expect "aucun fichier executable stocke apres les scans" 0 "$(field "$s12" executable)"
+
 rm -rf "$JAR" "$DIR"
 exit $FAIL
