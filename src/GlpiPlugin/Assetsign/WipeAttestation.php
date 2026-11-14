@@ -699,8 +699,7 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
            'result_color'  => self::getResultColor((int) ($this->fields['verification_result'] ?? 0)),
            'media'         => $this->getMedia(),
            'report_name'   => $this->getReportName(),
-           'is_valid'      => self::getValidFor($itemtype, (int) ($this->fields['items_id'] ?? 0)) !== null
-               && (int) (self::getValidFor($itemtype, (int) ($this->fields['items_id'] ?? 0))['id'] ?? 0) === $this->getID(),
+           'is_valid'      => (int) (self::getValidFor($itemtype, (int) ($this->fields['items_id'] ?? 0))['id'] ?? 0) === $this->getID(),
            'can_cancel'    => (int) ($this->fields['is_cancelled'] ?? 0) === 0 && $this->can($this->getID(), UPDATE),
            'csrf_token'    => Session::getNewCSRFToken(),
        ]);

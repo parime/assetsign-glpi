@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="{{ html_lang|default('fr') }}">
+<head>
+<meta charset="UTF-8">
+<title>{{ document_title }}</title>
+{% include '@assetsign/pdf/_pdf_style.html.twig' %}
+</head>
+<body>
+{# Issue #322 : attestation d'effacement des données, signée par le technicien. #}
+{% include '@assetsign/pdf/_doc_header.html.twig' with {doc_header_title: __('Attestation d\'effacement des données', 'assetsign')} %}
+
+{% if logo_data_uri or company_name %}
+<div class="header-logo">
+  {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="">{% endif %}
+  {% if company_name %}<div class="company-name">{{ company_name }}</div>{% endif %}
+</div>
+{% endif %}
+
+<h1>{{ __('Attestation d\'effacement des données', 'assetsign') }}</h1>
+<p class="meta">{{ __('Attestation n°%1$d : effacement réalisé le %2$s', 'assetsign')|format(attestation.id, date_wipe) }}</p>
+
+<h2>{{ __('Matériel', 'assetsign') }}</h2>
+<table class="info-table">
+    <tr><th>{{ __('Type', 'assetsign') }}</th><td>{{ itemtype }}</td></tr>
+    <tr><th>{{ __('Nom GLPI', 'assetsign') }}</th><td>{{ item.name|default('-') }}</td></tr>
+    {% if item.manufacturer_name|default('') %}<tr><th>{{ __('Marque', 'assetsign') }}</th><td>{{ item.manufacturer_name }}</td></tr>{% endif %}
+    {% if item.model_name|default('') %}<tr><th>{{ __('Modèle', 'assetsign') }}</th><td>{{ item.model_name }}</td></tr>{% endif %}
+    <tr><th>{{ __('N° de série', 'assetsign') }}</th><td>{{ item.serial|default('-') }}</td></tr>
+    <tr><th>{{ __('N° d\'inventaire', 'assetsign') }}</th><td>{{ item.otherserial|default('-') }}</td></tr>
+</table>
+
+<h2>{{ __('Effacement', 'assetsign') }}</h2>
+<table class="info-table">
+    <tr><th>{{ __('Date de l\'effacement', 'assetsign') }}</th><td>{{ date_wipe }}</td></tr>
+    <tr><th>{{ __('Réalisé par', 'assetsign') }}</th><td>{{ technician_name|default('-') }}</td></tr>
+    <tr><th>{{ __('Méthode', 'assetsign') }}</th><td>{{ method_label }}</td></tr>
+    <tr><th>{{ __('Norme', 'assetsign') }}</th><td>{{ level_label|default(__('Aucune norme suivie', 'assetsign')) }}{% if level_help %} - {{ level_help }}{% endif %}</td></tr>
+    <tr><th>{{ __('Outil utilisé', 'assetsign') }}</th><td>{{ attestation.tool|default('-') }}</td></tr>
+    <tr><th>{{ __('Vérification', 'assetsign') }}</th><td>{{ result_label }}</td></tr>
+    {% if report_hash %}<tr><th>{{ __('Rapport de l\'outil (SHA-256)', 'assetsign') }}</th><td style="font-size: 8pt; word-break: break-all;">{{ report_hash }}</td></tr>{% endif %}
+</table>
+
+<h2>{{ __('Supports effacés', 'assetsign') }}</h2>
+<table class="info-table">
+    <tr><th>{{ __('Support', 'assetsign') }}</th><th>{{ __('N° de série', 'assetsign') }}</th><th>{{ __('Capacité', 'assetsign') }}</th><th>{{ __('Chiffrement', 'assetsign') }}</th></tr>
+    {% for m in media %}
+    <tr><td>{{ m.label|default('') }}</td><td>{{ m.serial|default('') ?: '-' }}</td><td>{{ m.capacity|default('') ?: '-' }}</td><td>{{ m.encryption|default('') ?: '-' }}</td></tr>
+    {% endfor %}
+</table>
+
+{% if attestation.comment|default('') %}
+<h2>{{ __('Commentaire', 'assetsign') }}</h2>
+<p class="legal-text" style="white-space: pre-line;">{{ attestation.comment }}</p>
+{% endif %}
+
+<p class="legal-text">{{ __('Je soussigné(e) atteste que les données des supports listés ci-dessus ont été effacées selon la méthode indiquée, avant que ce matériel ne soit donné, vendu, détruit ou réattribué.', 'assetsign') }}</p>
+
+<div class="signature-zone">
+    {% if signature_image|default(false) %}
+        <p>{{ __('Document signé électroniquement le %1$s à %2$s', 'assetsign')|format(signed_at|date('d/m/Y'), signed_at|date('H:i')) }}</p>
+        <img src="{{ signature_image }}" class="signature-img">
+        <p class="signer-title">{{ technician_title|default('') ?: __('Technicien', 'assetsign') }}</p>
+        <p class="proof">{{ __('Signataire : %s', 'assetsign')|format(technician_name) }}</p>
+    {% else %}
+        <p>{{ __('Signature du technicien :', 'assetsign') }} ______________________________</p>
+    {% endif %}
+</div>
+
+<div class="footer">{{ __('Attestation d\'effacement n°%d : Document généré par GLPI (plugin assetsign)', 'assetsign')|format(attestation.id) }}</div>
+</body>
+</html>

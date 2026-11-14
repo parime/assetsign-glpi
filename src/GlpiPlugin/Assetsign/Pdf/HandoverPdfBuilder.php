@@ -17,6 +17,8 @@ use GlpiPlugin\Assetsign\PaperSignature;
 use GlpiPlugin\Assetsign\QrCode;
 use GlpiPlugin\Assetsign\Template;
 use GlpiPlugin\Assetsign\VenteDetails;
+use GlpiPlugin\Assetsign\WipeAttestation;
+use GlpiPlugin\Assetsign\WipeRequirement;
 
 /**
  * Construit le PDF non signe de la fiche de remise a partir d'un gabarit Twig,
@@ -215,6 +217,8 @@ final class HandoverPdfBuilder
                : null,
            'don_organization_name'        => $donDetails?->fields['organization_name'] ?: null,
            'destruction_provider_name'    => $destructionDetails?->fields['provider_name'] ?: null,
+           // Issue #322 : effacement des donnees avant la sortie du materiel (don, vente, destruction).
+           'wipe'                => $this->getWipeSection($assetsign, $config),
            'currency_symbol'     => $config->fields['currency_symbol'] ?: '€',
            'damage_views'        => (bool) $config->fields['enable_damage_annotation']
                ? $this->getDamageViewsForPdf(DamageMarker::getForAssetsign($assetsign->getID()), $assetsign->fields['itemtype'])
@@ -243,6 +247,25 @@ final class HandoverPdfBuilder
            // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
            'doc_header'         => DocumentControlHeader::forEntity((int) $assetsign->fields['entities_id'], $template),
        ], $extra));
+   }
+
+    /**
+     * Issue #322 : section « Effacement des donnees » des fiches de don, de vente et de destruction :
+     * l'attestation valable si elle existe ; sinon une mention d'absence, seulement si l'entite exige
+     * l'attestation pour ce type (aucun PDF ne change tant que la fonction n'est pas utilisee).
+     *
+     * @return array{summary: array<string, mixed>|null}|null
+     */
+   private function getWipeSection(Assetsign $assetsign, Config $config): ?array {
+       $type = (int) $assetsign->fields['type'];
+      if (!in_array($type, [Assetsign::TYPE_DON, Assetsign::TYPE_VENTE, Assetsign::TYPE_DESTRUCTION], true)) {
+          return null;
+      }
+       $summary = WipeAttestation::summaryFor((string) $assetsign->fields['itemtype'], (int) $assetsign->fields['items_id']);
+      if ($summary === null && WipeRequirement::modeForType($config, $type) === WipeRequirement::MODE_DISABLED) {
+          return null;
+      }
+       return ['summary' => $summary];
    }
 
     /**

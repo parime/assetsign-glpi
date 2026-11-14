@@ -110,6 +110,22 @@
 </table>
 {% endif %}
 
+{# Issue #322 : effacement des données avant la sortie du matériel. #}
+{% if wipe|default(null) %}
+<h2>{{ __('Effacement des données', 'assetsign') }}</h2>
+{% if wipe.summary %}
+<table class="info-table">
+    <tr><th>{{ __('Attestation', 'assetsign') }}</th><td>{{ __('n°%1$d du %2$s', 'assetsign')|format(wipe.summary.reference, wipe.summary.date) }}</td></tr>
+    <tr><th>{{ __('Méthode', 'assetsign') }}</th><td>{{ wipe.summary.method }}{% if wipe.summary.level %} ({{ wipe.summary.level }}){% endif %}</td></tr>
+    <tr><th>{{ __('Vérification', 'assetsign') }}</th><td>{{ wipe.summary.result }}</td></tr>
+    <tr><th>{{ __('Réalisé par', 'assetsign') }}</th><td>{{ wipe.summary.technician|default('-') }}</td></tr>
+    {% if wipe.summary.pdf_hash %}<tr><th>{{ __("Empreinte de l'attestation (SHA-256)", 'assetsign') }}</th><td style="font-size: 8pt; word-break: break-all;">{{ wipe.summary.pdf_hash }}</td></tr>{% endif %}
+</table>
+{% else %}
+<p class="legal-text">{{ __("Aucune attestation d'effacement des données n'est enregistrée pour ce matériel.", 'assetsign') }}</p>
+{% endif %}
+{% endif %}
+
 {# Issue #193 : pret temporaire #}
 {% if loan_until|default(null) %}
 <h2>{{ __('Prêt temporaire', 'assetsign') }}</h2>

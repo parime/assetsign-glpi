@@ -29,6 +29,8 @@ class PassportEvent extends Compat\Base\PassportEventBase
     // Destruction (issue #78, "fin de vie structurée") : même motif exact que
     // TYPE_DON/TYPE_VENTE ci-dessus, cf. recordForAssetsign().
    public const TYPE_DESTRUCTION = 6;
+    // Issue #322 : attestation d'effacement des donnees (cf. recordForWipe()).
+   public const TYPE_WIPE        = 7;
 
 
 
@@ -61,6 +63,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
            self::TYPE_MAINTENANCE => __('Maintenance', 'assetsign'),
            self::TYPE_MOVEMENT    => __('Mouvement', 'assetsign'),
            self::TYPE_DESTRUCTION => __('Destruction', 'assetsign'),
+           self::TYPE_WIPE        => __('Effacement des données', 'assetsign'),
        ];
    }
 
@@ -288,6 +291,27 @@ class PassportEvent extends Compat\Base\PassportEventBase
        ]);
    }
 
+    /**
+     * Issue #322 : evenement d'une attestation d'effacement des donnees. Pas de snapshot
+     * beneficiaire (comme une maintenance) : le technicien n'est pas un detenteur.
+     */
+   public static function recordForWipe(WipeAttestation $attestation): void {
+      if (!Config::getForEntity((int) $attestation->fields['entities_id'])->fields['enable_passport']) {
+          return;
+      }
+
+       (new self())->add([
+           'itemtype'        => $attestation->fields['itemtype'],
+           'items_id'        => $attestation->fields['items_id'],
+           'entities_id'     => (int) $attestation->fields['entities_id'],
+           'event_type'      => self::TYPE_WIPE,
+           'source_itemtype' => WipeAttestation::class,
+           'source_items_id' => $attestation->getID(),
+           'date'            => $attestation->fields['date_wipe'] ?: date('Y-m-d H:i:s'),
+           'comment'         => WipeAttestation::getMethodLabels()[$attestation->fields['method']] ?? '',
+       ]);
+   }
+
    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0): string {
       if (!\Session::haveRight(self::$rightname, READ)) {
           return '';
@@ -360,6 +384,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
               Assetsign::class      => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.form.php?id=' . $row['source_items_id'],
               Maintenance::class => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/maintenance.form.php?id=' . $row['source_items_id'],
               Movement::class    => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/movement.form.php?id=' . $row['source_items_id'],
+              WipeAttestation::class => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/wipeattestation.form.php?id=' . $row['source_items_id'],
               default            => null,
           };
       }
@@ -1068,6 +1093,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
               Assetsign::class      => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/assetsign.form.php?id=' . $row['source_items_id'],
               Maintenance::class => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/maintenance.form.php?id=' . $row['source_items_id'],
               Movement::class    => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/movement.form.php?id=' . $row['source_items_id'],
+              WipeAttestation::class => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/wipeattestation.form.php?id=' . $row['source_items_id'],
               default            => null,
           };
           [$row['device_name'], $row['device_serial']] = self::resolveDeviceDisplay($row['itemtype'], (int) $row['items_id']);

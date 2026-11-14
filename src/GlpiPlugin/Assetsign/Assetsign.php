@@ -798,7 +798,34 @@ class Assetsign extends Compat\Base\AssetsignBase
            'types'         => self::getTypes(),
            'status_badges' => self::getStatusBadgeClasses(),
            'type_icons'    => self::getTypeIcons(),
+           // Issue #322 : attestation d'effacement exigee pour une sortie et absente.
+           'wipe_notice'   => self::wipeNoticeFor($item, array_keys($manualTypes)),
        ]);
+   }
+
+    /**
+     * Issue #322 : avertissement de l'onglet quand l'entite exige une attestation d'effacement
+     * pour un type de fiche propose et qu'aucune n'est valable pour ce materiel.
+     *
+     * @param list<int> $types types de fiche proposes
+     * @return array{blocking: bool, message: string, url: string}|null
+     */
+   public static function wipeNoticeFor(CommonDBTM $item, array $types): ?array {
+       $config = Config::getForEntity((int) $item->fields['entities_id']);
+       $mode = WipeRequirement::MODE_DISABLED;
+      foreach ($types as $type) {
+          $mode = max($mode, WipeRequirement::modeForType($config, (int) $type));
+      }
+      if ($mode === WipeRequirement::MODE_DISABLED || WipeAttestation::getValidFor($item->getType(), $item->getID()) !== null) {
+          return null;
+      }
+       return [
+           'blocking' => $mode === WipeRequirement::MODE_BLOCK,
+           'message'  => $mode === WipeRequirement::MODE_BLOCK
+               ? __('Aucune attestation d\'effacement des données valable pour ce matériel : l\'entité l\'exige avant un don, une vente ou une destruction.', 'assetsign')
+               : __('Aucune attestation d\'effacement des données valable pour ce matériel : pensez à l\'enregistrer avant un don, une vente ou une destruction.', 'assetsign'),
+           'url'      => $item::getFormURLWithID($item->getID()) . '&forcetab=' . rawurlencode(WipeAttestation::class . '$1'),
+       ];
    }
 
     /**
@@ -1700,6 +1727,16 @@ class Assetsign extends Compat\Base\AssetsignBase
            || $mode === Config::SENDING_MANUAL
            || ($mode === Config::SENDING_CONFIRM && $type === self::TYPE_HANDOVER && $technicianWaiting);
        $askConfirmation = $tickets_id === 0 && $asDraft && $type === self::TYPE_HANDOVER && $technicianWaiting;
+       // Issue #322 : attestation d'effacement exigee (reattribution, don, vente, destruction) :
+       // en mode bloquant, la feuille reste en brouillon (rien n'est envoye) ; sinon avertissement.
+       $wipeMode = WipeRequirement::check($item->getType(), $item->getID(), (int) $item->fields['entities_id'], $type, $users_id);
+      if ($wipeMode === WipeRequirement::MODE_BLOCK) {
+          $asDraft = true;
+          $askConfirmation = false;
+      }
+      if ($wipeMode !== WipeRequirement::MODE_DISABLED && $technicianWaiting) {
+          Session::addMessageAfterRedirect(WipeRequirement::message($wipeMode, $type), false, WARNING);
+      }
 
        $assetsign = new self();
        $id = $assetsign->add([
@@ -1737,7 +1774,7 @@ class Assetsign extends Compat\Base\AssetsignBase
          }
          if ($askConfirmation) {
              self::queueConfirmation($assetsign->getID());
-         } else if ($technicianWaiting && $tickets_id === 0) {
+         } else if ($technicianWaiting && $tickets_id === 0 && $wipeMode !== WipeRequirement::MODE_BLOCK) {
              Session::addMessageAfterRedirect(
                  __('Feuille préparée en brouillon : rien n\'a été envoyé. Envoyez-la depuis l\'onglet Attributions du matériel quand vous le souhaitez.', 'assetsign')
              );
@@ -1803,6 +1840,17 @@ class Assetsign extends Compat\Base\AssetsignBase
       if ((int) $this->fields['status'] !== self::STATUS_DRAFT) {
           throw new \RuntimeException(__('Cette feuille a déjà été envoyée.', 'assetsign'));
       }
+       // Issue #322 : attestation d'effacement exigee avant l'envoi (bloquant) ou signalee.
+       $wipeMode = WipeRequirement::check(
+           (string) $this->fields['itemtype'],
+           (int) $this->fields['items_id'],
+           (int) $this->fields['entities_id'],
+           (int) $this->fields['type'],
+           (int) $this->fields['users_id']
+       );
+      if ($wipeMode === WipeRequirement::MODE_BLOCK) {
+          throw new \RuntimeException(WipeRequirement::message($wipeMode, (int) $this->fields['type']));
+      }
       if ($keptItemIds !== null) {
          foreach (AssetsignItem::getForAssetsign($this->getID()) as $row) {
             if (!in_array((int) $row['id'], $keptItemIds, true)) {
@@ -1819,6 +1867,9 @@ class Assetsign extends Compat\Base\AssetsignBase
        $messagesBefore = $_SESSION['MESSAGE_AFTER_REDIRECT'] ?? [];
        $this->launchWorkflow();
        $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
+      if ($wipeMode === WipeRequirement::MODE_WARN) {
+          Session::addMessageAfterRedirect(WipeRequirement::message($wipeMode, (int) $this->fields['type']), false, WARNING);
+      }
    }
 
     /**
@@ -2139,6 +2190,13 @@ class Assetsign extends Compat\Base\AssetsignBase
        $config = Config::getForEntity((int) $item->fields['entities_id']);
        $template = Template::getDefaultFor($type, (int) $item->fields['entities_id']);
 
+       // Issue #322 : attestation d'effacement exigee par l'entite avant cette sortie : bloquee
+       // avant toute ecriture, ou creee avec un avertissement.
+       $wipeMode = WipeRequirement::check($itemtype, $items_id, (int) $item->fields['entities_id'], $type, $users_id);
+      if ($wipeMode === WipeRequirement::MODE_BLOCK) {
+          throw new \RuntimeException(WipeRequirement::message($wipeMode, $type));
+      }
+
        $assetsign = new self();
        $id = $assetsign->add([
            'entities_id'                   => $item->fields['entities_id'],
@@ -2191,6 +2249,10 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
 
        self::syncItemStateAfterManualCreation($item, $type, $config);
+
+      if ($wipeMode === WipeRequirement::MODE_WARN) {
+          Session::addMessageAfterRedirect(WipeRequirement::message($wipeMode, $type), false, WARNING);
+      }
 
        return $assetsign;
    }
