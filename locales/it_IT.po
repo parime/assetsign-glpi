@@ -5242,3 +5242,207 @@ msgstr "Tecnico della scheda: il tecnico responsabile del materiale, se indicato
 
 msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
 msgstr "Il campo «Tecnico» del materiale indica allora il tecnico della scheda (variabile {technicien}, notifiche, bozze da inviare). Senza tecnico responsabile, o se la casella non è selezionata, è la persona che genera la scheda, come prima."
+
+msgid "Choisissez le fichier du scan signé."
+msgstr "Scegli il file della scansione firmata."
+
+#, php-format
+msgid "Le scan dépasse la taille maximale (%d Mo)."
+msgstr "La scansione supera la dimensione massima (%d MB)."
+
+msgid "Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de signature électronique ne fonctionne plus."
+msgstr "Scansione allegata: la scheda è ora «Firmato su carta». Il link di firma elettronica non funziona più."
+
+msgid "Scan signé sur papier"
+msgstr "Scansione firmata su carta"
+
+msgid "Télécharger (scan signé sur papier)"
+msgstr "Scarica (scansione firmata su carta)"
+
+msgid "Signé sur papier"
+msgstr "Firmato su carta"
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le scan du document signé est joint au ticket."
+msgstr "La scheda n. %1$d (%2$s) per %3$s «%4$s» è stata firmata su carta. La scansione del documento firmato è allegata al ticket."
+
+msgid "Version papier inconnue."
+msgstr "Versione cartacea sconosciuta."
+
+#, php-format
+msgid "État des lieux imprimable de la fiche n° %1$s généré par %2$s"
+msgstr "Verbale di stato stampabile della scheda n. %1$s generato da %2$s"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s générée par %2$s, pour une signature à la main"
+msgstr "Versione cartacea della scheda n. %1$s generata da %2$s, per una firma a mano"
+
+#, php-format
+msgid "Fiche n° %1$s signée sur papier : scan joint par %2$s (signature datée du %3$s)"
+msgstr "Scheda n. %1$s firmata su carta: scansione allegata da %2$s (firma datata %3$s)"
+
+msgid "Le fichier du scan est vide."
+msgstr "Il file della scansione è vuoto."
+
+msgid "Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG."
+msgstr "Tipo di file rifiutato: allega una scansione in formato PDF, JPEG o PNG."
+
+msgid "Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG."
+msgstr "Il contenuto del file non corrisponde alla sua estensione: allega una vera scansione in formato PDF, JPEG o PNG."
+
+msgid "Vous n'avez pas le droit de modifier cette fiche."
+msgstr "Non hai il diritto di modificare questa scheda."
+
+msgid "La version papier n'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée)."
+msgstr "La versione cartacea non è possibile per questa scheda (già firmata, in attesa del responsabile, scaduta o annullata)."
+
+msgid "Date de signature invalide."
+msgstr "Data di firma non valida."
+
+msgid "La date de signature ne peut pas être dans le futur."
+msgstr "La data di firma non può essere nel futuro."
+
+msgid "La date de signature ne peut pas précéder la création de la fiche."
+msgstr "La data di firma non può precedere la creazione della scheda."
+
+#, php-format
+msgid "%1$s signée sur papier le %2$s"
+msgstr "%1$s firmata su carta il %2$s"
+
+msgid "Date de signature indiquée sur le papier"
+msgstr "Data di firma indicata sulla carta"
+
+msgid "Fiche signée à la main, sur papier"
+msgstr "Scheda firmata a mano, su carta"
+
+#, php-format
+msgid "Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est le scan joint (empreinte ci-dessous)."
+msgstr "Scansione allegata da %1$s il %2$s. Nessuna firma elettronica: la prova è la scansione allegata (impronta sotto)."
+
+msgid "Ouvrir le scan signé"
+msgstr "Apri la scansione firmata"
+
+msgid "Version papier (signature à la main)"
+msgstr "Versione cartacea (firma a mano)"
+
+msgid "Si la signature électronique n'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n'est pas joint, rien n'est enregistré comme signé."
+msgstr "Se la firma elettronica non è possibile: stampa la scheda precompilata, falla firmare a mano, poi allega qui la scansione del documento firmato. Finché la scansione non è allegata, nulla viene registrato come firmato."
+
+msgid "Imprimer pour signature à la main"
+msgstr "Stampa per firma a mano"
+
+msgid "Imprimer l'état des lieux seul"
+msgstr "Stampa solo il verbale di stato"
+
+#, php-format
+msgid "Dernière impression : %1$s, par %2$s."
+msgstr "Ultima stampa: %1$s, da %2$s."
+
+msgid "Joindre le scan signé"
+msgstr "Allega la scansione firmata"
+
+msgid "Scan du document signé"
+msgstr "Scansione del documento firmato"
+
+#, php-format
+msgid "PDF, JPEG ou PNG, %d Mo maximum."
+msgstr "PDF, JPEG o PNG, massimo %d MB."
+
+msgid "La fiche passera à « Signé sur papier » et le lien de signature électronique déjà envoyé ne fonctionnera plus. Continuer ?"
+msgstr "La scheda passerà a «Firmato su carta» e il link di firma elettronica già inviato non funzionerà più. Continuare?"
+
+msgid "La fiche passera à « Signé sur papier ». Continuer ?"
+msgstr "La scheda passerà a «Firmato su carta». Continuare?"
+
+msgid "Joindre et marquer signée sur papier"
+msgstr "Allega e segna come firmata su carta"
+
+msgid "À la main, sur papier (scan joint par un technicien)"
+msgstr "A mano, su carta (scansione allegata da un tecnico)"
+
+msgid "Scan joint par"
+msgstr "Scansione allegata da"
+
+msgid "Adresse IP (envoi du scan)"
+msgstr "Indirizzo IP (invio della scansione)"
+
+msgid "Navigateur (envoi du scan)"
+msgstr "Browser (invio della scansione)"
+
+msgid "Empreinte du scan (SHA-256)"
+msgstr "Impronta della scansione (SHA-256)"
+
+msgid "Scan joint le"
+msgstr "Scansione allegata il"
+
+msgid "État des lieux du matériel"
+msgstr "Verbale di stato dell'apparecchiatura"
+
+#, php-format
+msgid "Fiche « %1$s », référence n°%2$s"
+msgstr "Scheda «%1$s», riferimento n. %2$s"
+
+msgid "À compléter à la main au moment de la remise ou du retour du matériel. Cochez une case par ligne."
+msgstr "Da compilare a mano al momento della consegna o della restituzione dell'apparecchiatura. Spunta una casella per riga."
+
+msgid "État de chaque élément"
+msgstr "Stato di ogni elemento"
+
+msgid "Excellent"
+msgstr "Ottimo"
+
+msgid "Endommagé"
+msgstr "Danneggiato"
+
+msgid "Schéma du matériel"
+msgstr "Schema dell'apparecchiatura"
+
+msgid "Légende des dommages"
+msgstr "Legenda dei danni"
+
+msgid "reportez sur le schéma le numéro du dommage constaté"
+msgstr "riporta sullo schema il numero del danno riscontrato"
+
+msgid "rayure"
+msgstr "graffio"
+
+msgid "choc"
+msgstr "urto"
+
+msgid "usure"
+msgstr "usura"
+
+msgid "pièce manquante"
+msgstr "pezzo mancante"
+
+msgid "Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage majeur."
+msgstr "Punti già rilevati in GLPI: giallo = danno lieve, rosso = danno grave."
+
+msgid "Notes"
+msgstr "Note"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI."
+msgstr "Versione cartacea della scheda n. %1$s, generata il %2$s: da firmare a mano. La scansione firmata viene poi allegata alla scheda in GLPI."
+
+#, php-format
+msgid "pour le compte de %s"
+msgstr "per conto di %s"
+
+msgid "Date :"
+msgstr "Data:"
+
+msgid "Lieu :"
+msgstr "Luogo:"
+
+msgid "Signature, précédée de « Lu et approuvé » :"
+msgstr "Firma, preceduta da «Letto e approvato»:"
+
+msgid "Version papier, à signer à la main."
+msgstr "Versione cartacea, da firmare a mano."
+
+msgid "Vérifiez les informations, complétez l'état des lieux en dernière page, puis faites signer chaque cadre. Le scan du document signé est ensuite joint à la fiche dans GLPI."
+msgstr "Verifica le informazioni, compila il verbale di stato nell'ultima pagina, poi fai firmare ogni riquadro. La scansione del documento firmato viene poi allegata alla scheda in GLPI."
+
+msgid "Observations ou réserves"
+msgstr "Osservazioni o riserve"

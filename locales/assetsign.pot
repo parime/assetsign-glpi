@@ -3330,3 +3330,207 @@ msgstr ""
 
 msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
 msgstr ""
+
+msgid "Choisissez le fichier du scan signé."
+msgstr ""
+
+#, php-format
+msgid "Le scan dépasse la taille maximale (%d Mo)."
+msgstr ""
+
+msgid "Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de signature électronique ne fonctionne plus."
+msgstr ""
+
+msgid "Scan signé sur papier"
+msgstr ""
+
+msgid "Télécharger (scan signé sur papier)"
+msgstr ""
+
+msgid "Signé sur papier"
+msgstr ""
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le scan du document signé est joint au ticket."
+msgstr ""
+
+msgid "Version papier inconnue."
+msgstr ""
+
+#, php-format
+msgid "État des lieux imprimable de la fiche n° %1$s généré par %2$s"
+msgstr ""
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s générée par %2$s, pour une signature à la main"
+msgstr ""
+
+#, php-format
+msgid "Fiche n° %1$s signée sur papier : scan joint par %2$s (signature datée du %3$s)"
+msgstr ""
+
+msgid "Le fichier du scan est vide."
+msgstr ""
+
+msgid "Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG."
+msgstr ""
+
+msgid "Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG."
+msgstr ""
+
+msgid "Vous n'avez pas le droit de modifier cette fiche."
+msgstr ""
+
+msgid "La version papier n'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée)."
+msgstr ""
+
+msgid "Date de signature invalide."
+msgstr ""
+
+msgid "La date de signature ne peut pas être dans le futur."
+msgstr ""
+
+msgid "La date de signature ne peut pas précéder la création de la fiche."
+msgstr ""
+
+#, php-format
+msgid "%1$s signée sur papier le %2$s"
+msgstr ""
+
+msgid "Date de signature indiquée sur le papier"
+msgstr ""
+
+msgid "Fiche signée à la main, sur papier"
+msgstr ""
+
+#, php-format
+msgid "Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est le scan joint (empreinte ci-dessous)."
+msgstr ""
+
+msgid "Ouvrir le scan signé"
+msgstr ""
+
+msgid "Version papier (signature à la main)"
+msgstr ""
+
+msgid "Si la signature électronique n'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n'est pas joint, rien n'est enregistré comme signé."
+msgstr ""
+
+msgid "Imprimer pour signature à la main"
+msgstr ""
+
+msgid "Imprimer l'état des lieux seul"
+msgstr ""
+
+#, php-format
+msgid "Dernière impression : %1$s, par %2$s."
+msgstr ""
+
+msgid "Joindre le scan signé"
+msgstr ""
+
+msgid "Scan du document signé"
+msgstr ""
+
+#, php-format
+msgid "PDF, JPEG ou PNG, %d Mo maximum."
+msgstr ""
+
+msgid "La fiche passera à « Signé sur papier » et le lien de signature électronique déjà envoyé ne fonctionnera plus. Continuer ?"
+msgstr ""
+
+msgid "La fiche passera à « Signé sur papier ». Continuer ?"
+msgstr ""
+
+msgid "Joindre et marquer signée sur papier"
+msgstr ""
+
+msgid "À la main, sur papier (scan joint par un technicien)"
+msgstr ""
+
+msgid "Scan joint par"
+msgstr ""
+
+msgid "Adresse IP (envoi du scan)"
+msgstr ""
+
+msgid "Navigateur (envoi du scan)"
+msgstr ""
+
+msgid "Empreinte du scan (SHA-256)"
+msgstr ""
+
+msgid "Scan joint le"
+msgstr ""
+
+msgid "État des lieux du matériel"
+msgstr ""
+
+#, php-format
+msgid "Fiche « %1$s », référence n°%2$s"
+msgstr ""
+
+msgid "À compléter à la main au moment de la remise ou du retour du matériel. Cochez une case par ligne."
+msgstr ""
+
+msgid "État de chaque élément"
+msgstr ""
+
+msgid "Excellent"
+msgstr ""
+
+msgid "Endommagé"
+msgstr ""
+
+msgid "Schéma du matériel"
+msgstr ""
+
+msgid "Légende des dommages"
+msgstr ""
+
+msgid "reportez sur le schéma le numéro du dommage constaté"
+msgstr ""
+
+msgid "rayure"
+msgstr ""
+
+msgid "choc"
+msgstr ""
+
+msgid "usure"
+msgstr ""
+
+msgid "pièce manquante"
+msgstr ""
+
+msgid "Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage majeur."
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI."
+msgstr ""
+
+#, php-format
+msgid "pour le compte de %s"
+msgstr ""
+
+msgid "Date :"
+msgstr ""
+
+msgid "Lieu :"
+msgstr ""
+
+msgid "Signature, précédée de « Lu et approuvé » :"
+msgstr ""
+
+msgid "Version papier, à signer à la main."
+msgstr ""
+
+msgid "Vérifiez les informations, complétez l'état des lieux en dernière page, puis faites signer chaque cadre. Le scan du document signé est ensuite joint à la fiche dans GLPI."
+msgstr ""
+
+msgid "Observations ou réserves"
+msgstr ""

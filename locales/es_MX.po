@@ -5232,3 +5232,207 @@ msgstr "Técnico de la ficha: el técnico responsable del equipo, si está indic
 
 msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
 msgstr "El campo «Técnico» del equipo designa entonces al técnico de la ficha (variable {technicien}, notificaciones, borradores por enviar). Sin técnico responsable, o si la casilla está desmarcada, es la persona que genera la ficha, como antes."
+
+msgid "Choisissez le fichier du scan signé."
+msgstr "Elija el archivo del escaneo firmado."
+
+#, php-format
+msgid "Le scan dépasse la taille maximale (%d Mo)."
+msgstr "El escaneo supera el tamaño máximo (%d MB)."
+
+msgid "Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de signature électronique ne fonctionne plus."
+msgstr "Escaneo adjuntado: la ficha está ahora «Firmado en papel». El enlace de firma electrónica ya no funciona."
+
+msgid "Scan signé sur papier"
+msgstr "Escaneo firmado en papel"
+
+msgid "Télécharger (scan signé sur papier)"
+msgstr "Descargar (escaneo firmado en papel)"
+
+msgid "Signé sur papier"
+msgstr "Firmado en papel"
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le scan du document signé est joint au ticket."
+msgstr "La ficha n.º %1$d (%2$s) para %3$s «%4$s» se firmó en papel. El escaneo del documento firmado se adjunta al ticket."
+
+msgid "Version papier inconnue."
+msgstr "Versión en papel desconocida."
+
+#, php-format
+msgid "État des lieux imprimable de la fiche n° %1$s généré par %2$s"
+msgstr "Acta de estado imprimible de la ficha n.º %1$s generada por %2$s"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s générée par %2$s, pour une signature à la main"
+msgstr "Versión en papel de la ficha n.º %1$s generada por %2$s, para una firma manuscrita"
+
+#, php-format
+msgid "Fiche n° %1$s signée sur papier : scan joint par %2$s (signature datée du %3$s)"
+msgstr "Ficha n.º %1$s firmada en papel: escaneo adjuntado por %2$s (firma con fecha %3$s)"
+
+msgid "Le fichier du scan est vide."
+msgstr "El archivo del escaneo está vacío."
+
+msgid "Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG."
+msgstr "Tipo de archivo rechazado: adjunte un escaneo en formato PDF, JPEG o PNG."
+
+msgid "Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG."
+msgstr "El contenido del archivo no corresponde a su extensión: adjunte un escaneo real en formato PDF, JPEG o PNG."
+
+msgid "Vous n'avez pas le droit de modifier cette fiche."
+msgstr "No tiene permiso para modificar esta ficha."
+
+msgid "La version papier n'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée)."
+msgstr "La versión en papel no es posible para esta ficha (ya firmada, pendiente del responsable, caducada o cancelada)."
+
+msgid "Date de signature invalide."
+msgstr "Fecha de firma no válida."
+
+msgid "La date de signature ne peut pas être dans le futur."
+msgstr "La fecha de firma no puede estar en el futuro."
+
+msgid "La date de signature ne peut pas précéder la création de la fiche."
+msgstr "La fecha de firma no puede ser anterior a la creación de la ficha."
+
+#, php-format
+msgid "%1$s signée sur papier le %2$s"
+msgstr "%1$s firmada en papel el %2$s"
+
+msgid "Date de signature indiquée sur le papier"
+msgstr "Fecha de firma indicada en el papel"
+
+msgid "Fiche signée à la main, sur papier"
+msgstr "Ficha firmada a mano, en papel"
+
+#, php-format
+msgid "Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est le scan joint (empreinte ci-dessous)."
+msgstr "Escaneo adjuntado por %1$s el %2$s. Sin firma electrónica: la prueba es el escaneo adjunto (huella abajo)."
+
+msgid "Ouvrir le scan signé"
+msgstr "Abrir el escaneo firmado"
+
+msgid "Version papier (signature à la main)"
+msgstr "Versión en papel (firma manuscrita)"
+
+msgid "Si la signature électronique n'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n'est pas joint, rien n'est enregistré comme signé."
+msgstr "Si la firma electrónica no es posible: imprima la ficha rellenada, hágala firmar a mano y adjunte aquí el escaneo del documento firmado. Mientras no se adjunte el escaneo, nada se registra como firmado."
+
+msgid "Imprimer pour signature à la main"
+msgstr "Imprimir para firma manuscrita"
+
+msgid "Imprimer l'état des lieux seul"
+msgstr "Imprimir solo el acta de estado"
+
+#, php-format
+msgid "Dernière impression : %1$s, par %2$s."
+msgstr "Última impresión: %1$s, por %2$s."
+
+msgid "Joindre le scan signé"
+msgstr "Adjuntar el escaneo firmado"
+
+msgid "Scan du document signé"
+msgstr "Escaneo del documento firmado"
+
+#, php-format
+msgid "PDF, JPEG ou PNG, %d Mo maximum."
+msgstr "PDF, JPEG o PNG, %d MB como máximo."
+
+msgid "La fiche passera à « Signé sur papier » et le lien de signature électronique déjà envoyé ne fonctionnera plus. Continuer ?"
+msgstr "La ficha pasará a «Firmado en papel» y el enlace de firma electrónica ya enviado dejará de funcionar. ¿Continuar?"
+
+msgid "La fiche passera à « Signé sur papier ». Continuer ?"
+msgstr "La ficha pasará a «Firmado en papel». ¿Continuar?"
+
+msgid "Joindre et marquer signée sur papier"
+msgstr "Adjuntar y marcar como firmada en papel"
+
+msgid "À la main, sur papier (scan joint par un technicien)"
+msgstr "A mano, en papel (escaneo adjuntado por un técnico)"
+
+msgid "Scan joint par"
+msgstr "Escaneo adjuntado por"
+
+msgid "Adresse IP (envoi du scan)"
+msgstr "Dirección IP (envío del escaneo)"
+
+msgid "Navigateur (envoi du scan)"
+msgstr "Navegador (envío del escaneo)"
+
+msgid "Empreinte du scan (SHA-256)"
+msgstr "Huella del escaneo (SHA-256)"
+
+msgid "Scan joint le"
+msgstr "Escaneo adjuntado el"
+
+msgid "État des lieux du matériel"
+msgstr "Acta de estado del equipo"
+
+#, php-format
+msgid "Fiche « %1$s », référence n°%2$s"
+msgstr "Ficha «%1$s», referencia n.º %2$s"
+
+msgid "À compléter à la main au moment de la remise ou du retour du matériel. Cochez une case par ligne."
+msgstr "A completar a mano en el momento de la entrega o devolución del equipo. Marque una casilla por línea."
+
+msgid "État de chaque élément"
+msgstr "Estado de cada elemento"
+
+msgid "Excellent"
+msgstr "Excelente"
+
+msgid "Endommagé"
+msgstr "Dañado"
+
+msgid "Schéma du matériel"
+msgstr "Esquema del equipo"
+
+msgid "Légende des dommages"
+msgstr "Leyenda de daños"
+
+msgid "reportez sur le schéma le numéro du dommage constaté"
+msgstr "anote en el esquema el número del daño constatado"
+
+msgid "rayure"
+msgstr "rayadura"
+
+msgid "choc"
+msgstr "golpe"
+
+msgid "usure"
+msgstr "desgaste"
+
+msgid "pièce manquante"
+msgstr "pieza que falta"
+
+msgid "Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage majeur."
+msgstr "Puntos ya registrados en GLPI: amarillo = daño menor, rojo = daño mayor."
+
+msgid "Notes"
+msgstr "Notas"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI."
+msgstr "Versión en papel de la ficha n.º %1$s, generada el %2$s: a firmar a mano. El escaneo firmado se adjunta luego a la ficha en GLPI."
+
+#, php-format
+msgid "pour le compte de %s"
+msgstr "en nombre de %s"
+
+msgid "Date :"
+msgstr "Fecha:"
+
+msgid "Lieu :"
+msgstr "Lugar:"
+
+msgid "Signature, précédée de « Lu et approuvé » :"
+msgstr "Firma, precedida de «Leído y aprobado»:"
+
+msgid "Version papier, à signer à la main."
+msgstr "Versión en papel, a firmar a mano."
+
+msgid "Vérifiez les informations, complétez l'état des lieux en dernière page, puis faites signer chaque cadre. Le scan du document signé est ensuite joint à la fiche dans GLPI."
+msgstr "Verifique la información, complete el acta de estado en la última página y haga firmar cada recuadro. El escaneo del documento firmado se adjunta luego a la ficha en GLPI."
+
+msgid "Observations ou réserves"
+msgstr "Observaciones o reservas"

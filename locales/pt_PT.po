@@ -5833,3 +5833,207 @@ msgstr "Técnico da ficha: o técnico responsável pelo equipamento, se informad
 
 msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
 msgstr "O campo «Técnico» do equipamento passa a indicar o técnico da ficha (variável {technicien}, notificações, rascunhos a enviar). Sem técnico responsável, ou se a caixa estiver desmarcada, é a pessoa que gera a ficha, como antes."
+
+msgid "Choisissez le fichier du scan signé."
+msgstr "Escolha o arquivo da digitalização assinada."
+
+#, php-format
+msgid "Le scan dépasse la taille maximale (%d Mo)."
+msgstr "A digitalização excede o tamanho máximo (%d MB)."
+
+msgid "Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de signature électronique ne fonctionne plus."
+msgstr "Digitalização anexada: a ficha agora está «Assinado em papel». O link de assinatura eletrônica não funciona mais."
+
+msgid "Scan signé sur papier"
+msgstr "Digitalização assinada em papel"
+
+msgid "Télécharger (scan signé sur papier)"
+msgstr "Baixar (digitalização assinada em papel)"
+
+msgid "Signé sur papier"
+msgstr "Assinado em papel"
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le scan du document signé est joint au ticket."
+msgstr "A ficha n.º %1$d (%2$s) para %3$s «%4$s» foi assinada em papel. A digitalização do documento assinado está anexada ao chamado."
+
+msgid "Version papier inconnue."
+msgstr "Versão em papel desconhecida."
+
+#, php-format
+msgid "État des lieux imprimable de la fiche n° %1$s généré par %2$s"
+msgstr "Laudo de estado imprimível da ficha n.º %1$s gerado por %2$s"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s générée par %2$s, pour une signature à la main"
+msgstr "Versão em papel da ficha n.º %1$s gerada por %2$s, para uma assinatura à mão"
+
+#, php-format
+msgid "Fiche n° %1$s signée sur papier : scan joint par %2$s (signature datée du %3$s)"
+msgstr "Ficha n.º %1$s assinada em papel: digitalização anexada por %2$s (assinatura datada de %3$s)"
+
+msgid "Le fichier du scan est vide."
+msgstr "O arquivo da digitalização está vazio."
+
+msgid "Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG."
+msgstr "Tipo de arquivo recusado: anexe uma digitalização em formato PDF, JPEG ou PNG."
+
+msgid "Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG."
+msgstr "O conteúdo do arquivo não corresponde à sua extensão: anexe uma digitalização real em formato PDF, JPEG ou PNG."
+
+msgid "Vous n'avez pas le droit de modifier cette fiche."
+msgstr "Você não tem permissão para modificar esta ficha."
+
+msgid "La version papier n'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée)."
+msgstr "A versão em papel não é possível para esta ficha (já assinada, aguardando o gestor, expirada ou cancelada)."
+
+msgid "Date de signature invalide."
+msgstr "Data de assinatura inválida."
+
+msgid "La date de signature ne peut pas être dans le futur."
+msgstr "A data de assinatura não pode estar no futuro."
+
+msgid "La date de signature ne peut pas précéder la création de la fiche."
+msgstr "A data de assinatura não pode ser anterior à criação da ficha."
+
+#, php-format
+msgid "%1$s signée sur papier le %2$s"
+msgstr "%1$s assinada em papel em %2$s"
+
+msgid "Date de signature indiquée sur le papier"
+msgstr "Data de assinatura indicada no papel"
+
+msgid "Fiche signée à la main, sur papier"
+msgstr "Ficha assinada à mão, em papel"
+
+#, php-format
+msgid "Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est le scan joint (empreinte ci-dessous)."
+msgstr "Digitalização anexada por %1$s em %2$s. Sem assinatura eletrônica: a prova é a digitalização anexada (impressão digital abaixo)."
+
+msgid "Ouvrir le scan signé"
+msgstr "Abrir a digitalização assinada"
+
+msgid "Version papier (signature à la main)"
+msgstr "Versão em papel (assinatura à mão)"
+
+msgid "Si la signature électronique n'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n'est pas joint, rien n'est enregistré comme signé."
+msgstr "Se a assinatura eletrônica não for possível: imprima a ficha preenchida, faça-a assinar à mão e anexe aqui a digitalização do documento assinado. Enquanto a digitalização não for anexada, nada é registrado como assinado."
+
+msgid "Imprimer pour signature à la main"
+msgstr "Imprimir para assinatura à mão"
+
+msgid "Imprimer l'état des lieux seul"
+msgstr "Imprimir apenas o laudo de estado"
+
+#, php-format
+msgid "Dernière impression : %1$s, par %2$s."
+msgstr "Última impressão: %1$s, por %2$s."
+
+msgid "Joindre le scan signé"
+msgstr "Anexar a digitalização assinada"
+
+msgid "Scan du document signé"
+msgstr "Digitalização do documento assinado"
+
+#, php-format
+msgid "PDF, JPEG ou PNG, %d Mo maximum."
+msgstr "PDF, JPEG ou PNG, no máximo %d MB."
+
+msgid "La fiche passera à « Signé sur papier » et le lien de signature électronique déjà envoyé ne fonctionnera plus. Continuer ?"
+msgstr "A ficha passará para «Assinado em papel» e o link de assinatura eletrônica já enviado deixará de funcionar. Continuar?"
+
+msgid "La fiche passera à « Signé sur papier ». Continuer ?"
+msgstr "A ficha passará para «Assinado em papel». Continuar?"
+
+msgid "Joindre et marquer signée sur papier"
+msgstr "Anexar e marcar como assinada em papel"
+
+msgid "À la main, sur papier (scan joint par un technicien)"
+msgstr "À mão, em papel (digitalização anexada por um técnico)"
+
+msgid "Scan joint par"
+msgstr "Digitalização anexada por"
+
+msgid "Adresse IP (envoi du scan)"
+msgstr "Endereço IP (envio da digitalização)"
+
+msgid "Navigateur (envoi du scan)"
+msgstr "Navegador (envio da digitalização)"
+
+msgid "Empreinte du scan (SHA-256)"
+msgstr "Impressão digital da digitalização (SHA-256)"
+
+msgid "Scan joint le"
+msgstr "Digitalização anexada em"
+
+msgid "État des lieux du matériel"
+msgstr "Laudo de estado do equipamento"
+
+#, php-format
+msgid "Fiche « %1$s », référence n°%2$s"
+msgstr "Ficha «%1$s», referência n.º %2$s"
+
+msgid "À compléter à la main au moment de la remise ou du retour du matériel. Cochez une case par ligne."
+msgstr "A preencher à mão no momento da entrega ou devolução do equipamento. Marque uma caixa por linha."
+
+msgid "État de chaque élément"
+msgstr "Estado de cada item"
+
+msgid "Excellent"
+msgstr "Excelente"
+
+msgid "Endommagé"
+msgstr "Danificado"
+
+msgid "Schéma du matériel"
+msgstr "Esquema do equipamento"
+
+msgid "Légende des dommages"
+msgstr "Legenda dos danos"
+
+msgid "reportez sur le schéma le numéro du dommage constaté"
+msgstr "anote no esquema o número do dano constatado"
+
+msgid "rayure"
+msgstr "arranhão"
+
+msgid "choc"
+msgstr "impacto"
+
+msgid "usure"
+msgstr "desgaste"
+
+msgid "pièce manquante"
+msgstr "peça faltando"
+
+msgid "Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage majeur."
+msgstr "Pontos já registrados no GLPI: amarelo = dano leve, vermelho = dano grave."
+
+msgid "Notes"
+msgstr "Notas"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI."
+msgstr "Versão em papel da ficha n.º %1$s, gerada em %2$s: a assinar à mão. A digitalização assinada é depois anexada à ficha no GLPI."
+
+#, php-format
+msgid "pour le compte de %s"
+msgstr "em nome de %s"
+
+msgid "Date :"
+msgstr "Data:"
+
+msgid "Lieu :"
+msgstr "Local:"
+
+msgid "Signature, précédée de « Lu et approuvé » :"
+msgstr "Assinatura, precedida de «Lido e aprovado»:"
+
+msgid "Version papier, à signer à la main."
+msgstr "Versão em papel, a assinar à mão."
+
+msgid "Vérifiez les informations, complétez l'état des lieux en dernière page, puis faites signer chaque cadre. Le scan du document signé est ensuite joint à la fiche dans GLPI."
+msgstr "Verifique as informações, preencha o laudo de estado na última página e faça assinar cada quadro. A digitalização do documento assinado é depois anexada à ficha no GLPI."
+
+msgid "Observations ou réserves"
+msgstr "Observações ou ressalvas"
