@@ -5206,3 +5206,9 @@ msgstr "Revision date"
 
 msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
 msgstr "Printed in the document control header of every page, if it is enabled in the entity configuration (General tab). Change the revision when the template text changes: it applies to every form generated afterwards."
+
+msgid "Technicien de la fiche : le technicien responsable du matériel, s'il est renseigné"
+msgstr "Technician of the form: the technician in charge of the asset, if set"
+
+msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
+msgstr "The asset's \"Technician\" field then sets the technician of the form ({technicien} variable, notifications, drafts to send). Without a technician in charge, or if the box is unchecked, it is the person who generates the form, as before."

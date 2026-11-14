@@ -1652,7 +1652,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'itemtype'                    => $item->getType(),
            'items_id'                    => $item->getID(),
            'users_id'                    => $users_id,
-           'users_id_tech'               => Session::getLoginUserID() ?: 0,
+           'users_id_tech'               => self::resolveTechnicianId($item),
            'plugin_assetsign_templates_id'  => $template ? $template->getID() : 0,
            'plugin_assetsign_kits_id'    => self::resolveKitForAutomaticCreation($item, $type),
            'type'                        => $type,
@@ -1842,11 +1842,32 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
    }
 
+    /**
+     * Issue #280 : technicien de la fiche. Si l'entite l'a choisi (Config::technician_from_item,
+     * desactive par defaut), le technicien responsable du materiel (champ « Technicien » de GLPI)
+     * quand il est renseigne ; sinon, comme avant, la personne qui genere la fiche.
+     */
+   public static function resolveTechnicianId(CommonDBTM $item): int {
+       $sessionUser = (int) (Session::getLoginUserID() ?: 0);
+       $config = Config::getForEntity((int) ($item->fields['entities_id'] ?? 0));
+      if (empty($config->fields['technician_from_item'])) {
+          return $sessionUser;
+      }
+       $itemTech = (int) ($item->fields['users_id_tech'] ?? 0);
+      if ($itemTech > 0) {
+          $user = new \User();
+         if ($user->getFromDB($itemTech) && (int) $user->fields['is_active'] === 1 && (int) $user->fields['is_deleted'] === 0) {
+             return $itemTech;
+         }
+      }
+       return $sessionUser;
+   }
+
     /** Issue #163 : apercu du document tel qu'il partira, genere a la volee (rien n'est enregistre). */
    public function renderDraftPreviewPdf(): string {
        AssetsignItem::refreshSnapshots($this->getID());
        $builder = new Pdf\HandoverPdfBuilder();
-       return $builder->renderPdf($builder->renderHtml($this));
+       return $builder->renderPdf($builder->renderHtml($this), false, $builder->metadataFor($this));
    }
 
     /**
@@ -1912,7 +1933,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'itemtype'                       => $item->getType(),
            'items_id'                       => $item->getID(),
            'users_id'                       => $users_id,
-           'users_id_tech'                  => Session::getLoginUserID() ?: 0,
+           'users_id_tech'                  => self::resolveTechnicianId($item),
            'plugin_assetsign_templates_id'  => $template ? $template->getID() : 0,
            'plugin_assetsign_kits_id'       => self::resolveKitForAutomaticCreation($item, self::TYPE_RETURN),
            'plugin_assetsign_departures_id' => $departures_id,
@@ -2069,7 +2090,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'itemtype'                      => $itemtype,
            'items_id'                      => $items_id,
            'users_id'                      => $users_id,
-           'users_id_tech'                 => Session::getLoginUserID() ?: 0,
+           'users_id_tech'                 => self::resolveTechnicianId($item),
            'beneficiary_type'              => $beneficiaryType,
            'external_beneficiary_name'     => $beneficiaryType === self::BENEFICIARY_EXTERNAL ? $externalName : '',
            'external_beneficiary_contact'  => $beneficiaryType === self::BENEFICIARY_EXTERNAL ? $externalContact : '',

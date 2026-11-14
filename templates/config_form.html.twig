@@ -298,6 +298,14 @@
             <div class="form-text">{{ __('Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur qui respecte cette restriction : n\'affecte jamais la possibilité de le consulter ou de l\'imprimer.', 'assetsign') }}</div>
           </div>
 
+          {# Issue #280 : technicien de la fiche. #}
+          <div class="mb-3 form-check">
+            <input type="hidden" name="technician_from_item" value="0">
+            <input type="checkbox" name="technician_from_item" value="1" class="form-check-input" id="technician_from_item" {{ config.technician_from_item|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="technician_from_item">{{ __('Technicien de la fiche : le technicien responsable du matériel, s\'il est renseigné', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c\'est la personne qui génère la fiche, comme avant.', 'assetsign') }}</div>
+          </div>
+
           {# Issue #274 : en-tête de maîtrise documentaire (cartouche ISO) sur chaque page des PDF. #}
           <fieldset class="border rounded p-3 mb-3">
             <legend class="float-none w-auto px-2 fs-5"><i class="ti ti-file-certificate me-1"></i>{{ __('En-tête de maîtrise documentaire (ISO)', 'assetsign') }}</legend>

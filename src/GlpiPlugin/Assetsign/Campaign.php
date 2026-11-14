@@ -51,7 +51,10 @@ class Campaign extends Compat\Base\CampaignBase
            // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
            'doc_header'    => Pdf\DocumentControlHeader::forEntity((int) $this->fields['entities_id']),
        ]);
-       return $this->renderPdf($html);
+       return $this->renderPdf($html, false, Pdf\PdfMetadata::build(
+           'Campagne d\'attestation - ' . (string) $this->fields['name'],
+           (int) $this->fields['entities_id']
+       ));
    }
 
    public static function getTypeName($nb = 0): string {

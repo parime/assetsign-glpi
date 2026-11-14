@@ -68,6 +68,8 @@
     {% if signature_image|default(false) %}
         <p>{{ __('Document signé électroniquement le %1$s à %2$s', 'assetsign')|format(signed_at|date('d/m/Y'), signed_at|date('H:i')) }}</p>
         <img src="{{ signature_image }}" class="signature-img">
+        {# Issue #280 : titre GLPI du signataire, à défaut « Technicien ». #}
+        <p class="signer-title">{{ technician_title|default('') ?: __('Technicien', 'assetsign') }}</p>
         <p class="proof">
             {{ __('Signataire : %s', 'assetsign')|format(technician_name) }}
         </p>

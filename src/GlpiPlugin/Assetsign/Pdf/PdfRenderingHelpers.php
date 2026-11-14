@@ -25,8 +25,11 @@ trait PdfRenderingHelpers
      *        n'importe qui), seul un mot de passe proprietaire jetable est
      *        pose pour faire respecter les permissions par les lecteurs PDF
      *        qui les honorent.
+     * @param array<string, string> $metadata Issue #280 : metadonnees du PDF (Title, Author,
+     *        Subject, Creator ; cf. PdfMetadata::build()). Une valeur vide garde celle de Dompdf
+     *        (titre lu dans la balise <title>). Le createur « GLPI x - AssetSign y » est toujours pose.
      */
-   public function renderPdf(string $html, bool $protect = false): string {
+   public function renderPdf(string $html, bool $protect = false, array $metadata = []): string {
       // Issue #274 : « Page X sur Y » de l'en-tete de maitrise documentaire. Le total n'est connu
       // qu'apres un premier rendu (cf. DocumentControlHeader) : rendu a blanc pour compter les
       // pages, puis rendu definitif avec le total. Sans en-tete, un seul rendu, comme avant.
@@ -36,6 +39,12 @@ trait PdfRenderingHelpers
       }
 
        $dompdf = $this->renderDompdf($html);
+
+      foreach (['Creator' => PdfMetadata::creator()] + $metadata as $key => $value) {
+         if (in_array($key, ['Title', 'Author', 'Subject', 'Creator', 'Keywords'], true) && trim((string) $value) !== '') {
+             $dompdf->addInfo($key, (string) $value);
+         }
+      }
 
       if ($protect) {
           $canvas = $dompdf->getCanvas();

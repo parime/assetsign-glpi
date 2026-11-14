@@ -38,7 +38,11 @@ final class MaintenancePdfBuilder
    public function build(Maintenance $maintenance, ?string $signatureImage = null, ?string $signedAt = null): array {
        $html = $this->renderHtml($maintenance, $signatureImage, $signedAt);
        $protect = (bool) Config::getForEntity((int) $maintenance->fields['entities_id'])->fields['protect_pdf'];
-       $binary = $this->renderPdf($html, $protect);
+       $binary = $this->renderPdf($html, $protect, PdfMetadata::build(
+           $maintenance->getDocumentTitle(),
+           (int) $maintenance->fields['entities_id'],
+           PdfMetadata::personName($maintenance->getTechnician())
+       ));
        $hash = $signatureImage !== null ? hash('sha256', $binary) : null;
 
        return [
@@ -79,6 +83,8 @@ final class MaintenancePdfBuilder
            'company_name'        => $config->fields['company_name'] ?: null,
            'qr_data_uri'         => $qrDataUri,
            'document_title'      => $maintenance->getDocumentTitle(),
+           // Issue #280 : titre GLPI du technicien signataire (« Technicien » a defaut).
+           'technician_title'    => PdfMetadata::signerTitle($maintenance->getTechnician()),
            // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
            'doc_header'          => DocumentControlHeader::forEntity((int) $maintenance->fields['entities_id']),
        ]);
