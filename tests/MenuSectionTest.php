@@ -33,7 +33,7 @@ final class MenuSectionTest extends AssetsignTestCase
        MenuSection::showSection(Assetsign::class, Campaign::class);
        $html = (string) ob_get_clean();
 
-       $this->assertSame(4, substr_count($html, 'class="nav-link'));
+       $this->assertSame(5, substr_count($html, 'class="nav-link'));
        $this->assertSame(1, substr_count($html, 'nav-link active'));
        $this->assertMatchesRegularExpression('#nav-link active"[^>]*href="[^"]*front/campaign\.php"#', $html);
        $this->assertStringContainsString(Movement::getTypeName(2), $html);

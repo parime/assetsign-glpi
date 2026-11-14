@@ -26,6 +26,7 @@ assetsign/
 │   ├── ChecklistItem.php                                # checklists qualité réutilisables sur les mouvements Assetsign (V1, issue #74)
 │   ├── VenteDetails.php, DamageMarker.php             # données spécifiques Vente / état des lieux visuel
 │   ├── PassportEvent.php                                # Passeport matériel : agrege Assetsign/Maintenance en lecture seule
+│   ├── WipeAttestation.php, WipeRequirement.php         # attestation d'effacement des données et exigence par entité (#322)
 │   ├── Api/SignController.php                          # logique partagée par front/sign.php
 │   └── Compat/                                          # compatibilité GLPI 11 et 12 (version, client HTTP)
 │       └── Base/                                        # une classe parente par classe : propriétés typées en 12, non typées en 11

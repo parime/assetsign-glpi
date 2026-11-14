@@ -56,6 +56,9 @@ expect "front/assetsign.form.php : version papier de B"       $NF   "$(code "$P/
 expect "front/assetsign.form.php : etat des lieux papier de B" $NF  "$(code "$P/assetsign.form.php?id=$(id assetsign_B)&paper_pdf=condition")"
 expect "front/maintenance.form.php : maintenance de B"        $NF   "$(code "$P/maintenance.form.php?id=$(id maintenance_B)")"
 expect "front/movement.form.php : mouvement de B"             $NF   "$(code "$P/movement.form.php?id=$(id movement_B)")"
+# Issue #322 : attestation d'effacement des donnees.
+expect "front/wipeattestation.form.php : attestation de A"    200   "$(code "$P/wipeattestation.form.php?id=$(id wipe_A)")"
+expect "front/wipeattestation.form.php : attestation de B"    $NF   "$(code "$P/wipeattestation.form.php?id=$(id wipe_B)")"
 expect "front/departure.form.php : depart de A"               200   "$(code "$P/departure.form.php?id=$(id departure_A)")"
 expect "front/departure.form.php : depart de B"               $DENY "$(code "$P/departure.form.php?id=$(id departure_B)")"
 expect "front/campaign.form.php : campagne de A"              200   "$(code "$P/campaign.form.php?id=$(id campaign_A)")"
@@ -89,13 +92,13 @@ expect "front/assetsign.form.php : nouvelle attribution, PC de A" 200 "$(code "$
 expect "front/assetsign.form.php : nouvelle attribution, PC de B" $NF "$(code "$P/assetsign.form.php?itemtype=Computer&items_id=$(id computer_B)")"
 
 # --- Listes et tableaux : objets de A seulement (et la page ne plante pas) ---
-for list in front/assetsign.php front/maintenance.php front/movement.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php; do
+for list in front/assetsign.php front/maintenance.php front/movement.php front/wipeattestation.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php; do
   body=$(page "$BASE/plugins/assetsign/$list?all=1")
   expect "$list : la liste s'affiche" 200 "$(code "$BASE/plugins/assetsign/$list?all=1")"
   # Ces listes nomment les objets : le super-admin y voit B, le technicien jamais. Les autres ne
   # nomment pas les objets : elles doivent seulement s'afficher sans erreur et sans B.
   case "$list" in
-    front/assetsign.php|front/maintenance.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php)
+    front/assetsign.php|front/maintenance.php|front/wipeattestation.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php)
       shows "$list : objets de B" "securite B" "$SEE_B" "$body" ;;
     *)
       shows "$list : aucun objet de B" "securite B" non "$body" ;;
@@ -114,6 +117,8 @@ expect "front/assetsign.form.php : scan papier sur la feuille de B" $NF_POST "$(
 expect "front/assign_user_asset.php : attribuer un PC de B"  $NF_POST "$(post assign_user_asset.php "assign=1&itemtype=Computer&items_id=$(id computer_B)&users_id=$(id partant_A)")"
 expect "front/maintenance.form.php : maintenance d'un PC de B" $NF_POST "$(post maintenance.form.php "create=1&itemtype=Computer&items_id=$(id computer_B)")"
 expect "front/movement.form.php : mouvement d'un PC de B"    $NF_POST "$(post movement.form.php "create=1&itemtype=Computer&items_id=$(id computer_B)&locations_id_to=0")"
+expect "front/wipeattestation.form.php : attestation d'un PC de B" $NF_POST "$(post wipeattestation.form.php "create=1&itemtype=Computer&items_id=$(id computer_B)&method=overwrite&media_other=disque")"
+expect "front/wipeattestation.form.php : annuler l'attestation de B" $NF_POST "$(post wipeattestation.form.php "cancel_attestation=1&id=$(id wipe_B)&cancel_reason=test")"
 if [ "$ROLE" = limited ]; then
   # Appel AJAX : le refus est rendu en JSON ("success":false), pas par un code HTTP.
   marker=$(curl -s -c "$JAR" -b "$JAR" \

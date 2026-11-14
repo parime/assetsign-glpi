@@ -6037,3 +6037,346 @@ msgstr "Verifique as informações, preencha o laudo de estado na última págin
 
 msgid "Observations ou réserves"
 msgstr "Observações ou ressalvas"
+
+msgid "Attestation d'effacement enregistrée et signée."
+msgstr "Atestado de apagamento salvo e assinado."
+
+msgid "Une attestation d'effacement se crée depuis l'onglet « Effacement des données » du matériel concerné."
+msgstr "Um atestado de apagamento é criado na aba \"Apagamento de dados\" do equipamento em questão."
+
+msgid "Attestation annulée : elle ne compte plus pour la sortie du matériel."
+msgstr "Atestado cancelado: não conta mais para a saída do equipamento."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : l'entité l'exige avant un don, une vente ou une destruction."
+msgstr "Nenhum atestado de apagamento válido para este equipamento: a entidade o exige antes de uma doação, venda ou destruição."
+
+msgid "Aucune attestation d'effacement des données valable pour ce matériel : pensez à l'enregistrer avant un don, une vente ou une destruction."
+msgstr "Nenhum atestado de apagamento válido para este equipamento: lembre-se de registrá-lo antes de uma doação, venda ou destruição."
+
+msgid "Effacement des données"
+msgstr "Apagamento de dados"
+
+msgid "Attestations d'effacement des données"
+msgstr "Atestados de apagamento de dados"
+
+msgid "Attestation d'effacement des données"
+msgstr "Atestado de apagamento de dados"
+
+msgid "Effacement logiciel par réécriture (une ou plusieurs passes)"
+msgstr "Apagamento por software com sobrescrita (uma ou mais passagens)"
+
+msgid "Effacement sécurisé intégré au disque (Secure Erase, Sanitize)"
+msgstr "Apagamento seguro integrado ao disco (Secure Erase, Sanitize)"
+
+msgid "Effacement cryptographique (destruction de la clé de chiffrement)"
+msgstr "Apagamento criptográfico (destruição da chave de criptografia)"
+
+msgid "Réinitialisation d'usine avec chiffrement actif (téléphone, tablette)"
+msgstr "Restauração de fábrica com criptografia ativa (telefone, tablet)"
+
+msgid "Destruction physique du support (broyage, perçage, démagnétisation)"
+msgstr "Destruição física do suporte (trituração, perfuração, desmagnetização)"
+
+msgid "Aucune norme suivie"
+msgstr "Nenhuma norma seguida"
+
+msgid "NIST SP 800-88 : Clear"
+msgstr "NIST SP 800-88: Clear"
+
+msgid "NIST SP 800-88 : Purge"
+msgstr "NIST SP 800-88: Purge"
+
+msgid "NIST SP 800-88 : Destroy"
+msgstr "NIST SP 800-88: Destroy"
+
+msgid "Données irrécupérables avec les outils courants."
+msgstr "Dados irrecuperáveis com ferramentas comuns."
+
+msgid "Données irrécupérables même avec des moyens de laboratoire."
+msgstr "Dados irrecuperáveis mesmo com meios de laboratório."
+
+msgid "Support rendu physiquement inutilisable."
+msgstr "Suporte fisicamente inutilizado."
+
+msgid "Vérifié : aucune donnée récupérable"
+msgstr "Verificado: nenhum dado recuperável"
+
+msgid "Non vérifié"
+msgstr "Não verificado"
+
+msgid "Échec : des données restent lisibles"
+msgstr "Falha: dados ainda legíveis"
+
+msgid "Date de l'effacement"
+msgstr "Data do apagamento"
+
+msgid "Méthode"
+msgstr "Método"
+
+msgid "Norme"
+msgstr "Norma"
+
+msgid "Vérification"
+msgstr "Verificação"
+
+msgid "Outil utilisé"
+msgstr "Ferramenta utilizada"
+
+msgid "Annulée"
+msgstr "Cancelado"
+
+msgid "Disque"
+msgstr "Disco"
+
+#, php-format
+msgid "Volume %s"
+msgstr "Volume %s"
+
+msgid "Chiffré"
+msgstr "Criptografado"
+
+msgid "Partiellement chiffré"
+msgstr "Parcialmente criptografado"
+
+msgid "Non chiffré"
+msgstr "Não criptografado"
+
+msgid "To"
+msgstr "TB"
+
+msgid "Go"
+msgstr "GB"
+
+msgid "Mo"
+msgstr "MB"
+
+msgid "Choisissez la méthode d'effacement utilisée."
+msgstr "Escolha o método de apagamento utilizado."
+
+msgid "Norme d'effacement inconnue."
+msgstr "Norma de apagamento desconhecida."
+
+msgid "Résultat de vérification inconnu."
+msgstr "Resultado de verificação desconhecido."
+
+msgid "Indiquez au moins un support effacé : cochez un disque de l'inventaire ou saisissez-le."
+msgstr "Indique pelo menos um suporte apagado: marque um disco do inventário ou digite-o."
+
+msgid "Échec de la création de l'attestation."
+msgstr "Falha ao criar o atestado."
+
+msgid "Date de l'effacement invalide."
+msgstr "Data de apagamento inválida."
+
+msgid "La date de l'effacement ne peut pas être dans le futur."
+msgstr "A data do apagamento não pode estar no futuro."
+
+msgid "Le rapport joint est vide."
+msgstr "O relatório anexado está vazio."
+
+#, php-format
+msgid "Le rapport dépasse la taille maximale (%d Mo)."
+msgstr "O relatório excede o tamanho máximo (%d MB)."
+
+#, php-format
+msgid "Type de fichier refusé : le rapport doit être au format %s."
+msgstr "Tipo de arquivo recusado: o relatório deve estar no formato %s."
+
+msgid "Le contenu du rapport ne correspond pas à son type de fichier."
+msgstr "O conteúdo do relatório não corresponde ao tipo de arquivo."
+
+#, php-format
+msgid "Rapport d'effacement - %s"
+msgstr "Relatório de apagamento - %s"
+
+msgid "Cette attestation est déjà annulée."
+msgstr "Este atestado já está cancelado."
+
+msgid "Indiquez le motif de l'annulation."
+msgstr "Indique o motivo do cancelamento."
+
+msgid "Désactivé"
+msgstr "Desativado"
+
+msgid "Avertir (la fiche est créée, avec un avertissement)"
+msgstr "Avisar (a ficha é criada, com um aviso)"
+
+msgid "Bloquer (la fiche ne peut pas être envoyée)"
+msgstr "Bloquear (a ficha não pode ser enviada)"
+
+msgid "Réattribution à une autre personne"
+msgstr "Reatribuição a outra pessoa"
+
+msgid "ce don"
+msgstr "esta doação"
+
+msgid "cette vente"
+msgstr "esta venda"
+
+msgid "cette destruction"
+msgstr "esta destruição"
+
+msgid "cette réattribution"
+msgstr "esta reatribuição"
+
+#, php-format
+msgid "Attestation d'effacement des données exigée avant %s : enregistrez-la d'abord depuis l'onglet « Effacement des données » du matériel."
+msgstr "É exigido um atestado de apagamento antes de %s: registre-o primeiro na aba \"Apagamento de dados\" do equipamento."
+
+#, php-format
+msgid "Attention : aucune attestation d'effacement des données n'est enregistrée pour ce matériel avant %s. Pensez à l'ajouter depuis l'onglet « Effacement des données »."
+msgstr "Atenção: nenhum atestado de apagamento está registrado para este equipamento antes de %s. Lembre-se de adicioná-lo na aba \"Apagamento de dados\"."
+
+msgid "Enregistrer l'attestation"
+msgstr "Registrar o atestado"
+
+msgid "Avant qu'un matériel change de mains, le technicien enregistre une attestation d'effacement des données (onglet « Effacement des données » du matériel) : méthode, supports, outil, vérification, rapport joint, signature. Les fiches de don, de vente et de destruction la mentionnent dans leur PDF. Ce réglage décide si elle est exigée."
+msgstr "Antes que um equipamento mude de mãos, o técnico registra um atestado de apagamento (aba \"Apagamento de dados\" do equipamento): método, suportes, ferramenta, verificação, relatório anexado, assinatura. As fichas de doação, venda e destruição o mencionam no PDF. Esta configuração decide se ele é exigido."
+
+msgid "Attestation d'effacement exigée"
+msgstr "Atestado de apagamento exigido"
+
+msgid "Avertir : la fiche est créée et envoyée, avec un message au technicien. Bloquer : un don, une vente ou une destruction n'est pas créé, une réattribution reste en brouillon, tant qu'aucune attestation valable n'existe. Une attestation est valable si l'effacement a eu lieu après la dernière remise du matériel à une personne."
+msgstr "Avisar: a ficha é criada e enviada, com uma mensagem ao técnico. Bloquear: uma doação, venda ou destruição não é criada e uma reatribuição fica em rascunho, enquanto não houver atestado válido. Um atestado é válido se o apagamento ocorreu após a última entrega do equipamento a uma pessoa."
+
+msgid "Fiches concernées"
+msgstr "Fichas envolvidas"
+
+msgid "Voir les attestations et les matériels sortis sans attestation"
+msgstr "Ver os atestados e os equipamentos que saíram sem atestado"
+
+msgid "Attestation"
+msgstr "Atestado"
+
+#, php-format
+msgid "n°%1$d du %2$s"
+msgstr "n.º %1$d de %2$s"
+
+msgid "Réalisé par"
+msgstr "Realizado por"
+
+msgid "Empreinte de l'attestation (SHA-256)"
+msgstr "Impressão digital do atestado (SHA-256)"
+
+msgid "Aucune attestation d'effacement des données n'est enregistrée pour ce matériel."
+msgstr "Nenhum atestado de apagamento registrado para este equipamento."
+
+#, php-format
+msgid "Attestation n°%1$d : effacement réalisé le %2$s"
+msgstr "Atestado n.º %1$d: apagamento realizado em %2$s"
+
+msgid "Effacement"
+msgstr "Apagamento"
+
+msgid "Rapport de l'outil (SHA-256)"
+msgstr "Relatório da ferramenta (SHA-256)"
+
+msgid "Supports effacés"
+msgstr "Suportes apagados"
+
+msgid "Support"
+msgstr "Suporte"
+
+msgid "Capacité"
+msgstr "Capacidade"
+
+msgid "Chiffrement"
+msgstr "Criptografia"
+
+msgid "Je soussigné(e) atteste que les données des supports listés ci-dessus ont été effacées selon la méthode indiquée, avant que ce matériel ne soit donné, vendu, détruit ou réattribué."
+msgstr "Eu, abaixo assinado(a), atesto que os dados dos suportes listados acima foram apagados segundo o método indicado, antes que este equipamento seja doado, vendido, destruído ou reatribuído."
+
+#, php-format
+msgid "Attestation d'effacement n°%d : Document généré par GLPI (plugin assetsign)"
+msgstr "Atestado de apagamento n.º %d: Documento gerado pelo GLPI (plugin assetsign)"
+
+#, php-format
+msgid "Attestation d'effacement n°%d"
+msgstr "Atestado de apagamento n.º %d"
+
+msgid "Valable"
+msgstr "Válido"
+
+msgid "Plus valable (matériel remis depuis, ou échec)"
+msgstr "Não é mais válido (equipamento entregue desde então, ou falha)"
+
+msgid "Rapport de l'outil"
+msgstr "Relatório da ferramenta"
+
+#, php-format
+msgid "Annulée le %1$s par %2$s"
+msgstr "Cancelado em %1$s por %2$s"
+
+msgid "Annuler cette attestation"
+msgstr "Cancelar este atestado"
+
+msgid "Si l'attestation a été saisie par erreur : elle reste consultable mais ne compte plus pour la sortie du matériel."
+msgstr "Se o atestado foi registrado por engano: continua consultável, mas não conta mais para a saída do equipamento."
+
+msgid "Motif de l'annulation"
+msgstr "Motivo do cancelamento"
+
+msgid "Annuler l'attestation"
+msgstr "Cancelar o atestado"
+
+msgid "Matériels sortis sans attestation d'effacement"
+msgstr "Equipamentos que saíram sem atestado de apagamento"
+
+msgid "Toutes les fiches de don, de vente et de destruction ont une attestation d'effacement valable."
+msgstr "Todas as fichas de doação, venda e destruição têm um atestado de apagamento válido."
+
+#, php-format
+msgid "Fiches de don, de vente et de destruction dont le matériel n'avait pas d'attestation valable (les %d plus récentes sont examinées). Ouvrez l'onglet du matériel pour enregistrer l'attestation."
+msgstr "Fichas de doação, venda e destruição cujo equipamento não tinha atestado válido (as %d mais recentes são examinadas). Abra a aba do equipamento para registrar o atestado."
+
+msgid "Attestation valable : ce matériel peut sortir."
+msgstr "Atestado válido: este equipamento pode sair."
+
+msgid "Attestation exigée avant la sortie de ce matériel."
+msgstr "Atestado exigido antes da saída deste equipamento."
+
+msgid "Attestation recommandée avant la sortie de ce matériel."
+msgstr "Atestado recomendado antes da saída deste equipamento."
+
+#, php-format
+msgid "Concerne : %s."
+msgstr "Aplica-se a: %s."
+
+msgid "Aucune attestation d'effacement pour ce matériel."
+msgstr "Nenhum atestado de apagamento para este equipamento."
+
+msgid "Avant de donner, vendre, détruire ou réattribuer ce matériel, effacez ses données puis enregistrez ici comment cela a été fait."
+msgstr "Antes de doar, vender, destruir ou reatribuir este equipamento, apague seus dados e registre aqui como foi feito."
+
+msgid "Nouvelle attestation d'effacement"
+msgstr "Novo atestado de apagamento"
+
+msgid "Choisissez la méthode utilisée"
+msgstr "Escolha o método utilizado"
+
+msgid "Norme suivie"
+msgstr "Norma seguida"
+
+msgid "Ex. nom et version du logiciel d'effacement"
+msgstr "Ex.: nome e versão do software de apagamento"
+
+msgid "Aucun disque ni volume dans l'inventaire de ce matériel : décrivez les supports ci-dessous."
+msgstr "Nenhum disco ou volume no inventário deste equipamento: descreva os suportes abaixo."
+
+msgid "Autres supports, un par ligne (ex. mémoire interne du téléphone, clé USB n° de série...)"
+msgstr "Outros suportes, um por linha (ex.: memória interna do telefone, pen drive n.º de série...)"
+
+msgid "Résultat de la vérification"
+msgstr "Resultado da verificação"
+
+msgid "Une attestation en échec est conservée mais ne permet pas la sortie du matériel."
+msgstr "Um atestado com falha é mantido, mas não permite a saída do equipamento."
+
+msgid "Rapport de l'outil (facultatif)"
+msgstr "Relatório da ferramenta (opcional)"
+
+msgid "Joint au matériel ; son empreinte SHA-256 figure sur l'attestation."
+msgstr "Anexado ao equipamento; sua impressão digital SHA-256 consta no atestado."
+
+msgid "Signer et enregistrer l'attestation"
+msgstr "Assinar e salvar o atestado"

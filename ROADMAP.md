@@ -10,6 +10,8 @@ Ce document liste ce qui est **envisagé**, pas engagé sur une date précise. P
 
 ## Réalisé récemment (2026-11-14)
 
+- **Attestation d'effacement des données** (issue #322) : onglet « Effacement des données » du matériel, attestation signée par le technicien (PDF, empreinte SHA-256, rapport de l'outil), exigence par entité (avertir ou bloquer) pour le don, la vente, la destruction et la réattribution, mention dans les PDF de sortie, rattrapage des matériels sortis sans attestation. Non fait : preuve transmise automatiquement à GRC Manager (A.7.14), à brancher côté grcmanager en lisant la table `glpi_plugin_assetsign_wipeattestations`.
+
 - **Version papier** (issue #276) : PDF pré-rempli à signer à la main, état des lieux imprimable (une page A4), scan signé joint à la fiche (statut « Signé sur papier », distinct de la signature électronique, preuve SHA-256). Non fait : contre-signature sur papier d'une fiche déjà signée électroniquement par le bénéficiaire, et notification « signée » à l'arrivée du scan.
 
 ## Réalisé récemment (2026-10-05)

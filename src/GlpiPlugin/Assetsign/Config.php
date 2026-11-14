@@ -38,7 +38,7 @@ class Config extends Compat\Base\ConfigBase
         'protect_pdf'                         => 0,
         'enable_passport'                     => 1,
         'passport_retention_years'            => 3,
-        'passport_visible_types'              => '[0,1,2,3,4,5,6]',
+        'passport_visible_types'              => '[0,1,2,3,4,5,6,7]',
         'show_infocom_dates'                  => 1,
         'show_linked_tickets'                 => 1,
         'enable_health_score'                 => 1,
@@ -197,6 +197,10 @@ class Config extends Compat\Base\ConfigBase
         // Issue #280 : technicien de la fiche = technicien responsable du materiel s'il existe.
         // Desactive par defaut : la fiche garde la personne qui la genere, comme avant.
         'technician_from_item'                => 0,
+        // Issue #322 : attestation d'effacement exigee avant une sortie de materiel. Desactivee par
+        // defaut ; l'administrateur choisit d'avertir ou de bloquer, et pour quels types de fiche.
+        'wipe_requirement'                    => 0,
+        'wipe_required_types'                 => '[3,4]',
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -315,6 +319,10 @@ class Config extends Compat\Base\ConfigBase
            ],
            'passport_type_labels'   => PassportEvent::getTypeLabels(),
            'passport_visible_types' => $config->getPassportVisibleTypes(),
+           // Issue #322 : attestation d'effacement exigee.
+           'wipe_mode_labels'    => WipeRequirement::getModeLabels(),
+           'wipe_type_labels'    => WipeRequirement::getTypeLabels(),
+           'wipe_required_types' => WipeRequirement::normalizeTypes($config->fields['wipe_required_types'] ?? '[]'),
        ]);
    }
 
@@ -875,6 +883,9 @@ class Config extends Compat\Base\ConfigBase
            // Issue #280 : technicien responsable du materiel.
            'technician_from_item' => (int) !empty($input['technician_from_item']),
            'doc_header_doc_type' => mb_substr(trim((string) ($input['doc_header_doc_type'] ?? '')), 0, Pdf\DocumentControlHeader::MAX_LENGTH),
+           // Issue #322 : attestation d'effacement exigee (mode et types de fiche concernes).
+           'wipe_requirement'    => WipeRequirement::normalizeMode($input['wipe_requirement'] ?? 0),
+           'wipe_required_types' => json_encode(WipeRequirement::normalizeTypes($input['wipe_required_types'] ?? WipeRequirement::DEFAULT_TYPES)),
        ];
 
        // Issue #229 : sans le plugin Fields (desactive un temps), le choix enregistre est conserve.
@@ -1044,7 +1055,7 @@ class Config extends Compat\Base\ConfigBase
     /** Types d'evenement (PassportEvent::TYPE_*) a afficher dans la frise du Passeport materiel. */
    public function getPassportVisibleTypes(): array {
        $decoded = json_decode($this->fields['passport_visible_types'] ?? '', true);
-       return is_array($decoded) ? array_map('intval', $decoded) : [0, 1, 2, 3, 4, 5, 6];
+       return is_array($decoded) ? array_map('intval', $decoded) : [0, 1, 2, 3, 4, 5, 6, 7];
    }
 
    /** Couleur effective d'un score de santé, selon les seuils de l'entité. */
@@ -1192,6 +1203,8 @@ class Config extends Compat\Base\ConfigBase
                 `doc_header_enabled` tinyint NOT NULL DEFAULT 0,
                 `doc_header_doc_type` varchar(255) NOT NULL DEFAULT '',
                 `technician_from_item` tinyint NOT NULL DEFAULT 0,
+                `wipe_requirement` int NOT NULL DEFAULT 0,
+                `wipe_required_types` varchar(255) NOT NULL DEFAULT '[3,4]',
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -1329,6 +1342,11 @@ class Config extends Compat\Base\ConfigBase
          // Issue #280 : technicien responsable du materiel, desactive (rien ne change).
          if (!$DB->fieldExists($table, 'technician_from_item')) {
              $migration->addField($table, 'technician_from_item', 'bool', ['value' => 0]);
+         }
+         if (!$DB->fieldExists($table, 'wipe_requirement')) {
+             // Issue #322 : attestation d'effacement exigee, desactivee par defaut.
+             $migration->addField($table, 'wipe_requirement', 'integer', ['value' => 0]);
+             $migration->addField($table, 'wipe_required_types', 'string', ['value' => '[3,4]']);
              $migration->migrationOneTable($table);
          }
          // Issue #224 : re-signature quand la charte change.

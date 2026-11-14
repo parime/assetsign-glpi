@@ -194,6 +194,12 @@ function plugin_init_assetsign(): void {
     // qui veut hériter de cet onglet sans le réécrire (CommonDBTM::defineTabs()
     // ajoute automatiquement l'onglet Document dès que le type figure ici).
     $CFG_GLPI['document_types'][] = \GlpiPlugin\Assetsign\Movement::class;
+    // Issue #322 : attestations d'effacement des donnees, onglet sur les memes materiels geres
+    // (le PDF signe et le rapport de l'outil leur sont lies par Document_Item).
+    Plugin::registerClass(\GlpiPlugin\Assetsign\WipeAttestation::class, [
+        'addtabon' => $manageableItemtypes,
+    ]);
+    $CFG_GLPI['document_types'][] = \GlpiPlugin\Assetsign\WipeAttestation::class;
 
     // --- Notifications ------------------------------------------------------------
     // Rien a enregistrer explicitement : pour un itemtype namespace (GlpiPlugin\Assetsign\Assetsign),

@@ -1,0 +1,29 @@
+{# Issue #322 : rattrapage des matériels sortis sans attestation d'effacement valable. #}
+<div class="card mb-3">
+  <div class="card-header d-flex align-items-center gap-2">
+    <h3 class="card-title mb-0"><i class="ti ti-alert-triangle me-2 {{ exits is empty ? 'text-success' : 'text-warning' }}"></i>{{ __('Matériels sortis sans attestation d\'effacement', 'assetsign') }}</h3>
+    <span class="badge {{ exits is empty ? 'bg-green-lt' : 'bg-orange-lt' }}">{{ exits|length }}</span>
+  </div>
+  {% if exits is empty %}
+    <div class="card-body text-secondary"><i class="ti ti-circle-check me-1 text-success"></i>{{ __('Toutes les fiches de don, de vente et de destruction ont une attestation d\'effacement valable.', 'assetsign') }}</div>
+  {% else %}
+    <div class="card-body pb-0 text-secondary small">{{ __('Fiches de don, de vente et de destruction dont le matériel n\'avait pas d\'attestation valable (les %d plus récentes sont examinées). Ouvrez l\'onglet du matériel pour enregistrer l\'attestation.', 'assetsign')|format(limit) }}</div>
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <thead><tr><th>{{ __('Référence', 'assetsign') }}</th><th>{{ __('Type', 'assetsign') }}</th><th>{{ __('Matériel', 'assetsign') }}</th><th>{{ __('Créée le', 'assetsign') }}</th><th>{{ __('Statut', 'assetsign') }}</th><th></th></tr></thead>
+        <tbody>
+          {% for e in exits %}
+            <tr>
+              <td><a href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ e.id }}">{{ e.reference }}</a></td>
+              <td>{{ e.type }}</td>
+              <td>{% if e.item_url %}<a href="{{ e.item_url }}">{{ e.item }}</a>{% else %}{{ e.item }}{% endif %}</td>
+              <td>{{ e.date|formatted_datetime }}</td>
+              <td>{{ e.status }}</td>
+              <td>{% if e.tab_url %}<a href="{{ e.tab_url }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-eraser me-1"></i>{{ __('Enregistrer l\'attestation', 'assetsign') }}</a>{% endif %}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</div>

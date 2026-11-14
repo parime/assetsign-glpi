@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Attestation d'effacement des données avant un don, une vente, une destruction ou une réattribution
+  (#322, ISO 27001 A.7.14 et A.8.10) : onglet « Effacement des données » sur chaque matériel (date,
+  méthode, niveau NIST SP 800-88 facultatif, supports repris de l'inventaire GLPI, outil, résultat de
+  la vérification, rapport de l'outil joint avec son empreinte SHA-256), signée par le technicien,
+  PDF avec l'en-tête de maîtrise documentaire et empreinte SHA-256 ; annulation avec motif ; événement
+  du passeport matériel ; mention dans le PDF des fiches de don, de vente et de destruction ; page de
+  rattrapage des matériels sortis sans attestation. Réglage par entité (désactivé par défaut,
+  exporté avec la configuration) : avertir ou bloquer, pour le don, la vente, la destruction ou la
+  réattribution à une autre personne.
+
 ### Changed
 
 - Fichiers de citation et d'attribution : `CITATION.cff`, `NOTICE`, `AGENTS.md` (consignes de licence

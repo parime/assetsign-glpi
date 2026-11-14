@@ -197,6 +197,9 @@ final class ConfigTransfer
       'doc_header_doc_type'                  => ['string', Pdf\DocumentControlHeader::MAX_LENGTH],
       // Issue #280 : technicien responsable du matériel.
       'technician_from_item'                 => ['bool'],
+      // Issue #322 : attestation d'effacement exigée avant une sortie de matériel.
+      'wipe_requirement'                     => ['enum', [0, 1, 2]],
+      'wipe_required_types'                  => ['wipe_types'],
    ];
 
    /** @return array<string, array<int, mixed>> */
@@ -258,6 +261,7 @@ final class ConfigTransfer
          case 'itemtypes':
             return array_map('strval', self::decodeList($value));
          case 'passport_types':
+         case 'wipe_types':
             return array_map('intval', self::decodeList($value));
          case 'fields_containers':
             return array_values(array_filter(array_map(
@@ -470,6 +474,11 @@ final class ConfigTransfer
                if (array_diff($value, $known) === []) {
                   return array_values(array_unique($value));
                }
+            }
+            break;
+         case 'wipe_types':
+            if (self::isListOf($value, 'is_int') && array_diff($value, WipeRequirement::TYPES) === []) {
+               return array_values(array_unique($value));
             }
             break;
          case 'states':
@@ -845,7 +854,7 @@ final class ConfigTransfer
       unset($input['chat_webhook_url'], $input['provider_config']);
 
       foreach (self::SCHEMA as $key => $spec) {
-         if (in_array($spec[0], ['states', 'passport_types', 'fields_containers'], true)) {
+         if (in_array($spec[0], ['states', 'passport_types', 'wipe_types', 'fields_containers'], true)) {
             $input[$key] = array_map('intval', self::decodeList($current[$key] ?? '[]'));
          }
       }
@@ -887,7 +896,7 @@ final class ConfigTransfer
          $value = array_map(static fn ($id) => $stateNames[(int) $id] ?? '#' . (int) $id, self::decodeList($value));
       } else if (($type === 'state' || $type === 'handed_state') && (int) $value > 0) {
          $value = $stateNames[(int) $value] ?? '#' . (int) $value;
-      } else if (in_array($type, ['itemtypes', 'passport_types', 'fields_containers'], true)) {
+      } else if (in_array($type, ['itemtypes', 'passport_types', 'wipe_types', 'fields_containers'], true)) {
          $value = self::decodeList($value);
       }
       if (is_array($value)) {
