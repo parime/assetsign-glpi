@@ -116,7 +116,12 @@
     <table class="table table-striped">
       <tr>
         <th>{{ __('Statut', 'assetsign') }}</th>
-        <td>{{ statuses[item.fields.status] }}</td>
+        <td>
+          {# Issue #276 : pastille distincte pour une fiche signée sur papier. #}
+          <span class="badge {{ status_badges[item.fields.status]|default('bg-secondary-lt') }}">
+            {% if paper.is_signed|default(false) %}<i class="ti ti-writing-sign me-1"></i>{% endif %}{{ statuses[item.fields.status] }}
+          </span>
+        </td>
       </tr>
       <tr>
         <th>{{ __('Matériel', 'assetsign') }}</th>
@@ -149,11 +154,20 @@
         <th>{{ __('Nombre de relances', 'assetsign') }}</th>
         <td>{{ reminders }}</td>
       </tr>
-      {% if item.fields.document_id_unsigned or item.fields.document_id_signed or item.fields.document_id_cosigned %}
+      {% if paper.is_signed|default(false) and paper.signature_date %}
+      <tr>
+        <th>{{ __('Date de signature indiquée sur le papier', 'assetsign') }}</th>
+        <td>{{ paper.signature_date|formatted_date }}</td>
+      </tr>
+      {% endif %}
+      {% if item.fields.document_id_unsigned or item.fields.document_id_signed or item.fields.document_id_cosigned or item.fields.document_id_paper_scan|default(0) %}
       <tr>
         <th>{{ __('PDF', 'assetsign') }}</th>
         <td>
-          {% if item.fields.document_id_cosigned %}
+          {% if item.fields.document_id_paper_scan|default(0) %}
+            {# Issue #276 : scan du papier signé à la main (aucun PDF signé électroniquement). #}
+            <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_paper_scan }}" target="_blank"><i class="ti ti-writing-sign me-1"></i>{{ __('Télécharger (scan signé sur papier)', 'assetsign') }}</a>
+          {% elseif item.fields.document_id_cosigned %}
             {# Signatures multiples (issue #143) : PDF final a deux signatures,
                prioritaire sur document_id_signed ci-dessous (qui ne reste alors
                que le PDF intermediaire signe par le seul beneficiaire). #}
@@ -162,7 +176,7 @@
             <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_signed }}" target="_blank">{{ __('Télécharger (signé)', 'assetsign') }}{{ cosigner_pending ? ' ' ~ __('(bénéficiaire uniquement)', 'assetsign') : '' }}</a>
           {% endif %}
           {% if item.fields.document_id_unsigned %}
-            {% if item.fields.document_id_signed or item.fields.document_id_cosigned %} - {% endif %}
+            {% if item.fields.document_id_signed or item.fields.document_id_cosigned or item.fields.document_id_paper_scan|default(0) %} - {% endif %}
             <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ item.fields.document_id_unsigned }}" target="_blank">{{ __('Télécharger (non signé)', 'assetsign') }}</a>
           {% endif %}
         </td>
@@ -230,6 +244,62 @@
         </form>
       {% endif %}
     </div>
+
+    {# Issue #276 : version papier, quand la signature électronique n'est pas possible. #}
+    {% if paper.is_signed|default(false) %}
+      <div class="alert alert-teal mt-4 d-flex align-items-start gap-2" role="status">
+        <i class="ti ti-writing-sign fs-2"></i>
+        <div>
+          <div class="fw-bold">{{ __('Fiche signée à la main, sur papier', 'assetsign') }}</div>
+          <div>{{ __('Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est le scan joint (empreinte ci-dessous).', 'assetsign')|format(paper.scan_by, item.fields.date_signed|default('')) }}</div>
+          {% if paper.scan_id %}
+            <a class="btn btn-sm btn-outline-teal mt-2" href="{{ config('root_doc') }}/front/document.send.php?docid={{ paper.scan_id }}" target="_blank"><i class="ti ti-download me-1"></i>{{ __('Ouvrir le scan signé', 'assetsign') }}</a>
+          {% endif %}
+        </div>
+      </div>
+    {% elseif paper.can_act|default(false) %}
+      <div class="card mt-4" id="assetsign-paper">
+        <div class="card-header">
+          <h3 class="card-title"><i class="ti ti-printer me-1"></i>{{ __('Version papier (signature à la main)', 'assetsign') }}</h3>
+        </div>
+        <div class="card-body">
+          <p class="text-muted mb-3">{{ __('Si la signature électronique n\'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n\'est pas joint, rien n\'est enregistré comme signé.', 'assetsign') }}</p>
+          <div class="d-flex flex-wrap gap-2 mb-2">
+            <a class="btn btn-outline-primary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&paper_pdf=form">
+              <i class="ti ti-printer me-1"></i>{{ __('Imprimer pour signature à la main', 'assetsign') }}
+            </a>
+            <a class="btn btn-outline-secondary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&paper_pdf=condition">
+              <i class="ti ti-clipboard-check me-1"></i>{{ __('Imprimer l\'état des lieux seul', 'assetsign') }}
+            </a>
+          </div>
+          {% if paper.printed_at %}
+            <p class="small text-muted mb-3"><i class="ti ti-history me-1"></i>{{ __('Dernière impression : %1$s, par %2$s.', 'assetsign')|format(paper.printed_at, paper.printed_by) }}</p>
+          {% endif %}
+
+          <h4 class="mt-3"><i class="ti ti-upload me-1"></i>{{ __('Joindre le scan signé', 'assetsign') }}</h4>
+          <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" enctype="multipart/form-data" class="row g-3 align-items-end">
+            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="id" value="{{ item.fields.id }}">
+            <div class="col-md-5">
+              <label class="form-label" for="assetsign-paper-scan">{{ __('Scan du document signé', 'assetsign') }}</label>
+              <input type="file" name="paper_scan" id="assetsign-paper-scan" class="form-control" required
+                     accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+              <div class="form-text">{{ __('PDF, JPEG ou PNG, %d Mo maximum.', 'assetsign')|format(paper.max_mb) }}</div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="assetsign-paper-date">{{ __('Date de signature indiquée sur le papier', 'assetsign') }}</label>
+              <input type="date" name="paper_signature_date" id="assetsign-paper-date" class="form-control" value="{{ paper.today }}" max="{{ paper.today }}"{% if paper.min_date %} min="{{ paper.min_date }}"{% endif %}>
+            </div>
+            <div class="col-md-4">
+              <button type="submit" name="attach_paper_scan" class="btn btn-primary"
+                      onclick="return confirm('{{ (paper.link_was_sent ? __('La fiche passera à « Signé sur papier » et le lien de signature électronique déjà envoyé ne fonctionnera plus. Continuer ?', 'assetsign') : __('La fiche passera à « Signé sur papier ». Continuer ?', 'assetsign'))|e('js') }}');">
+                <i class="ti ti-writing-sign me-1"></i>{{ __('Joindre et marquer signée sur papier', 'assetsign') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    {% endif %}
 
     {% if delegate|default(null) %}
       <div class="alert alert-warning mt-4">
@@ -304,7 +374,7 @@
           </tr>
           <tr>
             <th>{{ __('Méthode de signature', 'assetsign') }}</th>
-            <td>{% if proof.signature_method|default('drawn') == 'typed' %}<i class="ti ti-keyboard me-1"></i>{{ __('Nom tapé', 'assetsign') }}{% else %}<i class="ti ti-signature me-1"></i>{{ __('Tracé à l\'écran', 'assetsign') }}{% endif %}</td>
+            <td>{% if proof.signature_method|default('drawn') == 'paper' %}<i class="ti ti-writing-sign me-1"></i>{{ __('À la main, sur papier (scan joint par un technicien)', 'assetsign') }}{% elseif proof.signature_method|default('drawn') == 'typed' %}<i class="ti ti-keyboard me-1"></i>{{ __('Nom tapé', 'assetsign') }}{% else %}<i class="ti ti-signature me-1"></i>{{ __('Tracé à l\'écran', 'assetsign') }}{% endif %}</td>
           </tr>
           {% if proof.witness_name|default('') is not empty %}
           {# Signature sur place (issue #152) : technicien temoin. #}
@@ -313,20 +383,28 @@
             <td><i class="ti ti-device-tablet me-1"></i>{{ proof.witness_name }}</td>
           </tr>
           {% endif %}
+          {% set proof_on_paper = proof.signature_method|default('drawn') == 'paper' %}
+          {% if proof_on_paper %}
+          {# Issue #276 : l'adresse IP et le navigateur sont ceux du technicien qui a joint le scan. #}
           <tr>
-            <th>{{ __('Adresse IP', 'assetsign') }}</th>
+            <th>{{ __('Scan joint par', 'assetsign') }}</th>
+            <td>{{ paper.scan_by|default('') }}</td>
+          </tr>
+          {% endif %}
+          <tr>
+            <th>{{ proof_on_paper ? __('Adresse IP (envoi du scan)', 'assetsign') : __('Adresse IP', 'assetsign') }}</th>
             <td>{{ proof.ip_address|default('') }}</td>
           </tr>
           <tr>
-            <th>{{ __('Navigateur / appareil', 'assetsign') }}</th>
+            <th>{{ proof_on_paper ? __('Navigateur (envoi du scan)', 'assetsign') : __('Navigateur / appareil', 'assetsign') }}</th>
             <td>{{ proof.user_agent|default('') }}</td>
           </tr>
           <tr>
-            <th>{{ __('Empreinte du document (SHA-256)', 'assetsign') }}</th>
+            <th>{{ proof_on_paper ? __('Empreinte du scan (SHA-256)', 'assetsign') : __('Empreinte du document (SHA-256)', 'assetsign') }}</th>
             <td><code>{{ proof.document_hash|default('') }}</code></td>
           </tr>
           <tr>
-            <th>{{ __('Horodatage', 'assetsign') }}</th>
+            <th>{{ proof_on_paper ? __('Scan joint le', 'assetsign') : __('Horodatage', 'assetsign') }}</th>
             <td>{{ proof.signed_at|default('') }}</td>
           </tr>
         </table>

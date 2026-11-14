@@ -157,7 +157,7 @@ class Departure extends Compat\Base\DepartureBase
             'items_id'   => $item->getID(),
             'users_id'   => $usersId,
             'type'       => [Assetsign::TYPE_HANDOVER, Assetsign::TYPE_RETURN],
-            'status'     => Assetsign::STATUS_SIGNED,
+            'status'     => Assetsign::STATUSES_SIGNED,
             'is_deleted' => 0,
          ],
          'ORDER'  => ['date_signed DESC', 'id DESC'],

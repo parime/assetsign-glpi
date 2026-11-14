@@ -58,6 +58,16 @@ class Assetsign extends Compat\Base\AssetsignBase
      * ENTIEREMENT signee) : voir markAwaitingCosignature()/markCosigned().
      */
    public const STATUS_AWAITING_COSIGNATURE = 9;
+    /**
+     * Issue #276 : fiche signee A LA MAIN sur la version papier, dont le scan a ete joint par un
+     * technicien (cf. PaperSignature::attachScan()). Statut terminal distinct de STATUS_SIGNED :
+     * aucune signature electronique n'a eu lieu, la preuve est le scan (empreinte SHA-256 du
+     * fichier joint), pas un PDF signe et horodate par le plugin.
+     */
+   public const STATUS_SIGNED_ON_PAPER = 10;
+
+    /** Issue #276 : fiche entierement signee, electroniquement ou a la main (scan joint). */
+   public const STATUSES_SIGNED = [self::STATUS_SIGNED, self::STATUS_SIGNED_ON_PAPER];
 
     // --- Beneficiaire ---------------------------------------------------------------
     /** Beneficiaire = un compte utilisateur GLPI existant (`users_id`). */
@@ -360,6 +370,17 @@ class Assetsign extends Compat\Base\AssetsignBase
            'massiveaction' => false,
        ];
 
+       // Issue #276 : scan de la version papier signee a la main (lien de telechargement).
+       $tab[] = [
+           'id'            => 16,
+           'table'         => self::getTable(),
+           'field'         => 'document_id_paper_scan',
+           'name'          => __('Scan signé sur papier', 'assetsign'),
+           'datatype'      => 'specific',
+           'nosearch'      => true,
+           'massiveaction' => false,
+       ];
+
        return $tab;
    }
 
@@ -404,13 +425,17 @@ class Assetsign extends Compat\Base\AssetsignBase
       if ($field === 'type') {
           return self::getTypes()[$values['type']] ?? $values['type'];
       }
-      if ($field === 'document_id_unsigned' || $field === 'document_id_signed') {
+      if (in_array($field, ['document_id_unsigned', 'document_id_signed', 'document_id_paper_scan'], true)) {
           $documents_id = (int) ($values[$field] ?? 0);
          if ($documents_id <= 0) {
              return '';
          }
           global $CFG_GLPI;
-          $label = $field === 'document_id_signed' ? __('Télécharger (signé)', 'assetsign') : __('Télécharger (non signé)', 'assetsign');
+          $label = match ($field) {
+              'document_id_signed'     => __('Télécharger (signé)', 'assetsign'),
+              'document_id_paper_scan' => __('Télécharger (scan signé sur papier)', 'assetsign'),
+              default                  => __('Télécharger (non signé)', 'assetsign'),
+          };
           return TwigBlocks::fragment('components/document_link.html.twig', [
               'url'   => $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documents_id,
               'label' => $label,
@@ -431,7 +456,10 @@ class Assetsign extends Compat\Base\AssetsignBase
            'item'         => $this,
            'params'       => $options,
            'statuses'     => self::getStatuses(),
+           'status_badges' => self::getStatusBadgeClasses(),
            'types'        => self::getTypes(),
+           // Issue #276 : version papier (impression, scan signe joint).
+           'paper'        => $this->isNewID($ID) ? null : $this->getPaperDisplayData(),
            'beneficiary'  => $this->isNewID($ID) ? [] : $this->getBeneficiary(),
            'target_item'  => $this->isNewID($ID) ? [] : $this->getTargetItem(),
            'reminders'    => $this->isNewID($ID) ? 0 : Reminder::countForAssetsign((int) $ID),
@@ -519,7 +547,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            // beneficiaire deviendrait invisible cote admin des que le responsable
            // contre-signe (Signature::getForAssetsign() ne renverrait plus alors
            // que la preuve la plus recente, celle du responsable).
-           'signature_proofs' => (!$this->isNewID($ID) && in_array((int) $this->fields['status'], [self::STATUS_SIGNED, self::STATUS_AWAITING_COSIGNATURE], true))
+           'signature_proofs' => (!$this->isNewID($ID) && in_array((int) $this->fields['status'], [...self::STATUSES_SIGNED, self::STATUS_AWAITING_COSIGNATURE], true))
                ? Signature::getAllForAssetsign((int) $ID)
                : [],
            'cosigner'         => $this->isNewID($ID) ? null : $this->getCosigner(),
@@ -558,6 +586,30 @@ class Assetsign extends Compat\Base\AssetsignBase
        ]);
 
        return true;
+   }
+
+    /**
+     * Issue #276 : bloc « Version papier » de la fiche : actions possibles (droit de modification et
+     * statut compatible) et trace (derniere impression, scan joint, par qui, date portee sur le papier).
+     *
+     * @return array<string, mixed>
+     */
+   public function getPaperDisplayData(): array {
+       $status = (int) $this->fields['status'];
+       return [
+           'can_act'        => \Session::haveRight(self::$rightname, UPDATE) && PaperSignature::isAvailableFor($this),
+           'is_signed'      => $status === self::STATUS_SIGNED_ON_PAPER,
+           'printed_at'     => (string) ($this->fields['paper_printed_at'] ?? ''),
+           'printed_by'     => (int) ($this->fields['paper_printed_by_users_id'] ?? 0) > 0 ? PaperSignature::userName((int) $this->fields['paper_printed_by_users_id']) : '',
+           'scan_id'        => (int) ($this->fields['document_id_paper_scan'] ?? 0),
+           'scan_by'        => (int) ($this->fields['paper_scan_users_id'] ?? 0) > 0 ? PaperSignature::userName((int) $this->fields['paper_scan_users_id']) : '',
+           'signature_date' => (string) ($this->fields['paper_signature_date'] ?? ''),
+           'max_mb'         => (int) (PaperSignature::MAX_SCAN_BYTES / 1024 / 1024),
+           'today'          => date('Y-m-d'),
+           'min_date'       => substr((string) ($this->fields['date_creation'] ?? ''), 0, 10),
+           // Fiche deja envoyee : le lien electronique sera invalide par le scan (prevenir avant).
+           'link_was_sent'  => in_array($status, [self::STATUS_SENT, self::STATUS_VIEWED], true),
+       ];
    }
 
     /** @return array<int, array> Marqueurs de dommages regroupes par view_index, pour assetsign_form.html.twig et front/sign.php. */
@@ -804,6 +856,8 @@ class Assetsign extends Compat\Base\AssetsignBase
            self::STATUS_CANCELLED              => 'bg-secondary-lt',
            self::STATUS_COMPLETED_NO_SIGNATURE => 'bg-green-lt',
            self::STATUS_AWAITING_COSIGNATURE   => 'bg-orange-lt',
+           // Issue #276 : couleur distincte du vert de la signature electronique.
+           self::STATUS_SIGNED_ON_PAPER        => 'bg-teal-lt',
        ];
    }
 
@@ -862,7 +916,7 @@ class Assetsign extends Compat\Base\AssetsignBase
        $groups = [
            ['statuses' => [self::STATUS_DRAFT], 'label' => __('Brouillons à envoyer', 'assetsign'), 'icon' => 'ti ti-pencil', 'color' => 'bg-secondary-lt'],
            ['statuses' => [self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED, self::STATUS_AWAITING_COSIGNATURE], 'label' => __('Attributions en attente de signature', 'assetsign'), 'icon' => 'ti ti-clock', 'color' => 'bg-azure-lt'],
-           ['statuses' => [self::STATUS_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE], 'label' => __('Attributions signées', 'assetsign'), 'icon' => 'ti ti-circle-check', 'color' => 'bg-green-lt'],
+           ['statuses' => [...self::STATUSES_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE], 'label' => __('Attributions signées', 'assetsign'), 'icon' => 'ti ti-circle-check', 'color' => 'bg-green-lt'],
            ['statuses' => [self::STATUS_EXPIRED], 'label' => __('Attributions expirées', 'assetsign'), 'icon' => 'ti ti-alert-triangle', 'color' => 'bg-red-lt'],
        ];
        $counters = [];
@@ -1296,6 +1350,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            self::STATUS_CANCELLED => __('Annulé', 'assetsign'),
            self::STATUS_COMPLETED_NO_SIGNATURE => __('Remis (bénéficiaire externe, sans signature)', 'assetsign'),
            self::STATUS_AWAITING_COSIGNATURE => __('Signé par le bénéficiaire, en attente du responsable', 'assetsign'),
+           self::STATUS_SIGNED_ON_PAPER => __('Signé sur papier', 'assetsign'),
        ];
    }
 
@@ -3026,7 +3081,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                'itemtype'   => $item->getType(),
                'items_id'   => $item->getID(),
                'type'       => self::TYPE_HANDOVER,
-               'status'     => [...self::STATUSES_AWAITING_SIGNATURE, self::STATUS_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE],
+               'status'     => [...self::STATUSES_AWAITING_SIGNATURE, ...self::STATUSES_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE],
                'is_deleted' => 0,
            ],
            'ORDER'  => 'id DESC',
@@ -3321,9 +3376,10 @@ class Assetsign extends Compat\Base\AssetsignBase
 
     /**
      * Issue #183 : a la signature, suivi dans le ticket rattache (document signe joint au ticket) et,
-     * si l'entite le demande, ticket resolu.
+     * si l'entite le demande, ticket resolu. Publique pour la signature sur papier (issue #276,
+     * PaperSignature::attachScan()), qui joint le scan au lieu d'un PDF signe.
      */
-   private function notifyLinkedTicket(int $documents_id): void {
+   public function notifyLinkedTicket(int $documents_id, bool $onPaper = false): void {
        $tickets_id = (int) ($this->fields['tickets_id'] ?? 0);
       if ($tickets_id <= 0) {
           return;
@@ -3337,7 +3393,9 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
        $target = $this->getTargetItem();
        $text = sprintf(
-           __('La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket.', 'assetsign'),
+           $onPaper
+               ? __('La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le scan du document signé est joint au ticket.', 'assetsign')
+               : __('La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé est joint au ticket.', 'assetsign'),
            $this->getID(),
            self::getTypes()[(int) $this->fields['type']] ?? '',
            self::getCanonicalItemtypeLabel((string) $this->fields['itemtype']),
@@ -4427,6 +4485,11 @@ class Assetsign extends Compat\Base\AssetsignBase
                 `cosigner_users_id` int unsigned NOT NULL DEFAULT 0,
                 `cosigner_pending_signature` longtext,
                 `document_id_cosigned` int unsigned NOT NULL DEFAULT 0,
+                `paper_printed_at` timestamp NULL DEFAULT NULL,
+                `paper_printed_by_users_id` int unsigned NOT NULL DEFAULT 0,
+                `document_id_paper_scan` int unsigned NOT NULL DEFAULT 0,
+                `paper_scan_users_id` int unsigned NOT NULL DEFAULT 0,
+                `paper_signature_date` date DEFAULT NULL,
                 `reminder_count` int unsigned NOT NULL DEFAULT 0,
                 `date_sent` timestamp NULL DEFAULT NULL,
                 `date_viewed` timestamp NULL DEFAULT NULL,
@@ -4587,6 +4650,16 @@ class Assetsign extends Compat\Base\AssetsignBase
              $migration->migrationOneTable($table);
          }
           $DB->update($table, ['reference' => new \Glpi\DBAL\QueryExpression('CAST(`id` AS CHAR)')], ['reference' => '']);
+         // Issue #276 : version papier (derniere impression, scan signe joint, par qui, date de
+         // signature indiquee sur le papier). Toutes a 0/NULL : aucun effet sur les fiches existantes.
+         if (!$DB->fieldExists($table, 'document_id_paper_scan')) {
+             $migration->addField($table, 'paper_printed_at', 'timestamp', ['after' => 'document_id_cosigned']);
+             $migration->addField($table, 'paper_printed_by_users_id', 'integer', ['value' => 0, 'after' => 'paper_printed_at']);
+             $migration->addField($table, 'document_id_paper_scan', 'integer', ['value' => 0, 'after' => 'paper_printed_by_users_id']);
+             $migration->addField($table, 'paper_scan_users_id', 'integer', ['value' => 0, 'after' => 'document_id_paper_scan']);
+             $migration->addField($table, 'paper_signature_date', 'date', ['after' => 'paper_scan_users_id']);
+             $migration->migrationOneTable($table);
+         }
       }
 
        // Resultats de checklist qualite (cf. ROADMAP.md V1, issue #74, ChecklistItem) :

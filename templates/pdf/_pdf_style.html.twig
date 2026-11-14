@@ -31,6 +31,25 @@
     .damage-pdf-marker-major { background: rgba(210, 40, 40, 0.9); }
     .damage-pdf-label { font-size: 9px; color: #555; text-align: center; margin: 4px 0 2px; }
     .damage-pdf-desc { font-size: 8.5px; color: #333; margin: 0; padding-left: 14px; }
+    {# Issue #276 : version papier (cadres de signature vides, état des lieux imprimable). #}
+    .paper-notice { border: 1px solid #1c2b3a; background: #f4f6f8; padding: 5px 8px; font-size: 10px; margin: 6px 0 10px; }
+    .paper-page-break { page-break-before: always; }
+    table.paper-sign-table { width: 100%; border-collapse: separate; border-spacing: 6px 0; margin-top: 4px; page-break-inside: avoid; }
+    td.paper-sign-cell { border: 1px solid #1c2b3a; padding: 6px; vertical-align: top; }
+    .paper-sign-role { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; }
+    .paper-sign-name { font-weight: bold; font-size: 11px; margin: 2px 0; }
+    .paper-sign-small { font-size: 8.5px; color: #333; margin: 2px 0; }
+    .paper-sign-line { font-size: 9.5px; margin: 6px 0 2px; }
+    .paper-sign-box { height: 22mm; border: 1px dashed #777; margin-top: 3px; }
+    table.paper-check-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; font-size: 9.5px; }
+    table.paper-check-table th { background: #f2f2f2; font-weight: normal; color: #555; text-align: left; padding: 3px 5px; border: 1px solid #ccc; }
+    table.paper-check-table td { padding: 4px 5px; border: 1px solid #ccc; }
+    table.paper-check-table .paper-check-col { width: 11%; text-align: center; }
+    .paper-box { display: inline-block; width: 10px; height: 10px; border: 1px solid #1c2b3a; }
+    .paper-legend { font-size: 9px; margin: 2px 0 6px; }
+    .paper-legend-key { display: inline-block; min-width: 10px; padding: 0 2px; border: 1px solid #1c2b3a; border-radius: 50%; text-align: center; font-weight: bold; margin-left: 6px; }
+    .paper-notes { border: 1px solid #ccc; padding: 2px 8px 8px; }
+    .paper-notes-line { border-bottom: 1px dotted #999; height: 7mm; }
     .checklist { margin: 4px 0; padding-left: 0; list-style: none; }
     .checklist li { padding: 3px 6px; border-bottom: 1px solid #eee; }
     .checklist li:last-child { border-bottom: none; }

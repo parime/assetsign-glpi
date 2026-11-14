@@ -113,7 +113,7 @@ final class CsrIndicators
               'FROM'   => Assetsign::getTable(),
               'WHERE'  => [
                   'type'        => array_keys($types),
-                  'status'      => [Assetsign::STATUS_SIGNED, Assetsign::STATUS_COMPLETED_NO_SIGNATURE],
+                  'status'      => [...Assetsign::STATUSES_SIGNED, Assetsign::STATUS_COMPLETED_NO_SIGNATURE],
                   'is_deleted'  => 0,
                   'date_signed' => ['>=', date('Y-m-d H:i:s', strtotime('-' . self::END_OF_LIFE_MONTHS . ' months'))],
               ] + getEntitiesRestrictCriteria(Assetsign::getTable(), '', '', true),

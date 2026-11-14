@@ -31,6 +31,11 @@
 
 <h1>{{ page_title }}</h1>
 <p class="meta">{{ __('Établie le %1$s : Référence assetsign n°%2$s', 'assetsign')|format(assetsign.date_creation|date('d/m/Y'), assetsign.reference|default(assetsign.id)) }}</p>
+{% set is_paper = paper_mode|default(false) %}
+{% if is_paper %}
+{# Issue #276 : version papier, à signer à la main (rien n'est enregistré comme signé). #}
+<p class="paper-notice"><strong>{{ __('Version papier, à signer à la main.', 'assetsign') }}</strong> {{ __('Vérifiez les informations, complétez l\'état des lieux en dernière page, puis faites signer chaque cadre. Le scan du document signé est ensuite joint à la fiche dans GLPI.', 'assetsign') }}</p>
+{% endif %}
 
 <h2>{{ beneficiary_is_external|default(false) ? __('Bénéficiaire (externe, sans compte GLPI)', 'assetsign') : __('Bénéficiaire', 'assetsign') }}</h2>
 <table class="info-table">
@@ -114,7 +119,10 @@
 <p class="legal-text">{{ __('Le matériel ci-dessus est prêté pour une durée limitée. Le bénéficiaire s\'engage à le restituer au service informatique au plus tard à cette date, avec les accessoires remis.', 'assetsign') }}</p>
 {% endif %}
 
+{# Version papier (issue #276) : les schémas figurent sur la page d'état des lieux, en fin de document. #}
+{% if not is_paper %}
 {% include '@assetsign/pdf/_damage_views.html.twig' %}
+{% endif %}
 
 {% if include_content %}
 <h2>{{ __('Conditions générales', 'assetsign') }}</h2>
@@ -150,6 +158,15 @@
 <p class="legal-text" style="white-space: pre-line;">{{ beneficiary_comment }}</p>
 {% endif %}
 
+{% if is_paper %}
+<h2>{{ __('Observations ou réserves', 'assetsign') }}</h2>
+<div class="paper-notes">
+    {% for i in 1..3 %}<div class="paper-notes-line"></div>{% endfor %}
+</div>
+<div class="signature-zone">
+    {% include '@assetsign/pdf/_paper_signatures.html.twig' %}
+</div>
+{% else %}
 <div class="signature-zone">
     {% if signature_image|default(false) %}
         <p>{{ __('Document signé électroniquement le %1$s à %2$s', 'assetsign')|format(signed_at|date('d/m/Y'), signed_at|date('H:i')) }}</p>
@@ -193,6 +210,7 @@
         <p>{{ __('Signature de l\'utilisateur :', 'assetsign') }} ______________________________</p>
     {% endif %}
 </div>
+{% endif %}
 
 {% if cosigner is defined and cosigner %}
 {# Signatures multiples (issue #143) : second bloc de signature, uniquement
@@ -214,7 +232,14 @@
 <div class="qr-block"><img src="{{ qr_data_uri }}" alt=""></div>
 {% endif %}
 
+{% if is_paper %}
+{% include '@assetsign/pdf/_paper_footer.html.twig' %}
+{# Issue #276 : état des lieux imprimable, sur une nouvelle page. #}
+<div class="paper-page-break"></div>
+{% include '@assetsign/pdf/_paper_condition.html.twig' %}
+{% else %}
 <div class="footer">{{ __('Attribution #%d : Document généré par GLPI (plugin assetsign)', 'assetsign')|format(assetsign.id) }}</div>
+{% endif %}
 
 </body>
 </html>

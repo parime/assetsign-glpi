@@ -1,0 +1,2 @@
+{# Issue #276 : pied de page de la version papier : jamais confondue avec un PDF signé électroniquement. #}
+<div class="footer">{{ __('Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI.', 'assetsign')|format(assetsign.reference|default(assetsign.id), paper_generated_at|default('now')|date('d/m/Y H:i')) }}</div>

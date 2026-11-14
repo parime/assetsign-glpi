@@ -13,6 +13,7 @@ use GlpiPlugin\Assetsign\DestructionDetails;
 use GlpiPlugin\Assetsign\DonDetails;
 use GlpiPlugin\Assetsign\FieldsPluginLogic;
 use GlpiPlugin\Assetsign\FieldsPluginValues;
+use GlpiPlugin\Assetsign\PaperSignature;
 use GlpiPlugin\Assetsign\QrCode;
 use GlpiPlugin\Assetsign\Template;
 use GlpiPlugin\Assetsign\VenteDetails;
@@ -51,7 +52,96 @@ final class HandoverPdfBuilder
        );
    }
 
-   private function renderLocalizedHtml(Assetsign $assetsign, array $extra): string {
+    /**
+     * Issue #276 : PDF de la version papier (cf. PaperSignature) : jamais enregistre comme
+     * Document, rien n'y est signe. Meme protection que le PDF de la fiche.
+     */
+   public function renderPaperPdf(Assetsign $assetsign, string $variant): string {
+       $protect = (bool) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['protect_pdf'];
+       return $this->renderPdf($this->renderPaperHtml($assetsign, $variant), $protect, $this->metadataFor($assetsign));
+   }
+
+    /**
+     * Issue #276 : HTML de la version papier, dans la langue du beneficiaire comme renderHtml().
+     * VARIANT_FORM : la fiche pre-remplie, cadres de signature vides, puis l'etat des lieux ;
+     * VARIANT_CONDITION : l'etat des lieux seul (une page A4).
+     */
+   public function renderPaperHtml(Assetsign $assetsign, string $variant): string {
+       return PdfLanguage::run(
+           PdfLanguage::forUser((int) ($assetsign->getBeneficiary()['id'] ?? 0)),
+           fn (): string => $this->renderLocalizedHtml(
+               $assetsign,
+               [
+                   'paper_mode'         => true,
+                   'paper_signers'      => $this->getPaperSigners($assetsign),
+                   'paper_condition'    => $this->getPaperCondition($assetsign),
+                   'paper_generated_at' => date('Y-m-d H:i:s'),
+               ],
+               $variant === PaperSignature::VARIANT_CONDITION
+                   ? '@assetsign/pdf/paper_condition_report.html.twig'
+                   : '@assetsign/pdf/handover.html.twig'
+           )
+       );
+   }
+
+    /**
+     * Issue #276 : un cadre de signature par signataire de la fiche : beneficiaire (ou son
+     * delegue), responsable qui contresigne s'il y en a un, technicien de la fiche. Le role est
+     * traduit par le gabarit (langue du PDF).
+     *
+     * @return list<array{role: string, name: string, title: string, on_behalf: string}>
+     */
+   private function getPaperSigners(Assetsign $assetsign): array {
+       $beneficiary = $assetsign->getBeneficiary();
+       $beneficiaryName = PdfMetadata::personName($beneficiary);
+       $signers = [];
+       $delegate = $assetsign->getDelegate();
+      if ($delegate !== null) {
+          $signers[] = ['role' => 'delegate', 'name' => PdfMetadata::personName($delegate), 'title' => PdfMetadata::signerTitle($delegate), 'on_behalf' => $beneficiaryName];
+      } else {
+          $signers[] = ['role' => 'beneficiary', 'name' => $beneficiaryName, 'title' => PdfMetadata::signerTitle($beneficiary), 'on_behalf' => ''];
+      }
+       $cosigner = $assetsign->getCosigner();
+      if ($cosigner !== null) {
+          $signers[] = ['role' => 'cosigner', 'name' => PdfMetadata::personName($cosigner), 'title' => PdfMetadata::signerTitle($cosigner), 'on_behalf' => ''];
+      }
+       $technician = new \User();
+      if ((int) $assetsign->fields['users_id_tech'] > 0 && $technician->getFromDB((int) $assetsign->fields['users_id_tech'])) {
+          $signers[] = ['role' => 'technician', 'name' => PdfMetadata::personName($technician->fields), 'title' => PdfMetadata::signerTitle($technician->fields), 'on_behalf' => ''];
+      }
+       return $signers;
+   }
+
+    /**
+     * Issue #276 : etat des lieux imprimable : une ligne par element remis (materiel, objets du
+     * parc, accessoires) a cocher a la main, et les schemas de l'etat des lieux visuel (avec les
+     * reperes deja poses, meme si l'etat des lieux visuel n'est pas active a l'ecran).
+     *
+     * @return array{rows: list<array{type: string, name: string, serial: string}>, views: array<int, array<string, mixed>>, has_markers: bool}
+     */
+   private function getPaperCondition(Assetsign $assetsign): array {
+       $item = $assetsign->getTargetItem();
+       $rows = [[
+           'type'   => Assetsign::getItemtypeLabel((string) $assetsign->fields['itemtype']),
+           'name'   => (string) ($item['name'] ?? ''),
+           'serial' => (string) ($item['serial'] ?? ''),
+       ]];
+      foreach (AssetsignItem::getForAssetsign($assetsign->getID()) as $row) {
+          $rows[] = ['type' => (string) ($row['type_label'] ?? ''), 'name' => (string) ($row['name'] ?? ''), 'serial' => (string) ($row['serial'] ?? '')];
+      }
+      foreach ($assetsign->getAccessories() as $accessory) {
+          $rows[] = ['type' => __('Accessoire', 'assetsign'), 'name' => sprintf('%s x %d', $accessory['name'], (int) $accessory['quantity']), 'serial' => ''];
+      }
+       $markers = DamageMarker::getForAssetsign($assetsign->getID());
+
+       return [
+           'rows'        => $rows,
+           'views'       => $this->getDamageViewsForPdf($markers, (string) $assetsign->fields['itemtype']),
+           'has_markers' => $markers !== [],
+       ];
+   }
+
+   private function renderLocalizedHtml(Assetsign $assetsign, array $extra, string $twigTemplate = '@assetsign/pdf/handover.html.twig'): string {
        $template = $assetsign->getTemplate();
        $headings = Assetsign::getPdfHeadings((int) $assetsign->fields['type']);
        $config = Config::getForEntity((int) $assetsign->fields['entities_id']);
@@ -90,7 +180,7 @@ final class HandoverPdfBuilder
           $placeholders[FieldsPluginLogic::placeholderKey($field['name'])] = htmlescape($field['value']);
       }
 
-       return TemplateRenderer::getInstance()->render('@assetsign/pdf/handover.html.twig', array_merge([
+       return TemplateRenderer::getInstance()->render($twigTemplate, array_merge([
            'html_lang'           => PdfLanguage::htmlLang(),
            'assetsign'              => $assetsign->fields,
            'user'                => $user,

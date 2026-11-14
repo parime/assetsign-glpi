@@ -2,6 +2,7 @@
 
 use GlpiPlugin\Assetsign\Api\AssetsignFormController;
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\PaperSignature;
 
 $controller = new AssetsignFormController();
 
@@ -60,6 +61,37 @@ if (isset($_GET['preview_draft'])) {
     header('Content-Disposition: inline; filename="apercu-feuille-' . $assetsign->getID() . '.pdf"');
     echo $assetsign->renderDraftPreviewPdf();
     return;
+}
+
+// Issue #276 : version papier a signer a la main (fiche pre-remplie + etat des lieux, ou etat des
+// lieux seul). Rien n'est signe : l'impression est seulement tracee (fiche, historique du materiel).
+if (isset($_GET['paper_pdf'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    $variant = $_GET['paper_pdf'] === PaperSignature::VARIANT_CONDITION ? PaperSignature::VARIANT_CONDITION : PaperSignature::VARIANT_FORM;
+    $paperPdf = null;
+   try {
+       $paperPdf = PaperSignature::renderPdf($assetsign, $variant, (int) Session::getLoginUserID());
+   } catch (\RuntimeException $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+   if ($paperPdf === null) {
+       Html::redirect($assetsign->getLinkURL());
+       return;
+   }
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: inline; filename="' . ($variant === PaperSignature::VARIANT_CONDITION ? 'etat-des-lieux-' : 'version-papier-') . $assetsign->getID() . '.pdf"');
+    echo $paperPdf;
+    return;
+}
+
+if (isset($_POST['attach_paper_scan'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       Session::addMessageAfterRedirect($controller->attachPaperScan($assetsign, $_POST, $_FILES));
+   } catch (\RuntimeException $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::back();
 }
 
 if (isset($_POST['update_draft'])) {

@@ -29,6 +29,11 @@ class Signature extends Compat\Base\SignatureBase
 {
    public const RIGHTNAME = Profile::RIGHT_ASSETSIGN;
 
+    /** Methodes de signature : tracee a l'ecran, nom tape (#275), a la main sur papier (#276). */
+   public const METHOD_DRAWN = 'drawn';
+   public const METHOD_TYPED = 'typed';
+   public const METHOD_PAPER = 'paper';
+
    public static function recordProofForAssetsign(Assetsign $assetsign, array $proof): int {
        return self::insertProof(['plugin_assetsign_assetsigns_id' => $assetsign->getID()], $proof);
    }
@@ -54,7 +59,9 @@ class Signature extends Compat\Base\SignatureBase
            // Signature sur place (issue #152) : technicien en presence duquel la signature a ete
            // recueillie, vide pour une signature faite par le signataire depuis sa propre session.
            'witness_name'  => $proof['witness_name'] ?? null,
-           'signature_method' => ($proof['signature_method'] ?? 'drawn') === 'typed' ? 'typed' : 'drawn',
+           'signature_method' => in_array($proof['signature_method'] ?? '', [self::METHOD_TYPED, self::METHOD_PAPER], true)
+               ? $proof['signature_method']
+               : self::METHOD_DRAWN,
            'date_creation' => date('Y-m-d H:i:s'),
        ]) ? $DB->insertId() : 0;
    }

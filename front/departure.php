@@ -39,7 +39,7 @@ foreach ($DB->request(['FROM' => Departure::getTable(), 'WHERE' => $where, 'ORDE
       'date_departure' => $row['date_departure'],
       'date_creation'  => $row['date_creation'],
       'total'          => count($lines),
-      'signed'         => count(array_filter($lines, static fn (array $l): bool => $l['status'] === \GlpiPlugin\Assetsign\Assetsign::STATUS_SIGNED)),
+      'signed'         => count(array_filter($lines, static fn (array $l): bool => in_array($l['status'], \GlpiPlugin\Assetsign\Assetsign::STATUSES_SIGNED, true))),
       'reminders'      => (int) $row['reminder_count'],
    ];
 }

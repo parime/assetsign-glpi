@@ -25,8 +25,8 @@ final class MyEquipment
    public const PROBLEM_LOSS      = 'loss';
    public const PROBLEM_THEFT     = 'theft';
 
-   /** Statuts d'une feuille dont le PDF signé peut être consulté. */
-   private const SIGNED_STATUSES = [Assetsign::STATUS_SIGNED, Assetsign::STATUS_AWAITING_COSIGNATURE];
+   /** Statuts d'une feuille dont le PDF signé (ou le scan signé sur papier, #276) peut être consulté. */
+   private const SIGNED_STATUSES = [Assetsign::STATUS_SIGNED, Assetsign::STATUS_AWAITING_COSIGNATURE, Assetsign::STATUS_SIGNED_ON_PAPER];
 
    /**
     * @return array<string, string>
@@ -43,7 +43,7 @@ final class MyEquipment
    /**
     * Matériel affecté à l'utilisateur, avec ses feuilles signées (la plus récente d'abord).
     *
-    * @return list<array{key: string, itemtype: string, items_id: int, type_label: string, name: string, model: string, serial: string, otherserial: string, documents: list<array{id: int, label: string, date: string}>}>
+    * @return list<array{key: string, itemtype: string, items_id: int, type_label: string, name: string, model: string, serial: string, otherserial: string, documents: list<array{id: int, label: string, date: string, on_paper: bool}>}>
     */
    public static function forUser(int $usersId): array {
       $user = new User();
@@ -74,7 +74,7 @@ final class MyEquipment
     * Feuilles signées par l'utilisateur pour ce matériel : feuille du matériel lui-même, ou feuille
     * d'un autre matériel avec lequel il a été remis (écran remis avec l'ordinateur, #166).
     *
-    * @return list<array{id: int, label: string, date: string}>
+    * @return list<array{id: int, label: string, date: string, on_paper: bool}>
     */
    private static function signedDocuments(CommonDBTM $item, int $usersId): array {
       global $DB;
@@ -92,7 +92,7 @@ final class MyEquipment
          'users_id'           => $usersId,
          'status'             => self::SIGNED_STATUSES,
          'is_deleted'         => 0,
-         'document_id_signed' => ['>', 0],
+         ['OR' => ['document_id_signed' => ['>', 0], 'document_id_paper_scan' => ['>', 0]]],
       ];
       $match = ['itemtype' => $item->getType(), 'items_id' => $item->getID()];
       $where[] = $sheetIds === [] ? $match : ['OR' => [$match, ['id' => $sheetIds]]];
@@ -104,6 +104,8 @@ final class MyEquipment
             'id'    => (int) $row['id'],
             'label' => (string) ($types[(int) $row['type']] ?? ''),
             'date'  => (string) $row['date_signed'],
+            // Issue #276 : signée à la main, le document est le scan joint par le technicien.
+            'on_paper' => (int) $row['status'] === Assetsign::STATUS_SIGNED_ON_PAPER,
          ];
       }
 
@@ -124,8 +126,11 @@ final class MyEquipment
          return null;
       }
       $document = new Document();
+      $documentId = (int) $sheet->fields['status'] === Assetsign::STATUS_SIGNED_ON_PAPER
+         ? (int) $sheet->fields['document_id_paper_scan']
+         : (int) $sheet->fields['document_id_signed'];
 
-      return $document->getFromDB((int) $sheet->fields['document_id_signed']) ? $document : null;
+      return $documentId > 0 && $document->getFromDB($documentId) ? $document : null;
    }
 
    /**
@@ -139,7 +144,9 @@ final class MyEquipment
       if ($document === null || $root === false || $path === false || !str_starts_with($path, $root . DIRECTORY_SEPARATOR)) {
          throw new \Glpi\Exception\Http\NotFoundHttpException();
       }
-      header('Content-Type: application/pdf');
+      // Issue #276 : un scan signé sur papier peut être une image (types contrôlés à l'envoi).
+      $mime = in_array((string) $document->fields['mime'], PaperSignature::ALLOWED_SCAN_TYPES, true) ? (string) $document->fields['mime'] : 'application/pdf';
+      header('Content-Type: ' . $mime);
       header('Content-Disposition: inline; filename="' . basename((string) $document->fields['filename']) . '"');
       readfile($path);
    }

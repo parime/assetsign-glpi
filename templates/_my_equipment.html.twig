@@ -37,7 +37,12 @@
             <div class="d-flex flex-wrap gap-2">
               {% for d in e.documents %}
                 <a class="btn btn-sm btn-outline-secondary" target="_blank" href="{{ action }}?pdf={{ d.id }}">
-                  <i class="ti ti-file-certificate me-1"></i>{{ __('%1$s signée le %2$s', 'assetsign')|format(d.label, d.date|formatted_date) }}
+                  {% if d.on_paper|default(false) %}
+                    {# Issue #276 : signée à la main, le document est le scan joint par le technicien. #}
+                    <i class="ti ti-writing-sign me-1"></i>{{ __('%1$s signée sur papier le %2$s', 'assetsign')|format(d.label, d.date|formatted_date) }}
+                  {% else %}
+                    <i class="ti ti-file-certificate me-1"></i>{{ __('%1$s signée le %2$s', 'assetsign')|format(d.label, d.date|formatted_date) }}
+                  {% endif %}
                 </a>
               {% endfor %}
               {% if can_report %}
