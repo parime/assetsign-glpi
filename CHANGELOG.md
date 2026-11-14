@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.22.0] - 2026-11-14
+
 ### Added
 
 - **En-tête de maîtrise documentaire (ISO) sur chaque page des PDF** (#274) : cartouche optionnel par entité (Configuration > Général, désactivé par défaut) avec l'entreprise (à défaut le nom de l'entité), le type de document (texte libre, ex. « Enregistrement »), le titre du document, le code du formulaire, la révision et sa date, la date de création du modèle et « Page X sur Y » (total exact, y compris au-delà de 10 pages). Code, révision et date de révision se règlent dans le gabarit de chaque type, pas à chaque fiche. Appliqué aux fiches d'attribution, restitution, don, vente, destruction, maintenance, aux attestations, au récapitulatif de départ et au rapport de campagne. Aperçu en direct avant enregistrement ; réglages compris dans l'export et l'import de la configuration (un fichier exporté avant cette version laisse le code et la révision des gabarits en place). Les documents déjà générés ne changent pas.
