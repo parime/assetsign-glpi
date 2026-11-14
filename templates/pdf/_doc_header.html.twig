@@ -22,9 +22,14 @@
                 {%- if dh.preview -%}
                     {{ __('Page %1$s sur %2$s', 'assetsign')|format('1', '1') }}
                 {%- else -%}
-                    {# Numéro de page : compteur de Dompdf ; total : rempli après un premier rendu.
-                       Traduction échappée avant d'y insérer la balise du compteur. #}
-                    {{ __('Page %1$s sur %2$s', 'assetsign')|e|format('<span class="dh-page-num"></span>', constant('GlpiPlugin\\Assetsign\\Pdf\\DocumentControlHeader::PAGE_COUNT_TOKEN'))|raw }}
+                    {# Numéro de page : compteur de Dompdf (balise vide, cf. .dh-page-num) ; total :
+                       jeton rempli après un premier rendu. La traduction est coupée autour de %1$s
+                       (quel que soit l'ordre des deux nombres), sans désactiver l'échappement. #}
+                    {% set dh_total = constant('GlpiPlugin\\Assetsign\\Pdf\\DocumentControlHeader::PAGE_COUNT_TOKEN') %}
+                    {% set dh_parts = __('Page %1$s sur %2$s', 'assetsign')|split('%1$s', 2) %}
+                    {{- dh_parts[0]|replace({'%2$s': dh_total}) -}}
+                    <span class="dh-page-num"></span>
+                    {{- dh_parts[1]|default('')|replace({'%2$s': dh_total}) -}}
                 {%- endif -%}
             </div>
         </td>

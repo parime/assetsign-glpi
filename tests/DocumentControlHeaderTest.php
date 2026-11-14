@@ -175,6 +175,35 @@ class DocumentControlHeaderTest extends AssetsignTestCase
         $this->assertSame('2026-03-05', $template?->fields['doc_revision_date']);
     }
 
+    public function testCampaignReportCarriesTheHeader(): void
+    {
+        global $DB;
+
+        $entityId = $this->createTestEntity(0, 'PHPUnit Cartouche campagne');
+        Config::upsertForEntity($entityId, ['doc_header_enabled' => 1, 'company_name' => 'Societe Fictive']);
+        $usersId = $this->createTestUser('Dominique', 'Fictif', ['entities_id' => $entityId]);
+        $DB->insert('glpi_profiles_users', ['users_id' => $usersId, 'profiles_id' => 1, 'entities_id' => $entityId, 'is_recursive' => 0]);
+        $computer = $this->createTestComputer($entityId, 'PC-FICTIF-CAMPAGNE');
+        $DB->update('glpi_computers', ['users_id' => $usersId], ['id' => $computer->getID()]);
+
+        $campaign = \GlpiPlugin\Assetsign\Campaign::launch([
+            'name'          => 'Campagne fictive',
+            'entities_id'   => $entityId,
+            'is_recursive'  => false,
+            'groups_id'     => 0,
+            'profiles_id'   => 0,
+            'date_deadline' => date('Y-m-d', strtotime('+30 days')),
+        ]);
+        $this->assertNotNull($campaign);
+
+        $pages = $this->extractPageTexts($campaign->renderReportPdf());
+        $this->assertNotEmpty($pages);
+        foreach ($pages as $index => $text) {
+            $this->assertStringContainsString('Societe Fictive', $text, 'Page ' . ($index + 1) . ' must carry the header.');
+            $this->assertMatchesRegularExpression('/\D' . ($index + 1) . '\D{1,15}' . count($pages) . '(\D|$)/u', $text);
+        }
+    }
+
     public function testImportRejectsAnInvalidRevisionDate(): void
     {
         $this->expectException(\InvalidArgumentException::class);
