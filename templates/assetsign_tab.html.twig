@@ -39,7 +39,7 @@
             {% endif %}
             <td>
               {% if status_badges is defined %}
-                <span class="badge {{ status_badges[r.status]|default('bg-secondary-lt') }}">{{ statuses[r.status] }}</span>
+                <span class="badge {{ status_badges[r.status]|default('bg-secondary-lt') }}">{% if r.status == 10 %}<i class="ti ti-writing-sign me-1"></i>{% endif %}{{ statuses[r.status] }}</span>
               {% else %}
                 {{ statuses[r.status] }}
               {% endif %}
@@ -58,7 +58,10 @@
               {% endif %}
             </td>
             <td>
-              {% if r.document_id_signed %}
+              {% if r.document_id_paper_scan|default(0) %}
+                {# Issue #276 : scan du papier signé à la main. #}
+                <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ r.document_id_paper_scan }}" target="_blank"><i class="ti ti-writing-sign me-1"></i>{{ __('Télécharger (scan signé sur papier)', 'assetsign') }}</a>
+              {% elseif r.document_id_signed %}
                 <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ r.document_id_signed }}" target="_blank">{{ __('Télécharger (signé)', 'assetsign') }}</a>
               {% elseif r.document_id_unsigned %}
                 <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ r.document_id_unsigned }}" target="_blank">{{ __('Télécharger (non signé)', 'assetsign') }}</a>

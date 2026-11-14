@@ -5268,3 +5268,207 @@ msgstr "Techniker des Formulars: der für das Gerät zuständige Techniker, sofe
 
 msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
 msgstr "Das Feld „Techniker“ des Geräts bestimmt dann den Techniker des Formulars (Variable {technicien}, Benachrichtigungen, zu sendende Entwürfe). Ohne zuständigen Techniker oder wenn das Kästchen nicht angekreuzt ist, ist es wie bisher die Person, die das Formular erzeugt."
+
+msgid "Choisissez le fichier du scan signé."
+msgstr "Wählen Sie die Datei des unterschriebenen Scans."
+
+#, php-format
+msgid "Le scan dépasse la taille maximale (%d Mo)."
+msgstr "Der Scan überschreitet die maximale Größe (%d MB)."
+
+msgid "Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de signature électronique ne fonctionne plus."
+msgstr "Scan angehängt: Das Formular ist jetzt „Auf Papier unterschrieben“. Der Link zur elektronischen Unterschrift funktioniert nicht mehr."
+
+msgid "Scan signé sur papier"
+msgstr "Auf Papier unterschriebener Scan"
+
+msgid "Télécharger (scan signé sur papier)"
+msgstr "Herunterladen (auf Papier unterschriebener Scan)"
+
+msgid "Signé sur papier"
+msgstr "Auf Papier unterschrieben"
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le scan du document signé est joint au ticket."
+msgstr "Das Formular Nr. %1$d (%2$s) für %3$s „%4$s“ wurde auf Papier unterschrieben. Der Scan des unterschriebenen Dokuments ist dem Ticket beigefügt."
+
+msgid "Version papier inconnue."
+msgstr "Unbekannte Papierversion."
+
+#, php-format
+msgid "État des lieux imprimable de la fiche n° %1$s généré par %2$s"
+msgstr "Druckbares Zustandsprotokoll des Formulars Nr. %1$s erstellt von %2$s"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s générée par %2$s, pour une signature à la main"
+msgstr "Papierversion des Formulars Nr. %1$s erstellt von %2$s, für eine handschriftliche Unterschrift"
+
+#, php-format
+msgid "Fiche n° %1$s signée sur papier : scan joint par %2$s (signature datée du %3$s)"
+msgstr "Formular Nr. %1$s auf Papier unterschrieben: Scan angehängt von %2$s (Unterschrift vom %3$s)"
+
+msgid "Le fichier du scan est vide."
+msgstr "Die Scandatei ist leer."
+
+msgid "Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG."
+msgstr "Dateityp abgelehnt: Hängen Sie einen Scan im Format PDF, JPEG oder PNG an."
+
+msgid "Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG."
+msgstr "Der Dateiinhalt entspricht nicht seiner Endung: Hängen Sie einen echten Scan im Format PDF, JPEG oder PNG an."
+
+msgid "Vous n'avez pas le droit de modifier cette fiche."
+msgstr "Sie dürfen dieses Formular nicht ändern."
+
+msgid "La version papier n'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée)."
+msgstr "Die Papierversion ist für dieses Formular nicht möglich (bereits unterschrieben, wartet auf den Vorgesetzten, abgelaufen oder storniert)."
+
+msgid "Date de signature invalide."
+msgstr "Ungültiges Unterschriftsdatum."
+
+msgid "La date de signature ne peut pas être dans le futur."
+msgstr "Das Unterschriftsdatum darf nicht in der Zukunft liegen."
+
+msgid "La date de signature ne peut pas précéder la création de la fiche."
+msgstr "Das Unterschriftsdatum darf nicht vor der Erstellung des Formulars liegen."
+
+#, php-format
+msgid "%1$s signée sur papier le %2$s"
+msgstr "%1$s auf Papier unterschrieben am %2$s"
+
+msgid "Date de signature indiquée sur le papier"
+msgstr "Auf dem Papier angegebenes Unterschriftsdatum"
+
+msgid "Fiche signée à la main, sur papier"
+msgstr "Formular von Hand auf Papier unterschrieben"
+
+#, php-format
+msgid "Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est le scan joint (empreinte ci-dessous)."
+msgstr "Scan angehängt von %1$s am %2$s. Keine elektronische Unterschrift: Der Nachweis ist der angehängte Scan (Prüfsumme unten)."
+
+msgid "Ouvrir le scan signé"
+msgstr "Unterschriebenen Scan öffnen"
+
+msgid "Version papier (signature à la main)"
+msgstr "Papierversion (handschriftliche Unterschrift)"
+
+msgid "Si la signature électronique n'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n'est pas joint, rien n'est enregistré comme signé."
+msgstr "Wenn keine elektronische Unterschrift möglich ist: Drucken Sie das vorausgefüllte Formular, lassen Sie es von Hand unterschreiben und hängen Sie dann hier den Scan des unterschriebenen Dokuments an. Solange der Scan nicht angehängt ist, wird nichts als unterschrieben erfasst."
+
+msgid "Imprimer pour signature à la main"
+msgstr "Für handschriftliche Unterschrift drucken"
+
+msgid "Imprimer l'état des lieux seul"
+msgstr "Nur das Zustandsprotokoll drucken"
+
+#, php-format
+msgid "Dernière impression : %1$s, par %2$s."
+msgstr "Zuletzt gedruckt: %1$s, von %2$s."
+
+msgid "Joindre le scan signé"
+msgstr "Unterschriebenen Scan anhängen"
+
+msgid "Scan du document signé"
+msgstr "Scan des unterschriebenen Dokuments"
+
+#, php-format
+msgid "PDF, JPEG ou PNG, %d Mo maximum."
+msgstr "PDF, JPEG oder PNG, maximal %d MB."
+
+msgid "La fiche passera à « Signé sur papier » et le lien de signature électronique déjà envoyé ne fonctionnera plus. Continuer ?"
+msgstr "Das Formular wird „Auf Papier unterschrieben“ und der bereits gesendete Link zur elektronischen Unterschrift funktioniert nicht mehr. Fortfahren?"
+
+msgid "La fiche passera à « Signé sur papier ». Continuer ?"
+msgstr "Das Formular wird „Auf Papier unterschrieben“. Fortfahren?"
+
+msgid "Joindre et marquer signée sur papier"
+msgstr "Anhängen und als auf Papier unterschrieben markieren"
+
+msgid "À la main, sur papier (scan joint par un technicien)"
+msgstr "Von Hand, auf Papier (Scan von einem Techniker angehängt)"
+
+msgid "Scan joint par"
+msgstr "Scan angehängt von"
+
+msgid "Adresse IP (envoi du scan)"
+msgstr "IP-Adresse (Hochladen des Scans)"
+
+msgid "Navigateur (envoi du scan)"
+msgstr "Browser (Hochladen des Scans)"
+
+msgid "Empreinte du scan (SHA-256)"
+msgstr "Prüfsumme des Scans (SHA-256)"
+
+msgid "Scan joint le"
+msgstr "Scan angehängt am"
+
+msgid "État des lieux du matériel"
+msgstr "Zustandsprotokoll des Geräts"
+
+#, php-format
+msgid "Fiche « %1$s », référence n°%2$s"
+msgstr "Formular „%1$s“, Referenz Nr. %2$s"
+
+msgid "À compléter à la main au moment de la remise ou du retour du matériel. Cochez une case par ligne."
+msgstr "Bei Übergabe oder Rückgabe des Geräts von Hand auszufüllen. Ein Kästchen pro Zeile ankreuzen."
+
+msgid "État de chaque élément"
+msgstr "Zustand jedes Elements"
+
+msgid "Excellent"
+msgstr "Ausgezeichnet"
+
+msgid "Endommagé"
+msgstr "Beschädigt"
+
+msgid "Schéma du matériel"
+msgstr "Skizze des Geräts"
+
+msgid "Légende des dommages"
+msgstr "Legende der Schäden"
+
+msgid "reportez sur le schéma le numéro du dommage constaté"
+msgstr "tragen Sie die Nummer des festgestellten Schadens in die Skizze ein"
+
+msgid "rayure"
+msgstr "Kratzer"
+
+msgid "choc"
+msgstr "Stoß"
+
+msgid "usure"
+msgstr "Abnutzung"
+
+msgid "pièce manquante"
+msgstr "fehlendes Teil"
+
+msgid "Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage majeur."
+msgstr "Bereits in GLPI erfasste Punkte: gelb = kleiner Schaden, rot = großer Schaden."
+
+msgid "Notes"
+msgstr "Notizen"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI."
+msgstr "Papierversion des Formulars Nr. %1$s, erstellt am %2$s: von Hand zu unterschreiben. Der unterschriebene Scan wird anschließend in GLPI an das Formular angehängt."
+
+#, php-format
+msgid "pour le compte de %s"
+msgstr "im Namen von %s"
+
+msgid "Date :"
+msgstr "Datum:"
+
+msgid "Lieu :"
+msgstr "Ort:"
+
+msgid "Signature, précédée de « Lu et approuvé » :"
+msgstr "Unterschrift, mit dem Vermerk „Gelesen und genehmigt“:"
+
+msgid "Version papier, à signer à la main."
+msgstr "Papierversion, von Hand zu unterschreiben."
+
+msgid "Vérifiez les informations, complétez l'état des lieux en dernière page, puis faites signer chaque cadre. Le scan du document signé est ensuite joint à la fiche dans GLPI."
+msgstr "Prüfen Sie die Angaben, füllen Sie das Zustandsprotokoll auf der letzten Seite aus und lassen Sie dann jedes Feld unterschreiben. Der Scan des unterschriebenen Dokuments wird anschließend in GLPI an das Formular angehängt."
+
+msgid "Observations ou réserves"
+msgstr "Bemerkungen oder Vorbehalte"

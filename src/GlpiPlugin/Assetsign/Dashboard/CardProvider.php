@@ -18,7 +18,7 @@ final class CardProvider
    }
 
    public static function signed(array $params = []): array {
-       return self::countByStatus([Assetsign::STATUS_SIGNED], 'Signées', $params);
+       return self::countByStatus(Assetsign::STATUSES_SIGNED, 'Signées', $params);
    }
 
    public static function expired(array $params = []): array {

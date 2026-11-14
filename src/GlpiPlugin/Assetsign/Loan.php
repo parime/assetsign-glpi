@@ -32,6 +32,7 @@ final class Loan
       Assetsign::STATUS_SENT,
       Assetsign::STATUS_VIEWED,
       Assetsign::STATUS_SIGNED,
+      Assetsign::STATUS_SIGNED_ON_PAPER,
       Assetsign::STATUS_COMPLETED_NO_SIGNATURE,
       Assetsign::STATUS_AWAITING_COSIGNATURE,
    ];
@@ -63,7 +64,7 @@ final class Loan
             'itemtype'      => $itemtype,
             'items_id'      => (int) $row['items_id'],
             'type'          => Assetsign::TYPE_RETURN,
-            'status'        => [Assetsign::STATUS_SIGNED, Assetsign::STATUS_COMPLETED_NO_SIGNATURE],
+            'status'        => [...Assetsign::STATUSES_SIGNED, Assetsign::STATUS_COMPLETED_NO_SIGNATURE],
             'is_deleted'    => 0,
             'date_creation' => ['>=', (string) $row['date_creation']],
          ],

@@ -169,7 +169,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
           'WHERE'      => [
               AssetsignItem::getTable() . '.itemtype' => $itemtype,
               AssetsignItem::getTable() . '.items_id' => $items_id,
-              Assetsign::getTable() . '.status'       => [...Assetsign::STATUSES_AWAITING_SIGNATURE, Assetsign::STATUS_SIGNED, Assetsign::STATUS_COMPLETED_NO_SIGNATURE],
+              Assetsign::getTable() . '.status'       => [...Assetsign::STATUSES_AWAITING_SIGNATURE, ...Assetsign::STATUSES_SIGNED, Assetsign::STATUS_COMPLETED_NO_SIGNATURE],
           ],
       ]) as $row) {
           $sheet = new Assetsign();

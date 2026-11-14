@@ -5232,3 +5232,207 @@ msgstr "Technicien de la fiche : le technicien responsable du matériel, s'il es
 
 msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
 msgstr "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
+
+msgid "Choisissez le fichier du scan signé."
+msgstr "Choisissez le fichier du scan signé."
+
+#, php-format
+msgid "Le scan dépasse la taille maximale (%d Mo)."
+msgstr "Le scan dépasse la taille maximale (%d Mo)."
+
+msgid "Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de signature électronique ne fonctionne plus."
+msgstr "Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de signature électronique ne fonctionne plus."
+
+msgid "Scan signé sur papier"
+msgstr "Scan signé sur papier"
+
+msgid "Télécharger (scan signé sur papier)"
+msgstr "Télécharger (scan signé sur papier)"
+
+msgid "Signé sur papier"
+msgstr "Signé sur papier"
+
+#, php-format
+msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le scan du document signé est joint au ticket."
+msgstr "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le scan du document signé est joint au ticket."
+
+msgid "Version papier inconnue."
+msgstr "Version papier inconnue."
+
+#, php-format
+msgid "État des lieux imprimable de la fiche n° %1$s généré par %2$s"
+msgstr "État des lieux imprimable de la fiche n° %1$s généré par %2$s"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s générée par %2$s, pour une signature à la main"
+msgstr "Version papier de la fiche n° %1$s générée par %2$s, pour une signature à la main"
+
+#, php-format
+msgid "Fiche n° %1$s signée sur papier : scan joint par %2$s (signature datée du %3$s)"
+msgstr "Fiche n° %1$s signée sur papier : scan joint par %2$s (signature datée du %3$s)"
+
+msgid "Le fichier du scan est vide."
+msgstr "Le fichier du scan est vide."
+
+msgid "Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG."
+msgstr "Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG."
+
+msgid "Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG."
+msgstr "Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG."
+
+msgid "Vous n'avez pas le droit de modifier cette fiche."
+msgstr "Vous n'avez pas le droit de modifier cette fiche."
+
+msgid "La version papier n'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée)."
+msgstr "La version papier n'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée)."
+
+msgid "Date de signature invalide."
+msgstr "Date de signature invalide."
+
+msgid "La date de signature ne peut pas être dans le futur."
+msgstr "La date de signature ne peut pas être dans le futur."
+
+msgid "La date de signature ne peut pas précéder la création de la fiche."
+msgstr "La date de signature ne peut pas précéder la création de la fiche."
+
+#, php-format
+msgid "%1$s signée sur papier le %2$s"
+msgstr "%1$s signée sur papier le %2$s"
+
+msgid "Date de signature indiquée sur le papier"
+msgstr "Date de signature indiquée sur le papier"
+
+msgid "Fiche signée à la main, sur papier"
+msgstr "Fiche signée à la main, sur papier"
+
+#, php-format
+msgid "Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est le scan joint (empreinte ci-dessous)."
+msgstr "Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est le scan joint (empreinte ci-dessous)."
+
+msgid "Ouvrir le scan signé"
+msgstr "Ouvrir le scan signé"
+
+msgid "Version papier (signature à la main)"
+msgstr "Version papier (signature à la main)"
+
+msgid "Si la signature électronique n'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n'est pas joint, rien n'est enregistré comme signé."
+msgstr "Si la signature électronique n'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n'est pas joint, rien n'est enregistré comme signé."
+
+msgid "Imprimer pour signature à la main"
+msgstr "Imprimer pour signature à la main"
+
+msgid "Imprimer l'état des lieux seul"
+msgstr "Imprimer l'état des lieux seul"
+
+#, php-format
+msgid "Dernière impression : %1$s, par %2$s."
+msgstr "Dernière impression : %1$s, par %2$s."
+
+msgid "Joindre le scan signé"
+msgstr "Joindre le scan signé"
+
+msgid "Scan du document signé"
+msgstr "Scan du document signé"
+
+#, php-format
+msgid "PDF, JPEG ou PNG, %d Mo maximum."
+msgstr "PDF, JPEG ou PNG, %d Mo maximum."
+
+msgid "La fiche passera à « Signé sur papier » et le lien de signature électronique déjà envoyé ne fonctionnera plus. Continuer ?"
+msgstr "La fiche passera à « Signé sur papier » et le lien de signature électronique déjà envoyé ne fonctionnera plus. Continuer ?"
+
+msgid "La fiche passera à « Signé sur papier ». Continuer ?"
+msgstr "La fiche passera à « Signé sur papier ». Continuer ?"
+
+msgid "Joindre et marquer signée sur papier"
+msgstr "Joindre et marquer signée sur papier"
+
+msgid "À la main, sur papier (scan joint par un technicien)"
+msgstr "À la main, sur papier (scan joint par un technicien)"
+
+msgid "Scan joint par"
+msgstr "Scan joint par"
+
+msgid "Adresse IP (envoi du scan)"
+msgstr "Adresse IP (envoi du scan)"
+
+msgid "Navigateur (envoi du scan)"
+msgstr "Navigateur (envoi du scan)"
+
+msgid "Empreinte du scan (SHA-256)"
+msgstr "Empreinte du scan (SHA-256)"
+
+msgid "Scan joint le"
+msgstr "Scan joint le"
+
+msgid "État des lieux du matériel"
+msgstr "État des lieux du matériel"
+
+#, php-format
+msgid "Fiche « %1$s », référence n°%2$s"
+msgstr "Fiche « %1$s », référence n°%2$s"
+
+msgid "À compléter à la main au moment de la remise ou du retour du matériel. Cochez une case par ligne."
+msgstr "À compléter à la main au moment de la remise ou du retour du matériel. Cochez une case par ligne."
+
+msgid "État de chaque élément"
+msgstr "État de chaque élément"
+
+msgid "Excellent"
+msgstr "Excellent"
+
+msgid "Endommagé"
+msgstr "Endommagé"
+
+msgid "Schéma du matériel"
+msgstr "Schéma du matériel"
+
+msgid "Légende des dommages"
+msgstr "Légende des dommages"
+
+msgid "reportez sur le schéma le numéro du dommage constaté"
+msgstr "reportez sur le schéma le numéro du dommage constaté"
+
+msgid "rayure"
+msgstr "rayure"
+
+msgid "choc"
+msgstr "choc"
+
+msgid "usure"
+msgstr "usure"
+
+msgid "pièce manquante"
+msgstr "pièce manquante"
+
+msgid "Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage majeur."
+msgstr "Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage majeur."
+
+msgid "Notes"
+msgstr "Notes"
+
+#, php-format
+msgid "Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI."
+msgstr "Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI."
+
+#, php-format
+msgid "pour le compte de %s"
+msgstr "pour le compte de %s"
+
+msgid "Date :"
+msgstr "Date :"
+
+msgid "Lieu :"
+msgstr "Lieu :"
+
+msgid "Signature, précédée de « Lu et approuvé » :"
+msgstr "Signature, précédée de « Lu et approuvé » :"
+
+msgid "Version papier, à signer à la main."
+msgstr "Version papier, à signer à la main."
+
+msgid "Vérifiez les informations, complétez l'état des lieux en dernière page, puis faites signer chaque cadre. Le scan du document signé est ensuite joint à la fiche dans GLPI."
+msgstr "Vérifiez les informations, complétez l'état des lieux en dernière page, puis faites signer chaque cadre. Le scan du document signé est ensuite joint à la fiche dans GLPI."
+
+msgid "Observations ou réserves"
+msgstr "Observations ou réserves"

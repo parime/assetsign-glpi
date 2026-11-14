@@ -51,6 +51,9 @@ fi
 # --- Enregistrements designes par leur id (lecture) ---
 expect "front/assetsign.form.php : feuille de A"              200   "$(code "$P/assetsign.form.php?id=$(id assetsign_A)")"
 expect "front/assetsign.form.php : feuille de B"              $NF   "$(code "$P/assetsign.form.php?id=$(id assetsign_B)")"
+# Issue #276 : version papier de la feuille de B (impression tracee en base, verifiee par la CI).
+expect "front/assetsign.form.php : version papier de B"       $NF   "$(code "$P/assetsign.form.php?id=$(id assetsign_B)&paper_pdf=form")"
+expect "front/assetsign.form.php : etat des lieux papier de B" $NF  "$(code "$P/assetsign.form.php?id=$(id assetsign_B)&paper_pdf=condition")"
 expect "front/maintenance.form.php : maintenance de B"        $NF   "$(code "$P/maintenance.form.php?id=$(id maintenance_B)")"
 expect "front/movement.form.php : mouvement de B"             $NF   "$(code "$P/movement.form.php?id=$(id movement_B)")"
 expect "front/departure.form.php : depart de A"               200   "$(code "$P/departure.form.php?id=$(id departure_A)")"
@@ -106,6 +109,8 @@ expect "onglet passeport d'un utilisateur : contenu affiche" oui "$([ -n "$(page
 
 # --- Ecritures sur des objets de B (etat en base verifie par la CI) ---
 expect "front/assetsign.form.php : annuler la feuille de B"  $NF_POST "$(post assetsign.form.php "cancel_request=1&id=$(id assetsign_B)")"
+# Issue #276 : scan signe sur papier joint a la feuille de B (sans fichier : refuse dans tous les cas).
+expect "front/assetsign.form.php : scan papier sur la feuille de B" $NF_POST "$(post assetsign.form.php "attach_paper_scan=1&id=$(id assetsign_B)")"
 expect "front/assign_user_asset.php : attribuer un PC de B"  $NF_POST "$(post assign_user_asset.php "assign=1&itemtype=Computer&items_id=$(id computer_B)&users_id=$(id partant_A)")"
 expect "front/maintenance.form.php : maintenance d'un PC de B" $NF_POST "$(post maintenance.form.php "create=1&itemtype=Computer&items_id=$(id computer_B)")"
 expect "front/movement.form.php : mouvement d'un PC de B"    $NF_POST "$(post movement.form.php "create=1&itemtype=Computer&items_id=$(id computer_B)&locations_id_to=0")"

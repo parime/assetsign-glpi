@@ -3,6 +3,7 @@
 namespace GlpiPlugin\Assetsign\Api;
 
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\PaperSignature;
 
 /**
  * Logique partagee par front/assetsign.form.php : une methode par action POST,
@@ -42,6 +43,37 @@ final class AssetsignFormController
        );
 
        return __('Fiche créée.', 'assetsign');
+   }
+
+    /**
+     * Issue #276 : joint le scan de la version papier signee a la main. Le fichier doit etre un vrai
+     * upload HTTP de cette requete ; son contenu est controle par PaperSignature::attachScan().
+     *
+     * @throws \RuntimeException message pour l'utilisateur
+     */
+   public function attachPaperScan(Assetsign $assetsign, array $post, array $files): string {
+       $file = $files['paper_scan'] ?? [];
+       $error = $file['error'] ?? UPLOAD_ERR_NO_FILE;
+      if ($error === UPLOAD_ERR_NO_FILE) {
+          throw new \RuntimeException(__('Choisissez le fichier du scan signé.', 'assetsign'));
+      }
+      if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
+          throw new \RuntimeException(sprintf(__('Le scan dépasse la taille maximale (%d Mo).', 'assetsign'), PaperSignature::MAX_SCAN_BYTES / 1024 / 1024));
+      }
+      if ($error !== UPLOAD_ERR_OK || empty($file['tmp_name']) || !is_uploaded_file((string) $file['tmp_name'])) {
+          throw new \RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
+      }
+
+       PaperSignature::attachScan(
+           $assetsign,
+           (string) $file['tmp_name'],
+           (string) ($file['name'] ?? ''),
+           (int) \Session::getLoginUserID(),
+           (string) ($post['paper_signature_date'] ?? ''),
+           ['ip' => (string) ($_SERVER['REMOTE_ADDR'] ?? ''), 'user_agent' => (string) ($_SERVER['HTTP_USER_AGENT'] ?? '')]
+       );
+
+       return __('Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de signature électronique ne fonctionne plus.', 'assetsign');
    }
 
    public function sendReminder(Assetsign $assetsign): string {

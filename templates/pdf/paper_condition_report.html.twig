@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ html_lang|default('fr') }}">
+<head>
+<meta charset="UTF-8">
+<title>{{ __('État des lieux du matériel', 'assetsign') }} - {{ document_title }}</title>
+{% include '@assetsign/pdf/_pdf_style.html.twig' %}
+</head>
+<body>
+{# Issue #276 : état des lieux imprimable seul (une page A4), cf. PaperSignature::VARIANT_CONDITION. #}
+{% include '@assetsign/pdf/_doc_header.html.twig' with {doc_header_title: __('État des lieux du matériel', 'assetsign')} %}
+
+{% if logo_data_uri or company_name %}
+<div class="header-logo">
+  {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="">{% endif %}
+  {% if company_name %}<div class="company-name">{{ company_name }}</div>{% endif %}
+</div>
+{% endif %}
+
+{% include '@assetsign/pdf/_paper_condition.html.twig' %}
+
+{% include '@assetsign/pdf/_paper_footer.html.twig' %}
+</body>
+</html>

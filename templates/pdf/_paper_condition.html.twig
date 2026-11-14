@@ -1,0 +1,71 @@
+{# Issue #276 : état des lieux imprimable (une page A4) : cases d'état à cocher pour chaque élément
+   remis, schémas de l'état des lieux visuel (repères déjà posés compris), légende des dommages,
+   zone de notes manuscrites et cadres de signature. Données : paper_condition et paper_signers
+   (cf. HandoverPdfBuilder::getPaperCondition()/getPaperSigners()). #}
+{% set pc = paper_condition|default({rows: [], views: [], has_markers: false}) %}
+{% set pc_beneficiary = (user.firstname|default('') ~ ' ' ~ user.realname|default(''))|trim %}
+{% if pc_beneficiary is empty %}{% set pc_beneficiary = user.name|default('') %}{% endif %}
+
+<h1>{{ __('État des lieux du matériel', 'assetsign') }}</h1>
+<p class="meta">
+    {{ __('Fiche « %1$s », référence n°%2$s', 'assetsign')|format(page_title, assetsign.reference|default(assetsign.id)) }}
+    {% if pc_beneficiary is not empty %} - {{ __('Bénéficiaire : %s', 'assetsign')|format(pc_beneficiary) }}{% endif %}
+</p>
+<p class="paper-notice">{{ __('À compléter à la main au moment de la remise ou du retour du matériel. Cochez une case par ligne.', 'assetsign') }}</p>
+
+<h2>{{ __('État de chaque élément', 'assetsign') }}</h2>
+<table class="paper-check-table">
+    <tr>
+        <th>{{ __('Élément', 'assetsign') }}</th>
+        <th>{{ __('N° de série', 'assetsign') }}</th>
+        <th class="paper-check-col">{{ __('Excellent', 'assetsign') }}</th>
+        <th class="paper-check-col">{{ __('Bon', 'assetsign') }}</th>
+        <th class="paper-check-col">{{ __('Moyen', 'assetsign') }}</th>
+        <th class="paper-check-col">{{ __('Endommagé', 'assetsign') }}</th>
+    </tr>
+    {% for row in pc.rows %}
+    <tr>
+        <td>{{ row.type }}{% if row.name %} - {{ row.name }}{% endif %}</td>
+        <td>{{ row.serial|default('-') ?: '-' }}</td>
+        <td class="paper-check-col"><span class="paper-box"></span></td>
+        <td class="paper-check-col"><span class="paper-box"></span></td>
+        <td class="paper-check-col"><span class="paper-box"></span></td>
+        <td class="paper-check-col"><span class="paper-box"></span></td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if pc.views|length %}
+<h2>{{ __('Schéma du matériel', 'assetsign') }}</h2>
+<div class="damage-pdf-views">
+{% for view in pc.views %}
+<div class="damage-pdf-col">
+    <div class="damage-pdf-view" style="padding-bottom: {{ view.aspect_ratio_percent }}%;">
+        <img src="{{ view.image_data_uri }}" class="damage-pdf-img">
+        {% for marker in view.markers %}
+        <div class="damage-pdf-marker{{ marker.severity == 1 ? ' damage-pdf-marker-major' : '' }}"
+             style="left: {{ marker.x_percent }}%; top: {{ marker.y_percent }}%;"></div>
+        {% endfor %}
+    </div>
+    <p class="damage-pdf-label">{{ view.label }}</p>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+<p class="paper-legend">
+    <strong>{{ __('Légende des dommages', 'assetsign') }}</strong> : {{ __('reportez sur le schéma le numéro du dommage constaté', 'assetsign') }} -
+    <span class="paper-legend-key">1</span> {{ __('rayure', 'assetsign') }}
+    <span class="paper-legend-key">2</span> {{ __('choc', 'assetsign') }}
+    <span class="paper-legend-key">3</span> {{ __('usure', 'assetsign') }}
+    <span class="paper-legend-key">4</span> {{ __('pièce manquante', 'assetsign') }}
+    {% if pc.has_markers %}
+        <br>{{ __('Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage majeur.', 'assetsign') }}
+    {% endif %}
+</p>
+
+<h2>{{ __('Notes', 'assetsign') }}</h2>
+<div class="paper-notes">
+    {% for i in 1..5 %}<div class="paper-notes-line"></div>{% endfor %}
+</div>
+
+{% include '@assetsign/pdf/_paper_signatures.html.twig' %}

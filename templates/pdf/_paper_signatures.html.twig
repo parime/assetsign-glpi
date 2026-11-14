@@ -1,0 +1,29 @@
+{# Issue #276 : cadres de signature vides de la version papier, un par signataire (paper_signers,
+   cf. HandoverPdfBuilder::getPaperSigners()). Nom et titre pre-remplis ; date, lieu et signature a
+   remplir a la main. #}
+{% set role_labels = {
+    beneficiary: __('Bénéficiaire', 'assetsign'),
+    delegate: __('Signataire délégué', 'assetsign'),
+    cosigner: __('Responsable hiérarchique', 'assetsign'),
+    technician: __('Technicien', 'assetsign')
+} %}
+<table class="paper-sign-table">
+    <tr>
+    {% for signer in paper_signers|default([]) %}
+        <td class="paper-sign-cell" style="width: {{ (100 / paper_signers|length)|round(0, 'floor') }}%;">
+            <div class="paper-sign-role">{{ role_labels[signer.role]|default(signer.role) }}</div>
+            <div class="paper-sign-name">{{ signer.name|default('') is not empty ? signer.name : '______________________' }}</div>
+            {% if signer.on_behalf|default('') is not empty %}
+                <div class="paper-sign-small">{{ __('pour le compte de %s', 'assetsign')|format(signer.on_behalf) }}</div>
+            {% endif %}
+            {% if signer.title|default('') is not empty %}
+                <div class="paper-sign-small">{{ signer.title }}</div>
+            {% endif %}
+            <div class="paper-sign-line">{{ __('Date :', 'assetsign') }} ____ / ____ / ________</div>
+            <div class="paper-sign-line">{{ __('Lieu :', 'assetsign') }} ______________________</div>
+            <div class="paper-sign-small">{{ __('Signature, précédée de « Lu et approuvé » :', 'assetsign') }}</div>
+            <div class="paper-sign-box"></div>
+        </td>
+    {% endfor %}
+    </tr>
+</table>
