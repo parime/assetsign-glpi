@@ -110,6 +110,35 @@ class Template extends Compat\Base\TemplateBase
        return true;
    }
 
+   public function prepareInputForAdd($input) {
+       return self::normalizeDocControlInput($input);
+   }
+
+   public function prepareInputForUpdate($input) {
+       return self::normalizeDocControlInput($input);
+   }
+
+    /**
+     * Issue #274 : code du formulaire, revision et date de revision (en-tete de maitrise
+     * documentaire). Textes coupes a la longueur du cartouche ; date vide ou invalide = aucune.
+     *
+     * @param array<string, mixed> $input
+     * @return array<string, mixed>
+     */
+   public static function normalizeDocControlInput(array $input): array {
+      foreach (['doc_code', 'doc_revision'] as $key) {
+         if (array_key_exists($key, $input)) {
+             $input[$key] = mb_substr(trim((string) $input[$key]), 0, Pdf\DocumentControlHeader::MAX_LENGTH);
+         }
+      }
+      if (array_key_exists('doc_revision_date', $input)) {
+          $date = trim((string) $input['doc_revision_date']);
+          $parsed = \DateTime::createFromFormat('!Y-m-d', $date);
+          $input['doc_revision_date'] = ($parsed !== false && $parsed->format('Y-m-d') === $date) ? $date : 'NULL';
+      }
+       return $input;
+   }
+
    public static function getDefaultFor(int $type, int $entities_id): ?self {
        global $DB;
 
@@ -144,6 +173,9 @@ class Template extends Compat\Base\TemplateBase
                 `charter_content` text,
                 `include_content` tinyint NOT NULL DEFAULT 1,
                 `include_charter` tinyint NOT NULL DEFAULT 1,
+                `doc_code` varchar(255) NOT NULL DEFAULT '',
+                `doc_revision` varchar(255) NOT NULL DEFAULT '',
+                `doc_revision_date` date DEFAULT NULL,
                 `is_default` tinyint NOT NULL DEFAULT 0,
                 `is_active` tinyint NOT NULL DEFAULT 1,
                 `comment` text,
@@ -175,6 +207,14 @@ class Template extends Compat\Base\TemplateBase
              // (cf. le commentaire equivalent sur getDefaultContentFor()).
              $migration->addField($table, 'include_content', 'bool', ['value' => 1, 'after' => 'charter_content']);
              $migration->addField($table, 'include_charter', 'bool', ['value' => 1, 'after' => 'include_content']);
+             $migration->migrationOneTable($table);
+         }
+
+          // Issue #274 : code du formulaire et revision, pour l'en-tete de maitrise documentaire.
+         if (!$DB->fieldExists($table, 'doc_code')) {
+             $migration->addField($table, 'doc_code', 'string', ['value' => '', 'after' => 'include_charter']);
+             $migration->addField($table, 'doc_revision', 'string', ['value' => '', 'after' => 'doc_code']);
+             $migration->addField($table, 'doc_revision_date', 'date', ['after' => 'doc_revision']);
              $migration->migrationOneTable($table);
          }
 

@@ -1,0 +1,21 @@
+{# Issue #274 : code du formulaire et révision du modèle, imprimés dans l'en-tête de maîtrise
+   documentaire des PDF quand il est activé dans la configuration de l'entité. Partagé par la page
+   du gabarit (form_id nul) et l'éditeur intégré de la configuration (champs rattachés par form=). #}
+<fieldset class="border rounded p-3 mb-3">
+  <legend class="float-none w-auto px-2 fs-6"><i class="ti ti-file-certificate me-1"></i>{{ __('Maîtrise documentaire (en-tête ISO)', 'assetsign') }}</legend>
+  <div class="row g-2">
+    <div class="col-sm-4">
+      <label class="form-label" for="doc_code{{ id_suffix }}">{{ __('Code du formulaire', 'assetsign') }}</label>
+      <input type="text" name="doc_code" id="doc_code{{ id_suffix }}"{% if form_id %} form="{{ form_id }}"{% endif %} class="form-control" maxlength="100" placeholder="{{ __('Exemple : FOR-IT-012', 'assetsign') }}" value="{{ tpl.doc_code|default('') }}">
+    </div>
+    <div class="col-sm-4">
+      <label class="form-label" for="doc_revision{{ id_suffix }}">{{ __('Révision', 'assetsign') }}</label>
+      <input type="text" name="doc_revision" id="doc_revision{{ id_suffix }}"{% if form_id %} form="{{ form_id }}"{% endif %} class="form-control" maxlength="100" placeholder="{{ __('Exemple : B', 'assetsign') }}" value="{{ tpl.doc_revision|default('') }}">
+    </div>
+    <div class="col-sm-4">
+      <label class="form-label" for="doc_revision_date{{ id_suffix }}">{{ __('Date de révision', 'assetsign') }}</label>
+      <input type="date" name="doc_revision_date" id="doc_revision_date{{ id_suffix }}"{% if form_id %} form="{{ form_id }}"{% endif %} class="form-control" value="{{ tpl.doc_revision_date|default('') }}">
+    </div>
+  </div>
+  <div class="form-text">{{ __('Imprimés dans l\'en-tête de maîtrise documentaire de chaque page, s\'il est activé dans la configuration de l\'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite.', 'assetsign') }}</div>
+</fieldset>

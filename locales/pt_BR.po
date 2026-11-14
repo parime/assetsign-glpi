@@ -5768,3 +5768,62 @@ msgstr "Estas configurações valem apenas para esta impressão. As configuraç�
 
 msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
 msgstr "Na caixa de impressão, escolha o tamanho real (sem ajuste de escala) e nenhuma margem para que as etiquetas caiam certinho na folha."
+
+#, php-format
+msgid "Code : %s"
+msgstr "Código: %s"
+
+#, php-format
+msgid "Révision %1$s du %2$s"
+msgstr "Revisão %1$s de %2$s"
+
+#, php-format
+msgid "Révision %s"
+msgstr "Revisão %s"
+
+#, php-format
+msgid "Créé le %s"
+msgstr "Criado em %s"
+
+#, php-format
+msgid "Page %1$s sur %2$s"
+msgstr "Página %1$s de %2$s"
+
+msgid "En-tête de maîtrise documentaire (ISO)"
+msgstr "Cabeçalho de controle documental (ISO)"
+
+msgid "Afficher un en-tête de maîtrise documentaire sur chaque page des PDF"
+msgstr "Exibir um cabeçalho de controle documental em cada página dos PDFs"
+
+msgid "Cartouche attendu par les organisations certifiées : entreprise, type et titre du document, code du formulaire, révision, date de création du modèle et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit (onglets Attribution, Restitution...), pas à chaque fiche. Les documents déjà générés ne changent pas."
+msgstr "Carimbo esperado pelas organizações certificadas: empresa, tipo e título do documento, código do formulário, revisão, data de criação do modelo e «Página X de Y». O código e a revisão são definidos em cada modelo (abas Atribuição, Devolução...), não em cada ficha. Os documentos já gerados não mudam."
+
+msgid "Type de document"
+msgstr "Tipo de documento"
+
+msgid "Exemple : Enregistrement"
+msgstr "Exemplo: Registro"
+
+msgid "Optionnel : affiché au-dessus du titre du document dans l'en-tête. L'aperçu se met à jour avant l'enregistrement."
+msgstr "Opcional: exibido acima do título do documento no cabeçalho. A pré-visualização é atualizada antes de salvar."
+
+msgid "Maîtrise documentaire (en-tête ISO)"
+msgstr "Controle documental (cabeçalho ISO)"
+
+msgid "Code du formulaire"
+msgstr "Código do formulário"
+
+msgid "Exemple : FOR-IT-012"
+msgstr "Exemplo: FOR-IT-012"
+
+msgid "Révision"
+msgstr "Revisão"
+
+msgid "Exemple : B"
+msgstr "Exemplo: B"
+
+msgid "Date de révision"
+msgstr "Data de revisão"
+
+msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
+msgstr "Impressos no cabeçalho de controle documental de cada página, se estiver ativado na configuração da entidade (aba Geral). Altere a revisão quando o texto do modelo mudar: ela vale para todas as fichas geradas depois."

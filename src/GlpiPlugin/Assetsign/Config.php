@@ -190,6 +190,10 @@ class Config extends Compat\Base\ConfigBase
         'qr_label_text_position'              => 'beside',
         'qr_label_cut_frame'                  => 1,
         'qr_label_text'                       => '',
+        // Issue #274 : en-tete de maitrise documentaire (cartouche ISO) sur chaque page des PDF.
+        // Desactive par defaut : aucun document ne change sans decision de l'administrateur.
+        'doc_header_enabled'                  => 0,
+        'doc_header_doc_type'                 => '',
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -863,6 +867,9 @@ class Config extends Compat\Base\ConfigBase
            'charter_resign_on_change' => (int) ($input['charter_resign_on_change'] ?? 0),
            'renewal_default_years' => max(1, min(15, (int) ($input['renewal_default_years'] ?? 4))),
            'renewal_monthly_change' => (int) ($input['renewal_monthly_change'] ?? 0),
+           // Issue #274 : en-tete de maitrise documentaire.
+           'doc_header_enabled'  => (int) !empty($input['doc_header_enabled']),
+           'doc_header_doc_type' => mb_substr(trim((string) ($input['doc_header_doc_type'] ?? '')), 0, Pdf\DocumentControlHeader::MAX_LENGTH),
        ];
 
        // Issue #229 : sans le plugin Fields (desactive un temps), le choix enregistre est conserve.
@@ -1177,6 +1184,8 @@ class Config extends Compat\Base\ConfigBase
                 `qr_label_text_position` varchar(255) NOT NULL DEFAULT 'beside',
                 `qr_label_cut_frame` tinyint NOT NULL DEFAULT 1,
                 `qr_label_text` text,
+                `doc_header_enabled` tinyint NOT NULL DEFAULT 0,
+                `doc_header_doc_type` varchar(255) NOT NULL DEFAULT '',
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -1303,6 +1312,12 @@ class Config extends Compat\Base\ConfigBase
              $migration->addField($table, 'qr_label_text_position', 'string', ['value' => 'beside']);
              $migration->addField($table, 'qr_label_cut_frame', 'bool', ['value' => 1]);
              $migration->addField($table, 'qr_label_text', 'text', []);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #274 : en-tete de maitrise documentaire, desactive (rien ne change).
+         if (!$DB->fieldExists($table, 'doc_header_enabled')) {
+             $migration->addField($table, 'doc_header_enabled', 'bool', ['value' => 0]);
+             $migration->addField($table, 'doc_header_doc_type', 'string', ['value' => '']);
              $migration->migrationOneTable($table);
          }
          // Issue #224 : re-signature quand la charte change.

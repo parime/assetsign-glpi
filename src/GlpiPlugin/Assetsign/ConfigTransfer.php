@@ -45,7 +45,16 @@ final class ConfigTransfer
       'config', 'templates', 'logo', 'excluded',
    ];
 
-   private const TEMPLATE_KEYS = ['type', 'name', 'content', 'charter_content', 'include_content', 'include_charter'];
+   private const TEMPLATE_KEYS = [
+      'type', 'name', 'content', 'charter_content', 'include_content', 'include_charter',
+      'doc_code', 'doc_revision', 'doc_revision_date',
+   ];
+
+   /**
+    * Issue #274 : maîtrise documentaire du modèle. Facultatifs : un fichier exporté avant leur
+    * ajout ne les contient pas, et l'import laisse alors ceux du gabarit en place.
+    */
+   private const TEMPLATE_DOC_KEYS = ['doc_code', 'doc_revision', 'doc_revision_date'];
 
    /** Colonnes propres à cette instance ou à cette ligne : jamais exportées ni importées. */
    public const INSTANCE_FIELDS = [
@@ -183,6 +192,9 @@ final class ConfigTransfer
       'qr_label_text_position'               => ['enum', QrLabelLayout::POSITIONS],
       'qr_label_cut_frame'                   => ['bool'],
       'qr_label_text'                        => ['string', QrLabelLayout::TEXT_MAX_LENGTH],
+      // Issue #274 : en-tête de maîtrise documentaire.
+      'doc_header_enabled'                   => ['bool'],
+      'doc_header_doc_type'                  => ['string', Pdf\DocumentControlHeader::MAX_LENGTH],
    ];
 
    /** @return array<string, array<int, mixed>> */
@@ -270,6 +282,9 @@ final class ConfigTransfer
             'charter_content' => (string) ($template->fields['charter_content'] ?? ''),
             'include_content' => (int) $template->fields['include_content'],
             'include_charter' => (int) $template->fields['include_charter'],
+            'doc_code'        => (string) ($template->fields['doc_code'] ?? ''),
+            'doc_revision'    => (string) ($template->fields['doc_revision'] ?? ''),
+            'doc_revision_date' => (string) ($template->fields['doc_revision_date'] ?? ''),
          ];
       }
       return $templates;
@@ -508,6 +523,18 @@ final class ConfigTransfer
          foreach (['include_content', 'include_charter'] as $key) {
             $row[$key] = self::validateValue('templates.' . $key, ['bool'], $template[$key] ?? 1);
          }
+         foreach (['doc_code', 'doc_revision'] as $key) {
+            if (array_key_exists($key, $template)) {
+               $row[$key] = self::validateValue('templates.' . $key, ['string', Pdf\DocumentControlHeader::MAX_LENGTH], $template[$key]);
+            }
+         }
+         if (array_key_exists('doc_revision_date', $template)) {
+            $date = $template['doc_revision_date'];
+            if (!is_string($date) || ($date !== '' && Template::normalizeDocControlInput(['doc_revision_date' => $date])['doc_revision_date'] !== $date)) {
+               throw self::invalid('templates.doc_revision_date');
+            }
+            $row['doc_revision_date'] = $date;
+         }
          $result[$type] = $row;
       }
       return array_values($result);
@@ -680,6 +707,11 @@ final class ConfigTransfer
       $row = reset($existing);
       $item = new Template();
       $fields = ['name', 'content', 'charter_content', 'include_content', 'include_charter'];
+      foreach (self::TEMPLATE_DOC_KEYS as $key) {
+         if (array_key_exists($key, $template)) {
+            $fields[] = $key;
+         }
+      }
 
       if ($row !== false) {
          $changed = [];
@@ -750,6 +782,11 @@ final class ConfigTransfer
             'include_content' => $data['include_content'],
             'include_charter' => $data['include_charter'],
          ];
+         foreach (self::TEMPLATE_DOC_KEYS as $key) {
+            if (array_key_exists($key, $data)) {
+               $values[$key] = $data[$key];
+            }
+         }
          $item = new Template();
          if ($template['action'] === 'update' && $item->update(['id' => $template['id']] + $values)) {
             $templatesChanged++;

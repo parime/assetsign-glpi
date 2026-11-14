@@ -48,6 +48,8 @@ class Campaign extends Compat\Base\CampaignBase
            'status_labels' => Attestation::getStatusLabels(),
            'gap_labels'    => Attestation::getGapLabels(),
            'generated_at'  => Html::convDateTime(date('Y-m-d H:i:s')),
+           // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
+           'doc_header'    => Pdf\DocumentControlHeader::forEntity((int) $this->fields['entities_id']),
        ]);
        return $this->renderPdf($html);
    }

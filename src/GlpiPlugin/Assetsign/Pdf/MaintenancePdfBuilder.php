@@ -79,6 +79,8 @@ final class MaintenancePdfBuilder
            'company_name'        => $config->fields['company_name'] ?: null,
            'qr_data_uri'         => $qrDataUri,
            'document_title'      => $maintenance->getDocumentTitle(),
+           // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
+           'doc_header'          => DocumentControlHeader::forEntity((int) $maintenance->fields['entities_id']),
        ]);
    }
 

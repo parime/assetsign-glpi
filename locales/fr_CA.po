@@ -5167,3 +5167,62 @@ msgstr "Ces réglages ne valent que pour cette impression. Les réglages par dé
 
 msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
 msgstr "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
+
+#, php-format
+msgid "Code : %s"
+msgstr "Code : %s"
+
+#, php-format
+msgid "Révision %1$s du %2$s"
+msgstr "Révision %1$s du %2$s"
+
+#, php-format
+msgid "Révision %s"
+msgstr "Révision %s"
+
+#, php-format
+msgid "Créé le %s"
+msgstr "Créé le %s"
+
+#, php-format
+msgid "Page %1$s sur %2$s"
+msgstr "Page %1$s sur %2$s"
+
+msgid "En-tête de maîtrise documentaire (ISO)"
+msgstr "En-tête de maîtrise documentaire (ISO)"
+
+msgid "Afficher un en-tête de maîtrise documentaire sur chaque page des PDF"
+msgstr "Afficher un en-tête de maîtrise documentaire sur chaque page des PDF"
+
+msgid "Cartouche attendu par les organisations certifiées : entreprise, type et titre du document, code du formulaire, révision, date de création du modèle et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit (onglets Attribution, Restitution...), pas à chaque fiche. Les documents déjà générés ne changent pas."
+msgstr "Cartouche attendu par les organisations certifiées : entreprise, type et titre du document, code du formulaire, révision, date de création du modèle et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit (onglets Attribution, Restitution...), pas à chaque fiche. Les documents déjà générés ne changent pas."
+
+msgid "Type de document"
+msgstr "Type de document"
+
+msgid "Exemple : Enregistrement"
+msgstr "Exemple : Enregistrement"
+
+msgid "Optionnel : affiché au-dessus du titre du document dans l'en-tête. L'aperçu se met à jour avant l'enregistrement."
+msgstr "Optionnel : affiché au-dessus du titre du document dans l'en-tête. L'aperçu se met à jour avant l'enregistrement."
+
+msgid "Maîtrise documentaire (en-tête ISO)"
+msgstr "Maîtrise documentaire (en-tête ISO)"
+
+msgid "Code du formulaire"
+msgstr "Code du formulaire"
+
+msgid "Exemple : FOR-IT-012"
+msgstr "Exemple : FOR-IT-012"
+
+msgid "Révision"
+msgstr "Révision"
+
+msgid "Exemple : B"
+msgstr "Exemple : B"
+
+msgid "Date de révision"
+msgstr "Date de révision"
+
+msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
+msgstr "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."

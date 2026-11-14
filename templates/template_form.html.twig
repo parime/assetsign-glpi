@@ -47,6 +47,9 @@
         <div class="form-text">{{ __('Variables disponibles, remplacées automatiquement sur le PDF :', 'assetsign') }} <code>{beneficiaire}</code>, <code>{technicien}</code>, <code>{materiel}</code>, <code>{date}</code>, <code>{entite}</code>, <code>{champ:nom}</code> {{ __('(champ du plugin Fields, si son bloc est retenu dans la configuration)', 'assetsign') }}.</div>
       </div>
 
+      {# Issue #274 : maîtrise documentaire du modèle (en-tête ISO des PDF, si activé). #}
+      {% include '@assetsign/_template_doc_control_fields.html.twig' with {tpl: item.fields, form_id: null, id_suffix: ''} %}
+
       <div class="mb-3 form-check">
         <input type="hidden" name="is_default" value="0">
         <input type="checkbox" name="is_default" value="1" class="form-check-input" id="is_default" {{ item.fields.is_default|default(0) ? 'checked' : '' }}>

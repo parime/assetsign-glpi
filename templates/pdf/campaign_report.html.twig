@@ -9,6 +9,8 @@
 {% include '@assetsign/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
+{# Issue #274 : en-tête de maîtrise documentaire, sur chaque page (si activé). #}
+{% include '@assetsign/pdf/_doc_header.html.twig' with {doc_header_title: __('Campagne d\'attestation de détention', 'assetsign')} %}
 
 {% if company_name %}
 <div class="header-logo"><div class="company-name">{{ company_name }}</div></div>

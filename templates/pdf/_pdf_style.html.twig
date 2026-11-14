@@ -33,4 +33,24 @@
     .checklist li { padding: 3px 6px; border-bottom: 1px solid #eee; }
     .checklist li:last-child { border-bottom: none; }
     .checklist .value { color: #555; }
+    {# Issue #274 : en-tete de maitrise documentaire (cf. _doc_header.html.twig). Dans le PDF, la
+       marge haute de chaque page est agrandie pour l'accueillir ; dans l'apercu (navigateur), il
+       s'affiche simplement en haut de la fiche. #}
+    {% if doc_header|default(null) %}
+    {% if not doc_header.preview %}
+    @page { margin-top: 34mm; }
+    .doc-header { position: fixed; top: -28mm; left: 0; right: 0; height: 24mm; overflow: hidden; }
+    .dh-page-num:before { content: counter(page); }
+    {% else %}
+    .doc-header { margin-bottom: 12px; }
+    {% endif %}
+    table.doc-header-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    table.doc-header-table td { border: 1px solid #1c2b3a; padding: 3px 5px; vertical-align: middle; font-size: 8px; line-height: 1.3; }
+    td.dh-org { width: 26%; font-weight: bold; font-size: 9px; text-align: center; }
+    td.dh-title { width: 46%; text-align: center; }
+    .dh-type { font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; margin-bottom: 2px; }
+    .dh-name { font-size: 11px; font-weight: bold; }
+    td.dh-meta { width: 28%; }
+    .dh-page { font-weight: bold; }
+    {% endif %}
 </style>

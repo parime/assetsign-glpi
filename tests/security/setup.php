@@ -98,10 +98,13 @@ if (($argv[1] ?? '') === 'xss') {
     foreach (['templates', 'kits', 'accessories', 'checklistitems', 'maintenancechecklistitems'] as $table) {
         $set($table, ['name' => $canary, 'comment' => $canary], ['id' => $ids[$table . '_A']]);
     }
+    // Issue #274 : code et revision du gabarit (en-tete de maitrise documentaire).
+    $set('templates', ['doc_code' => $canary, 'doc_revision' => $canary], ['id' => $ids['templates_A']]);
     $set('configs', [
         'company_name' => $canary, 'sender_name' => $canary, 'preview_watermark_text' => $canary,
         'currency_symbol' => $canary, 'default_provider' => $canary,
         'reference_format' => $canary, 'reference_prefix' => $canary,
+        'doc_header_enabled' => 1, 'doc_header_doc_type' => $canary,
     ], ['entities_id' => $ids['a']]);
     $DB->update('glpi_computers', ['name' => $canary, 'serial' => $canary], ['id' => $ids['computer_A']]);
     $DB->update('glpi_users', ['realname' => $canary, 'firstname' => $canary], ['id' => $ids['partant_A']]);

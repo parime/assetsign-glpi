@@ -7,6 +7,8 @@
 {% include '@assetsign/pdf/_pdf_style.html.twig' %}
 </head>
 <body>
+{# Issue #274 : en-tête de maîtrise documentaire, sur chaque page (si activé). #}
+{% include '@assetsign/pdf/_doc_header.html.twig' with {doc_header_title: __('Fiche de maintenance', 'assetsign')} %}
 
 {% set technician_name = (technician.firstname|default('') ~ ' ' ~ technician.realname|default(''))|trim %}
 {% if technician_name is empty %}{% set technician_name = technician.name|default('-') %}{% endif %}

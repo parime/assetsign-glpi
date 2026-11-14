@@ -119,6 +119,8 @@ class Attestation extends Compat\Base\AttestationBase
            'signature_image' => $signaturePngDataUrl,
            'signed_at'       => Html::convDateTime($signedAt),
            'ip_address'      => $meta['ip'] ?? '',
+           // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
+           'doc_header'      => Pdf\DocumentControlHeader::forEntity((int) $this->fields['entities_id']),
        ]));
        $binary = $this->renderPdf($html, (bool) ($config->fields['protect_pdf'] ?? false));
        $documentsId = $this->storePdf($binary, $user, $campaign?->isCharter() ?? false);

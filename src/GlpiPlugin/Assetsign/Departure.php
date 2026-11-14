@@ -333,6 +333,8 @@ class Departure extends Compat\Base\DepartureBase
          'signed_at'       => Html::convDateTime($signedAt),
          'witness_name'    => $witnessName,
          'ip_address'      => $meta['ip'] ?? '',
+         // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
+         'doc_header'      => Pdf\DocumentControlHeader::forEntity((int) $this->fields['entities_id']),
       ]));
       $binary = $this->renderPdf($html, (bool) ($config->fields['protect_pdf'] ?? false));
 
