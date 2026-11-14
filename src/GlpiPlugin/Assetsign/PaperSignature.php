@@ -4,7 +4,6 @@ namespace GlpiPlugin\Assetsign;
 
 use Document;
 use Document_Item;
-use RuntimeException;
 
 /**
  * Issue #276 : version papier d'une fiche, pour les cas ou la signature electronique n'est pas
@@ -58,11 +57,11 @@ final class PaperSignature
      * lieux, ou VARIANT_CONDITION, l'etat des lieux seul). Trace l'impression sur la fiche et dans
      * l'historique du materiel ; ne change jamais le statut.
      *
-     * @throws RuntimeException fiche plus imprimable ou droit insuffisant
+     * @throws \RuntimeException fiche plus imprimable ou droit insuffisant
      */
    public static function renderPdf(Assetsign $assetsign, string $variant, int $usersId): string {
       if (!in_array($variant, [self::VARIANT_FORM, self::VARIANT_CONDITION], true)) {
-          throw new RuntimeException(__('Version papier inconnue.', 'assetsign'));
+          throw new \RuntimeException(__('Version papier inconnue.', 'assetsign'));
       }
        self::assertAllowed($assetsign);
 
@@ -91,7 +90,7 @@ final class PaperSignature
      * @param string $declaredDate date de signature portee sur le papier (AAAA-MM-JJ), vide = aujourd'hui
      * @param array{ip?: string, user_agent?: string} $context
      *
-     * @throws RuntimeException droit, statut, fichier ou date refuses (message pour l'utilisateur)
+     * @throws \RuntimeException droit, statut, fichier ou date refuses (message pour l'utilisateur)
      */
    public static function attachScan(Assetsign $assetsign, string $path, string $originalName, int $usersId, string $declaredDate = '', array $context = []): void {
        self::assertAllowed($assetsign);
@@ -99,7 +98,7 @@ final class PaperSignature
        $signatureDate = self::validateDeclaredDate($assetsign, $declaredDate);
        $hash = hash_file('sha256', $path);
       if ($hash === false) {
-          throw new RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
+          throw new \RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
       }
 
        $document = self::storeScan($assetsign, $path, $extension, $hash);
@@ -157,58 +156,58 @@ final class PaperSignature
      *
      * @return string extension normalisee
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
    public static function validateScan(string $path, string $originalName): string {
       if (!is_file($path) || !is_readable($path)) {
-          throw new RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
+          throw new \RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
       }
        $size = (int) filesize($path);
       if ($size <= 0) {
-          throw new RuntimeException(__('Le fichier du scan est vide.', 'assetsign'));
+          throw new \RuntimeException(__('Le fichier du scan est vide.', 'assetsign'));
       }
       if ($size > self::MAX_SCAN_BYTES) {
-          throw new RuntimeException(sprintf(__('Le scan dépasse la taille maximale (%d Mo).', 'assetsign'), self::MAX_SCAN_BYTES / 1024 / 1024));
+          throw new \RuntimeException(sprintf(__('Le scan dépasse la taille maximale (%d Mo).', 'assetsign'), self::MAX_SCAN_BYTES / 1024 / 1024));
       }
 
        $extension = strtolower((string) pathinfo($originalName, PATHINFO_EXTENSION));
       if (!isset(self::ALLOWED_SCAN_TYPES[$extension])) {
-          throw new RuntimeException(__('Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG.', 'assetsign'));
+          throw new \RuntimeException(__('Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG.', 'assetsign'));
       }
 
        $mime = (string) (new \finfo(FILEINFO_MIME_TYPE))->file($path);
       if ($mime !== self::ALLOWED_SCAN_TYPES[$extension]) {
-          throw new RuntimeException(__('Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG.', 'assetsign'));
+          throw new \RuntimeException(__('Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG.', 'assetsign'));
       }
       if ($mime === 'application/pdf') {
           $head = (string) file_get_contents($path, false, null, 0, 5);
          if ($head !== '%PDF-') {
-             throw new RuntimeException(__('Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG.', 'assetsign'));
+             throw new \RuntimeException(__('Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG.', 'assetsign'));
          }
       } else {
           $image = @getimagesize($path);
          if ($image === false || $image['mime'] !== $mime || (int) $image[0] <= 0 || (int) $image[1] <= 0) {
-             throw new RuntimeException(__('Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG.', 'assetsign'));
+             throw new \RuntimeException(__('Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG.', 'assetsign'));
          }
       }
 
        return $extension === 'jpeg' ? 'jpg' : $extension;
    }
 
-    /** @throws RuntimeException */
+    /** @throws \RuntimeException */
    private static function assertAllowed(Assetsign $assetsign): void {
       if (!$assetsign->can($assetsign->getID(), UPDATE)) {
-          throw new RuntimeException(__('Vous n\'avez pas le droit de modifier cette fiche.', 'assetsign'));
+          throw new \RuntimeException(__('Vous n\'avez pas le droit de modifier cette fiche.', 'assetsign'));
       }
       if (!self::isAvailableFor($assetsign)) {
-          throw new RuntimeException(__('La version papier n\'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée).', 'assetsign'));
+          throw new \RuntimeException(__('La version papier n\'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée).', 'assetsign'));
       }
    }
 
     /**
      * Date de signature portee sur le papier : ni dans le futur, ni avant la creation de la fiche.
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
    private static function validateDeclaredDate(Assetsign $assetsign, string $declaredDate): string {
        $declaredDate = trim($declaredDate);
@@ -217,14 +216,14 @@ final class PaperSignature
       }
        $parsed = \DateTime::createFromFormat('!Y-m-d', $declaredDate);
       if ($parsed === false || $parsed->format('Y-m-d') !== $declaredDate) {
-          throw new RuntimeException(__('Date de signature invalide.', 'assetsign'));
+          throw new \RuntimeException(__('Date de signature invalide.', 'assetsign'));
       }
       if ($declaredDate > date('Y-m-d')) {
-          throw new RuntimeException(__('La date de signature ne peut pas être dans le futur.', 'assetsign'));
+          throw new \RuntimeException(__('La date de signature ne peut pas être dans le futur.', 'assetsign'));
       }
        $created = substr((string) ($assetsign->fields['date_creation'] ?? ''), 0, 10);
       if ($created !== '' && $declaredDate < $created) {
-          throw new RuntimeException(__('La date de signature ne peut pas précéder la création de la fiche.', 'assetsign'));
+          throw new \RuntimeException(__('La date de signature ne peut pas précéder la création de la fiche.', 'assetsign'));
       }
        return $declaredDate;
    }
@@ -233,12 +232,12 @@ final class PaperSignature
      * Document GLPI du scan, rattache au materiel et au beneficiaire comme le PDF signe. Le fichier
      * enregistre est relu : son empreinte doit etre celle calculee sur le fichier recu.
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
    private static function storeScan(Assetsign $assetsign, string $path, string $extension, string $hash): Document {
        $tmpName = uniqid('assetsign_paper_', true) . '.' . $extension;
       if (!copy($path, GLPI_TMP_DIR . '/' . $tmpName)) {
-          throw new RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
+          throw new \RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
       }
 
        // Messages techniques du coeur (« Document copie avec succes ») : seul le message de
@@ -256,12 +255,12 @@ final class PaperSignature
        $_SESSION['MESSAGE_AFTER_REDIRECT'] = $messagesBefore;
 
       if ($documents_id <= 0 || !$document->getFromDB($documents_id)) {
-          throw new RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
+          throw new \RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
       }
        $stored = GLPI_DOC_DIR . '/' . $document->fields['filepath'];
       if (!is_file($stored) || hash_file('sha256', $stored) !== $hash) {
           $document->delete(['id' => $documents_id], true);
-          throw new RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
+          throw new \RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
       }
 
       foreach ([[(string) $assetsign->fields['itemtype'], (int) $assetsign->fields['items_id']], ['User', (int) $assetsign->fields['users_id']]] as [$itemtype, $itemsId]) {

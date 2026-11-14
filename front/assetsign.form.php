@@ -76,7 +76,6 @@ if (isset($_GET['paper_pdf'])) {
    }
    if ($paperPdf === null) {
        Html::redirect($assetsign->getLinkURL());
-       return;
    }
     header('Content-Type: application/pdf');
     header('Content-Disposition: inline; filename="' . ($variant === PaperSignature::VARIANT_CONDITION ? 'etat-des-lieux-' : 'version-papier-') . $assetsign->getID() . '.pdf"');

@@ -126,12 +126,12 @@ final class HandoverPdfBuilder
            'name'   => (string) ($item['name'] ?? ''),
            'serial' => (string) ($item['serial'] ?? ''),
        ]];
-      foreach (AssetsignItem::getForAssetsign($assetsign->getID()) as $row) {
+       foreach (AssetsignItem::getForAssetsign($assetsign->getID()) as $row) {
           $rows[] = ['type' => (string) ($row['type_label'] ?? ''), 'name' => (string) ($row['name'] ?? ''), 'serial' => (string) ($row['serial'] ?? '')];
-      }
-      foreach ($assetsign->getAccessories() as $accessory) {
+       }
+       foreach ($assetsign->getAccessories() as $accessory) {
           $rows[] = ['type' => __('Accessoire', 'assetsign'), 'name' => sprintf('%s x %d', $accessory['name'], (int) $accessory['quantity']), 'serial' => ''];
-      }
+       }
        $markers = DamageMarker::getForAssetsign($assetsign->getID());
 
        return [
