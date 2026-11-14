@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.24.0] - 2026-11-14
+
 ### Added
 
 - Attestation d'effacement des données avant un don, une vente, une destruction ou une réattribution
