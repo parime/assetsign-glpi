@@ -70,9 +70,9 @@ final class PaperSignatureTest extends AssetsignTestCase
         $this->assertStringContainsString('PC-PAPIER-276', $html, 'Materiel pre-rempli.');
         $this->assertStringContainsString('SN-PAPIER-276', $html, 'Numero de serie pre-rempli.');
         $this->assertStringContainsString('Technifictif', $html, 'Cadre du technicien de la fiche.');
-        $this->assertSame(2, substr_count($html, 'class="paper-sign-box"'), 'Un cadre vide par signataire (beneficiaire, technicien).');
+        $this->assertSame(4, substr_count($html, 'class="paper-sign-box"'), 'Un cadre vide par signataire (beneficiaire, technicien), sur la fiche puis sur la page Etat des lieux.');
         $this->assertStringNotContainsString('class="signature-img"', $html, 'Aucune signature incrustee.');
-        $this->assertStringContainsString('paper-page-break', $html, 'Etat des lieux sur une nouvelle page.');
+        $this->assertStringContainsString('class="paper-page-break"', $html, 'Etat des lieux sur une nouvelle page.');
         $this->assertStringContainsString('paper-check-table', $html);
         $this->assertSame(4, substr_count($html, 'class="paper-box"'), 'Une ligne (le materiel) x quatre etats a cocher.');
         $this->assertStringContainsString('class="paper-notes"', $html, 'Zone de notes manuscrites.');
@@ -80,7 +80,7 @@ final class PaperSignatureTest extends AssetsignTestCase
 
         $condition = (new HandoverPdfBuilder())->renderPaperHtml($assetsign, PaperSignature::VARIANT_CONDITION);
         $this->assertStringContainsString('paper-check-table', $condition);
-        $this->assertStringNotContainsString('paper-page-break', $condition, 'Etat des lieux seul : une page.');
+        $this->assertStringNotContainsString('class="paper-page-break"', $condition, 'Etat des lieux seul : une page.');
         $this->assertSame(2, substr_count($condition, 'class="paper-sign-box"'));
     }
 
