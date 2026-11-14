@@ -41,6 +41,8 @@
 
 <h2>{{ __('Signature', 'assetsign') }}</h2>
 <img src="{{ signature_image }}" alt="" style="max-height: 110px; border: 1px solid #ccc;">
+{# Issue #280 : titre GLPI du signataire, à défaut « Utilisateur ». #}
+<p class="signer-title">{{ signer_title|default('') ?: __('Utilisateur', 'assetsign') }}</p>
 <table class="info-table">
     <tr><th>{{ __('Signataire', 'assetsign') }}</th><td>{{ user_name }}</td></tr>
     <tr><th>{{ __('Date et heure', 'assetsign') }}</th><td>{{ signed_at }}</td></tr>

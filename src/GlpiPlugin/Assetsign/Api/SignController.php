@@ -4,6 +4,7 @@ namespace GlpiPlugin\Assetsign\Api;
 
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Config;
+use GlpiPlugin\Assetsign\Pdf\PdfMetadata;
 use GlpiPlugin\Assetsign\Pdf\SignatureImageValidator;
 use GlpiPlugin\Assetsign\Pdf\SignatureStamper;
 use GlpiPlugin\Assetsign\Signature;
@@ -258,6 +259,8 @@ final class SignController
            'signed_at'       => $beneficiaryProof['signed_at'] ?? $assetsign->fields['date_mod'],
            'signer_name'     => $beneficiaryProof['signer_name'] ?? trim(\formatUserName(0, $beneficiarySignerIdentity['name'] ?? '', $beneficiarySignerIdentity['realname'] ?? '', $beneficiarySignerIdentity['firstname'] ?? '')),
            'signer_email'    => $beneficiaryProof['signer_email'] ?? ($beneficiarySignerIdentity['email'] ?? ''),
+           // Issue #280 : titre GLPI de qui a signe a l'etape beneficiaire (delegue eventuel).
+           'signer_title'    => PdfMetadata::signerTitle($assetsign->getExpectedSigner()),
        ];
 
        $cosignerIdentity = $assetsign->getCosigner() ?? [];
@@ -267,6 +270,7 @@ final class SignController
            'signed_at'       => $signedAt,
            'signer_name'     => trim(\formatUserName(0, $cosignerIdentity['name'] ?? '', $cosignerIdentity['realname'] ?? '', $cosignerIdentity['firstname'] ?? '')),
            'signer_email'    => $cosignerIdentity['email'] ?? '',
+           'signer_title'    => PdfMetadata::signerTitle($cosignerIdentity),
        ];
 
        $stamper = new SignatureStamper();

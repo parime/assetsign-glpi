@@ -333,10 +333,16 @@ class Departure extends Compat\Base\DepartureBase
          'signed_at'       => Html::convDateTime($signedAt),
          'witness_name'    => $witnessName,
          'ip_address'      => $meta['ip'] ?? '',
+         // Issue #280 : titre GLPI du signataire (« Utilisateur » a defaut).
+         'signer_title'    => Pdf\PdfMetadata::signerTitle($user->fields),
          // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
          'doc_header'      => Pdf\DocumentControlHeader::forEntity((int) $this->fields['entities_id']),
       ]));
-      $binary = $this->renderPdf($html, (bool) ($config->fields['protect_pdf'] ?? false));
+      $binary = $this->renderPdf($html, (bool) ($config->fields['protect_pdf'] ?? false), Pdf\PdfMetadata::build(
+         'Restitution de départ',
+         (int) $this->fields['entities_id'],
+         Pdf\PdfMetadata::personName($user->fields)
+      ));
 
       $tmpName = uniqid('assetsign_departure_', true) . '.pdf';
       if (file_put_contents(GLPI_TMP_DIR . '/' . $tmpName, $binary) === false) {
