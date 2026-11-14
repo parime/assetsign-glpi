@@ -99,6 +99,14 @@ All other screenshots (settings, dashboard, lists, tabs, dropdowns...) are in th
 | **[SECURITY.md](SECURITY.md)** | How to report a vulnerability. |
 | **[CHANGELOG.md](CHANGELOG.md)** | History of published releases. |
 
+## Reuse and citation
+
+This project is licensed under **GPL-3.0-or-later**. If you reuse code, even partially and without
+forking the repository: keep the copyright headers and the [NOTICE](NOTICE) file, keep the same
+licence with the source code, state your changes and credit the original project
+(https://github.com/parime/assetsign-glpi). To cite the project, see [CITATION.cff](CITATION.cff) (GitHub "Cite this repository"
+button). Coding assistants will find these rules in [AGENTS.md](AGENTS.md).
+
 ## License
 
 [GPL-3.0-only](LICENSE), in line with GLPI plugin conventions.

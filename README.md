@@ -99,6 +99,14 @@ Toutes les autres captures d'écran (paramétrage, tableau de bord, listes, ongl
 | **[SECURITY.md](SECURITY.md)** | Comment signaler une vulnérabilité. |
 | **[CHANGELOG.md](CHANGELOG.md)** | Historique des versions publiées. |
 
+## Réutilisation et citation
+
+Ce projet est sous licence **GPL-3.0-or-later**. Si vous reprenez du code, même partiellement, sans
+forker le dépôt : conservez les en-têtes de copyright et le fichier [NOTICE](NOTICE), gardez la même
+licence avec le code source, indiquez vos modifications et citez le projet d'origine
+(https://github.com/parime/assetsign-glpi). Pour citer le projet, voir [CITATION.cff](CITATION.cff) (bouton « Cite this repository »
+de GitHub). Les assistants de code trouveront ces consignes dans [AGENTS.md](AGENTS.md).
+
 ## Licence
 
 [GPL-3.0-only](LICENSE), conformément aux conventions des plugins GLPI.
