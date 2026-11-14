@@ -31,7 +31,6 @@ use GlpiPlugin\Assetsign\Loan;
 use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Movement;
-use GlpiPlugin\Assetsign\WipeAttestation;
 use GlpiPlugin\Assetsign\NotificationTargetAssetsign;
 use GlpiPlugin\Assetsign\NotificationTargetAttestation;
 use GlpiPlugin\Assetsign\NotificationTargetDeparture;
@@ -44,6 +43,7 @@ use GlpiPlugin\Assetsign\Signature;
 use GlpiPlugin\Assetsign\Template;
 use GlpiPlugin\Assetsign\Token;
 use GlpiPlugin\Assetsign\VenteDetails;
+use GlpiPlugin\Assetsign\WipeAttestation;
 
 // ----------------------------------------------------------------------------------
 // Callbacks de hooks (item_add / item_update / pre_item_purge)

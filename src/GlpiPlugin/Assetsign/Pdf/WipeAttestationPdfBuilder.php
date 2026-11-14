@@ -89,12 +89,12 @@ final class WipeAttestationPdfBuilder
            [WipeAttestation::class, $attestation->getID()],
            [(string) $attestation->fields['itemtype'], (int) $attestation->fields['items_id']],
        ];
-      if ((int) $attestation->fields['users_id_tech'] > 0) {
+       if ((int) $attestation->fields['users_id_tech'] > 0) {
           $links[] = ['User', (int) $attestation->fields['users_id_tech']];
-      }
-      foreach ($links as [$itemtype, $itemsId]) {
+       }
+       foreach ($links as [$itemtype, $itemsId]) {
           (new Document_Item())->add(['documents_id' => $documentsId, 'itemtype' => $itemtype, 'items_id' => $itemsId]);
-      }
+       }
        return $document;
    }
 }

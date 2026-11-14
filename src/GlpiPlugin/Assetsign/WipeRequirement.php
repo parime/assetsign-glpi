@@ -100,9 +100,9 @@ final class WipeRequirement
            'is_deleted' => 0,
            'NOT'        => ['status' => self::HANDED_OVER_EXCLUDED_STATUSES],
        ];
-      if ($newUsersId > 0) {
+       if ($newUsersId > 0) {
           $criteria[] = ['NOT' => ['users_id' => $newUsersId]];
-      }
+       }
        return $DB->request(['SELECT' => ['id'], 'FROM' => Assetsign::getTable(), 'WHERE' => $criteria, 'LIMIT' => 1])->count() > 0;
    }
 
@@ -120,9 +120,9 @@ final class WipeRequirement
            'is_deleted' => 0,
            'NOT'        => ['status' => self::HANDED_OVER_EXCLUDED_STATUSES],
        ];
-      if ($before !== null) {
+       if ($before !== null) {
           $criteria[] = ['date_creation' => ['<', $before]];
-      }
+       }
        $row = $DB->request([
            'SELECT' => ['date_sent', 'date_creation'],
            'FROM'   => Assetsign::getTable(),

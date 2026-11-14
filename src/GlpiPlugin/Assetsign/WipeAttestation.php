@@ -151,28 +151,28 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
       if (!is_array($values)) {
           $values = [$field => $values];
       }
-       switch ($field) {
+      switch ($field) {
          case 'method':
-             return htmlescape(self::getMethodLabels()[(string) ($values[$field] ?? '')] ?? '');
+            return htmlescape(self::getMethodLabels()[(string) ($values[$field] ?? '')] ?? '');
          case 'nist_level':
-             return htmlescape(self::getLevelLabels()[(string) ($values[$field] ?? '')] ?? '');
+            return htmlescape(self::getLevelLabels()[(string) ($values[$field] ?? '')] ?? '');
          case 'verification_result':
              $result = (int) ($values[$field] ?? 0);
-             return TwigBlocks::fragment('components/status_badge.html.twig', [
-                 'color' => self::getResultColor($result),
-                 'label' => self::getResultLabels()[$result] ?? '',
-             ]);
+            return TwigBlocks::fragment('components/status_badge.html.twig', [
+                'color' => self::getResultColor($result),
+                'label' => self::getResultLabels()[$result] ?? '',
+            ]);
          case 'documents_id':
-             $documentsId = (int) ($values[$field] ?? 0);
+            $documentsId = (int) ($values[$field] ?? 0);
             if ($documentsId <= 0) {
-                return '';
+               return '';
             }
-             global $CFG_GLPI;
-             return TwigBlocks::fragment('components/document_link.html.twig', [
-                 'url'   => $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documentsId,
-                 'label' => __('Télécharger', 'assetsign'),
-             ]);
-       }
+            global $CFG_GLPI;
+            return TwigBlocks::fragment('components/document_link.html.twig', [
+                'url'   => $CFG_GLPI['root_doc'] . '/front/document.send.php?docid=' . $documentsId,
+                'label' => __('Télécharger', 'assetsign'),
+            ]);
+      }
        return parent::getSpecificValueToDisplay($field, $values, $options);
    }
 
@@ -201,8 +201,7 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
        global $DB;
 
        $rows = [];
-      foreach (
-           $DB->request([
+      foreach ($DB->request([
                'FROM'  => self::getTable(),
                'WHERE' => ['itemtype' => $item->getType(), 'items_id' => $item->getID()],
                'ORDER' => 'date_wipe DESC',
@@ -256,8 +255,7 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
        global $DB;
 
        $media = [];
-      foreach (
-           $DB->request([
+      foreach ($DB->request([
                'SELECT'    => [
                    'glpi_items_deviceharddrives.id',
                    'glpi_items_deviceharddrives.serial',
@@ -285,8 +283,7 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
               'encryption' => '',
           ];
       }
-      foreach (
-           $DB->request([
+      foreach ($DB->request([
                'FROM'  => 'glpi_items_disks',
                'WHERE' => ['itemtype' => $item->getType(), 'items_id' => $item->getID(), 'is_deleted' => 0],
                'ORDER' => 'id',
@@ -395,7 +392,7 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
 
        $reportFile = null;
       if ($report !== null && ($report['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
-         if (($report['error'] ?? null) !== UPLOAD_ERR_OK || empty($report['tmp_name']) || !is_uploaded_file((string) $report['tmp_name'])) {
+         if ($report['error'] !== UPLOAD_ERR_OK || empty($report['tmp_name']) || !is_uploaded_file((string) $report['tmp_name'])) {
              throw new \RuntimeException(__('Échec de l\'envoi du document.', 'assetsign'));
          }
           self::validateReport((string) $report['tmp_name'], (string) ($report['name'] ?? ''));
@@ -601,9 +598,9 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
            'NOT'          => ['verification_result' => self::RESULT_FAILED],
        ];
        $since = WipeRequirement::lastHandoverDate($itemtype, $itemsId, $before);
-      if ($since !== null) {
+       if ($since !== null) {
           $criteria[] = ['date_wipe' => ['>=', $since]];
-      }
+       }
        $row = $DB->request([
            'FROM'  => self::getTable(),
            'WHERE' => $criteria,
@@ -647,8 +644,7 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
        $types = Assetsign::getTypes();
        $statuses = Assetsign::getStatuses();
        $rows = [];
-      foreach (
-           $DB->request([
+      foreach ($DB->request([
                'FROM'  => Assetsign::getTable(),
                'WHERE' => [
                    'type'       => [Assetsign::TYPE_DON, Assetsign::TYPE_VENTE, Assetsign::TYPE_DESTRUCTION],
