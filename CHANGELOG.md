@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- PDF.js 6.5.438 (aperçu du PDF sur la page de signature) : mise à jour proposée par Dependabot, fichiers
+  vendorisés remplacés et vérifiés (empreinte du paquet npm, rendu d'un PDF sur GLPI 12).
+
 ## [2.21.0] - 2026-11-08
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
