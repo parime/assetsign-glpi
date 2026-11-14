@@ -5167,3 +5167,62 @@ msgstr "Estos ajustes solo valen para esta impresión. Los ajustes por defecto s
 
 msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
 msgstr "En el cuadro de impresión, elija el tamaño real (sin escalar) y ningún margen para que las etiquetas coincidan con la hoja."
+
+#, php-format
+msgid "Code : %s"
+msgstr "Código: %s"
+
+#, php-format
+msgid "Révision %1$s du %2$s"
+msgstr "Revisión %1$s del %2$s"
+
+#, php-format
+msgid "Révision %s"
+msgstr "Revisión %s"
+
+#, php-format
+msgid "Créé le %s"
+msgstr "Creado el %s"
+
+#, php-format
+msgid "Page %1$s sur %2$s"
+msgstr "Página %1$s de %2$s"
+
+msgid "En-tête de maîtrise documentaire (ISO)"
+msgstr "Encabezado de control documental (ISO)"
+
+msgid "Afficher un en-tête de maîtrise documentaire sur chaque page des PDF"
+msgstr "Mostrar un encabezado de control documental en cada página de los PDF"
+
+msgid "Cartouche attendu par les organisations certifiées : entreprise, type et titre du document, code du formulaire, révision, date de création du modèle et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit (onglets Attribution, Restitution...), pas à chaque fiche. Les documents déjà générés ne changent pas."
+msgstr "Cajetín esperado por las organizaciones certificadas: empresa, tipo y título del documento, código del formulario, revisión, fecha de creación de la plantilla y «Página X de Y». El código y la revisión se configuran en cada plantilla (pestañas Asignación, Devolución...), no en cada ficha. Los documentos ya generados no cambian."
+
+msgid "Type de document"
+msgstr "Tipo de documento"
+
+msgid "Exemple : Enregistrement"
+msgstr "Ejemplo: Registro"
+
+msgid "Optionnel : affiché au-dessus du titre du document dans l'en-tête. L'aperçu se met à jour avant l'enregistrement."
+msgstr "Opcional: se muestra encima del título del documento en el encabezado. La vista previa se actualiza antes de guardar."
+
+msgid "Maîtrise documentaire (en-tête ISO)"
+msgstr "Control documental (encabezado ISO)"
+
+msgid "Code du formulaire"
+msgstr "Código del formulario"
+
+msgid "Exemple : FOR-IT-012"
+msgstr "Ejemplo: FOR-IT-012"
+
+msgid "Révision"
+msgstr "Revisión"
+
+msgid "Exemple : B"
+msgstr "Ejemplo: B"
+
+msgid "Date de révision"
+msgstr "Fecha de revisión"
+
+msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
+msgstr "Se imprimen en el encabezado de control documental de cada página, si está activado en la configuración de la entidad (pestaña General). Cambie la revisión cuando cambie el texto de la plantilla: se aplica a todas las fichas generadas después."

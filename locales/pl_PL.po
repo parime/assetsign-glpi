@@ -5784,3 +5784,62 @@ msgstr "Te ustawienia dotyczą tylko tego wydruku. Ustawienia domyślne zmienia 
 
 msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
 msgstr "W oknie drukowania wybierz rzeczywisty rozmiar (bez skalowania) i brak marginesów, aby etykiety trafiły dokładnie na arkusz."
+
+#, php-format
+msgid "Code : %s"
+msgstr "Kod: %s"
+
+#, php-format
+msgid "Révision %1$s du %2$s"
+msgstr "Wersja %1$s z dnia %2$s"
+
+#, php-format
+msgid "Révision %s"
+msgstr "Wersja %s"
+
+#, php-format
+msgid "Créé le %s"
+msgstr "Utworzono %s"
+
+#, php-format
+msgid "Page %1$s sur %2$s"
+msgstr "Strona %1$s z %2$s"
+
+msgid "En-tête de maîtrise documentaire (ISO)"
+msgstr "Nagłówek nadzoru nad dokumentacją (ISO)"
+
+msgid "Afficher un en-tête de maîtrise documentaire sur chaque page des PDF"
+msgstr "Wyświetlaj nagłówek nadzoru nad dokumentacją na każdej stronie plików PDF"
+
+msgid "Cartouche attendu par les organisations certifiées : entreprise, type et titre du document, code du formulaire, révision, date de création du modèle et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit (onglets Attribution, Restitution...), pas à chaque fiche. Les documents déjà générés ne changent pas."
+msgstr "Metryka wymagana przez organizacje certyfikowane: firma, typ i tytuł dokumentu, kod formularza, wersja, data utworzenia szablonu i „Strona X z Y”. Kod i wersję ustawia się w każdym szablonie (karty Przypisanie, Zwrot...), a nie w każdym formularzu. Dokumenty już wygenerowane nie zmieniają się."
+
+msgid "Type de document"
+msgstr "Typ dokumentu"
+
+msgid "Exemple : Enregistrement"
+msgstr "Przykład: Zapis"
+
+msgid "Optionnel : affiché au-dessus du titre du document dans l'en-tête. L'aperçu se met à jour avant l'enregistrement."
+msgstr "Opcjonalnie: wyświetlany nad tytułem dokumentu w nagłówku. Podgląd aktualizuje się przed zapisaniem."
+
+msgid "Maîtrise documentaire (en-tête ISO)"
+msgstr "Nadzór nad dokumentacją (nagłówek ISO)"
+
+msgid "Code du formulaire"
+msgstr "Kod formularza"
+
+msgid "Exemple : FOR-IT-012"
+msgstr "Przykład: FOR-IT-012"
+
+msgid "Révision"
+msgstr "Wersja"
+
+msgid "Exemple : B"
+msgstr "Przykład: B"
+
+msgid "Date de révision"
+msgstr "Data wersji"
+
+msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
+msgstr "Drukowane w nagłówku nadzoru nad dokumentacją na każdej stronie, jeśli jest on włączony w konfiguracji jednostki (karta Ogólne). Zmień wersję, gdy zmienia się tekst szablonu: obowiązuje ona dla wszystkich formularzy wygenerowanych później."

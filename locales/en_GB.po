@@ -5147,3 +5147,62 @@ msgstr "These settings only apply to this print. The default settings are change
 
 msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
 msgstr "In the print dialog, choose actual size (no scaling) and no margins so that the labels line up with the sheet."
+
+#, php-format
+msgid "Code : %s"
+msgstr "Code: %s"
+
+#, php-format
+msgid "Révision %1$s du %2$s"
+msgstr "Revision %1$s of %2$s"
+
+#, php-format
+msgid "Révision %s"
+msgstr "Revision %s"
+
+#, php-format
+msgid "Créé le %s"
+msgstr "Created on %s"
+
+#, php-format
+msgid "Page %1$s sur %2$s"
+msgstr "Page %1$s of %2$s"
+
+msgid "En-tête de maîtrise documentaire (ISO)"
+msgstr "Document control header (ISO)"
+
+msgid "Afficher un en-tête de maîtrise documentaire sur chaque page des PDF"
+msgstr "Show a document control header on every page of the PDFs"
+
+msgid "Cartouche attendu par les organisations certifiées : entreprise, type et titre du document, code du formulaire, révision, date de création du modèle et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit (onglets Attribution, Restitution...), pas à chaque fiche. Les documents déjà générés ne changent pas."
+msgstr "Title block expected by certified organisations: company, document type and title, form code, revision, template creation date and \"Page X of Y\". The code and revision are set in each template (Attribution, Return... tabs), not on each form. Documents already generated do not change."
+
+msgid "Type de document"
+msgstr "Document type"
+
+msgid "Exemple : Enregistrement"
+msgstr "Example: Record"
+
+msgid "Optionnel : affiché au-dessus du titre du document dans l'en-tête. L'aperçu se met à jour avant l'enregistrement."
+msgstr "Optional: shown above the document title in the header. The preview updates before saving."
+
+msgid "Maîtrise documentaire (en-tête ISO)"
+msgstr "Document control (ISO header)"
+
+msgid "Code du formulaire"
+msgstr "Form code"
+
+msgid "Exemple : FOR-IT-012"
+msgstr "Example: FOR-IT-012"
+
+msgid "Révision"
+msgstr "Revision"
+
+msgid "Exemple : B"
+msgstr "Example: B"
+
+msgid "Date de révision"
+msgstr "Revision date"
+
+msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
+msgstr "Printed in the document control header of every page, if it is enabled in the entity configuration (General tab). Change the revision when the template text changes: it applies to every form generated afterwards."

@@ -228,7 +228,7 @@ final class HandoverPdfBuilder
          }
       }
        $docHeaderConfig['company_name'] = $companyName ?? '';
-       $docHeaderTemplate = $template?->fields ?? [];
+       $docHeaderTemplate = $template->fields ?? [];
       foreach (['doc_code', 'doc_revision', 'doc_revision_date'] as $key) {
          if (array_key_exists($key, $overrides)) {
              $docHeaderTemplate[$key] = $overrides[$key];

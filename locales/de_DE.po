@@ -5203,3 +5203,62 @@ msgstr "Diese Einstellungen gelten nur für diesen Druck. Die Standardeinstellun
 
 msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
 msgstr "Wählen Sie im Druckdialog die tatsächliche Größe (ohne Skalierung) und keine Ränder, damit die Etiketten genau auf den Bogen passen."
+
+#, php-format
+msgid "Code : %s"
+msgstr "Code: %s"
+
+#, php-format
+msgid "Révision %1$s du %2$s"
+msgstr "Revision %1$s vom %2$s"
+
+#, php-format
+msgid "Révision %s"
+msgstr "Revision %s"
+
+#, php-format
+msgid "Créé le %s"
+msgstr "Erstellt am %s"
+
+#, php-format
+msgid "Page %1$s sur %2$s"
+msgstr "Seite %1$s von %2$s"
+
+msgid "En-tête de maîtrise documentaire (ISO)"
+msgstr "Kopfzeile der Dokumentenlenkung (ISO)"
+
+msgid "Afficher un en-tête de maîtrise documentaire sur chaque page des PDF"
+msgstr "Auf jeder Seite der PDFs eine Kopfzeile der Dokumentenlenkung anzeigen"
+
+msgid "Cartouche attendu par les organisations certifiées : entreprise, type et titre du document, code du formulaire, révision, date de création du modèle et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit (onglets Attribution, Restitution...), pas à chaque fiche. Les documents déjà générés ne changent pas."
+msgstr "Von zertifizierten Organisationen erwarteter Schriftkopf: Unternehmen, Dokumenttyp und -titel, Formularcode, Revision, Erstellungsdatum der Vorlage und „Seite X von Y“. Code und Revision werden in jeder Vorlage eingestellt (Registerkarten Zuweisung, Rückgabe...), nicht bei jedem Formular. Bereits erzeugte Dokumente ändern sich nicht."
+
+msgid "Type de document"
+msgstr "Dokumenttyp"
+
+msgid "Exemple : Enregistrement"
+msgstr "Beispiel: Aufzeichnung"
+
+msgid "Optionnel : affiché au-dessus du titre du document dans l'en-tête. L'aperçu se met à jour avant l'enregistrement."
+msgstr "Optional: wird in der Kopfzeile über dem Dokumenttitel angezeigt. Die Vorschau wird vor dem Speichern aktualisiert."
+
+msgid "Maîtrise documentaire (en-tête ISO)"
+msgstr "Dokumentenlenkung (ISO-Kopfzeile)"
+
+msgid "Code du formulaire"
+msgstr "Formularcode"
+
+msgid "Exemple : FOR-IT-012"
+msgstr "Beispiel: FOR-IT-012"
+
+msgid "Révision"
+msgstr "Revision"
+
+msgid "Exemple : B"
+msgstr "Beispiel: B"
+
+msgid "Date de révision"
+msgstr "Revisionsdatum"
+
+msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
+msgstr "Werden in der Kopfzeile der Dokumentenlenkung jeder Seite gedruckt, sofern sie in der Konfiguration der Entität aktiviert ist (Registerkarte Allgemein). Ändern Sie die Revision, wenn sich der Text der Vorlage ändert: Sie gilt für alle danach erzeugten Formulare."
