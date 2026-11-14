@@ -134,7 +134,8 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
            ['id' => 'common', 'name' => self::getTypeName(1)],
            ['id' => 1, 'table' => $table, 'field' => 'id', 'name' => __('ID'), 'datatype' => 'itemlink', 'itemtype' => self::class],
            ['id' => 2, 'table' => $table, 'field' => 'itemtype', 'name' => __('Type de matériel', 'assetsign'), 'datatype' => 'itemtype'],
-           ['id' => 3, 'table' => $table, 'field' => 'items_id', 'name' => __('Matériel', 'assetsign'), 'datatype' => 'itemlink', 'itemlink_type' => ''],
+           // Nom du matériel (lien), pas son identifiant : le type est lu dans la même ligne.
+           ['id' => 3, 'table' => $table, 'field' => 'items_id', 'name' => __('Matériel', 'assetsign'), 'datatype' => 'specific', 'additionalfields' => ['itemtype'], 'nosearch' => true],
            ['id' => 4, 'table' => 'glpi_users', 'field' => 'name', 'linkfield' => 'users_id_tech', 'name' => __('Technicien', 'assetsign'), 'datatype' => 'itemlink', 'itemlink_type' => 'User'],
            ['id' => 5, 'table' => $table, 'field' => 'date_wipe', 'name' => __('Date de l\'effacement', 'assetsign'), 'datatype' => 'datetime'],
            ['id' => 6, 'table' => $table, 'field' => 'method', 'name' => __('Méthode', 'assetsign'), 'datatype' => 'specific', 'searchtype' => ['equals', 'notequals']],
@@ -152,6 +153,15 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
           $values = [$field => $values];
       }
       switch ($field) {
+         case 'items_id':
+            $item = Assetsign::resolveReadableItem((string) ($values['itemtype'] ?? ''), (int) ($values[$field] ?? 0));
+            if ($item === null) {
+                return htmlescape('#' . (int) ($values[$field] ?? 0));
+            }
+            return TwigBlocks::fragment('components/item_link.html.twig', [
+                'url'   => (string) $item->getLinkURL(),
+                'label' => (string) $item->getName(),
+            ]);
          case 'method':
             return htmlescape(self::getMethodLabels()[(string) ($values[$field] ?? '')] ?? '');
          case 'nist_level':
