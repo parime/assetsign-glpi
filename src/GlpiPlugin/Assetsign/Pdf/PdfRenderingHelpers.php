@@ -27,15 +27,15 @@ trait PdfRenderingHelpers
      *        qui les honorent.
      */
    public function renderPdf(string $html, bool $protect = false): string {
-       $options = new Options();
-       $options->set('isRemoteEnabled', false);
-       $options->set('defaultFont', 'DejaVu Sans');
-       $options->set('chroot', GLPI_DOC_DIR);
+      // Issue #274 : « Page X sur Y » de l'en-tete de maitrise documentaire. Le total n'est connu
+      // qu'apres un premier rendu (cf. DocumentControlHeader) : rendu a blanc pour compter les
+      // pages, puis rendu definitif avec le total. Sans en-tete, un seul rendu, comme avant.
+      if (DocumentControlHeader::hasPageCountToken($html)) {
+          $pageCount = $this->renderDompdf(DocumentControlHeader::fillPageCount($html, 1))->getCanvas()->get_page_count();
+          $html = DocumentControlHeader::fillPageCount($html, $pageCount);
+      }
 
-       $dompdf = new Dompdf($options);
-       $dompdf->loadHtml($html, 'UTF-8');
-       $dompdf->setPaper('A4', 'portrait');
-       $dompdf->render();
+       $dompdf = $this->renderDompdf($html);
 
       if ($protect) {
           $canvas = $dompdf->getCanvas();
@@ -54,6 +54,19 @@ trait PdfRenderingHelpers
       }
 
        return $dompdf->output();
+   }
+
+   private function renderDompdf(string $html): Dompdf {
+       $options = new Options();
+       $options->set('isRemoteEnabled', false);
+       $options->set('defaultFont', 'DejaVu Sans');
+       $options->set('chroot', GLPI_DOC_DIR);
+
+       $dompdf = new Dompdf($options);
+       $dompdf->loadHtml($html, 'UTF-8');
+       $dompdf->setPaper('A4', 'portrait');
+       $dompdf->render();
+       return $dompdf;
    }
 
     /**

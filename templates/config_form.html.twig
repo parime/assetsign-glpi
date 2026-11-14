@@ -298,6 +298,22 @@
             <div class="form-text">{{ __('Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur qui respecte cette restriction : n\'affecte jamais la possibilité de le consulter ou de l\'imprimer.', 'assetsign') }}</div>
           </div>
 
+          {# Issue #274 : en-tête de maîtrise documentaire (cartouche ISO) sur chaque page des PDF. #}
+          <fieldset class="border rounded p-3 mb-3">
+            <legend class="float-none w-auto px-2 fs-5"><i class="ti ti-file-certificate me-1"></i>{{ __('En-tête de maîtrise documentaire (ISO)', 'assetsign') }}</legend>
+            <div class="mb-3 form-check">
+              <input type="hidden" name="doc_header_enabled" value="0">
+              <input type="checkbox" name="doc_header_enabled" value="1" class="form-check-input" id="doc_header_enabled" {{ config.doc_header_enabled|default(0) ? 'checked' : '' }}>
+              <label class="form-check-label" for="doc_header_enabled">{{ __('Afficher un en-tête de maîtrise documentaire sur chaque page des PDF', 'assetsign') }}</label>
+              <div class="form-text">{{ __('Cartouche attendu par les organisations certifiées : entreprise, type et titre du document, code du formulaire, révision, date de création du modèle et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit (onglets Attribution, Restitution...), pas à chaque fiche. Les documents déjà générés ne changent pas.', 'assetsign') }}</div>
+            </div>
+            <div class="mb-1">
+              <label class="form-label" for="doc_header_doc_type">{{ __('Type de document', 'assetsign') }}</label>
+              <input type="text" name="doc_header_doc_type" id="doc_header_doc_type" class="form-control" maxlength="100" placeholder="{{ __('Exemple : Enregistrement', 'assetsign') }}" value="{{ config.doc_header_doc_type|default('') }}">
+              <div class="form-text">{{ __('Optionnel : affiché au-dessus du titre du document dans l\'en-tête. L\'aperçu se met à jour avant l\'enregistrement.', 'assetsign') }}</div>
+            </div>
+          </fieldset>
+
           <hr>
           <h4>{{ __('Types de matériel gérés par le plugin', 'assetsign') }}</h4>
           <p class="text-muted">{{ __('Décochez un type pour que le plugin n\'agisse jamais dessus, quelle que soit l\'affectation ou l\'État.', 'assetsign') }}</p>
@@ -939,6 +955,9 @@
       <div class="mb-3">
         {{ fields.textareaField('charter_content', template.fields.charter_content|default(''), __('Charte informatique', 'assetsign'), {'enable_richtext': true, 'enable_images': false, 'rows': 6, 'additional_attributes': {'form': form_id}}) }}
       </div>
+
+      {# Issue #274 : maîtrise documentaire du modèle (en-tête ISO des PDF, si activé). #}
+      {% include '@assetsign/_template_doc_control_fields.html.twig' with {tpl: template.fields|default({}), form_id: form_id, id_suffix: '_' ~ type} %}
 
       <div class="d-flex gap-2 align-items-center">
         <button type="submit" form="{{ form_id }}" name="{{ template.fields.id|default(0) ? 'update' : 'add' }}" class="btn btn-primary btn-sm">{{ __('Enregistrer le gabarit', 'assetsign') }}</button>

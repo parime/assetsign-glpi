@@ -1,0 +1,34 @@
+{# Issue #274 : en-tête de maîtrise documentaire, répété sur chaque page du PDF (position fixe,
+   dans la marge haute réservée par _pdf_style.html.twig). Données : Pdf\DocumentControlHeader ;
+   titre : celui du document (doc_header_title). Dans l'aperçu (navigateur), affiché une fois en
+   haut de la fiche, avec « Page 1 sur 1 ». #}
+{% if doc_header|default(null) %}
+{% set dh = doc_header %}
+<div class="doc-header{{ dh.preview ? ' doc-header-preview' : '' }}">
+<table class="doc-header-table">
+    <tr>
+        <td class="dh-org">{{ dh.organization }}</td>
+        <td class="dh-title">
+            {% if dh.doc_type %}<div class="dh-type">{{ dh.doc_type }}</div>{% endif %}
+            <div class="dh-name">{{ doc_header_title|default('') }}</div>
+        </td>
+        <td class="dh-meta">
+            {% if dh.code %}<div>{{ __('Code : %s', 'assetsign')|format(dh.code) }}</div>{% endif %}
+            {% if dh.revision %}
+                <div>{{ dh.revision_date ? __('Révision %1$s du %2$s', 'assetsign')|format(dh.revision, dh.revision_date) : __('Révision %s', 'assetsign')|format(dh.revision) }}</div>
+            {% endif %}
+            {% if dh.created_date %}<div>{{ __('Créé le %s', 'assetsign')|format(dh.created_date) }}</div>{% endif %}
+            <div class="dh-page">
+                {%- if dh.preview -%}
+                    {{ __('Page %1$s sur %2$s', 'assetsign')|format('1', '1') }}
+                {%- else -%}
+                    {# Numéro de page : compteur de Dompdf ; total : rempli après un premier rendu.
+                       Traduction échappée avant d'y insérer la balise du compteur. #}
+                    {{ __('Page %1$s sur %2$s', 'assetsign')|e|format('<span class="dh-page-num"></span>', constant('GlpiPlugin\\Assetsign\\Pdf\\DocumentControlHeader::PAGE_COUNT_TOKEN'))|raw }}
+                {%- endif -%}
+            </div>
+        </td>
+    </tr>
+</table>
+</div>
+{% endif %}

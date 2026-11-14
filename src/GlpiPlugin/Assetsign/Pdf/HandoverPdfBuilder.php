@@ -150,6 +150,8 @@ final class HandoverPdfBuilder
            // Assetsign::delegateSignatureTo()) - sans ca le PDF archive
            // affirmait a tort que le beneficiaire avait toujours delegue lui-meme.
            'delegated_by_name'  => $this->resolveDelegatedByName((int) ($assetsign->fields['delegated_by_users_id'] ?? 0)),
+           // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
+           'doc_header'         => DocumentControlHeader::forEntity((int) $assetsign->fields['entities_id'], $template),
        ], $extra));
    }
 
@@ -217,6 +219,27 @@ final class HandoverPdfBuilder
        $watermarkText = array_key_exists('preview_watermark_text', $overrides)
            ? ((string) $overrides['preview_watermark_text'] ?: 'APERÇU')
            : ($config->fields['preview_watermark_text'] ?: 'APERÇU');
+       // Issue #274 : en-tete de maitrise documentaire, avec les valeurs en cours de saisie
+       // (configuration : activation et type ; gabarit : code et revision).
+       $docHeaderConfig = $config->fields;
+      foreach (['doc_header_enabled', 'doc_header_doc_type'] as $key) {
+         if (array_key_exists($key, $overrides)) {
+             $docHeaderConfig[$key] = $overrides[$key];
+         }
+      }
+       $docHeaderConfig['company_name'] = $companyName ?? '';
+       $docHeaderTemplate = $template?->fields ?? [];
+      foreach (['doc_code', 'doc_revision', 'doc_revision_date'] as $key) {
+         if (array_key_exists($key, $overrides)) {
+             $docHeaderTemplate[$key] = $overrides[$key];
+         }
+      }
+       $docHeader = DocumentControlHeader::build(
+           $docHeaderConfig,
+           DocumentControlHeader::entityName($entities_id),
+           Template::normalizeDocControlInput($docHeaderTemplate),
+           true
+       );
        $watermarkOpacity = max(5, min(100, (int) (array_key_exists('preview_watermark_opacity', $overrides)
            ? $overrides['preview_watermark_opacity']
            : $config->fields['preview_watermark_opacity'])));
@@ -272,6 +295,7 @@ final class HandoverPdfBuilder
            // conditionne l'affichage a la simple presence de cette variable.
            'watermark_text'      => $watermarkText,
            'watermark_opacity'   => $watermarkOpacity,
+           'doc_header'          => $docHeader,
        ]);
    }
 
