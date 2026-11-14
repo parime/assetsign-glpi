@@ -95,6 +95,10 @@ if (($argv[1] ?? '') === 'xss') {
     $set('attestations', ['comment' => $canary, 'items' => json_encode([['name' => $canary]])], ['id' => $ids['attestation_A']]);
     $set('maintenances', ['comment' => $canary], ['id' => $ids['maintenance_A']]);
     $set('movements', ['comment' => $canary], ['id' => $ids['movement_A']]);
+    $set('wipeattestations', [
+        'comment' => $canary, 'tool' => $canary, 'signer_name' => $canary, 'cancel_reason' => $canary, 'is_cancelled' => 1,
+        'media' => json_encode([['label' => $canary, 'serial' => $canary, 'capacity' => $canary, 'encryption' => $canary, 'source' => 'manual']]),
+    ], ['id' => $ids['wipe_A']]);
     foreach (['templates', 'kits', 'accessories', 'checklistitems', 'maintenancechecklistitems'] as $table) {
         $set($table, ['name' => $canary, 'comment' => $canary], ['id' => $ids[$table . '_A']]);
     }
@@ -129,7 +133,7 @@ if (($argv[1] ?? '') === 'snapshot') {
     $snapshot = [
         'computer_B.users_id' => (int) ($DB->request(['SELECT' => ['users_id'], 'FROM' => 'glpi_computers', 'WHERE' => ['id' => $computerB]])->current()['users_id'] ?? -1),
     ];
-    foreach (['assetsigns', 'maintenances', 'movements', 'residualvalues', 'environmentaldatas', 'events'] as $table) {
+    foreach (['assetsigns', 'maintenances', 'movements', 'wipeattestations', 'residualvalues', 'environmentaldatas', 'events'] as $table) {
         $snapshot[$table . '(computer_B)'] = countElementsInTable('glpi_plugin_assetsign_' . $table, ['itemtype' => 'Computer', 'items_id' => $computerB]);
     }
     foreach ($DB->request(['FROM' => 'glpi_plugin_assetsign_assetsigns', 'WHERE' => ['itemtype' => 'Computer', 'items_id' => $computerB]]) as $row) {
@@ -216,6 +220,11 @@ foreach (['A' => $a, 'B' => $b] as $suffix => $entity) {
     ]);
     $ids['movement_' . $suffix] = $insert('glpi_plugin_assetsign_movements', [
         'entities_id' => $entity, 'itemtype' => 'Computer', 'items_id' => $ids['computer_' . $suffix],
+    ]);
+    // Issue #322 : attestation d'effacement des donnees.
+    $ids['wipe_' . $suffix] = $insert('glpi_plugin_assetsign_wipeattestations', [
+        'entities_id' => $entity, 'itemtype' => 'Computer', 'items_id' => $ids['computer_' . $suffix],
+        'method' => 'overwrite', 'date_wipe' => date('Y-m-d H:i:s'), 'media' => '[]',
     ]);
     $ids['departure_' . $suffix] = $insert('glpi_plugin_assetsign_departures', [
         'entities_id' => $entity, 'users_id' => $leaving, 'status' => 1, 'trigger_type' => 1,
