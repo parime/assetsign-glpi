@@ -195,6 +195,8 @@ final class ConfigTransfer
       // Issue #274 : en-tête de maîtrise documentaire.
       'doc_header_enabled'                   => ['bool'],
       'doc_header_doc_type'                  => ['string', Pdf\DocumentControlHeader::MAX_LENGTH],
+      // Issue #280 : technicien responsable du matériel.
+      'technician_from_item'                 => ['bool'],
    ];
 
    /** @return array<string, array<int, mixed>> */

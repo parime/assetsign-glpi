@@ -3324,3 +3324,9 @@ msgstr ""
 
 msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
 msgstr ""
+
+msgid "Technicien de la fiche : le technicien responsable du matériel, s'il est renseigné"
+msgstr ""
+
+msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
+msgstr ""

@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **En-tête de maîtrise documentaire (ISO) sur chaque page des PDF** (#274) : cartouche optionnel par entité (Configuration > Général, désactivé par défaut) avec l'entreprise (à défaut le nom de l'entité), le type de document (texte libre, ex. « Enregistrement »), le titre du document, le code du formulaire, la révision et sa date, la date de création du modèle et « Page X sur Y » (total exact, y compris au-delà de 10 pages). Code, révision et date de révision se règlent dans le gabarit de chaque type, pas à chaque fiche. Appliqué aux fiches d'attribution, restitution, don, vente, destruction, maintenance, aux attestations, au récapitulatif de départ et au rapport de campagne. Aperçu en direct avant enregistrement ; réglages compris dans l'export et l'import de la configuration (un fichier exporté avant cette version laisse le code et la révision des gabarits en place). Les documents déjà générés ne changent pas.
+- **Titre GLPI sous chaque signature** (#280) : le champ « Titre » de l'utilisateur (ex. « Technicien support ») est imprimé sous la signature du bénéficiaire, du délégué, du responsable qui contresigne, du technicien (maintenance), et sur les attestations et récapitulatifs de départ ; à défaut « Utilisateur » ou « Technicien ».
+- **Métadonnées des PDF** (#280) : titre (nom du document), auteur (émetteur : nom de l'entreprise de la configuration, à défaut l'entité), sujet (signataire), créateur « GLPI x - AssetSign y », pour le classement dans une GED. Toujours posées, PDF protégé compris.
+- **Technicien de la fiche = technicien responsable du matériel** (#280, option par entité, onglet Général, désactivée par défaut) : le champ « Technicien » du matériel devient le technicien de la fiche (variable `{technicien}`, notifications, brouillons) ; sans technicien responsable, c'est toujours la personne qui génère la fiche.
+
+### Changed
+
+- **Protection du PDF** (#280) : l'option existante « Protéger le PDF » (onglet Général) couvre la demande : copie et modification interdites, impression permise, aucun mot de passe d'ouverture ; l'empreinte SHA-256 reste la preuve d'intégrité. Désormais couverte par un test des droits du PDF.
 
 ## [2.21.1] - 2026-11-14
 

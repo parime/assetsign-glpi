@@ -39,12 +39,14 @@ final class SignatureStamper
            'signed_at'       => $signedAt,
            'signer_name'     => trim(\formatUserName(0, $signer['name'] ?? '', $signer['realname'] ?? '', $signer['firstname'] ?? '')),
            'signer_email'    => $signer['email'] ?? '',
+           // Issue #280 : titre GLPI du signataire, sous la signature (« Utilisateur » a defaut).
+           'signer_title'    => PdfMetadata::signerTitle($signer),
            'witness_name'    => $witnessName,
            'signature_method' => $signatureMethod,
        ]);
 
        $protect = (bool) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['protect_pdf'];
-       $binary = $this->builder->renderPdf($html, $protect);
+       $binary = $this->builder->renderPdf($html, $protect, $this->builder->metadataFor($assetsign, PdfMetadata::personName($signer)));
        $hash = hash('sha256', $binary);
 
        $path = GLPI_TMP_DIR . '/' . uniqid('assetsign_signed_', true) . '.pdf';
@@ -65,15 +67,17 @@ final class SignatureStamper
      * (cosigner_pending_signature + la preuve de signature deja stockee),
      * et celle du responsable, tout juste soumise.
      *
-     * @param array{signature_image:string,signed_at:string,signer_name:string,signer_email:string} $beneficiarySigner
-     * @param array{signature_image:string,signed_at:string,signer_name:string,signer_email:string} $cosignerSigner
+     * @param array{signature_image:string,signed_at:string,signer_name:string,signer_email:string,signer_title?:string} $beneficiarySigner
+     * @param array{signature_image:string,signed_at:string,signer_name:string,signer_email:string,signer_title?:string} $cosignerSigner
      * @return array{path:string,hash:string,signed_at:string}
      */
    public function applyCosignature(\GlpiPlugin\Assetsign\Assetsign $assetsign, array $beneficiarySigner, array $cosignerSigner): array {
        $html = $this->builder->renderHtml($assetsign, $beneficiarySigner + ['cosigner' => $cosignerSigner]);
 
        $protect = (bool) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['protect_pdf'];
-       $binary = $this->builder->renderPdf($html, $protect);
+       // Issue #280 : sujet = les deux signataires.
+       $signers = implode(', ', array_filter([$beneficiarySigner['signer_name'], $cosignerSigner['signer_name']]));
+       $binary = $this->builder->renderPdf($html, $protect, $this->builder->metadataFor($assetsign, $signers));
        $hash = hash('sha256', $binary);
 
        $path = GLPI_TMP_DIR . '/' . uniqid('assetsign_cosigned_', true) . '.pdf';

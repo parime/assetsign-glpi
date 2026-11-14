@@ -154,6 +154,8 @@
     {% if signature_image|default(false) %}
         <p>{{ __('Document signé électroniquement le %1$s à %2$s', 'assetsign')|format(signed_at|date('d/m/Y'), signed_at|date('H:i')) }}</p>
         <img src="{{ signature_image }}" class="signature-img">
+        {# Issue #280 : titre GLPI du signataire, à défaut « Utilisateur ». #}
+        <p class="signer-title">{{ signer_title|default('') ?: __('Utilisateur', 'assetsign') }}</p>
         <p class="proof">
             {# E-mail entre parentheses seulement s'il existe : sinon "()" vide pour tout signataire
                sans adresse e-mail - cas courant depuis les issues #150/#152. #}
@@ -201,6 +203,7 @@
 <div class="signature-zone">
     <p>{{ __('Contre-signé électroniquement le %1$s à %2$s', 'assetsign')|format(cosigner.signed_at|date('d/m/Y'), cosigner.signed_at|date('H:i')) }}</p>
     <img src="{{ cosigner.signature_image }}" class="signature-img">
+    <p class="signer-title">{{ cosigner.signer_title|default('') ?: __('Utilisateur', 'assetsign') }}</p>
     <p class="proof">
         {{ __('Responsable hiérarchique : %s', 'assetsign')|format(cosigner.signer_name) }}{% if cosigner.signer_email is not empty %} ({{ cosigner.signer_email }}){% endif %}
     </p>

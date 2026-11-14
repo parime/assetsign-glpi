@@ -5236,3 +5236,9 @@ msgstr "Data di revisione"
 
 msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
 msgstr "Stampati nell'intestazione di controllo documentale di ogni pagina, se attivata nella configurazione dell'entità (scheda Generale). Cambiate la revisione quando il testo del modello cambia: vale per tutte le schede generate in seguito."
+
+msgid "Technicien de la fiche : le technicien responsable du matériel, s'il est renseigné"
+msgstr "Tecnico della scheda: il tecnico responsabile del materiale, se indicato"
+
+msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
+msgstr "Il campo «Tecnico» del materiale indica allora il tecnico della scheda (variabile {technicien}, notifiche, bozze da inviare). Senza tecnico responsabile, o se la casella non è selezionata, è la persona che genera la scheda, come prima."

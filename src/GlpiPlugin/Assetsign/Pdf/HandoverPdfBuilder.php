@@ -30,7 +30,7 @@ final class HandoverPdfBuilder
    public function build(Assetsign $assetsign): Document {
        $html = $this->renderHtml($assetsign);
        $protect = (bool) Config::getForEntity((int) $assetsign->fields['entities_id'])->fields['protect_pdf'];
-       $binary = $this->renderPdf($html, $protect);
+       $binary = $this->renderPdf($html, $protect, $this->metadataFor($assetsign));
 
        return $this->storeAsDocument($assetsign, $binary, 'fiche-attribution-' . $assetsign->getID() . '.pdf');
    }
@@ -153,6 +153,17 @@ final class HandoverPdfBuilder
            // Issue #274 : en-tete de maitrise documentaire (null si desactive pour l'entite).
            'doc_header'         => DocumentControlHeader::forEntity((int) $assetsign->fields['entities_id'], $template),
        ], $extra));
+   }
+
+    /**
+     * Issue #280 : metadonnees du PDF de la fiche. Sujet = signataire : celui qui a signe, sinon
+     * celui qui est attendu (delegue ou beneficiaire, nom saisi pour un beneficiaire externe).
+     *
+     * @return array<string, string>
+     */
+   public function metadataFor(Assetsign $assetsign, ?string $signerName = null): array {
+       $signerName ??= PdfMetadata::personName($assetsign->getExpectedSigner());
+       return PdfMetadata::build($assetsign->getDocumentTitle(), (int) $assetsign->fields['entities_id'], $signerName);
    }
 
    private function resolveDelegatedByName(int $usersId): ?string {

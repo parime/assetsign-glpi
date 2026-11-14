@@ -194,6 +194,9 @@ class Config extends Compat\Base\ConfigBase
         // Desactive par defaut : aucun document ne change sans decision de l'administrateur.
         'doc_header_enabled'                  => 0,
         'doc_header_doc_type'                 => '',
+        // Issue #280 : technicien de la fiche = technicien responsable du materiel s'il existe.
+        // Desactive par defaut : la fiche garde la personne qui la genere, comme avant.
+        'technician_from_item'                => 0,
     ];
 
    public static function getTypeName($nb = 0): string {
@@ -869,6 +872,8 @@ class Config extends Compat\Base\ConfigBase
            'renewal_monthly_change' => (int) ($input['renewal_monthly_change'] ?? 0),
            // Issue #274 : en-tete de maitrise documentaire.
            'doc_header_enabled'  => (int) !empty($input['doc_header_enabled']),
+           // Issue #280 : technicien responsable du materiel.
+           'technician_from_item' => (int) !empty($input['technician_from_item']),
            'doc_header_doc_type' => mb_substr(trim((string) ($input['doc_header_doc_type'] ?? '')), 0, Pdf\DocumentControlHeader::MAX_LENGTH),
        ];
 
@@ -1186,6 +1191,7 @@ class Config extends Compat\Base\ConfigBase
                 `qr_label_text` text,
                 `doc_header_enabled` tinyint NOT NULL DEFAULT 0,
                 `doc_header_doc_type` varchar(255) NOT NULL DEFAULT '',
+                `technician_from_item` tinyint NOT NULL DEFAULT 0,
                 `date_creation` timestamp NULL DEFAULT NULL,
                 `date_mod` timestamp NULL DEFAULT NULL,
                 PRIMARY KEY (`id`),
@@ -1318,6 +1324,11 @@ class Config extends Compat\Base\ConfigBase
          if (!$DB->fieldExists($table, 'doc_header_enabled')) {
              $migration->addField($table, 'doc_header_enabled', 'bool', ['value' => 0]);
              $migration->addField($table, 'doc_header_doc_type', 'string', ['value' => '']);
+             $migration->migrationOneTable($table);
+         }
+         // Issue #280 : technicien responsable du materiel, desactive (rien ne change).
+         if (!$DB->fieldExists($table, 'technician_from_item')) {
+             $migration->addField($table, 'technician_from_item', 'bool', ['value' => 0]);
              $migration->migrationOneTable($table);
          }
          // Issue #224 : re-signature quand la charte change.
