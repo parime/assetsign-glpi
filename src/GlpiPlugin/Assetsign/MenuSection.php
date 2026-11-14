@@ -20,7 +20,7 @@ final class MenuSection
    public static function sections(): array {
        return [
            // Remises, mouvements, départs et campagnes d'attestation : le cycle de vie du matériel.
-           Assetsign::class    => [Movement::class, Departure::class, Campaign::class],
+           Assetsign::class    => [Movement::class, Departure::class, Campaign::class, WipeAttestation::class],
            // Tableau de bord RSE et plan de renouvellement : le pilotage du parc.
            CsrDashboard::class => [Renewal::class],
        ];

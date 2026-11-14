@@ -75,6 +75,14 @@
 
     {% if can_create_manual %}
       <hr>
+      {# Issue #322 : attestation d'effacement exigée par l'entité et absente. #}
+      {% if wipe_notice|default(null) %}
+        <div class="alert {{ wipe_notice.blocking ? 'alert-danger' : 'alert-warning' }} d-flex align-items-center gap-2" id="assetsign-wipe-notice">
+          <i class="ti ti-eraser fs-2"></i>
+          <div class="flex-fill">{{ wipe_notice.message }}</div>
+          <a href="{{ wipe_notice.url }}" class="btn btn-sm {{ wipe_notice.blocking ? 'btn-danger' : 'btn-warning' }}">{{ __('Enregistrer l\'attestation', 'assetsign') }}</a>
+        </div>
+      {% endif %}
       <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" enctype="multipart/form-data" class="row g-2 align-items-end" id="assetsign-manual-form">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="itemtype" value="{{ item.getType() }}">

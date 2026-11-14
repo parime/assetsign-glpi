@@ -1,0 +1,78 @@
+{# Issue #322 : attestation d'effacement des données (lecture seule, annulation possible). #}
+<div class="container-lg my-3">
+  <div class="card mb-3">
+    <div class="card-header d-flex align-items-center gap-2 flex-wrap">
+      <h3 class="card-title mb-0"><i class="ti ti-eraser me-2"></i>{{ __('Attestation d\'effacement n°%d', 'assetsign')|format(attestation.id) }}</h3>
+      {% if attestation.is_cancelled %}
+        <span class="badge bg-secondary-lt"><i class="ti ti-ban me-1"></i>{{ __('Annulée', 'assetsign') }}</span>
+      {% elseif is_valid %}
+        <span class="badge bg-green-lt"><i class="ti ti-shield-check me-1"></i>{{ __('Valable', 'assetsign') }}</span>
+      {% else %}
+        <span class="badge bg-orange-lt">{{ __('Plus valable (matériel remis depuis, ou échec)', 'assetsign') }}</span>
+      {% endif %}
+      {% if attestation.documents_id %}
+        <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ attestation.documents_id }}" target="_blank" class="btn btn-sm btn-primary ms-auto"><i class="ti ti-file-type-pdf me-1"></i>{{ __('Télécharger en PDF', 'assetsign') }}</a>
+      {% endif %}
+    </div>
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <tr><th class="w-25">{{ __('Matériel', 'assetsign') }}</th><td>{{ item_type }} : {% if item_url %}<a href="{{ item_url }}">{{ item_name }}</a>{% else %}{{ item_name }}{% endif %}</td></tr>
+        <tr><th>{{ __('Date de l\'effacement', 'assetsign') }}</th><td>{{ attestation.date_wipe|formatted_datetime }}</td></tr>
+        <tr><th>{{ __('Réalisé par', 'assetsign') }}</th><td>{{ technician }}</td></tr>
+        <tr><th>{{ __('Méthode', 'assetsign') }}</th><td>{{ method_label }}</td></tr>
+        <tr><th>{{ __('Norme', 'assetsign') }}</th><td>{{ level_label|default(__('Aucune norme suivie', 'assetsign')) }}</td></tr>
+        <tr><th>{{ __('Outil utilisé', 'assetsign') }}</th><td>{{ attestation.tool|default('-') }}</td></tr>
+        <tr><th>{{ __('Vérification', 'assetsign') }}</th><td><span class="badge" style="background-color: {{ result_color }}; color: #fff;">{{ result_label }}</span></td></tr>
+        {% if attestation.comment %}<tr><th>{{ __('Commentaire', 'assetsign') }}</th><td style="white-space: pre-line;">{{ attestation.comment }}</td></tr>{% endif %}
+        {% if attestation.report_documents_id %}
+          <tr><th>{{ __('Rapport de l\'outil', 'assetsign') }}</th><td><a href="{{ config('root_doc') }}/front/document.send.php?docid={{ attestation.report_documents_id }}" target="_blank"><i class="ti ti-paperclip me-1"></i>{{ report_name ?: __('Télécharger', 'assetsign') }}</a><div class="small text-secondary">SHA-256 : <code>{{ attestation.report_hash }}</code></div></td></tr>
+        {% endif %}
+      </table>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header"><h3 class="card-title"><i class="ti ti-device-sd-card me-2"></i>{{ __('Supports effacés', 'assetsign') }}</h3></div>
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <thead><tr><th>{{ __('Support', 'assetsign') }}</th><th>{{ __('N° de série', 'assetsign') }}</th><th>{{ __('Capacité', 'assetsign') }}</th><th>{{ __('Chiffrement', 'assetsign') }}</th></tr></thead>
+        <tbody>
+          {% for m in media %}
+            <tr><td>{{ m.label|default('') }}</td><td>{{ m.serial|default('') ?: '-' }}</td><td>{{ m.capacity|default('') ?: '-' }}</td><td>{{ m.encryption|default('') ?: '-' }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header"><h3 class="card-title"><i class="ti ti-writing-sign me-2"></i>{{ __('Preuve de signature', 'assetsign') }}</h3></div>
+    <table class="table card-table">
+      <tr><th class="w-25">{{ __('Signataire', 'assetsign') }}</th><td>{{ attestation.signer_name }}</td></tr>
+      <tr><th>{{ __('Horodatage', 'assetsign') }}</th><td>{{ attestation.signed_at|formatted_datetime }}</td></tr>
+      <tr><th>{{ __('Adresse IP', 'assetsign') }}</th><td>{{ attestation.ip_address }}</td></tr>
+      <tr><th>{{ __('Empreinte du document (SHA-256)', 'assetsign') }}</th><td><code>{{ attestation.pdf_hash }}</code></td></tr>
+    </table>
+  </div>
+
+  {% if attestation.is_cancelled %}
+    <div class="alert alert-secondary">
+      <div class="fw-bold"><i class="ti ti-ban me-1"></i>{{ __('Annulée le %1$s par %2$s', 'assetsign')|format(attestation.date_cancelled|formatted_datetime, cancelled_by) }}</div>
+      <div>« {{ attestation.cancel_reason }} »</div>
+    </div>
+  {% elseif can_cancel %}
+    <div class="card border-warning">
+      <div class="card-header"><h3 class="card-title"><i class="ti ti-ban me-2"></i>{{ __('Annuler cette attestation', 'assetsign') }}</h3></div>
+      <div class="card-body">
+        <p class="text-secondary">{{ __('Si l\'attestation a été saisie par erreur : elle reste consultable mais ne compte plus pour la sortie du matériel.', 'assetsign') }}</p>
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/wipeattestation.form.php">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ attestation.id }}">
+          <label class="form-label" for="assetsign-wipe-cancel-reason">{{ __('Motif de l\'annulation', 'assetsign') }}</label>
+          <textarea name="cancel_reason" id="assetsign-wipe-cancel-reason" class="form-control" rows="2" required></textarea>
+          <button type="submit" name="cancel_attestation" value="1" class="btn btn-outline-warning mt-2"><i class="ti ti-ban me-1"></i>{{ __('Annuler l\'attestation', 'assetsign') }}</button>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+</div>

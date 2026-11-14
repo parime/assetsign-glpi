@@ -319,6 +319,10 @@ class Config extends Compat\Base\ConfigBase
            ],
            'passport_type_labels'   => PassportEvent::getTypeLabels(),
            'passport_visible_types' => $config->getPassportVisibleTypes(),
+           // Issue #322 : attestation d'effacement exigee.
+           'wipe_mode_labels'    => WipeRequirement::getModeLabels(),
+           'wipe_type_labels'    => WipeRequirement::getTypeLabels(),
+           'wipe_required_types' => WipeRequirement::normalizeTypes($config->fields['wipe_required_types'] ?? '[]'),
        ]);
    }
 

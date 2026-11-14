@@ -31,6 +31,7 @@ use GlpiPlugin\Assetsign\Loan;
 use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Movement;
+use GlpiPlugin\Assetsign\WipeAttestation;
 use GlpiPlugin\Assetsign\NotificationTargetAssetsign;
 use GlpiPlugin\Assetsign\NotificationTargetAttestation;
 use GlpiPlugin\Assetsign\NotificationTargetDeparture;
@@ -437,6 +438,9 @@ function plugin_assetsign_install(): bool {
     // et ChecklistItem/Assetsign plus haut.
     Movement::install($migration);
     Signature::install($migration);
+    // Issue #322 : attestations d'effacement des donnees (apres Config::install(), dont elle
+    // complete les types visibles du passeport).
+    WipeAttestation::install($migration);
     Reminder::install($migration);
     Profile::install($migration);
 
@@ -598,6 +602,7 @@ function plugin_assetsign_uninstall(): bool {
         // etrangere, cf. Signature::install()) : meme ordre enfant-avant-parent
         // que le reste de cette liste.
         'glpi_plugin_assetsign_movements',
+        'glpi_plugin_assetsign_wipeattestations',
         'glpi_plugin_assetsign_tokens',
         'glpi_plugin_assetsign_assetsignaccessories',
         'glpi_plugin_assetsign_assetsignitems',

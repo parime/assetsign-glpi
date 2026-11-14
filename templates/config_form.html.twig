@@ -39,6 +39,7 @@
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-vente" type="button" role="tab" data-assetsign-preview-type="4">{{ __('Vente', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-destruction" type="button" role="tab" data-assetsign-preview-type="5">{{ __('Destruction', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-reforme" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Réforme', 'assetsign') }}</button></li>
+        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-wipe" type="button" role="tab" data-assetsign-preview-type="3">{{ __('Effacement des données', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Compléments', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Maintenance', 'assetsign') }}</button></li>
         <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-movements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Mouvements', 'assetsign') }}</button></li>
@@ -720,6 +721,31 @@
             </div>
           </div>
           <div class="form-text mb-3">{{ __('Affiché uniquement sur l\'aperçu en direct (jamais sur le vrai PDF), pour éviter toute confusion entre les deux.', 'assetsign') }}</div>
+        </div>
+
+        {# ---------------------------------------------------------------- Effacement des données (issue #322) #}
+        <div class="tab-pane fade" id="tab-wipe" role="tabpanel">
+          <p class="text-muted">{{ __('Avant qu\'un matériel change de mains, le technicien enregistre une attestation d\'effacement des données (onglet « Effacement des données » du matériel) : méthode, supports, outil, vérification, rapport joint, signature. Les fiches de don, de vente et de destruction la mentionnent dans leur PDF. Ce réglage décide si elle est exigée.', 'assetsign') }}</p>
+          <div class="mb-3">
+            <label class="form-label" for="wipe_requirement">{{ __('Attestation d\'effacement exigée', 'assetsign') }}</label>
+            <select name="wipe_requirement" id="wipe_requirement" class="form-select" style="max-width: 32rem;">
+              {% for value, label in wipe_mode_labels %}
+                <option value="{{ value }}" {{ config.wipe_requirement|default(0) == value ? 'selected' : '' }}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            <div class="form-text">{{ __('Avertir : la fiche est créée et envoyée, avec un message au technicien. Bloquer : un don, une vente ou une destruction n\'est pas créé, une réattribution reste en brouillon, tant qu\'aucune attestation valable n\'existe. Une attestation est valable si l\'effacement a eu lieu après la dernière remise du matériel à une personne.', 'assetsign') }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="form-label">{{ __('Fiches concernées', 'assetsign') }}</div>
+            <input type="hidden" name="wipe_required_types[]" value="-1">
+            {% for value, label in wipe_type_labels %}
+              <div class="form-check">
+                <input type="checkbox" name="wipe_required_types[]" value="{{ value }}" class="form-check-input" id="wipe_required_type_{{ value }}" {{ value in wipe_required_types ? 'checked' : '' }}>
+                <label class="form-check-label" for="wipe_required_type_{{ value }}">{{ label }}</label>
+              </div>
+            {% endfor %}
+          </div>
+          <a href="{{ config('root_doc') }}/plugins/assetsign/front/wipeattestation.php" class="btn btn-outline-secondary"><i class="ti ti-eraser me-1"></i>{{ __('Voir les attestations et les matériels sortis sans attestation', 'assetsign') }}</a>
         </div>
 
         {# ---------------------------------------------------------------- Maintenance #}
