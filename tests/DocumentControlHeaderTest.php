@@ -19,8 +19,14 @@ class DocumentControlHeaderTest extends AssetsignTestCase
 
     public function testDisabledByDefault(): void
     {
-        $entityId = $this->createTestEntity(0, 'PHPUnit Cartouche defaut');
+        global $DB;
 
+        // Valeur de la colonne pour toute ligne existante ou nouvelle (la configuration racine de
+        // l'instance de test peut l'avoir activé : elle n'est pas lue ici).
+        $this->assertSame('0', (string) $DB->listFields(Config::getTable())['doc_header_enabled']['Default']);
+
+        $entityId = $this->createTestEntity(0, 'PHPUnit Cartouche defaut');
+        Config::upsertForEntity($entityId, ['sender_name' => 'Parc fictif']);
         $this->assertSame(0, (int) Config::getForEntity($entityId)->fields['doc_header_enabled']);
         $this->assertNull(DocumentControlHeader::forEntity($entityId));
 
