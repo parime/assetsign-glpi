@@ -49,13 +49,13 @@ final class HttpTest extends AssetsignTestCase
            'http://[::ffff:127.0.0.1]/', 'http://[::ffff:169.254.169.254]/', 'http://localhost/',
            'http://LOCALHOST./', 'http://api.localhost/', 'http://nas.local/',
        ];
-      foreach ($internal as $url) {
+       foreach ($internal as $url) {
           $this->assertSame(Http::ERROR_INTERNAL, Http::checkUrl($url, false, false), $url);
-      }
+       }
        // Ecritures numeriques de 127.0.0.1 : refusees comme adresse invalide.
-      foreach (['http://2130706433/', 'http://0x7f.1/', 'http://017700000001/', 'http://127.1/'] as $url) {
+       foreach (['http://2130706433/', 'http://0x7f.1/', 'http://017700000001/', 'http://127.1/'] as $url) {
           $this->assertNotNull(Http::checkUrl($url, false, false), $url);
-      }
+       }
        // Autorisees explicitement par l'administrateur.
        $this->assertNull(Http::checkUrl('http://127.0.0.1/', false, true));
        $this->assertNull(Http::checkUrl('https://10.0.0.5/hook', false, true));
@@ -147,14 +147,14 @@ PHP);
            [0 => ['pipe', 'r'], 1 => ['file', $this->workDir . '/out.log', 'a'], 2 => ['file', $this->workDir . '/out.log', 'a']],
            $pipes
        );
-       for ($i = 0; $i < 50; $i++) {
-           $probe = @fsockopen('127.0.0.1', $port, $errno, $errstr, 0.1);
+      for ($i = 0; $i < 50; $i++) {
+          $probe = @fsockopen('127.0.0.1', $port, $errno, $errstr, 0.1);
          if ($probe !== false) {
              fclose($probe);
              return $port;
          }
-           usleep(100000);
-       }
+          usleep(100000);
+      }
        $this->markTestSkipped('Le serveur PHP local n\'a pas démarré.');
    }
 

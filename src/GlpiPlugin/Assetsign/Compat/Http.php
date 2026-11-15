@@ -276,17 +276,17 @@ final class Http
            'allow_redirects' => false,
            'http_errors'     => false,
        ];
-      if (isset($options['json'])) {
+       if (isset($options['json'])) {
           $request['json'] = $options['json'];
-      }
-      if (defined('CURLOPT_PROTOCOLS')) {
+       }
+       if (defined('CURLOPT_PROTOCOLS')) {
           $request['curl'] = [CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS];
-         if ($pin !== null) {
+          if ($pin !== null) {
              $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
              $port = (int) (parse_url($url, PHP_URL_PORT) ?: ($scheme === 'https' ? 443 : 80));
              $request['curl'][CURLOPT_RESOLVE] = [sprintf('%s:%d:%s', $host, $port, str_contains($pin, ':') ? '[' . $pin . ']' : $pin)];
-         }
-      }
+          }
+       }
        $response = \Toolbox::getGuzzleClient(['timeout' => $timeout])->request(strtoupper($method), $url, $request);
        return [$response->getStatusCode(), (string) $response->getBody()];
    }
