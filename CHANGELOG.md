@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- CI : le contrôle « Sécurité commune » ne tourne plus sur chaque push de branche de travail, seulement sur les PR et les branches principales (moins d'exécutions en double et de notifications d'échec).
 - Une seule entrée de menu : **Outils > AssetSign** (#330). Les trois entrées précédentes
   (Attributions, Fiches de maintenance, Pilotage du parc) deviennent ses sous-pages, avec une barre
   d'onglets commune en tête de page : Attributions (attributions, mouvements, départs, campagnes),
