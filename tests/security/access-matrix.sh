@@ -78,6 +78,11 @@ expect "front/qrlabels.php : jeton forgé"                     404   "$(code "$P
 expect "front/config.php : configuration de B"                $DENY "$(code "$P/config.php?entities_id=$(id b)")"
 # Ni technicien ni super-admin ne sont beneficiaires : le PDF d'une feuille d'autrui n'est jamais servi.
 expect "front/mysignatures.php : PDF de la feuille d'autrui"  404   "$(code "$P/mysignatures.php?pdf=$(id assetsign_B)")"
+# Issue #330 : une seule entrée AssetSign dans le menu Outils (les autres écrans en sont les onglets).
+CENTRAL=$(curl -s -c "$JAR" -b "$JAR" "$BASE/front/central.php")
+expect "menu : une seule entrée AssetSign" 1 "$(grep -o '/plugins/assetsign/front/[a-z_.]*\.php' <<< "$CENTRAL" | sort -u | wc -l | tr -d ' ')"
+shows  "menu : plus d'entrée Fiches de maintenance" "/plugins/assetsign/front/maintenance.php" non "$CENTRAL"
+shows  "menu : plus d'entrée Pilotage du parc" "/plugins/assetsign/front/csr.php" non "$CENTRAL"
 # Lien de signature d'un autre compte : page de refus, aucun contenu de la feuille.
 shows "front/sign.php : lien de signature d'autrui (contenu)" "PC securite A" non "$(page "$P/sign.php?t=$(id token_A)")"
 expect "front/sign.php : PDF via le lien d'autrui"            404   "$(code "$P/sign.php?t=$(id token_A)&action=pdf")"

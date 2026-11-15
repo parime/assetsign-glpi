@@ -1,6 +1,5 @@
 <?php
 
-use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\ChecklistItem;
 
 $item = new ChecklistItem();
@@ -19,7 +18,7 @@ if (isset($_POST['add'])) {
     Html::redirect(ChecklistItem::getSearchURL());
 } else {
     Session::checkRight(ChecklistItem::$rightname, READ);
-    Html::header(ChecklistItem::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Assetsign::class, ChecklistItem::class);
+    Html::header(ChecklistItem::getTypeName(1), $_SERVER['PHP_SELF'], 'config', \CommonDropdown::class, ChecklistItem::class);
     $id = (int) ($_GET['id'] ?? 0);
    if ($id > 0) {
        $item->getFromDB($id);

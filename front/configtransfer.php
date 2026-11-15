@@ -8,7 +8,6 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
-use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\ConfigTransfer;
 
@@ -51,7 +50,7 @@ if (isset($_POST['preview'])) {
     $options = ['logo' => !empty($_POST['with_logo']), 'templates' => !empty($_POST['with_templates'])];
     $plan = ConfigTransfer::plan($payload, $entities_id, $options);
 
-    Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'tools', Assetsign::class);
+    Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'config', \Plugin::class);
     TemplateRenderer::getInstance()->display('@assetsign/config_transfer_preview.html.twig', [
         'plan'         => $plan,
         'payload'      => $payload,
@@ -92,7 +91,7 @@ if (!Session::haveAccessToEntity($entities_id)) {
     throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
 }
 
-Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'tools', Assetsign::class);
+Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'config', \Plugin::class);
 TemplateRenderer::getInstance()->display('@assetsign/config_transfer.html.twig', [
     'entities'       => ConfigTransfer::getEntityChoices(),
     'entity_id'      => $entities_id,

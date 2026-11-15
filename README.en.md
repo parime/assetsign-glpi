@@ -71,7 +71,7 @@ php bin/console plugin:activate assetsign
 
 **3. Grant rights**: right after a fresh install, only Super-Admin has access. Admin and Technician automatically get everyday usage rights (enough to process handovers day-to-day). For any other profile, or to adjust what Admin/Technician get by default: **Administration > Profiles** > the profile > the **"Assetsign & signature"** tab.
 
-**4. Configure**: an **Administration > Assetsign & signature** menu appears, with one form tab per sheet type (live PDF preview): shipping address, managed equipment types, triggers (by assignment or by Status). Configuration is independent per entity, with automatic inheritance.
+**4. Configure**: the **Setup > Plugins > AssetSign** page (click the plugin name) holds every setting, one form tab per sheet type (live PDF preview): shipping address, managed equipment types, triggers (by assignment or by Status). Configuration is independent per entity, with automatic inheritance.
 
 📖 Full detail (diagrams, screenshots, every setting, the `update.sh` update script, Twig/OPcache caching pitfalls) is in **[INSTALLATION.md](INSTALLATION.md)** (French).
 
@@ -101,6 +101,15 @@ Rules shared by all parime plugins, to read before contributing: [common plugin 
 | **[ROADMAP.md](ROADMAP.md)** | What's under consideration, not yet committed to a specific date. |
 | **[SECURITY.md](SECURITY.md)** | How to report a vulnerability. |
 | **[CHANGELOG.md](CHANGELOG.md)** | History of published releases. |
+
+## Translations
+
+[![Translation status](https://hosted.weblate.org/widget/assetsign-glpi/svg-badge.svg)](https://hosted.weblate.org/engage/assetsign-glpi/)
+
+The plugin is translated into French, English, German, Spanish, Italian, Polish and Portuguese
+(Brazil). **Translation contributions are welcome on [Hosted Weblate](https://hosted.weblate.org/engage/assetsign-glpi/)**: fixing a term,
+improving domain vocabulary or adding a language is done directly in the browser, without Git.
+Weblate then proposes the translations through a Pull Request, reviewed before being merged.
 
 ## Reuse and citation
 

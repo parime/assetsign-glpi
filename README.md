@@ -71,7 +71,7 @@ php bin/console plugin:activate assetsign
 
 **3. Accorder les droits** : après une installation fraîche, seul Super-Admin a accès. Admin et Technician reçoivent automatiquement un droit d'usage courant (suffisant pour traiter les remises au quotidien). Pour un autre profil, ou ajuster ce qui est accordé par défaut : **Administration > Profils** > profil concerné > onglet **« Assetsign & signature »**.
 
-**4. Configurer** : un menu **Administration > Assetsign & signature** apparaît, avec un formulaire par onglet (aperçu PDF en direct) : adresse d'expédition, types de matériel gérés, déclencheurs (par affectation ou par État). La configuration est indépendante par entité, avec héritage automatique.
+**4. Configurer** : la page **Configuration > Plugins > AssetSign** (clic sur le nom du plugin) regroupe tous les réglages, un formulaire par onglet (aperçu PDF en direct) : adresse d'expédition, types de matériel gérés, déclencheurs (par affectation ou par État). La configuration est indépendante par entité, avec héritage automatique.
 
 📖 Le détail complet (schémas, captures d'écran, chaque réglage, script de mise à jour `update.sh`, pièges de cache Twig/OPcache) est dans **[INSTALLATION.md](INSTALLATION.md)**.
 
@@ -101,6 +101,16 @@ Règles communes à tous les plugins de parime, à lire avant de contribuer : [c
 | **[ROADMAP.md](ROADMAP.md)** | Ce qui est envisagé, pas encore engagé sur une date précise. |
 | **[SECURITY.md](SECURITY.md)** | Comment signaler une vulnérabilité. |
 | **[CHANGELOG.md](CHANGELOG.md)** | Historique des versions publiées. |
+
+## Traductions
+
+[![État de la traduction](https://hosted.weblate.org/widget/assetsign-glpi/svg-badge.svg)](https://hosted.weblate.org/engage/assetsign-glpi/)
+
+Le plugin est traduit en français, anglais, allemand, espagnol, italien, polonais et portugais
+(Brésil). **Les contributions de traduction sont bienvenues sur [Hosted Weblate](https://hosted.weblate.org/engage/assetsign-glpi/)** :
+corriger un terme, améliorer le vocabulaire métier ou ajouter une langue se fait directement dans
+le navigateur, sans Git. Weblate propose ensuite les traductions par une Pull Request, relue avant
+d'être fusionnée.
 
 ## Réutilisation et citation
 

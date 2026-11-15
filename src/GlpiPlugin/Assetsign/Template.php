@@ -32,12 +32,11 @@ class Template extends Compat\Base\TemplateBase
    }
 
     /**
-     * Rattache au fil d'Ariane de Assetsign (menu 'tools'), pas au secteur
-     * generique 'config' des intitules : cf. Assetsign::getSectorizedDetails()/
-     * getMenuContent() et le commentaire equivalent dans ROADMAP.md.
+     * Issue #330 : intitulé natif, rangé dans Configuration > Intitulés (secteur 'config', comme
+     * tout CommonDropdown) et non plus dans le menu Outils du plugin.
      */
    public static function getSectorizedDetails(): array {
-       return ['tools', Assetsign::class, self::class];
+       return ['config', \CommonDropdown::class, self::class];
    }
 
     // rawSearchOptions() (pas getSearchOptions(), `final` dans CommonDBTM) :
