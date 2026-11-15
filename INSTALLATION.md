@@ -60,7 +60,7 @@ Pour donner accès à un profil supplémentaire, ou pour ajuster ce qui est acco
 
 ### 4. Configurer
 
-Un menu **Administration > Assetsign & signature** apparaît (Assetsigns, Gabarits de remise, Configuration).
+Tous les réglages se font depuis la page du plugin : **Configuration > Plugins**, clic sur **AssetSign** (ou sur l'icône Configurer). Un sélecteur en haut de la page choisit l'entité réglée ; l'onglet AssetSign de la fiche d'une entité mène à cette même page. Les intitulés (gabarits, accessoires, kits, points de contrôle) sont dans **Configuration > Intitulés**. Pour l'usage quotidien, le plugin n'ajoute qu'une entrée au menu : **Outils > AssetSign**.
 
 Le formulaire de configuration est organisé en onglets (un par type de fiche, plus un onglet Général et un onglet Compléments), chacun avec un aperçu du PDF qui se met à jour automatiquement dès qu'un réglage change, avant même d'enregistrer :
 
