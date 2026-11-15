@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   au lieu d'en recopier le formulaire. Les intitulés (gabarits, accessoires, kits, points de
   contrôle) sont rattachés à Configuration > Intitulés, et la page du plugin à Configuration >
   Plugins (fil d'Ariane et menu actif).
+- Traductions collaboratives sur Hosted Weblate : section « Traductions » des README avec le badge
+  d'avancement et le lien pour contribuer.
 
 ## [2.24.0] - 2026-11-14
 

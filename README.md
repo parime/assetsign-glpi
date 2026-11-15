@@ -100,6 +100,16 @@ Toutes les autres captures d'écran (paramétrage, tableau de bord, listes, ongl
 | **[SECURITY.md](SECURITY.md)** | Comment signaler une vulnérabilité. |
 | **[CHANGELOG.md](CHANGELOG.md)** | Historique des versions publiées. |
 
+## Traductions
+
+[![État de la traduction](https://hosted.weblate.org/widget/assetsign-glpi/svg-badge.svg)](https://hosted.weblate.org/engage/assetsign-glpi/)
+
+Le plugin est traduit en français, anglais, allemand, espagnol, italien, polonais et portugais
+(Brésil). **Les contributions de traduction sont bienvenues sur [Hosted Weblate](https://hosted.weblate.org/engage/assetsign-glpi/)** :
+corriger un terme, améliorer le vocabulaire métier ou ajouter une langue se fait directement dans
+le navigateur, sans Git. Weblate propose ensuite les traductions par une Pull Request, relue avant
+d'être fusionnée.
+
 ## Réutilisation et citation
 
 Ce projet est sous licence **GPL-3.0-or-later**. Si vous reprenez du code, même partiellement, sans
