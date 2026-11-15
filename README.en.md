@@ -71,7 +71,7 @@ php bin/console plugin:activate assetsign
 
 **3. Grant rights**: right after a fresh install, only Super-Admin has access. Admin and Technician automatically get everyday usage rights (enough to process handovers day-to-day). For any other profile, or to adjust what Admin/Technician get by default: **Administration > Profiles** > the profile > the **"Assetsign & signature"** tab.
 
-**4. Configure**: an **Administration > Assetsign & signature** menu appears, with one form tab per sheet type (live PDF preview): shipping address, managed equipment types, triggers (by assignment or by Status). Configuration is independent per entity, with automatic inheritance.
+**4. Configure**: the **Setup > Plugins > AssetSign** page (click the plugin name) holds every setting, one form tab per sheet type (live PDF preview): shipping address, managed equipment types, triggers (by assignment or by Status). Configuration is independent per entity, with automatic inheritance.
 
 📖 Full detail (diagrams, screenshots, every setting, the `update.sh` update script, Twig/OPcache caching pitfalls) is in **[INSTALLATION.md](INSTALLATION.md)** (French).
 

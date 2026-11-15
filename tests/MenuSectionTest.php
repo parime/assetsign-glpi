@@ -2,52 +2,151 @@
 
 namespace GlpiPlugin\Assetsign\Tests;
 
+use Glpi\Plugin\Hooks;
+use GlpiPlugin\Assetsign\Accessory;
 use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Campaign;
+use GlpiPlugin\Assetsign\ChecklistItem;
+use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\CsrDashboard;
+use GlpiPlugin\Assetsign\Departure;
+use GlpiPlugin\Assetsign\Kit;
+use GlpiPlugin\Assetsign\Maintenance;
+use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
+use GlpiPlugin\Assetsign\Menu;
 use GlpiPlugin\Assetsign\MenuSection;
 use GlpiPlugin\Assetsign\Movement;
+use GlpiPlugin\Assetsign\Profile;
 use GlpiPlugin\Assetsign\Renewal;
+use GlpiPlugin\Assetsign\Template;
+use GlpiPlugin\Assetsign\WipeAttestation;
 
 /**
- * Menu Outils en trois rubriques : les sous-pages sont dans l'entrée de leur rubrique (fil
- * d'Ariane) et dans sa barre d'onglets.
+ * Issue #330 : une seule entrée Outils > AssetSign ; les écrans d'usage en sont les sous-pages
+ * (options GLPI et barre d'onglets), chacun visible seulement avec son droit.
  */
 final class MenuSectionTest extends AssetsignTestCase
 {
-   public function testSubPagesAreOptionsOfTheirSection(): void {
-       $attributions = Assetsign::getMenuContent();
-      foreach (MenuSection::sections()[Assetsign::class] as $child) {
-          $this->assertArrayHasKey($child, $attributions['options']);
-      }
-       // Les sous-pages déjà présentes (gabarits, accessoires, points de contrôle) restent.
-       $this->assertArrayHasKey(\GlpiPlugin\Assetsign\Template::class, $attributions['options']);
+    /** @var array<string, int> */
+   private array $savedRights = [];
 
-       $pilotage = CsrDashboard::getMenuContent();
-       $this->assertSame(__('Pilotage du parc', 'assetsign'), $pilotage['title']);
-       $this->assertArrayHasKey(Renewal::class, $pilotage['options']);
+   protected function setUp(): void {
+       parent::setUp();
+      foreach ([Profile::RIGHT_ASSETSIGN, Profile::RIGHT_MAINTENANCE] as $right) {
+          $this->savedRights[$right] = $_SESSION['glpiactiveprofile'][$right] ?? 0;
+      }
    }
 
-   public function testSectionNavMarksTheDisplayedPage(): void {
+   protected function tearDown(): void {
+      foreach ($this->savedRights as $right => $value) {
+          $_SESSION['glpiactiveprofile'][$right] = $value;
+      }
+       parent::tearDown();
+   }
+
+   private function setRights(int $assetsign, int $maintenance): void {
+       $_SESSION['glpiactiveprofile'][Profile::RIGHT_ASSETSIGN]   = $assetsign;
+       $_SESSION['glpiactiveprofile'][Profile::RIGHT_MAINTENANCE] = $maintenance;
+   }
+
+   public function testTheToolsMenuHasASingleEntry(): void {
+       global $PLUGIN_HOOKS;
+
+       $this->assertSame(['tools' => [Menu::class]], $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign']);
+   }
+
+   public function testAllSubPagesAreOptionsOfTheEntry(): void {
+       $this->setRights(ALLSTANDARDRIGHT, ALLSTANDARDRIGHT);
+
+       $menu = Menu::getMenuContent();
+       $this->assertIsArray($menu);
+       $this->assertSame('AssetSign', $menu['title']);
+       $this->assertSame('/plugins/assetsign/front/assetsign.php', $menu['page']);
+       $this->assertSame(
+           [
+               Assetsign::class, Movement::class, Departure::class, Campaign::class,
+               WipeAttestation::class, Maintenance::class, CsrDashboard::class, Renewal::class,
+           ],
+           array_keys($menu['options'])
+       );
+       // Les intitulés ne sont plus rangés sous ce menu : Configuration > Intitulés.
+       $this->assertArrayNotHasKey(Template::class, $menu['options']);
+   }
+
+   public function testMaintenanceOnlyProfileSeesOnlyMaintenance(): void {
+       $this->setRights(0, READ);
+
+       $menu = Menu::getMenuContent();
+       $this->assertIsArray($menu);
+       $this->assertSame([Maintenance::class], array_keys($menu['options']));
+       // L'entrée mène à la seule page autorisée.
+       $this->assertSame('/plugins/assetsign/front/maintenance.php', $menu['page']);
+   }
+
+   public function testNoEntryWithoutAnyRight(): void {
+       $this->setRights(0, 0);
+
+       $this->assertFalse(Menu::getMenuContent());
        ob_start();
-       MenuSection::showSection(Assetsign::class, Campaign::class);
+       MenuSection::show(Maintenance::class);
+       $this->assertSame('', trim((string) ob_get_clean()));
+   }
+
+   public function testNavShowsSectionsAndThePagesOfTheCurrentOne(): void {
+       $this->setRights(ALLSTANDARDRIGHT, ALLSTANDARDRIGHT);
+
+       ob_start();
+       MenuSection::show(Campaign::class);
        $html = (string) ob_get_clean();
 
-       $this->assertSame(5, substr_count($html, 'class="nav-link'));
-       $this->assertSame(1, substr_count($html, 'nav-link active'));
-       $this->assertMatchesRegularExpression('#nav-link active"[^>]*href="[^"]*front/campaign\.php"#', $html);
+       // Quatre rubriques, puis les quatre pages de la rubrique Attributions.
+       $this->assertSame(4, substr_count($html, 'data-assetsign-section='));
+       $this->assertSame(4, substr_count($html, 'class="nav-link'));
+       $this->assertSame(4, substr_count($html, 'class="btn btn-sm'));
+       $this->assertSame(1, substr_count($html, 'aria-current="page"'));
+       $this->assertMatchesRegularExpression('#btn-primary"[^>]*href="[^"]*front/campaign\.php"#', $html);
        $this->assertStringContainsString(Movement::getTypeName(2), $html);
    }
 
-   public function testNoNavWithoutTheRightToSeeTheSection(): void {
-       $saved = $_SESSION['glpiactiveprofile'][\GlpiPlugin\Assetsign\Profile::RIGHT_ASSETSIGN] ?? 0;
-       $_SESSION['glpiactiveprofile'][\GlpiPlugin\Assetsign\Profile::RIGHT_ASSETSIGN] = 0;
-      try {
-          ob_start();
-          MenuSection::showSection(CsrDashboard::class, Renewal::class);
-          $this->assertSame('', (string) ob_get_clean());
-      } finally {
-          $_SESSION['glpiactiveprofile'][\GlpiPlugin\Assetsign\Profile::RIGHT_ASSETSIGN] = $saved;
+   public function testSingleSectionPageHasNoSecondRow(): void {
+       $this->setRights(ALLSTANDARDRIGHT, ALLSTANDARDRIGHT);
+
+       ob_start();
+       MenuSection::show(Maintenance::class);
+       $html = (string) ob_get_clean();
+
+       $this->assertSame(4, substr_count($html, 'class="nav-link'));
+       $this->assertStringNotContainsString('assetsign-section-pages', $html);
+   }
+
+   public function testAssetsignOnlyProfileHasNoMaintenanceTab(): void {
+       $this->setRights(READ, 0);
+
+       ob_start();
+       MenuSection::show(Renewal::class);
+       $html = (string) ob_get_clean();
+
+       $this->assertSame(3, substr_count($html, 'data-assetsign-section='));
+       $this->assertStringNotContainsString('front/maintenance.php', $html);
+       $this->assertStringContainsString('front/renewal.php', $html);
+   }
+
+   public function testDropdownsBelongToTheNativeDropdownsMenu(): void {
+      foreach ([Template::class, Accessory::class, Kit::class, ChecklistItem::class, MaintenanceChecklistItem::class] as $class) {
+          $this->assertSame(['config', \CommonDropdown::class, $class], $class::getSectorizedDetails(), $class);
       }
+   }
+
+   public function testEntityTabLeadsToThePluginSettingsPage(): void {
+       $entity = new \Entity();
+       $this->assertTrue($entity->getFromDB(0));
+
+       ob_start();
+       Config::displayTabContentForItem($entity);
+       $html = (string) ob_get_clean();
+
+       $this->assertStringContainsString('/plugins/assetsign/front/config.php?entities_id=0', $html);
+       // Plus de formulaire de réglages dans l'onglet de l'entité.
+       $this->assertStringNotContainsString('assetsign-config-form', $html);
    }
 }

@@ -5759,3 +5759,15 @@ msgstr "Attached to the equipment; its SHA-256 fingerprint appears on the attest
 
 msgid "Signer et enregistrer l'attestation"
 msgstr "Sign and save the attestation"
+
+msgid "Les réglages d'AssetSign se font depuis la page du plugin."
+msgstr "AssetSign settings are made from the plugin's page."
+
+msgid "Ouvrir les réglages de cette entité"
+msgstr "Open the settings of this entity"
+
+msgid "Réglages de l'entité"
+msgstr "Settings of the entity"
+
+msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
+msgstr "Settings apply to the chosen entity (and to its sub-entities that have no settings of their own)."

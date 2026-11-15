@@ -1,10 +1,22 @@
-{# Rubrique du menu Outils qui regroupe plusieurs écrans (GlpiPlugin\Assetsign\MenuSection::showSection()). #}
-<ul class="nav nav-tabs mb-3">
-   {% for tab in tabs %}
-      <li class="nav-item">
-         <a class="nav-link{{ tab.active ? ' active' : '' }}" href="{{ tab.url }}"{% if tab.active %} aria-current="page"{% endif %}>
-            {% if tab.icon %}<i class="{{ tab.icon }} me-1"></i>{% endif %}{{ tab.label }}
-         </a>
-      </li>
-   {% endfor %}
-</ul>
+{# Issue #330 : onglets de l'entrée Outils > AssetSign (GlpiPlugin\Assetsign\MenuSection::show()) :
+   les rubriques, puis les pages de la rubrique affichée quand elle en a plusieurs. #}
+<nav class="mb-3" aria-label="AssetSign">
+   <ul class="nav nav-tabs">
+      {% for group in groups %}
+         <li class="nav-item">
+            <a class="nav-link{{ group.active ? ' active fw-bold' : '' }}" href="{{ group.url }}" data-assetsign-section="{{ group.key }}"{% if group.active %} aria-current="true"{% endif %}>
+               {% if group.icon %}<i class="{{ group.icon }} me-1"></i>{% endif %}{{ group.label }}
+            </a>
+         </li>
+      {% endfor %}
+   </ul>
+   {% if pages is not empty %}
+      <div class="d-flex flex-wrap gap-2 mt-2 assetsign-section-pages">
+         {% for page in pages %}
+            <a class="btn btn-sm {{ page.active ? 'btn-primary' : 'btn-outline-secondary' }}" href="{{ page.url }}"{% if page.active %} aria-current="page"{% endif %}>
+               {% if page.icon %}<i class="{{ page.icon }} me-1"></i>{% endif %}{{ page.label }}
+            </a>
+         {% endfor %}
+      </div>
+   {% endif %}
+</nav>

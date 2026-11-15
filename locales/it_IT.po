@@ -5789,3 +5789,15 @@ msgstr "Allegato all'apparecchiatura; la sua impronta SHA-256 compare sull'attes
 
 msgid "Signer et enregistrer l'attestation"
 msgstr "Firma e salva l'attestazione"
+
+msgid "Les réglages d'AssetSign se font depuis la page du plugin."
+msgstr "Le impostazioni di AssetSign si effettuano dalla pagina del plugin."
+
+msgid "Ouvrir les réglages de cette entité"
+msgstr "Apri le impostazioni di questa entità"
+
+msgid "Réglages de l'entité"
+msgstr "Impostazioni dell'entità"
+
+msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
+msgstr "Le impostazioni si applicano all'entità scelta (e alle sue sotto-entità senza impostazioni proprie)."

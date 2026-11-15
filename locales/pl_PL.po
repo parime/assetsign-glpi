@@ -6396,3 +6396,15 @@ msgstr "Dołączony do sprzętu; jego skrót SHA-256 widnieje na zaświadczeniu.
 
 msgid "Signer et enregistrer l'attestation"
 msgstr "Podpisz i zapisz zaświadczenie"
+
+msgid "Les réglages d'AssetSign se font depuis la page du plugin."
+msgstr "Ustawienia AssetSign wprowadza się na stronie wtyczki."
+
+msgid "Ouvrir les réglages de cette entité"
+msgstr "Otwórz ustawienia tej jednostki"
+
+msgid "Réglages de l'entité"
+msgstr "Ustawienia jednostki"
+
+msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
+msgstr "Ustawienia dotyczą wybranej jednostki (oraz jej podjednostek bez własnych ustawień)."

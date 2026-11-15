@@ -37,8 +37,8 @@ if (($_GET['export'] ?? '') === 'csv') {
    return;
 }
 
-Html::header(Renewal::getTypeName(), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\CsrDashboard::class, \GlpiPlugin\Assetsign\Renewal::class);
-\GlpiPlugin\Assetsign\MenuSection::showSection(\GlpiPlugin\Assetsign\CsrDashboard::class, \GlpiPlugin\Assetsign\Renewal::class);
+Html::header(Renewal::getTypeName(), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Renewal::class);
+\GlpiPlugin\Assetsign\MenuSection::show(\GlpiPlugin\Assetsign\Renewal::class);
 
 TemplateRenderer::getInstance()->display('@assetsign/renewal.html.twig', [
    'rows'          => $rows,

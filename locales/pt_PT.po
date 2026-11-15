@@ -6380,3 +6380,15 @@ msgstr "Anexado ao equipamento; sua impressão digital SHA-256 consta no atestad
 
 msgid "Signer et enregistrer l'attestation"
 msgstr "Assinar e salvar o atestado"
+
+msgid "Les réglages d'AssetSign se font depuis la page du plugin."
+msgstr "As configurações do AssetSign são feitas na página do plugin."
+
+msgid "Ouvrir les réglages de cette entité"
+msgstr "Abrir as configurações desta entidade"
+
+msgid "Réglages de l'entité"
+msgstr "Configurações da entidade"
+
+msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
+msgstr "As configurações se aplicam à entidade escolhida (e às suas subentidades sem configurações próprias)."

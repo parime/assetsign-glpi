@@ -14,6 +14,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Une seule entrée de menu : **Outils > AssetSign** (#330). Les trois entrées précédentes
+  (Attributions, Fiches de maintenance, Pilotage du parc) deviennent ses sous-pages, avec une barre
+  d'onglets commune en tête de page : Attributions (attributions, mouvements, départs, campagnes),
+  Attestations d'effacement des données, Fiches de maintenance, Pilotage du parc (tableau de bord
+  RSE, renouvellement). Chaque onglet n'apparaît qu'avec son droit, comme avant ; les anciennes
+  adresses (favoris) fonctionnent toujours.
+- Tous les réglages se font depuis la page du plugin (Configuration > Plugins > AssetSign), avec un
+  sélecteur d'entité en tête de page. L'onglet AssetSign de la fiche d'une entité mène à cette page
+  au lieu d'en recopier le formulaire. Les intitulés (gabarits, accessoires, kits, points de
+  contrôle) sont rattachés à Configuration > Intitulés, et la page du plugin à Configuration >
+  Plugins (fil d'Ariane et menu actif).
 - Traductions collaboratives sur Hosted Weblate : section « Traductions » des README avec le badge
   d'avancement et le lien pour contribuer.
 

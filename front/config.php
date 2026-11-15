@@ -1,6 +1,5 @@
 <?php
 
-use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\Notification\ChatWebhook;
 
@@ -89,7 +88,7 @@ if (!Session::haveAccessToEntity($entities_id)) {
     throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
 }
 
-Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'tools', Assetsign::class);
+Html::header(Config::getTypeName(), $_SERVER['PHP_SELF'], 'config', \Plugin::class);
 
 Config::showConfigForm($entities_id);
 
