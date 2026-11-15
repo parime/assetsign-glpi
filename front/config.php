@@ -37,6 +37,11 @@ if (isset($_POST['update'])) {
    }
 
     Config::upsertForEntity($entities_id, $input);
+    // Issue #347 : adresses internes pour les appels sortants. Reglage global (toutes les
+    // entites), reserve au droit de modifier la configuration generale de GLPI.
+   if (isset($_POST['http_allow_private_networks']) && Session::haveRight('config', UPDATE)) {
+       \GlpiPlugin\Assetsign\Compat\Http::setAllowPrivateNetworks(!empty($_POST['http_allow_private_networks']));
+   }
     Session::addMessageAfterRedirect(__('Configuration enregistrée.', 'assetsign'));
     Html::back();
 }

@@ -633,6 +633,8 @@ function plugin_assetsign_uninstall(): bool {
        $migration->dropTable($table);
    }
 
+    // Issue #347 : reglage global des appels sortants (table de configuration du cœur).
+    \Config::deleteConfigurationValues(\GlpiPlugin\Assetsign\Compat\Http::CONFIG_CONTEXT, [\GlpiPlugin\Assetsign\Compat\Http::CONFIG_ALLOW_PRIVATE]);
     Profile::uninstall();
     NotificationTargetAssetsign::uninstall();
     NotificationTargetDeparture::uninstall();

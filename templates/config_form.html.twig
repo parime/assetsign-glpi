@@ -249,6 +249,36 @@
             <div class="form-text">{{ __('Utilise les réglages déjà enregistrés : enregistrez d\'abord.', 'assetsign') }}</div>
           </div>
 
+          {# Issue #347 : les appels sortants refusent les adresses internes ; seul un administrateur
+             de GLPI (droit de modifier la configuration generale) peut les autoriser, pour toutes les
+             entites. #}
+          <div class="card border-warning mb-3">
+            <div class="card-body py-2">
+              <div class="d-flex align-items-center mb-1">
+                <i class="ti ti-shield-lock me-2 text-warning"></i>
+                <strong>{{ __('Adresses internes', 'assetsign') }}</strong>
+                {% if http_allow_private %}
+                  <span class="badge bg-warning text-dark ms-2">{{ __('Autorisées', 'assetsign') }}</span>
+                {% else %}
+                  <span class="badge bg-success ms-2">{{ __('Refusées', 'assetsign') }}</span>
+                {% endif %}
+              </div>
+              <div class="form-text mb-2">{{ __('Par sécurité, le plugin n\'appelle jamais une adresse interne (le serveur lui-même, un réseau privé, les métadonnées d\'un hébergeur cloud) et ne suit jamais une redirection. Autorisez les adresses internes seulement si votre outil de messagerie est hébergé sur votre réseau (Mattermost, Rocket.Chat). Ce réglage vaut pour toutes les entités.', 'assetsign') }}</div>
+              {% if http_can_edit_private %}
+                <div class="form-check">
+                  <input type="hidden" name="http_allow_private_networks" value="0">
+                  <input type="checkbox" name="http_allow_private_networks" value="1" class="form-check-input" id="http_allow_private_networks" {{ http_allow_private ? 'checked' : '' }}>
+                  <label class="form-check-label" for="http_allow_private_networks">{{ __('Autoriser les adresses internes', 'assetsign') }}</label>
+                </div>
+                {% if http_glpi12_context_hint %}
+                  <div class="form-text"><i class="ti ti-info-circle me-1"></i>{{ http_glpi12_context_hint }}</div>
+                {% endif %}
+              {% else %}
+                <div class="form-text"><i class="ti ti-lock me-1"></i>{{ __('Seul un administrateur de GLPI (droit de modifier la configuration générale) peut changer ce réglage.', 'assetsign') }}</div>
+              {% endif %}
+            </div>
+          </div>
+
           {# Issue #222 : renouvellement du parc. #}
           <h4 class="mt-4"><i class="ti ti-recycle me-1"></i>{{ __('Renouvellement du parc', 'assetsign') }}</h4>
           <div class="mb-3">

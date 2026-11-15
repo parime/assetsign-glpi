@@ -258,6 +258,12 @@ class Config extends Compat\Base\ConfigBase
            'fields_selected'   => FieldsPluginLogic::decodeContainerIds($config->fields['fields_containers'] ?? '[]'),
            // Issue #231 : seule la presence d'une adresse est transmise, jamais l'adresse elle-meme.
            'chat_webhook_configured' => ($config->fields['chat_webhook_url'] ?? '') !== '',
+           // Issue #347 : adresses internes pour les appels sortants (reglage global, administrateurs
+           // de GLPI seulement) ; en GLPI 12, le cœur doit aussi autoriser le contexte du plugin.
+           'http_allow_private'      => Compat\Http::allowsPrivateNetworks(),
+           'http_can_edit_private'   => \Session::haveRight('config', UPDATE),
+           'http_glpi12_context_hint' => class_exists(\Glpi\Toolbox\HttpClient::class) && !Compat\Http::glpiAllowsPrivateNetworks()
+               ? Compat\Http::getErrorMessage(Compat\Http::ERROR_GLPI_CONTEXT) : '',
            // Issue #273 : prochain numero et exemple de reference.
            'reference_preview'    => $config->getReferencePreview(),
            'reference_type_codes' => array_values(array_unique(DocumentReferenceFormat::TYPE_CODES)),
@@ -719,7 +725,8 @@ class Config extends Compat\Base\ConfigBase
             $data['chat_webhook_url'] = Notification\ChatWebhook::encryptUrl($chatUrl);
          } else {
              \Session::addMessageAfterRedirect(
-                 __('Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même.', 'assetsign'),
+                 __('Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser le serveur lui-même.', 'assetsign')
+                 . ' ' . Compat\Http::getErrorMessage(Compat\Http::ERROR_INTERNAL),
                  false,
                  ERROR
              );
