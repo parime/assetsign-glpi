@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.25.0] - 2026-11-15
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Security
 
 - Appels HTTP sortants (#347, suite de #335) : un seul point de passage (`Compat\Http::request()`)
