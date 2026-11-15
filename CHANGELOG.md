@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Traductions collaboratives sur Hosted Weblate : section « Traductions » des README avec le badge
+  d'avancement et le lien pour contribuer.
+
 ## [2.24.0] - 2026-11-14
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
