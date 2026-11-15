@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Test du cartouche « Page X sur Y » instable : le nombre réel de pages est lu dans le PDF au lieu
+  d'être déduit de l'extraction du texte, qui pouvait perdre une page (aucun changement du plugin).
+
 ### Changed
 
 - Une seule entrée de menu : **Outils > AssetSign** (#330). Les trois entrées précédentes

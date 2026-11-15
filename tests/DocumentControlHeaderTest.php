@@ -95,23 +95,34 @@ class DocumentControlHeaderTest extends AssetsignTestCase
         $this->assertStringContainsString(self::CODE, $html);
         $this->assertStringContainsString(DocumentControlHeader::PAGE_COUNT_TOKEN, $html);
 
-        $pages = $this->extractPageTexts($builder->renderPdf($html));
-        $pageCount = count($pages);
+        $pdf = $builder->renderPdf($html);
+        // Nombre réel de pages lu dans l'arbre des pages du PDF : l'extraction texte, volontairement
+        // minimale, peut perdre un flux de page (test instable avant ce correctif, « 1 sur 18 »
+        // imprimé pour 17 flux extraits).
+        $pageCount = $this->pdfPageCount($pdf);
         $this->assertGreaterThanOrEqual(10, $pageCount, 'The test document must span at least 10 pages ("Page X of Y" with two digits).');
+        $pages = $this->extractPageTexts($pdf);
+        $this->assertGreaterThanOrEqual($pageCount - 2, count($pages), 'Almost every page must be readable by the test extraction.');
 
+        $numbers = [];
         foreach ($pages as $index => $text) {
-            $number = $index + 1;
-            $this->assertStringContainsString(self::CODE, $text, "The form code must be printed on page $number.");
-            $this->assertStringContainsString('Societe Fictive', $text, "The organization must be printed on page $number.");
+            $label = 'extracted page ' . ($index + 1);
+            $this->assertStringContainsString(self::CODE, $text, "The form code must be printed on $label.");
+            $this->assertStringContainsString('Societe Fictive', $text, "The organization must be printed on $label.");
             // Type de document en capitales (text-transform du cartouche).
-            $this->assertStringContainsStringIgnoringCase('Enregistrement', $text, "The document type must be printed on page $number.");
+            $this->assertStringContainsStringIgnoringCase('Enregistrement', $text, "The document type must be printed on $label.");
             $this->assertMatchesRegularExpression(
-                '/\D' . $number . '\D{1,15}' . $pageCount . '(\D|$)/u',
+                '/\D(\d{1,3})\D{1,15}' . $pageCount . '(\D|$)/u',
                 $text,
-                "Page $number must show its number followed by the total ($pageCount)."
+                "Each page must show its number followed by the real total ($pageCount) on $label."
             );
+            preg_match('/\D(\d{1,3})\D{1,15}' . $pageCount . '(\D|$)/u', $text, $match);
+            $numbers[] = (int) $match[1];
             $this->assertStringNotContainsString(DocumentControlHeader::PAGE_COUNT_TOKEN, $text);
         }
+        $this->assertContains(1, $numbers, 'The first page must show "1" followed by the total.');
+        $this->assertSame($numbers, array_values(array_unique($numbers)), 'Page numbers must not repeat.');
+        $this->assertLessThanOrEqual($pageCount, max($numbers), 'No page number may exceed the total.');
     }
 
     public function testPreviewShowsTheHeaderInlineWithUnsavedValues(): void
@@ -250,6 +261,17 @@ class DocumentControlHeaderTest extends AssetsignTestCase
         ]);
         $assetsign->getFromDB($id);
         return $assetsign;
+    }
+
+    /**
+     * Nombre réel de pages, lu dans l'arbre des pages du PDF (/Count n). Plus sûr que le nombre de
+     * flux extraits par extractPageTexts() : un flux de page dont le contenu binaire contient une fin
+     * de ligne suivie de « endstream » est coupé par l'expression régulière et peut manquer.
+     */
+    private function pdfPageCount(string $pdf): int
+    {
+        preg_match_all('/\/Count\s+(\d+)/', $pdf, $counts);
+        return $counts[1] === [] ? 0 : max(array_map('intval', $counts[1]));
     }
 
     /**
