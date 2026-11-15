@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- CI : contrôles de sécurité communs v1.7.1 (exceptions de menus de la charte, correction du jeu de données du contrôle de désinstallation).
+
 ## [2.25.0] - 2026-11-15
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
