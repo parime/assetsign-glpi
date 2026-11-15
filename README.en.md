@@ -89,6 +89,8 @@ All other screenshots (settings, dashboard, lists, tabs, dropdowns...) are in th
 
 ## Documentation
 
+Rules shared by all parime plugins, to read before contributing: [common plugin charter](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md) (in French).
+
 | Document | For whom / for what |
 |---|---|
 | **[INSTALLATION.md](INSTALLATION.md)** | Prerequisites, installation, first-time setup, updating the plugin. |
