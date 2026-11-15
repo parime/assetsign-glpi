@@ -6409,8 +6409,8 @@ msgstr "Ustawienia jednostki"
 msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
 msgstr "Ustawienia dotyczą wybranej jednostki (oraz jej podjednostek bez własnych ustawień)."
 
-msgid "Seules les adresses http:// et https:// sont acceptées."
-msgstr "Akceptowane są tylko adresy http:// i https://."
+msgid "Seules les adresses web (protocole http ou https) sont acceptées."
+msgstr "Akceptowane są tylko adresy internetowe (protokół http lub https)."
 
 msgid "Cette adresse vise le serveur lui-même ou un réseau interne. Un administrateur peut autoriser les adresses internes dans la configuration du plugin."
 msgstr "Ten adres wskazuje na sam serwer lub sieć wewnętrzną. Administrator może zezwolić na adresy wewnętrzne w konfiguracji wtyczki."

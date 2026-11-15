@@ -5828,8 +5828,8 @@ msgstr "Einstellungen der Einheit"
 msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
 msgstr "Die Einstellungen gelten für die gewählte Einheit (und für ihre Untereinheiten ohne eigene Einstellungen)."
 
-msgid "Seules les adresses http:// et https:// sont acceptées."
-msgstr "Nur http://- und https://-Adressen werden akzeptiert."
+msgid "Seules les adresses web (protocole http ou https) sont acceptées."
+msgstr "Nur Webadressen (Protokoll http oder https) werden akzeptiert."
 
 msgid "Cette adresse vise le serveur lui-même ou un réseau interne. Un administrateur peut autoriser les adresses internes dans la configuration du plugin."
 msgstr "Diese Adresse zielt auf den Server selbst oder ein internes Netzwerk. Ein Administrator kann interne Adressen in der Plugin-Konfiguration erlauben."

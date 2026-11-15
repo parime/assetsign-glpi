@@ -6393,8 +6393,8 @@ msgstr "Configurações da entidade"
 msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
 msgstr "As configurações se aplicam à entidade escolhida (e às suas subentidades sem configurações próprias)."
 
-msgid "Seules les adresses http:// et https:// sont acceptées."
-msgstr "Apenas endereços http:// e https:// são aceitos."
+msgid "Seules les adresses web (protocole http ou https) sont acceptées."
+msgstr "Apenas endereços web (protocolo http ou https) são aceitos."
 
 msgid "Cette adresse vise le serveur lui-même ou un réseau interne. Un administrateur peut autoriser les adresses internes dans la configuration du plugin."
 msgstr "Este endereço aponta para o próprio servidor ou para uma rede interna. Um administrador pode autorizar endereços internos na configuração do plugin."

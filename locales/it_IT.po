@@ -5802,8 +5802,8 @@ msgstr "Impostazioni dell'entità"
 msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
 msgstr "Le impostazioni si applicano all'entità scelta (e alle sue sotto-entità senza impostazioni proprie)."
 
-msgid "Seules les adresses http:// et https:// sont acceptées."
-msgstr "Sono accettati solo indirizzi http:// e https://."
+msgid "Seules les adresses web (protocole http ou https) sont acceptées."
+msgstr "Sono accettati solo indirizzi web (protocollo http o https)."
 
 msgid "Cette adresse vise le serveur lui-même ou un réseau interne. Un administrateur peut autoriser les adresses internes dans la configuration du plugin."
 msgstr "Questo indirizzo punta al server stesso o a una rete interna. Un amministratore può autorizzare gli indirizzi interni nella configurazione del plugin."

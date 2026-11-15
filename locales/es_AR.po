@@ -5792,8 +5792,8 @@ msgstr "Configuración de la entidad"
 msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
 msgstr "La configuración se aplica a la entidad elegida (y a sus subentidades que no tienen configuración propia)."
 
-msgid "Seules les adresses http:// et https:// sont acceptées."
-msgstr "Solo se aceptan direcciones http:// y https://."
+msgid "Seules les adresses web (protocole http ou https) sont acceptées."
+msgstr "Solo se aceptan direcciones web (protocolo http o https)."
 
 msgid "Cette adresse vise le serveur lui-même ou un réseau interne. Un administrateur peut autoriser les adresses internes dans la configuration du plugin."
 msgstr "Esta dirección apunta al propio servidor o a una red interna. Un administrador puede autorizar las direcciones internas en la configuración del plugin."

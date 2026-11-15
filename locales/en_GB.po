@@ -5772,8 +5772,8 @@ msgstr "Settings of the entity"
 msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
 msgstr "Settings apply to the chosen entity (and to its sub-entities that have no settings of their own)."
 
-msgid "Seules les adresses http:// et https:// sont acceptées."
-msgstr "Only http:// and https:// addresses are accepted."
+msgid "Seules les adresses web (protocole http ou https) sont acceptées."
+msgstr "Only web addresses (http or https protocol) are accepted."
 
 msgid "Cette adresse vise le serveur lui-même ou un réseau interne. Un administrateur peut autoriser les adresses internes dans la configuration du plugin."
 msgstr "This address targets the server itself or an internal network. An administrator can allow internal addresses in the plugin configuration."

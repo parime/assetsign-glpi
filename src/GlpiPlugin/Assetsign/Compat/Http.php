@@ -180,12 +180,6 @@ final class Http
          } else {
              [$status, $body] = self::sendWithGlpi11($method, $url, $host, $pin, $headers, $timeout, $options);
          }
-      } catch (\Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface $e) {
-          $error = self::ERROR_REDIRECT . ': HTTP ' . $e->getResponse()->getStatusCode();
-          return null;
-      } catch (\Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface $e) {
-          $error = self::ERROR_STATUS . ': HTTP ' . $e->getResponse()->getStatusCode();
-          return null;
       } catch (\Throwable $e) {
           $error = self::ERROR_TRANSPORT . ': ' . $e->getMessage();
           return null;
@@ -226,7 +220,7 @@ final class Http
    public static function getErrorMessage(string $code): string {
        $code = explode(':', $code, 2)[0];
        return match ($code) {
-           self::ERROR_SCHEME       => __('Seules les adresses http:// et https:// sont acceptées.', 'assetsign'),
+           self::ERROR_SCHEME       => __('Seules les adresses web (protocole http ou https) sont acceptées.', 'assetsign'),
            self::ERROR_INTERNAL     => __('Cette adresse vise le serveur lui-même ou un réseau interne. Un administrateur peut autoriser les adresses internes dans la configuration du plugin.', 'assetsign'),
            self::ERROR_GLPI_CONTEXT => sprintf(
                __('GLPI refuse les adresses internes pour ce plugin : ajoutez %s à la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (config/local_define.php).', 'assetsign'),
@@ -260,7 +254,20 @@ final class Http
       if ($pin !== null) {
           $request['resolve'] = [$host => $pin];
       }
-       $response = (new \Glpi\Toolbox\HttpClient(self::CONTEXT))->request(strtoupper($method), $url, $request);
+      if (!class_exists(\Glpi\Toolbox\HttpClient::class)) {
+          throw new \LogicException('Glpi\Toolbox\HttpClient is not available.');
+      }
+      try {
+          $response = (new \Glpi\Toolbox\HttpClient(self::CONTEXT))->request(strtoupper($method), $url, $request);
+      } catch (\Throwable $e) {
+          // Le client du cœur leve une exception pour toute reponse 3xx, 4xx ou 5xx : on en garde
+          // le code, traite ensuite comme pour GLPI 11 (redirection refusee, code hors 2xx).
+          $failed = method_exists($e, 'getResponse') ? $e->getResponse() : null;
+         if (is_object($failed) && method_exists($failed, 'getStatusCode')) {
+             return [(int) $failed->getStatusCode(), ''];
+         }
+          throw $e;
+      }
        return [$response->getStatusCode(), $response->getContent(false)];
    }
 
