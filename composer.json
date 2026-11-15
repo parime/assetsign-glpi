@@ -2,7 +2,7 @@
     "name": "parime/assetsign-glpi",
     "description": "Gestion des remises de materiel avec signature electronique et tracabilite pour GLPI",
     "type": "glpi-plugin",
-    "license": "GPL-3.0-only",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Vincent GUILLOTTE"

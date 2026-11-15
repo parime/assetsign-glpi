@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   contrôle) sont rattachés à Configuration > Intitulés, et la page du plugin à Configuration >
   Plugins (fil d'Ariane et menu actif).
 - Traductions collaboratives sur Hosted Weblate : section « Traductions » des README avec le badge
+- Identifiant de licence standardisé sur **GPL-3.0-or-later** (charte commune) : `setup.php` et `composer.json`.
   d'avancement et le lien pour contribuer.
 
 ## [2.24.0] - 2026-11-14

@@ -252,7 +252,7 @@ function plugin_version_assetsign(): array {
         'name'           => 'Assetsign & Signature',
         'version'        => PLUGIN_ASSETSIGN_VERSION,
         'author'         => 'Vincent GUILLOTTE',
-        'license'        => 'GPLv3',
+        'license'        => 'GPL-3.0-or-later',
         'homepage'       => 'https://github.com/parime/assetsign-glpi',
         'requirements'   => [
             'glpi' => [
