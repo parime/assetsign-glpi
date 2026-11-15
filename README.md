@@ -89,6 +89,8 @@ Toutes les autres captures d'écran (paramétrage, tableau de bord, listes, ongl
 
 ## Documentation
 
+Règles communes à tous les plugins de parime, à lire avant de contribuer : [charte commune des plugins](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md).
+
 | Document | Pour qui / pour quoi |
 |---|---|
 | **[INSTALLATION.md](INSTALLATION.md)** | Prérequis, installation, premier réglage, mise à jour du plugin. |
