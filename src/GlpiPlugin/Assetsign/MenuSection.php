@@ -106,9 +106,9 @@ final class MenuSection
               'url'    => $pages[0]['url'],
               'active' => $isActive,
           ];
-         if ($isActive && count($pages) > 1) {
+          if ($isActive && count($pages) > 1) {
              $current = $pages;
-         }
+          }
       }
       if ($groups === []) {
           return;

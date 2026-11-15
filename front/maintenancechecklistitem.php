@@ -1,7 +1,6 @@
 <?php
 
 use Glpi\Application\View\TemplateRenderer;
-use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 
 Session::checkRight(MaintenanceChecklistItem::$rightname, READ);

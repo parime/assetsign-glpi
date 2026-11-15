@@ -1,6 +1,5 @@
 <?php
 
-use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 
 $item = new MaintenanceChecklistItem();

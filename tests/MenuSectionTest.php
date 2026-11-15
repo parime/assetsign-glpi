@@ -101,9 +101,10 @@ final class MenuSectionTest extends AssetsignTestCase
 
        // Quatre rubriques, puis les quatre pages de la rubrique Attributions.
        $this->assertSame(4, substr_count($html, 'data-assetsign-section='));
-       $this->assertSame(8, substr_count($html, 'class="nav-link'));
+       $this->assertSame(4, substr_count($html, 'class="nav-link'));
+       $this->assertSame(4, substr_count($html, 'class="btn btn-sm'));
        $this->assertSame(1, substr_count($html, 'aria-current="page"'));
-       $this->assertMatchesRegularExpression('#nav-link py-1 active"[^>]*href="[^"]*front/campaign\.php"#', $html);
+       $this->assertMatchesRegularExpression('#btn-primary"[^>]*href="[^"]*front/campaign\.php"#', $html);
        $this->assertStringContainsString(Movement::getTypeName(2), $html);
    }
 
@@ -115,7 +116,7 @@ final class MenuSectionTest extends AssetsignTestCase
        $html = (string) ob_get_clean();
 
        $this->assertSame(4, substr_count($html, 'class="nav-link'));
-       $this->assertStringNotContainsString('nav-pills', $html);
+       $this->assertStringNotContainsString('assetsign-section-pages', $html);
    }
 
    public function testAssetsignOnlyProfileHasNoMaintenanceTab(): void {
