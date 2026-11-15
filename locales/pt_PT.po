@@ -6382,13 +6382,13 @@ msgid "Signer et enregistrer l'attestation"
 msgstr "Assinar e salvar o atestado"
 
 msgid "Les réglages d'AssetSign se font depuis la page du plugin."
-msgstr "As definições do AssetSign são feitas na página do plugin."
+msgstr "As configurações do AssetSign são feitas na página do plugin."
 
 msgid "Ouvrir les réglages de cette entité"
-msgstr "Abrir as definições desta entidade"
+msgstr "Abrir as configurações desta entidade"
 
 msgid "Réglages de l'entité"
-msgstr "Definições da entidade"
+msgstr "Configurações da entidade"
 
 msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
-msgstr "As definições aplicam-se à entidade escolhida (e às suas subentidades sem definições próprias)."
+msgstr "As configurações se aplicam à entidade escolhida (e às suas subentidades sem configurações próprias)."
