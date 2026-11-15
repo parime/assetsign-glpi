@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- Appels HTTP sortants (#347, suite de #335) : un seul point de passage (`Compat\Http::request()`)
+  pour les webhooks de messagerie et la vérification de version. Client HTTP du cœur GLPI (proxy),
+  délai d'expiration total, redirections jamais suivies, schémas http et https seulement, adresses
+  internes refusées (boucle locale, réseaux privés, lien local dont les métadonnées cloud
+  169.254.169.254) après résolution du nom, avec connexion épinglée sur l'adresse contrôlée. Un
+  administrateur de GLPI peut autoriser les adresses internes depuis la page du plugin (messagerie
+  hébergée sur le réseau) ; en GLPI 12, ajouter aussi `GlpiPlugin\Assetsign\Config` à
+  `GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS`. Aucun jeton GLPI (session, application,
+  cookie) n'est transmis.
+
 ### Fixed
 
 - Test du cartouche « Page X sur Y » instable : le nombre réel de pages est lu dans le PDF au lieu

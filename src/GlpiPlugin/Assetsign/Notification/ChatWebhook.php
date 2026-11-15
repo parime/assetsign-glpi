@@ -19,18 +19,18 @@ final class ChatWebhook
 {
    public const FORMATS = ['teams', 'slack', 'mattermost'];
 
-    /** Adresses jamais appelees : boucle locale, lien local (dont les metadonnees cloud). */
-   private const FORBIDDEN_HOST_PATTERN = '/^(localhost|127\.|0\.|169\.254\.|\[?::1\]?$|\[?fe80:)/i';
-
     /**
-     * Code d'erreur si l'URL n'est pas acceptable, null sinon.
+     * Code d'erreur si l'URL n'est pas acceptable, null sinon : https obligatoire (l'adresse vaut
+     * mot de passe), puis les controles communs a tous les appels sortants (Compat\Http, #347 :
+     * boucle locale, reseaux internes et metadonnees cloud refuses sauf autorisation de
+     * l'administrateur). Le nom n'est resolu qu'a l'envoi.
      */
    public static function validateUrl(string $url): ?string {
        $parts = parse_url(trim($url));
-      if (!is_array($parts) || ($parts['scheme'] ?? '') !== 'https' || empty($parts['host'])) {
+      if (!is_array($parts) || strtolower((string) ($parts['scheme'] ?? '')) !== 'https' || empty($parts['host'])) {
           return 'https_required';
       }
-      if (preg_match(self::FORBIDDEN_HOST_PATTERN, (string) $parts['host']) === 1) {
+      if (Http::checkUrl(trim($url), false) !== null) {
           return 'forbidden_host';
       }
        return null;
