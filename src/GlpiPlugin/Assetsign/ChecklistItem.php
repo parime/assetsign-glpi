@@ -37,14 +37,11 @@ class ChecklistItem extends CommonDropdown
    }
 
     /**
-     * Rattache au fil d'Ariane d'Assetsign (menu 'tools'), pas au secteur
-     * generique 'config' des intitules - meme raison que
-     * MaintenanceChecklistItem::getSectorizedDetails(), mais sous Assetsign
-     * plutot que Maintenance (ces points de controle sont specifiques aux
-     * mouvements de materiel, pas a la maintenance interne).
+     * Issue #330 : intitulé natif, rangé dans Configuration > Intitulés (secteur 'config', comme
+     * tout CommonDropdown) et non plus dans le menu Outils du plugin.
      */
    public static function getSectorizedDetails(): array {
-       return ['tools', Assetsign::class, self::class];
+       return ['config', \CommonDropdown::class, self::class];
    }
 
     /** @return array<int, string> Libelles des types de saisie disponibles, par constante TYPE_*. */

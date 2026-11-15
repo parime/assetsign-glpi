@@ -1,4 +1,13 @@
 {% import 'components/form/fields_macros.html.twig' as fields %}
+{# Issue #330 : tous les réglages du plugin se font ici ; choix de l'entité réglée. #}
+<form method="get" action="{{ config('root_doc') }}/plugins/assetsign/front/config.php" class="card card-sm mb-3" id="assetsign-config-entity">
+  <div class="card-body d-flex align-items-center gap-2 flex-wrap">
+    <i class="ti ti-building text-primary fs-2"></i>
+    <span class="fw-bold">{{ __('Réglages de l\'entité', 'assetsign') }}</span>
+    <div style="min-width: 260px;">{{ entity_dropdown|raw }}</div>
+    <span class="text-muted small">{{ __('Les réglages s\'appliquent à l\'entité choisie (et à ses sous-entités qui n\'ont pas leurs propres réglages).', 'assetsign') }}</span>
+  </div>
+</form>
 <div class="row flex-nowrap align-items-start" style="gap: 1rem;">
 <div class="col" style="min-width: 320px;">
 <div class="card">

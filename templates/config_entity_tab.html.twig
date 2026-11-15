@@ -1,0 +1,14 @@
+{# Issue #330 : onglet AssetSign de la fiche d'une entité. Les réglages se font uniquement depuis la
+   page du plugin (Configuration > Plugins > AssetSign) : cet onglet y mène, sur cette entité. #}
+<div class="card">
+   <div class="card-body d-flex align-items-center gap-3 flex-wrap">
+      <i class="ti ti-settings fs-1 text-primary"></i>
+      <div class="flex-grow-1">
+         <div class="fw-bold">{{ __('Les réglages d\'AssetSign se font depuis la page du plugin.', 'assetsign') }}</div>
+         <div class="text-muted">{{ __('Entité', 'assetsign') }} : {{ entity_name }}</div>
+      </div>
+      <a class="btn btn-primary" href="{{ config_url }}">
+         <i class="ti ti-arrow-right me-1"></i>{{ __('Ouvrir les réglages de cette entité', 'assetsign') }}
+      </a>
+   </div>
+</div>

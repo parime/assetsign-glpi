@@ -1,6 +1,5 @@
 <?php
 
-use GlpiPlugin\Assetsign\Assetsign;
 use GlpiPlugin\Assetsign\Kit;
 
 $item = new Kit();
@@ -19,7 +18,7 @@ if (isset($_POST['add'])) {
     Html::redirect(Kit::getSearchURL());
 } else {
     Session::checkRight(Kit::$rightname, READ);
-    Html::header(Kit::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Assetsign::class, Kit::class);
+    Html::header(Kit::getTypeName(1), $_SERVER['PHP_SELF'], 'config', \CommonDropdown::class, Kit::class);
     $id = (int) ($_GET['id'] ?? 0);
    if ($id > 0) {
        $item->getFromDB($id);

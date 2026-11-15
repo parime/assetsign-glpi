@@ -69,7 +69,7 @@ class WipeAttestation extends Compat\Base\WipeAttestationBase
 
     /** Secteur 'tools' (Outils), comme Assetsign::getSectorizedDetails(). */
    public static function getSectorizedDetails(): array {
-       return ['tools', self::class];
+       return ['tools', Menu::class, self::class];
    }
 
     /** Pas de bouton « Ajouter » : une attestation se crée depuis l'onglet du matériel. */

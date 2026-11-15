@@ -62,7 +62,7 @@ class Movement extends Compat\Base\MovementBase
 
     /** Secteur 'tools' (Outils), pas 'admin' - même raison que Assetsign::getSectorizedDetails(). */
    public static function getSectorizedDetails(): array {
-       return ['tools', self::class];
+       return ['tools', Menu::class, self::class];
    }
 
     /** @return array<int, string> Libellé de chaque statut, par constante STATUS_*. */

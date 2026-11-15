@@ -218,13 +218,19 @@ class Config extends Compat\Base\ConfigBase
       if ($item->getType() !== 'Entity' || !\Session::haveRight(self::$rightname, READ)) {
           return false;
       }
-       self::showConfigForm((int) $item->getID());
+       // Issue #330 : les réglages se font uniquement depuis la page du plugin ; l'onglet de
+       // l'entité y mène directement, déjà positionné sur cette entité.
+       global $CFG_GLPI;
+       \Glpi\Application\View\TemplateRenderer::getInstance()->display('@assetsign/config_entity_tab.html.twig', [
+           'entity_name' => \Dropdown::getDropdownName('glpi_entities', (int) $item->getID()),
+           'config_url'  => $CFG_GLPI['root_doc'] . '/plugins/assetsign/front/config.php?entities_id=' . (int) $item->getID(),
+       ]);
        return true;
    }
 
     /**
-     * Rendu du formulaire de configuration, partage par l'onglet Entity et
-     * la page dediee du menu d'administration (front/config.php).
+     * Rendu du formulaire de la page du plugin (front/config.php, Configuration > Plugins >
+     * AssetSign) pour l'entité choisie : seul endroit où se règle le plugin (issue #330).
      */
    public static function showConfigForm(int $entities_id): void {
        $config = self::getForEntity($entities_id);
@@ -258,6 +264,15 @@ class Config extends Compat\Base\ConfigBase
            // Issue #278 : mise en page des etiquettes QR.
            'qr_label_form'        => QrLabelLayout::formData(QrLabelLayout::normalize($config->fields)),
            'entity_id'       => $entities_id,
+           // Issue #330 : choix de l'entité réglée, en tête de la page du plugin.
+           'entity_name'     => \Dropdown::getDropdownName('glpi_entities', $entities_id),
+           'entity_dropdown' => \Entity::dropdown([
+               'name'      => 'entities_id',
+               'value'     => $entities_id,
+               'entity'    => $_SESSION['glpiactiveentities'] ?? [],
+               'on_change' => 'this.form.submit()',
+               'display'   => false,
+           ]),
            'csrf_token'      => \Session::getNewCSRFToken(),
            // Jeton CSRF DEDIE au canal d'apercu en direct (live-preview.js),
            // totalement independant de celui du formulaire lui-meme

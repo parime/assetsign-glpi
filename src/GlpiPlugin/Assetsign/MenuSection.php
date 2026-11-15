@@ -5,29 +5,46 @@ namespace GlpiPlugin\Assetsign;
 use Glpi\Application\View\TemplateRenderer;
 
 /**
- * Menu Outils : trois rubriques au lieu de sept entrées, comme les rubriques du plugin GRC Manager.
+ * Issue #330 : organisation des sous-pages de l'unique entrée Outils > AssetSign (Menu).
  *
- * Une rubrique est une seule entrée de menu (le parent) ; les autres écrans du même travail sont
- * ses sous-pages (options GLPI : fil d'Ariane « Rubrique > Page ») et partagent une barre
- * d'onglets en tête de page (showSection()). Fiches de maintenance reste une rubrique à part :
- * elle a son propre droit (Profile::RIGHT_MAINTENANCE).
+ * Quatre rubriques, chacune avec ses pages : Attributions (attributions, mouvements, départs,
+ * campagnes d'attestation), Attestations d'effacement, Fiches de maintenance (droit propre,
+ * Profile::RIGHT_MAINTENANCE) et Pilotage du parc (tableau de bord RSE, renouvellement). Chaque
+ * page déclare elle-même son entrée et son droit (getMenuContent()) : une page, et une rubrique
+ * sans page visible, n'apparaissent pas pour qui n'a pas le droit.
  */
 final class MenuSection
 {
     /**
-     * @return array<class-string, list<class-string>>
+     * @return array<string, array{label: string, icon: string, pages: list<class-string>}>
      */
-   public static function sections(): array {
+   public static function groups(): array {
        return [
-           // Remises, mouvements, départs et campagnes d'attestation : le cycle de vie du matériel.
-           Assetsign::class    => [Movement::class, Departure::class, Campaign::class, WipeAttestation::class],
-           // Tableau de bord RSE et plan de renouvellement : le pilotage du parc.
-           CsrDashboard::class => [Renewal::class],
+           'attributions' => [
+               'label' => Assetsign::getTypeName(2),
+               'icon'  => Assetsign::getIcon(),
+               'pages' => [Assetsign::class, Movement::class, Departure::class, Campaign::class],
+           ],
+           'wipe' => [
+               'label' => WipeAttestation::getTypeName(2),
+               'icon'  => WipeAttestation::getIcon(),
+               'pages' => [WipeAttestation::class],
+           ],
+           'maintenance' => [
+               'label' => Maintenance::getTypeName(2),
+               'icon'  => Maintenance::getIcon(),
+               'pages' => [Maintenance::class],
+           ],
+           'fleet' => [
+               'label' => __('Pilotage du parc', 'assetsign'),
+               'icon'  => 'ti ti-chart-pie',
+               'pages' => [CsrDashboard::class, Renewal::class],
+           ],
        ];
    }
 
     /**
-     * Entrée de menu d'un écran, telle qu'il la déclare (droits compris), ou null.
+     * Entrée de menu d'une page, telle qu'elle la déclare (droits compris), ou null.
      *
      * @return array<string, mixed>|null
      */
@@ -38,56 +55,67 @@ final class MenuSection
    }
 
     /**
-     * Ajoute les sous-pages de la rubrique $parent à son entrée de menu.
+     * Pages que l'utilisateur connecté peut ouvrir, dans l'ordre des rubriques.
      *
-     * @param array<string, mixed>|false $menu
-     * @return array<string, mixed>|false
+     * @return array<class-string, array<string, mixed>>
      */
-   public static function withSubPages(string $parent, $menu) {
-      if (!is_array($menu) || $menu === []) {
-          return $menu;
-      }
-      foreach (self::sections()[$parent] ?? [] as $child) {
-          $childMenu = self::menuOf($child);
-         if ($childMenu !== null) {
-             $menu['options'][$child] = $childMenu;
+   public static function visiblePages(): array {
+       $pages = [];
+      foreach (self::groups() as $group) {
+         foreach ($group['pages'] as $class) {
+             $menu = self::menuOf($class);
+            if ($menu !== null) {
+                $pages[$class] = $menu;
+            }
          }
       }
 
-       return $menu;
+       return $pages;
    }
 
     /**
-     * Barre d'onglets de la rubrique de $parent, $active étant la page affichée. Rien si
-     * l'utilisateur ne voit qu'une seule page de la rubrique.
+     * Barres d'onglets en tête d'une sous-page : les rubriques, puis les pages de la rubrique
+     * affichée quand elle en compte plusieurs. $active est la page affichée.
      */
-   public static function showSection(string $parent, string $active): void {
+   public static function show(string $active): void {
        global $CFG_GLPI;
 
-       $parentMenu = self::menuOf($parent);
-      if ($parentMenu === null) {
-          return;
-      }
-       $pages = [$parent => $parentMenu];
-      foreach (self::sections()[$parent] ?? [] as $child) {
-          $childMenu = self::menuOf($child);
-         if ($childMenu !== null) {
-             $pages[$child] = $childMenu;
+       $groups  = [];
+       $current = [];
+      foreach (self::groups() as $key => $group) {
+          $pages = [];
+         foreach ($group['pages'] as $class) {
+             $menu = self::menuOf($class);
+            if ($menu !== null) {
+                $pages[] = [
+                    'label'  => (string) $menu['title'],
+                    'icon'   => (string) ($menu['icon'] ?? ''),
+                    'url'    => $CFG_GLPI['root_doc'] . $menu['page'],
+                    'active' => $class === $active,
+                ];
+            }
+         }
+         if ($pages === []) {
+             continue;
+         }
+          $isActive = in_array($active, $group['pages'], true);
+          $groups[] = [
+              'key'    => $key,
+              'label'  => $group['label'],
+              'icon'   => $group['icon'],
+              'url'    => $pages[0]['url'],
+              'active' => $isActive,
+          ];
+         if ($isActive && count($pages) > 1) {
+             $current = $pages;
          }
       }
-      if (count($pages) < 2) {
+      if ($groups === []) {
           return;
       }
-       $tabs = [];
-      foreach ($pages as $key => $page) {
-          $tabs[] = [
-              // Le parent peut porter, dans sa barre, un nom de page distinct du nom de la rubrique.
-              'label'  => (string) ($key === $parent ? ($page['section_label'] ?? $page['title']) : $page['title']),
-              'icon'   => (string) ($page['icon'] ?? ''),
-              'url'    => $CFG_GLPI['root_doc'] . $page['page'],
-              'active' => $key === $active,
-          ];
-      }
-       TemplateRenderer::getInstance()->display('@assetsign/_section_nav.html.twig', ['tabs' => $tabs]);
+       TemplateRenderer::getInstance()->display('@assetsign/_section_nav.html.twig', [
+           'groups' => $groups,
+           'pages'  => $current,
+       ]);
    }
 }

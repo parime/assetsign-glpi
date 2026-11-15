@@ -19,7 +19,7 @@ if (isset($_POST['add'])) {
     Html::redirect(MaintenanceChecklistItem::getSearchURL());
 } else {
     Session::checkRight(MaintenanceChecklistItem::$rightname, READ);
-    Html::header(MaintenanceChecklistItem::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', Maintenance::class, MaintenanceChecklistItem::class);
+    Html::header(MaintenanceChecklistItem::getTypeName(1), $_SERVER['PHP_SELF'], 'config', \CommonDropdown::class, MaintenanceChecklistItem::class);
     $id = (int) ($_GET['id'] ?? 0);
    if ($id > 0) {
        $item->getFromDB($id);

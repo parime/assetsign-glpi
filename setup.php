@@ -50,7 +50,7 @@ function plugin_init_assetsign(): void {
     $PLUGIN_HOOKS['csrf_compliant']['assetsign'] = true;
 
     // Tout ce qui suit référence de vraies classes du plugin (WorkflowTypeRegistry ci-dessous,
-    // Assetsign::class/Maintenance::class/Movement::class dans le hook MENU_TOADD plus bas...) -
+    // Menu::class dans le hook MENU_TOADD plus bas...) -
     // sans ce garde-fou, cette fonction plante en erreur fatale PHP sur une version de GLPI
     // incompatible (cas réel rencontré avec GLPI 12.0.0-rc2 avant la couche Compat/ :
     // "Type of GlpiPlugin\Assetsign\Assetsign::$rightname must be string, as in class CommonGLPI").
@@ -227,28 +227,19 @@ function plugin_init_assetsign(): void {
     // pour chaque plugin actif : aucune entree $PLUGIN_HOOKS n'est necessaire pour ce
     // hook "auto", le nom de fonction est resolu par convention).
 
-    // --- Menu d'administration --------------------------------------------------------
-    // "Gestion des fiches" (Search::show(Assetsign::class), cf. front/assetsign.php) : vue
-    // transverse de toutes les assetsigns/restitutions, tous materiels et beneficiaires
-    // confondus, avec telechargement direct des PDF et annulation (cf. Assetsign::
-    // rawSearchOptions()/cancelRequest()) : un onglet par materiel ne suffit plus des
-    // qu'il faut suivre l'ensemble des fiches en attente sans savoir a l'avance sur
-    // quel materiel chercher.
-    // "Fiches de maintenance" (Search::show(Maintenance::class), cf. front/maintenance.php) :
-    // volontairement une entree de menu SEPAREE de "Gestion des fiches" (pas fusionnee),
-    // le sous-systeme de maintenance etant lui-meme structurellement independant du
-    // moteur de fiches signees (cf. Maintenance.php) : un tableau melant les deux
-    // brouillerait deux notions de statut/cycle de vie totalement differentes.
-    //   - Config : icone "Configurer" + nom cliquable sur la ligne du plugin dans
-    //     Configuration > Plugins (Hooks::CONFIG_PAGE plus haut) ;
-    //   - Template/Points de controle de maintenance : page Configuration > Intitulés (ci-dessus).
+    // --- Menu Outils : une seule entrée « AssetSign » (issue #330) ----------------------
+    // Règle commune aux plugins : les réglages se font depuis la page du plugin
+    // (Configuration > Plugins > AssetSign, Hooks::CONFIG_PAGE plus haut) et le plugin n'ajoute
+    // qu'UNE entrée d'usage aux menus de GLPI. Les écrans d'usage (attributions, mouvements,
+    // départs, campagnes, attestations d'effacement, fiches de maintenance, pilotage du parc)
+    // sont les sous-pages de cette entrée, avec une barre d'onglets commune
+    // (GlpiPlugin\Assetsign\Menu et MenuSection). Les intitulés (gabarits, accessoires, kits,
+    // points de contrôle) restent dans Configuration > Intitulés, comme tout intitulé de GLPI.
     // Format attendu par le coeur GLPI : une LISTE PLATE de classes par categorie
     // (pas le format documente ['types'=>[...],'icon'=>'...']) : piege deja
     // rencontre et documente dans TROUBLESHOOTING.md.
     $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign'] = [
-        // Trois rubriques (GlpiPlugin\Assetsign\MenuSection) : Attributions (mouvements, départs,
-        // campagnes d'attestation), Fiches de maintenance, Pilotage du parc (renouvellement).
-        'tools' => [\GlpiPlugin\Assetsign\Assetsign::class, \GlpiPlugin\Assetsign\Maintenance::class, \GlpiPlugin\Assetsign\CsrDashboard::class],
+        'tools' => [\GlpiPlugin\Assetsign\Menu::class],
     ];
 
     if (Plugin::isPluginActive('assetsign')) {

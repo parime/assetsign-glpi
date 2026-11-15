@@ -155,59 +155,17 @@ class Assetsign extends Compat\Base\AssetsignBase
      * chercherait Assetsign dans le secteur 'admin', ou elle n'existe pas.
      */
    public static function getSectorizedDetails(): array {
-       return ['tools', self::class];
+       return ['tools', Menu::class, self::class];
    }
 
     /**
-     * Etend le menu par defaut (recherche/ajout de Assetsign) avec des entrees
-     * pour Template et Accessory : sans "options", le fil d'Ariane de ces
-     * deux intitules (aujourd'hui geres via Configuration > Intitulés) ne
-     * peut jamais afficher de segment "Gabarits de remise"/"Accessoires de
-     * remise" - cf. templates/layout/parts/breadcrumbs.html.twig du coeur,
-     * qui lit exactement menu[sector]['content'][item]['options'][option].
+     * Sous-page « Attributions » de l'entrée Outils > AssetSign (Menu, issue #330) : recherche
+     * seule, la création passe par le formulaire guidé de la page. Les intitulés (gabarits,
+     * accessoires, kits, points de contrôle) ne sont plus des options de ce menu : ce sont des
+     * intitulés natifs, rangés dans Configuration > Intitulés.
      */
    public static function getMenuContent(): array {
-       $menu = self::withoutAddLink(parent::getMenuContent());
-      if (!$menu) {
-          return [];
-      }
-
-      if (Template::canView()) {
-          $menu['options'][Template::class] = [
-              'title' => Template::getTypeName(Session::getPluralNumber()),
-              'page'  => Template::getSearchURL(false),
-              'icon'  => Template::getIcon(),
-              'links' => [
-                  'search' => Template::getSearchURL(false),
-                  'add'    => Template::getFormURL(false),
-              ],
-          ];
-      }
-      if (Accessory::canView()) {
-          $menu['options'][Accessory::class] = [
-              'title' => Accessory::getTypeName(Session::getPluralNumber()),
-              'page'  => Accessory::getSearchURL(false),
-              'icon'  => Accessory::getIcon(),
-              'links' => [
-                  'search' => Accessory::getSearchURL(false),
-                  'add'    => Accessory::getFormURL(false),
-              ],
-          ];
-      }
-      if (ChecklistItem::canView()) {
-          $menu['options'][ChecklistItem::class] = [
-              'title' => ChecklistItem::getTypeName(Session::getPluralNumber()),
-              'page'  => ChecklistItem::getSearchURL(false),
-              'icon'  => ChecklistItem::getIcon(),
-              'links' => [
-                  'search' => ChecklistItem::getSearchURL(false),
-                  'add'    => ChecklistItem::getFormURL(false),
-              ],
-          ];
-      }
-
-       // Rubrique « Attributions » : mouvements, départs et campagnes d'attestation en sous-pages.
-       return MenuSection::withSubPages(self::class, $menu);
+       return self::withoutAddLink(parent::getMenuContent());
    }
 
     /**

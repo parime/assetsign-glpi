@@ -31,11 +31,11 @@ class Kit extends CommonDropdown
    }
 
     /**
-     * Rattache au fil d'Ariane de Assetsign (menu 'tools') : meme raison que
-     * Accessory::getSectorizedDetails()/ChecklistItem::getSectorizedDetails().
+     * Issue #330 : intitulé natif, rangé dans Configuration > Intitulés (secteur 'config', comme
+     * tout CommonDropdown) et non plus dans le menu Outils du plugin.
      */
    public static function getSectorizedDetails(): array {
-       return ['tools', Assetsign::class, self::class];
+       return ['config', \CommonDropdown::class, self::class];
    }
 
     /**
