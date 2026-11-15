@@ -17,3 +17,4 @@ jobs:
     with:
       plugin-key: assetsign
       seed-command: php plugins/assetsign/tests/security/setup.php
+      charter-mode: error
