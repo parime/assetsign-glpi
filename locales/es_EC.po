@@ -5791,3 +5791,37 @@ msgstr "Configuración de la entidad"
 
 msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
 msgstr "La configuración se aplica a la entidad elegida (y a sus subentidades que no tienen configuración propia)."
+
+msgid "Seules les adresses http:// et https:// sont acceptées."
+msgstr "Solo se aceptan direcciones http:// y https://."
+
+msgid "Cette adresse vise le serveur lui-même ou un réseau interne. Un administrateur peut autoriser les adresses internes dans la configuration du plugin."
+msgstr "Esta dirección apunta al propio servidor o a una red interna. Un administrador puede autorizar las direcciones internas en la configuración del plugin."
+
+#, php-format
+msgid "GLPI refuse les adresses internes pour ce plugin : ajoutez %s à la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (config/local_define.php)."
+msgstr "GLPI rechaza las direcciones internas para este plugin: añada %s a la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (config/local_define.php)."
+
+msgid "Le serveur a répondu par une redirection, qui n'est jamais suivie : indiquez l'adresse finale."
+msgstr "El servidor respondió con una redirección, que nunca se sigue: indique la dirección final."
+
+msgid "Adresse invalide."
+msgstr "Dirección no válida."
+
+msgid "Adresses internes"
+msgstr "Direcciones internas"
+
+msgid "Autorisées"
+msgstr "Autorizadas"
+
+msgid "Refusées"
+msgstr "Rechazadas"
+
+msgid "Par sécurité, le plugin n'appelle jamais une adresse interne (le serveur lui-même, un réseau privé, les métadonnées d'un hébergeur cloud) et ne suit jamais une redirection. Autorisez les adresses internes seulement si votre outil de messagerie est hébergé sur votre réseau (Mattermost, Rocket.Chat). Ce réglage vaut pour toutes les entités."
+msgstr "Por seguridad, el plugin nunca llama a una dirección interna (el propio servidor, una red privada, los metadatos de un proveedor cloud) y nunca sigue una redirección. Autorice las direcciones internas solo si su herramienta de mensajería está alojada en su red (Mattermost, Rocket.Chat). Este ajuste se aplica a todas las entidades."
+
+msgid "Autoriser les adresses internes"
+msgstr "Autorizar las direcciones internas"
+
+msgid "Seul un administrateur de GLPI (droit de modifier la configuration générale) peut changer ce réglage."
+msgstr "Solo un administrador de GLPI (derecho de modificar la configuración general) puede cambiar este ajuste."
