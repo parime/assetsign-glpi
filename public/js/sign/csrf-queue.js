@@ -1,3 +1,18 @@
+/**
+ * -------------------------------------------------------------------------
+ * AssetSign for GLPI
+ * Copyright (C) 2026 Vincent GUILLOTTE
+ * https://github.com/parime/assetsign-glpi
+ * -------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version. See LICENSE for the full text.
+ * -------------------------------------------------------------------------
+ */
+
 // File d'attente partagee pour tout appel authentifie par le jeton CSRF a
 // usage unique de GLPI (cf. README) : sign.js, damage-annotation.js et le
 // script inline de la Remarque (sign_page.html.twig) l'utilisent tous les

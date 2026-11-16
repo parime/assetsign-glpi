@@ -1,3 +1,17 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
 {# Issue #158 : réponse d'une personne à son attestation de détention.
    Issue #204 : même page pour la signature de la charte informatique (is_charter). #}
 <div class="container-lg my-3">
@@ -94,7 +108,7 @@
       </div>
       {% endif %}
     </div>
-    <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+    <script src="{{ config('root_doc') }}/plugins/assetsign/lib/sign/signature_pad.umd.min.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
     <script>
       (function () {
         var canvas = document.getElementById('attestation-signature-pad');

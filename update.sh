@@ -1,4 +1,19 @@
 #!/bin/sh
+#
+# -------------------------------------------------------------------------
+# AssetSign for GLPI
+# Copyright (C) 2026 Vincent GUILLOTTE
+# https://github.com/parime/assetsign-glpi
+# -------------------------------------------------------------------------
+# LICENSE
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version. See LICENSE for the full text.
+# -------------------------------------------------------------------------
+#
+
 # A lancer depuis ce dossier (plugins/assetsign/) apres chaque "git pull"/mise a jour
 # du code : regroupe les 3 etapes decrites dans le README (section "Mettre a
 # jour le plugin") qu'il est facile d'oublier ou de faire dans le mauvais ordre :

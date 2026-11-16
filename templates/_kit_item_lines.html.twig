@@ -1,3 +1,17 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
 {# Issue #181 : lignes « type d'element GLPI » du kit de la feuille - pourvues ou a pourvoir avec le
    materiel disponible de ce type. Variables : kit_item_lines, can_edit (bool), reopen (bool), item, csrf_token. #}
 {% if kit_item_lines|default([])|length %}
