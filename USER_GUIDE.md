@@ -27,6 +27,8 @@ AssetSign n'ajoute **qu'une entrée** aux menus de GLPI : **Outils > AssetSign**
 
 Chaque onglet n'apparaît que si votre profil a le droit correspondant (par exemple, un profil qui n'a que le droit Maintenance ne voit que les fiches de maintenance). Les anciennes adresses (favoris) continuent de fonctionner.
 
+En tête de chaque page, un encadré **« À quoi sert cette page ? »** rappelle son but et ce qui est attendu de vous ; la page « Mon matériel et mes documents » a le sien. Un clic sur son titre le replie, et le navigateur s'en souvient pour cette page.
+
 **Tous les réglages** se font depuis la page du plugin : **Configuration > Plugins**, clic sur **AssetSign**. Un sélecteur en haut de la page choisit l'entité réglée ; l'onglet AssetSign de la fiche d'une entité mène à cette même page. Les listes (gabarits, accessoires, kits, points de contrôle) sont des intitulés de GLPI : **Configuration > Intitulés**.
 
 ### Aperçu
@@ -290,6 +292,8 @@ AssetSign adds **a single entry** to GLPI's menus: **Tools > AssetSign**. At the
 | **Fleet management** | CSR dashboard, Fleet renewal |
 
 Each tab only appears if your profile has the matching right (for instance, a profile with only the Maintenance right only sees maintenance records). Old addresses (bookmarks) keep working.
+
+At the top of each page, a **"What is this page for?"** box recalls its purpose and what is expected from you; the "My equipment and documents" page has its own. Clicking its title folds it, and the browser remembers it for that page.
 
 **All settings** are made from the plugin's page: **Setup > Plugins**, click **AssetSign**. A selector at the top of the page picks the entity being configured; the AssetSign tab of an entity record leads to this same page. Lists (templates, accessories, kits, checklist items) are GLPI dropdowns: **Setup > Dropdowns**.
 
