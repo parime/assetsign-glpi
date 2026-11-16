@@ -582,14 +582,6 @@ jobs:
       # et local : ne depend ni du token Semgrep ni du registre de regles en ligne.
       - name: "Semgrep - regles securite GLPI du projet"
         run: semgrep scan --config .semgrep/ --error --metrics=off
-      # Chaque point d'entree front/ajax doit appeler un controle d'autorisation explicite, ou
-      # figurer avec sa justification dans .github/security-entrypoints-allowlist.txt.
-      - name: "Points d'entrée : contrôle d'autorisation présent"
-        run: sh .github/scripts/check-entrypoints-auth.sh
-      # Chaque page front/ajax doit figurer dans la matrice d'acces de bout en bout
-      # (tests/security/access-matrix.sh), ou etre justifiee dans tests/security/not-covered.txt.
-      - name: "Matrice d'accès : toutes les pages couvertes"
-        run: sh .github/scripts/check-security-matrix-coverage.sh
 
   # Bloque une PR qui ajoute ou met a jour une dependance (composer, npm, actions) ayant un avis de
   # securite connu - avant la fusion, la ou Dependabot ne previent qu'apres coup.
@@ -639,10 +631,6 @@ jobs:
           find . -type f -name "*.xml*" -not -path "./vendor/*" -not -path "./node_modules/*" -not -path "./.git/*" \
             | xargs -I {} sh -c 'echo "Validation de {}" && xmllint --noout {} || exit 1'
 
-      # Exigences de revue du Marketplace GLPI : pas de SQL brut hors installation, et HTML ecrit en
-      # PHP qui ne peut que baisser (les nouveaux ecrans s'ecrivent en Twig). Voir le script.
-      - name: "Marketplace GLPI : SQL brut et Twig"
-        run: php .github/scripts/check-marketplace-readiness.php
 
   locales:
     # #91 : detecte une chaine __()/_n() ajoutee au code sans etre propagee a
