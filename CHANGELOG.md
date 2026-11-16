@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Licence** (#333, #340, #343) : identifiant unique `GPL-3.0-or-later` dans `setup.php` et
+  `composer.json` (comme `CITATION.cff` et `NOTICE`), en-tête de licence `tools/HEADER` en tête de
+  chaque fichier PHP et Twig du plugin (charte commune, section 1). Aucun changement de
+  fonctionnement.
+
 - **CI** : contrôles des points d'entrée, de la matrice d'accès et des exigences marketplace repris
   par les contrôles communs (glpi-plugin-security v1.8.0, issue parime/glpi-plugin-security#11) ;
   les copies de `.github/scripts/` sont retirées. Les fichiers de réglage restent dans ce dépôt.

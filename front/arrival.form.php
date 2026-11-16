@@ -1,6 +1,21 @@
 <?php
 
 /**
+ * -------------------------------------------------------------------------
+ * AssetSign for GLPI
+ * Copyright (C) 2026 Vincent GUILLOTTE
+ * https://github.com/parime/assetsign-glpi
+ * -------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version. See LICENSE for the full text.
+ * -------------------------------------------------------------------------
+ */
+
+/**
  * Issue #221 : préparation manuelle de l'arrivée d'un salarié depuis l'onglet Assetsign de son
  * compte utilisateur (POST « prepare »). Le dossier vit dans son ticket « Arrivée de … » : cette
  * page n'a pas d'écran propre, elle redirige vers le ticket.

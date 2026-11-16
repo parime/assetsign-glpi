@@ -276,7 +276,7 @@ Autres fonctionnalités : configuration par entité (avec héritage du logo entr
       <lang>es_MX</lang>
       <lang>fr_CA</lang>
    </langs>
-   <license>GPL v3</license>
+   <license>GPL-3.0-or-later</license>
    <tags>
       <en>
          <tag>signature</tag>

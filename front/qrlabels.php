@@ -1,6 +1,21 @@
 <?php
 
 /**
+ * -------------------------------------------------------------------------
+ * AssetSign for GLPI
+ * Copyright (C) 2026 Vincent GUILLOTTE
+ * https://github.com/parime/assetsign-glpi
+ * -------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version. See LICENSE for the full text.
+ * -------------------------------------------------------------------------
+ */
+
+/**
  * Issue #278 : planche d'étiquettes QR de plusieurs matériels, ouverte par l'action de masse
  * « Imprimer les étiquettes QR ». Même principe que front/qrlabel.php (page sans le chrome de GLPI,
  * accès authentifié) ; le lot vient de la session de l'utilisateur, chaque matériel est revérifié

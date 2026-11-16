@@ -121,4 +121,4 @@ button). Coding assistants will find these rules in [AGENTS.md](AGENTS.md).
 
 ## License
 
-[GPL-3.0-only](LICENSE), in line with GLPI plugin conventions.
+[GPL-3.0-or-later](LICENSE) (GNU GPL version 3 or later), in line with GLPI plugin conventions.
