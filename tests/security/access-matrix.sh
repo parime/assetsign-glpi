@@ -7,7 +7,7 @@
 #
 # Chaque page de front/ est soit testee ici (le chemin « front/<page>.php » apparait dans ce
 # fichier), soit listee avec sa justification dans tests/security/not-covered.txt : la CI le
-# verifie (.github/scripts/check-security-matrix-coverage.sh), une nouvelle page ne peut donc pas
+# verifie (checks/check-security-matrix-coverage.sh de parime/glpi-plugin-security (job security)), une nouvelle page ne peut donc pas
 # echapper a ce test sans decision explicite.
 #
 # Les ecritures refusees sont aussi verifiees en base : la CI compare `setup.php snapshot` (etat des

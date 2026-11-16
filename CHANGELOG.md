@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **CI** : contrôles des points d'entrée, de la matrice d'accès et des exigences marketplace repris
+  par les contrôles communs (glpi-plugin-security v1.8.0, issue parime/glpi-plugin-security#11) ;
+  les copies de `.github/scripts/` sont retirées. Les fichiers de réglage restent dans ce dépôt.
+
+### Changed
+
 - CI : contrôles de sécurité communs v1.7.1 (exceptions de menus de la charte, correction du jeu de données du contrôle de désinstallation).
 
 ## [2.25.0] - 2026-11-15
