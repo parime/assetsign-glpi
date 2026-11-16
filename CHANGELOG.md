@@ -18,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **`vendor/` hors du dépôt, `src/` à plat** (#335, charte commune, section 4) : `vendor/` n'est
+  plus versionné. L'archive de release l'installe (`composer install --no-dev
+  --optimize-autoloader`) et contient toujours Dompdf et ses dépendances, sans aucun outil de
+  développement ; une installation depuis les sources demande désormais `composer install
+  --no-dev` (README, INSTALLATION.md), que `update.sh` lance après un `git pull`. Les classes
+  passent de `src/GlpiPlugin/Assetsign/` à `src/`, espace de noms `GlpiPlugin\Assetsign\`
+  inchangé : l'organisation attendue par l'autochargement natif de GLPI 11. Ni les noms de
+  classes, ni les tables, ni le comportement ne changent. Mise à jour par archive : remplacer le
+  dossier `assetsign/` (ne pas extraire par-dessus l'ancien).
 - CI : charte commune en mode bloquant (#342) : licence, en-têtes, documentation et langues sont désormais contrôlés sans tolérance.
 - CI : contrôles de sécurité communs v1.8.2 (scripts communs bien pris à la version appelée).
 - **Traductions** (#334, #345) : `locales/assetsign.pot`, lu par Hosted Weblate, est régénéré

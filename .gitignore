@@ -1,1 +1,4 @@
 .phpunit.result.cache
+# Dépendances Composer : installées par `composer install` (--no-dev en production), jamais
+# versionnées ; l'archive de release les embarque (charte commune, section 4).
+/vendor/

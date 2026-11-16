@@ -15,13 +15,28 @@
 #
 
 # A lancer depuis ce dossier (plugins/assetsign/) apres chaque "git pull"/mise a jour
-# du code : regroupe les 3 etapes decrites dans le README (section "Mettre a
+# du code : regroupe les etapes decrites dans le README (section "Mettre a
 # jour le plugin") qu'il est facile d'oublier ou de faire dans le mauvais ordre :
-# migration de la base, puis vidage du cache Twig/traductions de GLPI.
+# dependances Composer (copie git), migration de la base, puis vidage du cache
+# Twig/traductions de GLPI.
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 GLPI_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+# vendor/ n'est plus versionne (#335) : l'archive de release l'embarque deja, mais une copie
+# clonee avec git doit installer ses dependances de production apres chaque "git pull"
+# (composer.lock a pu changer).
+if [ -d "$SCRIPT_DIR/.git" ] || [ ! -f "$SCRIPT_DIR/vendor/autoload.php" ]; then
+    if command -v composer >/dev/null 2>&1; then
+        (cd "$SCRIPT_DIR" && composer install --no-dev --no-interaction --optimize-autoloader)
+    elif [ ! -f "$SCRIPT_DIR/vendor/autoload.php" ]; then
+        echo "Dependances manquantes (vendor/) : installez Composer puis lancez"
+        echo "  composer install --no-dev --optimize-autoloader"
+        echo "dans $SCRIPT_DIR, ou utilisez l'archive de release, qui les contient deja."
+        exit 1
+    fi
+fi
 
 cd "$GLPI_ROOT"
 php bin/console plugin:install assetsign --force

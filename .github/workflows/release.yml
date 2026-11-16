@@ -57,18 +57,56 @@ jobs:
           php composer-setup.php --install-dir=/tmp --filename=composer.phar
           php /tmp/composer.phar validate
 
+      - name: Installe PHP et Composer
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2 (SHA pinned)
+        with:
+          php-version: "8.2"
+          coverage: none
+          tools: composer
+
+      - name: Installe les dépendances de production
+        # vendor/ n'est pas versionné (charte commune, section 4, #335) : l'archive l'embarque à
+        # partir de cette installation, sans les dépendances de développement (PHPUnit, PHPStan...).
+        # Même PHP que le minimum supporté (config.platform.php = 8.2.0 dans composer.json).
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
+        run: composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader
+
       - name: Construit l'archive de distribution
         # git archive (pas un simple zip du checkout) : construit exactement a
         # partir du contenu commite au tag, exclut automatiquement ce qui est
         # marque `export-ignore` dans .gitattributes (tests/, .github/,
         # config CI/qualite...) - rien d'accidentel du repertoire de travail
-        # ne peut s'y retrouver. Prefixe `assetsign/` : l'archive s'extrait
-        # directement sous `plugins/` sur une instance GLPI (structure exigee
-        # par le coeur GLPI, cf. ARCHITECTURE.md).
+        # ne peut s'y retrouver. vendor/ n'est pas versionne : copie depuis
+        # l'installation de production ci-dessus. Prefixe `assetsign/` :
+        # l'archive s'extrait directement sous `plugins/` sur une instance
+        # GLPI (structure exigee par le coeur GLPI, cf. ARCHITECTURE.md).
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          echo "ARCHIVE_NAME=assetsign-glpi-${VERSION}.zip" >> "$GITHUB_ENV"
-          git archive --format=zip --prefix=assetsign/ -o "assetsign-glpi-${VERSION}.zip" "$GITHUB_REF_NAME"
+          ARCHIVE_NAME="assetsign-glpi-${VERSION}.zip"
+          echo "ARCHIVE_NAME=${ARCHIVE_NAME}" >> "$GITHUB_ENV"
+
+          mkdir -p /tmp/staging/assetsign
+          git archive "$GITHUB_REF_NAME" | tar -x -C /tmp/staging/assetsign
+          cp -r vendor /tmp/staging/assetsign/vendor
+
+          (cd /tmp/staging && zip -qr "$GITHUB_WORKSPACE/${ARCHIVE_NAME}" assetsign)
+
+      - name: Vérifie le contenu de l'archive (dépendances embarquées, aucun outil de développement)
+        run: |
+          list=$(unzip -Z1 "$ARCHIVE_NAME")
+          status=0
+          for f in setup.php vendor/autoload.php vendor/dompdf/dompdf/src/Dompdf.php \
+                   vendor/sabberworm/php-css-parser/src/Parser.php src/Assetsign.php; do
+            grep -qxF "assetsign/$f" <<< "$list" || { echo "::error::$f absent de l'archive"; status=1; }
+          done
+          dev=$(grep -E '^assetsign/(vendor/(phpunit|phpstan|squizlabs|glpi-project)/|tests/|\.github/)' <<< "$list" || true)
+          if [ -n "$dev" ]; then
+            echo "::error::outils de développement dans l'archive :"
+            head -20 <<< "$dev"
+            status=1
+          fi
+          exit $status
 
       - name: Démarre MariaDB
         run: |
