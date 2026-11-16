@@ -1,3 +1,18 @@
+/**
+ * -------------------------------------------------------------------------
+ * AssetSign for GLPI
+ * Copyright (C) 2026 Vincent GUILLOTTE
+ * https://github.com/parime/assetsign-glpi
+ * -------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version. See LICENSE for the full text.
+ * -------------------------------------------------------------------------
+ */
+
 (async function () {
     'use strict';
 
@@ -23,7 +38,7 @@
     // (window.ASSETSIGN_PLUGIN_VERSION, injecte par sign_page.html.twig) est ainsi
     // repercute sur l'URL importee, exactement comme sur les balises <script>.
     var pdfjsLib = await import(
-        (window.ASSETSIGN_ROOT_DOC || '') + '/plugins/assetsign/js/sign/vendor/pdf.min.js?v=' + encodeURIComponent(window.ASSETSIGN_PLUGIN_VERSION || '')
+        (window.ASSETSIGN_ROOT_DOC || '') + '/plugins/assetsign/lib/sign/pdf.min.js?v=' + encodeURIComponent(window.ASSETSIGN_PLUGIN_VERSION || '')
     );
 
     // window.ASSETSIGN_ROOT_DOC (injecte par sign_page.html.twig via config('root_doc'))
@@ -44,7 +59,7 @@
     // Worker nous-memes avec `{ type: 'module' }` explicite, assigne via
     // `workerPort` plutot que `workerSrc` (API alternative documentee par PDF.js).
     var pdfWorker = new Worker(
-        (window.ASSETSIGN_ROOT_DOC || '') + '/plugins/assetsign/js/sign/vendor/pdf.worker.min.js?v=' + encodeURIComponent(window.ASSETSIGN_PLUGIN_VERSION || ''),
+        (window.ASSETSIGN_ROOT_DOC || '') + '/plugins/assetsign/lib/sign/pdf.worker.min.js?v=' + encodeURIComponent(window.ASSETSIGN_PLUGIN_VERSION || ''),
         { type: 'module' }
     );
     pdfjsLib.GlobalWorkerOptions.workerPort = pdfWorker;
