@@ -1,3 +1,17 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
 {# Issue #157 : dossier de départ : restitution groupée de tout le matériel, signée en une fois. #}
 <div class="container-lg my-3">
   <div class="card mb-3">
@@ -87,7 +101,7 @@
         </form>
       </div>
     </div>
-    <script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/vendor/signature_pad.umd.min.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+    <script src="{{ config('root_doc') }}/plugins/assetsign/lib/sign/signature_pad.umd.min.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
     <script>
       (function () {
         var canvas = document.getElementById('departure-signature-pad');

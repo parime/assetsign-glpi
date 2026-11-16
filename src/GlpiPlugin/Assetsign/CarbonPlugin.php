@@ -2,7 +2,9 @@
 
 /**
  * -------------------------------------------------------------------------
- * Assetsign plugin for GLPI
+ * AssetSign for GLPI
+ * Copyright (C) 2026 Vincent GUILLOTTE
+ * https://github.com/parime/assetsign-glpi
  * -------------------------------------------------------------------------
  * LICENSE
  *

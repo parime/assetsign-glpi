@@ -6442,3 +6442,63 @@ msgstr "Zezwalaj na adresy wewnętrzne"
 
 msgid "Seul un administrateur de GLPI (droit de modifier la configuration générale) peut changer ce réglage."
 msgstr "Tylko administrator GLPI (uprawnienie do zmiany konfiguracji ogólnej) może zmienić to ustawienie."
+
+msgid "À quoi sert cette page ?"
+msgstr "Do czego służy ta strona?"
+
+msgid "Ce qui est attendu :"
+msgstr "Czego się od Ciebie oczekuje:"
+
+msgid "Toutes les fiches d'attribution du parc (remise, restitution, don, vente, destruction) et leur état de signature. Le plugin crée la fiche quand un matériel est affecté ou repris dans GLPI."
+msgstr "Wszystkie karty przydziału sprzętu (wydanie, zwrot, darowizna, sprzedaż, zniszczenie) i stan ich podpisu. Wtyczka tworzy kartę, gdy sprzęt zostaje przydzielony lub odebrany w GLPI."
+
+msgid "Suivez les fiches en attente de signature : copiez un nouveau lien, relancez ou annulez au besoin. « Nouvelle attribution » crée une fiche à la main pour un matériel."
+msgstr "Śledź karty oczekujące na podpis: skopiuj nowy link, przypomnij lub anuluj w razie potrzeby. „Nowe przekazanie” tworzy kartę ręcznie dla sprzętu."
+
+msgid "Les déplacements physiques de matériel sans bénéficiaire à faire signer : transfert entre sites, retour au stock, envoi en réparation."
+msgstr "Fizyczne przemieszczenia sprzętu bez odbiorcy, który musi podpisać: przeniesienie między lokalizacjami, zwrot do magazynu, wysyłka do naprawy."
+
+msgid "Enregistrez chaque déplacement avec son lieu de départ, sa destination et sa date ; il apparaît ensuite dans le passeport du matériel."
+msgstr "Zapisz każde przemieszczenie z miejscem początkowym, miejscem docelowym i datą; pojawi się ono następnie w paszporcie sprzętu."
+
+msgid "Les dossiers de départ des salariés : tout le matériel à restituer par une même personne, signé en une seule fois."
+msgstr "Teczki odejść pracowników: cały sprzęt do zwrotu przez jedną osobę, podpisany za jednym razem."
+
+msgid "Suivez l'avancement des signatures et relancez si besoin. Un départ se prépare depuis l'onglet AssetSign du compte de la personne."
+msgstr "Śledź postęp podpisów i w razie potrzeby przypominaj. Odejście przygotowuje się z karty AssetSign konta danej osoby."
+
+msgid "Les campagnes d'attestation de détention : chaque personne confirme le matériel qu'elle détient, ou signale un écart."
+msgstr "Kampanie potwierdzania posiadania: każda osoba potwierdza posiadany sprzęt lub zgłasza rozbieżność."
+
+msgid "Lancez une campagne avec « Nouvelle campagne », puis suivez le taux de réponse et les écarts, et relancez les personnes sans réponse avant la date limite."
+msgstr "Uruchom kampanię przyciskiem „Nowa kampania”, następnie śledź odsetek odpowiedzi i rozbieżności oraz przypominaj osobom bez odpowiedzi przed terminem."
+
+msgid "Les preuves d'effacement des données d'un matériel avant un don, une vente ou une destruction."
+msgstr "Dowody usunięcia danych ze sprzętu przed darowizną, sprzedażą lub zniszczeniem."
+
+msgid "Enregistrez une attestation pour chaque matériel qui quitte le parc. La liste du haut montre les matériels déjà sortis sans attestation, à rattraper."
+msgstr "Zarejestruj zaświadczenie dla każdego sprzętu opuszczającego park. Lista u góry pokazuje sprzęt, który już wyszedł bez zaświadczenia, do uzupełnienia."
+
+msgid "Les fiches internes de maintenance ou de préparation d'un matériel : points de contrôle, commentaire et PDF."
+msgstr "Wewnętrzne karty konserwacji lub przygotowania sprzętu: punkty kontrolne, komentarz i PDF."
+
+msgid "Créez une fiche en choisissant le matériel, puis remplissez les points de contrôle. Une fiche créée n'est plus modifiée."
+msgstr "Utwórz kartę, wybierając sprzęt, a następnie wypełnij punkty kontrolne. Utworzona karta nie jest już zmieniana."
+
+msgid "Les indicateurs environnementaux du parc des entités actives : empreinte de fabrication, réemploi, âge et filières de fin de vie."
+msgstr "Wskaźniki środowiskowe parku aktywnych jednostek: ślad produkcyjny, ponowne użycie, wiek i ścieżki końca życia."
+
+msgid "Rien à saisir ici : les chiffres viennent des données renseignées sur les matériels. Complétez-les pour améliorer le taux de couverture."
+msgstr "Nic tu nie trzeba wpisywać: liczby pochodzą z danych uzupełnionych w sprzęcie. Uzupełnij je, aby poprawić wskaźnik pokrycia."
+
+msgid "Les matériels qui arrivent en fin d'amortissement sur la période choisie, avec le budget de remplacement par année."
+msgstr "Sprzęt, którego amortyzacja kończy się w wybranym okresie, z budżetem wymiany na każdy rok."
+
+msgid "Choisissez la période, puis exportez la liste en CSV ou créez un ticket de changement groupé pour planifier le remplacement."
+msgstr "Wybierz okres, a następnie wyeksportuj listę do CSV lub utwórz zbiorcze zgłoszenie zmiany, aby zaplanować wymianę."
+
+msgid "Le matériel qui vous est confié et les documents qui attendent votre signature."
+msgstr "Powierzony Ci sprzęt i dokumenty oczekujące na Twój podpis."
+
+msgid "Signez les documents en attente. En cas de problème avec un matériel, signalez-le depuis cette page : un ticket est créé pour le service informatique."
+msgstr "Podpisz oczekujące dokumenty. W razie problemu ze sprzętem zgłoś go z tej strony: zostanie utworzone zgłoszenie dla działu IT."

@@ -1,0 +1,28 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #336 : badge de statut, couleurs et icônes communes à tous les plugins (charte commune,
+   section 8, partiel repris de glpi-plugin-template) : ok (vert : conforme, terminé), warning
+   (orange : à surveiller), danger (rouge : en retard, refusé), info (bleu : en cours), neutral
+   (gris : neutre, retiré, sans objet).
+   Usage : {% include '@assetsign/_badge.html.twig' with {kind: 'ok', label: __('Signé', 'assetsign')} %} #}
+{% set styles = {
+   'ok':      ['bg-green-lt', 'ti-circle-check'],
+   'warning': ['bg-orange-lt', 'ti-alert-triangle'],
+   'danger':  ['bg-red-lt', 'ti-alert-octagon'],
+   'info':    ['bg-blue-lt', 'ti-loader'],
+   'neutral': ['bg-secondary-lt', 'ti-circle-dashed'],
+} %}
+{% set style = styles[kind] ?? styles['neutral'] %}
+<span class="badge {{ style[0] }}"><i class="ti {{ style[1] }} me-1"></i>{{ label }}</span>

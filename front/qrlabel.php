@@ -1,6 +1,21 @@
 <?php
 
 /**
+ * -------------------------------------------------------------------------
+ * AssetSign for GLPI
+ * Copyright (C) 2026 Vincent GUILLOTTE
+ * https://github.com/parime/assetsign-glpi
+ * -------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version. See LICENSE for the full text.
+ * -------------------------------------------------------------------------
+ */
+
+/**
  * Étiquette QR code imprimable pour un matériel (cf. ROADMAP.md V3, issue #82) :
  * page dédiée, volontairement minimale (pas de chrome GLPI), pensée pour être
  * imprimée et collée physiquement sur le matériel. Accès authentifié classique

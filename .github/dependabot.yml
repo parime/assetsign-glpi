@@ -31,7 +31,7 @@ updates:
     cooldown:
       default-days: 7
 
-  # Bibliotheques JS vendorisees dans public/js/sign/vendor/ (PDF.js, signature_pad),
+  # Bibliotheques JS vendorisees dans public/lib/sign/ (PDF.js, signature_pad),
   # copiees a la main plutot que via un bundler npm (pas de build JS dans ce plugin) -
   # package.json/package-lock.json n'existent QUE pour permettre ce suivi de version
   # (cf. package.json, TROUBLESHOOTING.md). Une PR Dependabot ici signale une nouvelle

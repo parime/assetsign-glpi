@@ -1,4 +1,19 @@
 #!/usr/bin/env bash
+#
+# -------------------------------------------------------------------------
+# AssetSign for GLPI
+# Copyright (C) 2026 Vincent GUILLOTTE
+# https://github.com/parime/assetsign-glpi
+# -------------------------------------------------------------------------
+# LICENSE
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version. See LICENSE for the full text.
+# -------------------------------------------------------------------------
+#
+
 # Test XSS de bout en bout : apres `setup.php xss`, chaque champ texte libre des objets de l'entite
 # A contient <svg/onload=alert('xss-canary')>. Aucune page ni onglet ne doit restituer cette
 # charge telle quelle (non echappee).

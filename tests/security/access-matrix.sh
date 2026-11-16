@@ -1,4 +1,19 @@
 #!/usr/bin/env bash
+#
+# -------------------------------------------------------------------------
+# AssetSign for GLPI
+# Copyright (C) 2026 Vincent GUILLOTTE
+# https://github.com/parime/assetsign-glpi
+# -------------------------------------------------------------------------
+# LICENSE
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version. See LICENSE for the full text.
+# -------------------------------------------------------------------------
+#
+
 # Matrice de controle d'acces de bout en bout (vraies requetes HTTP, vraie session GLPI).
 #
 # Usage : access-matrix.sh <url GLPI> <limited|admin> <login> <mot de passe> <json de setup.php>
@@ -108,7 +123,14 @@ for list in front/assetsign.php front/maintenance.php front/movement.php front/w
     *)
       shows "$list : aucun objet de B" "securite B" non "$body" ;;
   esac
+  # Issue #336 : encadré « À quoi sert cette page ? » sur les pages d'usage (les pages d'intitulés
+  # n'en ont pas). Pour un profil sans le droit, la page répond 403 avant tout affichage.
+  case "$list" in
+    front/assetsign.php|front/maintenance.php|front/movement.php|front/wipeattestation.php|front/departure.php|front/campaign.php|front/csr.php|front/renewal.php)
+      shows "$list : encadré d'aide" "assetsign-page-help" oui "$body" ;;
+  esac
 done
+shows "front/mysignatures.php : encadré d'aide" "assetsign-help-my-equipment" oui "$(page "$P/mysignatures.php")"
 # Onglet « Passeport utilisateur » (requete restreinte par entite) : sur la fiche du technicien
 # lui-meme, visible des deux profils. Un profil hors racine faisait planter la requete SQL.
 user_tab_url="$BASE/ajax/common.tabs.php?_target=%2Ffront%2Fuser.form.php&_itemtype=User&_glpi_tab=GlpiPlugin%5CAssetsign%5CPassportEvent%241&id=$(id technician)"

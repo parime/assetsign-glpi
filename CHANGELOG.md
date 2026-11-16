@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Encadré d'aide** (#336, #344) : « À quoi sert cette page ? » en tête de chaque page d'usage
+  (Attributions, Mouvements, Départs, Campagnes d'attestation, Attestations d'effacement, Fiches
+  de maintenance, Tableau de bord RSE, Renouvellement du parc, Mon matériel et mes documents) :
+  but de la page et ce qui est attendu de l'utilisateur, repliable, choix mémorisé par page.
+  Affiché seulement à qui peut ouvrir la page ; textes dans les 18 langues. Partiels communs
+  `_page_help.html.twig` et `_badge.html.twig` repris du modèle (charte commune, section 8).
+
 ### Changed
 
 - **Traductions** (#334, #345) : `locales/assetsign.pot`, lu par Hosted Weblate, est régénéré
@@ -14,12 +23,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   emplacements). Les msgid restent en français (pas de migration imposée par la charte commune) ;
   règle et commande documentées dans CONTRIBUTING.md et AGENTS.md, langue secondaire anglaise
   expliquée aux traducteurs dans les README.
+- **Licence** (#333, #340, #343) : identifiant unique `GPL-3.0-or-later` dans `setup.php` et
+  `composer.json` (comme `CITATION.cff` et `NOTICE`), en-tête de licence `tools/HEADER` en tête de
+  chaque fichier PHP et Twig du plugin (charte commune, section 1), ainsi que des tests, scripts
+  shell, JavaScript et CSS (contrôle `licence-headers-check` de la CI officielle GLPI, activé par
+  `tools/HEADER`). Les bibliothèques tierces PDF.js et signature_pad passent de
+  `public/js/sign/vendor/` à `public/lib/sign/`, dossier exclu de ce contrôle : elles gardent leur
+  propre licence. Aucun changement de fonctionnement.
 
 - **CI** : contrôles des points d'entrée, de la matrice d'accès et des exigences marketplace repris
   par les contrôles communs (glpi-plugin-security v1.8.0, issue parime/glpi-plugin-security#11) ;
   les copies de `.github/scripts/` sont retirées. Les fichiers de réglage restent dans ce dépôt.
-
-### Changed
 
 - CI : contrôles de sécurité communs v1.7.1 (exceptions de menus de la charte, correction du jeu de données du contrôle de désinstallation).
 

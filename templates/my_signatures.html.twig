@@ -1,5 +1,22 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
 {# "Mes documents a signer" (issue #150), cf. front/mysignatures.php #}
 <div class="container-lg my-3 assetsign-my-signatures">
+  {% if help is defined and help %}
+    {{ include('@assetsign/_page_help.html.twig', help) }}
+  {% endif %}
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">

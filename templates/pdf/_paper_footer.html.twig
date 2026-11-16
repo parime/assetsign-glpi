@@ -1,2 +1,16 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
 {# Issue #276 : pied de page de la version papier : jamais confondue avec un PDF signé électroniquement. #}
 <div class="footer">{{ __('Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI.', 'assetsign')|format(assetsign.reference|default(assetsign.id), paper_generated_at|default('now')|date('d/m/Y H:i')) }}</div>

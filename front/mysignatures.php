@@ -1,6 +1,21 @@
 <?php
 
 /**
+ * -------------------------------------------------------------------------
+ * AssetSign for GLPI
+ * Copyright (C) 2026 Vincent GUILLOTTE
+ * https://github.com/parime/assetsign-glpi
+ * -------------------------------------------------------------------------
+ * LICENSE
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version. See LICENSE for the full text.
+ * -------------------------------------------------------------------------
+ */
+
+/**
  * "Mes documents a signer" (issue #150) : documents qui attendent la signature de l'utilisateur
  * connecte, quel que soit son profil ou ses droits sur le plugin - seuls SES documents sont
  * listes (cf. PendingSignatures). Point d'entree pour les utilisateurs sans adresse e-mail, qui
@@ -13,6 +28,7 @@
 
 use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\MenuSection;
 use GlpiPlugin\Assetsign\MyEquipment;
 use GlpiPlugin\Assetsign\PendingSignatures;
 
@@ -120,6 +136,8 @@ foreach (PendingSignatures::pendingAttestationsForUser($usersId) as $attestation
 
 TemplateRenderer::getInstance()->display('@assetsign/my_signatures.html.twig', [
     'title'      => __('Mes documents à signer', 'assetsign'),
+    // Issue #336 : encadré « À quoi sert cette page ? ».
+    'help'       => MenuSection::myEquipmentHelp(),
     'rows'       => $rows,
     // Issue #194
     'equipment'     => MyEquipment::forUser($usersId),

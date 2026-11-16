@@ -126,4 +126,4 @@ de GitHub). Les assistants de code trouveront ces consignes dans [AGENTS.md](AGE
 
 ## Licence
 
-[GPL-3.0-only](LICENSE), conformément aux conventions des plugins GLPI.
+[GPL-3.0-or-later](LICENSE) (GNU GPL version 3 ou ultérieure), conformément aux conventions des plugins GLPI.
