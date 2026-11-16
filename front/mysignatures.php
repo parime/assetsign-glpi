@@ -13,6 +13,7 @@
 
 use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\MenuSection;
 use GlpiPlugin\Assetsign\MyEquipment;
 use GlpiPlugin\Assetsign\PendingSignatures;
 
@@ -120,6 +121,8 @@ foreach (PendingSignatures::pendingAttestationsForUser($usersId) as $attestation
 
 TemplateRenderer::getInstance()->display('@assetsign/my_signatures.html.twig', [
     'title'      => __('Mes documents à signer', 'assetsign'),
+    // Issue #336 : encadré « À quoi sert cette page ? ».
+    'help'       => MenuSection::myEquipmentHelp(),
     'rows'       => $rows,
     // Issue #194
     'equipment'     => MyEquipment::forUser($usersId),

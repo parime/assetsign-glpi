@@ -5805,3 +5805,63 @@ msgstr "Allow internal addresses"
 
 msgid "Seul un administrateur de GLPI (droit de modifier la configuration générale) peut changer ce réglage."
 msgstr "Only a GLPI administrator (right to update the general configuration) can change this setting."
+
+msgid "À quoi sert cette page ?"
+msgstr "What is this page for?"
+
+msgid "Ce qui est attendu :"
+msgstr "What is expected:"
+
+msgid "Toutes les fiches d'attribution du parc (remise, restitution, don, vente, destruction) et leur état de signature. Le plugin crée la fiche quand un matériel est affecté ou repris dans GLPI."
+msgstr "All assignment records of the fleet (handover, return, donation, sale, destruction) and their signature status. The plugin creates the record when an item is assigned or taken back in GLPI."
+
+msgid "Suivez les fiches en attente de signature : copiez un nouveau lien, relancez ou annulez au besoin. « Nouvelle attribution » crée une fiche à la main pour un matériel."
+msgstr "Follow the records awaiting signature: copy a new link, send a reminder or cancel if needed. \"New handover\" creates a record by hand for an item."
+
+msgid "Les déplacements physiques de matériel sans bénéficiaire à faire signer : transfert entre sites, retour au stock, envoi en réparation."
+msgstr "Physical movements of equipment with no recipient to sign: transfer between sites, return to stock, sending for repair."
+
+msgid "Enregistrez chaque déplacement avec son lieu de départ, sa destination et sa date ; il apparaît ensuite dans le passeport du matériel."
+msgstr "Record each movement with its origin, its destination and its date; it then appears in the equipment passport."
+
+msgid "Les dossiers de départ des salariés : tout le matériel à restituer par une même personne, signé en une seule fois."
+msgstr "Employee departure files: all the equipment one person has to return, signed in a single step."
+
+msgid "Suivez l'avancement des signatures et relancez si besoin. Un départ se prépare depuis l'onglet AssetSign du compte de la personne."
+msgstr "Follow the progress of signatures and send reminders if needed. A departure is prepared from the AssetSign tab of the person's account."
+
+msgid "Les campagnes d'attestation de détention : chaque personne confirme le matériel qu'elle détient, ou signale un écart."
+msgstr "Holding attestation campaigns: each person confirms the equipment they hold, or reports a discrepancy."
+
+msgid "Lancez une campagne avec « Nouvelle campagne », puis suivez le taux de réponse et les écarts, et relancez les personnes sans réponse avant la date limite."
+msgstr "Start a campaign with \"New campaign\", then follow the response rate and the discrepancies, and remind people who have not answered before the deadline."
+
+msgid "Les preuves d'effacement des données d'un matériel avant un don, une vente ou une destruction."
+msgstr "Proof that the data of an item was wiped before a donation, a sale or a destruction."
+
+msgid "Enregistrez une attestation pour chaque matériel qui quitte le parc. La liste du haut montre les matériels déjà sortis sans attestation, à rattraper."
+msgstr "Record an attestation for each item that leaves the fleet. The list at the top shows the items that already left without an attestation, to catch up."
+
+msgid "Les fiches internes de maintenance ou de préparation d'un matériel : points de contrôle, commentaire et PDF."
+msgstr "Internal maintenance or preparation records of an item: checkpoints, comment and PDF."
+
+msgid "Créez une fiche en choisissant le matériel, puis remplissez les points de contrôle. Une fiche créée n'est plus modifiée."
+msgstr "Create a record by choosing the item, then fill in the checkpoints. A record is no longer changed once created."
+
+msgid "Les indicateurs environnementaux du parc des entités actives : empreinte de fabrication, réemploi, âge et filières de fin de vie."
+msgstr "Environmental indicators of the fleet of the active entities: manufacturing footprint, reuse, age and end-of-life channels."
+
+msgid "Rien à saisir ici : les chiffres viennent des données renseignées sur les matériels. Complétez-les pour améliorer le taux de couverture."
+msgstr "Nothing to enter here: the figures come from the data filled in on the items. Complete it to improve the coverage rate."
+
+msgid "Les matériels qui arrivent en fin d'amortissement sur la période choisie, avec le budget de remplacement par année."
+msgstr "Items reaching the end of their depreciation within the chosen period, with the replacement budget per year."
+
+msgid "Choisissez la période, puis exportez la liste en CSV ou créez un ticket de changement groupé pour planifier le remplacement."
+msgstr "Choose the period, then export the list as CSV or create a grouped change ticket to plan the replacement."
+
+msgid "Le matériel qui vous est confié et les documents qui attendent votre signature."
+msgstr "The equipment entrusted to you and the documents awaiting your signature."
+
+msgid "Signez les documents en attente. En cas de problème avec un matériel, signalez-le depuis cette page : un ticket est créé pour le service informatique."
+msgstr "Sign the pending documents. If there is a problem with an item, report it from this page: a ticket is created for the IT department."

@@ -1,5 +1,8 @@
 {# "Mes documents a signer" (issue #150), cf. front/mysignatures.php #}
 <div class="container-lg my-3 assetsign-my-signatures">
+  {% if help is defined and help %}
+    {{ include('@assetsign/_page_help.html.twig', help) }}
+  {% endif %}
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">

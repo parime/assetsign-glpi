@@ -1,0 +1,54 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #336 : encadré « À quoi sert cette page ? » en tête de chaque page d'usage (charte
+   commune, section 8, partiel repris de glpi-plugin-template). Repliable, choix mémorisé par page
+   dans le navigateur. Affiché par MenuSection::show() (sous-pages de Outils > AssetSign) et par
+   my_signatures.html.twig, toujours après le contrôle de droit de la page.
+   Paramètres : page (identifiant court), purpose, expected, reference (facultatif). #}
+{% set help_id = 'assetsign-help-' ~ page %}
+<div class="card border-info-subtle mb-3 assetsign-page-help">
+   <div class="card-body py-2">
+      <a class="d-flex align-items-center text-decoration-none" data-bs-toggle="collapse" href="#{{ help_id }}" role="button" aria-expanded="true" aria-controls="{{ help_id }}">
+         <i class="ti ti-help-circle text-info me-2"></i><strong>{{ __('À quoi sert cette page ?', 'assetsign') }}</strong>
+         <i class="ti ti-chevron-down ms-auto"></i>
+      </a>
+      <div class="collapse show" id="{{ help_id }}">
+         <p class="mb-1 mt-2">{{ purpose }}</p>
+         <p class="mb-1"><i class="ti ti-checklist me-1 text-muted"></i><strong>{{ __('Ce qui est attendu :', 'assetsign') }}</strong> {{ expected }}</p>
+         {% if reference is defined and reference %}
+            <p class="mb-0 small text-muted"><i class="ti ti-book me-1"></i>{{ reference }}</p>
+         {% endif %}
+      </div>
+   </div>
+</div>
+<script>
+   (function () {
+      const key = 'assetsign.help.{{ page|e('js') }}';
+      const panel = document.getElementById('{{ help_id|e('js') }}');
+      try {
+         if (window.localStorage.getItem(key) === 'hidden') {
+            panel.classList.remove('show');
+            const toggle = document.querySelector('[aria-controls="{{ help_id|e('js') }}"]');
+            if (toggle) {
+               toggle.setAttribute('aria-expanded', 'false');
+            }
+         }
+         panel.addEventListener('hidden.bs.collapse', function () { window.localStorage.setItem(key, 'hidden'); });
+         panel.addEventListener('shown.bs.collapse', function () { window.localStorage.removeItem(key); });
+      } catch (e) {
+         // Stockage du navigateur indisponible : l'encadré reste simplement ouvert.
+      }
+   })();
+</script>
