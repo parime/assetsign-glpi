@@ -665,6 +665,8 @@ jobs:
 
       - name: Régénère le .pot à partir du code actuel
         run: |
+          # Copie du .pot versionne, comparee au .pot frais a l'etape suivante.
+          cp locales/assetsign.pot /tmp/assetsign.versionne.pot
           vendor/bin/extract-locales
           # La derniere etape de extract-locales regenere en_GB.po depuis
           # zero via msginit (le msgid francais recopie comme msgstr, ecrasant
@@ -672,6 +674,18 @@ jobs:
           # en_GB.po de la meme facon que les 4 autres langues : fusionne
           # contre le .pot frais, pas regenere a l'aveugle.
           git checkout -- locales/en_GB.po
+
+      - name: Vérifie que le .pot versionné est à jour (source lue par Weblate)
+        # Charte commune, section 2 bis (#334) : Hosted Weblate lira le .pot du depot, jamais une
+        # copie ; il doit donc contenir exactement les chaines du code. Comparaison sans les
+        # emplacements (#: fichier:ligne) ni la date de creation : deplacer une chaine dans un
+        # fichier ne demande pas de regenerer le .pot, ajouter, modifier ou retirer une chaine oui.
+        run: |
+          norm() { msgcat --no-location --no-wrap --sort-output "$1" | grep -v '^"POT-Creation-Date:'; }
+          if ! diff -u <(norm /tmp/assetsign.versionne.pot) <(norm locales/assetsign.pot); then
+            echo "::error::locales/assetsign.pot n'est pas à jour : lancer vendor/bin/extract-locales, puis git checkout -- locales/en_GB.po, et versionner locales/assetsign.pot"
+            exit 1
+          fi
 
       - name: Vérifie que les variantes régionales (es_MX, fr_CA, en_US...) suivent leur langue
         run: sh tools/sync-locale-variants.sh --check

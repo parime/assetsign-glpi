@@ -26,6 +26,17 @@ vendor/bin/phpunit
 - **Analyse statique** : PHPStan niveau 5 (`phpstan.neon.dist`). Quelques faux positifs inévitables (méthodes de hook GLPI type-hintées à la classe parente par obligation de signature) sont déjà documentés et ignorés dans la config : si vous en rencontrez un nouveau de la même famille, ajoutez-le au même endroit avec la même justification plutôt que de générer une baseline qui masquerait tout sans distinction.
 - **Tests** : voir [ARCHITECTURE.md](ARCHITECTURE.md#tests-automatisés) pour l'environnement requis (conteneur GLPI dédié, jamais contre une base de production) et ce qui est déjà couvert. Ajoutez un test pour tout comportement non trivial que vous introduisez ou corrigez.
 
+### Traductions
+
+- **Les chaînes sources (msgid) de ce plugin sont en français**, et le restent : toute nouvelle chaîne s'écrit en français, jamais en anglais (un plugin ne mélange jamais deux langues de msgid, [charte commune](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md), section 2). La charte retient l'anglais pour les nouveaux plugins ; pour AssetSign, aucune migration n'est imposée (plan dans l'issue #334, à engager seulement si les traducteurs le demandent).
+- **`locales/assetsign.pot` est la source lue par Hosted Weblate** : il est versionné et doit contenir exactement les chaînes du code. Après avoir ajouté, modifié ou retiré une chaîne :
+  ```bash
+  vendor/bin/extract-locales
+  git checkout -- locales/en_GB.po   # extract-locales réécrit en_GB.po : on garde les vraies traductions
+  ```
+  puis versionnez le `.pot`. Le job « locales » de la CI échoue si le `.pot` versionné n'est pas à jour (les seuls emplacements `#: fichier:ligne` ne comptent pas).
+- Chaque chaîne nouvelle arrive traduite dans la PR qui l'ajoute, dans les langues de base (fr_FR, en_GB, de_DE, es_ES, it_IT, pl_PL, pt_BR), avec les `.mo` compilés (`msgfmt -c`) ; les variantes régionales se recopient avec `sh tools/sync-locale-variants.sh`. Weblate sert à corriger et à ajouter des langues, pas à combler un manque.
+
 ### Messages de commit
 
 Ce dépôt écrit ses messages de commit en français, à l'impératif, et explique le **pourquoi** plutôt que de reformuler le diff : la raison du changement, ce qui a été vérifié, un piège rencontré s'il y en a un. `git log` sur ce dépôt donne le ton à suivre.
@@ -93,6 +104,17 @@ vendor/bin/phpunit
 - **Code style**: the official GLPI standard (`GlpiStandard`), no house convention. `phpcs` (not `phpcbf`) fails CI rather than silently fixing things: use `phpcbf` locally to auto-fix whatever can be.
 - **Static analysis**: PHPStan level 5 (`phpstan.neon.dist`). A few unavoidable false positives (GLPI hook methods type-hinted to the parent class due to signature constraints) are already documented and ignored in the config: if you run into a new one of the same kind, add it in the same place with the same justification rather than generating a baseline that would blanket-mask everything indiscriminately.
 - **Tests**: see [ARCHITECTURE.md](ARCHITECTURE.md#tests-automatisés) for the required environment (dedicated GLPI container, never against a production database) and what's already covered. Add a test for any non-trivial behavior you introduce or fix.
+
+### Translations
+
+- **This plugin's source strings (msgids) are in French**, and stay so: every new string is written in French, never in English (a plugin never mixes two msgid languages, [common charter](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md), section 2). The charter picks English for new plugins; for AssetSign no migration is required (plan in issue #334, only started if translators ask for it).
+- **`locales/assetsign.pot` is the source read by Hosted Weblate**: it is versioned and must hold exactly the strings of the code. After adding, changing or removing a string:
+  ```bash
+  vendor/bin/extract-locales
+  git checkout -- locales/en_GB.po   # extract-locales rewrites en_GB.po: keep the real translations
+  ```
+  then commit the `.pot`. The CI "locales" job fails when the versioned `.pot` is out of date (`#: file:line` locations alone do not count).
+- Every new string comes translated in the PR that adds it, in the base languages (fr_FR, en_GB, de_DE, es_ES, it_IT, pl_PL, pt_BR), with the compiled `.mo` files (`msgfmt -c`); regional variants are copied with `sh tools/sync-locale-variants.sh`. Weblate is for fixing and adding languages, not for filling gaps.
 
 ### Commit messages
 

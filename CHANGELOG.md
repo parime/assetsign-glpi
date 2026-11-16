@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Traductions** (#334, #345) : `locales/assetsign.pot`, lu par Hosted Weblate, est régénéré
+  depuis le code et la CI échoue désormais s'il n'est pas à jour (comparaison des chaînes, sans les
+  emplacements). Les msgid restent en français (pas de migration imposée par la charte commune) ;
+  règle et commande documentées dans CONTRIBUTING.md et AGENTS.md, langue secondaire anglaise
+  expliquée aux traducteurs dans les README.
+
 - **CI** : contrôles des points d'entrée, de la matrice d'accès et des exigences marketplace repris
   par les contrôles communs (glpi-plugin-security v1.8.0, issue parime/glpi-plugin-security#11) ;
   les copies de `.github/scripts/` sont retirées. Les fichiers de réglage restent dans ce dépôt.

@@ -112,6 +112,10 @@ corriger un terme, améliorer le vocabulaire métier ou ajouter une langue se fa
 le navigateur, sans Git. Weblate propose ensuite les traductions par une Pull Request, relue avant
 d'être fusionnée.
 
+La langue source des chaînes est le français. Pour traduire depuis l'anglais, ajoutez l'anglais en
+langue secondaire dans votre profil Weblate (Préférences > Langues) : sa traduction s'affiche alors
+à côté de chaque chaîne source française.
+
 ## Réutilisation et citation
 
 Ce projet est sous licence **GPL-3.0-or-later**. Si vous reprenez du code, même partiellement, sans
