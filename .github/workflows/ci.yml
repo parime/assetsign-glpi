@@ -677,11 +677,13 @@ jobs:
 
       - name: Vérifie que le .pot versionné est à jour (source lue par Weblate)
         # Charte commune, section 2 bis (#334) : Hosted Weblate lira le .pot du depot, jamais une
-        # copie ; il doit donc contenir exactement les chaines du code. Comparaison sans les
-        # emplacements (#: fichier:ligne) ni la date de creation : deplacer une chaine dans un
-        # fichier ne demande pas de regenerer le .pot, ajouter, modifier ou retirer une chaine oui.
+        # copie ; il doit donc contenir exactement les chaines du code. Comparaison des chaines
+        # seules : sans les emplacements (#: fichier:ligne), la date de creation ni les drapeaux
+        # (#, php-format), que deux versions de xgettext ne devinent pas toujours de la meme facon
+        # (0.21 du runner et 0.22 d'Alpine different sur « % du prix »). Deplacer une chaine ne
+        # demande pas de regenerer le .pot ; ajouter, modifier ou retirer une chaine, si.
         run: |
-          norm() { msgcat --no-location --no-wrap --sort-output "$1" | grep -v '^"POT-Creation-Date:'; }
+          norm() { msgcat --no-location --no-wrap --sort-output "$1" | grep -v -e '^#' -e '^"POT-Creation-Date:'; }
           if ! diff -u <(norm /tmp/assetsign.versionne.pot) <(norm locales/assetsign.pot); then
             echo "::error::locales/assetsign.pot n'est pas à jour : lancer vendor/bin/extract-locales, puis git checkout -- locales/en_GB.po, et versionner locales/assetsign.pot"
             exit 1

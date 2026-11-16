@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:25+0000\n"
+"POT-Creation-Date: 2026-11-16 13:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1176,10 +1176,10 @@ msgstr ""
 #: templates/config_form.html.twig
 msgid ""
 "Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-"
-"dessous ; le matériel se remet ensuite depuis l'onglet « Remise de "
-"matériel » du ticket. L'action « Préparer l'arrivée » est toujours "
-"disponible dans l'onglet « Attributions » de la fiche utilisateur ; les "
-"déclencheurs automatiques ci-dessous sont facultatifs."
+"dessous ; le matériel se remet ensuite depuis l'onglet « Remise de matériel "
+"» du ticket. L'action « Préparer l'arrivée » est toujours disponible dans "
+"l'onglet « Attributions » de la fiche utilisateur ; les déclencheurs "
+"automatiques ci-dessous sont facultatifs."
 msgstr ""
 
 #: templates/config_form.html.twig
@@ -1431,8 +1431,8 @@ msgstr ""
 #: templates/config_form.html.twig
 msgid ""
 "Les champs renseignés des blocs cochés s'ajoutent au tableau du matériel sur "
-"la fiche. Dans le texte du gabarit, un champ s'insère avec "
-"{champ:nom_du_champ} (nom système du champ dans Fields)."
+"la fiche. Dans le texte du gabarit, un champ s'insère avec {champ:"
+"nom_du_champ} (nom système du champ dans Fields)."
 msgstr ""
 
 #: templates/config_form.html.twig
@@ -1882,6 +1882,7 @@ msgid ""
 msgstr ""
 
 #: templates/config_form.html.twig
+#, php-format
 msgid ""
 "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix "
 "d'achat)"
@@ -1889,8 +1890,8 @@ msgstr ""
 
 #: templates/config_form.html.twig
 msgid ""
-"En dessous de ce pourcentage du prix d'achat d'origine, la recommandation "
-"« Réévaluer l'usage » est affichée."
+"En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « "
+"Réévaluer l'usage » est affichée."
 msgstr ""
 
 #: templates/config_form.html.twig
@@ -5583,8 +5584,8 @@ msgstr ""
 msgid ""
 "%s n'a pas encore de profil dans cette entité : la personne sera ajoutée "
 "automatiquement comme demandeur de ce ticket dès que ses habilitations "
-"seront créées. Le matériel pourra alors lui être remis depuis l'onglet "
-"« Remise de matériel »."
+"seront créées. Le matériel pourra alors lui être remis depuis l'onglet « "
+"Remise de matériel »."
 msgstr ""
 
 #: src/GlpiPlugin/Assetsign/Arrival.php:299
@@ -6959,8 +6960,8 @@ msgstr ""
 #, php-format
 msgid ""
 "GLPI refuse les adresses internes pour ce plugin : ajoutez %s à la constante "
-"GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (config/"
-"local_define.php)."
+"GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (config/local_define."
+"php)."
 msgstr ""
 
 #: src/GlpiPlugin/Assetsign/Compat/Http.php:229
