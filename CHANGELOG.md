@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Encadré d'aide** (#336, #344) : « À quoi sert cette page ? » en tête de chaque page d'usage
+  (Attributions, Mouvements, Départs, Campagnes d'attestation, Attestations d'effacement, Fiches
+  de maintenance, Tableau de bord RSE, Renouvellement du parc, Mon matériel et mes documents) :
+  but de la page et ce qui est attendu de l'utilisateur, repliable, choix mémorisé par page.
+  Affiché seulement à qui peut ouvrir la page ; textes dans les 18 langues. Partiels communs
+  `_page_help.html.twig` et `_badge.html.twig` repris du modèle (charte commune, section 8).
+
 ### Changed
 
 - **Licence** (#333, #340, #343) : identifiant unique `GPL-3.0-or-later` dans `setup.php` et

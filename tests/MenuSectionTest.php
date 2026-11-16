@@ -146,6 +146,78 @@ final class MenuSectionTest extends AssetsignTestCase
        $this->assertStringContainsString('front/renewal.php', $html);
    }
 
+    /**
+     * Issue #336 : chaque sous-page a son encadré « À quoi sert cette page ? ».
+     */
+   public function testEverySubPageHasAHelpBox(): void {
+       $pages = [];
+      foreach (MenuSection::groups() as $group) {
+          $pages = array_merge($pages, $group['pages']);
+      }
+       $help = MenuSection::helpTexts();
+       $this->assertSame($pages, array_keys($help));
+      foreach ($help as $class => $texts) {
+          $this->assertMatchesRegularExpression('/^[a-z-]+$/', $texts['page'], $class);
+          $this->assertNotSame('', $texts['purpose'], $class);
+          $this->assertNotSame('', $texts['expected'], $class);
+      }
+       $this->assertSame(
+           count($help),
+           count(array_unique(array_column($help, 'page'))),
+           'identifiants de page uniques (choix replié mémorisé par page)'
+       );
+   }
+
+   public function testHelpBoxIsShownAboveTheTabs(): void {
+       $this->setRights(ALLSTANDARDRIGHT, ALLSTANDARDRIGHT);
+
+       ob_start();
+       MenuSection::show(Campaign::class);
+       $html = (string) ob_get_clean();
+
+       $this->assertSame(1, substr_count($html, 'assetsign-page-help'));
+       $this->assertStringContainsString('id="assetsign-help-campaigns"', $html);
+       $this->assertStringContainsString("'assetsign.help.campaigns'", $html);
+       $this->assertStringContainsString(
+           htmlescape(MenuSection::helpTexts()[Campaign::class]['purpose']),
+           $html
+       );
+       $this->assertLessThan(strpos($html, '<nav'), strpos($html, 'assetsign-page-help'));
+   }
+
+   public function testNoHelpBoxForAPageTheUserCannotOpen(): void {
+       // Droit AssetSign sans droit Maintenance : les onglets AssetSign restent, pas l'aide de
+       // la page Maintenance.
+       $this->setRights(READ, 0);
+
+       ob_start();
+       MenuSection::show(Maintenance::class);
+       $html = (string) ob_get_clean();
+
+       $this->assertStringContainsString('data-assetsign-section=', $html);
+       $this->assertStringNotContainsString('assetsign-page-help', $html);
+   }
+
+   public function testMyEquipmentPageHasAHelpBox(): void {
+       $help = MenuSection::myEquipmentHelp();
+       $html = \Glpi\Application\View\TemplateRenderer::getInstance()->render(
+           '@assetsign/my_signatures.html.twig',
+           [
+               'title'         => 'x',
+               'help'          => $help,
+               'rows'          => [],
+               'equipment'     => [],
+               'problem_types' => [],
+               'can_report'    => false,
+               'action'        => '/front/mysignatures.php',
+               'csrf_token'    => 'x',
+           ]
+       );
+
+       $this->assertStringContainsString('id="assetsign-help-my-equipment"', $html);
+       $this->assertStringContainsString(htmlescape($help['expected']), $html);
+   }
+
    public function testDropdownsBelongToTheNativeDropdownsMenu(): void {
       foreach ([Template::class, Accessory::class, Kit::class, ChecklistItem::class, MaintenanceChecklistItem::class] as $class) {
           $this->assertSame(['config', \CommonDropdown::class, $class], $class::getSectorizedDetails(), $class);
