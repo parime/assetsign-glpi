@@ -20,3 +20,5 @@ jobs:
     with:
       plugin-key: assetsign
       seed-command: php plugins/assetsign/tests/security/setup.php
+      # Charte commune bloquante : licence, en-têtes, documentation et langues conformes (#342).
+      charter-mode: error

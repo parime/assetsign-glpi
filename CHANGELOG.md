@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- CI : charte commune en mode bloquant (#342) : licence, en-têtes, documentation et langues sont désormais contrôlés sans tolérance.
 - CI : contrôles de sécurité communs v1.8.2 (scripts communs bien pris à la version appelée).
 - **Traductions** (#334, #345) : `locales/assetsign.pot`, lu par Hosted Weblate, est régénéré
   depuis le code et la CI échoue désormais s'il n'est pas à jour (comparaison des chaînes, sans les
