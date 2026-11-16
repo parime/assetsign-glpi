@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Traductions** (#334, #345) : `locales/assetsign.pot`, lu par Hosted Weblate, est régénéré
+  depuis le code et la CI échoue désormais s'il n'est pas à jour (comparaison des chaînes, sans les
+  emplacements). Les msgid restent en français (pas de migration imposée par la charte commune) ;
+  règle et commande documentées dans CONTRIBUTING.md et AGENTS.md, langue secondaire anglaise
+  expliquée aux traducteurs dans les README.
 - **Licence** (#333, #340, #343) : identifiant unique `GPL-3.0-or-later` dans `setup.php` et
   `composer.json` (comme `CITATION.cff` et `NOTICE`), en-tête de licence `tools/HEADER` en tête de
   chaque fichier PHP et Twig du plugin (charte commune, section 1), ainsi que des tests, scripts
@@ -29,8 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI** : contrôles des points d'entrée, de la matrice d'accès et des exigences marketplace repris
   par les contrôles communs (glpi-plugin-security v1.8.0, issue parime/glpi-plugin-security#11) ;
   les copies de `.github/scripts/` sont retirées. Les fichiers de réglage restent dans ce dépôt.
-
-### Changed
 
 - CI : contrôles de sécurité communs v1.7.1 (exceptions de menus de la charte, correction du jeu de données du contrôle de désinstallation).
 

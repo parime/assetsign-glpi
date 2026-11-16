@@ -111,6 +111,10 @@ The plugin is translated into French, English, German, Spanish, Italian, Polish 
 improving domain vocabulary or adding a language is done directly in the browser, without Git.
 Weblate then proposes the translations through a Pull Request, reviewed before being merged.
 
+The source language of the strings is French. To translate from English instead, add English as a
+secondary language in your Weblate profile (Preferences > Languages): its translation is then shown
+next to each French source string.
+
 ## Reuse and citation
 
 This project is licensed under **GPL-3.0-or-later**. If you reuse code, even partially and without
