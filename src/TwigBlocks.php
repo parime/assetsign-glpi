@@ -34,7 +34,7 @@ final class TwigBlocks
        $environment = TemplateRenderer::getInstance()->getEnvironment();
        $loader = $environment->getLoader();
       if ($loader instanceof \Twig\Loader\FilesystemLoader && !in_array('assetsign', $loader->getNamespaces(), true)) {
-          $loader->addPath(dirname(__DIR__, 3) . '/templates', 'assetsign');
+          $loader->addPath(dirname(__DIR__) . '/templates', 'assetsign');
       }
        return $environment;
    }

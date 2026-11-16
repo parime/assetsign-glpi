@@ -18,17 +18,17 @@ msgstr "Podpis przekazania sprzętu"
 #: templates/qr_label.html.twig templates/assetsign_form.html.twig
 #: templates/movement_create.html.twig templates/maintenance_create.html.twig
 #: templates/maintenance_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:225
-#: src/GlpiPlugin/Assetsign/Movement.php:121
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:158
-#: src/GlpiPlugin/Assetsign/Maintenance.php:86
+#: src/Assetsign.php:225
+#: src/Movement.php:121
+#: src/NotificationTargetAssetsign.php:158
+#: src/Maintenance.php:86
 msgid "Matériel"
 msgstr "Zasób"
 
 #: templates/sign_page.html.twig templates/assetsign_form.html.twig
-#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:234
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:64
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:159
+#: templates/assetsign_tab.html.twig src/Assetsign.php:234
+#: src/NotificationTargetAssetsign.php:64
+#: src/NotificationTargetAssetsign.php:159
 msgid "Bénéficiaire"
 msgstr "Odbiorca"
 
@@ -147,8 +147,8 @@ msgid "Remarque enregistrée."
 msgstr "Uwaga zapisana."
 
 #: templates/movement_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:60
-#: src/GlpiPlugin/Assetsign/Movement.php:56
+#: src/PassportEvent.php:60
+#: src/Movement.php:56
 msgid "Mouvement"
 msgid_plural "Mouvements"
 msgstr[0] "Przemieszczenie"
@@ -157,25 +157,25 @@ msgstr[2] "Przemieszczeń"
 
 #: templates/movement_form.html.twig templates/movement_tab.html.twig
 #: templates/movement_create.html.twig
-#: src/GlpiPlugin/Assetsign/Movement.php:130
+#: src/Movement.php:130
 msgid "Lieu de départ"
 msgstr "Miejsce wyjazdu"
 
 #: templates/movement_form.html.twig templates/movement_tab.html.twig
 #: templates/movement_create.html.twig
-#: src/GlpiPlugin/Assetsign/Movement.php:145
+#: src/Movement.php:145
 msgid "Date de départ"
 msgstr "Data wyjazdu"
 
 #: templates/movement_form.html.twig templates/movement_tab.html.twig
 #: templates/movement_create.html.twig
-#: src/GlpiPlugin/Assetsign/Movement.php:138
+#: src/Movement.php:138
 msgid "Lieu de destination"
 msgstr "Miejsce docelowe"
 
 #: templates/movement_form.html.twig templates/movement_tab.html.twig
 #: templates/movement_create.html.twig
-#: src/GlpiPlugin/Assetsign/Movement.php:152
+#: src/Movement.php:152
 msgid "Date de destination"
 msgstr "Data dotarcia do celu"
 
@@ -187,7 +187,7 @@ msgstr "Utworzono"
 #: templates/assetsign_form.html.twig templates/maintenance_tab.html.twig
 #: templates/movement_create.html.twig templates/maintenance_create.html.twig
 #: templates/maintenance_form.html.twig
-#: src/GlpiPlugin/Assetsign/Movement.php:183
+#: src/Movement.php:183
 msgid "Commentaire"
 msgstr "Komentarz"
 
@@ -293,13 +293,13 @@ msgid "Destination"
 msgstr "Cel"
 
 #: templates/movement_tab.html.twig templates/assetsign_form.html.twig
-#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:242
-#: src/GlpiPlugin/Assetsign/Movement.php:159
+#: templates/assetsign_tab.html.twig src/Assetsign.php:242
+#: src/Movement.php:159
 msgid "Statut"
 msgstr "Status"
 
-#: templates/movement_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:685
-#: src/GlpiPlugin/Assetsign/Movement.php:176
+#: templates/movement_tab.html.twig src/Assetsign.php:685
+#: src/Movement.php:176
 msgid "Signé"
 msgstr "Podpisano"
 
@@ -317,9 +317,9 @@ msgid "Créer le mouvement"
 msgstr "Utwórz przemieszczenie"
 
 #: templates/assetsign_form.html.twig templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:55
-#: src/GlpiPlugin/Assetsign/Assetsign.php:107
-#: src/GlpiPlugin/Assetsign/Workflow/HandoverType.php:21
+#: src/PassportEvent.php:55
+#: src/Assetsign.php:107
+#: src/Workflow/HandoverType.php:21
 msgid "Attribution"
 msgid_plural "Attributions"
 msgstr[0] "Przekazanie"
@@ -343,27 +343,27 @@ msgid "Signé le"
 msgstr "Podpisano dnia"
 
 #: templates/assetsign_form.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:272
+#: src/Assetsign.php:272
 msgid "Nombre de relances"
 msgstr "Liczba przypomnień"
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Maintenance.php:93
+#: src/Maintenance.php:93
 msgid "PDF"
 msgstr "PDF"
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:327
+#: src/Assetsign.php:327
 msgid "Télécharger (signé)"
 msgstr "Pobierz (podpisany)"
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:327
+#: src/Assetsign.php:327
 msgid "Télécharger (non signé)"
 msgstr "Pobierz (niepodpisany)"
 
 #: templates/assetsign_form.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:433
+#: src/Assetsign.php:433
 msgid "Relancer maintenant"
 msgstr "Wyślij przypomnienie teraz"
 
@@ -372,7 +372,7 @@ msgid "Annuler cette demande de signature ?"
 msgstr "Anulować tę prośbę o podpis?"
 
 #: templates/assetsign_form.html.twig
-#: src/GlpiPlugin/Assetsign/Assetsign.php:435
+#: src/Assetsign.php:435
 msgid "Annuler la demande"
 msgstr "Anuluj prośbę"
 
@@ -459,7 +459,7 @@ msgstr ""
 "Brak punktów listy kontrolnej skonfigurowanych dla tego typu przemieszczenia "
 "(Konfiguracja > Listy rozwijane > Punkty kontroli jakości)."
 
-#: templates/assetsign_form.html.twig src/GlpiPlugin/Assetsign/Kit.php:30
+#: templates/assetsign_form.html.twig src/Kit.php:30
 msgid "Kit d'accessoires"
 msgid_plural "Kits d'accessoires"
 msgstr[0] "Zestaw akcesoriów"
@@ -600,31 +600,31 @@ msgid "Général"
 msgstr "Ogólne"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:56
-#: src/GlpiPlugin/Assetsign/Workflow/ReturnType.php:16
+#: src/PassportEvent.php:56
+#: src/Workflow/ReturnType.php:16
 msgid "Restitution"
 msgstr "Zwrot"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:57
-#: src/GlpiPlugin/Assetsign/Workflow/DonType.php:23
+#: src/PassportEvent.php:57
+#: src/Workflow/DonType.php:23
 msgid "Don"
 msgstr "Darowizna"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:58
-#: src/GlpiPlugin/Assetsign/Workflow/VenteType.php:23
+#: src/PassportEvent.php:58
+#: src/Workflow/VenteType.php:23
 msgid "Vente"
 msgstr "Sprzedaż"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:61
-#: src/GlpiPlugin/Assetsign/Workflow/DestructionType.php:25
+#: src/PassportEvent.php:61
+#: src/Workflow/DestructionType.php:25
 msgid "Destruction"
 msgstr "Zniszczenie"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:568
+#: src/PassportEvent.php:568
 msgid "Réforme"
 msgstr "Wycofanie z użytku"
 
@@ -633,19 +633,19 @@ msgid "Compléments"
 msgstr "Dodatki"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:59
-#: src/GlpiPlugin/Assetsign/Maintenance.php:117
+#: src/PassportEvent.php:59
+#: src/Maintenance.php:117
 msgid "Maintenance"
 msgstr "Konserwacja"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:524
-#: src/GlpiPlugin/Assetsign/Movement.php:207
+#: src/PassportEvent.php:524
+#: src/Movement.php:207
 msgid "Mouvements"
 msgstr "Przemieszczenia"
 
 #: templates/config_form.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:174
+#: src/PassportEvent.php:174
 msgid "Passeport matériel"
 msgstr "Paszport sprzętu"
 
@@ -1332,9 +1332,9 @@ msgid "Créer la fiche"
 msgstr "Utwórz formularz"
 
 #: templates/movement_create.html.twig templates/maintenance_create.html.twig
-#: templates/assetsign_tab.html.twig src/GlpiPlugin/Assetsign/Assetsign.php:218
-#: src/GlpiPlugin/Assetsign/Movement.php:114
-#: src/GlpiPlugin/Assetsign/Maintenance.php:85
+#: templates/assetsign_tab.html.twig src/Assetsign.php:218
+#: src/Movement.php:114
+#: src/Maintenance.php:85
 msgid "Type de matériel"
 msgstr "Typ zasobu"
 
@@ -1367,17 +1367,17 @@ msgid "Entité"
 msgstr "Jednostka"
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:565
+#: src/PassportEvent.php:565
 msgid "Achat"
 msgstr "Zakup"
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:598
+#: src/PassportEvent.php:598
 msgid "Fin de garantie"
 msgstr "Koniec gwarancji"
 
 #: templates/passport_tab.html.twig
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:493
+#: src/PassportEvent.php:493
 msgid "Âge"
 msgstr "Wiek"
 
@@ -1468,7 +1468,7 @@ msgid "Aucun événement enregistré pour le moment."
 msgstr "Brak zarejestrowanych zdarzeń."
 
 #: templates/maintenance_form.html.twig
-#: src/GlpiPlugin/Assetsign/Maintenance.php:34
+#: src/Maintenance.php:34
 msgid "Fiche de maintenance"
 msgid_plural "Fiches de maintenance"
 msgstr[0] "Formularz konserwacji"
@@ -1602,7 +1602,7 @@ msgstr ""
 msgid "Assigner"
 msgstr "Przypisz"
 
-#: hook.php:111 src/GlpiPlugin/Assetsign/Config.php:84
+#: hook.php:111 src/Config.php:84
 msgid "Assetsign & signature"
 msgstr "Przekazanie i podpis"
 
@@ -1618,7 +1618,7 @@ msgstr "Podpisane przekazania"
 msgid "Attributions expirées"
 msgstr "Wygasłe przekazania"
 
-#: hook.php:138 src/GlpiPlugin/Assetsign/Dashboard/CardProvider.php:59
+#: hook.php:138 src/Dashboard/CardProvider.php:59
 msgid "Échecs de création (30 derniers jours)"
 msgstr "Nieudane utworzenia (ostatnie 30 dni)"
 
@@ -1658,11 +1658,11 @@ msgstr "Przemieszczenie utworzone."
 msgid "Aucune verification de configuration bloquante."
 msgstr "Brak blokujących kontroli konfiguracji."
 
-#: src/GlpiPlugin/Assetsign/Kit.php:128
+#: src/Kit.php:128
 msgid "Accessoires attendus dans ce kit"
 msgstr "Akcesoria przewidziane w tym zestawie"
 
-#: src/GlpiPlugin/Assetsign/Kit.php:151
+#: src/Kit.php:151
 msgid ""
 "Ces accessoires seront automatiquement vérifiés à la restitution si ce kit "
 "est assigné à une remise."
@@ -1670,74 +1670,74 @@ msgstr ""
 "Te akcesoria zostaną automatycznie zaznaczone przy zwrocie, jeśli ten zestaw "
 "zostanie przypisany do przekazania."
 
-#: src/GlpiPlugin/Assetsign/Accessory.php:17
+#: src/Accessory.php:17
 msgid "Accessoire d'attribution"
 msgid_plural "Accessoires d'attribution"
 msgstr[0] "Akcesorium przekazania"
 msgstr[1] "Akcesoria przekazania"
 msgstr[2] "Akcesoriów przekazania"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:45
+#: src/PassportEvent.php:45
 msgid "Événement du passeport matériel"
 msgid_plural "Événements du passeport matériel"
 msgstr[0] "Zdarzenie paszportu sprzętu"
 msgstr[1] "Zdarzenia paszportu sprzętu"
 msgstr[2] "Zdarzeń paszportu sprzętu"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:171
+#: src/PassportEvent.php:171
 msgid "Passeport utilisateur"
 msgstr "Paszport użytkownika"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:339
+#: src/PassportEvent.php:339
 msgid "depuis l'achat"
 msgstr "od zakupu"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:339
+#: src/PassportEvent.php:339
 msgid "depuis l'entrée dans GLPI"
 msgstr "od wprowadzenia do GLPI"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:503
+#: src/PassportEvent.php:503
 msgid "Incidents"
 msgstr "Incydenty"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:520
+#: src/PassportEvent.php:520
 msgid "État physique"
 msgstr "Stan fizyczny"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:563
+#: src/PassportEvent.php:563
 msgid "Commande"
 msgstr "Zamówienie"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:564
+#: src/PassportEvent.php:564
 msgid "Livraison"
 msgstr "Dostawa"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:566
+#: src/PassportEvent.php:566
 msgid "Mise en service"
 msgstr "Uruchomienie"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:567
+#: src/PassportEvent.php:567
 msgid "Début de garantie"
 msgstr "Początek gwarancji"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:587
+#: src/PassportEvent.php:587
 #, php-format
 msgid "Prix d'achat : %s %s"
 msgstr "Cena zakupu: %s %s"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:646
+#: src/PassportEvent.php:646
 msgid "Ticket"
 msgstr "Zgłoszenie"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:794
+#: src/PassportEvent.php:794
 msgid "Reconstitué automatiquement depuis l'historique GLPI."
 msgstr "Odtworzone automatycznie z historii GLPI."
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1084
+#: src/PassportEvent.php:1084
 msgid "Utilisateur retiré"
 msgstr "Użytkownik usunięty"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1113
+#: src/PassportEvent.php:1113
 #, php-format
 msgid "%d jour"
 msgid_plural "%d jours"
@@ -1745,8 +1745,8 @@ msgstr[0] "%d dzień"
 msgstr[1] "%d dni"
 msgstr[2] "%d dni"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1118
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1128
+#: src/PassportEvent.php:1118
+#: src/PassportEvent.php:1128
 #, php-format
 msgid "%d mois"
 msgid_plural "%d mois"
@@ -1754,7 +1754,7 @@ msgstr[0] "%d miesiąc"
 msgstr[1] "%d miesiące"
 msgstr[2] "%d miesięcy"
 
-#: src/GlpiPlugin/Assetsign/PassportEvent.php:1123
+#: src/PassportEvent.php:1123
 #, php-format
 msgid "%d an"
 msgid_plural "%d ans"
@@ -1762,86 +1762,86 @@ msgstr[0] "%d rok"
 msgstr[1] "%d lata"
 msgstr[2] "%d lat"
 
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:25
+#: src/MaintenanceChecklistItem.php:25
 msgid "Point de contrôle de maintenance"
 msgid_plural "Points de contrôle de maintenance"
 msgstr[0] "Punkt listy kontrolnej konserwacji"
 msgstr[1] "Punkty listy kontrolnej konserwacji"
 msgstr[2] "Punktów listy kontrolnej konserwacji"
 
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:41
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:53
+#: src/MaintenanceChecklistItem.php:41
+#: src/ChecklistItem.php:53
 msgid "Case à cocher"
 msgstr "Pole wyboru"
 
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:42
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:54
+#: src/MaintenanceChecklistItem.php:42
+#: src/ChecklistItem.php:54
 msgid "Texte libre"
 msgstr "Tekst dowolny"
 
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:43
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:55
+#: src/MaintenanceChecklistItem.php:43
+#: src/ChecklistItem.php:55
 msgid "Menu déroulant"
 msgstr "Lista rozwijana"
 
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:63
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:86
+#: src/MaintenanceChecklistItem.php:63
+#: src/ChecklistItem.php:86
 msgid "Type de saisie"
 msgstr "Typ pola"
 
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:68
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:91
+#: src/MaintenanceChecklistItem.php:68
+#: src/ChecklistItem.php:91
 msgid "Options du menu déroulant (une par ligne)"
 msgstr "Opcje listy rozwijanej (jedna na wiersz)"
 
-#: src/GlpiPlugin/Assetsign/MaintenanceChecklistItem.php:87
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:115
+#: src/MaintenanceChecklistItem.php:87
+#: src/ChecklistItem.php:115
 msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
 msgstr "Używane tylko, jeśli typ pola to \"Lista rozwijana\"."
 
-#: src/GlpiPlugin/Assetsign/DamageMarker.php:44
+#: src/DamageMarker.php:44
 msgid "Vue arrière"
 msgstr "Widok z tyłu"
 
-#: src/GlpiPlugin/Assetsign/DamageMarker.php:45
+#: src/DamageMarker.php:45
 msgid "Vue de face"
 msgstr "Widok z przodu"
 
-#: src/GlpiPlugin/Assetsign/DamageMarker.php:46
+#: src/DamageMarker.php:46
 msgid "Dessous"
 msgstr "Spód"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:250
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:157
-#: src/GlpiPlugin/Assetsign/Template.php:51
+#: src/Assetsign.php:250
+#: src/NotificationTargetAssetsign.php:157
+#: src/Template.php:51
 msgid "Type d'attribution"
 msgstr "Typ przekazania"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:258
+#: src/Assetsign.php:258
 msgid "Date d'envoi"
 msgstr "Data wysłania"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:265
+#: src/Assetsign.php:265
 msgid "Date de signature"
 msgstr "Data podpisu"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:283
+#: src/Assetsign.php:283
 msgid "PDF non signé"
 msgstr "Niepodpisany PDF"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:291
+#: src/Assetsign.php:291
 msgid "PDF signé"
 msgstr "Podpisany PDF"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:304
+#: src/Assetsign.php:304
 msgid "Bénéficiaire externe"
 msgstr "Odbiorca zewnętrzny"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:444
+#: src/Assetsign.php:444
 msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
 msgstr "Wysłać przypomnienie o podpisie do wybranych przekazań?"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:448
+#: src/Assetsign.php:448
 msgid ""
 "Annuler les demandes de signature sélectionnées ? Le lien envoyé au "
 "bénéficiaire deviendra invalide."
@@ -1849,59 +1849,59 @@ msgstr ""
 "Anulować wybrane prośby o podpis? Link wysłany do odbiorcy przestanie być "
 "ważny."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:514
-#: src/GlpiPlugin/Assetsign/Assetsign.php:523
+#: src/Assetsign.php:514
+#: src/Assetsign.php:523
 msgid "Attributions"
 msgstr "Przekazania"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:634
-#: src/GlpiPlugin/Assetsign/Movement.php:294
-#: src/GlpiPlugin/Assetsign/Maintenance.php:299
+#: src/Assetsign.php:634
+#: src/Movement.php:294
+#: src/Maintenance.php:299
 msgid "Choisissez d'abord un type de matériel ci-dessus."
 msgstr "Najpierw wybierz typ zasobu powyżej."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:681
+#: src/Assetsign.php:681
 msgid "Brouillon"
 msgstr "Szkic"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:682
+#: src/Assetsign.php:682
 msgid "En attente"
 msgstr "Oczekujące"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:683
+#: src/Assetsign.php:683
 msgid "Envoyé"
 msgstr "Wysłane"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:684
+#: src/Assetsign.php:684
 msgid "Consulté"
 msgstr "Wyświetlone"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:686
+#: src/Assetsign.php:686
 msgid "Expiré"
 msgstr "Wygasłe"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:687
-#: src/GlpiPlugin/Assetsign/Movement.php:74
+#: src/Assetsign.php:687
+#: src/Movement.php:74
 msgid "Annulé"
 msgstr "Anulowane"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:688
+#: src/Assetsign.php:688
 msgid "Remis (bénéficiaire externe, sans signature)"
 msgstr "Przekazane (odbiorca zewnętrzny, bez podpisu)"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:862
+#: src/Assetsign.php:862
 msgid "don"
 msgstr "darowizna"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:862
+#: src/Assetsign.php:862
 msgid "vente"
 msgstr "sprzedaż"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:862
+#: src/Assetsign.php:862
 msgid "destruction"
 msgstr "zniszczenie"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:868
+#: src/Assetsign.php:868
 #, php-format
 msgid ""
 "Ce matériel n'a pas d'utilisateur assigné : <a href=\"%s\">créez maintenant "
@@ -1910,7 +1910,7 @@ msgstr ""
 "Ten sprzęt nie ma przypisanego użytkownika: <a href=\"%s\">utwórz teraz "
 "formularz: %s</a> (odbiorca wewnętrzny lub zewnętrzny)."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:890
+#: src/Assetsign.php:890
 msgid ""
 "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc"
 " pas générer de fiche d'attribution ou de restitution. Assignez un "
@@ -1920,35 +1920,35 @@ msgstr ""
 "wygenerować formularza przekazania ani zwrotu. Przypisz użytkownika w "
 "rekordzie zasobu, jeśli oczekiwany jest podpis."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1057
+#: src/Assetsign.php:1057
 msgid "Ce type de fiche ne peut pas être créé manuellement."
 msgstr "Tego typu rekordu nie można utworzyć ręcznie."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1066
+#: src/Assetsign.php:1066
 msgid "Le nom du bénéficiaire externe est obligatoire."
 msgstr "Nazwa odbiorcy zewnętrznego jest wymagana."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1070
+#: src/Assetsign.php:1070
 msgid "Le bénéficiaire (utilisateur GLPI) est obligatoire."
 msgstr "Odbiorca (użytkownik GLPI) jest wymagany."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1074
+#: src/Assetsign.php:1074
 #, php-format
 msgid "Type de matériel invalide : %s"
 msgstr "Nieprawidłowy typ zasobu: %s"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1089
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:25
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:25
-#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:41
+#: src/Assetsign.php:1089
+#: src/Api/ResidualValueFormController.php:25
+#: src/Api/PassportBackfillController.php:25
+#: src/Api/QrLabelController.php:41
 msgid "Matériel introuvable."
 msgstr "Nie znaleziono zasobu."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1111
+#: src/Assetsign.php:1111
 msgid "Échec de la création de la fiche."
 msgstr "Nie udało się utworzyć rekordu."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1199
+#: src/Assetsign.php:1199
 #, php-format
 msgid ""
 "État mis à jour automatiquement (%s) suite à la création d'une fiche par le "
@@ -1957,70 +1957,70 @@ msgstr ""
 "Status zaktualizowany automatycznie (%s) po utworzeniu formularza przez "
 "wtyczkę Assetsign & podpis."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1238
+#: src/Assetsign.php:1238
 msgid "Annulée automatiquement (matériel réaffecté avant signature)"
 msgstr "Anulowane automatycznie (sprzęt przypisany ponownie przed podpisem)"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1258
+#: src/Assetsign.php:1258
 msgid ""
 "Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà "
 "annulée)."
 msgstr ""
 "Tej prośby nie można już anulować (już podpisana, wygasła lub już anulowana)."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1627
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1633
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1645
-#: src/GlpiPlugin/Assetsign/Movement.php:396
-#: src/GlpiPlugin/Assetsign/Movement.php:402
-#: src/GlpiPlugin/Assetsign/Movement.php:414
+#: src/Assetsign.php:1627
+#: src/Assetsign.php:1633
+#: src/Assetsign.php:1645
+#: src/Movement.php:396
+#: src/Movement.php:402
+#: src/Movement.php:414
 msgid "Échec de l'envoi du document."
 msgstr "Nie udało się przesłać dokumentu."
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1899
+#: src/Assetsign.php:1899
 msgid "Envoie les relances de signature dues"
 msgstr "Wysyła należne przypomnienia o podpisie"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1900
+#: src/Assetsign.php:1900
 msgid "Marque comme expirées les attributions hors délai"
 msgstr "Oznacza przekazania po terminie jako wygasłe"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1901
+#: src/Assetsign.php:1901
 msgid "Alerte le technicien des attributions sur le point d'expirer"
 msgstr "Ostrzega technika o przekazaniach bliskich wygaśnięcia"
 
-#: src/GlpiPlugin/Assetsign/Assetsign.php:1915
+#: src/Assetsign.php:1915
 msgid "Cette attribution ne peut plus être relancée (déjà signée ou expirée)."
 msgstr ""
 "Do tego przekazania nie można już wysłać przypomnienia (już podpisane lub "
 "wygasłe)."
 
-#: src/GlpiPlugin/Assetsign/Config.php:79
+#: src/Config.php:79
 msgid "AssetSign : Signature électronique"
 msgstr "AssetSign: Podpis elektroniczny"
 
-#: src/GlpiPlugin/Assetsign/Config.php:151
+#: src/Config.php:151
 msgid "Signature intégrée (canvas)"
 msgstr "Wbudowany podpis (canvas)"
 
-#: src/GlpiPlugin/Assetsign/Config.php:203
-#: src/GlpiPlugin/Assetsign/Config.php:228
+#: src/Config.php:203
+#: src/Config.php:228
 msgid "Échec de l'envoi du logo."
 msgstr "Nie udało się przesłać logo."
 
-#: src/GlpiPlugin/Assetsign/Config.php:209
+#: src/Config.php:209
 msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
 msgstr "Logo musi być obrazem (PNG, JPG, GIF lub WEBP)."
 
-#: src/GlpiPlugin/Assetsign/Config.php:255
+#: src/Config.php:255
 msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
 msgstr "Twoje konto GLPI nie ma zarejestrowanego adresu e-mail."
 
-#: src/GlpiPlugin/Assetsign/Config.php:269
+#: src/Config.php:269
 msgid "E-mail de test: Assetsign & signature"
 msgstr "Testowy e-mail: Przekazanie i podpis"
 
-#: src/GlpiPlugin/Assetsign/Config.php:270
+#: src/Config.php:270
 msgid ""
 "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & "
 "signature fonctionne."
@@ -2028,27 +2028,27 @@ msgstr ""
 "Ten e-mail potwierdza, że konfiguracja wysyłania wtyczki Przekazanie i podpis"
 " działa."
 
-#: src/GlpiPlugin/Assetsign/Config.php:273
+#: src/Config.php:273
 msgid "Le serveur de messagerie a refusé l'envoi."
 msgstr "Serwer pocztowy odrzucił wysyłkę."
 
-#: src/GlpiPlugin/Assetsign/Movement.php:71
+#: src/Movement.php:71
 msgid "Prévu"
 msgstr "Zaplanowane"
 
-#: src/GlpiPlugin/Assetsign/Movement.php:72
+#: src/Movement.php:72
 msgid "En cours"
 msgstr "W toku"
 
-#: src/GlpiPlugin/Assetsign/Movement.php:73
+#: src/Movement.php:73
 msgid "Terminé"
 msgstr "Zakończone"
 
-#: src/GlpiPlugin/Assetsign/Movement.php:168
+#: src/Movement.php:168
 msgid "Déclaré par"
 msgstr "Zgłoszone przez"
 
-#: src/GlpiPlugin/Assetsign/Movement.php:276
+#: src/Movement.php:276
 msgid ""
 "La fonctionnalité « Mouvements » n'est pas activée pour cette entité "
 "(Configuration > Mouvements)."
@@ -2056,126 +2056,126 @@ msgstr ""
 "Funkcja \"Przemieszczenia\" nie jest włączona dla tej jednostki (Konfiguracja"
 " > Przemieszczenia)."
 
-#: src/GlpiPlugin/Assetsign/Movement.php:460
+#: src/Movement.php:460
 msgid "Échec de la création du mouvement."
 msgstr "Nie udało się utworzyć przemieszczenia."
 
-#: src/GlpiPlugin/Assetsign/Movement.php:514
+#: src/Movement.php:514
 #, php-format
 msgid "Signature du mouvement #%d"
 msgstr "Podpis przemieszczenia nr %d"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:50
+#: src/NotificationTargetAssetsign.php:50
 msgid "Nouvelle attribution de matériel"
 msgstr "Nowe przekazanie sprzętu"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:51
+#: src/NotificationTargetAssetsign.php:51
 msgid "Relance de signature"
 msgstr "Przypomnienie o podpisie"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:52
+#: src/NotificationTargetAssetsign.php:52
 msgid "Document signé"
 msgstr "Dokument podpisany"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:53
+#: src/NotificationTargetAssetsign.php:53
 msgid "Document expiré"
 msgstr "Dokument wygasł"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:54
+#: src/NotificationTargetAssetsign.php:54
 msgid "Document sur le point d'expirer"
 msgstr "Dokument bliski wygaśnięcia"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:77
-#: src/GlpiPlugin/Assetsign/Maintenance.php:87
+#: src/NotificationTargetAssetsign.php:77
+#: src/Maintenance.php:87
 msgid "Technicien"
 msgstr "Technik"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:155
+#: src/NotificationTargetAssetsign.php:155
 msgid "Événement"
 msgstr "Zdarzenie"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:156
+#: src/NotificationTargetAssetsign.php:156
 msgid "Identifiant"
 msgstr "ID"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:160
+#: src/NotificationTargetAssetsign.php:160
 msgid "Lien de signature"
 msgstr "Link do podpisu"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php:161
+#: src/NotificationTargetAssetsign.php:161
 msgid "Date limite de signature"
 msgstr "Termin podpisu"
 
-#: src/GlpiPlugin/Assetsign/Template.php:32
+#: src/Template.php:32
 msgid "Gabarit d'attribution"
 msgid_plural "Gabarits d'attribution"
 msgstr[0] "Szablon przekazania"
 msgstr[1] "Szablony przekazania"
 msgstr[2] "Szablonów przekazania"
 
-#: src/GlpiPlugin/Assetsign/Template.php:52
+#: src/Template.php:52
 msgid "Par défaut"
 msgstr "Domyślny"
 
-#: src/GlpiPlugin/Assetsign/Pdf/PdfRenderingHelpers.php:145
-#: src/GlpiPlugin/Assetsign/Pdf/HandoverPdfBuilder.php:185
+#: src/Pdf/PdfRenderingHelpers.php:145
+#: src/Pdf/HandoverPdfBuilder.php:185
 msgid "Exemple : petite rayure sur le capot, sans gravité."
 msgstr "Przykład: lekka rysa na pokrywie, niegroźna."
 
-#: src/GlpiPlugin/Assetsign/Pdf/PdfRenderingHelpers.php:146
+#: src/Pdf/PdfRenderingHelpers.php:146
 msgid "Exemple : touche cassée."
 msgstr "Przykład: uszkodzony klawisz."
 
-#: src/GlpiPlugin/Assetsign/Pdf/PdfRenderingHelpers.php:147
+#: src/Pdf/PdfRenderingHelpers.php:147
 msgid "Exemple : pied manquant."
 msgstr "Przykład: brakująca nóżka."
 
-#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:28
+#: src/Pdf/SignatureImageValidator.php:28
 msgid "Format de signature invalide."
 msgstr "Nieprawidłowy format podpisu."
 
-#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:33
-#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:38
+#: src/Pdf/SignatureImageValidator.php:33
+#: src/Pdf/SignatureImageValidator.php:38
 msgid "Signature illisible."
 msgstr "Nieczytelny podpis."
 
-#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:45
+#: src/Pdf/SignatureImageValidator.php:45
 msgid "Signature trop petite, merci de recommencer."
 msgstr "Podpis za mały, spróbuj ponownie."
 
-#: src/GlpiPlugin/Assetsign/Pdf/SignatureImageValidator.php:52
+#: src/Pdf/SignatureImageValidator.php:52
 msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
 msgstr "Pusty lub ledwie narysowany podpis, podpisz ponownie."
 
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:20
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:20
-#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:31
+#: src/Api/ResidualValueFormController.php:20
+#: src/Api/PassportBackfillController.php:20
+#: src/Api/QrLabelController.php:31
 msgid "Type de matériel invalide."
 msgstr "Nieprawidłowy typ sprzętu."
 
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:34
+#: src/Api/ResidualValueFormController.php:34
 msgid "La valeur résiduelle ne peut pas être négative."
 msgstr "Wartość rezydualna nie może być ujemna."
 
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:40
+#: src/Api/ResidualValueFormController.php:40
 msgid "Valeur résiduelle repassée en calcul automatique."
 msgstr "Wartość rezydualna wróciła do obliczenia automatycznego."
 
-#: src/GlpiPlugin/Assetsign/Api/ResidualValueFormController.php:41
+#: src/Api/ResidualValueFormController.php:41
 msgid "Valeur résiduelle manuelle enregistrée."
 msgstr "Ręczna wartość rezydualna zapisana."
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:37
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:54
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:80
+#: src/Api/SignController.php:37
+#: src/Api/SignController.php:54
+#: src/Api/SignController.php:80
 msgid "Attribution introuvable."
 msgstr "Nie znaleziono przekazania."
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:113
+#: src/Api/SignController.php:113
 msgid "Vous devez être connecté pour accéder à ce document."
 msgstr "Musisz być zalogowany, aby uzyskać dostęp do tego dokumentu."
 
-#: src/GlpiPlugin/Assetsign/Api/SignController.php:117
+#: src/Api/SignController.php:117
 msgid "Ce document ne correspond pas à votre compte utilisateur."
 msgstr "Ten dokument nie odpowiada Twojemu kontu użytkownika."
 
@@ -2184,27 +2184,27 @@ msgid ""
 msgstr ""
 "Tylko pierwotny odbiorca może przekazać uprawnienie do podpisu z tej strony."
 
-#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:44
+#: src/Api/AssetsignFormController.php:44
 msgid "Fiche créée."
 msgstr "Formularz utworzony."
 
-#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:50
+#: src/Api/AssetsignFormController.php:50
 msgid "Relance envoyée."
 msgstr "Przypomnienie wysłane."
 
-#: src/GlpiPlugin/Assetsign/Api/AssetsignFormController.php:56
+#: src/Api/AssetsignFormController.php:56
 msgid "Demande annulée."
 msgstr "Prośba anulowana."
 
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:36
+#: src/Api/PassportBackfillController.php:36
 msgid "Utilisateur introuvable."
 msgstr "Nie znaleziono użytkownika."
 
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:44
+#: src/Api/PassportBackfillController.php:44
 msgid "Aucun nouvel événement trouvé dans l'historique."
 msgstr "Nie znaleziono nowych zdarzeń w historii."
 
-#: src/GlpiPlugin/Assetsign/Api/PassportBackfillController.php:48
+#: src/Api/PassportBackfillController.php:48
 #, php-format
 msgid "%d événement retrouvé dans l'historique."
 msgid_plural "%d événements retrouvés dans l'historique."
@@ -2212,53 +2212,53 @@ msgstr[0] "Znaleziono %d zdarzenie w historii."
 msgstr[1] "Znaleziono %d zdarzenia w historii."
 msgstr[2] "Znaleziono %d zdarzeń w historii."
 
-#: src/GlpiPlugin/Assetsign/Api/QrLabelController.php:46
+#: src/Api/QrLabelController.php:46
 msgid "Étiquette QR code désactivée pour cette entité."
 msgstr "Etykieta z kodem QR wyłączona dla tej jednostki."
 
-#: src/GlpiPlugin/Assetsign/Maintenance.php:107
+#: src/Maintenance.php:107
 msgid "Télécharger"
 msgstr "Pobierz"
 
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:36
+#: src/ChecklistItem.php:36
 msgid "Point de contrôle qualité"
 msgid_plural "Points de contrôle qualité"
 msgstr[0] "Punkt kontroli jakości"
 msgstr[1] "Punkty kontroli jakości"
 msgstr[2] "Punktów kontroli jakości"
 
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:96
+#: src/ChecklistItem.php:96
 msgid "S'applique aux mouvements"
 msgstr "Dotyczy przemieszczeń"
 
-#: src/GlpiPlugin/Assetsign/ChecklistItem.php:131
+#: src/ChecklistItem.php:131
 msgid ""
 "Un point non rattaché à aucun mouvement n'apparaît jamais sur aucune fiche."
 msgstr ""
 "Punkt listy kontrolnej niepowiązany z żadnym przemieszczeniem nigdy nie "
 "pojawia się w żadnym rekordzie."
 
-#: src/GlpiPlugin/Assetsign/Token.php:85
+#: src/Token.php:85
 msgid "Lien de signature inconnu."
 msgstr "Nieznany link do podpisu."
 
-#: src/GlpiPlugin/Assetsign/Token.php:95
+#: src/Token.php:95
 msgid "Ce document a déjà été traité."
 msgstr "Ten dokument został już przetworzony."
 
-#: src/GlpiPlugin/Assetsign/Token.php:98
+#: src/Token.php:98
 msgid "Ce lien de signature n'est plus valide."
 msgstr "Ten link do podpisu nie jest już ważny."
 
-#: src/GlpiPlugin/Assetsign/Token.php:103
+#: src/Token.php:103
 msgid "Ce lien de signature a expiré."
 msgstr "Ten link do podpisu wygasł."
 
-#: src/GlpiPlugin/Assetsign/Token.php:113
+#: src/Token.php:113
 msgid "Trop de tentatives, lien désactivé par sécurité."
 msgstr "Zbyt wiele prób, link wyłączony ze względów bezpieczeństwa."
 
-#: src/GlpiPlugin/Assetsign/Token.php:139
+#: src/Token.php:139
 msgid "Purge les jetons de signature expirés ou invalides"
 msgstr "Usuwa wygasłe lub nieważne tokeny podpisu"
 
@@ -2486,47 +2486,47 @@ msgstr "Podpisujący pełnomocnik"
 msgid "Motif de la délégation"
 msgstr "Powód przekazania"
 
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+#: src/EnvironmentalData.php
 msgid "Constructeur"
 msgstr "Producent"
 
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+#: src/EnvironmentalData.php
 msgid "API externe dédiée"
 msgstr "Dedykowane zewnętrzne API"
 
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+#: src/EnvironmentalData.php
 msgid "Saisie manuelle"
 msgstr "Wpis ręczny"
 
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+#: src/EnvironmentalData.php
 msgid "Élevé"
 msgstr "Wysoki"
 
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+#: src/EnvironmentalData.php
 msgid "Moyen"
 msgstr "Średni"
 
-#: src/GlpiPlugin/Assetsign/EnvironmentalData.php
+#: src/EnvironmentalData.php
 msgid "Faible"
 msgstr "Niski"
 
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+#: src/Api/EnvironmentalDataFormController.php
 msgid "L'empreinte de fabrication ne peut pas être négative."
 msgstr "Ślad produkcyjny nie może być ujemny."
 
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+#: src/Api/EnvironmentalDataFormController.php
 msgid "Source invalide."
 msgstr "Nieprawidłowe źródło."
 
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+#: src/Api/EnvironmentalDataFormController.php
 msgid "Niveau de confiance invalide."
 msgstr "Nieprawidłowy poziom pewności."
 
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+#: src/Api/EnvironmentalDataFormController.php
 msgid "Empreinte environnementale effacée."
 msgstr "Ślad środowiskowy wyczyszczony."
 
-#: src/GlpiPlugin/Assetsign/Api/EnvironmentalDataFormController.php
+#: src/Api/EnvironmentalDataFormController.php
 msgid "Empreinte environnementale enregistrée."
 msgstr "Ślad środowiskowy zapisany."
 
@@ -4319,11 +4319,11 @@ msgstr "Np.: ekran nie włącza się od rana."
 msgid "Envoyer le signalement"
 msgstr "Wyślij zgłoszenie"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
+#: src/NotificationTargetAssetsign.php
 msgid "Votre signature a été déléguée"
 msgstr "Twój podpis został przekazany"
 
-#: src/GlpiPlugin/Assetsign/NotificationTargetAssetsign.php
+#: src/NotificationTargetAssetsign.php
 msgid "Délégation faite par"
 msgstr "Przekazane przez"
 

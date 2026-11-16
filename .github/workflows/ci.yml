@@ -420,7 +420,7 @@ jobs:
         if: failure()
         run: docker logs glpi --tail 200
 
-  # Meme plugin, meme suite PHPUnit, sur GLPI 12 (cf. src/GlpiPlugin/Assetsign/Compat/) : sans ce
+  # Meme plugin, meme suite PHPUnit, sur GLPI 12 (cf. src/Compat/) : sans ce
   # job, la compatibilite 12 pourrait regresser silencieusement (la CI principale ci-dessus ne
   # tourne que sur GLPI 11). Volontairement limite a l'installation + aux tests : les analyses
   # (Trivy, audits, PHPStan, phpcs) ne dependent pas de la version de GLPI et tournent deja

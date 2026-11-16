@@ -13,10 +13,10 @@ Ce document s'adresse à qui veut comprendre comment le plugin est construit, co
 
 ```
 assetsign/
-├── composer.json           # dépendance Dompdf (vendor/ commité, voir INSTALLATION.md > Prérequis)
+├── composer.json           # dépendance Dompdf (vendor/ non versionné : installé par composer install --no-dev, livré dans l'archive de release)
 ├── setup.php / hook.php    # déclaration, hooks, install/uninstall
 ├── update.sh               # migration + vidage de cache en une commande (voir INSTALLATION.md > Mettre à jour le plugin)
-├── src/GlpiPlugin/Assetsign/  # classes métier (PSR-4)
+├── src/                    # classes métier (PSR-4, espace de noms GlpiPlugin\Assetsign\, dossier plat : autochargement natif de GLPI 11)
 │   ├── Workflow/            # WorkflowTypeInterface/Registry + un type = une classe (Handover, Return, Don, Vente...)
 │   ├── Notification/        # contenu par défaut des e-mails (DefaultNotificationContent)
 │   ├── Pdf/                 # génération du PDF (Dompdf)

@@ -218,7 +218,7 @@ trait PdfRenderingHelpers
      * reellement generes (pas une simple lecture du gabarit).
      */
    private function getDamageViewAspectRatioPercent(string $filename): float {
-       $pluginRoot = dirname(__DIR__, 4);
+       $pluginRoot = dirname(__DIR__, 2);
        $fullpath = $pluginRoot . '/public/images/damage-views/' . $filename;
 
        $size = @getimagesize($fullpath);
@@ -234,8 +234,8 @@ trait PdfRenderingHelpers
           return null;
       }
 
-       // Racine du plugin : Pdf/ -> Assetsign/ -> GlpiPlugin/ -> src/ -> assetsign/
-       $pluginRoot = dirname(__DIR__, 4);
+       // Racine du plugin : Pdf/ -> src/ -> assetsign/
+       $pluginRoot = dirname(__DIR__, 2);
        $fullpath = $pluginRoot . '/public/images/damage-views/' . $filename;
       if (!is_readable($fullpath)) {
           return null;
