@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.26.0] - 2026-11-17
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Added
 
 - **Encadré d'aide** (#336, #344) : « À quoi sert cette page ? » en tête de chaque page d'usage
