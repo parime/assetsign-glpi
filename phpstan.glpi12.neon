@@ -10,6 +10,6 @@ parameters:
     ignoreErrors:
         # Branches GLPI 11 de la couche de compatibilite (deja aiguillees par version de GLPI).
         - identifier: booleanAnd.rightAlwaysTrue
-          path: src/GlpiPlugin/Assetsign/Compat/GlpiVersion.php
+          path: src/Compat/GlpiVersion.php
         - message: '#Toolbox::(getURLContent|getGuzzleClient)\(\)#'
-          path: src/GlpiPlugin/Assetsign/Compat/Http.php
+          path: src/Compat/Http.php

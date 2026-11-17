@@ -226,9 +226,9 @@ jobs:
           '
 
       - name: Installe les dépendances de dev du plugin (PHPUnit)
-        # Le vendor/ commite dans le depot n'embarque volontairement QUE les
-        # dependances de production (cf. INSTALLATION.md, section Prerequis) : PHPUnit
-        # n'y est jamais present, il faut le recuperer ici. composer n'est pas
+        # vendor/ n'est pas versionne (charte commune, section 4, #335) : toutes les
+        # dependances (Dompdf pour la production, PHPUnit/PHPStan/phpcs pour les
+        # controles) s'installent ici, avant l'installation du plugin. composer n'est pas
         # fourni par l'image glpi/glpi -> installe a la volee dans /tmp.
         # COMPOSER_HOME doit deja exister et etre exporte AVANT meme le script
         # d'installation de composer.phar lui-meme (pas seulement pour
@@ -420,7 +420,7 @@ jobs:
         if: failure()
         run: docker logs glpi --tail 200
 
-  # Meme plugin, meme suite PHPUnit, sur GLPI 12 (cf. src/GlpiPlugin/Assetsign/Compat/) : sans ce
+  # Meme plugin, meme suite PHPUnit, sur GLPI 12 (cf. src/Compat/) : sans ce
   # job, la compatibilite 12 pourrait regresser silencieusement (la CI principale ci-dessus ne
   # tourne que sur GLPI 11). Volontairement limite a l'installation + aux tests : les analyses
   # (Trivy, audits, PHPStan, phpcs) ne dependent pas de la version de GLPI et tournent deja
@@ -461,39 +461,8 @@ jobs:
           done
           exit 1
 
-      - name: Installe la dernière version publiée (test de mise à jour)
-        # Le code de la PR est ensuite installe PAR-DESSUS (--force) : verifie les migrations depuis la
-        # derniere version publiee. Une installation neuve ne le fait pas - une migration dependant
-        # d'une colonne creee plus loin (cf. AFTER `stock_states`) passait la CI mais aurait casse la
-        # mise a jour de chaque installation existante.
-        run: |
-          tag=$(git tag --sort=-v:refname | head -1)
-          echo "Derniere version publiee : $tag"
-          docker exec glpi mkdir -p /var/www/glpi/plugins/assetsign
-          git archive "$tag" | docker exec -i glpi tar x -C /var/www/glpi/plugins/assetsign
-          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/assetsign
-          docker exec glpi php bin/console plugin:install assetsign --username=glpi --no-interaction
-          docker exec glpi php bin/console plugin:activate assetsign --no-interaction
-
-      - name: Copie le plugin dans le conteneur GLPI
-        run: |
-          docker exec glpi mkdir -p /var/www/glpi/plugins/assetsign
-          docker cp ./. glpi:/var/www/glpi/plugins/assetsign
-          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/assetsign
-
-      - name: Installe et active le plugin
-        # AVANT les dependances de dev (contrairement au job GLPI 11) : celles-ci embarquent leur
-        # propre symfony/console, incompatible avec celui de GLPI 12 - la console GLPI planterait
-        # (collision d'autoload constatee en local). Le vendor/ commite (production seule) n'a pas
-        # ce probleme.
-        run: |
-          docker exec glpi php bin/console plugin:install assetsign --username=glpi --force --no-interaction
-          docker exec glpi php bin/console plugin:activate assetsign --no-interaction
-
-      - name: Installe les dépendances de dev du plugin (PHPUnit)
+      - name: Installe Composer dans le conteneur
         # Meme procedure que le job GLPI 11 (cf. ses commentaires).
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           docker exec glpi sh -c '
             export COMPOSER_HOME=/tmp/composer-home
@@ -502,6 +471,64 @@ jobs:
             php -r "copy(\"https://getcomposer.org/installer\", \"composer-setup.php\");"
             php composer-setup.php --install-dir=/tmp --filename=composer.phar
           '
+
+      - name: Installe la dernière version publiée (test de mise à jour)
+        # Le code de la PR est ensuite installe PAR-DESSUS (--force) : verifie les migrations depuis la
+        # derniere version publiee. Une installation neuve ne le fait pas - une migration dependant
+        # d'une colonne creee plus loin (cf. AFTER `stock_states`) passait la CI mais aurait casse la
+        # mise a jour de chaque installation existante. vendor/ est versionne jusqu'a la 2.25.0 ;
+        # ensuite (#335), il s'installe comme dans l'archive de release (composer install --no-dev).
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(git tag --sort=-v:refname | head -1)
+          echo "Derniere version publiee : $tag"
+          docker exec glpi mkdir -p /var/www/glpi/plugins/assetsign
+          git archive "$tag" | docker exec -i glpi tar x -C /var/www/glpi/plugins/assetsign
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/assetsign
+          if ! docker exec glpi test -f /var/www/glpi/plugins/assetsign/vendor/autoload.php; then
+            docker exec -e COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GH_TOKEN\"}}" glpi sh -c '
+              export COMPOSER_HOME=/tmp/composer-home
+              cd /var/www/glpi/plugins/assetsign
+              php /tmp/composer.phar install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+            '
+          fi
+          docker exec glpi php bin/console plugin:install assetsign --username=glpi --no-interaction
+          docker exec glpi php bin/console plugin:activate assetsign --no-interaction
+
+      - name: Remplace le plugin par le code de la PR
+        # Dossier vide d'abord, comme une mise a jour par l'archive : sinon les fichiers de l'ancienne
+        # version (src/GlpiPlugin/Assetsign/ jusqu'a la 2.25.0) resteraient a cote des nouveaux, et
+        # PHPStan y verrait chaque classe en double.
+        run: |
+          docker exec -u root glpi sh -c 'rm -rf /var/www/glpi/plugins/assetsign && mkdir -p /var/www/glpi/plugins/assetsign'
+          docker cp ./. glpi:/var/www/glpi/plugins/assetsign
+          docker exec -u root glpi chown -R www-data:www-data /var/www/glpi/plugins/assetsign
+
+      - name: Installe les dépendances de production du plugin
+        # Comme l'archive de release : Dompdf seul, sans les outils de developpement.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          docker exec -e COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GH_TOKEN\"}}" glpi sh -c '
+            export COMPOSER_HOME=/tmp/composer-home
+            cd /var/www/glpi/plugins/assetsign
+            php /tmp/composer.phar install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+          '
+
+      - name: Installe et active le plugin
+        # AVANT les dependances de dev (contrairement au job GLPI 11) : celles-ci embarquent leur
+        # propre symfony/console, incompatible avec celui de GLPI 12 - la console GLPI planterait
+        # (collision d'autoload constatee en local). Les dependances de production seules n'ont pas
+        # ce probleme.
+        run: |
+          docker exec glpi php bin/console plugin:install assetsign --username=glpi --force --no-interaction
+          docker exec glpi php bin/console plugin:activate assetsign --no-interaction
+
+      - name: Installe les dépendances de dev du plugin (PHPUnit)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
           docker exec -e COMPOSER_AUTH="{\"github-oauth\":{\"github.com\":\"$GH_TOKEN\"}}" glpi sh -c '
             export COMPOSER_HOME=/tmp/composer-home
             cd /var/www/glpi/plugins/assetsign

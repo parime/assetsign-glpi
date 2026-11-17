@@ -7,9 +7,9 @@
 - PHP 8.2+ (testé en CI avec PHP 8.2 et PHP 8.5 ; GLPI 12 exige PHP 8.3+)
 - MariaDB / MySQL
 - Un serveur SMTP configuré dans GLPI (pour l'envoi des e-mails de remise et de relance)
-- Composer **uniquement si vous développez sur le plugin** (pour relancer les tests, mettre à jour Dompdf...) - **pas nécessaire pour l'installer**, voir ci-dessous.
+- Composer **seulement pour une installation depuis les sources** (`git clone`) ou pour développer sur le plugin : l'archive de release contient déjà les dépendances, voir ci-dessous.
 
-Le dossier `vendor/` (Dompdf et ses dépendances, ~14 Mo, dépendances de production uniquement) est **commité directement dans ce dépôt**, volontairement, contrairement à la convention habituelle qui l'exclut. Un serveur GLPI de production n'a pas forcément Composer installé : un simple `git clone` (ou une release ZIP) suffit intégralement, sans aucune étape `composer install` sur le serveur cible. `composer.lock` est commité avec, pour que quiconque reconstruit `vendor/` (mise à jour de Dompdf, par exemple) obtienne exactement les mêmes versions. Seules les dépendances de développement (PHPUnit, PHPStan...) restent exclues de ce `vendor/` embarqué : elles n'ont aucune utilité en production : voir [ARCHITECTURE.md](ARCHITECTURE.md#tests-automatisés) pour les réinstaller si besoin.
+Le dossier `vendor/` (Dompdf et ses dépendances, dépendances de production uniquement) **n'est pas versionné** dans ce dépôt, comme dans tous les plugins de la [charte commune](https://github.com/parime/glpi-plugin-template/blob/main/CHARTE.md) (section 4). L'**archive de release** l'embarque déjà, sans aucun fichier de développement : c'est la méthode recommandée sur un serveur sans Composer. Depuis les sources (`git clone`), installez-le avec `composer install --no-dev` ; `composer.lock` est versionné, pour que chacun obtienne exactement les mêmes versions. Les dépendances de développement (PHPUnit, PHPStan...) ne servent qu'aux tests : voir [ARCHITECTURE.md](ARCHITECTURE.md#tests-automatisés).
 
 ## Installation
 
@@ -17,10 +17,12 @@ Le dossier `vendor/` (Dompdf et ses dépendances, ~14 Mo, dépendances de produc
 
 Trois façons de faire, au choix :
 
-**a) `git clone`** (pratique pour ensuite `git pull` lors des mises à jour) :
+**a) `git clone`** (pratique pour ensuite `git pull` lors des mises à jour ; demande Composer) :
 ```bash
 cd /chemin/vers/glpi/plugins
 git clone https://github.com/parime/assetsign-glpi.git assetsign
+cd assetsign
+composer install --no-dev --optimize-autoloader
 ```
 
 **b) Archive de release** - téléchargez `assetsign-glpi-X.Y.Z.zip` depuis la [page des releases](https://github.com/parime/assetsign-glpi/releases) et extrayez-la dans `plugins/` :
@@ -28,7 +30,7 @@ git clone https://github.com/parime/assetsign-glpi.git assetsign
 cd /chemin/vers/glpi/plugins
 unzip assetsign-glpi-X.Y.Z.zip
 ```
-L'archive contient déjà un dossier `assetsign/` à la racine : pas d'étape supplémentaire de renommage.
+L'archive contient déjà un dossier `assetsign/` à la racine, avec ses dépendances (`vendor/`) : pas d'étape supplémentaire de renommage ni de `composer install`.
 
 **c) Sans `git` ni `unzip` disponibles sur le serveur** (ex: conteneur minimal) : récupère l'archive de la branche `main` via `curl` et l'extension PHP `ZipArchive` (quasi toujours présente, GLPI lui-même en dépend) :
 ```bash
@@ -38,7 +40,7 @@ php -r '$z = new ZipArchive; $z->open("assetsign.zip"); $z->extractTo("."); $z->
 mv assetsign-glpi-main assetsign
 rm assetsign.zip
 ```
-Contrairement à l'archive de release (b), celle-ci contient un dossier `assetsign-glpi-main/` à renommer : c'est l'archive brute générée par GitHub pour la branche, pas une release construite par ce dépôt. Elle exclut malgré tout les fichiers de développement/CI (`tests/`, `.github/`...) grâce au même mécanisme `.gitattributes` que les releases.
+Contrairement à l'archive de release (b), celle-ci contient un dossier `assetsign-glpi-main/` à renommer : c'est l'archive brute générée par GitHub pour la branche, pas une release construite par ce dépôt. Elle exclut malgré tout les fichiers de développement/CI (`tests/`, `.github/`...) grâce au même mécanisme `.gitattributes` que les releases, mais **ne contient pas `vendor/`** : lancez ensuite `composer install --no-dev --optimize-autoloader` dans `assetsign/`, ou préférez l'archive de release (b).
 
 Important, dans les trois cas : le dossier doit impérativement s'appeler **`assetsign`** - GLPI déduit la clé du plugin (`plugin_version_assetsign()`, etc.) du nom du dossier dans `plugins/`.
 
@@ -97,7 +99,7 @@ Vérifiez aussi que les notifications GLPI sont actives (**Configuration > Notif
 Une modification du code (nouvelle fonctionnalité, correctif) ne se signale jamais automatiquement côté GLPI : ce dépôt est hors du Marketplace officiel. La marche à suivre :
 
 1. Sur le serveur GLPI, récupérez le nouveau code par la même méthode qu'à l'installation (voir [Installation](#installation) ci-dessus) :
-   - `git pull` si vous avez cloné le dépôt ;
+   - `git pull` si vous avez cloné le dépôt (`update.sh`, à l'étape 2, réinstalle alors les dépendances avec `composer install --no-dev`) ;
    - ou re-téléchargez l'archive ZIP en remplaçant le dossier `assetsign/` par son contenu ;
    - ou, sans `git` disponible, re-jouez la méthode `curl` + `ZipArchive` (méthode c) en écrasant l'ancien dossier :
      ```bash
@@ -109,7 +111,7 @@ Une modification du code (nouvelle fonctionnalité, correctif) ne se signale jam
      rm assetsign.zip
      ```
      `rm -rf assetsign` avant de ré-extraire (plutôt que d'extraire par-dessus) : une simple extraction par-dessus ne supprime jamais un fichier qu'une version plus récente aurait retiré, ne laissant que des fichiers orphelins inoffensifs mais jamais un dossier réellement à jour.
-2. Lancez `sh update.sh` (depuis `plugins/assetsign/`) : ce script regroupe les trois étapes qu'il est facile d'oublier ou de faire dans le mauvais ordre : migration de la base (`plugin:install --force`, sans risque si déjà à jour), réactivation, et vidage du cache GLPI (`cache:clear`).
+2. Lancez `sh update.sh` (depuis `plugins/assetsign/`) : pour une copie clonée avec git, il installe d'abord les dépendances (`composer install --no-dev`) ; puis il regroupe les trois étapes qu'il est facile d'oublier ou de faire dans le mauvais ordre : migration de la base (`plugin:install --force`, sans risque si déjà à jour), réactivation, et vidage du cache GLPI (`cache:clear`).
 
 Le détail de ce que fait `update.sh`, et pourquoi chaque étape est nécessaire :
 - **Migration de la base** (`php bin/console plugin:install assetsign --force`) : nécessaire si le changement ajoute une table ou un champ. GLPI ne le fait jamais tout seul après un simple remplacement de fichiers, même si le numéro de version dans `setup.php` (`PLUGIN_ASSETSIGN_VERSION`) a été incrémenté (il l'est systématiquement à chaque changement de structure) : sans cette étape, GLPI affiche bien le plugin comme "à mettre à jour" sur **Configuration > Plugins**, mais les nouvelles tables/colonnes n'existent pas tant que le bouton (ou cette commande) n'a pas été actionné.

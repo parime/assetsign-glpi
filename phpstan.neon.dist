@@ -17,7 +17,7 @@ parameters:
     # heritent), seulement plus analysees.
     excludePaths:
         analyse:
-            - src/GlpiPlugin/Assetsign/Compat/Base/*
+            - src/Compat/Base/*
     ignoreErrors:
         -
             # Cf. le commentaire de `level` ci-dessus.
@@ -28,7 +28,7 @@ parameters:
             # FieldsPluginValues::isAvailable() (plugin actif, classe et methode presentes).
             message: '#PluginFields#'
             paths:
-                - src/GlpiPlugin/Assetsign/FieldsPluginValues.php
+                - src/FieldsPluginValues.php
         -
             # Les methodes de hook GLPI (getTabNameForItem, displayTabContentForItem,
             # processMassiveActionsForOneItemtype) typent obligatoirement leur
@@ -40,9 +40,9 @@ parameters:
             # type a l'execution.
             message: '#Call to an undefined method (CommonGLPI|CommonDBTM)::(getID|sendReminderNow|cancelRequest)\(\)#'
             paths:
-                - src/GlpiPlugin/Assetsign/Assetsign.php
-                - src/GlpiPlugin/Assetsign/Config.php
-                - src/GlpiPlugin/Assetsign/Maintenance.php
+                - src/Assetsign.php
+                - src/Config.php
+                - src/Maintenance.php
 
         -
             # GLPI_VERSION est un vrai define() du coeur GLPI, resolu ici par le bootstrap au tres
@@ -59,4 +59,4 @@ parameters:
             # detection de GLPI 12 (Compat\GlpiVersion::isAtLeast12()) parait donc toujours fausse
             # - elle est pourtant vraie sur une vraie instance GLPI 12 (verifie en direct).
             identifier: booleanAnd.rightAlwaysFalse
-            path: src/GlpiPlugin/Assetsign/Compat/GlpiVersion.php
+            path: src/Compat/GlpiVersion.php

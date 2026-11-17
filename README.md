@@ -51,16 +51,18 @@ Le même mécanisme fonctionne aussi en sens inverse : quand un matériel est **
 
 ## Installation
 
-**Prérequis** : GLPI 11.0.8+ (recommandé : corrige plusieurs failles critiques du cœur GLPI lui-même) **ou GLPI 12** (même paquet), PHP 8.2+ (8.3+ avec GLPI 12), MariaDB/MySQL, un serveur SMTP configuré dans GLPI. Composer n'est nécessaire que pour développer sur le plugin - **pas pour l'installer** : `vendor/` (Dompdf et ses dépendances, ~14 Mo, production uniquement) est commité directement dans ce dépôt, un simple `git clone` ou une release ZIP suffit sur le serveur cible.
+**Prérequis** : GLPI 11.0.8+ (recommandé : corrige plusieurs failles critiques du cœur GLPI lui-même) **ou GLPI 12** (même paquet), PHP 8.2+ (8.3+ avec GLPI 12), MariaDB/MySQL, un serveur SMTP configuré dans GLPI. L'**archive de release** contient déjà les dépendances (`vendor/`, Dompdf) : aucun Composer nécessaire. Depuis les sources (`git clone`), `vendor/` n'est pas versionné : Composer installe les dépendances de production (`composer install --no-dev`).
 
 **1. Récupérer le code** dans `plugins/` de votre GLPI, sous le nom **`assetsign`** (GLPI en déduit la clé du plugin) :
 
 ```bash
 cd /chemin/vers/glpi/plugins
 git clone https://github.com/parime/assetsign-glpi.git assetsign
+cd assetsign
+composer install --no-dev --optimize-autoloader
 ```
 
-Ou, sans Git disponible : téléchargez `assetsign-glpi-X.Y.Z.zip` depuis les [releases](https://github.com/parime/assetsign-glpi/releases) et extrayez-la dans `plugins/` (elle contient déjà un dossier `assetsign/`, pas de renommage à faire).
+Ou, sans Git ni Composer : téléchargez `assetsign-glpi-X.Y.Z.zip` depuis les [releases](https://github.com/parime/assetsign-glpi/releases) et extrayez-la dans `plugins/` (elle contient déjà un dossier `assetsign/`, pas de renommage à faire).
 
 **2. Installer et activer**, depuis l'interface (**Configuration > Plugins**, « Assetsign & signature ») ou en ligne de commande :
 

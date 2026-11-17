@@ -20,7 +20,7 @@
  *
  * Declaration du plugin aupres de GLPI : version, prerequis, hooks.
  * L'installation/desinstallation et les fonctions procedurales de hook
- * vivent dans hook.php ; la logique metier vit dans src/GlpiPlugin/Assetsign/.
+ * vivent dans hook.php ; la logique metier vit dans src/.
  */
 
 use Glpi\Plugin\Hooks;
@@ -33,7 +33,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
 
 define('PLUGIN_ASSETSIGN_VERSION', '2.25.0');
 define('PLUGIN_ASSETSIGN_MIN_GLPI', '11.0.0');
-// GLPI 11 ET 12 depuis un seul code source (cf. src/GlpiPlugin/Assetsign/Compat/).
+// GLPI 11 ET 12 depuis un seul code source (cf. src/Compat/).
 define('PLUGIN_ASSETSIGN_MAX_GLPI', '12.99.99');
 // PHP 8.2 (et non plus 8.3) depuis le 10 octobre 2026 : rien dans le code ni dans ses dependances
 // n'exige 8.3 (verifie : lint integral sous PHP 8.2, chargement des classes en CI, suite de tests

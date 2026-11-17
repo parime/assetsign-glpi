@@ -18,7 +18,7 @@
 /**
  * Fonctions procedurales appelees directement par le coeur de GLPI.
  * Volontairement minces : elles delegue immediatement aux classes namespacees
- * dans src/GlpiPlugin/Assetsign/ qui portent la vraie logique metier.
+ * dans src/ qui portent la vraie logique metier.
  */
 
 use Glpi\Application\View\TemplateRenderer;
