@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- CI : contrôles de sécurité communs glpi-plugin-security v1.9.0 (charte commune et contrôle des menus bloquants par défaut).
+
 ### Fixed
 
 - **Mise à jour depuis une version antérieure à la signature sur place** (#152) : la migration
