@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Mise à jour depuis une version antérieure à la signature sur place** (#152) : la migration
+  ajoutait `signature_method` après la colonne `witness_name` avant d'avoir créé celle-ci, et
+  échouait sur « Unknown column 'witness_name' » ; le plugin restait « à mettre à jour ».
+  `witness_name` est maintenant ajoutée en premier.
+
 ## [2.26.0] - 2026-11-17
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

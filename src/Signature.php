@@ -179,6 +179,13 @@ class Signature extends Compat\Base\SignatureBase
           // qui met la modification en FILE D'ATTENTE jusqu'a la toute fin de
           // l'installation, cf. le commentaire equivalent dans DamageMarker::
           // install() pour le piege deja rencontre).
+         // Signature sur place (issue #152) : technicien temoin, cf. insertProof().
+         // Ajoutee AVANT signature_method, qui se place apres elle : une base
+         // anterieure a #152 echouait sinon sur "Unknown column 'witness_name'".
+         if (!$DB->fieldExists($table, 'witness_name')) {
+             $migration->addField($table, 'witness_name', 'string', ['after' => 'signed_at', 'null' => true]);
+             $migration->migrationOneTable($table);
+         }
          // Issue #275 : methode de signature (trace ou nom tape), ajoutee immediatement.
          if (!$DB->fieldExists($table, 'signature_method')) {
              $DB->doQuery("ALTER TABLE `$table` ADD `signature_method` varchar(20) NOT NULL DEFAULT 'drawn' AFTER `witness_name`");
@@ -205,12 +212,6 @@ class Signature extends Compat\Base\SignatureBase
              $DB->doQuery("ALTER TABLE `$table` ADD COLUMN `plugin_assetsign_movements_id` int unsigned DEFAULT NULL AFTER `plugin_assetsign_maintenances_id`");
              $DB->doQuery("ALTER TABLE `$table` ADD KEY `plugin_assetsign_movements_id` (`plugin_assetsign_movements_id`)");
              $DB->doQuery("ALTER TABLE `$table` ADD CONSTRAINT `fk_signature_movement` FOREIGN KEY (`plugin_assetsign_movements_id`) REFERENCES `glpi_plugin_assetsign_movements` (`id`) ON DELETE CASCADE");
-         }
-
-         // Signature sur place (issue #152) : technicien temoin, cf. insertProof().
-         if (!$DB->fieldExists($table, 'witness_name')) {
-             $migration->addField($table, 'witness_name', 'string', ['after' => 'signed_at', 'null' => true]);
-             $migration->migrationOneTable($table);
          }
       }
    }
