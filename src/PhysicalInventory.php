@@ -196,10 +196,7 @@ class PhysicalInventory extends Compat\Base\PhysicalInventoryBase
              $where[$field] = 0;
          }
       }
-      if (method_exists($itemtype, 'getSystemSQLCriteria')) {
-          $where += $itemtype::getSystemSQLCriteria();
-      }
-       return $where;
+       return $where + $itemtype::getSystemSQLCriteria();
    }
 
     /**

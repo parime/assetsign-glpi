@@ -114,8 +114,8 @@ final class MenuSection
            ],
            PhysicalInventory::class => [
                'page'     => 'physicalinventory',
-               'purpose'  => __('L'inventaire physique, salle par salle : on scanne les étiquettes QR du matériel présent (ou on saisit son numéro de série) et le plugin le compare à ce que GLPI attend dans ce lieu.', 'assetsign'),
-               'expected' => __('Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un autre emplacement, en trop. Rien n'est modifié dans le parc : corrigez vous-même les écarts. L'export CSV sert de preuve d'inventaire.', 'assetsign'),
+               'purpose'  => __('L\'inventaire physique, salle par salle : on scanne les étiquettes QR du matériel présent (ou on saisit son numéro de série) et le plugin le compare à ce que GLPI attend dans ce lieu.', 'assetsign'),
+               'expected' => __('Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un autre emplacement, en trop. Rien n\'est modifié dans le parc : corrigez vous-même les écarts. L\'export CSV sert de preuve d\'inventaire.', 'assetsign'),
            ],
        ];
    }
