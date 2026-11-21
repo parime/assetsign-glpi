@@ -50,11 +50,6 @@ class ConditionPhoto extends CommonDBTM
 
     public const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
-    public static function getTypeName($nb = 0): string
-    {
-        return _n('Photo de l\'état des lieux', 'Photos de l\'état des lieux', $nb, 'assetsign');
-    }
-
     public static function isApplicable(Assetsign $sheet): bool
     {
         return in_array((int) ($sheet->fields['type'] ?? -1), [Assetsign::TYPE_HANDOVER, Assetsign::TYPE_RETURN], true);
