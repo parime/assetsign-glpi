@@ -1,0 +1,126 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #369 : photos de l'etat des lieux. Attend `photos` (ConditionPhoto::getDisplayData()),
+   `item` et `csrf_token`. Restitution : photos de la remise (avant) et de la restitution (apres)
+   cote a cote, ligne par ligne. #}
+{% macro photo_cell(photo, can_delete, item_id, csrf_token) %}
+  <figure class="mb-0 text-center">
+    <a href="{{ photo.url }}" target="_blank" rel="noopener" title="SHA-256 : {{ photo.sha256 }}">
+      <img src="{{ photo.url }}" class="img-thumbnail" style="max-height: 220px; width: auto; max-width: 100%;" loading="lazy"
+           alt="{{ __('Photo n° %d', 'assetsign')|format(photo.number) }}">
+    </a>
+    <figcaption class="small text-secondary mt-1">
+      <span class="badge bg-azure-lt">{{ __('Photo n° %d', 'assetsign')|format(photo.number) }}</span>
+      {{ photo.date }} - {{ photo.user }}
+      {% if can_delete %}
+        <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="id" value="{{ item_id }}">
+          <button type="submit" name="delete_condition_photo" value="{{ photo.id }}" class="btn btn-sm btn-ghost-danger p-1"
+                  title="{{ __('Supprimer cette photo', 'assetsign') }}" aria-label="{{ __('Supprimer cette photo', 'assetsign') }}">
+            <i class="ti ti-trash"></i>
+          </button>
+        </form>
+      {% endif %}
+    </figcaption>
+  </figure>
+{% endmacro %}
+{% import _self as cp %}
+
+<div class="card mt-4" id="assetsign-photos">
+  <div class="card-header">
+    <h3 class="card-title"><i class="ti ti-camera me-1"></i>{{ __('Photos de l\'état des lieux', 'assetsign') }}</h3>
+    <div class="card-actions d-flex gap-1">
+      <span class="badge bg-blue-lt">{{ _n('%d photo', '%d photos', photos.photos|length, 'assetsign')|format(photos.photos|length) }}</span>
+      {% if photos.in_pdf %}
+        <span class="badge bg-green-lt"><i class="ti ti-file-type-pdf me-1"></i>{{ __('Reproduites dans le PDF', 'assetsign') }}</span>
+      {% else %}
+        <span class="badge bg-secondary-lt"><i class="ti ti-fingerprint me-1"></i>{{ __('Empreintes seules dans le PDF', 'assetsign') }}</span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="card-body">
+    <p class="text-secondary small">
+      <i class="ti ti-info-circle me-1"></i>
+      {% if photos.is_return %}
+        {{ __('Comparez l\'état du matériel à la remise (à gauche) et à la restitution (à droite). Les photos de la restitution s\'ajoutent tant que la fiche n\'est pas signée.', 'assetsign') }}
+      {% else %}
+        {{ __('Photographiez le matériel au moment de la remise : ces photos serviront de point de comparaison à sa restitution. Elles s\'ajoutent tant que la fiche n\'est pas signée.', 'assetsign') }}
+      {% endif %}
+    </p>
+
+    {% if photos.is_return %}
+      {% set before = photos.before.photos|default([]) %}
+      {% set rows = max(before|length, photos.photos|length) %}
+      <div class="row g-2 fw-bold border-bottom pb-1 mb-2">
+        <div class="col-6">
+          <i class="ti ti-arrow-big-right-line me-1"></i>{{ __('Avant : à la remise', 'assetsign') }}
+          {% if photos.before %}
+            <a href="{{ photos.before.url }}" class="fw-normal small ms-1">{{ __('Fiche n° %s', 'assetsign')|format(photos.before.reference) }}</a>
+          {% endif %}
+        </div>
+        <div class="col-6"><i class="ti ti-arrow-back-up me-1"></i>{{ __('Après : à la restitution', 'assetsign') }}</div>
+      </div>
+      {% if not photos.before %}
+        <p class="text-secondary small">{{ __('Aucune fiche de remise lisible pour ce matériel : seules les photos de la restitution s\'affichent.', 'assetsign') }}</p>
+      {% endif %}
+      {% if rows == 0 %}
+        <p class="text-secondary mb-0">{{ __('Aucune photo pour l\'instant.', 'assetsign') }}</p>
+      {% else %}
+        {% for i in 0..(rows - 1) %}
+          <div class="row g-2 mb-2 align-items-start assetsign-photo-pair">
+            <div class="col-6">
+              {% if before[i] is defined %}{{ cp.photo_cell(before[i], false, item.fields.id, csrf_token) }}{% else %}<div class="text-secondary small text-center py-4 border rounded">{{ __('Pas de photo', 'assetsign') }}</div>{% endif %}
+            </div>
+            <div class="col-6">
+              {% if photos.photos[i] is defined %}{{ cp.photo_cell(photos.photos[i], photos.can_edit, item.fields.id, csrf_token) }}{% else %}<div class="text-secondary small text-center py-4 border rounded">{{ __('Pas de photo', 'assetsign') }}</div>{% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% else %}
+      {% if photos.photos|length %}
+        <div class="row g-2">
+          {% for photo in photos.photos %}
+            <div class="col-6 col-md-4 col-lg-3">{{ cp.photo_cell(photo, photos.can_edit, item.fields.id, csrf_token) }}</div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-secondary mb-0">{{ __('Aucune photo pour l\'instant.', 'assetsign') }}</p>
+      {% endif %}
+    {% endif %}
+
+    {% if photos.can_edit and photos.photos|length < photos.max %}
+      <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" enctype="multipart/form-data" class="row g-2 align-items-end mt-3 border-top pt-3">
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="id" value="{{ item.fields.id }}">
+        <div class="col-12 col-md-auto">
+          <label class="form-label" for="assetsign-photo-camera"><i class="ti ti-camera-plus me-1"></i>{{ __('Prendre une photo', 'assetsign') }}</label>
+          <input type="file" name="condition_photos[]" id="assetsign-photo-camera" class="form-control" accept="image/*" capture="environment">
+        </div>
+        <div class="col-12 col-md-auto">
+          <label class="form-label" for="assetsign-photo-files"><i class="ti ti-photo-plus me-1"></i>{{ __('Ou choisir des photos', 'assetsign') }}</label>
+          <input type="file" name="condition_photos[]" id="assetsign-photo-files" class="form-control" accept="image/jpeg,image/png,image/webp" multiple>
+        </div>
+        <div class="col-12 col-md-auto">
+          <button type="submit" name="add_condition_photos" value="1" class="btn btn-primary"><i class="ti ti-upload me-1"></i>{{ __('Ajouter', 'assetsign') }}</button>
+        </div>
+        <div class="col-12 form-text">
+          {{ __('JPEG, PNG ou WebP, %1$d Mo au plus par photo, %2$d photos par fiche. Sur un téléphone, « Prendre une photo » ouvre l\'appareil photo. La position GPS et les autres métadonnées sont retirées à l\'envoi.', 'assetsign')|format(photos.max_mb, photos.max) }}
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>

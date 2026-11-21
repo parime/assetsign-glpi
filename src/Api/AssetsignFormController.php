@@ -18,6 +18,7 @@
 namespace GlpiPlugin\Assetsign\Api;
 
 use GlpiPlugin\Assetsign\Assetsign;
+use GlpiPlugin\Assetsign\ConditionPhoto;
 use GlpiPlugin\Assetsign\PaperSignature;
 
 /**
@@ -72,6 +73,49 @@ final class AssetsignFormController
            (int) ($post['users_id'] ?? 0)
        );
        return \GlpiPlugin\Assetsign\Transfer::createdMessage($sheets['return'], $sheets['handover']);
+   }
+
+    /**
+     * Issue #369 : photos de l'etat des lieux, prises avec l'appareil photo ou choisies parmi les
+     * fichiers. Chaque fichier doit etre un vrai upload HTTP de cette requete ; son contenu est
+     * controle et nettoye par ConditionPhoto::sanitize().
+     *
+     * @return array{added: int, errors: list<string>}
+     */
+   public function addConditionPhotos(Assetsign $assetsign, array $files): array {
+       $upload = $files['condition_photos'] ?? [];
+       $names = (array) ($upload['tmp_name'] ?? []);
+       $errors = (array) ($upload['error'] ?? []);
+       $added = 0;
+       $messages = [];
+       $number = 0;
+      foreach ($names as $key => $tmpName) {
+          $error = (int) ($errors[$key] ?? UPLOAD_ERR_NO_FILE);
+         if ($error === UPLOAD_ERR_NO_FILE) {
+             continue;
+         }
+          $number++;
+         try {
+            if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
+                throw new \RuntimeException(sprintf(__('La photo dépasse la taille maximale (%d Mo).', 'assetsign'), ConditionPhoto::MAX_BYTES / 1024 / 1024));
+            }
+            if ($error !== UPLOAD_ERR_OK || !is_string($tmpName) || $tmpName === '' || !is_uploaded_file($tmpName)) {
+                throw new \RuntimeException(__('Échec de l\'envoi de la photo.', 'assetsign'));
+            }
+             ConditionPhoto::addToSheet($assetsign, $tmpName, (int) \Session::getLoginUserID());
+             $added++;
+         } catch (\RuntimeException $e) {
+             $messages[] = sprintf(__('Photo %1$d : %2$s', 'assetsign'), $number, $e->getMessage());
+         }
+      }
+      if ($number === 0) {
+          $messages[] = __('Prenez ou choisissez au moins une photo.', 'assetsign');
+      }
+      if ($added > 0) {
+          // Le PDF non signe reflete les photos (empreintes, et images si le reglage est actif).
+          $assetsign->refreshDamageAnnotationPdf();
+      }
+       return ['added' => $added, 'errors' => $messages];
    }
 
     /**

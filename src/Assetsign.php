@@ -572,6 +572,8 @@ class Assetsign extends Compat\Base\AssetsignBase
            // Issue #181 : lignes « type d'element GLPI » du kit et objets reels choisis.
            'kit_item_lines'   => $this->isNewID($ID) ? [] : $this->getKitItemLines(),
            'transfer'         => $this->isNewID($ID) ? null : Transfer::getDisplayData($this),
+           // Issue #369 : photos de l'etat des lieux (avant/apres pour une restitution).
+           'condition_photos' => $this->isNewID($ID) ? null : ConditionPhoto::getDisplayData($this),
            'csrf_token'   => \Session::getNewCSRFToken(),
        ]);
 
@@ -3813,12 +3815,15 @@ class Assetsign extends Compat\Base\AssetsignBase
    public static function getAttachedDocuments(int $assetsigns_id): array {
        global $DB;
 
+       $photoIds = ConditionPhoto::getDocumentIds($assetsigns_id);
        $documents = [];
       foreach ($DB->request([
           'SELECT'     => ['glpi_documents.id', 'glpi_documents.name'],
           'FROM'       => 'glpi_documents_items',
           'INNER JOIN' => ['glpi_documents' => ['FKEY' => ['glpi_documents_items' => 'documents_id', 'glpi_documents' => 'id']]],
-          'WHERE'      => ['glpi_documents_items.itemtype' => self::class, 'glpi_documents_items.items_id' => $assetsigns_id],
+          'WHERE'      => ['glpi_documents_items.itemtype' => self::class, 'glpi_documents_items.items_id' => $assetsigns_id]
+              // Issue #369 : les photos de l'etat des lieux ont leur propre bloc.
+              + ($photoIds !== [] ? ['NOT' => ['glpi_documents.id' => $photoIds]] : []),
           'ORDER'      => 'glpi_documents.date_creation DESC',
       ]) as $row) {
           $documents[] = ['id' => (int) $row['id'], 'name' => (string) $row['name']];
