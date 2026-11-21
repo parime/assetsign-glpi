@@ -5984,3 +5984,7 @@ msgstr "Automatisch storniert: Das zugehörige Formular Nr. %s der Übergabe wur
 #, php-format
 msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
 msgstr "Übergabe vorbereitet: %1$s unterschreibt die Rückgabe, %2$s die Übergabe. Das Gerät geht nach beiden Unterschriften in GLPI an %2$s über."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "Eine von zwei Unterschriften: wartet auf %s"

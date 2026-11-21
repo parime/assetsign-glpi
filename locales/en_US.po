@@ -5928,3 +5928,7 @@ msgstr "Cancelled automatically: the paired sheet no. %s of the handover was can
 #, php-format
 msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
 msgstr "Handover prepared: %1$s signs the return, %2$s signs the handover. The equipment will move to %2$s in GLPI after both signatures."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "One of two signatures: waiting for %s"

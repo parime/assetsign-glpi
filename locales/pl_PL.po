@@ -6565,3 +6565,7 @@ msgstr "Anulowano automatycznie: powiązany formularz nr %s przekazania został 
 #, php-format
 msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
 msgstr "Przekazanie przygotowane: %1$s podpisuje zwrot, %2$s podpisuje przekazanie. Sprzęt przejdzie na %2$s w GLPI po obu podpisach."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "Jeden z dwóch podpisów: oczekuje na %s"

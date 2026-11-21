@@ -7433,3 +7433,7 @@ msgstr ""
 #: src/Workflow/VenteType.php:46
 msgid "Matériel vendu"
 msgstr ""
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr ""

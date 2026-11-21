@@ -210,7 +210,13 @@ final class Transfer {
 
       $returnStatus = (int) $return->fields['status'];
       $handoverStatus = (int) $handover->fields['status'];
+      // Une seule fiche reste a signer : le badge nomme la personne attendue.
+      $waitingFor = '';
+      if ($returnLine['is_signed'] !== $handoverLine['is_signed']) {
+         $waitingFor = $returnLine['is_signed'] ? $handoverLine['user'] : $returnLine['user'];
+      }
       return [
+         'waiting_for' => $waitingFor,
          'return'    => $returnLine,
          'handover'  => $handoverLine,
          'complete'  => self::isComplete($returnStatus, $handoverStatus),

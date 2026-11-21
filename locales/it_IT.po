@@ -5958,3 +5958,7 @@ msgstr "Annullata automaticamente: la scheda abbinata n. %s del passaggio è sta
 #, php-format
 msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
 msgstr "Passaggio preparato: %1$s firma la restituzione, %2$s firma la consegna. Il dispositivo passerà a %2$s in GLPI dopo le due firme."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "Una firma su due: in attesa di %s"

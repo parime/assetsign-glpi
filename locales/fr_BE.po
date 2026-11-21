@@ -5948,3 +5948,7 @@ msgstr "Annulée automatiquement : la fiche jumelle n° %s de la passation a ét
 #, php-format
 msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
 msgstr "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "Une signature sur deux : en attente de %s"

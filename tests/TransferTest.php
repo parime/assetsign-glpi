@@ -110,6 +110,12 @@ final class TransferTest extends AssetsignTestCase
 
           $this->setStatus($returnFirst ? $return : $handover, Assetsign::STATUS_SIGNED);
           $this->assertSame($this->outgoing, $this->holderOf($computer), 'Une seule signature : toujours au sortant.');
+          $waiting = Transfer::getDisplayData($return);
+          $this->assertNotNull($waiting);
+          $pending = new \User();
+          $pending->getFromDB($returnFirst ? $this->incoming : $this->outgoing);
+          $this->assertSame($pending->getFriendlyName(), $waiting['waiting_for'], 'Une signature sur deux : la personne attendue est nommee.');
+          $this->assertFalse($waiting['complete']);
 
           $this->setStatus($returnFirst ? $handover : $return, Assetsign::STATUS_SIGNED_ON_PAPER);
           $this->assertSame($this->incoming, $this->holderOf($computer), 'Deux signatures : attribue a l\'entrant.');
@@ -121,6 +127,7 @@ final class TransferTest extends AssetsignTestCase
           $data = Transfer::getDisplayData($handover);
           $this->assertNotNull($data);
           $this->assertTrue($data['complete']);
+          $this->assertSame('', $data['waiting_for']);
       }
    }
 

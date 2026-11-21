@@ -6549,3 +6549,7 @@ msgstr "Cancelada automaticamente: a ficha vinculada nº %s da transferência fo
 #, php-format
 msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
 msgstr "Transferência preparada: %1$s assina a devolução, %2$s assina a entrega. O equipamento passará para %2$s no GLPI após as duas assinaturas."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "Uma das duas assinaturas: aguardando %s"

@@ -39,6 +39,8 @@
               <span class="badge bg-green-lt"><i class="ti ti-check me-1"></i>{{ __('Terminée : matériel attribué dans GLPI', 'assetsign') }}</span>
             {% elseif transfer.aborted %}
               <span class="badge bg-secondary-lt"><i class="ti ti-x me-1"></i>{{ __('Annulée', 'assetsign') }}</span>
+            {% elseif transfer.waiting_for|default('') != '' %}
+              <span class="badge bg-orange-lt"><i class="ti ti-hourglass me-1"></i>{{ __('Une signature sur deux : en attente de %s', 'assetsign')|format(transfer.waiting_for) }}</span>
             {% else %}
               <span class="badge bg-orange-lt"><i class="ti ti-hourglass me-1"></i>{{ __('En attente des deux signatures', 'assetsign') }}</span>
             {% endif %}
