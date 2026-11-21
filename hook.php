@@ -454,6 +454,8 @@ function plugin_assetsign_install(): bool {
     Movement::install($migration);
     Signature::install($migration);
     \GlpiPlugin\Assetsign\IntegrityCheck::install($migration);
+    // Issue #368 : campagnes d'inventaire physique et leurs scans.
+    \GlpiPlugin\Assetsign\PhysicalInventory::install($migration);
     // Issue #322 : attestations d'effacement des donnees (apres Config::install(), dont elle
     // complete les types visibles du passeport).
     WipeAttestation::install($migration);
@@ -654,6 +656,8 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_configs',
         'glpi_plugin_assetsign_creationfailures',
         \GlpiPlugin\Assetsign\IntegrityCheck::RUNS_TABLE,
+        \GlpiPlugin\Assetsign\PhysicalInventory::SCANS_TABLE,
+        'glpi_plugin_assetsign_physicalinventories',
         DocumentReference::COUNTERS_TABLE,
         DocumentReference::REGISTRY_TABLE,
     ] as $table) {

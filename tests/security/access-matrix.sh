@@ -79,6 +79,10 @@ expect "front/departure.form.php : depart de B"               $DENY "$(code "$P/
 expect "front/campaign.form.php : campagne de A"              200   "$(code "$P/campaign.form.php?id=$(id campaign_A)")"
 expect "front/campaign.form.php : campagne de B"              $DENY "$(code "$P/campaign.form.php?id=$(id campaign_B)")"
 expect "front/campaign.form.php : export CSV de B"            $DENY "$(code "$P/campaign.form.php?id=$(id campaign_B)&export=csv")"
+# Issue #368 : campagne d'inventaire physique (page, export CSV).
+expect "front/physicalinventory.form.php : inventaire de A"   200   "$(code "$P/physicalinventory.form.php?id=$(id physicalinventory_A)")"
+expect "front/physicalinventory.form.php : inventaire de B"   $DENY "$(code "$P/physicalinventory.form.php?id=$(id physicalinventory_B)")"
+expect "front/physicalinventory.form.php : export CSV de B"   $DENY "$(code "$P/physicalinventory.form.php?id=$(id physicalinventory_B)&export=csv")"
 expect "front/attestation.form.php : attestation de A"        200   "$(code "$P/attestation.form.php?id=$(id attestation_A)")"
 expect "front/attestation.form.php : attestation de B"        $DENY "$(code "$P/attestation.form.php?id=$(id attestation_B)")"
 expect "front/template.form.php : gabarit de B"               $DENY "$(code "$P/template.form.php?id=$(id templates_B)")"
@@ -112,13 +116,13 @@ expect "front/assetsign.form.php : nouvelle attribution, PC de A" 200 "$(code "$
 expect "front/assetsign.form.php : nouvelle attribution, PC de B" $NF "$(code "$P/assetsign.form.php?itemtype=Computer&items_id=$(id computer_B)")"
 
 # --- Listes et tableaux : objets de A seulement (et la page ne plante pas) ---
-for list in front/assetsign.php front/maintenance.php front/movement.php front/wipeattestation.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php front/integrity.php; do
+for list in front/assetsign.php front/maintenance.php front/movement.php front/wipeattestation.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php front/integrity.php front/physicalinventory.php; do
   body=$(page "$BASE/plugins/assetsign/$list?all=1")
   expect "$list : la liste s'affiche" 200 "$(code "$BASE/plugins/assetsign/$list?all=1")"
   # Ces listes nomment les objets : le super-admin y voit B, le technicien jamais. Les autres ne
   # nomment pas les objets : elles doivent seulement s'afficher sans erreur et sans B.
   case "$list" in
-    front/assetsign.php|front/maintenance.php|front/wipeattestation.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php|front/integrity.php)
+    front/assetsign.php|front/maintenance.php|front/wipeattestation.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php|front/integrity.php|front/physicalinventory.php)
       shows "$list : objets de B" "securite B" "$SEE_B" "$body" ;;
     *)
       shows "$list : aucun objet de B" "securite B" non "$body" ;;
@@ -126,7 +130,7 @@ for list in front/assetsign.php front/maintenance.php front/movement.php front/w
   # Issue #336 : encadré « À quoi sert cette page ? » sur les pages d'usage (les pages d'intitulés
   # n'en ont pas). Pour un profil sans le droit, la page répond 403 avant tout affichage.
   case "$list" in
-    front/assetsign.php|front/maintenance.php|front/movement.php|front/wipeattestation.php|front/departure.php|front/campaign.php|front/csr.php|front/renewal.php|front/integrity.php)
+    front/assetsign.php|front/maintenance.php|front/movement.php|front/wipeattestation.php|front/departure.php|front/campaign.php|front/csr.php|front/renewal.php|front/integrity.php|front/physicalinventory.php)
       shows "$list : encadré d'aide" "assetsign-page-help" oui "$body" ;;
   esac
 done
@@ -152,6 +156,9 @@ if [ "$ROLE" = limited ]; then
     -d "assetsigns_id=$(id assetsign_B)&action=add&view_index=0&x_percent=10&y_percent=10&_glpi_csrf_token=$(csrf)" \
     "$P/damagemarker.php")
   shows "front/damagemarker.php : marqueur sur la feuille de B refuse" '"success":false' oui "$marker"
+  # Issue #368 : scan par la camera (appel AJAX) dans l'inventaire de B : refus en JSON.
+  scan=$(curl -s -c "$JAR" -b "$JAR" -d "id=$(id physicalinventory_B)&code=securite&_glpi_csrf_token=$(csrf)" "$P/physicalinventoryscan.php")
+  shows "front/physicalinventoryscan.php : scan dans l'inventaire de B refuse" '"success":false' oui "$scan"
 fi
 expect "front/ticket_handover.php : ticket de B"             $NF_POST "$(post ticket_handover.php "handover=1&tickets_id=$(id ticket_B)&available_item=Computer:$(id computer_B)&users_id=$(id partant_B)")"
 expect "front/preview.php : apercu avec la configuration de B" $DENY "$(post preview.php "entities_id=$(id b)&type=0")"
@@ -165,6 +172,9 @@ expect "front/configtransfer.php : appliquer avec un jeton forge" 302  "$(post c
 expect "front/campaign.form.php : lancer une campagne en B"  $DENY_POST "$(post campaign.form.php "launch=1&name=securite&entities_id=$(id b)&date_deadline=2099-01-01")"
 # Issue #224 : re-signature de la charte de B.
 expect "front/campaign.form.php : re-signature de la charte de B" $DENY_POST "$(post campaign.form.php "launch_resign=1&entities_id=$(id b)")"
+# Issue #368 : scan (saisie manuelle) et cloture d'un inventaire de B.
+expect "front/physicalinventory.form.php : scan dans l'inventaire de B" $DENY_POST "$(post physicalinventory.form.php "scan=1&id=$(id physicalinventory_B)&code=securite")"
+expect "front/physicalinventory.form.php : cloturer l'inventaire de B" $DENY_POST "$(post physicalinventory.form.php "close=1&id=$(id physicalinventory_B)")"
 expect "front/departure.form.php : depart d'une personne de B" $DENY_POST "$(post departure.form.php "prepare=1&users_id=$(id partant_B)")"
 # Issue #221 : preparer l'arrivee d'une personne de B (ticket cree dans son entite).
 expect "front/arrival.form.php : arrivee d'une personne de B" $DENY_POST "$(post arrival.form.php "prepare=1&users_id=$(id partant_B)")"

@@ -23,7 +23,7 @@ AssetSign n'ajoute **qu'une entrée** aux menus de GLPI : **Outils > AssetSign**
 | **Attributions** | Attributions (liste et nouvelle attribution), Mouvements, Départs, Campagnes d'attestation |
 | **Attestations d'effacement des données** | Attestations et matériels sortis sans attestation |
 | **Fiches de maintenance** | Fiches de maintenance et de préparation de poste |
-| **Pilotage du parc** | Tableau de bord RSE, Renouvellement du parc, Contrôle d'intégrité des preuves |
+| **Pilotage du parc** | Tableau de bord RSE, Renouvellement du parc, Contrôle d'intégrité des preuves, Inventaires physiques |
 
 Chaque onglet n'apparaît que si votre profil a le droit correspondant (par exemple, un profil qui n'a que le droit Maintenance ne voit que les fiches de maintenance). Les anciennes adresses (favoris) continuent de fonctionner.
 
@@ -215,6 +215,23 @@ anomalies sert de preuve de contrôle lors d'un audit. Rien n'est corrigé autom
 fiche en cause pour comprendre ce qui a changé. Les 60 derniers contrôles sont conservés, chaque
 utilisateur n'en voit que la part de ses entités.
 
+### Inventaire physique par scan des étiquettes QR
+
+Outils > AssetSign > Pilotage du parc > **Inventaires physiques**. Créez une campagne pour un lieu
+(une salle, un étage ; ses sous-lieux sont inclus si la case est cochée), puis ouvrez-la sur le
+téléphone ou la tablette : **Démarrer la caméra** et visez les étiquettes QR imprimées par le plugin.
+Chaque matériel reconnu s'ajoute aussitôt à la liste ; un matériel sans étiquette se saisit à la
+main (numéro de série, numéro d'inventaire ou nom). La caméra exige une connexion HTTPS ; le
+décodage se fait dans le navigateur, rien n'est envoyé ailleurs qu'à GLPI.
+
+Le **rapport de rapprochement** classe chaque matériel : *Trouvé* (scanné, rangé dans ce lieu dans
+GLPI), *À un autre emplacement* (scanné ici, mais GLPI le place ailleurs), *Absent* (attendu dans
+ce lieu, pas scanné), *En trop* (code qui ne correspond à aucun matériel de vos entités). L'export
+CSV sert de preuve d'inventaire ; **Clôturer la campagne** fige le rapport. Le plugin ne modifie
+jamais le parc : corrigez les écarts depuis la fiche du matériel. Il faut le droit de lecture
+AssetSign pour consulter, et le droit de modification pour créer une campagne et scanner ; seul le
+matériel de vos entités est pris en compte.
+
 ### Alternative au cron GLPI
 
 Le CronTask GLPI (**Administration > Actions automatiques** > `assetsignReminders` / `assetsignExpire` / `assetsignExpiryWarning`) est actif par défaut et suffit dans la plupart des cas.
@@ -302,7 +319,7 @@ AssetSign adds **a single entry** to GLPI's menus: **Tools > AssetSign**. At the
 | **Assignments** | Assignments (list and new assignment), Movements, Departures, Attestation campaigns |
 | **Data wiping attestations** | Attestations and equipment that left without one |
 | **Maintenance records** | Maintenance and workstation preparation records |
-| **Fleet management** | CSR dashboard, Fleet renewal, Integrity check of signed proofs |
+| **Fleet management** | CSR dashboard, Fleet renewal, Integrity check of signed proofs, Physical inventories |
 
 Each tab only appears if your profile has the matching right (for instance, a profile with only the Maintenance right only sees maintenance records). Old addresses (bookmarks) keep working.
 
@@ -477,6 +494,22 @@ sheet marked as signed without any PDF or proof is reported too. The **Run the c
 it immediately (AssetSign update right); the CSV export of the anomalies is evidence of the check
 for an audit. Nothing is fixed automatically: open the sheet concerned to see what changed. The last
 60 checks are kept, and each user only sees the part covering their entities.
+
+### Physical inventory by scanning QR labels
+
+Tools > AssetSign > Fleet management > **Physical inventories**. Create a campaign for a location
+(a room, a floor; its sub-locations are included when the box is ticked), then open it on a phone or
+tablet: **Start the camera** and point it at the QR labels printed by the plugin. Each recognised
+item is added to the list at once; an item without a label can be typed in (serial number,
+inventory number or name). The camera requires an HTTPS connection; decoding happens in the
+browser, nothing is sent anywhere but GLPI.
+
+The **reconciliation report** classifies each item: *Found* (scanned, stored in this location in
+GLPI), *At another location* (scanned here, but GLPI places it elsewhere), *Missing* (expected in
+this location, not scanned), *Extra* (a code matching no item of your entities). The CSV export is
+the inventory evidence; **Close the campaign** freezes the report. The plugin never changes the
+fleet: fix the gaps from the item's form. Viewing requires the AssetSign read right; creating a
+campaign and scanning require the update right; only items of your entities are taken into account.
 
 ### Alternative to the GLPI cron
 

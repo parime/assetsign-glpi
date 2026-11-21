@@ -114,6 +114,12 @@ if (($argv[1] ?? '') === 'xss') {
         'comment' => $canary,
     ]);
     $set('campaigns', ['name' => $canary], ['id' => $ids['campaign_A']]);
+    // Issue #368 : campagne d'inventaire physique (nom, commentaire, code scanne inconnu).
+    $set('physicalinventories', ['name' => $canary, 'comment' => $canary], ['id' => $ids['physicalinventory_A']]);
+    $DB->insert('glpi_plugin_assetsign_physicalinventoryscans', [
+        'physicalinventories_id' => $ids['physicalinventory_A'], 'code' => $canary, 'itemtype' => '', 'items_id' => 0,
+        'users_id' => $ids['partant_A'], 'date_scan' => date('Y-m-d H:i:s'),
+    ]);
     $set('attestations', ['comment' => $canary, 'items' => json_encode([['name' => $canary]])], ['id' => $ids['attestation_A']]);
     $set('maintenances', ['comment' => $canary], ['id' => $ids['maintenance_A']]);
     $set('movements', ['comment' => $canary], ['id' => $ids['movement_A']]);
@@ -167,6 +173,10 @@ if (($argv[1] ?? '') === 'snapshot') {
     // Issue #221 : dossiers d'arrivee et tickets de l'entite B.
     $snapshot['arrivals_B'] = countElementsInTable('glpi_plugin_assetsign_arrivals', ['entities_id' => $b]);
     $snapshot['tickets_B'] = countElementsInTable('glpi_tickets', ['entities_id' => $b]);
+    // Issue #368 : scans des campagnes d'inventaire physique de l'entite B.
+    $snapshot['physicalinventoryscans_B'] = countElementsInTable('glpi_plugin_assetsign_physicalinventoryscans', [
+        'physicalinventories_id' => array_merge([0], array_column(iterator_to_array($DB->request(['SELECT' => ['id'], 'FROM' => 'glpi_plugin_assetsign_physicalinventories', 'WHERE' => ['entities_id' => $b]])), 'id')),
+    ]);
     $snapshot['config_B'] = md5(json_encode(iterator_to_array($DB->request(['FROM' => 'glpi_plugin_assetsign_configs', 'WHERE' => ['entities_id' => $b]]))));
     ksort($snapshot);
     echo json_encode($snapshot), "\n";
@@ -260,6 +270,18 @@ foreach (['A' => $a, 'B' => $b] as $suffix => $entity) {
     ]);
     $ids['campaign_' . $suffix] = $insert('glpi_plugin_assetsign_campaigns', [
         'entities_id' => $entity, 'name' => 'Campagne securite ' . $suffix,
+    ]);
+    // Issue #368 : campagne d'inventaire physique (lieu de l'entite), PC de l'entite scanne.
+    $location = new Location();
+    $locationId = (int) ($location->getFromDBByCrit(['name' => 'Salle securite ' . $suffix, 'entities_id' => $entity])
+        ? $location->getID()
+        : $location->add(['name' => 'Salle securite ' . $suffix, 'entities_id' => $entity]));
+    $ids['physicalinventory_' . $suffix] = $insert('glpi_plugin_assetsign_physicalinventories', [
+        'entities_id' => $entity, 'name' => 'Inventaire securite ' . $suffix, 'locations_id' => $locationId, 'users_id' => $leaving,
+    ]);
+    $DB->insert('glpi_plugin_assetsign_physicalinventoryscans', [
+        'physicalinventories_id' => $ids['physicalinventory_' . $suffix], 'code' => 'SN-SECURITE-' . $suffix,
+        'itemtype' => 'Computer', 'items_id' => $ids['computer_' . $suffix], 'users_id' => $leaving, 'date_scan' => date('Y-m-d H:i:s'),
     ]);
     $ids['attestation_' . $suffix] = $insert('glpi_plugin_assetsign_attestations', [
         'entities_id' => $entity, 'users_id' => $leaving, 'plugin_assetsign_campaigns_id' => $ids['campaign_' . $suffix],

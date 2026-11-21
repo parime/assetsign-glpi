@@ -1,0 +1,93 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #368 : campagnes d'inventaire physique. #}
+<div class="container-lg my-3">
+  {% if can_create %}
+    <div class="card mb-3">
+      <div class="card-header"><h3 class="card-title mb-0"><i class="ti ti-plus me-2"></i>{{ __('Nouvelle campagne d\'inventaire', 'assetsign') }}</h3></div>
+      <div class="card-body">
+        {% if locations is empty %}
+          <div class="alert alert-info mb-0"><i class="ti ti-info-circle me-1"></i>{{ __('Aucun lieu dans vos entités : créez d\'abord les lieux (salles, étages) dans Configuration > Intitulés > Lieux.', 'assetsign') }}</div>
+        {% else %}
+          <form method="post" action="{{ self_url }}" class="row g-3 align-items-end">
+            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+            <div class="col-md-4">
+              <label class="form-label required" for="pi-name">{{ __('Nom de la campagne', 'assetsign') }}</label>
+              <input type="text" id="pi-name" name="name" class="form-control" maxlength="255" required placeholder="{{ __('Exemple : inventaire du 2e étage', 'assetsign') }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label required" for="pi-location">{{ __('Lieu à inventorier', 'assetsign') }}</label>
+              <select id="pi-location" name="locations_id" class="form-select" required>
+                <option value="">-----</option>
+                {% for lid, lname in locations %}
+                  <option value="{{ lid }}">{{ lname }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-check">
+                <input type="checkbox" class="form-check-input" name="include_sublocations" value="1" checked>
+                <span class="form-check-label">{{ __('Inclure les sous-lieux (salles du bâtiment, par exemple)', 'assetsign') }}</span>
+              </label>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="pi-comment">{{ __('Commentaire', 'assetsign') }}</label>
+              <textarea id="pi-comment" name="comment" class="form-control" rows="2"></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" name="launch" value="1" class="btn btn-primary"><i class="ti ti-player-play me-1"></i>{{ __('Créer la campagne', 'assetsign') }}</button>
+            </div>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-header"><h3 class="card-title mb-0"><i class="ti ti-scan me-2"></i>{{ __('Campagnes d\'inventaire physique', 'assetsign') }}</h3></div>
+    {% if rows is empty %}
+      <div class="card-body"><div class="empty"><p class="empty-title">{{ __('Aucune campagne pour l\'instant', 'assetsign') }}</p></div></div>
+    {% else %}
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>{{ __('Campagne', 'assetsign') }}</th>
+              <th>{{ __('Lieu', 'assetsign') }}</th>
+              <th>{{ __('Scans', 'assetsign') }}</th>
+              <th>{{ __('Statut') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+              <tr>
+                <td><a href="{{ form_url }}?id={{ row.id }}">{{ row.name }}</a><div class="text-muted small">{{ row.date_creation|formatted_datetime }}</div></td>
+                <td>{{ row.location }}</td>
+                <td>{{ row.scans }}</td>
+                <td>
+                  {% if row.is_open %}
+                    <span class="badge bg-primary-subtle text-primary-emphasis"><i class="ti ti-player-play me-1"></i>{{ __('Ouverte', 'assetsign') }}</span>
+                  {% else %}
+                    <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-lock me-1"></i>{{ __('Clôturée', 'assetsign') }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>
