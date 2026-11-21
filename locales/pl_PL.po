@@ -6569,3 +6569,126 @@ msgstr "Przekazanie przygotowane: %1$s podpisuje zwrot, %2$s podpisuje przekazan
 #, php-format
 msgid "Une signature sur deux : en attente de %s"
 msgstr "Jeden z dwóch podpisów: oczekuje na %s"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:51
+msgid "Contrôle d'intégrité des preuves"
+msgstr "Kontrola integralności dowodów"
+
+#: src/IntegrityCheck.php:79
+msgid "Preuve de signature absente"
+msgstr "Brak dowodu podpisu"
+
+#: src/IntegrityCheck.php:80
+msgid "Aucun PDF signé enregistré"
+msgstr "Brak zapisanego podpisanego PDF"
+
+#: src/IntegrityCheck.php:81
+msgid "Document supprimé de GLPI"
+msgstr "Dokument usunięty z GLPI"
+
+#: src/IntegrityCheck.php:82
+msgid "Fichier absent du disque"
+msgstr "Brak pliku na dysku"
+
+#: src/IntegrityCheck.php:83
+msgid "Empreinte SHA-256 modifiée"
+msgstr "Zmieniony skrót SHA-256"
+
+#: src/IntegrityCheck.php:84
+msgid "Document détaché du matériel"
+msgstr "Dokument odłączony od sprzętu"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Fiche"
+msgstr "Karta"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Anomalie"
+msgstr "Nieprawidłowość"
+
+#: src/IntegrityCheck.php:298
+msgid ""
+"Contrôle l'intégrité des preuves signées (PDF présent, empreinte inchangée, "
+"document rattaché)"
+msgstr ""
+"Sprawdza integralność podpisanych dowodów (PDF obecny, skrót niezmieniony, "
+"dokument powiązany)"
+
+#: front/integrity.php:35 src/IntegrityCheck.php:306
+#, php-format
+msgid "%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)"
+msgstr "%d nieprawidłowości w %d sprawdzonych podpisanych kartach"
+
+#: front/integrity.php:57
+msgid "Tâche planifiée"
+msgstr "Akcja automatyczna"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "%d anomalie(s)"
+msgstr "%d nieprawidłowości"
+
+#: templates/integrity.html.twig
+msgid "Aucune anomalie"
+msgstr "Brak nieprawidłowości"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "Dernier contrôle le %1$s (%2$s) : %3$d fiche(s) signée(s) contrôlée(s)."
+msgstr "Ostatnia kontrola %1$s (%2$s): sprawdzono %3$d podpisanych kart."
+
+#: templates/integrity.html.twig
+msgid ""
+"Aucun contrôle effectué pour l'instant : la tâche planifiée tourne chaque "
+"semaine, ou lancez-le maintenant."
+msgstr ""
+"Nie wykonano jeszcze żadnej kontroli: akcja automatyczna działa co tydzień, "
+"możesz też uruchomić ją teraz."
+
+#: templates/integrity.html.twig
+msgid "Lancer le contrôle"
+msgstr "Uruchom kontrolę"
+
+#: templates/integrity.html.twig
+msgid "Fréquence : Configuration > Actions automatiques (assetsignIntegrity)"
+msgstr "Częstotliwość: Konfiguracja > Akcje automatyczne (assetsignIntegrity)"
+
+#: templates/integrity.html.twig
+msgid "Toutes les preuves contrôlées sont intactes."
+msgstr "Wszystkie sprawdzone dowody są nienaruszone."
+
+#: templates/integrity.html.twig
+msgid "Contrôles précédents"
+msgstr "Poprzednie kontrole"
+
+#: templates/integrity.html.twig
+msgid "Lancé par"
+msgstr "Uruchomione przez"
+
+#: templates/integrity.html.twig
+msgid "Fiches contrôlées"
+msgstr "Sprawdzone karty"
+
+#: templates/integrity.html.twig
+msgid "Anomalies"
+msgstr "Nieprawidłowości"
+
+#: src/MenuSection.php:107
+msgid ""
+"Vérifie que chaque fiche signée garde sa preuve : le PDF signé (ou le scan "
+"papier) existe toujours, son empreinte SHA-256 n'a pas changé et il reste "
+"rattaché au matériel."
+msgstr ""
+"Sprawdza, czy każda podpisana karta zachowuje swój dowód: podpisany PDF (lub "
+"skan papierowy) nadal istnieje, jego skrót SHA-256 się nie zmienił i nadal "
+"jest powiązany ze sprzętem."
+
+#: src/MenuSection.php:108
+msgid ""
+"Le contrôle tourne chaque semaine ; « Lancer le contrôle » le relance "
+"aussitôt. Ouvrez chaque fiche en anomalie pour comprendre ce qui a changé : "
+"rien n'est corrigé automatiquement. L'export CSV sert de preuve de contrôle."
+msgstr ""
+"Kontrola działa co tydzień; „Uruchom kontrolę” uruchamia ją od razu. Otwórz "
+"każdą kartę z nieprawidłowością, aby zobaczyć, co się zmieniło: nic nie jest "
+"poprawiane automatycznie. Eksport CSV służy jako dowód kontroli."

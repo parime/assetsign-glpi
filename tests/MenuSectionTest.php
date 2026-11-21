@@ -25,6 +25,7 @@ use GlpiPlugin\Assetsign\ChecklistItem;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\CsrDashboard;
 use GlpiPlugin\Assetsign\Departure;
+use GlpiPlugin\Assetsign\IntegrityCheck;
 use GlpiPlugin\Assetsign\Kit;
 use GlpiPlugin\Assetsign\Maintenance;
 use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
@@ -80,7 +81,7 @@ final class MenuSectionTest extends AssetsignTestCase
        $this->assertSame(
            [
                Assetsign::class, Movement::class, Departure::class, Campaign::class,
-               WipeAttestation::class, Maintenance::class, CsrDashboard::class, Renewal::class,
+               WipeAttestation::class, Maintenance::class, CsrDashboard::class, Renewal::class, IntegrityCheck::class,
            ],
            array_keys($menu['options'])
        );

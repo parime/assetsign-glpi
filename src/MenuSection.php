@@ -53,7 +53,7 @@ final class MenuSection
            'fleet' => [
                'label' => __('Pilotage du parc', 'assetsign'),
                'icon'  => 'ti ti-chart-pie',
-               'pages' => [CsrDashboard::class, Renewal::class],
+               'pages' => [CsrDashboard::class, Renewal::class, IntegrityCheck::class],
            ],
        ];
    }
@@ -106,6 +106,11 @@ final class MenuSection
                'page'     => 'renewal',
                'purpose'  => __('Les matériels qui arrivent en fin d\'amortissement sur la période choisie, avec le budget de remplacement par année.', 'assetsign'),
                'expected' => __('Choisissez la période, puis exportez la liste en CSV ou créez un ticket de changement groupé pour planifier le remplacement.', 'assetsign'),
+           ],
+           IntegrityCheck::class => [
+               'page'     => 'integrity',
+               'purpose'  => __('Vérifie que chaque fiche signée garde sa preuve : le PDF signé (ou le scan papier) existe toujours, son empreinte SHA-256 n\'a pas changé et il reste rattaché au matériel.', 'assetsign'),
+               'expected' => __('Le contrôle tourne chaque semaine ; « Lancer le contrôle » le relance aussitôt. Ouvrez chaque fiche en anomalie pour comprendre ce qui a changé : rien n\'est corrigé automatiquement. L\'export CSV sert de preuve de contrôle.', 'assetsign'),
            ],
        ];
    }

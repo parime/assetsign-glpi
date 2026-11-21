@@ -5988,3 +5988,126 @@ msgstr "Übergabe vorbereitet: %1$s unterschreibt die Rückgabe, %2$s die Überg
 #, php-format
 msgid "Une signature sur deux : en attente de %s"
 msgstr "Eine von zwei Unterschriften: wartet auf %s"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:51
+msgid "Contrôle d'intégrité des preuves"
+msgstr "Integritätsprüfung der Nachweise"
+
+#: src/IntegrityCheck.php:79
+msgid "Preuve de signature absente"
+msgstr "Signaturnachweis fehlt"
+
+#: src/IntegrityCheck.php:80
+msgid "Aucun PDF signé enregistré"
+msgstr "Kein signiertes PDF gespeichert"
+
+#: src/IntegrityCheck.php:81
+msgid "Document supprimé de GLPI"
+msgstr "Dokument in GLPI gelöscht"
+
+#: src/IntegrityCheck.php:82
+msgid "Fichier absent du disque"
+msgstr "Datei fehlt auf dem Datenträger"
+
+#: src/IntegrityCheck.php:83
+msgid "Empreinte SHA-256 modifiée"
+msgstr "SHA-256-Hash geändert"
+
+#: src/IntegrityCheck.php:84
+msgid "Document détaché du matériel"
+msgstr "Dokument vom Gerät getrennt"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Fiche"
+msgstr "Blatt"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Anomalie"
+msgstr "Abweichung"
+
+#: src/IntegrityCheck.php:298
+msgid ""
+"Contrôle l'intégrité des preuves signées (PDF présent, empreinte inchangée, "
+"document rattaché)"
+msgstr ""
+"Prüft die Integrität der signierten Nachweise (PDF vorhanden, Hash "
+"unverändert, Dokument verknüpft)"
+
+#: front/integrity.php:35 src/IntegrityCheck.php:306
+#, php-format
+msgid "%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)"
+msgstr "%d Abweichung(en) bei %d geprüften signierten Blättern"
+
+#: front/integrity.php:57
+msgid "Tâche planifiée"
+msgstr "Automatische Aktion"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "%d anomalie(s)"
+msgstr "%d Abweichung(en)"
+
+#: templates/integrity.html.twig
+msgid "Aucune anomalie"
+msgstr "Keine Abweichung"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "Dernier contrôle le %1$s (%2$s) : %3$d fiche(s) signée(s) contrôlée(s)."
+msgstr "Letzte Prüfung am %1$s (%2$s): %3$d signierte Blätter geprüft."
+
+#: templates/integrity.html.twig
+msgid ""
+"Aucun contrôle effectué pour l'instant : la tâche planifiée tourne chaque "
+"semaine, ou lancez-le maintenant."
+msgstr ""
+"Noch keine Prüfung durchgeführt: Die automatische Aktion läuft wöchentlich, "
+"oder starten Sie sie jetzt."
+
+#: templates/integrity.html.twig
+msgid "Lancer le contrôle"
+msgstr "Prüfung starten"
+
+#: templates/integrity.html.twig
+msgid "Fréquence : Configuration > Actions automatiques (assetsignIntegrity)"
+msgstr "Häufigkeit: Einstellungen > Automatische Aktionen (assetsignIntegrity)"
+
+#: templates/integrity.html.twig
+msgid "Toutes les preuves contrôlées sont intactes."
+msgstr "Alle geprüften Nachweise sind unversehrt."
+
+#: templates/integrity.html.twig
+msgid "Contrôles précédents"
+msgstr "Frühere Prüfungen"
+
+#: templates/integrity.html.twig
+msgid "Lancé par"
+msgstr "Gestartet von"
+
+#: templates/integrity.html.twig
+msgid "Fiches contrôlées"
+msgstr "Geprüfte Blätter"
+
+#: templates/integrity.html.twig
+msgid "Anomalies"
+msgstr "Abweichungen"
+
+#: src/MenuSection.php:107
+msgid ""
+"Vérifie que chaque fiche signée garde sa preuve : le PDF signé (ou le scan "
+"papier) existe toujours, son empreinte SHA-256 n'a pas changé et il reste "
+"rattaché au matériel."
+msgstr ""
+"Prüft, dass jedes signierte Blatt seinen Nachweis behält: Das signierte PDF "
+"(oder der Papierscan) ist noch vorhanden, sein SHA-256-Hash hat sich nicht "
+"geändert und es ist weiterhin mit dem Gerät verknüpft."
+
+#: src/MenuSection.php:108
+msgid ""
+"Le contrôle tourne chaque semaine ; « Lancer le contrôle » le relance "
+"aussitôt. Ouvrez chaque fiche en anomalie pour comprendre ce qui a changé : "
+"rien n'est corrigé automatiquement. L'export CSV sert de preuve de contrôle."
+msgstr ""
+"Die Prüfung läuft jede Woche; „Prüfung starten“ führt sie sofort aus. Öffnen "
+"Sie jedes Blatt mit Abweichung, um zu sehen, was sich geändert hat: Nichts "
+"wird automatisch korrigiert. Der CSV-Export dient als Prüfnachweis."

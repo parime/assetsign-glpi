@@ -453,6 +453,7 @@ function plugin_assetsign_install(): bool {
     // et ChecklistItem/Assetsign plus haut.
     Movement::install($migration);
     Signature::install($migration);
+    \GlpiPlugin\Assetsign\IntegrityCheck::install($migration);
     // Issue #322 : attestations d'effacement des donnees (apres Config::install(), dont elle
     // complete les types visibles du passeport).
     WipeAttestation::install($migration);
@@ -558,6 +559,16 @@ function plugin_assetsign_install(): bool {
             'mode'    => CronTask::MODE_EXTERNAL,
         ]
     );
+    // Issue #371 : controle d'integrite hebdomadaire des preuves signees (rapport seulement).
+    CronTask::register(
+        \GlpiPlugin\Assetsign\IntegrityCheck::class,
+        'assetsignIntegrity',
+        WEEK_TIMESTAMP,
+        [
+            'comment' => 'Controle que chaque fiche signee a son PDF, une empreinte inchangee et un document rattache',
+            'mode'    => CronTask::MODE_EXTERNAL,
+        ]
+    );
     CronTask::register(
         PassportEvent::class,
         'passportAnonymize',
@@ -642,6 +653,7 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_templates',
         'glpi_plugin_assetsign_configs',
         'glpi_plugin_assetsign_creationfailures',
+        \GlpiPlugin\Assetsign\IntegrityCheck::RUNS_TABLE,
         DocumentReference::COUNTERS_TABLE,
         DocumentReference::REGISTRY_TABLE,
     ] as $table) {

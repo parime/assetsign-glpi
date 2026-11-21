@@ -112,13 +112,13 @@ expect "front/assetsign.form.php : nouvelle attribution, PC de A" 200 "$(code "$
 expect "front/assetsign.form.php : nouvelle attribution, PC de B" $NF "$(code "$P/assetsign.form.php?itemtype=Computer&items_id=$(id computer_B)")"
 
 # --- Listes et tableaux : objets de A seulement (et la page ne plante pas) ---
-for list in front/assetsign.php front/maintenance.php front/movement.php front/wipeattestation.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php; do
+for list in front/assetsign.php front/maintenance.php front/movement.php front/wipeattestation.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php front/integrity.php; do
   body=$(page "$BASE/plugins/assetsign/$list?all=1")
   expect "$list : la liste s'affiche" 200 "$(code "$BASE/plugins/assetsign/$list?all=1")"
   # Ces listes nomment les objets : le super-admin y voit B, le technicien jamais. Les autres ne
   # nomment pas les objets : elles doivent seulement s'afficher sans erreur et sans B.
   case "$list" in
-    front/assetsign.php|front/maintenance.php|front/wipeattestation.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php)
+    front/assetsign.php|front/maintenance.php|front/wipeattestation.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php|front/integrity.php)
       shows "$list : objets de B" "securite B" "$SEE_B" "$body" ;;
     *)
       shows "$list : aucun objet de B" "securite B" non "$body" ;;
@@ -126,7 +126,7 @@ for list in front/assetsign.php front/maintenance.php front/movement.php front/w
   # Issue #336 : encadré « À quoi sert cette page ? » sur les pages d'usage (les pages d'intitulés
   # n'en ont pas). Pour un profil sans le droit, la page répond 403 avant tout affichage.
   case "$list" in
-    front/assetsign.php|front/maintenance.php|front/movement.php|front/wipeattestation.php|front/departure.php|front/campaign.php|front/csr.php|front/renewal.php)
+    front/assetsign.php|front/maintenance.php|front/movement.php|front/wipeattestation.php|front/departure.php|front/campaign.php|front/csr.php|front/renewal.php|front/integrity.php)
       shows "$list : encadré d'aide" "assetsign-page-help" oui "$body" ;;
   esac
 done

@@ -1,0 +1,86 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #371 : controle d'integrite des preuves signees. #}
+<div class="container-lg my-3">
+  <div class="card mb-3">
+    <div class="card-header d-flex flex-wrap align-items-center gap-2">
+      <h3 class="card-title mb-0"><i class="ti ti-shield-check me-2"></i>{{ __('Contrôle d\'intégrité des preuves', 'assetsign') }}</h3>
+      {% if last %}
+        {% if last.anomalies > 0 %}
+          <span class="badge bg-danger-subtle text-danger-emphasis"><i class="ti ti-alert-triangle me-1"></i>{{ __('%d anomalie(s)', 'assetsign')|format(last.anomalies) }}</span>
+        {% else %}
+          <span class="badge bg-success-subtle text-success-emphasis"><i class="ti ti-circle-check me-1"></i>{{ __('Aucune anomalie', 'assetsign') }}</span>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="card-body">
+      {% if last %}
+        <p class="mb-0">{{ __('Dernier contrôle le %1$s (%2$s) : %3$d fiche(s) signée(s) contrôlée(s).', 'assetsign')|format(last.date_run|formatted_datetime, last.by, last.checked) }}</p>
+      {% else %}
+        <p class="mb-0 text-muted">{{ __('Aucun contrôle effectué pour l\'instant : la tâche planifiée tourne chaque semaine, ou lancez-le maintenant.', 'assetsign') }}</p>
+      {% endif %}
+    </div>
+    <div class="card-footer d-flex flex-wrap gap-2">
+      {% if can_run %}
+        <form method="post" action="{{ self_url }}">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" name="run_check" value="1" class="btn btn-primary"><i class="ti ti-player-play me-1"></i>{{ __('Lancer le contrôle', 'assetsign') }}</button>
+        </form>
+      {% endif %}
+      {% if last %}
+        <a class="btn btn-outline-secondary" href="{{ self_url }}?export=csv"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('Exporter (CSV)', 'assetsign') }}</a>
+      {% endif %}
+      <a class="ms-auto align-self-center" href="{{ cron_url }}">{{ __('Fréquence : Configuration > Actions automatiques (assetsignIntegrity)', 'assetsign') }}</a>
+    </div>
+  </div>
+
+  {% if last %}
+    <div class="card mb-3">
+      {% if rows is empty %}
+        <div class="card-body"><div class="empty"><p class="empty-title">{{ __('Toutes les preuves contrôlées sont intactes.', 'assetsign') }}</p></div></div>
+      {% else %}
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead><tr><th>{{ __('Fiche', 'assetsign') }}</th><th>{{ __('Matériel', 'assetsign') }}</th><th>{{ __('Document', 'assetsign') }}</th><th>{{ __('Anomalie', 'assetsign') }}</th></tr></thead>
+            <tbody>
+              {% for row in rows %}
+                <tr>
+                  <td>{% if row.url %}<a href="{{ row.url }}">{{ row.reference ?: ('#' ~ row.assetsigns_id) }}</a>{% else %}#{{ row.assetsigns_id }}{% endif %}</td>
+                  <td>{{ row.item }}</td>
+                  <td>{% if row.document_url %}<a href="{{ row.document_url }}">{{ row.document }}</a>{% else %}{{ row.document }}{% endif %}</td>
+                  <td><span class="badge bg-warning-subtle text-warning-emphasis">{{ row.label }}</span></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h4 class="card-title mb-0"><i class="ti ti-history me-2"></i>{{ __('Contrôles précédents', 'assetsign') }}</h4></div>
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead><tr><th>{{ __('Date', 'assetsign') }}</th><th>{{ __('Lancé par', 'assetsign') }}</th><th>{{ __('Fiches contrôlées', 'assetsign') }}</th><th>{{ __('Anomalies', 'assetsign') }}</th></tr></thead>
+          <tbody>
+            {% for run in history %}
+              <tr><td>{{ run.date_run|formatted_datetime }}</td><td>{{ run.by }}</td><td>{{ run.checked }}</td><td>{{ run.anomalies }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+</div>

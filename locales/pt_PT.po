@@ -6553,3 +6553,127 @@ msgstr "Transferência preparada: %1$s assina a devolução, %2$s assina a entre
 #, php-format
 msgid "Une signature sur deux : en attente de %s"
 msgstr "Uma das duas assinaturas: aguardando %s"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:51
+msgid "Contrôle d'intégrité des preuves"
+msgstr "Verificação de integridade das provas"
+
+#: src/IntegrityCheck.php:79
+msgid "Preuve de signature absente"
+msgstr "Prova de assinatura ausente"
+
+#: src/IntegrityCheck.php:80
+msgid "Aucun PDF signé enregistré"
+msgstr "Nenhum PDF assinado registrado"
+
+#: src/IntegrityCheck.php:81
+msgid "Document supprimé de GLPI"
+msgstr "Documento excluído do GLPI"
+
+#: src/IntegrityCheck.php:82
+msgid "Fichier absent du disque"
+msgstr "Arquivo ausente do disco"
+
+#: src/IntegrityCheck.php:83
+msgid "Empreinte SHA-256 modifiée"
+msgstr "Hash SHA-256 alterado"
+
+#: src/IntegrityCheck.php:84
+msgid "Document détaché du matériel"
+msgstr "Documento desvinculado do equipamento"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Fiche"
+msgstr "Ficha"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Anomalie"
+msgstr "Anomalia"
+
+#: src/IntegrityCheck.php:298
+msgid ""
+"Contrôle l'intégrité des preuves signées (PDF présent, empreinte inchangée, "
+"document rattaché)"
+msgstr ""
+"Verifica a integridade das provas assinadas (PDF presente, hash inalterado, "
+"documento vinculado)"
+
+#: front/integrity.php:35 src/IntegrityCheck.php:306
+#, php-format
+msgid "%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)"
+msgstr "%d anomalia(s) em %d ficha(s) assinada(s) verificada(s)"
+
+#: front/integrity.php:57
+msgid "Tâche planifiée"
+msgstr "Ação automática"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "%d anomalie(s)"
+msgstr "%d anomalia(s)"
+
+#: templates/integrity.html.twig
+msgid "Aucune anomalie"
+msgstr "Nenhuma anomalia"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "Dernier contrôle le %1$s (%2$s) : %3$d fiche(s) signée(s) contrôlée(s)."
+msgstr ""
+"Última verificação em %1$s (%2$s): %3$d ficha(s) assinada(s) verificada(s)."
+
+#: templates/integrity.html.twig
+msgid ""
+"Aucun contrôle effectué pour l'instant : la tâche planifiée tourne chaque "
+"semaine, ou lancez-le maintenant."
+msgstr ""
+"Nenhuma verificação feita ainda: a ação automática roda toda semana, ou "
+"execute-a agora."
+
+#: templates/integrity.html.twig
+msgid "Lancer le contrôle"
+msgstr "Executar a verificação"
+
+#: templates/integrity.html.twig
+msgid "Fréquence : Configuration > Actions automatiques (assetsignIntegrity)"
+msgstr "Frequência: Configurar > Ações automáticas (assetsignIntegrity)"
+
+#: templates/integrity.html.twig
+msgid "Toutes les preuves contrôlées sont intactes."
+msgstr "Todas as provas verificadas estão intactas."
+
+#: templates/integrity.html.twig
+msgid "Contrôles précédents"
+msgstr "Verificações anteriores"
+
+#: templates/integrity.html.twig
+msgid "Lancé par"
+msgstr "Executado por"
+
+#: templates/integrity.html.twig
+msgid "Fiches contrôlées"
+msgstr "Fichas verificadas"
+
+#: templates/integrity.html.twig
+msgid "Anomalies"
+msgstr "Anomalias"
+
+#: src/MenuSection.php:107
+msgid ""
+"Vérifie que chaque fiche signée garde sa preuve : le PDF signé (ou le scan "
+"papier) existe toujours, son empreinte SHA-256 n'a pas changé et il reste "
+"rattaché au matériel."
+msgstr ""
+"Verifica se cada ficha assinada mantém sua prova: o PDF assinado (ou o scan "
+"em papel) ainda existe, seu hash SHA-256 não mudou e ele continua vinculado "
+"ao equipamento."
+
+#: src/MenuSection.php:108
+msgid ""
+"Le contrôle tourne chaque semaine ; « Lancer le contrôle » le relance "
+"aussitôt. Ouvrez chaque fiche en anomalie pour comprendre ce qui a changé : "
+"rien n'est corrigé automatiquement. L'export CSV sert de preuve de contrôle."
+msgstr ""
+"A verificação roda toda semana; “Executar a verificação” a executa "
+"imediatamente. Abra cada ficha com anomalia para entender o que mudou: nada é"
+" corrigido automaticamente. A exportação CSV serve como prova da verificação."

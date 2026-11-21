@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 05:58+0000\n"
+"POT-Creation-Date: 2026-11-21 11:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,17 +94,17 @@ msgstr ""
 #: templates/sign_page.html.twig templates/pdf/wipe_attestation.html.twig
 #: templates/pdf/maintenance.html.twig
 #: templates/pdf/departure_summary.html.twig
-#: templates/pdf/attestation.html.twig templates/movement_form.html.twig
-#: templates/qr_label.html.twig templates/departure_form.html.twig
-#: templates/wipeattestation_list.html.twig templates/drafts_to_send.html.twig
-#: templates/assetsign_form.html.twig
+#: templates/pdf/attestation.html.twig templates/integrity.html.twig
+#: templates/movement_form.html.twig templates/qr_label.html.twig
+#: templates/departure_form.html.twig templates/wipeattestation_list.html.twig
+#: templates/drafts_to_send.html.twig templates/assetsign_form.html.twig
 #: templates/ticket_preparation_tab.html.twig templates/my_signatures.html.twig
 #: templates/ticket_tab.html.twig templates/movement_create.html.twig
 #: templates/renewal.html.twig templates/maintenance_create.html.twig
 #: templates/loans_in_progress.html.twig templates/maintenance_form.html.twig
 #: templates/attestation_form.html.twig templates/assetsign_tab.html.twig
 #: templates/wipeattestation_form.html.twig src/Assetsign.php:230
-#: src/Maintenance.php:99 src/Movement.php:136
+#: src/IntegrityCheck.php:282 src/Maintenance.php:99 src/Movement.php:136
 #: src/NotificationTargetAssetsign.php:262
 #: src/NotificationTargetAttestation.php:127
 #: src/NotificationTargetDeparture.php:124 src/Renewal.php:177
@@ -1168,6 +1168,80 @@ msgstr ""
 msgid "(ticket n°%d)"
 msgstr ""
 
+#: templates/integrity.html.twig src/IntegrityCheck.php:51
+msgid "Contrôle d'intégrité des preuves"
+msgstr ""
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "%d anomalie(s)"
+msgstr ""
+
+#: templates/integrity.html.twig
+msgid "Aucune anomalie"
+msgstr ""
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "Dernier contrôle le %1$s (%2$s) : %3$d fiche(s) signée(s) contrôlée(s)."
+msgstr ""
+
+#: templates/integrity.html.twig
+msgid ""
+"Aucun contrôle effectué pour l'instant : la tâche planifiée tourne chaque "
+"semaine, ou lancez-le maintenant."
+msgstr ""
+
+#: templates/integrity.html.twig
+msgid "Lancer le contrôle"
+msgstr ""
+
+#: templates/integrity.html.twig templates/renewal.html.twig
+msgid "Exporter (CSV)"
+msgstr ""
+
+#: templates/integrity.html.twig
+msgid "Fréquence : Configuration > Actions automatiques (assetsignIntegrity)"
+msgstr ""
+
+#: templates/integrity.html.twig
+msgid "Toutes les preuves contrôlées sont intactes."
+msgstr ""
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Fiche"
+msgstr ""
+
+#: templates/integrity.html.twig templates/my_signatures.html.twig
+#: src/IntegrityCheck.php:282
+msgid "Document"
+msgstr ""
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Anomalie"
+msgstr ""
+
+#: templates/integrity.html.twig
+msgid "Contrôles précédents"
+msgstr ""
+
+#: templates/integrity.html.twig templates/ticket_preparation_tab.html.twig
+#: templates/maintenance_tab.html.twig templates/maintenance_form.html.twig
+msgid "Date"
+msgstr ""
+
+#: templates/integrity.html.twig
+msgid "Lancé par"
+msgstr ""
+
+#: templates/integrity.html.twig
+msgid "Fiches contrôlées"
+msgstr ""
+
+#: templates/integrity.html.twig
+msgid "Anomalies"
+msgstr ""
+
 #: templates/config_transfer.html.twig
 msgid "Exporter la configuration"
 msgstr ""
@@ -1528,7 +1602,7 @@ msgid ""
 msgstr ""
 
 #: templates/wipeattestation_list.html.twig templates/assetsign_tab.html.twig
-#: src/Assetsign.php:341
+#: src/Assetsign.php:341 src/IntegrityCheck.php:282
 msgid "Référence"
 msgstr ""
 
@@ -1682,6 +1756,11 @@ msgstr ""
 #: templates/assetsign_form.html.twig templates/wipeattestation_form.html.twig
 #: templates/wipeattestation_tab.html.twig src/WipeAttestation.php:160
 msgid "Annulée"
+msgstr ""
+
+#: templates/assetsign_form.html.twig
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
 msgstr ""
 
 #: templates/assetsign_form.html.twig
@@ -3647,11 +3726,6 @@ msgstr ""
 
 #: templates/ticket_preparation_tab.html.twig
 #: templates/maintenance_tab.html.twig templates/maintenance_form.html.twig
-msgid "Date"
-msgstr ""
-
-#: templates/ticket_preparation_tab.html.twig
-#: templates/maintenance_tab.html.twig templates/maintenance_form.html.twig
 #: src/Maintenance.php:108
 msgid "Nature"
 msgstr ""
@@ -3678,10 +3752,6 @@ msgstr ""
 msgid ""
 "Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le "
 "document puis le signer."
-msgstr ""
-
-#: templates/my_signatures.html.twig
-msgid "Document"
 msgstr ""
 
 #: templates/my_signatures.html.twig
@@ -4128,10 +4198,6 @@ msgstr ""
 msgid ""
 "Budget estimé d'après la valeur d'achat ; un matériel sans valeur compte "
 "zéro."
-msgstr ""
-
-#: templates/renewal.html.twig
-msgid "Exporter (CSV)"
 msgstr ""
 
 #: templates/renewal.html.twig
@@ -5148,6 +5214,15 @@ msgstr ""
 msgid "Départ annulé, ses fiches en attente aussi."
 msgstr ""
 
+#: front/integrity.php:35 src/IntegrityCheck.php:306
+#, php-format
+msgid "%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)"
+msgstr ""
+
+#: front/integrity.php:57
+msgid "Tâche planifiée"
+msgstr ""
+
 #: front/maintenance.form.php:27
 msgid "Fiche de préparation de poste créée."
 msgstr ""
@@ -5267,7 +5342,7 @@ msgstr ""
 msgid "RSE : taux de seconde vie"
 msgstr ""
 
-#: hook.php:591
+#: hook.php:602
 #, php-format
 msgid ""
 "Désinstallation interrompue : impossible d'archiver les références de "
@@ -6479,6 +6554,36 @@ msgstr ""
 msgid "Non"
 msgstr ""
 
+#: src/IntegrityCheck.php:79
+msgid "Preuve de signature absente"
+msgstr ""
+
+#: src/IntegrityCheck.php:80
+msgid "Aucun PDF signé enregistré"
+msgstr ""
+
+#: src/IntegrityCheck.php:81
+msgid "Document supprimé de GLPI"
+msgstr ""
+
+#: src/IntegrityCheck.php:82
+msgid "Fichier absent du disque"
+msgstr ""
+
+#: src/IntegrityCheck.php:83
+msgid "Empreinte SHA-256 modifiée"
+msgstr ""
+
+#: src/IntegrityCheck.php:84
+msgid "Document détaché du matériel"
+msgstr ""
+
+#: src/IntegrityCheck.php:298
+msgid ""
+"Contrôle l'intégrité des preuves signées (PDF présent, empreinte inchangée, "
+"document rattaché)"
+msgstr ""
+
 #: src/Kit.php:164
 msgid "Accessoires attendus dans ce kit"
 msgstr ""
@@ -6651,13 +6756,27 @@ msgid ""
 "changement groupé pour planifier le remplacement."
 msgstr ""
 
-#: src/MenuSection.php:122
+#: src/MenuSection.php:112
+msgid ""
+"Vérifie que chaque fiche signée garde sa preuve : le PDF signé (ou le scan "
+"papier) existe toujours, son empreinte SHA-256 n'a pas changé et il reste "
+"rattaché au matériel."
+msgstr ""
+
+#: src/MenuSection.php:113
+msgid ""
+"Le contrôle tourne chaque semaine ; « Lancer le contrôle » le relance "
+"aussitôt. Ouvrez chaque fiche en anomalie pour comprendre ce qui a changé : "
+"rien n'est corrigé automatiquement. L'export CSV sert de preuve de contrôle."
+msgstr ""
+
+#: src/MenuSection.php:127
 msgid ""
 "Le matériel qui vous est confié et les documents qui attendent votre "
 "signature."
 msgstr ""
 
-#: src/MenuSection.php:123
+#: src/MenuSection.php:128
 msgid ""
 "Signez les documents en attente. En cas de problème avec un matériel, "
 "signalez-le depuis cette page : un ticket est créé pour le service "
@@ -7190,7 +7309,7 @@ msgid ""
 "annulée ou a expiré"
 msgstr ""
 
-#: src/Transfer.php:229
+#: src/Transfer.php:235
 #, php-format
 msgid ""
 "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le "
@@ -7432,8 +7551,4 @@ msgstr ""
 
 #: src/Workflow/VenteType.php:46
 msgid "Matériel vendu"
-msgstr ""
-
-#, php-format
-msgid "Une signature sur deux : en attente de %s"
 msgstr ""
