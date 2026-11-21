@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.30.0] - 2026-11-21
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Added
 
 - **Inventaire physique par scan des étiquettes QR, salle par salle** (#368) : nouvelle page Outils >
