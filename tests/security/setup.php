@@ -91,6 +91,13 @@ if (($argv[1] ?? '') === 'xss') {
         'observations' => $canary, 'beneficiary_comment' => $canary, 'delegation_reason' => $canary,
         'external_beneficiary_name' => $canary, 'external_beneficiary_contact' => $canary, 'reference' => $canary,
     ], $sheet);
+    // Issue #370 : feuille jumelle d'une passation (encadre « Passation », noms des deux personnes).
+    $peerId = $insert('glpi_plugin_assetsign_assetsigns', [
+        'entities_id' => $ids['a'], 'itemtype' => 'Computer', 'items_id' => $ids['computer_A'],
+        'users_id' => $ids['partant_A'], 'type' => Assetsign::TYPE_RETURN, 'status' => Assetsign::STATUS_SENT,
+        'transfer_peer_id' => $ids['assetsign_A'], 'reference' => $canary,
+    ]);
+    $set('assetsigns', ['transfer_peer_id' => $peerId], $sheet);
     $DB->insert('glpi_plugin_assetsign_assetsignitems', [
         'plugin_assetsign_assetsigns_id' => $ids['assetsign_A'], 'itemtype' => 'Monitor', 'items_id' => 0,
         'name' => $canary, 'serial' => $canary, 'otherserial' => $canary, 'model' => $canary,

@@ -127,7 +127,7 @@ class NewAttributionTest extends AssetsignTestCase
 
        $cards = array_column(Assetsign::actionCards($computer)['cards'], null, 'type');
 
-       $this->assertSame(['handover', 'return', 'manual', 'manual', 'manual'], array_column(array_values($cards), 'action'));
+       $this->assertSame(['handover', 'return', 'transfer', 'manual', 'manual', 'manual'], array_column(array_values($cards), 'action'));
        $this->assertSame('', $cards[Assetsign::TYPE_HANDOVER]['reason']);
        $this->assertNotSame('', $cards[Assetsign::TYPE_RETURN]['reason'], 'Sans utilisateur, rien a restituer.');
        $this->assertSame('', $cards[Assetsign::TYPE_DON]['reason']);
@@ -220,8 +220,8 @@ class NewAttributionTest extends AssetsignTestCase
        $this->assertStringContainsString('SN-PAGE-282', $html);
        $this->assertStringContainsString('PHPUnit PC &lt;b&gt;page&lt;/b&gt;', $html);
        $this->assertStringNotContainsString('<b>page</b>', $html);
-       $this->assertSame(5, substr_count($html, 'class="btn-check" name="assetsign_action"'));
-       $this->assertSame(3, substr_count($html, 'name="_glpi_csrf_token"'), 'Chaque formulaire porte son jeton CSRF.');
+       $this->assertSame(6, substr_count($html, 'class="btn-check" name="assetsign_action"'));
+       $this->assertSame(4, substr_count($html, 'name="_glpi_csrf_token"'), 'Chaque formulaire porte son jeton CSRF.');
        $this->assertStringContainsString('name="open_sheet"', $html);
        $this->assertStringContainsString($computer->getLinkURL(), $html, 'Lien « Ouvrir la fiche du matériel ».');
        $this->assertNoStrayNumericTextNode($html, 'assetsign_new.html.twig');

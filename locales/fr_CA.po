@@ -5885,3 +5885,70 @@ msgstr "Le matériel qui vous est confié et les documents qui attendent votre s
 
 msgid "Signez les documents en attente. En cas de problème avec un matériel, signalez-le depuis cette page : un ticket est créé pour le service informatique."
 msgstr "Signez les documents en attente. En cas de problème avec un matériel, signalez-le depuis cette page : un ticket est créé pour le service informatique."
+
+msgid "Passation"
+msgstr "Passation"
+
+msgid "Terminée : matériel attribué dans GLPI"
+msgstr "Terminée : matériel attribué dans GLPI"
+
+msgid "En attente des deux signatures"
+msgstr "En attente des deux signatures"
+
+msgid "Le détenteur sortant signe la restitution, le nouveau détenteur signe la remise. L'attribution du matériel dans GLPI ne change qu'après les deux signatures."
+msgstr "Le détenteur sortant signe la restitution, le nouveau détenteur signe la remise. L'attribution du matériel dans GLPI ne change qu'après les deux signatures."
+
+msgid "Restitution par"
+msgstr "Restitution par"
+
+msgid "Remise à"
+msgstr "Remise à"
+
+msgid "Cette fiche"
+msgstr "Cette fiche"
+
+#, php-format
+msgid "Fiche n° %s"
+msgstr "Fiche n° %s"
+
+#, php-format
+msgid "%s signe la restitution du matériel ; la personne choisie ci-dessous signe sa remise."
+msgstr "%s signe la restitution du matériel ; la personne choisie ci-dessous signe sa remise."
+
+msgid "Le matériel reste attribué au détenteur actuel dans GLPI jusqu'à ce que les deux fiches soient signées, puis il passe automatiquement à la nouvelle personne. Si l'une des deux fiches est annulée ou expire, l'autre est annulée aussi."
+msgstr "Le matériel reste attribué au détenteur actuel dans GLPI jusqu'à ce que les deux fiches soient signées, puis il passe automatiquement à la nouvelle personne. Si l'une des deux fiches est annulée ou expire, l'autre est annulée aussi."
+
+msgid "Nouveau détenteur"
+msgstr "Nouveau détenteur"
+
+msgid "Préparer la passation"
+msgstr "Préparer la passation"
+
+msgid "Passer le matériel de son utilisateur actuel à un autre : chacun signe, l'attribution GLPI suit après les deux signatures."
+msgstr "Passer le matériel de son utilisateur actuel à un autre : chacun signe, l'attribution GLPI suit après les deux signatures."
+
+msgid "Choisissez une autre personne que le détenteur actuel."
+msgstr "Choisissez une autre personne que le détenteur actuel."
+
+#, php-format
+msgid "Passation demandée de %1$s à %2$s : restitution n° %3$s et remise n° %4$s à signer"
+msgstr "Passation demandée de %1$s à %2$s : restitution n° %3$s et remise n° %4$s à signer"
+
+msgid "Ce matériel figure dans un dossier de départ en cours."
+msgstr "Ce matériel figure dans un dossier de départ en cours."
+
+#, php-format
+msgid "Passation terminée : matériel attribué à %1$s après les deux signatures (restitution n° %2$s, remise n° %3$s)"
+msgstr "Passation terminée : matériel attribué à %1$s après les deux signatures (restitution n° %2$s, remise n° %3$s)"
+
+#, php-format
+msgid "Annulée automatiquement : la fiche jumelle n° %s de la passation a été annulée ou a expiré"
+msgstr "Annulée automatiquement : la fiche jumelle n° %s de la passation a été annulée ou a expiré"
+
+#, php-format
+msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
+msgstr "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "Une signature sur deux : en attente de %s"

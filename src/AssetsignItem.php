@@ -118,7 +118,9 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
       if (count($DB->request(['FROM' => self::getTable(), 'WHERE' => $sameItem + ['plugin_assetsign_assetsigns_id' => $assetsign->getID()]])) > 0) {
           return self::ERROR_ALREADY_LISTED;
       }
-      if (self::getPendingSheetIdFor($itemtype, $items_id, $assetsign->getID()) !== null) {
+      // Issue #370 : dans une passation, le meme element figure sur la restitution du sortant et
+      // sur la remise a l'entrant (fiches jumelles).
+      if (self::getPendingSheetIdFor($itemtype, $items_id, $assetsign->getID(), (int) ($assetsign->fields['transfer_peer_id'] ?? 0)) !== null) {
           return self::ERROR_ON_OTHER_SHEET;
       }
 
@@ -130,7 +132,7 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
    }
 
     /** Fiche encore modifiable (hors $exceptAssetsignsId) qui liste deja cet objet, s'il y en a une. */
-   public static function getPendingSheetIdFor(string $itemtype, int $items_id, int $exceptAssetsignsId = 0): ?int {
+   public static function getPendingSheetIdFor(string $itemtype, int $items_id, int $exceptAssetsignsId = 0, int $alsoExceptAssetsignsId = 0): ?int {
        global $DB;
 
        $link = self::getTable();
@@ -143,7 +145,7 @@ class AssetsignItem extends Compat\Base\AssetsignItemBase
               "$link.itemtype" => $itemtype,
               "$link.items_id" => $items_id,
               "$sheet.status"  => Assetsign::STATUSES_STILL_EDITABLE,
-              'NOT'            => ["$link.plugin_assetsign_assetsigns_id" => $exceptAssetsignsId],
+              'NOT'            => ["$link.plugin_assetsign_assetsigns_id" => array_values(array_unique([$exceptAssetsignsId, $alsoExceptAssetsignsId]))],
           ],
           'LIMIT'      => 1,
       ]) as $row) {

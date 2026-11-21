@@ -123,6 +123,33 @@
         <button type="submit" name="assign" class="btn btn-primary"><i class="ti ti-arrow-back-up me-1"></i>{{ __('Préparer la feuille', 'assetsign') }}</button>
       </form>
 
+      {# Issue #370 : passation directe. Deux fiches (restitution du détenteur actuel, remise à
+         l'entrant) ; l'attribution GLPI ne change qu'après les deux signatures. #}
+      <form method="post" action="{{ form_url }}" class="row g-2 align-items-end mt-3 assetsign-action-form" data-action="transfer" hidden>
+        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="itemtype" value="{{ item.getType() }}">
+        <input type="hidden" name="items_id" value="{{ item.getID() }}">
+        <input type="hidden" name="create_transfer" value="1">
+        <div class="col-12">
+          <div class="alert alert-info mb-0 d-flex gap-2">
+            <i class="ti ti-arrows-exchange"></i>
+            <div>
+              {% if summary.user %}
+                <div>{{ __('%s signe la restitution du matériel ; la personne choisie ci-dessous signe sa remise.', 'assetsign')|format(summary.user) }}</div>
+              {% endif %}
+              <div class="small">{{ __('Le matériel reste attribué au détenteur actuel dans GLPI jusqu\'à ce que les deux fiches soient signées, puis il passe automatiquement à la nouvelle personne. Si l\'une des deux fiches est annulée ou expire, l\'autre est annulée aussi.', 'assetsign') }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-auto">
+          <label class="form-label">{{ __('Nouveau détenteur', 'assetsign') }}</label>
+          {% do call('User::dropdown', [{'name': 'users_id', 'right': 'all', 'entity': item.fields.entities_id, 'display_emptychoice': false}]) %}
+        </div>
+        <div class="col-12 col-md-auto">
+          <button type="submit" class="btn btn-primary w-100"><i class="ti ti-arrows-exchange me-1"></i>{{ __('Préparer la passation', 'assetsign') }}</button>
+        </div>
+      </form>
+
       {# Don, vente, destruction : création manuelle, mêmes champs que l'onglet du matériel. #}
       <form method="post" action="{{ form_url }}" enctype="multipart/form-data" class="row g-2 align-items-end mt-3 assetsign-action-form" data-action="manual" id="assetsign-manual-form" hidden>
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">

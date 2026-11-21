@@ -5865,3 +5865,70 @@ msgstr "The equipment entrusted to you and the documents awaiting your signature
 
 msgid "Signez les documents en attente. En cas de problème avec un matériel, signalez-le depuis cette page : un ticket est créé pour le service informatique."
 msgstr "Sign the pending documents. If there is a problem with an item, report it from this page: a ticket is created for the IT department."
+
+msgid "Passation"
+msgstr "Handover between holders"
+
+msgid "Terminée : matériel attribué dans GLPI"
+msgstr "Completed: equipment assigned in GLPI"
+
+msgid "En attente des deux signatures"
+msgstr "Awaiting both signatures"
+
+msgid "Le détenteur sortant signe la restitution, le nouveau détenteur signe la remise. L'attribution du matériel dans GLPI ne change qu'après les deux signatures."
+msgstr "The outgoing holder signs the return, the new holder signs the handover. The equipment's assignment in GLPI only changes after both signatures."
+
+msgid "Restitution par"
+msgstr "Return by"
+
+msgid "Remise à"
+msgstr "Handover to"
+
+msgid "Cette fiche"
+msgstr "This sheet"
+
+#, php-format
+msgid "Fiche n° %s"
+msgstr "Sheet no. %s"
+
+#, php-format
+msgid "%s signe la restitution du matériel ; la personne choisie ci-dessous signe sa remise."
+msgstr "%s signs the return of the equipment; the person chosen below signs its handover."
+
+msgid "Le matériel reste attribué au détenteur actuel dans GLPI jusqu'à ce que les deux fiches soient signées, puis il passe automatiquement à la nouvelle personne. Si l'une des deux fiches est annulée ou expire, l'autre est annulée aussi."
+msgstr "The equipment stays assigned to the current holder in GLPI until both sheets are signed, then it automatically moves to the new person. If either sheet is cancelled or expires, the other is cancelled too."
+
+msgid "Nouveau détenteur"
+msgstr "New holder"
+
+msgid "Préparer la passation"
+msgstr "Prepare the handover"
+
+msgid "Passer le matériel de son utilisateur actuel à un autre : chacun signe, l'attribution GLPI suit après les deux signatures."
+msgstr "Move the equipment from its current user to another: each signs, the GLPI assignment follows after both signatures."
+
+msgid "Choisissez une autre personne que le détenteur actuel."
+msgstr "Choose someone other than the current holder."
+
+#, php-format
+msgid "Passation demandée de %1$s à %2$s : restitution n° %3$s et remise n° %4$s à signer"
+msgstr "Handover requested from %1$s to %2$s: return no. %3$s and handover no. %4$s to be signed"
+
+msgid "Ce matériel figure dans un dossier de départ en cours."
+msgstr "This equipment is part of an ongoing departure file."
+
+#, php-format
+msgid "Passation terminée : matériel attribué à %1$s après les deux signatures (restitution n° %2$s, remise n° %3$s)"
+msgstr "Handover completed: equipment assigned to %1$s after both signatures (return no. %2$s, handover no. %3$s)"
+
+#, php-format
+msgid "Annulée automatiquement : la fiche jumelle n° %s de la passation a été annulée ou a expiré"
+msgstr "Cancelled automatically: the paired sheet no. %s of the handover was cancelled or expired"
+
+#, php-format
+msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
+msgstr "Handover prepared: %1$s signs the return, %2$s signs the handover. The equipment will move to %2$s in GLPI after both signatures."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "One of two signatures: waiting for %s"

@@ -5895,3 +5895,70 @@ msgstr "L'attrezzatura che ti è affidata e i documenti che attendono la tua fir
 
 msgid "Signez les documents en attente. En cas de problème avec un matériel, signalez-le depuis cette page : un ticket est créé pour le service informatique."
 msgstr "Firma i documenti in attesa. In caso di problemi con un dispositivo, segnalalo da questa pagina: viene creato un ticket per il reparto IT."
+
+msgid "Passation"
+msgstr "Passaggio tra assegnatari"
+
+msgid "Terminée : matériel attribué dans GLPI"
+msgstr "Completato: dispositivo assegnato in GLPI"
+
+msgid "En attente des deux signatures"
+msgstr "In attesa delle due firme"
+
+msgid "Le détenteur sortant signe la restitution, le nouveau détenteur signe la remise. L'attribution du matériel dans GLPI ne change qu'après les deux signatures."
+msgstr "L'assegnatario uscente firma la restituzione, il nuovo assegnatario firma la consegna. L'assegnazione del dispositivo in GLPI cambia solo dopo le due firme."
+
+msgid "Restitution par"
+msgstr "Restituzione da parte di"
+
+msgid "Remise à"
+msgstr "Consegna a"
+
+msgid "Cette fiche"
+msgstr "Questa scheda"
+
+#, php-format
+msgid "Fiche n° %s"
+msgstr "Scheda n. %s"
+
+#, php-format
+msgid "%s signe la restitution du matériel ; la personne choisie ci-dessous signe sa remise."
+msgstr "%s firma la restituzione del dispositivo; la persona scelta qui sotto firma la consegna."
+
+msgid "Le matériel reste attribué au détenteur actuel dans GLPI jusqu'à ce que les deux fiches soient signées, puis il passe automatiquement à la nouvelle personne. Si l'une des deux fiches est annulée ou expire, l'autre est annulée aussi."
+msgstr "Il dispositivo resta assegnato all'assegnatario attuale in GLPI finché le due schede non sono firmate, poi passa automaticamente alla nuova persona. Se una delle due schede viene annullata o scade, viene annullata anche l'altra."
+
+msgid "Nouveau détenteur"
+msgstr "Nuovo assegnatario"
+
+msgid "Préparer la passation"
+msgstr "Preparare il passaggio"
+
+msgid "Passer le matériel de son utilisateur actuel à un autre : chacun signe, l'attribution GLPI suit après les deux signatures."
+msgstr "Passare il dispositivo dal suo utente attuale a un altro: ognuno firma, l'assegnazione in GLPI segue dopo le due firme."
+
+msgid "Choisissez une autre personne que le détenteur actuel."
+msgstr "Scegliete una persona diversa dall'assegnatario attuale."
+
+#, php-format
+msgid "Passation demandée de %1$s à %2$s : restitution n° %3$s et remise n° %4$s à signer"
+msgstr "Passaggio richiesto da %1$s a %2$s: restituzione n. %3$s e consegna n. %4$s da firmare"
+
+msgid "Ce matériel figure dans un dossier de départ en cours."
+msgstr "Questo dispositivo fa parte di una pratica di uscita in corso."
+
+#, php-format
+msgid "Passation terminée : matériel attribué à %1$s après les deux signatures (restitution n° %2$s, remise n° %3$s)"
+msgstr "Passaggio completato: dispositivo assegnato a %1$s dopo le due firme (restituzione n. %2$s, consegna n. %3$s)"
+
+#, php-format
+msgid "Annulée automatiquement : la fiche jumelle n° %s de la passation a été annulée ou a expiré"
+msgstr "Annullata automaticamente: la scheda abbinata n. %s del passaggio è stata annullata o è scaduta"
+
+#, php-format
+msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
+msgstr "Passaggio preparato: %1$s firma la restituzione, %2$s firma la consegna. Il dispositivo passerà a %2$s in GLPI dopo le due firme."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "Una firma su due: in attesa di %s"

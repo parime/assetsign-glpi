@@ -5921,3 +5921,70 @@ msgstr "Die Ihnen anvertrauten Geräte und die Dokumente, die auf Ihre Unterschr
 
 msgid "Signez les documents en attente. En cas de problème avec un matériel, signalez-le depuis cette page : un ticket est créé pour le service informatique."
 msgstr "Unterschreiben Sie die ausstehenden Dokumente. Bei einem Problem mit einem Gerät melden Sie es auf dieser Seite: Für die IT-Abteilung wird ein Ticket erstellt."
+
+msgid "Passation"
+msgstr "Übergabe zwischen Inhabern"
+
+msgid "Terminée : matériel attribué dans GLPI"
+msgstr "Abgeschlossen: Gerät in GLPI zugewiesen"
+
+msgid "En attente des deux signatures"
+msgstr "Wartet auf beide Unterschriften"
+
+msgid "Le détenteur sortant signe la restitution, le nouveau détenteur signe la remise. L'attribution du matériel dans GLPI ne change qu'après les deux signatures."
+msgstr "Der bisherige Inhaber unterschreibt die Rückgabe, der neue Inhaber die Übergabe. Die Zuweisung des Geräts in GLPI ändert sich erst nach beiden Unterschriften."
+
+msgid "Restitution par"
+msgstr "Rückgabe durch"
+
+msgid "Remise à"
+msgstr "Übergabe an"
+
+msgid "Cette fiche"
+msgstr "Dieses Formular"
+
+#, php-format
+msgid "Fiche n° %s"
+msgstr "Formular Nr. %s"
+
+#, php-format
+msgid "%s signe la restitution du matériel ; la personne choisie ci-dessous signe sa remise."
+msgstr "%s unterschreibt die Rückgabe des Geräts; die unten gewählte Person unterschreibt die Übergabe."
+
+msgid "Le matériel reste attribué au détenteur actuel dans GLPI jusqu'à ce que les deux fiches soient signées, puis il passe automatiquement à la nouvelle personne. Si l'une des deux fiches est annulée ou expire, l'autre est annulée aussi."
+msgstr "Das Gerät bleibt in GLPI dem aktuellen Inhaber zugewiesen, bis beide Formulare unterschrieben sind, und geht dann automatisch an die neue Person über. Wird eines der beiden Formulare storniert oder läuft es ab, wird auch das andere storniert."
+
+msgid "Nouveau détenteur"
+msgstr "Neuer Inhaber"
+
+msgid "Préparer la passation"
+msgstr "Übergabe vorbereiten"
+
+msgid "Passer le matériel de son utilisateur actuel à un autre : chacun signe, l'attribution GLPI suit après les deux signatures."
+msgstr "Das Gerät von seinem aktuellen Benutzer an einen anderen übergeben: Beide unterschreiben, die Zuweisung in GLPI folgt nach beiden Unterschriften."
+
+msgid "Choisissez une autre personne que le détenteur actuel."
+msgstr "Wählen Sie eine andere Person als den aktuellen Inhaber."
+
+#, php-format
+msgid "Passation demandée de %1$s à %2$s : restitution n° %3$s et remise n° %4$s à signer"
+msgstr "Übergabe von %1$s an %2$s angefordert: Rückgabe Nr. %3$s und Übergabe Nr. %4$s zu unterschreiben"
+
+msgid "Ce matériel figure dans un dossier de départ en cours."
+msgstr "Dieses Gerät ist Teil eines laufenden Austrittsvorgangs."
+
+#, php-format
+msgid "Passation terminée : matériel attribué à %1$s après les deux signatures (restitution n° %2$s, remise n° %3$s)"
+msgstr "Übergabe abgeschlossen: Gerät nach beiden Unterschriften %1$s zugewiesen (Rückgabe Nr. %2$s, Übergabe Nr. %3$s)"
+
+#, php-format
+msgid "Annulée automatiquement : la fiche jumelle n° %s de la passation a été annulée ou a expiré"
+msgstr "Automatisch storniert: Das zugehörige Formular Nr. %s der Übergabe wurde storniert oder ist abgelaufen"
+
+#, php-format
+msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
+msgstr "Übergabe vorbereitet: %1$s unterschreibt die Rückgabe, %2$s die Übergabe. Das Gerät geht nach beiden Unterschriften in GLPI an %2$s über."
+
+#, php-format
+msgid "Une signature sur deux : en attente de %s"
+msgstr "Eine von zwei Unterschriften: wartet auf %s"

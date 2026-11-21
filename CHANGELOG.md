@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Passation directe d'un détenteur à un autre** (#370) : nouvelle carte « Passation » de la page
+  Nouvelle attribution (Outils > AssetSign > Attributions), pour un matériel déjà attribué. On
+  choisit le nouveau détenteur : le plugin crée deux fiches liées, la restitution signée par le
+  détenteur actuel et la remise signée par le nouveau, envoyées toutes les deux (lien, e-mail,
+  signature sur place ou sur papier comme d'habitude). Le matériel reste attribué au détenteur
+  actuel dans GLPI tant que les deux fiches ne sont pas signées, dans n'importe quel ordre ; il
+  passe ensuite au nouveau détenteur, avec le matériel remis avec (écran, station d'accueil…), sans
+  créer de nouvelle fiche. Si l'une des deux fiches est annulée ou expire, l'autre est annulée et
+  rien ne change dans GLPI. Un encadré « Passation » sur chaque fiche montre les deux signataires,
+  l'état de chaque fiche et le lien vers l'autre ; l'historique du matériel et des fiches trace la
+  demande et l'attribution. Réglage utilisé : « réaffectation » de l'entité ; droit de modification
+  du matériel requis.
+
 ## [2.26.1] - 2026-11-18
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
