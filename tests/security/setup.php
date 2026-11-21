@@ -161,6 +161,7 @@ if (($argv[1] ?? '') === 'snapshot') {
     foreach ($DB->request(['FROM' => 'glpi_plugin_assetsign_assetsigns', 'WHERE' => ['itemtype' => 'Computer', 'items_id' => $computerB]]) as $row) {
         $snapshot['assetsign_B.status'] = (int) $row['status'];
         $snapshot['assetsign_B.markers'] = countElementsInTable('glpi_plugin_assetsign_damagemarkers', ['plugin_assetsign_assetsigns_id' => $row['id']]);
+        $snapshot['assetsign_B.photos'] = countElementsInTable('glpi_plugin_assetsign_conditionphotos', ['plugin_assetsign_assetsigns_id' => $row['id']]);
         // Issue #276 : version papier (impression tracee, scan joint).
         $snapshot['assetsign_B.paper'] = (string) ($row['paper_printed_at'] ?? '') . '/' . (int) ($row['document_id_paper_scan'] ?? 0);
     }
@@ -188,6 +189,17 @@ if (($argv[1] ?? '') === 'uploads') {
         'movement_links' => countElementsInTable('glpi_documents_items', ['itemtype' => \GlpiPlugin\Assetsign\Movement::class]),
         // Issue #276 : feuilles signees sur papier (scan joint).
         'paper_signed'   => countElementsInTable('glpi_plugin_assetsign_assetsigns', ['status' => Assetsign::STATUS_SIGNED_ON_PAPER]),
+        // Issue #369 : photos de l'etat des lieux, et photos dont le fichier stocke contient encore
+        // la charge d'un fichier piege.
+        'photos'         => countElementsInTable('glpi_plugin_assetsign_conditionphotos'),
+        'photo_payload'  => (static function () use ($DB): int {
+            $found = 0;
+            foreach ($DB->request(['SELECT' => ['glpi_documents.filepath'], 'FROM' => 'glpi_plugin_assetsign_conditionphotos',
+                'INNER JOIN' => ['glpi_documents' => ['FKEY' => ['glpi_plugin_assetsign_conditionphotos' => 'documents_id', 'glpi_documents' => 'id']]]]) as $row) {
+                $found += (int) str_contains((string) @file_get_contents(GLPI_DOC_DIR . '/' . $row['filepath']), 'UPLOAD-EXECUTE');
+            }
+            return $found;
+        })(),
     ]), "\n";
     exit(0);
 }
@@ -236,6 +248,10 @@ foreach (['A' => $a, 'B' => $b] as $suffix => $entity) {
     ]);
     $sheet->getFromDB($ids['assetsign_' . $suffix]);
     $ids['token_' . $suffix] = Token::createForAssetsign($sheet, 30);
+    // Issue #369 : photo de l'etat des lieux de la feuille (sans fichier : seul l'acces est teste).
+    $ids['photo_' . $suffix] = $insert('glpi_plugin_assetsign_conditionphotos', [
+        'plugin_assetsign_assetsigns_id' => $ids['assetsign_' . $suffix], 'documents_id' => 0, 'sha256' => str_repeat('0', 64),
+    ]);
 
     $ids['maintenance_' . $suffix] = $insert('glpi_plugin_assetsign_maintenances', [
         'entities_id' => $entity, 'itemtype' => 'Computer', 'items_id' => $ids['computer_' . $suffix],

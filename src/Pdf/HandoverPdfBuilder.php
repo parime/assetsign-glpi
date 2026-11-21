@@ -238,6 +238,8 @@ final class HandoverPdfBuilder
            'damage_views'        => (bool) $config->fields['enable_damage_annotation']
                ? $this->getDamageViewsForPdf(DamageMarker::getForAssetsign($assetsign->getID()), $assetsign->fields['itemtype'])
                : [],
+           // Issue #369 : photos de l'etat des lieux, images seulement si le reglage est actif.
+           'condition_photos'    => \GlpiPlugin\Assetsign\ConditionPhoto::getForPdf($assetsign, (bool) ($config->fields['photos_in_pdf'] ?? false)),
            'page_title'          => $headings['page_title'],
            'material_heading'    => $headings['material_heading'],
            'document_title'      => $assetsign->getDocumentTitle(),

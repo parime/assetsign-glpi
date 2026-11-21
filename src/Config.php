@@ -89,6 +89,8 @@ class Config extends Compat\Base\ConfigBase
         'enable_vente'                        => 0,
         'enable_destruction'                  => 0,
         'enable_damage_annotation'            => 0,
+        // Issue #369 : photos de l'etat des lieux reproduites dans le PDF signe (sinon empreintes seules).
+        'photos_in_pdf'                       => 0,
         'enable_maintenance_signature'        => 0,
         'enable_movements'                    => 0,
         'enable_movement_signature'           => 0,
@@ -848,6 +850,7 @@ class Config extends Compat\Base\ConfigBase
            'enable_vente'         => (int) ($input['enable_vente'] ?? 0),
            'enable_destruction'   => (int) ($input['enable_destruction'] ?? 0),
            'enable_damage_annotation' => (int) ($input['enable_damage_annotation'] ?? 0),
+           'photos_in_pdf'        => (int) ($input['photos_in_pdf'] ?? 0),
            'enable_maintenance_signature' => (int) ($input['enable_maintenance_signature'] ?? 0),
            'enable_movements'     => (int) ($input['enable_movements'] ?? 0),
            'enable_movement_signature' => (int) ($input['enable_movement_signature'] ?? 0),
@@ -1168,6 +1171,7 @@ class Config extends Compat\Base\ConfigBase
                 `enable_vente` tinyint NOT NULL DEFAULT 0,
                 `enable_destruction` tinyint NOT NULL DEFAULT 0,
                 `enable_damage_annotation` tinyint NOT NULL DEFAULT 0,
+                `photos_in_pdf` tinyint NOT NULL DEFAULT 0,
                 `enable_maintenance_signature` tinyint NOT NULL DEFAULT 0,
                 `enable_movements` tinyint NOT NULL DEFAULT 0,
                 `enable_movement_signature` tinyint NOT NULL DEFAULT 0,
@@ -1633,6 +1637,11 @@ class Config extends Compat\Base\ConfigBase
          }
          if (!$DB->fieldExists($table, 'health_weight_energy')) {
              $migration->addField($table, 'health_weight_energy', 'integer', ['value' => 0, 'after' => 'health_weight_movements']);
+             $migration->migrationOneTable($table);
+         }
+          // Issue #369 : photos de l'etat des lieux dans le PDF signe (desactive par defaut).
+         if (!$DB->fieldExists($table, 'photos_in_pdf')) {
+             $migration->addField($table, 'photos_in_pdf', 'bool', ['value' => 0, 'after' => 'enable_damage_annotation']);
              $migration->migrationOneTable($table);
          }
       }

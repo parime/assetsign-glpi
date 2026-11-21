@@ -85,6 +85,37 @@ if (!$assetsign->getFromDB($id) || !$assetsign->can($id, READ)) {
     throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
+// Issue #369 : photo de l'etat des lieux de CETTE fiche (droit de lecture et entite verifies
+// ci-dessus ; une photo d'une autre fiche est introuvable).
+if (isset($_GET['photo'])) {
+    \GlpiPlugin\Assetsign\ConditionPhoto::send($assetsign, (int) $_GET['photo']);
+    return;
+}
+
+if (isset($_POST['add_condition_photos'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    $result = $controller->addConditionPhotos($assetsign, $_FILES);
+   if ($result['added'] > 0) {
+       Session::addMessageAfterRedirect(sprintf(_n('%d photo ajoutée.', '%d photos ajoutées.', $result['added'], 'assetsign'), $result['added']));
+   }
+   foreach ($result['errors'] as $message) {
+       Session::addMessageAfterRedirect($message, false, ERROR);
+   }
+    Html::redirect($assetsign->getLinkURL() . '#assetsign-photos');
+}
+
+if (isset($_POST['delete_condition_photo'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+   try {
+       \GlpiPlugin\Assetsign\ConditionPhoto::removeFromSheet($assetsign, (int) $_POST['delete_condition_photo']);
+       $assetsign->refreshDamageAnnotationPdf();
+       Session::addMessageAfterRedirect(__('Photo supprimée.', 'assetsign'));
+   } catch (\RuntimeException $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    Html::redirect($assetsign->getLinkURL() . '#assetsign-photos');
+}
+
 // Issue #163 : apercu du brouillon tel qu'il partira (PDF genere a la volee, rien n'est enregistre).
 if (isset($_GET['preview_draft'])) {
     Session::checkRight(Assetsign::$rightname, READ);

@@ -6053,3 +6053,160 @@ msgstr ""
 "The check runs every week; “Run the check” runs it immediately. Open each "
 "sheet with an anomaly to see what changed: nothing is fixed automatically. "
 "The CSV export is evidence of the check."
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Photos de l'état des lieux"
+msgstr "Condition report photos"
+
+#: templates/pdf/_condition_photos.html.twig
+msgid "Les photos sont jointes à la fiche dans GLPI ; leur empreinte SHA-256 ci-dessous permet de vérifier qu'elles n'ont pas changé."
+msgstr "The photos are attached to the record in GLPI; their SHA-256 hash below makes it possible to check that they have not changed."
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Avant : à la remise"
+msgstr "Before: at handover"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Après : à la restitution"
+msgstr "After: at return"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "Photo n° %d"
+msgstr "Photo no. %d"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Pas de photo"
+msgstr "No photo"
+
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "%d photo"
+msgid_plural "%d photos"
+msgstr[0] "%d photo"
+msgstr[1] "%d photos"
+
+#: templates/_condition_photos.html.twig
+msgid "Reproduites dans le PDF"
+msgstr "Printed in the PDF"
+
+#: templates/_condition_photos.html.twig
+msgid "Empreintes seules dans le PDF"
+msgstr "Only hashes in the PDF"
+
+#: templates/_condition_photos.html.twig
+msgid "Comparez l'état du matériel à la remise (à gauche) et à la restitution (à droite). Les photos de la restitution s'ajoutent tant que la fiche n'est pas signée."
+msgstr "Compare the equipment's condition at handover (left) and at return (right). Return photos can be added until the record is signed."
+
+#: templates/_condition_photos.html.twig
+msgid "Photographiez le matériel au moment de la remise : ces photos serviront de point de comparaison à sa restitution. Elles s'ajoutent tant que la fiche n'est pas signée."
+msgstr "Take photos of the equipment at handover: they will be the reference point when it is returned. They can be added until the record is signed."
+
+#: templates/_condition_photos.html.twig
+msgid "Aucune fiche de remise lisible pour ce matériel : seules les photos de la restitution s'affichent."
+msgstr "No readable handover record for this equipment: only the return photos are shown."
+
+#: templates/_condition_photos.html.twig
+msgid "Aucune photo pour l'instant."
+msgstr "No photos yet."
+
+#: templates/_condition_photos.html.twig
+msgid "Prendre une photo"
+msgstr "Take a photo"
+
+#: templates/_condition_photos.html.twig
+msgid "Ou choisir des photos"
+msgstr "Or choose photos"
+
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "JPEG, PNG ou WebP, %1$d Mo au plus par photo, %2$d photos par fiche. Sur un téléphone, « Prendre une photo » ouvre l'appareil photo. La position GPS et les autres métadonnées sont retirées à l'envoi."
+msgstr "JPEG, PNG or WebP, %1$d MB at most per photo, %2$d photos per record. On a phone, “Take a photo” opens the camera. The GPS position and other metadata are removed on upload."
+
+#: templates/_condition_photos.html.twig
+msgid "Supprimer cette photo"
+msgstr "Delete this photo"
+
+#: templates/config_form.html.twig
+msgid "Reproduire les photos de l'état des lieux dans le PDF signé"
+msgstr "Print the condition report photos in the signed PDF"
+
+#: templates/config_form.html.twig
+msgid "Désactivé : le PDF ne cite que l'empreinte SHA-256 de chaque photo, les photos restent consultables sur la fiche dans GLPI. Activé : les photos (et, pour une restitution, celles de la remise) sont imprimées dans le PDF, qui devient plus lourd."
+msgstr "Off: the PDF only lists the SHA-256 hash of each photo, and the photos remain viewable on the record in GLPI. On: the photos (and, for a return, those of the handover) are printed in the PDF, which gets heavier."
+
+#: front/assetsign.form.php:99
+#, php-format
+msgid "%d photo ajoutée."
+msgid_plural "%d photos ajoutées."
+msgstr[0] "%d photo added."
+msgstr[1] "%d photos added."
+
+#: front/assetsign.form.php:112
+msgid "Photo supprimée."
+msgstr "Photo deleted."
+
+#: src/Api/AssetsignFormController.php:100 src/ConditionPhoto.php:80
+#, php-format
+msgid "La photo dépasse la taille maximale (%d Mo)."
+msgstr "The photo exceeds the maximum size (%d MB)."
+
+#: src/Api/AssetsignFormController.php:103 src/ConditionPhoto.php:73
+#: src/ConditionPhoto.php:109 src/ConditionPhoto.php:118
+#: src/ConditionPhoto.php:182 src/ConditionPhoto.php:200
+#: src/ConditionPhoto.php:205
+msgid "Échec de l'envoi de la photo."
+msgstr "Photo upload failed."
+
+#: src/Api/AssetsignFormController.php:108
+#, php-format
+msgid "Photo %1$d : %2$s"
+msgstr "Photo %1$d: %2$s"
+
+#: src/Api/AssetsignFormController.php:112
+msgid "Prenez ou choisissez au moins une photo."
+msgstr "Take or choose at least one photo."
+
+#: src/ConditionPhoto.php:77
+msgid "Le fichier de la photo est vide."
+msgstr "The photo file is empty."
+
+#: src/ConditionPhoto.php:85
+msgid "Type de fichier refusé : joignez une photo au format JPEG, PNG ou WebP."
+msgstr "File type refused: attach a JPEG, PNG or WebP photo."
+
+#: src/ConditionPhoto.php:89 src/ConditionPhoto.php:97
+msgid "Le contenu du fichier n'est pas une photo valide."
+msgstr "The file content is not a valid photo."
+
+#: src/ConditionPhoto.php:92
+#, php-format
+msgid "La photo est trop grande (%d mégapixels au plus)."
+msgstr "The photo is too large (%d megapixels at most)."
+
+#: src/ConditionPhoto.php:166
+msgid "Les photos ne concernent que les fiches de remise et de restitution."
+msgstr "Photos only apply to handover and return records."
+
+#: src/ConditionPhoto.php:172
+msgid "Les photos ne peuvent plus changer : la fiche est signée, expirée ou annulée."
+msgstr "Photos can no longer change: the record is signed, expired or cancelled."
+
+#: src/ConditionPhoto.php:175
+#, php-format
+msgid "Une fiche compte %d photos au plus."
+msgstr "A record holds %d photos at most."
+
+#: src/ConditionPhoto.php:190
+#, php-format
+msgid "Photo de l'état des lieux - fiche n° %s"
+msgstr "Condition report photo - record no. %s"
+
+#: src/ConditionPhoto.php:235
+msgid "Photo introuvable."
+msgstr "Photo not found."

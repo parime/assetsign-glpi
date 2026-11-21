@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Photos de l'état des lieux, comparaison avant/après** (#369) : sur une fiche de remise ou de
+  restitution, bloc « Photos de l'état des lieux » pour photographier le matériel (bouton « Prendre
+  une photo » qui ouvre l'appareil photo d'un téléphone, ou choix de fichiers). Chaque photo devient
+  un Document GLPI de l'entité de la fiche ; type (JPEG, PNG, WebP) et taille (10 Mo, 24 mégapixels,
+  12 photos par fiche) contrôlés, image réencodée : la position GPS et les autres métadonnées EXIF
+  sont retirées, comme tout contenu caché à la suite de l'image. Sur la restitution, les photos de
+  la remise et celles du retour s'affichent côte à côte. Le PDF signé cite l'empreinte SHA-256 de
+  chaque photo ; les photos elles-mêmes n'y sont imprimées que si le nouveau réglage « Reproduire
+  les photos de l'état des lieux dans le PDF signé » est activé (désactivé par défaut). Ajout et
+  suppression avec le droit de modification, tant que la fiche n'est pas signée ; affichage limité
+  aux fiches lisibles (droits et entités).
+
 ## [2.28.0] - 2026-11-21
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

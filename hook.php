@@ -436,6 +436,8 @@ function plugin_assetsign_install(): bool {
     // plugin_assetsign_maintenances_id absente sans qu'aucune erreur ne
     // remonte jusqu'a l'ecran d'installation).
     DamageMarker::install($migration);
+    // Issue #369 : photos de l'etat des lieux (cle etrangere vers glpi_plugin_assetsign_assetsigns).
+    \GlpiPlugin\Assetsign\ConditionPhoto::install($migration);
     PassportEvent::install($migration);
     // Aucune contrainte de cle etrangere (reference itemtype/items_id arbitraire,
     // comme Movement/PassportEvent - jamais un type natif GLPI precis) : aucun
@@ -636,6 +638,8 @@ function plugin_assetsign_uninstall(): bool {
         'glpi_plugin_assetsign_dondetails',
         'glpi_plugin_assetsign_destructiondetails',
         'glpi_plugin_assetsign_damagemarkers',
+        // Issue #369 : avant glpi_plugin_assetsign_assetsigns (cle etrangere).
+        'glpi_plugin_assetsign_conditionphotos',
         'glpi_plugin_assetsign_checklistvalues',
         'glpi_plugin_assetsign_assetsigns',
         'glpi_plugin_assetsign_departures',

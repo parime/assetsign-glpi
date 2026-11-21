@@ -203,6 +203,26 @@ Vue symétrique du Passeport matériel : une frise chronologique de tout ce qu'u
 
 Voir aussi [ROADMAP.md](ROADMAP.md) pour ce qui est envisagé.
 
+### Photos de l'état des lieux
+
+Sur une fiche de **remise** ou de **restitution**, le bloc **Photos de l'état des lieux** sert à
+photographier le matériel. Sur un téléphone, **Prendre une photo** ouvre directement l'appareil
+photo ; **Ou choisir des photos** permet d'en joindre plusieurs déjà prises. Formats JPEG, PNG ou
+WebP, 10 Mo au plus par photo, 12 photos par fiche. Chaque photo est enregistrée comme un document
+GLPI de l'entité de la fiche ; elle est réencodée à l'envoi, ce qui retire la position GPS et les
+autres métadonnées de l'appareil.
+
+Sur la fiche de restitution, les photos prises à la remise (à gauche, avec le lien vers la fiche de
+remise) et celles du retour (à droite) s'affichent côte à côte, ligne par ligne : on compare d'un
+coup d'œil. Les photos s'ajoutent ou se retirent tant que la fiche n'est pas signée (droit de
+modification AssetSign) ; une fois signée, elles ne changent plus. Une personne qui ne peut pas lire
+la fiche de remise (autre entité, par exemple) ne voit que les photos de la restitution.
+
+Le PDF signé cite l'empreinte SHA-256 de chaque photo : elle prouve que les photos jointes dans GLPI
+sont bien celles d'origine. Pour imprimer aussi les photos dans le PDF, cochez **Reproduire les
+photos de l'état des lieux dans le PDF signé** dans la configuration de l'entité (désactivé par
+défaut : le PDF devient plus lourd).
+
 ### Contrôle d'intégrité des preuves
 
 Outils > AssetSign > Pilotage du parc > **Contrôle d'intégrité des preuves**. Chaque semaine, la
@@ -466,6 +486,24 @@ A view symmetrical to the Asset Passport: a timeline of everything a person has 
 - Automated test coverage: deliberately partial today, to be extended as the plugin evolves (see [ARCHITECTURE.md](ARCHITECTURE.md#tests-automatisés)).
 
 See also [ROADMAP.md](ROADMAP.md) for what's under consideration.
+
+### Condition report photos
+
+On a **handover** or **return** record, the **Condition report photos** block is used to take
+pictures of the equipment. On a phone, **Take a photo** opens the camera directly; **Or choose
+photos** attaches several existing pictures. JPEG, PNG or WebP, 10 MB at most per photo, 12 photos
+per record. Each photo is saved as a GLPI document of the record's entity; it is re-encoded on
+upload, which removes the GPS position and the other camera metadata.
+
+On the return record, the photos taken at handover (left, with a link to the handover record) and
+those taken at return (right) are shown side by side, row by row, for an at-a-glance comparison.
+Photos can be added or removed until the record is signed (AssetSign update right); once signed,
+they no longer change. Someone who cannot read the handover record (another entity, for instance)
+only sees the return photos.
+
+The signed PDF lists the SHA-256 hash of each photo: it proves the photos attached in GLPI are the
+original ones. To also print the photos in the PDF, tick **Print the condition report photos in the
+signed PDF** in the entity configuration (off by default: the PDF gets heavier).
 
 ### Integrity check of signed proofs
 

@@ -1,0 +1,61 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #369 : photos de l'etat des lieux dans le PDF (ConditionPhoto::getForPdf()). Les empreintes
+   SHA-256 figurent toujours : le PDF signe atteste ainsi les photos jointes dans GLPI. Les images ne
+   sont reproduites que si le reglage « photos dans le PDF » est actif (with_images). #}
+{% set cp = condition_photos|default(null) %}
+{% if cp %}
+<h2>{{ __('Photos de l\'état des lieux', 'assetsign') }}</h2>
+{% if not cp.with_images %}
+<p class="legal-text">{{ __('Les photos sont jointes à la fiche dans GLPI ; leur empreinte SHA-256 ci-dessous permet de vérifier qu\'elles n\'ont pas changé.', 'assetsign') }}</p>
+{% endif %}
+{% if cp.is_return %}
+{% set rows = max(cp.before|length, cp.photos|length) %}
+<table class="info-table" style="width: 100%; table-layout: fixed;">
+    <tr>
+        <th style="width: 50%;">{{ __('Avant : à la remise', 'assetsign') }}</th>
+        <th style="width: 50%;">{{ __('Après : à la restitution', 'assetsign') }}</th>
+    </tr>
+    {% for i in 0..(rows - 1) %}
+    <tr style="page-break-inside: avoid;">
+        {% for photo in [cp.before[i]|default(null), cp.photos[i]|default(null)] %}
+        <td style="vertical-align: top; text-align: center;">
+            {% if photo %}
+                {% if photo.data_uri %}<img src="{{ photo.data_uri }}" style="max-width: 100%; max-height: 60mm;"><br>{% endif %}
+                <span style="font-size: 8px; word-wrap: break-word; word-break: break-all;">{{ __('Photo n° %d', 'assetsign')|format(photo.number) }} - {{ photo.date }}<br>SHA-256 : {{ photo.sha256 }}</span>
+            {% else %}
+                <span style="font-size: 8.5px; color: #777;">{{ __('Pas de photo', 'assetsign') }}</span>
+            {% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<table class="info-table" style="width: 100%; table-layout: fixed;">
+    {% for pair in cp.photos|batch(2) %}
+    <tr style="page-break-inside: avoid;">
+        {% for photo in pair %}
+        <td style="width: 50%; vertical-align: top; text-align: center;">
+            {% if photo.data_uri %}<img src="{{ photo.data_uri }}" style="max-width: 100%; max-height: 60mm;"><br>{% endif %}
+            <span style="font-size: 8px; word-wrap: break-word; word-break: break-all;">{{ __('Photo n° %d', 'assetsign')|format(photo.number) }} - {{ photo.date }}<br>SHA-256 : {{ photo.sha256 }}</span>
+        </td>
+        {% endfor %}
+        {% if pair|length < 2 %}<td style="width: 50%;"></td>{% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endif %}

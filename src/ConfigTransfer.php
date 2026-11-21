@@ -137,6 +137,7 @@ final class ConfigTransfer
       'enable_vente'                         => ['bool'],
       'enable_destruction'                   => ['bool'],
       'enable_damage_annotation'             => ['bool'],
+      'photos_in_pdf'                        => ['bool'],
       'enable_maintenance_signature'         => ['bool'],
       'enable_movements'                     => ['bool'],
       'enable_movement_signature'            => ['bool'],
