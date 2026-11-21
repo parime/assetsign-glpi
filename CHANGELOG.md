@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Inventaire physique par scan des étiquettes QR, salle par salle** (#368) : nouvelle page Outils >
+  AssetSign > Pilotage du parc > Inventaires physiques. Une campagne vise un lieu (et ses sous-lieux
+  au choix) ; le technicien scanne les étiquettes QR du plugin avec la caméra du téléphone ou de la
+  tablette (décodage dans le navigateur, bibliothèque jsQR 1.4.0 livrée avec le plugin, aucun CDN),
+  ou saisit le numéro de série, d'inventaire ou le nom. Le rapport rapproche les scans du matériel
+  GLPI : trouvé, absent, à un autre emplacement, en trop ; export CSV comme preuve d'inventaire,
+  clôture de la campagne. Droits AssetSign et entités de l'utilisateur respectés ; lecture seule
+  sur le parc : seules la campagne et ses scans sont écrits, aucun écart n'est corrigé
+  automatiquement. Tables `glpi_plugin_assetsign_physicalinventories` et
+  `glpi_plugin_assetsign_physicalinventoryscans` (installation, mise à jour, désinstallation).
+
 ## [2.29.0] - 2026-11-21
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

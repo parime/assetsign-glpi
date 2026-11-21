@@ -32,6 +32,7 @@ use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
 use GlpiPlugin\Assetsign\Menu;
 use GlpiPlugin\Assetsign\MenuSection;
 use GlpiPlugin\Assetsign\Movement;
+use GlpiPlugin\Assetsign\PhysicalInventory;
 use GlpiPlugin\Assetsign\Profile;
 use GlpiPlugin\Assetsign\Renewal;
 use GlpiPlugin\Assetsign\Template;
@@ -81,7 +82,7 @@ final class MenuSectionTest extends AssetsignTestCase
        $this->assertSame(
            [
                Assetsign::class, Movement::class, Departure::class, Campaign::class,
-               WipeAttestation::class, Maintenance::class, CsrDashboard::class, Renewal::class, IntegrityCheck::class,
+               WipeAttestation::class, Maintenance::class, CsrDashboard::class, Renewal::class, IntegrityCheck::class, PhysicalInventory::class,
            ],
            array_keys($menu['options'])
        );

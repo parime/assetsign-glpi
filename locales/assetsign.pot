@@ -7729,3 +7729,246 @@ msgstr ""
 #: src/Workflow/VenteType.php:46
 msgid "Matériel vendu"
 msgstr ""
+
+
+#: templates/physicalinventory_list.html.twig
+msgid "Nouvelle campagne d'inventaire"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid ""
+"Aucun lieu dans vos entités : créez d'abord les lieux (salles, étages) dans "
+"Configuration > Intitulés > Lieux."
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Exemple : inventaire du 2e étage"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Lieu à inventorier"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Inclure les sous-lieux (salles du bâtiment, par exemple)"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Créer la campagne"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Campagnes d'inventaire physique"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Lieu"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Scans"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Toutes les campagnes d'inventaire"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+#, php-format
+msgid "Lieu : %s"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "avec ses sous-lieux"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+#, php-format
+msgid "Créée le %s"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+#, php-format
+msgid "clôturée le %s"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid ""
+"La caméra n'est pas disponible dans ce navigateur (elle exige une connexion "
+"HTTPS) : utilisez la saisie manuelle."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid ""
+"Accès à la caméra refusé : autorisez-le dans le navigateur, ou utilisez la "
+"saisie manuelle."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Visez une étiquette QR : chaque matériel reconnu s'ajoute ci-dessous."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Le scan n'a pas pu être enregistré : réessayez."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Scanner les étiquettes QR"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Démarrer la caméra"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Arrêter la caméra"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Saisie manuelle : numéro de série, numéro d'inventaire ou nom"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Rapport de rapprochement"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Actualiser"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid ""
+"Trouvé : scanné et rangé dans ce lieu dans GLPI. À un autre emplacement : "
+"scanné ici, mais GLPI le place ailleurs. Absent : attendu dans ce lieu, pas "
+"scanné. En trop : code scanné qui ne correspond à aucun matériel de vos "
+"entités. Rien n'est modifié dans GLPI : corrigez les écarts depuis la fiche "
+"du matériel."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Aucun matériel attendu ni scanné pour l'instant."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig src/PhysicalInventory.php:463
+msgid "Résultat"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig src/PhysicalInventory.php:463
+msgid "Numéro de série"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig src/PhysicalInventory.php:464
+msgid "Emplacement dans GLPI"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Scan"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Clôturer la campagne ? Elle ne recevra plus de scan."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Clôturer la campagne"
+msgstr ""
+
+#: front/physicalinventory.form.php:45
+msgid "Campagne clôturée : le rapport est figé."
+msgstr ""
+
+#: front/physicalinventory.php:38
+msgid "Indiquez un nom et un lieu pour la campagne."
+msgstr ""
+
+#: front/physicalinventoryscan.php:30
+msgid "Campagne introuvable."
+msgstr ""
+
+#: src/MenuSection.php:117
+msgid ""
+"L'inventaire physique, salle par salle : on scanne les étiquettes QR du "
+"matériel présent (ou on saisit son numéro de série) et le plugin le compare "
+"à ce que GLPI attend dans ce lieu."
+msgstr ""
+
+#: src/MenuSection.php:118
+msgid ""
+"Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du "
+"téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un "
+"autre emplacement, en trop. Rien n'est modifié dans le parc : corrigez vous-"
+"même les écarts. L'export CSV sert de preuve d'inventaire."
+msgstr ""
+
+#: src/PhysicalInventory.php:46
+msgid "Inventaire physique"
+msgid_plural "Inventaires physiques"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/PhysicalInventory.php:74
+msgid "Trouvé"
+msgstr ""
+
+#: src/PhysicalInventory.php:75
+msgid "À un autre emplacement"
+msgstr ""
+
+#: src/PhysicalInventory.php:76
+msgid "Absent"
+msgstr ""
+
+#: src/PhysicalInventory.php:77
+msgid "En trop"
+msgstr ""
+
+#: src/PhysicalInventory.php:302
+msgid "Saisissez ou scannez un code."
+msgstr ""
+
+#: src/PhysicalInventory.php:305
+msgid "Cette campagne est clôturée : elle ne reçoit plus de scan."
+msgstr ""
+
+#: src/PhysicalInventory.php:310
+#, php-format
+msgid ""
+"Plusieurs matériels correspondent à « %s » : scannez l'étiquette QR ou "
+"saisissez le numéro de série."
+msgstr ""
+
+#: src/PhysicalInventory.php:319
+#, php-format
+msgid "« %s » est déjà scanné dans cette campagne."
+msgstr ""
+
+#: src/PhysicalInventory.php:333
+#, php-format
+msgid "« %s » : aucun matériel GLPI ne correspond (en trop)."
+msgstr ""
+
+#: src/PhysicalInventory.php:337
+#, php-format
+msgid "« %s » : trouvé."
+msgstr ""
+
+#: src/PhysicalInventory.php:337
+#, php-format
+msgid "« %s » : trouvé, mais enregistré dans GLPI à un autre emplacement."
+msgstr ""
+
+#: src/PhysicalInventory.php:464
+msgid "Numéro d'inventaire"
+msgstr ""
+
+#: src/PhysicalInventory.php:464
+msgid "Code scanné"
+msgstr ""
+
+#: src/PhysicalInventory.php:465
+msgid "Date du scan"
+msgstr ""
+
+#: src/PhysicalInventory.php:465
+msgid "Scanné par"
+msgstr ""

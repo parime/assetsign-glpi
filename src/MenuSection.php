@@ -53,7 +53,7 @@ final class MenuSection
            'fleet' => [
                'label' => __('Pilotage du parc', 'assetsign'),
                'icon'  => 'ti ti-chart-pie',
-               'pages' => [CsrDashboard::class, Renewal::class, IntegrityCheck::class],
+               'pages' => [CsrDashboard::class, Renewal::class, IntegrityCheck::class, PhysicalInventory::class],
            ],
        ];
    }
@@ -111,6 +111,11 @@ final class MenuSection
                'page'     => 'integrity',
                'purpose'  => __('Vérifie que chaque fiche signée garde sa preuve : le PDF signé (ou le scan papier) existe toujours, son empreinte SHA-256 n\'a pas changé et il reste rattaché au matériel.', 'assetsign'),
                'expected' => __('Le contrôle tourne chaque semaine ; « Lancer le contrôle » le relance aussitôt. Ouvrez chaque fiche en anomalie pour comprendre ce qui a changé : rien n\'est corrigé automatiquement. L\'export CSV sert de preuve de contrôle.', 'assetsign'),
+           ],
+           PhysicalInventory::class => [
+               'page'     => 'physicalinventory',
+               'purpose'  => __('L\'inventaire physique, salle par salle : on scanne les étiquettes QR du matériel présent (ou on saisit son numéro de série) et le plugin le compare à ce que GLPI attend dans ce lieu.', 'assetsign'),
+               'expected' => __('Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un autre emplacement, en trop. Rien n\'est modifié dans le parc : corrigez vous-même les écarts. L\'export CSV sert de preuve d\'inventaire.', 'assetsign'),
            ],
        ];
    }

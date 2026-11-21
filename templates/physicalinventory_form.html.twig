@@ -1,0 +1,125 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #368 : une campagne d'inventaire physique : scan, saisie manuelle, rapport. #}
+<div class="container-lg my-3">
+  <p><a href="{{ list_url }}"><i class="ti ti-arrow-left me-1"></i>{{ __('Toutes les campagnes d\'inventaire', 'assetsign') }}</a></p>
+
+  <div class="card mb-3">
+    <div class="card-header d-flex flex-wrap align-items-center gap-2">
+      <h3 class="card-title mb-0"><i class="ti ti-scan me-2"></i>{{ campaign.name }}</h3>
+      {% if campaign.is_open %}
+        <span class="badge bg-primary-subtle text-primary-emphasis"><i class="ti ti-player-play me-1"></i>{{ __('Ouverte', 'assetsign') }}</span>
+      {% else %}
+        <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-lock me-1"></i>{{ __('Clôturée', 'assetsign') }}</span>
+      {% endif %}
+    </div>
+    <div class="card-body">
+      <p class="mb-1"><i class="ti ti-map-pin me-1"></i>{{ __('Lieu : %s', 'assetsign')|format(campaign.location) }}{% if campaign.include_sublocations %} <span class="text-muted">({{ __('avec ses sous-lieux', 'assetsign') }})</span>{% endif %}</p>
+      <p class="mb-1 text-muted">{{ __('Créée le %s', 'assetsign')|format(campaign.date_creation|formatted_datetime) }}{% if campaign.date_closed %} - {{ __('clôturée le %s', 'assetsign')|format(campaign.date_closed|formatted_datetime) }}{% endif %}</p>
+      {% if campaign.comment %}<p class="mb-0">{{ campaign.comment|nl2br }}</p>{% endif %}
+    </div>
+  </div>
+
+  {% if can_scan %}
+    <div class="card mb-3" id="assetsign-inventory-scanner"
+         data-scan-url="{{ scan_url }}" data-campaign="{{ campaign.id }}" data-token="{{ scan_token }}"
+         data-msg-no-camera="{{ __('La caméra n\'est pas disponible dans ce navigateur (elle exige une connexion HTTPS) : utilisez la saisie manuelle.', 'assetsign') }}"
+         data-msg-denied="{{ __('Accès à la caméra refusé : autorisez-le dans le navigateur, ou utilisez la saisie manuelle.', 'assetsign') }}"
+         data-msg-ready="{{ __('Visez une étiquette QR : chaque matériel reconnu s\'ajoute ci-dessous.', 'assetsign') }}"
+         data-msg-error="{{ __('Le scan n\'a pas pu être enregistré : réessayez.', 'assetsign') }}">
+      <div class="card-header"><h4 class="card-title mb-0"><i class="ti ti-camera me-2"></i>{{ __('Scanner les étiquettes QR', 'assetsign') }}</h4></div>
+      <div class="card-body">
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          <button type="button" class="btn btn-primary" data-scan-start><i class="ti ti-camera me-1"></i>{{ __('Démarrer la caméra', 'assetsign') }}</button>
+          <button type="button" class="btn btn-outline-secondary d-none" data-scan-stop><i class="ti ti-player-stop me-1"></i>{{ __('Arrêter la caméra', 'assetsign') }}</button>
+        </div>
+        <div class="text-muted small mb-2" data-scan-status aria-live="polite"></div>
+        <video class="d-none rounded border w-100" style="max-width: 480px;" data-scan-video playsinline muted></video>
+        <canvas class="d-none" data-scan-canvas></canvas>
+        <ul class="list-unstyled mt-2 mb-0" data-scan-log aria-live="polite"></ul>
+      </div>
+      <div class="card-footer">
+        <form method="post" action="{{ self_url }}" class="row g-2 align-items-end">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="id" value="{{ campaign.id }}">
+          <div class="col-md-6">
+            <label class="form-label" for="pi-code">{{ __('Saisie manuelle : numéro de série, numéro d\'inventaire ou nom', 'assetsign') }}</label>
+            <input type="text" id="pi-code" name="code" class="form-control" maxlength="255" required autocomplete="off">
+          </div>
+          <div class="col-md-auto">
+            <button type="submit" name="scan" value="1" class="btn btn-outline-primary"><i class="ti ti-keyboard me-1"></i>{{ __('Enregistrer', 'assetsign') }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="{{ config('root_doc') }}/plugins/assetsign/lib/scan/jsQR.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+    <script src="{{ config('root_doc') }}/plugins/assetsign/js/inventory/scan.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-header d-flex flex-wrap align-items-center gap-2">
+      <h4 class="card-title mb-0"><i class="ti ti-report-analytics me-2"></i>{{ __('Rapport de rapprochement', 'assetsign') }}</h4>
+      {% for status, label in labels %}
+        <span class="badge bg-{{ colors[status] }}-subtle text-{{ colors[status] }}-emphasis">{{ label }} : {{ report.counts[status] }}</span>
+      {% endfor %}
+      <div class="ms-auto d-flex gap-2">
+        <a class="btn btn-outline-secondary btn-sm" href="{{ self_url }}"><i class="ti ti-refresh me-1"></i>{{ __('Actualiser', 'assetsign') }}</a>
+        <a class="btn btn-outline-secondary btn-sm" href="{{ self_url }}&amp;export=csv"><i class="ti ti-file-spreadsheet me-1"></i>{{ __('Exporter (CSV)', 'assetsign') }}</a>
+      </div>
+    </div>
+    <div class="card-body pb-0">
+      <p class="text-muted">{{ __('Trouvé : scanné et rangé dans ce lieu dans GLPI. À un autre emplacement : scanné ici, mais GLPI le place ailleurs. Absent : attendu dans ce lieu, pas scanné. En trop : code scanné qui ne correspond à aucun matériel de vos entités. Rien n\'est modifié dans GLPI : corrigez les écarts depuis la fiche du matériel.', 'assetsign') }}</p>
+    </div>
+    {% if report.rows is empty %}
+      <div class="card-body"><div class="empty"><p class="empty-title">{{ __('Aucun matériel attendu ni scanné pour l\'instant.', 'assetsign') }}</p></div></div>
+    {% else %}
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>{{ __('Résultat', 'assetsign') }}</th>
+              <th>{{ __('Matériel', 'assetsign') }}</th>
+              <th>{{ __('Numéro de série', 'assetsign') }}</th>
+              <th>{{ __('Emplacement dans GLPI', 'assetsign') }}</th>
+              <th>{{ __('Scan', 'assetsign') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in report.rows %}
+              <tr>
+                <td><span class="badge bg-{{ row.color }}-subtle text-{{ row.color }}-emphasis">{{ row.label }}</span></td>
+                <td>
+                  {% if row.url %}<a href="{{ row.url }}">{{ row.name ?: '-' }}</a> <span class="text-muted small">{{ row.type }}</span>{% else %}<code>{{ row.code }}</code>{% endif %}
+                </td>
+                <td>{{ row.serial }}{% if row.otherserial %}<div class="text-muted small">{{ row.otherserial }}</div>{% endif %}</td>
+                <td>{{ row.location }}</td>
+                <td>{% if row.date_scan %}{{ row.date_scan|formatted_datetime }}<div class="text-muted small">{{ row.scanned_by }}</div>{% else %}-{% endif %}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+    {% if can_scan %}
+      <div class="card-footer">
+        <form method="post" action="{{ self_url }}" data-assetsign-confirm="{{ __('Clôturer la campagne ? Elle ne recevra plus de scan.', 'assetsign') }}">
+          <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="id" value="{{ campaign.id }}">
+          <button type="submit" name="close" value="1" class="btn btn-outline-danger"><i class="ti ti-lock me-1"></i>{{ __('Clôturer la campagne', 'assetsign') }}</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+</div>
