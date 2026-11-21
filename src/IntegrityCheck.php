@@ -98,24 +98,24 @@ class IntegrityCheck extends CommonGLPI
            'is_deleted' => 0,
            'status'     => [...Assetsign::STATUSES_SIGNED, Assetsign::STATUS_AWAITING_COSIGNATURE],
        ];
-      if ($entityIds !== null) {
+       if ($entityIds !== null) {
           $where['entities_id'] = $entityIds === [] ? [-1] : $entityIds;
-      }
+       }
 
        $checked = [];
        $anomalies = [];
-      foreach ($DB->request(['FROM' => Assetsign::getTable(), 'WHERE' => $where, 'ORDER' => 'id']) as $row) {
+       foreach ($DB->request(['FROM' => Assetsign::getTable(), 'WHERE' => $where, 'ORDER' => 'id']) as $row) {
           $entity = (int) $row['entities_id'];
           $checked[$entity] = ($checked[$entity] ?? 0) + 1;
-         foreach (self::checkSheet($row) as [$documentsId, $code]) {
+          foreach (self::checkSheet($row) as [$documentsId, $code]) {
              $anomalies[] = [
                  'assetsigns_id' => (int) $row['id'],
                  'entities_id'   => $entity,
                  'documents_id'  => $documentsId,
                  'code'          => $code,
              ];
-         }
-      }
+          }
+       }
 
        return ['checked' => $checked, 'anomalies' => $anomalies];
    }
@@ -158,7 +158,7 @@ class IntegrityCheck extends CommonGLPI
           $hash = (string) $document->fields['filepath'] !== '' && is_file($path) ? hash_file('sha256', $path) : false;
          if ($hash === false) {
              $anomalies[] = [$documentsId, self::ANOMALY_FILE_MISSING];
-         } elseif ($hashes !== [] && !in_array($hash, $hashes, true)) {
+         } else if ($hashes !== [] && !in_array($hash, $hashes, true)) {
              $anomalies[] = [$documentsId, self::ANOMALY_HASH_MISMATCH];
          }
           $attached = countElementsInTable('glpi_documents_items', [

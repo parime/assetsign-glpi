@@ -32,9 +32,7 @@ if (isset($_POST['run_check'])) {
    Session::checkRight(Profile::RIGHT_ASSETSIGN, UPDATE);
    $result = IntegrityCheck::run($entities, (int) Session::getLoginUserID());
    Session::addMessageAfterRedirect(
-       htmlescape(sprintf(__('%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)', 'assetsign'), $result['anomalies'], $result['checked'])),
-       false,
-       $result['anomalies'] > 0 ? WARNING : INFO
+       htmlescape(sprintf(__('%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)', 'assetsign'), $result['anomalies'], $result['checked'])), false, $result['anomalies'] > 0 ? WARNING : INFO
    );
    Html::redirect($selfUrl);
 }
