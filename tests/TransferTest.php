@@ -103,25 +103,25 @@ final class TransferTest extends AssetsignTestCase
    }
 
    public function testGlpiAssignmentFollowsOnlyAfterBothSignaturesInAnyOrder(): void {
-       foreach ([[true, 'PHPUNIT-PASSATION-2'], [false, 'PHPUNIT-PASSATION-3']] as [$returnFirst, $name]) {
-           $computer = $this->computerHeldBy($this->outgoing, $name);
-           ['return' => $return, 'handover' => $handover] = Assetsign::createTransfer('Computer', $computer->getID(), $this->incoming);
-           $sheetsBefore = count((new Assetsign())->find(['itemtype' => 'Computer', 'items_id' => $computer->getID()]));
+      foreach ([[true, 'PHPUNIT-PASSATION-2'], [false, 'PHPUNIT-PASSATION-3']] as [$returnFirst, $name]) {
+          $computer = $this->computerHeldBy($this->outgoing, $name);
+          ['return' => $return, 'handover' => $handover] = Assetsign::createTransfer('Computer', $computer->getID(), $this->incoming);
+          $sheetsBefore = count((new Assetsign())->find(['itemtype' => 'Computer', 'items_id' => $computer->getID()]));
 
-           $this->setStatus($returnFirst ? $return : $handover, Assetsign::STATUS_SIGNED);
-           $this->assertSame($this->outgoing, $this->holderOf($computer), 'Une seule signature : toujours au sortant.');
+          $this->setStatus($returnFirst ? $return : $handover, Assetsign::STATUS_SIGNED);
+          $this->assertSame($this->outgoing, $this->holderOf($computer), 'Une seule signature : toujours au sortant.');
 
-           $this->setStatus($returnFirst ? $handover : $return, Assetsign::STATUS_SIGNED_ON_PAPER);
-           $this->assertSame($this->incoming, $this->holderOf($computer), 'Deux signatures : attribue a l\'entrant.');
-           $this->assertSame(
-               $sheetsBefore,
-               count((new Assetsign())->find(['itemtype' => 'Computer', 'items_id' => $computer->getID()])),
-               'Le changement d\'utilisateur fait par la passation ne cree pas de nouvelle fiche.'
-           );
-           $data = Transfer::getDisplayData($handover);
-           $this->assertNotNull($data);
-           $this->assertTrue($data['complete']);
-       }
+          $this->setStatus($returnFirst ? $handover : $return, Assetsign::STATUS_SIGNED_ON_PAPER);
+          $this->assertSame($this->incoming, $this->holderOf($computer), 'Deux signatures : attribue a l\'entrant.');
+          $this->assertSame(
+              $sheetsBefore,
+              count((new Assetsign())->find(['itemtype' => 'Computer', 'items_id' => $computer->getID()])),
+              'Le changement d\'utilisateur fait par la passation ne cree pas de nouvelle fiche.'
+          );
+          $data = Transfer::getDisplayData($handover);
+          $this->assertNotNull($data);
+          $this->assertTrue($data['complete']);
+      }
    }
 
    public function testHandedItemGoesWithTheMainItemAfterBothSignatures(): void {
@@ -166,20 +166,20 @@ final class TransferTest extends AssetsignTestCase
 
    public function testRefusedWithoutHolderForTheSamePersonOrWhenDisabled(): void {
        $free = $this->createTestComputer($this->entity, 'PHPUNIT-PASSATION-6');
-       try {
-           Assetsign::createTransfer('Computer', $free->getID(), $this->incoming);
-           $this->fail('Sans detenteur, pas de passation.');
-       } catch (\RuntimeException $e) {
-           $this->assertSame(0, count((new Assetsign())->find(['itemtype' => 'Computer', 'items_id' => $free->getID()])));
-       }
+      try {
+          Assetsign::createTransfer('Computer', $free->getID(), $this->incoming);
+          $this->fail('Sans detenteur, pas de passation.');
+      } catch (\RuntimeException $e) {
+          $this->assertSame(0, count((new Assetsign())->find(['itemtype' => 'Computer', 'items_id' => $free->getID()])));
+      }
 
        $computer = $this->computerHeldBy($this->outgoing, 'PHPUNIT-PASSATION-7');
-       try {
-           Assetsign::createTransfer('Computer', $computer->getID(), $this->outgoing);
-           $this->fail('Le detenteur actuel ne peut pas etre l\'entrant.');
-       } catch (\InvalidArgumentException $e) {
-           $this->assertSame(0, count((new Assetsign())->find(['itemtype' => 'Computer', 'items_id' => $computer->getID()])));
-       }
+      try {
+          Assetsign::createTransfer('Computer', $computer->getID(), $this->outgoing);
+          $this->fail('Le detenteur actuel ne peut pas etre l\'entrant.');
+      } catch (\InvalidArgumentException $e) {
+          $this->assertSame(0, count((new Assetsign())->find(['itemtype' => 'Computer', 'items_id' => $computer->getID()])));
+      }
 
        Config::upsertForEntity($this->entity, ['sign_on_reassignment' => 0]);
        $this->expectException(\RuntimeException::class);

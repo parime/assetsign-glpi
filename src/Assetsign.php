@@ -1189,9 +1189,9 @@ class Assetsign extends Compat\Base\AssetsignBase
               'reason' => array_key_exists($type, $manualTypes) ? '' : $disabled];
        }
        foreach ($cards as &$card) {
-         if (isset($card['label'])) {
+          if (isset($card['label'])) {
              continue;
-         }
+          }
           // « Remise » plutot que le nom generique du type (« Attribution »), face a « Restitution ».
           $card['label'] = $card['type'] === self::TYPE_HANDOVER ? __('Remise', 'assetsign') : ($types[$card['type']] ?? '');
           $card['icon'] = $icons[$card['type']] ?? 'ti ti-file';
