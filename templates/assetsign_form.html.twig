@@ -594,6 +594,11 @@
       {% endif %}
     {% endif %}
 
+    {# Issue #369 : photos de l'etat des lieux (remise, restitution avec comparaison avant/apres). #}
+    {% if condition_photos|default(null) %}
+      {% include '@assetsign/_condition_photos.html.twig' with {photos: condition_photos} %}
+    {% endif %}
+
     {% if checklist_results|length or checklist_items|length %}
       <h3 class="mt-4">{{ __('Contrôle qualité', 'assetsign') }}</h3>
       {% if checklist_results|length %}

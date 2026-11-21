@@ -154,6 +154,9 @@
 {% include '@assetsign/pdf/_damage_views.html.twig' %}
 {% endif %}
 
+{# Issue #369 : photos de l'etat des lieux (empreintes toujours, images si le reglage est actif). #}
+{% include '@assetsign/pdf/_condition_photos.html.twig' %}
+
 {% if include_content %}
 <h2>{{ __('Conditions générales', 'assetsign') }}</h2>
 <div class="legal-text">{{ contract_safe_html|raw }}</div>

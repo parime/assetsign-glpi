@@ -155,6 +155,31 @@ import_apply "$token" > /dev/null
 expect "jeton de simulation a usage unique" "$(field "$s9" documents)" "$(field "$(state)" documents)"
 expect "aucun fichier executable stocke apres import" 0 "$(field "$(state)" executable)"
 
+# --- Photos de l'etat des lieux (issue #369) : images reelles uniquement, reencodees ---
+photo() { # id de la feuille, fichier local, nom annonce
+  curl -s -o /dev/null -w '%{http_code}' -c "$JAR" -b "$JAR" -F add_condition_photos=1 -F "id=$1"     -F "_glpi_csrf_token=$(csrf)" -F "condition_photos[]=@$2;filename=$3" "$P/assetsign.form.php"
+}
+base64 -d <<< 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=' > "$DIR/photo.png"
+cat "$DIR/photo.png" "$DIR/script" > "$DIR/photo-polyglot.png"
+login glpi glpi
+p0=$(state)
+for name in photo.php photo.jpg photo.phtml; do
+  photo "$(id assetsign_A)" "$DIR/script" "$name" > /dev/null
+done
+photo "$(id assetsign_A)" "$DIR/polyglot" photo.gif > /dev/null
+p1=$(state)
+expect "photo : script ou GIF refuses" "$(field "$p0" photos)" "$(field "$p1" photos)"
+expect "photo refusee : aucun document cree" "$(field "$p0" documents)" "$(field "$p1" documents)"
+photo "$(id assetsign_A)" "$DIR/photo-polyglot.png" photo.png > /dev/null
+p2=$(state)
+expect "photo PNG suivie de code PHP : acceptee apres nettoyage" $(($(field "$p1" photos) + 1)) "$(field "$p2" photos)"
+expect "photo stockee sans la charge cachee" 0 "$(field "$p2" photo_payload)"
+login securite-tech 'Secrev#2026'
+expect "technicien de A : photo sur une feuille de B" 404 "$(photo "$(id assetsign_B)" "$DIR/photo.png" photo.png)"
+expect "technicien de A : aucune photo ajoutee a B" "$(field "$p2" photos)" "$(field "$(state)" photos)"
+expect "aucun fichier executable stocke apres les photos" 0 "$(field "$(state)" executable)"
+login glpi glpi
+
 # --- Scan signe sur papier (issue #276) : PDF, JPEG ou PNG reels uniquement ---
 paper() { # id de la feuille, fichier local, nom annonce
   curl -s -o /dev/null -w '%{http_code}' -c "$JAR" -b "$JAR" -F attach_paper_scan=1 -F "id=$1"     -F "_glpi_csrf_token=$(csrf)" -F "paper_scan=@$2;filename=$3" "$P/assetsign.form.php"

@@ -145,6 +145,12 @@ expect "onglet passeport d'un utilisateur : contenu affiche" oui "$([ -n "$(page
 expect "front/assetsign.form.php : annuler la feuille de B"  $NF_POST "$(post assetsign.form.php "cancel_request=1&id=$(id assetsign_B)")"
 # Issue #276 : scan signe sur papier joint a la feuille de B (sans fichier : refuse dans tous les cas).
 expect "front/assetsign.form.php : scan papier sur la feuille de B" $NF_POST "$(post assetsign.form.php "attach_paper_scan=1&id=$(id assetsign_B)")"
+# Issue #369 : photos de l'etat des lieux (la photo de B n'a pas de fichier : introuvable pour tous ;
+# servie par une autre feuille, introuvable aussi).
+expect "front/assetsign.form.php : photo de B"                 404   "$(code "$P/assetsign.form.php?id=$(id assetsign_B)&photo=$(id photo_B)")"
+expect "front/assetsign.form.php : photo de B via la feuille de A" 404 "$(code "$P/assetsign.form.php?id=$(id assetsign_A)&photo=$(id photo_B)")"
+expect "front/assetsign.form.php : supprimer la photo de B"    $NF_POST "$(post assetsign.form.php "delete_condition_photo=$(id photo_B)&id=$(id assetsign_B)")"
+expect "front/assetsign.form.php : photos sur la feuille de B" $NF_POST "$(post assetsign.form.php "add_condition_photos=1&id=$(id assetsign_B)")"
 expect "front/assign_user_asset.php : attribuer un PC de B"  $NF_POST "$(post assign_user_asset.php "assign=1&itemtype=Computer&items_id=$(id computer_B)&users_id=$(id partant_A)")"
 expect "front/maintenance.form.php : maintenance d'un PC de B" $NF_POST "$(post maintenance.form.php "create=1&itemtype=Computer&items_id=$(id computer_B)")"
 expect "front/movement.form.php : mouvement d'un PC de B"    $NF_POST "$(post movement.form.php "create=1&itemtype=Computer&items_id=$(id computer_B)&locations_id_to=0")"

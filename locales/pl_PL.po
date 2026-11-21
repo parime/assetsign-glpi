@@ -8,7 +8,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 
 #: templates/sign_page.html.twig front/sign.php:130
 msgid "Signature d'attribution de matériel"
@@ -18,10 +19,8 @@ msgstr "Podpis przekazania sprzętu"
 #: templates/qr_label.html.twig templates/assetsign_form.html.twig
 #: templates/movement_create.html.twig templates/maintenance_create.html.twig
 #: templates/maintenance_form.html.twig templates/assetsign_tab.html.twig
-#: src/Assetsign.php:225
-#: src/Movement.php:121
-#: src/NotificationTargetAssetsign.php:158
-#: src/Maintenance.php:86
+#: src/Assetsign.php:225 src/Movement.php:121
+#: src/NotificationTargetAssetsign.php:158 src/Maintenance.php:86
 msgid "Matériel"
 msgstr "Zasób"
 
@@ -52,8 +51,8 @@ msgid ""
 "repère existant pour le décrire ou le supprimer, glissez-le pour le "
 "repositionner."
 msgstr ""
-"Kliknij widok, aby zaznaczyć uszkodzenie; kliknij istniejący znacznik, aby go"
-" opisać lub usunąć, przeciągnij go, aby zmienić położenie."
+"Kliknij widok, aby zaznaczyć uszkodzenie; kliknij istniejący znacznik, aby "
+"go opisać lub usunąć, przeciągnij go, aby zmienić położenie."
 
 #: templates/sign_page.html.twig
 msgid "Remarque"
@@ -146,8 +145,7 @@ msgstr "Usuń"
 msgid "Remarque enregistrée."
 msgstr "Uwaga zapisana."
 
-#: templates/movement_form.html.twig
-#: src/PassportEvent.php:60
+#: templates/movement_form.html.twig src/PassportEvent.php:60
 #: src/Movement.php:56
 msgid "Mouvement"
 msgid_plural "Mouvements"
@@ -156,26 +154,22 @@ msgstr[1] "Przemieszczenia"
 msgstr[2] "Przemieszczeń"
 
 #: templates/movement_form.html.twig templates/movement_tab.html.twig
-#: templates/movement_create.html.twig
-#: src/Movement.php:130
+#: templates/movement_create.html.twig src/Movement.php:130
 msgid "Lieu de départ"
 msgstr "Miejsce wyjazdu"
 
 #: templates/movement_form.html.twig templates/movement_tab.html.twig
-#: templates/movement_create.html.twig
-#: src/Movement.php:145
+#: templates/movement_create.html.twig src/Movement.php:145
 msgid "Date de départ"
 msgstr "Data wyjazdu"
 
 #: templates/movement_form.html.twig templates/movement_tab.html.twig
-#: templates/movement_create.html.twig
-#: src/Movement.php:138
+#: templates/movement_create.html.twig src/Movement.php:138
 msgid "Lieu de destination"
 msgstr "Miejsce docelowe"
 
 #: templates/movement_form.html.twig templates/movement_tab.html.twig
-#: templates/movement_create.html.twig
-#: src/Movement.php:152
+#: templates/movement_create.html.twig src/Movement.php:152
 msgid "Date de destination"
 msgstr "Data dotarcia do celu"
 
@@ -186,8 +180,7 @@ msgstr "Utworzono"
 #: templates/movement_form.html.twig templates/movement_tab.html.twig
 #: templates/assetsign_form.html.twig templates/maintenance_tab.html.twig
 #: templates/movement_create.html.twig templates/maintenance_create.html.twig
-#: templates/maintenance_form.html.twig
-#: src/Movement.php:183
+#: templates/maintenance_form.html.twig src/Movement.php:183
 msgid "Commentaire"
 msgstr "Komentarz"
 
@@ -293,13 +286,11 @@ msgid "Destination"
 msgstr "Cel"
 
 #: templates/movement_tab.html.twig templates/assetsign_form.html.twig
-#: templates/assetsign_tab.html.twig src/Assetsign.php:242
-#: src/Movement.php:159
+#: templates/assetsign_tab.html.twig src/Assetsign.php:242 src/Movement.php:159
 msgid "Statut"
 msgstr "Status"
 
-#: templates/movement_tab.html.twig src/Assetsign.php:685
-#: src/Movement.php:176
+#: templates/movement_tab.html.twig src/Assetsign.php:685 src/Movement.php:176
 msgid "Signé"
 msgstr "Podpisano"
 
@@ -317,8 +308,7 @@ msgid "Créer le mouvement"
 msgstr "Utwórz przemieszczenie"
 
 #: templates/assetsign_form.html.twig templates/config_form.html.twig
-#: src/PassportEvent.php:55
-#: src/Assetsign.php:107
+#: src/PassportEvent.php:55 src/Assetsign.php:107
 #: src/Workflow/HandoverType.php:21
 msgid "Attribution"
 msgid_plural "Attributions"
@@ -342,8 +332,7 @@ msgstr "Wyświetlono"
 msgid "Signé le"
 msgstr "Podpisano dnia"
 
-#: templates/assetsign_form.html.twig
-#: src/Assetsign.php:272
+#: templates/assetsign_form.html.twig src/Assetsign.php:272
 msgid "Nombre de relances"
 msgstr "Liczba przypomnień"
 
@@ -362,8 +351,7 @@ msgstr "Pobierz (podpisany)"
 msgid "Télécharger (non signé)"
 msgstr "Pobierz (niepodpisany)"
 
-#: templates/assetsign_form.html.twig
-#: src/Assetsign.php:433
+#: templates/assetsign_form.html.twig src/Assetsign.php:433
 msgid "Relancer maintenant"
 msgstr "Wyślij przypomnienie teraz"
 
@@ -371,8 +359,7 @@ msgstr "Wyślij przypomnienie teraz"
 msgid "Annuler cette demande de signature ?"
 msgstr "Anulować tę prośbę o podpis?"
 
-#: templates/assetsign_form.html.twig
-#: src/Assetsign.php:435
+#: templates/assetsign_form.html.twig src/Assetsign.php:435
 msgid "Annuler la demande"
 msgstr "Anuluj prośbę"
 
@@ -392,11 +379,11 @@ msgstr "Szczegóły sprzedaży"
 
 #: templates/assetsign_form.html.twig
 msgid ""
-"Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF ne"
-" mentionne pas encore la vente tant que ce prix n'est pas saisi."
+"Aucun prix renseigné pour le moment (fiche créée automatiquement) : le PDF "
+"ne mentionne pas encore la vente tant que ce prix n'est pas saisi."
 msgstr ""
-"Nie podano jeszcze ceny (formularz utworzony automatycznie): PDF nie wspomina"
-" o sprzedaży, dopóki cena nie zostanie podana."
+"Nie podano jeszcze ceny (formularz utworzony automatycznie): PDF nie "
+"wspomina o sprzedaży, dopóki cena nie zostanie podana."
 
 #: templates/assetsign_form.html.twig templates/assetsign_tab.html.twig
 msgid "Prix"
@@ -429,8 +416,8 @@ msgstr "Szczegóły zniszczenia"
 
 #: templates/assetsign_form.html.twig
 msgid ""
-"Aucun prestataire renseigné pour le moment (fiche créée automatiquement) : le"
-" PDF ne le mentionne pas encore tant qu'il n'est pas saisi."
+"Aucun prestataire renseigné pour le moment (fiche créée automatiquement) : "
+"le PDF ne le mentionne pas encore tant qu'il n'est pas saisi."
 msgstr ""
 "Nie podano jeszcze dostawcy (formularz utworzony automatycznie): PDF nie "
 "wspomina o nim, dopóki nie zostanie podany."
@@ -589,8 +576,9 @@ msgstr "Podgląd wygenerowanego formularza"
 
 #: templates/template_form.html.twig
 msgid ""
-"Exemple avec des données fictives. L'aperçu se met à jour automatiquement dès"
-" que vous modifiez le texte ou une case à cocher, avant même d'enregistrer."
+"Exemple avec des données fictives. L'aperçu se met à jour automatiquement "
+"dès que vous modifiez le texte ou une case à cocher, avant même "
+"d'enregistrer."
 msgstr ""
 "Przykład z fikcyjnymi danymi. Podgląd aktualizuje się automatycznie, gdy "
 "tylko zmienisz tekst lub pole wyboru, jeszcze przed zapisaniem."
@@ -599,32 +587,27 @@ msgstr ""
 msgid "Général"
 msgstr "Ogólne"
 
-#: templates/config_form.html.twig
-#: src/PassportEvent.php:56
+#: templates/config_form.html.twig src/PassportEvent.php:56
 #: src/Workflow/ReturnType.php:16
 msgid "Restitution"
 msgstr "Zwrot"
 
-#: templates/config_form.html.twig
-#: src/PassportEvent.php:57
+#: templates/config_form.html.twig src/PassportEvent.php:57
 #: src/Workflow/DonType.php:23
 msgid "Don"
 msgstr "Darowizna"
 
-#: templates/config_form.html.twig
-#: src/PassportEvent.php:58
+#: templates/config_form.html.twig src/PassportEvent.php:58
 #: src/Workflow/VenteType.php:23
 msgid "Vente"
 msgstr "Sprzedaż"
 
-#: templates/config_form.html.twig
-#: src/PassportEvent.php:61
+#: templates/config_form.html.twig src/PassportEvent.php:61
 #: src/Workflow/DestructionType.php:25
 msgid "Destruction"
 msgstr "Zniszczenie"
 
-#: templates/config_form.html.twig
-#: src/PassportEvent.php:568
+#: templates/config_form.html.twig src/PassportEvent.php:568
 msgid "Réforme"
 msgstr "Wycofanie z użytku"
 
@@ -632,20 +615,17 @@ msgstr "Wycofanie z użytku"
 msgid "Compléments"
 msgstr "Dodatki"
 
-#: templates/config_form.html.twig
-#: src/PassportEvent.php:59
+#: templates/config_form.html.twig src/PassportEvent.php:59
 #: src/Maintenance.php:117
 msgid "Maintenance"
 msgstr "Konserwacja"
 
-#: templates/config_form.html.twig
-#: src/PassportEvent.php:524
+#: templates/config_form.html.twig src/PassportEvent.php:524
 #: src/Movement.php:207
 msgid "Mouvements"
 msgstr "Przemieszczenia"
 
-#: templates/config_form.html.twig
-#: src/PassportEvent.php:174
+#: templates/config_form.html.twig src/PassportEvent.php:174
 msgid "Passeport matériel"
 msgstr "Paszport sprzętu"
 
@@ -699,8 +679,9 @@ msgid ""
 "(voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition "
 "est retirée."
 msgstr ""
-"Poniższe logo jest obecnie narzucone przez jednostkę nadrzędną (patrz niżej)."
-" Logo przesłane tutaj zostanie użyte dopiero po usunięciu tego narzucenia."
+"Poniższe logo jest obecnie narzucone przez jednostkę nadrzędną (patrz "
+"niżej). Logo przesłane tutaj zostanie użyte dopiero po usunięciu tego "
+"narzucenia."
 
 #: templates/config_form.html.twig
 msgid "Retirer le logo actuel"
@@ -720,8 +701,8 @@ msgstr "Narzuć to logo wszystkim jednostkom podrzędnym (i ich podjednostkom)"
 #: templates/config_form.html.twig
 msgid ""
 "Utile si plusieurs entités doivent afficher le même logo : cette entité "
-"impose alors le sien à toute sa descendance, même si une entité enfant a déjà"
-" envoyé son propre logo."
+"impose alors le sien à toute sa descendance, même si une entité enfant a "
+"déjà envoyé son propre logo."
 msgstr ""
 "Przydatne, gdy kilka jednostek ma wyświetlać to samo logo: ta jednostka "
 "narzuca wtedy swoje całej gałęzi, nawet jeśli jednostka podrzędna przesłała "
@@ -745,8 +726,8 @@ msgstr "Link do pełnego regulaminu IT"
 
 #: templates/config_form.html.twig
 msgid ""
-"Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en"
-" ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en "
+"Optionnel : URL vers un document ou une page existante (intranet, PDF déjà "
+"en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en "
 "plus du texte de la charte défini dans le gabarit : commun à tous les types."
 msgstr ""
 "Opcjonalnie: adres URL istniejącego dokumentu lub strony (intranet, PDF już "
@@ -776,8 +757,8 @@ msgstr "Ostrzeż technika przed wygaśnięciem (dni wcześniej, 0 = wyłączone)
 
 #: templates/config_form.html.twig
 msgid ""
-"Le technicien à l'origine de l'attribution reçoit un e-mail quand il reste ce"
-" nombre de jours avant l'expiration du lien, pour pouvoir relancer le "
+"Le technicien à l'origine de l'attribution reçoit un e-mail quand il reste "
+"ce nombre de jours avant l'expiration du lien, pour pouvoir relancer le "
 "bénéficiaire autrement (appel, passage sur place) avant qu'il ne soit trop "
 "tard."
 msgstr ""
@@ -795,13 +776,13 @@ msgstr "Chroń PDF (ogranicz kopiowanie i edycję)"
 
 #: templates/config_form.html.twig
 msgid ""
-"Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur qui"
-" respecte cette restriction : n'affecte jamais la possibilité de le consulter"
-" ou de l'imprimer."
+"Chiffre le PDF généré pour empêcher sa copie/modification dans un lecteur "
+"qui respecte cette restriction : n'affecte jamais la possibilité de le "
+"consulter ou de l'imprimer."
 msgstr ""
 "Szyfruje wygenerowany PDF, aby uniemożliwić kopiowanie/edycję w czytniku "
-"respektującym to ograniczenie: nigdy nie wpływa na możliwość wyświetlenia ani"
-" wydruku."
+"respektującym to ograniczenie: nigdy nie wpływa na możliwość wyświetlenia "
+"ani wydruku."
 
 #: templates/config_form.html.twig
 msgid "Types de matériel gérés par le plugin"
@@ -860,8 +841,8 @@ msgid ""
 "Ajoute un bouton « Créer une fiche de don » sur l'onglet Attribution de "
 "chaque matériel géré par le plugin."
 msgstr ""
-"Dodaje przycisk \"Utwórz formularz darowizny\" w zakładce Przekazanie każdego"
-" zasobu obsługiwanego przez wtyczkę."
+"Dodaje przycisk \"Utwórz formularz darowizny\" w zakładce Przekazanie "
+"każdego zasobu obsługiwanego przez wtyczkę."
 
 #: templates/config_form.html.twig
 msgid "Autoriser la création de fiches de vente de matériel"
@@ -908,8 +889,8 @@ msgid ""
 "Le prestataire et le certificat ne sont pas connus automatiquement : à "
 "compléter ensuite sur la fiche créée."
 msgstr ""
-"Dostawca i certyfikat nie są znane automatycznie: należy je uzupełnić później"
-" w utworzonym formularzu."
+"Dostawca i certyfikat nie są znane automatycznie: należy je uzupełnić "
+"później w utworzonym formularzu."
 
 #: templates/config_form.html.twig
 msgid ""
@@ -928,8 +909,8 @@ msgid ""
 "Une date de réforme déjà renseignée (saisie manuelle ou déclenchement "
 "précédent) n'est jamais écrasée."
 msgstr ""
-"Już wypełniona data wycofania (wpis ręczny lub wcześniejsze wyzwolenie) nigdy"
-" nie jest nadpisywana."
+"Już wypełniona data wycofania (wpis ręczny lub wcześniejsze wyzwolenie) "
+"nigdy nie jest nadpisywana."
 
 #: templates/config_form.html.twig
 msgid "Déclenchement par État du matériel"
@@ -946,8 +927,8 @@ msgstr "Pole tekstowe \"Uwagi\" w każdym formularzu"
 #: templates/config_form.html.twig
 msgid ""
 "Si activé, un champ de texte libre devient disponible sur chaque fiche "
-"d'attribution (ex: état constaté du matériel) et apparaît sur le PDF tant que"
-" la fiche n'est pas encore signée."
+"d'attribution (ex: état constaté du matériel) et apparaît sur le PDF tant "
+"que la fiche n'est pas encore signée."
 msgstr ""
 "Jeśli włączone, w każdym formularzu przekazania dostępne jest pole tekstowe "
 "(np. stwierdzony stan sprzętu), widoczne w PDF, dopóki formularz nie jest "
@@ -985,10 +966,11 @@ msgstr "Zezwalaj na drukowanie etykiety z kodem QR dla sprzętu"
 
 #: templates/config_form.html.twig
 msgid ""
-"Différent du réglage ci-dessus (celui-ci concerne les fiches PDF) : ajoute un"
-" bouton sur l'onglet Passeport matériel pour imprimer une étiquette à coller "
-"physiquement sur le matériel. Scannée, elle ouvre directement son Passeport "
-"matériel dans GLPI (connexion requise, comme n'importe quel lien GLPI)."
+"Différent du réglage ci-dessus (celui-ci concerne les fiches PDF) : ajoute "
+"un bouton sur l'onglet Passeport matériel pour imprimer une étiquette à "
+"coller physiquement sur le matériel. Scannée, elle ouvre directement son "
+"Passeport matériel dans GLPI (connexion requise, comme n'importe quel lien "
+"GLPI)."
 msgstr ""
 "Inne niż powyższe ustawienie (dotyczące formularzy PDF): dodaje przycisk w "
 "zakładce Paszport sprzętu do wydruku etykiety do naklejenia na sprzęt. Po "
@@ -1015,8 +997,8 @@ msgstr ""
 msgid ""
 "La fiche de maintenance est un sous-système séparé de celui des fiches "
 "signées (pas de bénéficiaire, pas de jeton, pas d'e-mail) : elle génère "
-"toujours un PDF (même mise en page que les fiches attribution/don/vente, avec"
-" le logo), et peut en plus faire signer le technicien directement sur le "
+"toujours un PDF (même mise en page que les fiches attribution/don/vente, "
+"avec le logo), et peut en plus faire signer le technicien directement sur le "
 "formulaire de création si l'option ci-dessous est activée. L'accès se gère "
 "par le droit dédié (Administration > Profils)."
 msgstr ""
@@ -1053,9 +1035,9 @@ msgstr "Wyświetlaj formularze konserwacji"
 msgid ""
 "Un mouvement structuré généralise la notion de remise à n'importe quel "
 "déplacement physique de matériel (transfert inter-site, retour au stock, "
-"envoi vers un centre de réparation...) : lieu et date de départ, lieu et date"
-" de destination, document(s) joint(s) (onglet Documents natif), signature "
-"optionnelle. Alimente la même frise que le Passeport matériel."
+"envoi vers un centre de réparation...) : lieu et date de départ, lieu et "
+"date de destination, document(s) joint(s) (onglet Documents natif), "
+"signature optionnelle. Alimente la même frise que le Passeport matériel."
 msgstr ""
 "Ustrukturyzowane przemieszczenie uogólnia pojęcie przekazania na każde "
 "fizyczne przemieszczenie zasobu (przeniesienie między lokalizacjami, powrót "
@@ -1069,8 +1051,8 @@ msgstr "Włącz ustrukturyzowane przemieszczenia"
 
 #: templates/config_form.html.twig
 msgid ""
-"Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, ainsi"
-" qu'une entrée dédiée dans le menu Outils."
+"Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, "
+"ainsi qu'une entrée dédiée dans le menu Outils."
 msgstr ""
 "Dodaje zakładkę \"Przemieszczenia\" do każdego zasobu obsługiwanego przez "
 "wtyczkę oraz osobną pozycję w menu Narzędzia."
@@ -1166,8 +1148,8 @@ msgstr "Poniżej progu Do obserwacji."
 #: templates/config_form.html.twig
 msgid ""
 "Estimation simple de la valeur restante d'un matériel (pas un module "
-"comptable complet) : aide à trancher entre réemploi et sortie de parc. Calcul"
-" linéaire à partir du prix d'achat Infocom, sur une durée de vie utile "
+"comptable complet) : aide à trancher entre réemploi et sortie de parc. "
+"Calcul linéaire à partir du prix d'achat Infocom, sur une durée de vie utile "
 "réglable ci-dessous. Une saisie manuelle, disponible sur l'onglet Passeport "
 "matériel de chaque matériel, l'emporte toujours sur ce calcul."
 msgstr ""
@@ -1204,8 +1186,8 @@ msgstr ""
 #: templates/config_form.html.twig
 msgid ""
 "Le Passeport matériel agrège en lecture seule les événements des onglets "
-"Attribution/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel onglet"
-" du matériel concerné."
+"Attribution/Restitution/Don/Vente/Maintenance ci-dessus, sur un nouvel "
+"onglet du matériel concerné."
 msgstr ""
 "Paszport sprzętu zbiera, tylko do odczytu, zdarzenia z powyższych zakładek "
 "Przekazanie/Zwrot/Darowizna/Sprzedaż/Konserwacja w nowej zakładce danego "
@@ -1218,8 +1200,8 @@ msgstr "Włącz Paszport sprzętu"
 #: templates/config_form.html.twig
 msgid ""
 "Désactivé : l'onglet disparaît et aucun nouvel événement n'est enregistré. "
-"Les événements déjà enregistrés ne sont jamais supprimés : ils réapparaissent"
-" si vous réactivez."
+"Les événements déjà enregistrés ne sont jamais supprimés : ils "
+"réapparaissent si vous réactivez."
 msgstr ""
 "Wyłączony: zakładka znika i żadne nowe zdarzenie nie jest zapisywane. Już "
 "zapisane zdarzenia nigdy nie są usuwane: pojawią się ponownie po ponownym "
@@ -1248,8 +1230,8 @@ msgid ""
 "Décocher un type ne supprime rien : il n'est plus qu'affiché dans la frise, "
 "tant qu'il reste décoché."
 msgstr ""
-"Odznaczenie typu niczego nie usuwa: po prostu przestaje on być wyświetlany na"
-" osi czasu, dopóki pozostaje odznaczony."
+"Odznaczenie typu niczego nie usuwa: po prostu przestaje on być wyświetlany "
+"na osi czasu, dopóki pozostaje odznaczony."
 
 #: templates/config_form.html.twig
 msgid "Afficher les dates Infocom dans la frise"
@@ -1262,8 +1244,8 @@ msgid ""
 "modifiables depuis ici."
 msgstr ""
 "Zakup, zamówienie, dostawa, uruchomienie, gwarancja, wycofanie: odczytywane "
-"bezpośrednio z zakładki Informacje finansowe i administracyjne sprzętu, nigdy"
-" kopiowane ani edytowalne tutaj."
+"bezpośrednio z zakładki Informacje finansowe i administracyjne sprzętu, "
+"nigdy kopiowane ani edytowalne tutaj."
 
 #: templates/config_form.html.twig
 msgid "Afficher les tickets liés dans la frise"
@@ -1274,8 +1256,8 @@ msgid ""
 "Lecture seule : chaque technicien ne voit que les tickets auxquels il a "
 "réellement accès, exactement comme sur l'onglet Tickets du matériel."
 msgstr ""
-"Tylko do odczytu: każdy technik widzi tylko zgłoszenia, do których faktycznie"
-" ma dostęp, dokładnie jak w zakładce Zgłoszenia sprzętu."
+"Tylko do odczytu: każdy technik widzi tylko zgłoszenia, do których "
+"faktycznie ma dostęp, dokładnie jak w zakładce Zgłoszenia sprzętu."
 
 #: templates/config_form.html.twig
 msgid ""
@@ -1283,9 +1265,9 @@ msgid ""
 "L'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou "
 "changez d'onglet, avant même d'enregistrer."
 msgstr ""
-"Przykład z fikcyjnymi danymi, te same szablony Twig co prawdziwy PDF. Podgląd"
-" aktualizuje się automatycznie, gdy tylko zmienisz ustawienie lub zakładkę, "
-"jeszcze przed zapisaniem."
+"Przykład z fikcyjnymi danymi, te same szablony Twig co prawdziwy PDF. "
+"Podgląd aktualizuje się automatycznie, gdy tylko zmienisz ustawienie lub "
+"zakładkę, jeszcze przed zapisaniem."
 
 #: templates/config_form.html.twig
 msgid ""
@@ -1332,8 +1314,7 @@ msgid "Créer la fiche"
 msgstr "Utwórz formularz"
 
 #: templates/movement_create.html.twig templates/maintenance_create.html.twig
-#: templates/assetsign_tab.html.twig src/Assetsign.php:218
-#: src/Movement.php:114
+#: templates/assetsign_tab.html.twig src/Assetsign.php:218 src/Movement.php:114
 #: src/Maintenance.php:85
 msgid "Type de matériel"
 msgstr "Typ zasobu"
@@ -1366,18 +1347,15 @@ msgstr "Bieżący użytkownik"
 msgid "Entité"
 msgstr "Jednostka"
 
-#: templates/passport_tab.html.twig
-#: src/PassportEvent.php:565
+#: templates/passport_tab.html.twig src/PassportEvent.php:565
 msgid "Achat"
 msgstr "Zakup"
 
-#: templates/passport_tab.html.twig
-#: src/PassportEvent.php:598
+#: templates/passport_tab.html.twig src/PassportEvent.php:598
 msgid "Fin de garantie"
 msgstr "Koniec gwarancji"
 
-#: templates/passport_tab.html.twig
-#: src/PassportEvent.php:493
+#: templates/passport_tab.html.twig src/PassportEvent.php:493
 msgid "Âge"
 msgstr "Wiek"
 
@@ -1467,8 +1445,7 @@ msgstr "Zobacz formularz"
 msgid "Aucun événement enregistré pour le moment."
 msgstr "Brak zarejestrowanych zdarzeń."
 
-#: templates/maintenance_form.html.twig
-#: src/Maintenance.php:34
+#: templates/maintenance_form.html.twig src/Maintenance.php:34
 msgid "Fiche de maintenance"
 msgid_plural "Fiches de maintenance"
 msgstr[0] "Formularz konserwacji"
@@ -1745,8 +1722,7 @@ msgstr[0] "%d dzień"
 msgstr[1] "%d dni"
 msgstr[2] "%d dni"
 
-#: src/PassportEvent.php:1118
-#: src/PassportEvent.php:1128
+#: src/PassportEvent.php:1118 src/PassportEvent.php:1128
 #, php-format
 msgid "%d mois"
 msgid_plural "%d mois"
@@ -1769,33 +1745,27 @@ msgstr[0] "Punkt listy kontrolnej konserwacji"
 msgstr[1] "Punkty listy kontrolnej konserwacji"
 msgstr[2] "Punktów listy kontrolnej konserwacji"
 
-#: src/MaintenanceChecklistItem.php:41
-#: src/ChecklistItem.php:53
+#: src/MaintenanceChecklistItem.php:41 src/ChecklistItem.php:53
 msgid "Case à cocher"
 msgstr "Pole wyboru"
 
-#: src/MaintenanceChecklistItem.php:42
-#: src/ChecklistItem.php:54
+#: src/MaintenanceChecklistItem.php:42 src/ChecklistItem.php:54
 msgid "Texte libre"
 msgstr "Tekst dowolny"
 
-#: src/MaintenanceChecklistItem.php:43
-#: src/ChecklistItem.php:55
+#: src/MaintenanceChecklistItem.php:43 src/ChecklistItem.php:55
 msgid "Menu déroulant"
 msgstr "Lista rozwijana"
 
-#: src/MaintenanceChecklistItem.php:63
-#: src/ChecklistItem.php:86
+#: src/MaintenanceChecklistItem.php:63 src/ChecklistItem.php:86
 msgid "Type de saisie"
 msgstr "Typ pola"
 
-#: src/MaintenanceChecklistItem.php:68
-#: src/ChecklistItem.php:91
+#: src/MaintenanceChecklistItem.php:68 src/ChecklistItem.php:91
 msgid "Options du menu déroulant (une par ligne)"
 msgstr "Opcje listy rozwijanej (jedna na wiersz)"
 
-#: src/MaintenanceChecklistItem.php:87
-#: src/ChecklistItem.php:115
+#: src/MaintenanceChecklistItem.php:87 src/ChecklistItem.php:115
 msgid "Utilisé uniquement si le type de saisie est \"Menu déroulant\"."
 msgstr "Używane tylko, jeśli typ pola to \"Lista rozwijana\"."
 
@@ -1811,8 +1781,7 @@ msgstr "Widok z przodu"
 msgid "Dessous"
 msgstr "Spód"
 
-#: src/Assetsign.php:250
-#: src/NotificationTargetAssetsign.php:157
+#: src/Assetsign.php:250 src/NotificationTargetAssetsign.php:157
 #: src/Template.php:51
 msgid "Type d'attribution"
 msgstr "Typ przekazania"
@@ -1849,14 +1818,11 @@ msgstr ""
 "Anulować wybrane prośby o podpis? Link wysłany do odbiorcy przestanie być "
 "ważny."
 
-#: src/Assetsign.php:514
-#: src/Assetsign.php:523
+#: src/Assetsign.php:514 src/Assetsign.php:523
 msgid "Attributions"
 msgstr "Przekazania"
 
-#: src/Assetsign.php:634
-#: src/Movement.php:294
-#: src/Maintenance.php:299
+#: src/Assetsign.php:634 src/Movement.php:294 src/Maintenance.php:299
 msgid "Choisissez d'abord un type de matériel ci-dessus."
 msgstr "Najpierw wybierz typ zasobu powyżej."
 
@@ -1880,8 +1846,7 @@ msgstr "Wyświetlone"
 msgid "Expiré"
 msgstr "Wygasłe"
 
-#: src/Assetsign.php:687
-#: src/Movement.php:74
+#: src/Assetsign.php:687 src/Movement.php:74
 msgid "Annulé"
 msgstr "Anulowane"
 
@@ -1912,8 +1877,8 @@ msgstr ""
 
 #: src/Assetsign.php:890
 msgid ""
-"Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut donc"
-" pas générer de fiche d'attribution ou de restitution. Assignez un "
+"Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut "
+"donc pas générer de fiche d'attribution ou de restitution. Assignez un "
 "utilisateur sur la fiche du matériel si une signature est attendue."
 msgstr ""
 "Ten zasób nie ma przypisanego użytkownika: ta zmiana statusu nie może więc "
@@ -1937,10 +1902,8 @@ msgstr "Odbiorca (użytkownik GLPI) jest wymagany."
 msgid "Type de matériel invalide : %s"
 msgstr "Nieprawidłowy typ zasobu: %s"
 
-#: src/Assetsign.php:1089
-#: src/Api/ResidualValueFormController.php:25
-#: src/Api/PassportBackfillController.php:25
-#: src/Api/QrLabelController.php:41
+#: src/Assetsign.php:1089 src/Api/ResidualValueFormController.php:25
+#: src/Api/PassportBackfillController.php:25 src/Api/QrLabelController.php:41
 msgid "Matériel introuvable."
 msgstr "Nie znaleziono zasobu."
 
@@ -1968,12 +1931,8 @@ msgid ""
 msgstr ""
 "Tej prośby nie można już anulować (już podpisana, wygasła lub już anulowana)."
 
-#: src/Assetsign.php:1627
-#: src/Assetsign.php:1633
-#: src/Assetsign.php:1645
-#: src/Movement.php:396
-#: src/Movement.php:402
-#: src/Movement.php:414
+#: src/Assetsign.php:1627 src/Assetsign.php:1633 src/Assetsign.php:1645
+#: src/Movement.php:396 src/Movement.php:402 src/Movement.php:414
 msgid "Échec de l'envoi du document."
 msgstr "Nie udało się przesłać dokumentu."
 
@@ -2003,8 +1962,7 @@ msgstr "AssetSign: Podpis elektroniczny"
 msgid "Signature intégrée (canvas)"
 msgstr "Wbudowany podpis (canvas)"
 
-#: src/Config.php:203
-#: src/Config.php:228
+#: src/Config.php:203 src/Config.php:228
 msgid "Échec de l'envoi du logo."
 msgstr "Nie udało się przesłać logo."
 
@@ -2025,8 +1983,8 @@ msgid ""
 "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & "
 "signature fonctionne."
 msgstr ""
-"Ten e-mail potwierdza, że konfiguracja wysyłania wtyczki Przekazanie i podpis"
-" działa."
+"Ten e-mail potwierdza, że konfiguracja wysyłania wtyczki Przekazanie i "
+"podpis działa."
 
 #: src/Config.php:273
 msgid "Le serveur de messagerie a refusé l'envoi."
@@ -2053,8 +2011,8 @@ msgid ""
 "La fonctionnalité « Mouvements » n'est pas activée pour cette entité "
 "(Configuration > Mouvements)."
 msgstr ""
-"Funkcja \"Przemieszczenia\" nie jest włączona dla tej jednostki (Konfiguracja"
-" > Przemieszczenia)."
+"Funkcja \"Przemieszczenia\" nie jest włączona dla tej jednostki "
+"(Konfiguracja > Przemieszczenia)."
 
 #: src/Movement.php:460
 msgid "Échec de la création du mouvement."
@@ -2085,8 +2043,7 @@ msgstr "Dokument wygasł"
 msgid "Document sur le point d'expirer"
 msgstr "Dokument bliski wygaśnięcia"
 
-#: src/NotificationTargetAssetsign.php:77
-#: src/Maintenance.php:87
+#: src/NotificationTargetAssetsign.php:77 src/Maintenance.php:87
 msgid "Technicien"
 msgstr "Technik"
 
@@ -2117,8 +2074,7 @@ msgstr[2] "Szablonów przekazania"
 msgid "Par défaut"
 msgstr "Domyślny"
 
-#: src/Pdf/PdfRenderingHelpers.php:145
-#: src/Pdf/HandoverPdfBuilder.php:185
+#: src/Pdf/PdfRenderingHelpers.php:145 src/Pdf/HandoverPdfBuilder.php:185
 msgid "Exemple : petite rayure sur le capot, sans gravité."
 msgstr "Przykład: lekka rysa na pokrywie, niegroźna."
 
@@ -2148,8 +2104,7 @@ msgid "Signature vide ou trop peu tracée, merci de signer à nouveau."
 msgstr "Pusty lub ledwie narysowany podpis, podpisz ponownie."
 
 #: src/Api/ResidualValueFormController.php:20
-#: src/Api/PassportBackfillController.php:20
-#: src/Api/QrLabelController.php:31
+#: src/Api/PassportBackfillController.php:20 src/Api/QrLabelController.php:31
 msgid "Type de matériel invalide."
 msgstr "Nieprawidłowy typ sprzętu."
 
@@ -2165,8 +2120,7 @@ msgstr "Wartość rezydualna wróciła do obliczenia automatycznego."
 msgid "Valeur résiduelle manuelle enregistrée."
 msgstr "Ręczna wartość rezydualna zapisana."
 
-#: src/Api/SignController.php:37
-#: src/Api/SignController.php:54
+#: src/Api/SignController.php:37 src/Api/SignController.php:54
 #: src/Api/SignController.php:80
 msgid "Attribution introuvable."
 msgstr "Nie znaleziono przekazania."
@@ -2298,8 +2252,8 @@ msgstr ""
 "zakupu)"
 
 msgid ""
-"En dessous de ce pourcentage du prix d'achat d'origine, la recommandation « "
-"Réévaluer l'usage » est affichée."
+"En dessous de ce pourcentage du prix d'achat d'origine, la recommandation "
+"« Réévaluer l'usage » est affichée."
 msgstr ""
 "Poniżej tego procentu pierwotnej ceny zakupu wyświetlane jest zalecenie "
 "\"Oceń ponownie użycie\"."
@@ -2350,8 +2304,8 @@ msgid "Le motif de la délégation est obligatoire."
 msgstr "Powód przekazania jest wymagany."
 
 msgid ""
-"La signature a été déléguée. La personne désignée va recevoir son propre lien"
-" par e-mail."
+"La signature a été déléguée. La personne désignée va recevoir son propre "
+"lien par e-mail."
 msgstr "Podpis został przekazany. Wskazana osoba otrzyma własny link e-mailem."
 
 msgid "Signature déléguée à"
@@ -2373,9 +2327,9 @@ msgid "Déléguer la signature"
 msgstr "Przekaż podpis"
 
 msgid ""
-"Désigne un autre compte GLPI pour signer à la place du bénéficiaire d'origine"
-" (absence prolongée, congés, départ...). Le lien de signature envoyé au "
-"bénéficiaire d'origine devient invalide dès la délégation."
+"Désigne un autre compte GLPI pour signer à la place du bénéficiaire "
+"d'origine (absence prolongée, congés, départ...). Le lien de signature "
+"envoyé au bénéficiaire d'origine devient invalide dès la délégation."
 msgstr ""
 "Wskazuje inne konto GLPI do podpisania zamiast pierwotnego odbiorcy (dłuższa "
 "nieobecność, urlop, odejście...). Link do podpisu wysłany pierwotnemu "
@@ -2391,11 +2345,11 @@ msgid "Délégation de signature"
 msgstr "Przekazanie podpisu"
 
 msgid ""
-"Permet de continuer une restitution/remise bloquée par l'absence prolongée du"
-" bénéficiaire désigné (congés, arrêt maladie, départ...), en confiant la "
-"signature à un autre compte GLPI. Le bénéficiaire d'origine reste tracé comme"
-" signataire prévu ; la personne qui signe réellement, la date et le motif de "
-"la délégation sont conservés (historique de la fiche, PDF signé)."
+"Permet de continuer une restitution/remise bloquée par l'absence prolongée "
+"du bénéficiaire désigné (congés, arrêt maladie, départ...), en confiant la "
+"signature à un autre compte GLPI. Le bénéficiaire d'origine reste tracé "
+"comme signataire prévu ; la personne qui signe réellement, la date et le "
+"motif de la délégation sont conservés (historique de la fiche, PDF signé)."
 msgstr ""
 "Pozwala kontynuować zwrot/przekazanie zablokowane przez dłuższą nieobecność "
 "wskazanego odbiorcy (urlop, zwolnienie lekarskie, odejście...), powierzając "
@@ -2560,9 +2514,9 @@ msgstr "Ślad produkcyjny (kg CO2-eq)"
 
 #: templates/passport_tab.html.twig
 msgid ""
-"Toujours une saisie manuelle dans cette version : la source précise d'où vous"
-" tenez le chiffre (fiche constructeur, outil externe consulté, estimation "
-"propre), jamais une recherche automatique."
+"Toujours une saisie manuelle dans cette version : la source précise d'où "
+"vous tenez le chiffre (fiche constructeur, outil externe consulté, "
+"estimation propre), jamais une recherche automatique."
 msgstr ""
 "W tej wersji zawsze wpis ręczny: źródło określa, skąd pochodzi liczba (karta "
 "katalogowa producenta, sprawdzone narzędzie zewnętrzne, własna ocena), nigdy "
@@ -2586,12 +2540,13 @@ msgid ""
 msgstr ""
 "Inicjuje element CSR Paszportu sprzętu (ślad produkcyjny w kg CO2-eq). "
 "Analiza wykonana przed wdrożeniem (patrz zgłoszenie #80): publiczne API "
-"Boavizta udostępnia dla komputerów/laptopów tylko średnie kategorii (\"laptop"
-" profesjonalny/osobisty\"), nigdy wartości właściwej dla rzeczywistego modelu"
-" obecnego w GLPI: wyświetlenie jej jako danych TEGO sprzętu byłoby wymyśloną "
-"liczbą. Ta wersja pozostaje więc wyłącznie z wpisem ręcznym: źródło "
-"(producent / dedykowane zewnętrzne API / wpis ręczny) i poziom pewności "
-"deklaruje osoba wpisująca wartość, nigdy nie są obliczane automatycznie."
+"Boavizta udostępnia dla komputerów/laptopów tylko średnie kategorii "
+"(\"laptop profesjonalny/osobisty\"), nigdy wartości właściwej dla "
+"rzeczywistego modelu obecnego w GLPI: wyświetlenie jej jako danych TEGO "
+"sprzętu byłoby wymyśloną liczbą. Ta wersja pozostaje więc wyłącznie z wpisem "
+"ręcznym: źródło (producent / dedykowane zewnętrzne API / wpis ręczny) i "
+"poziom pewności deklaruje osoba wpisująca wartość, nigdy nie są obliczane "
+"automatycznie."
 
 #: templates/config_form.html.twig
 msgid "Afficher le passeport environnemental sur le Passeport matériel"
@@ -2599,8 +2554,8 @@ msgstr "Pokaż paszport środowiskowy w Paszporcie sprzętu"
 
 #: templates/config_form.html.twig
 msgid ""
-"Rien n'est affiché tant qu'aucune valeur n'a été saisie manuellement : jamais"
-" une estimation par défaut."
+"Rien n'est affiché tant qu'aucune valeur n'a été saisie manuellement : "
+"jamais une estimation par défaut."
 msgstr ""
 "Nic nie jest wyświetlane, dopóki wartość nie zostanie wpisana ręcznie: nigdy "
 "domyślne szacunki."
@@ -2616,10 +2571,10 @@ msgid ""
 "rien tant que cette durée n'est pas dépassée, ou si l'empreinte carbone ci-"
 "dessus n'a pas été saisie : jamais une estimation."
 msgstr ""
-"Wycenia przedłużenie użytkowania poza okres amortyzacji sprzętu (natywne pole"
-" GLPI \"Okres amortyzacji\", w latach). Nic nie jest wyświetlane, dopóki ten "
-"okres nie zostanie przekroczony lub jeśli powyższy ślad węglowy nie został "
-"wpisany: nigdy szacunki."
+"Wycenia przedłużenie użytkowania poza okres amortyzacji sprzętu (natywne "
+"pole GLPI \"Okres amortyzacji\", w latach). Nic nie jest wyświetlane, dopóki "
+"ten okres nie zostanie przekroczony lub jeśli powyższy ślad węglowy nie "
+"został wpisany: nigdy szacunki."
 
 #: templates/passport_tab.html.twig:135
 msgid "Bénéfice du réemploi"
@@ -2710,8 +2665,8 @@ msgid ""
 msgstr "Jako przełożony musisz złożyć podpis, aby sfinalizować to przekazanie."
 
 msgid ""
-"Remise, restitution ou autre document de matériel : il attend votre signature"
-" pour être finalisé."
+"Remise, restitution ou autre document de matériel : il attend votre "
+"signature pour être finalisé."
 msgstr ""
 "Przekazanie, zwrot lub inny dokument sprzętu: oczekuje na Twój podpis, aby "
 "zostać sfinalizowany."
@@ -2728,22 +2683,22 @@ msgid ""
 "indispensable pour les utilisateurs sans adresse e-mail, qui ne reçoivent "
 "jamais le lien de signature."
 msgstr ""
-"Baner informuje zalogowanego użytkownika, że dokument czeka na jego podpis, z"
-" linkiem do strony \"Moje dokumenty do podpisu\": niezbędne dla użytkowników "
-"bez adresu e-mail, którzy nigdy nie otrzymują linku do podpisu."
+"Baner informuje zalogowanego użytkownika, że dokument czeka na jego podpis, "
+"z linkiem do strony \"Moje dokumenty do podpisu\": niezbędne dla "
+"użytkowników bez adresu e-mail, którzy nigdy nie otrzymują linku do podpisu."
 
 msgid ""
 "Exige, en plus de la signature du bénéficiaire, celle de son responsable "
 "hiérarchique (renseigné dans sa fiche utilisateur) pour une Attribution. Le "
 "bénéficiaire signe d'abord ; le document lui est ensuite transmis au "
-"responsable pour contre-signature avant d'être considéré comme définitivement"
-" signé. Sans responsable renseigné pour le bénéficiaire, l'attribution reste "
-"mono-signataire, comme aujourd'hui."
+"responsable pour contre-signature avant d'être considéré comme "
+"définitivement signé. Sans responsable renseigné pour le bénéficiaire, "
+"l'attribution reste mono-signataire, comme aujourd'hui."
 msgstr ""
 "Wymaga, oprócz podpisu odbiorcy, podpisu jego przełożonego (ustawionego w "
-"rekordzie użytkownika) dla Przekazania. Odbiorca podpisuje pierwszy; dokument"
-" trafia następnie do przełożonego do kontrasygnaty, zanim zostanie uznany za "
-"w pełni podpisany. Jeśli odbiorca nie ma ustawionego przełożonego, "
+"rekordzie użytkownika) dla Przekazania. Odbiorca podpisuje pierwszy; "
+"dokument trafia następnie do przełożonego do kontrasygnaty, zanim zostanie "
+"uznany za w pełni podpisany. Jeśli odbiorca nie ma ustawionego przełożonego, "
 "przekazanie pozostaje z jednym podpisem, jak dotychczas."
 
 msgid ""
@@ -2760,8 +2715,8 @@ msgid ""
 "Quand un document (remise, restitution, don...) attendra votre signature, il "
 "apparaîtra ici."
 msgstr ""
-"Gdy dokument (przekazanie, zwrot, darowizna...) będzie czekał na Twój podpis,"
-" pojawi się tutaj."
+"Gdy dokument (przekazanie, zwrot, darowizna...) będzie czekał na Twój "
+"podpis, pojawi się tutaj."
 
 msgid ""
 "Ces documents attendent votre signature. Cliquez sur « Signer » pour lire le "
@@ -2830,9 +2785,9 @@ msgstr "Zezwalaj na podpis na miejscu (w obecności technika)"
 msgid ""
 "Ajoute un bouton « Faire signer sur place » sur la fiche : le bénéficiaire "
 "signe sur l'écran du technicien, sans avoir à se connecter à GLPI : pour les "
-"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la signature"
-" a été recueillie en présence de ce technicien, qui atteste ainsi de "
-"l'identité du signataire."
+"personnes qui n'ont pas d'accès à GLPI. Le PDF signé indique que la "
+"signature a été recueillie en présence de ce technicien, qui atteste ainsi "
+"de l'identité du signataire."
 msgstr ""
 "Dodaje do rekordu przycisk \"Zbierz podpis na miejscu\": odbiorca podpisuje "
 "na ekranie technika bez logowania do GLPI, dla osób bez dostępu do GLPI. "
@@ -3045,8 +3000,8 @@ msgid ""
 "Vérifié chaque jour par l'action automatique « assetsignDepartures », qui "
 "envoie aussi les relances des départs non signés."
 msgstr ""
-"Sprawdzane codziennie przez akcję automatyczną \"assetsignDepartures\", która"
-" wysyła też przypomnienia o niepodpisanych odejściach."
+"Sprawdzane codziennie przez akcję automatyczną \"assetsignDepartures\", "
+"która wysyła też przypomnienia o niepodpisanych odejściach."
 
 #, php-format
 msgid "%d matériel"
@@ -3298,8 +3253,8 @@ msgstr "Zgłoś rozbieżność"
 msgid ""
 "Un ticket est ouvert à votre nom et le gestionnaire du parc est prévenu."
 msgstr ""
-"Zgłoszenie zostaje otwarte w Twoim imieniu, a osoba odpowiedzialna za majątek"
-" zostaje powiadomiona."
+"Zgłoszenie zostaje otwarte w Twoim imieniu, a osoba odpowiedzialna za "
+"majątek zostaje powiadomiona."
 
 msgid "Campagne d'attestation"
 msgid_plural "Campagnes d'attestation"
@@ -3348,9 +3303,9 @@ msgid ""
 "baisser la couverture affichée sous chaque indicateur."
 msgstr ""
 "Obliczane dla aktywnych jednostek, wyłącznie na podstawie danych "
-"wprowadzonych w GLPI (paszport środowiskowy, informacje finansowe, formularze"
-" końca życia): nie dodaje się żadnych średnich ani szacunków. Brakujące dane "
-"obniżają pokrycie wyświetlane pod każdym wskaźnikiem."
+"wprowadzonych w GLPI (paszport środowiskowy, informacje finansowe, "
+"formularze końca życia): nie dodaje się żadnych średnich ani szacunków. "
+"Brakujące dane obniżają pokrycie wyświetlane pod każdym wskaźnikiem."
 
 msgid ""
 "Le passeport environnemental est désactivé : l'empreinte de fabrication ne "
@@ -3465,9 +3420,9 @@ msgid "Nom"
 msgstr "Nazwa"
 
 msgid ""
-"Si activé, les écrans, périphériques et téléphones connectés au matériel dans"
-" GLPI (onglet Connexions) sont ajoutés automatiquement aux fiches créées par "
-"une affectation, avec leur n° de série et leur modèle. Sinon, ils sont "
+"Si activé, les écrans, périphériques et téléphones connectés au matériel "
+"dans GLPI (onglet Connexions) sont ajoutés automatiquement aux fiches créées "
+"par une affectation, avec leur n° de série et leur modèle. Sinon, ils sont "
 "seulement proposés sur la fiche."
 msgstr ""
 "Jeśli włączone, monitory, urządzenia i telefony podłączone do sprzętu w GLPI "
@@ -3480,8 +3435,8 @@ msgstr "Typ"
 
 msgid ""
 "Écrans, stations d'accueil, téléphones… déjà inventoriés dans GLPI : leur "
-"modèle, leur n° de série et leur n° d'inventaire sont repris sur le document,"
-" sans ressaisie."
+"modèle, leur n° de série et leur n° d'inventaire sont repris sur le "
+"document, sans ressaisie."
 msgstr ""
 "Monitory, stacje dokujące, telefony… już zinwentaryzowane w GLPI: ich model, "
 "numer seryjny i numer inwentarzowy są kopiowane do dokumentu, bez ponownego "
@@ -3614,10 +3569,10 @@ msgid "Ignorer les changements faits par l'inventaire automatique"
 msgstr "Ignoruj zmiany wprowadzone przez automatyczną inwentaryzację"
 
 msgid ""
-"Si activé, quand l'inventaire automatique vide ou change le champ Utilisateur"
-" d'un matériel (agent qui ne remonte plus l'utilisateur, mouvement interne…),"
-" aucune feuille n'est créée ni envoyée. Seules les attributions faites par "
-"une personne déclenchent une feuille."
+"Si activé, quand l'inventaire automatique vide ou change le champ "
+"Utilisateur d'un matériel (agent qui ne remonte plus l'utilisateur, "
+"mouvement interne…), aucune feuille n'est créée ni envoyée. Seules les "
+"attributions faites par une personne déclenchent une feuille."
 msgstr ""
 "Jeśli włączone, gdy automatyczna inwentaryzacja czyści lub zmienia pole "
 "Użytkownik elementu (agent nie zgłasza już użytkownika, przeniesienie "
@@ -3655,8 +3610,8 @@ msgstr ""
 "klikniesz „Wyślij do podpisu”."
 
 msgid ""
-"Une feuille se crée depuis le matériel : en lui attribuant un utilisateur, ou"
-" depuis son onglet Attributions (don, vente, destruction)."
+"Une feuille se crée depuis le matériel : en lui attribuant un utilisateur, "
+"ou depuis son onglet Attributions (don, vente, destruction)."
 msgstr ""
 "Formularz tworzy się ze sprzętu: przypisując mu użytkownika lub z jego "
 "zakładki Przypisania (darowizna, sprzedaż, zniszczenie)."
@@ -3683,8 +3638,8 @@ msgstr "Przypisz w GLPI także sprzęt przekazany razem z nim"
 msgid ""
 "Si activé, chaque écran, périphérique, téléphone… ajouté à une feuille "
 "d'attribution est attribué au bénéficiaire dans GLPI (champ Utilisateur et "
-"statut ci-dessous) : à l'envoi de la feuille, ou dès l'ajout si elle est déjà"
-" envoyée. Un élément déjà attribué au bénéficiaire n'est pas modifié."
+"statut ci-dessous) : à l'envoi de la feuille, ou dès l'ajout si elle est "
+"déjà envoyée. Un élément déjà attribué au bénéficiaire n'est pas modifié."
 msgstr ""
 "Jeśli włączone, każdy monitor, urządzenie, telefon… dodany do formularza "
 "przypisania jest przypisywany adresatowi w GLPI (pole Użytkownik i status "
@@ -3726,16 +3681,17 @@ msgid ""
 "qu'elle reste en brouillon. Les brouillons apparaissent aussi sur la page "
 "d'accueil."
 msgstr ""
-"Formularz przygotowany, ale nigdy niewysłany (przycisk „Później”, ręczny tryb"
-" wysyłki), jest przypominany technikowi e-mailem, a następnie co tydzień, "
-"dopóki pozostaje szkicem. Szkice pojawiają się też na stronie głównej."
+"Formularz przygotowany, ale nigdy niewysłany (przycisk „Później”, ręczny "
+"tryb wysyłki), jest przypominany technikowi e-mailem, a następnie co "
+"tydzień, dopóki pozostaje szkicem. Szkice pojawiają się też na stronie "
+"głównej."
 
 msgid "Voir toutes les feuilles à envoyer"
 msgstr "Zobacz wszystkie formularze do wysłania"
 
 msgid ""
-"Ces feuilles sont prêtes mais n'ont pas été envoyées : le bénéficiaire ne les"
-" a pas reçues."
+"Ces feuilles sont prêtes mais n'ont pas été envoyées : le bénéficiaire ne "
+"les a pas reçues."
 msgstr ""
 "Te formularze są gotowe, ale nie zostały wysłane: adresat ich nie otrzymał."
 
@@ -3756,8 +3712,8 @@ msgid "Matériel disponible"
 msgstr "Dostępny sprzęt"
 
 msgid ""
-"Sans utilisateur ou au statut « en stock », pas déjà sur une autre feuille en"
-" attente."
+"Sans utilisateur ou au statut « en stock », pas déjà sur une autre feuille "
+"en attente."
 msgstr ""
 "Bez użytkownika lub w statusie „w magazynie”, nieobecny już w innym "
 "oczekującym formularzu."
@@ -3792,8 +3748,8 @@ msgstr "Kontroli zwrotu nie można już zmienić w tym formularzu."
 
 #, php-format
 msgid ""
-"%1$s « %2$s » n'a pas été rendu avec %3$s par %4$s (feuille de restitution n°"
-" %5$d)."
+"%1$s « %2$s » n'a pas été rendu avec %3$s par %4$s (feuille de restitution "
+"n° %5$d)."
 msgstr ""
 "%1$s „%2$s” nie został zwrócony razem z %3$s przez %4$s (formularz zwrotu nr "
 "%5$d)."
@@ -3836,9 +3792,9 @@ msgid "Statut d'un élément rendu abîmé"
 msgstr "Status elementu zwróconego w stanie uszkodzonym"
 
 msgid ""
-"À la restitution, le matériel remis avec le poste est repris sur la feuille :"
-" un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI et prend le "
-"statut choisi ci-dessus."
+"À la restitution, le matériel remis avec le poste est repris sur la "
+"feuille : un élément rendu ou abîmé n'a plus d'utilisateur dans GLPI et "
+"prend le statut choisi ci-dessus."
 msgstr ""
 "Przy zwrocie sprzęt przekazany razem z komputerem jest odbierany w "
 "formularzu: element zwrócony lub uszkodzony nie ma już użytkownika w GLPI i "
@@ -3922,21 +3878,21 @@ msgid ""
 "La feuille n'a pas pu être créée : vérifiez que l'attribution déclenche une "
 "feuille pour cette entité (Configuration > Général)."
 msgstr ""
-"Nie udało się utworzyć formularza: sprawdź, czy przypisanie wyzwala formularz"
-" dla tej jednostki (Konfiguracja > Ogólne)."
+"Nie udało się utworzyć formularza: sprawdź, czy przypisanie wyzwala "
+"formularz dla tej jednostki (Konfiguracja > Ogólne)."
 
 #, php-format
 msgid ""
 "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé "
 "est joint au ticket."
 msgstr ""
-"Formularz nr %1$d (%2$s) dla %3$s „%4$s” został podpisany. Podpisany dokument"
-" jest załączony do zgłoszenia."
+"Formularz nr %1$d (%2$s) dla %3$s „%4$s” został podpisany. Podpisany "
+"dokument jest załączony do zgłoszenia."
 
 msgid ""
-"Le ticket n'a pas pu être résolu automatiquement après la signature (un champ"
-" obligatoire du ticket n'est sans doute pas renseigné, comme la catégorie) : "
-"résolvez-le manuellement."
+"Le ticket n'a pas pu être résolu automatiquement après la signature (un "
+"champ obligatoire du ticket n'est sans doute pas renseigné, comme la "
+"catégorie) : résolvez-le manuellement."
 msgstr ""
 "Nie udało się automatycznie rozwiązać zgłoszenia po podpisie (prawdopodobnie "
 "puste jest obowiązkowe pole zgłoszenia, np. kategoria): rozwiąż je ręcznie."
@@ -3951,8 +3907,8 @@ msgid ""
 "Feuille préparée en brouillon et rattachée au ticket : complétez-la puis "
 "envoyez-la."
 msgstr ""
-"Formularz przygotowany jako szkic i powiązany ze zgłoszeniem: uzupełnij go, a"
-" następnie wyślij."
+"Formularz przygotowany jako szkic i powiązany ze zgłoszeniem: uzupełnij go, "
+"a następnie wyślij."
 
 msgid "Compléter et envoyer"
 msgstr "Uzupełnij i wyślij"
@@ -3969,13 +3925,13 @@ msgstr "Przygotuj formularz"
 msgid ""
 "Le matériel est attribué au bénéficiaire dans GLPI et lié au ticket ; la "
 "feuille est préparée en brouillon : vous la complétez (écran, accessoires…) "
-"puis l'envoyez. À la signature, un suivi avec le document signé est ajouté au"
-" ticket."
+"puis l'envoyez. À la signature, un suivi avec le document signé est ajouté "
+"au ticket."
 msgstr ""
 "Sprzęt jest przypisywany adresatowi w GLPI i powiązany ze zgłoszeniem; "
 "formularz jest przygotowywany jako szkic: uzupełniasz go (monitor, "
-"akcesoria…) i wysyłasz. Po podpisie do zgłoszenia dodawana jest kontynuacja z"
-" podpisanym dokumentem."
+"akcesoria…) i wysyłasz. Po podpisie do zgłoszenia dodawana jest kontynuacja "
+"z podpisanym dokumentem."
 
 msgid ""
 "Aucun matériel disponible (sans utilisateur ou « en stock ») dans les types "
@@ -4089,8 +4045,8 @@ msgid "La date de retour prévue ne peut pas être dans le passé."
 msgstr "Przewidywana data zwrotu nie może być w przeszłości."
 
 msgid ""
-"Rappelle les prêts arrivant à échéance et ouvre un ticket pour les retours en"
-" retard"
+"Rappelle les prêts arrivant à échéance et ouvre un ticket pour les retours "
+"en retard"
 msgstr ""
 "Przypomina o wypożyczeniach zbliżających się do terminu i otwiera zgłoszenie "
 "dla spóźnionych zwrotów"
@@ -4104,8 +4060,8 @@ msgstr ""
 "przypisany tej osobie."
 
 msgid ""
-"Récupérez le matériel puis faites signer la restitution, ou prolongez le prêt"
-" depuis la feuille."
+"Récupérez le matériel puis faites signer la restitution, ou prolongez le "
+"prêt depuis la feuille."
 msgstr ""
 "Odbierz sprzęt i zbierz podpis zwrotu albo przedłuż wypożyczenie w "
 "formularzu."
@@ -4203,9 +4159,9 @@ msgid ""
 msgstr "Otwórz zgłoszenie „Spóźniony zwrot wypożyczenia” po upływie terminu"
 
 msgid ""
-"Un ticket par prêt, lié au matériel, assigné au technicien. Le matériel n'est"
-" jamais désaffecté ni changé de statut automatiquement : le retour passe par "
-"la restitution habituelle."
+"Un ticket par prêt, lié au matériel, assigné au technicien. Le matériel "
+"n'est jamais désaffecté ni changé de statut automatiquement : le retour "
+"passe par la restitution habituelle."
 msgstr ""
 "Jedno zgłoszenie na wypożyczenie, powiązane ze sprzętem, przypisane "
 "technikowi. Sprzęt nigdy nie jest automatycznie odpisywany ani nie zmienia "
@@ -4341,9 +4297,9 @@ msgid ""
 "un élément à une feuille. Si aucun statut n'est choisi, c'est le matériel "
 "sans utilisateur qui est proposé."
 msgstr ""
-"Sprzęt w jednym z tych statusów jest proponowany jako pierwszy przy dodawaniu"
-" elementu do formularza. Jeśli nie wybrano żadnego statusu, proponowany jest "
-"sprzęt bez użytkownika."
+"Sprzęt w jednym z tych statusów jest proponowany jako pierwszy przy "
+"dodawaniu elementu do formularza. Jeśli nie wybrano żadnego statusu, "
+"proponowany jest sprzęt bez użytkownika."
 
 msgid "majeure"
 msgstr "poważne"
@@ -4494,8 +4450,8 @@ msgid "Fiche n°"
 msgstr "Formularz nr"
 
 msgid ""
-"Chaque matériel dispose de sa propre fiche de restitution signée (PDF joint à"
-" la fiche). Empreintes SHA-256 de ces PDF :"
+"Chaque matériel dispose de sa propre fiche de restitution signée (PDF joint "
+"à la fiche). Empreintes SHA-256 de ces PDF :"
 msgstr ""
 "Każdy element ma własny podpisany formularz zwrotu (PDF załączony do "
 "formularza). Odciski SHA-256 tych plików PDF:"
@@ -4557,8 +4513,8 @@ msgstr "Czas na podpis (dni)"
 msgid ""
 "Une campagne de charte est lancée pour cette entité et ses sous-entités à "
 "chaque période (tâche planifiée assetsignCampaigns), avec les relances "
-"habituelles. À la date limite, un ticket liste les personnes qui ne l'ont pas"
-" signée ; aucun compte n'est bloqué."
+"habituelles. À la date limite, un ticket liste les personnes qui ne l'ont "
+"pas signée ; aucun compte n'est bloqué."
 msgstr ""
 "Kampania regulaminu jest uruchamiana dla tej jednostki i jej podjednostek w "
 "każdym okresie (akcja automatyczna assetsignCampaigns), ze zwykłymi "
@@ -4590,9 +4546,9 @@ msgstr ""
 "terminie zgłoszenie wymienia osoby, które go nie podpisały."
 
 msgid ""
-"Aucune charte informatique n'est configurée pour cette entité : renseignez la"
-" charte du gabarit d'attribution par défaut ou le lien vers la charte dans la"
-" Configuration."
+"Aucune charte informatique n'est configurée pour cette entité : renseignez "
+"la charte du gabarit d'attribution par défaut ou le lien vers la charte dans "
+"la Configuration."
 msgstr ""
 "Dla tej jednostki nie skonfigurowano regulaminu IT: uzupełnij regulamin w "
 "domyślnym szablonie przekazania lub link do regulaminu w Konfiguracji."
@@ -4667,8 +4623,8 @@ msgstr "Regulamin IT podpisany. Dziękujemy!"
 
 #, php-format
 msgid ""
-"La campagne de charte « %s » est encore en cours pour cette entité : attendez"
-" sa date limite ou clôturez-la avant d'en lancer une nouvelle."
+"La campagne de charte « %s » est encore en cours pour cette entité : "
+"attendez sa date limite ou clôturez-la avant d'en lancer une nouvelle."
 msgstr ""
 "Kampania regulaminu IT \"%s\" nadal trwa dla tej jednostki: poczekaj do jej "
 "terminu lub zamknij ją przed uruchomieniem nowej."
@@ -4710,8 +4666,8 @@ msgid "Arrivée de %s : préparez son poste, ses accès et son matériel."
 msgstr "%s rozpoczyna pracę: przygotuj stanowisko, dostępy i sprzęt."
 
 msgid ""
-"Le matériel se remet depuis l'onglet « Remise de matériel » de ce ticket : la"
-" fiche d'attribution est envoyée à la personne pour signature."
+"Le matériel se remet depuis l'onglet « Remise de matériel » de ce ticket : "
+"la fiche d'attribution est envoyée à la personne pour signature."
 msgstr ""
 "Przekaż sprzęt z zakładki \"Przekazanie sprzętu\" tego zgłoszenia: formularz "
 "przekazania zostanie wysłany do osoby do podpisu."
@@ -4737,9 +4693,9 @@ msgstr ""
 #, php-format
 msgid ""
 "%s n'a pas encore de profil dans cette entité : la personne sera ajoutée "
-"automatiquement comme demandeur de ce ticket dès que ses habilitations seront"
-" créées. Le matériel pourra alors lui être remis depuis l'onglet « Remise de "
-"matériel »."
+"automatiquement comme demandeur de ce ticket dès que ses habilitations "
+"seront créées. Le matériel pourra alors lui être remis depuis l'onglet "
+"« Remise de matériel »."
 msgstr ""
 "%s nie ma jeszcze profilu w tej jednostce: osoba zostanie automatycznie "
 "dodana jako zgłaszający w tym zgłoszeniu, gdy tylko zostaną utworzone jej "
@@ -4790,11 +4746,11 @@ msgid "Arrivée d'un salarié"
 msgstr "Przybycie pracownika"
 
 msgid ""
-"Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-dessous"
-" ; le matériel se remet ensuite depuis l'onglet « Remise de matériel » du "
-"ticket. L'action « Préparer l'arrivée » est toujours disponible dans l'onglet"
-" « Attributions » de la fiche utilisateur ; les déclencheurs automatiques ci-"
-"dessous sont facultatifs."
+"Un ticket « Arrivée de … » pour l'équipe, avec une tâche par étape ci-"
+"dessous ; le matériel se remet ensuite depuis l'onglet « Remise de "
+"matériel » du ticket. L'action « Préparer l'arrivée » est toujours "
+"disponible dans l'onglet « Attributions » de la fiche utilisateur ; les "
+"déclencheurs automatiques ci-dessous sont facultatifs."
 msgstr ""
 "Zgłoszenie \"Przybycie: …\" dla zespołu, z jednym zadaniem na każdy krok "
 "poniżej; sprzęt przekazuje się następnie z zakładki \"Przekazanie sprzętu\" "
@@ -4806,9 +4762,9 @@ msgid "Préparer l'arrivée quand un compte GLPI est créé"
 msgstr "Przygotuj przybycie, gdy zostanie utworzone konto GLPI"
 
 msgid ""
-"À activer après le premier import de l'annuaire : sinon chaque compte importé"
-" ouvrirait un ticket. Un compte dont la date de début est passée de plus de "
-"30 jours est ignoré."
+"À activer après le premier import de l'annuaire : sinon chaque compte "
+"importé ouvrirait un ticket. Un compte dont la date de début est passée de "
+"plus de 30 jours est ignoré."
 msgstr ""
 "Włącz po pierwszym imporcie katalogu: w przeciwnym razie każde zaimportowane "
 "konto otworzyłoby zgłoszenie. Konto, którego data rozpoczęcia jest starsza "
@@ -4817,8 +4773,8 @@ msgstr ""
 msgid ""
 "Préparer l'arrivée quand un compte GLPI est réactivé (retour d'un salarié)"
 msgstr ""
-"Przygotuj przybycie, gdy konto GLPI zostanie ponownie aktywowane (powracający"
-" pracownik)"
+"Przygotuj przybycie, gdy konto GLPI zostanie ponownie aktywowane "
+"(powracający pracownik)"
 
 msgid "Préparer l'arrivée à l'approche de la date de début du compte"
 msgstr "Przygotuj przybycie, gdy zbliża się data rozpoczęcia konta"
@@ -4859,12 +4815,12 @@ msgstr ""
 
 msgid ""
 "Les champs renseignés des blocs cochés s'ajoutent au tableau du matériel sur "
-"la fiche. Dans le texte du gabarit, un champ s'insère avec "
-"{champ:nom_du_champ} (nom système du champ dans Fields)."
+"la fiche. Dans le texte du gabarit, un champ s'insère avec {champ:"
+"nom_du_champ} (nom système du champ dans Fields)."
 msgstr ""
 "Wypełnione pola zaznaczonych bloków są dodawane do tabeli sprzętu w "
-"formularzu. W tekście szablonu wstaw pole za pomocą {champ:nazwa_pola} (nazwa"
-" systemowa pola w Fields)."
+"formularzu. W tekście szablonu wstaw pole za pomocą {champ:nazwa_pola} "
+"(nazwa systemowa pola w Fields)."
 
 msgid "(champ du plugin Fields, si son bloc est retenu dans la configuration)"
 msgstr "(pole wtyczki Fields, jeśli jego blok jest wybrany w konfiguracji)"
@@ -4916,8 +4872,8 @@ msgstr ""
 "i spróbuj ponownie (szczegóły w dzienniku assetsign)."
 
 msgid ""
-"Adresse du webhook refusée : elle doit commencer par https:// et ne pas viser"
-" le serveur lui-même."
+"Adresse du webhook refusée : elle doit commencer par https:// et ne pas "
+"viser le serveur lui-même."
 msgstr ""
 "Adres webhooka odrzucony: musi zaczynać się od https:// i nie może wskazywać "
 "samego serwera."
@@ -4992,8 +4948,8 @@ msgid ""
 "fiches et les campagnes déjà signées gardent la version en vigueur au moment "
 "de la signature."
 msgstr ""
-"Każda zmiana tekstu regulaminu tworzy nową wersję. Już podpisane formularze i"
-" kampanie zachowują wersję obowiązującą w chwili podpisu."
+"Każda zmiana tekstu regulaminu tworzy nową wersję. Już podpisane formularze "
+"i kampanie zachowują wersję obowiązującą w chwili podpisu."
 
 msgid "La charte en vigueur n'a encore été diffusée par aucune campagne."
 msgstr "Obowiązujący regulamin nie został jeszcze rozesłany w żadnej kampanii."
@@ -5033,8 +4989,8 @@ msgstr "Automatycznie proś o nowy podpis, gdy regulamin się zmieni"
 
 msgid ""
 "Quand le texte de la charte est modifié, une campagne est lancée pour les "
-"seules personnes qui ont signé une ancienne version. Sinon, elle est proposée"
-" sur la page des campagnes."
+"seules personnes qui ont signé une ancienne version. Sinon, elle est "
+"proposée sur la page des campagnes."
 msgstr ""
 "Gdy tekst regulaminu zostanie zmieniony, kampania jest uruchamiana tylko dla "
 "osób, które podpisały starszą wersję. W przeciwnym razie jest proponowana na "
@@ -5193,8 +5149,8 @@ msgid ""
 "La fiche PDF et les photos y sont jointes, avec un suivi privé. Le ticket "
 "n'est jamais fermé automatiquement."
 msgstr ""
-"Karta PDF i zdjęcia są do niego załączane, z prywatną kontynuacją. Zgłoszenie"
-" nigdy nie jest zamykane automatycznie."
+"Karta PDF i zdjęcia są do niego załączane, z prywatną kontynuacją. "
+"Zgłoszenie nigdy nie jest zamykane automatycznie."
 
 msgid "Aucune fiche rattachée à ce ticket."
 msgstr "Brak karty powiązanej z tym zgłoszeniem."
@@ -5233,12 +5189,12 @@ msgstr "Waga: Zużycie energii"
 
 msgid ""
 "Consommation d'énergie : moyenne journalière sur 12 mois calculée par le "
-"plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si le"
-" plugin Carbon n'est pas actif ou n'a rien calculé pour le matériel."
+"plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si "
+"le plugin Carbon n'est pas actif ou n'a rien calculé pour le matériel."
 msgstr ""
-"Zużycie energii: średnia dzienna z 12 miesięcy obliczona przez wtyczkę Carbon"
-" (pełna degradacja od 1 kWh dziennie). Pomijane, jeśli wtyczka Carbon nie "
-"jest aktywna lub nic nie obliczyła dla zasobu."
+"Zużycie energii: średnia dzienna z 12 miesięcy obliczona przez wtyczkę "
+"Carbon (pełna degradacja od 1 kWh dziennie). Pomijane, jeśli wtyczka Carbon "
+"nie jest aktywna lub nic nie obliczyła dla zasobu."
 
 #, php-format
 msgid "dont %d calculés par le plugin Carbon (sans saisie manuelle)"
@@ -5307,8 +5263,12 @@ msgstr "Użytkownik: %s"
 msgid "Aucun utilisateur"
 msgstr "Brak użytkownika"
 
-msgid "Les fiches de remise et de restitution sont créées automatiquement quand un utilisateur est affecté à ce matériel ou en est retiré."
-msgstr "Formularze przekazania i zwrotu są tworzone automatycznie, gdy użytkownik zostaje przypisany do tego sprzętu lub z niego usunięty."
+msgid ""
+"Les fiches de remise et de restitution sont créées automatiquement quand un "
+"utilisateur est affecté à ce matériel ou en est retiré."
+msgstr ""
+"Formularze przekazania i zwrotu są tworzone automatycznie, gdy użytkownik "
+"zostaje przypisany do tego sprzętu lub z niego usunięty."
 
 msgid "Brouillons à envoyer"
 msgstr "Szkice do wysłania"
@@ -5316,14 +5276,23 @@ msgstr "Szkice do wysłania"
 msgid "Nouvelle attribution"
 msgstr "Nowe przekazanie"
 
-msgid "Choisissez le destinataire et le matériel : la feuille d'attribution est préparée comme lors d'une affectation depuis la fiche du matériel."
-msgstr "Wybierz adresata i sprzęt: formularz przekazania zostanie przygotowany tak jak przy przypisaniu z rekordu sprzętu."
+msgid ""
+"Choisissez le destinataire et le matériel : la feuille d'attribution est "
+"préparée comme lors d'une affectation depuis la fiche du matériel."
+msgstr ""
+"Wybierz adresata i sprzęt: formularz przekazania zostanie przygotowany tak "
+"jak przy przypisaniu z rekordu sprzętu."
 
 msgid "Nouveau lien de signature"
 msgstr "Nowy link do podpisu"
 
-msgid "Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette page."
-msgstr "Wyślij go przez Teams, czat lub SMS. Zastępuje wcześniej wysłany link, który już nie działa. Po opuszczeniu tej strony nie będzie ponownie wyświetlany."
+msgid ""
+"Envoyez-le par Teams, chat ou SMS. Il remplace le lien envoyé précédemment, "
+"qui ne fonctionne plus. Il ne sera plus affiché après avoir quitté cette "
+"page."
+msgstr ""
+"Wyślij go przez Teams, czat lub SMS. Zastępuje wcześniej wysłany link, który "
+"już nie działa. Po opuszczeniu tej strony nie będzie ponownie wyświetlany."
 
 msgid "Copier"
 msgstr "Kopiuj"
@@ -5331,8 +5300,12 @@ msgstr "Kopiuj"
 msgid "Copié"
 msgstr "Skopiowano"
 
-msgid "Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L'ancien lien cesse de fonctionner."
-msgstr "Bez e-maila: tworzy nowy link do samodzielnego wysłania (Teams, czat, SMS). Stary link przestaje działać."
+msgid ""
+"Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). "
+"L'ancien lien cesse de fonctionner."
+msgstr ""
+"Bez e-maila: tworzy nowy link do samodzielnego wysłania (Teams, czat, SMS). "
+"Stary link przestaje działać."
 
 msgid "Copier un nouveau lien"
 msgstr "Skopiuj nowy link"
@@ -5344,11 +5317,19 @@ msgstr "Logo przekracza %1$d × %2$d pikseli: wybierz mniejszy obraz."
 msgid "Autoriser la signature en tapant son nom"
 msgstr "Zezwalaj na podpis przez wpisanie imienia i nazwiska"
 
-msgid "En plus du tracé à la souris, au doigt ou au stylet, le signataire peut taper son nom : utile sans écran tactile et pour l'accessibilité. La preuve et le PDF indiquent la méthode utilisée."
-msgstr "Oprócz rysowania myszą, palcem lub rysikiem podpisujący może wpisać swoje imię i nazwisko: przydatne bez ekranu dotykowego i dla dostępności. Dowód i PDF wskazują użytą metodę."
+msgid ""
+"En plus du tracé à la souris, au doigt ou au stylet, le signataire peut "
+"taper son nom : utile sans écran tactile et pour l'accessibilité. La preuve "
+"et le PDF indiquent la méthode utilisée."
+msgstr ""
+"Oprócz rysowania myszą, palcem lub rysikiem podpisujący może wpisać swoje "
+"imię i nazwisko: przydatne bez ekranu dotykowego i dla dostępności. Dowód i "
+"PDF wskazują użytą metodę."
 
 msgid "La signature en tapant son nom n'est pas autorisée pour cette fiche."
-msgstr "Podpis przez wpisanie imienia i nazwiska nie jest dozwolony dla tego formularza."
+msgstr ""
+"Podpis przez wpisanie imienia i nazwiska nie jest dozwolony dla tego "
+"formularza."
 
 msgid "Signature saisie en tapant son nom"
 msgstr "Podpis złożony przez wpisanie imienia i nazwiska"
@@ -5378,8 +5359,11 @@ msgid "Imprimer les étiquettes QR"
 msgstr "Drukuj etykiety QR"
 
 #, php-format
-msgid "Une planche d'étiquettes s'ouvrira pour les matériels sélectionnés (%d au maximum)."
-msgstr "Zostanie otwarty arkusz etykiet dla wybranego sprzętu (maksymalnie %d)."
+msgid ""
+"Une planche d'étiquettes s'ouvrira pour les matériels sélectionnés (%d au "
+"maximum)."
+msgstr ""
+"Zostanie otwarty arkusz etykiet dla wybranego sprzętu (maksymalnie %d)."
 
 msgid "Aucune étiquette à imprimer."
 msgstr "Brak etykiet do wydrukowania."
@@ -5392,11 +5376,19 @@ msgstr[1] "%d etykiety"
 msgstr[2] "%d etykiet"
 
 #, php-format
-msgid "%d matériel ignoré (non visible ou étiquette désactivée pour son entité)"
-msgid_plural "%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
-msgstr[0] "%d urządzenie pominięte (niewidoczne lub etykieta wyłączona dla jego jednostki)"
-msgstr[1] "%d urządzenia pominięte (niewidoczne lub etykieta wyłączona dla ich jednostki)"
-msgstr[2] "%d urządzeń pominiętych (niewidoczne lub etykieta wyłączona dla ich jednostki)"
+msgid ""
+"%d matériel ignoré (non visible ou étiquette désactivée pour son entité)"
+msgid_plural ""
+"%d matériels ignorés (non visibles ou étiquette désactivée pour leur entité)"
+msgstr[0] ""
+"%d urządzenie pominięte (niewidoczne lub etykieta wyłączona dla jego "
+"jednostki)"
+msgstr[1] ""
+"%d urządzenia pominięte (niewidoczne lub etykieta wyłączona dla ich "
+"jednostki)"
+msgstr[2] ""
+"%d urządzeń pominiętych (niewidoczne lub etykieta wyłączona dla ich "
+"jednostki)"
 
 msgid "1. Choisir le matériel"
 msgstr "1. Wybierz sprzęt"
@@ -5419,8 +5411,12 @@ msgstr "Przekazać sprzęt osobie lub organizacji."
 msgid "Choisir un autre matériel"
 msgstr "Wybierz inny sprzęt"
 
-msgid "Choisissez le matériel, puis l'action : remise, restitution, don, vente ou destruction."
-msgstr "Wybierz sprzęt, a następnie czynność: wydanie, zwrot, darowizna, sprzedaż lub zniszczenie."
+msgid ""
+"Choisissez le matériel, puis l'action : remise, restitution, don, vente ou "
+"destruction."
+msgstr ""
+"Wybierz sprzęt, a następnie czynność: wydanie, zwrot, darowizna, sprzedaż "
+"lub zniszczenie."
 
 msgid "Désactivé dans la configuration de l'entité."
 msgstr "Wyłączone w konfiguracji jednostki."
@@ -5455,14 +5451,19 @@ msgstr "Wydać sprzęt użytkownikowi: podpisuje przy odbiorze."
 msgid "Remise"
 msgstr "Wydanie"
 
-msgid "Reprendre le matériel à son utilisateur actuel : il signe la restitution."
+msgid ""
+"Reprendre le matériel à son utilisateur actuel : il signe la restitution."
 msgstr "Odebrać sprzęt od obecnego użytkownika: podpisuje zwrot."
 
 msgid "Retour à la liste"
 msgstr "Powrót do listy"
 
-msgid "Saisissez au moins deux caractères du nom, du n° de série ou du n° d'inventaire."
-msgstr "Wpisz co najmniej dwa znaki nazwy, numeru seryjnego lub numeru inwentarzowego."
+msgid ""
+"Saisissez au moins deux caractères du nom, du n° de série ou du n° "
+"d'inventaire."
+msgstr ""
+"Wpisz co najmniej dwa znaki nazwy, numeru seryjnego lub numeru "
+"inwentarzowego."
 
 msgid "Vendre le matériel, avec son prix et sa date de vente."
 msgstr "Sprzedać sprzęt, z ceną i datą sprzedaży."
@@ -5484,8 +5485,12 @@ msgid "Les réglages de référence précédents sont conservés."
 msgstr "Poprzednie ustawienia numeru referencyjnego zostają zachowane."
 
 #, php-format
-msgid "Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret ou souligné, en commençant par une lettre ou un chiffre."
-msgstr "Prefiks odrzucony: najwyżej %d znaków, litery bez znaków diakrytycznych, cyfry, łącznik lub podkreślenie, zaczynając od litery lub cyfry."
+msgid ""
+"Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret "
+"ou souligné, en commençant par une lettre ou un chiffre."
+msgstr ""
+"Prefiks odrzucony: najwyżej %d znaków, litery bez znaków diakrytycznych, "
+"cyfry, łącznik lub podkreślenie, zaczynając od litery lub cyfry."
 
 #, php-format
 msgid "Format de référence refusé : %d caractères au plus."
@@ -5493,16 +5498,27 @@ msgstr "Format numeru referencyjnego odrzucony: najwyżej %d znaków."
 
 #, php-format
 msgid "Format de référence refusé : marqueur inconnu. Marqueurs admis : %s."
-msgstr "Format numeru referencyjnego odrzucony: nieznany znacznik. Dozwolone znaczniki: %s."
+msgstr ""
+"Format numeru referencyjnego odrzucony: nieznany znacznik. Dozwolone "
+"znaczniki: %s."
 
 msgid "Format de référence refusé : il doit contenir {seq} ou {aleatoire}."
-msgstr "Format numeru referencyjnego odrzucony: musi zawierać {seq} lub {aleatoire}."
+msgstr ""
+"Format numeru referencyjnego odrzucony: musi zawierać {seq} lub {aleatoire}."
 
-msgid "Format de référence refusé : pour recommencer à 1 chaque année, le format doit contenir {annee}."
-msgstr "Format numeru referencyjnego odrzucony: aby zaczynać od 1 co roku, format musi zawierać {annee}."
+msgid ""
+"Format de référence refusé : pour recommencer à 1 chaque année, le format "
+"doit contenir {annee}."
+msgstr ""
+"Format numeru referencyjnego odrzucony: aby zaczynać od 1 co roku, format "
+"musi zawierać {annee}."
 
-msgid "Format de référence refusé : en dehors des marqueurs, seuls les lettres sans accent, les chiffres, le tiret et le souligné sont admis."
-msgstr "Format numeru referencyjnego odrzucony: poza znacznikami dozwolone są tylko litery bez znaków diakrytycznych, cyfry, łącznik i podkreślenie."
+msgid ""
+"Format de référence refusé : en dehors des marqueurs, seuls les lettres sans "
+"accent, les chiffres, le tiret et le souligné sont admis."
+msgstr ""
+"Format numeru referencyjnego odrzucony: poza znacznikami dozwolone są tylko "
+"litery bez znaków diakrytycznych, cyfry, łącznik i podkreślenie."
 
 msgid "Référence de document"
 msgstr "Numer referencyjny dokumentu"
@@ -5526,11 +5542,21 @@ msgstr "Zaczynaj od 1 co roku"
 msgid "Exemple : %s"
 msgstr "Przykład: %s"
 
-msgid "Format vide : la référence est l'identifiant interne de la fiche (comportement actuel)."
-msgstr "Pusty format: numerem referencyjnym jest wewnętrzny identyfikator formularza (obecne działanie)."
+msgid ""
+"Format vide : la référence est l'identifiant interne de la fiche "
+"(comportement actuel)."
+msgstr ""
+"Pusty format: numerem referencyjnym jest wewnętrzny identyfikator formularza "
+"(obecne działanie)."
 
-msgid "Ce format sera refusé à l'enregistrement : il doit contenir {seq} ou {aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, des chiffres, le tiret et le souligné."
-msgstr "Ten format zostanie odrzucony przy zapisie: musi zawierać {seq} lub {aleatoire}, a poza znacznikami tylko litery bez znaków diakrytycznych, cyfry, łącznik i podkreślenie."
+msgid ""
+"Ce format sera refusé à l'enregistrement : il doit contenir {seq} ou "
+"{aleatoire}, et en dehors des marqueurs seulement des lettres sans accent, "
+"des chiffres, le tiret et le souligné."
+msgstr ""
+"Ten format zostanie odrzucony przy zapisie: musi zawierać {seq} lub "
+"{aleatoire}, a poza znacznikami tylko litery bez znaków diakrytycznych, "
+"cyfry, łącznik i podkreślenie."
 
 msgid "Marqueurs :"
 msgstr "Znaczniki:"
@@ -5541,16 +5567,30 @@ msgstr "(numer kolejny)"
 msgid "(6 caractères au hasard)"
 msgstr "(6 losowych znaków)"
 
-msgid "La référence est attribuée à la création de la fiche et ne change plus : elle figure sur le PDF, dans le commentaire du document GLPI, dans l'historique du matériel et dans la liste des attributions. Les fiches existantes gardent leur référence actuelle. Un numéro déjà attribué n'est jamais réattribué, même si le prochain numéro est abaissé : il est sauté."
-msgstr "Numer referencyjny jest nadawany przy tworzeniu formularza i już się nie zmienia: widnieje w pliku PDF, w komentarzu dokumentu GLPI, w historii sprzętu i na liście przypisań. Istniejące formularze zachowują obecny numer. Raz nadany numer nigdy nie jest nadawany ponownie, nawet jeśli następny numer zostanie obniżony: zostaje pominięty."
+msgid ""
+"La référence est attribuée à la création de la fiche et ne change plus : "
+"elle figure sur le PDF, dans le commentaire du document GLPI, dans "
+"l'historique du matériel et dans la liste des attributions. Les fiches "
+"existantes gardent leur référence actuelle. Un numéro déjà attribué n'est "
+"jamais réattribué, même si le prochain numéro est abaissé : il est sauté."
+msgstr ""
+"Numer referencyjny jest nadawany przy tworzeniu formularza i już się nie "
+"zmienia: widnieje w pliku PDF, w komentarzu dokumentu GLPI, w historii "
+"sprzętu i na liście przypisań. Istniejące formularze zachowują obecny numer. "
+"Raz nadany numer nigdy nie jest nadawany ponownie, nawet jeśli następny "
+"numer zostanie obniżony: zostaje pominięty."
 
 #, php-format
 msgid "Référence : %s"
 msgstr "Numer referencyjny: %s"
 
 #, php-format
-msgid "Désinstallation interrompue : impossible d'archiver les références de document dans %s."
-msgstr "Odinstalowanie przerwane: nie można zarchiwizować numerów referencyjnych dokumentów w %s."
+msgid ""
+"Désinstallation interrompue : impossible d'archiver les références de "
+"document dans %s."
+msgstr ""
+"Odinstalowanie przerwane: nie można zarchiwizować numerów referencyjnych "
+"dokumentów w %s."
 
 msgid "Simulation de l'import dans « %s »"
 msgstr "Symulacja importu do „%s”"
@@ -5558,8 +5598,12 @@ msgstr "Symulacja importu do „%s”"
 msgid "Fichier exporté depuis « %1$s » (AssetSign %2$s)."
 msgstr "Plik wyeksportowany z „%1$s” (AssetSign %2$s)."
 
-msgid "Cette entité hérite aujourd'hui de la configuration d'une entité parente : l'import lui créera sa propre configuration."
-msgstr "Ta jednostka dziedziczy obecnie konfigurację jednostki nadrzędnej: import utworzy dla niej własną konfigurację."
+msgid ""
+"Cette entité hérite aujourd'hui de la configuration d'une entité parente : "
+"l'import lui créera sa propre configuration."
+msgstr ""
+"Ta jednostka dziedziczy obecnie konfigurację jednostki nadrzędnej: import "
+"utworzy dla niej własną konfigurację."
 
 msgid "Compte rendu"
 msgstr "Raport"
@@ -5625,7 +5669,8 @@ msgid "Inclure le logo"
 msgstr "Dołącz logo"
 
 msgid "Jamais exportés (secrets, à ressaisir sur l'instance de destination) :"
-msgstr "Nigdy nieeksportowane (sekrety, do ponownego wpisania w instancji docelowej):"
+msgstr ""
+"Nigdy nieeksportowane (sekrety, do ponownego wpisania w instancji docelowej):"
 
 msgid "Télécharger le fichier JSON"
 msgstr "Pobierz plik JSON"
@@ -5648,8 +5693,12 @@ msgstr "Importuj szablony domyślne"
 msgid "Importer le logo"
 msgstr "Importuj logo"
 
-msgid "Rien n'est modifié à cette étape : les différences s'affichent d'abord, à confirmer."
-msgstr "Na tym etapie nic nie jest zmieniane: najpierw wyświetlane są różnice do potwierdzenia."
+msgid ""
+"Rien n'est modifié à cette étape : les différences s'affichent d'abord, à "
+"confirmer."
+msgstr ""
+"Na tym etapie nic nie jest zmieniane: najpierw wyświetlane są różnice do "
+"potwierdzenia."
 
 msgid "Simuler l'import"
 msgstr "Symuluj import"
@@ -5666,17 +5715,26 @@ msgstr "Ten plik nie jest poprawnym JSON."
 msgid "Ce fichier n'est pas une configuration AssetSign."
 msgstr "Ten plik nie jest konfiguracją AssetSign."
 
-msgid "Ce fichier n'est pas une configuration AssetSign dans un format reconnu."
+msgid ""
+"Ce fichier n'est pas une configuration AssetSign dans un format reconnu."
 msgstr "Ten plik nie jest konfiguracją AssetSign w rozpoznawanym formacie."
 
 msgid "Fichier refusé : la valeur « %s » est inconnue ou invalide."
 msgstr "Plik odrzucony: wartość „%s” jest nieznana lub nieprawidłowa."
 
-msgid "Logo refusé : image PNG, JPG, GIF ou WEBP attendue, de %1$d Ko et %2$d × %3$d pixels au plus."
-msgstr "Logo odrzucone: oczekiwany jest obraz PNG, JPG, GIF lub WEBP o rozmiarze maksymalnie %1$d KB i %2$d × %3$d pikseli."
+msgid ""
+"Logo refusé : image PNG, JPG, GIF ou WEBP attendue, de %1$d Ko et %2$d × "
+"%3$d pixels au plus."
+msgstr ""
+"Logo odrzucone: oczekiwany jest obraz PNG, JPG, GIF lub WEBP o rozmiarze "
+"maksymalnie %1$d KB i %2$d × %3$d pikseli."
 
-msgid "« %s » n'est jamais importé (secret ou propre à l'instance d'origine) : à ressaisir si besoin."
-msgstr "„%s” nigdy nie jest importowane (sekret lub właściwe dla instancji źródłowej): w razie potrzeby wpisz ponownie."
+msgid ""
+"« %s » n'est jamais importé (secret ou propre à l'instance d'origine) : à "
+"ressaisir si besoin."
+msgstr ""
+"„%s” nigdy nie jest importowane (sekret lub właściwe dla instancji "
+"źródłowej): w razie potrzeby wpisz ponownie."
 
 msgid "%1$s : « %2$s » n'existe pas sur cette instance, ignoré."
 msgstr "%1$s: „%2$s” nie istnieje w tej instancji, pominięto."
@@ -5684,8 +5742,12 @@ msgstr "%1$s: „%2$s” nie istnieje w tej instancji, pominięto."
 msgid "Gabarit « %s » ignoré : vous n'avez pas le droit de le modifier."
 msgstr "Szablon „%s” pominięty: nie masz uprawnień do jego modyfikacji."
 
-msgid "Gabarit « %s » ignoré : vous n'avez pas le droit d'en créer dans cette entité."
-msgstr "Szablon „%s” pominięty: nie masz uprawnień do tworzenia szablonów w tej jednostce."
+msgid ""
+"Gabarit « %s » ignoré : vous n'avez pas le droit d'en créer dans cette "
+"entité."
+msgstr ""
+"Szablon „%s” pominięty: nie masz uprawnień do tworzenia szablonów w tej "
+"jednostce."
 
 msgid "%1$s : « %2$s » est introuvable dans l'entité cible, ignoré."
 msgstr "%1$s: nie znaleziono „%2$s” w jednostce docelowej, pominięto."
@@ -5694,7 +5756,8 @@ msgid "Simulation expirée : relancez l'import."
 msgstr "Symulacja wygasła: uruchom import ponownie."
 
 msgid "Import appliqué : %1$d réglage(s) et %2$d gabarit(s) modifiés%3$s."
-msgstr "Import zastosowany: zmienione ustawienia: %1$d, zmienione szablony: %2$d%3$s."
+msgstr ""
+"Import zastosowany: zmienione ustawienia: %1$d, zmienione szablony: %2$d%3$s."
 
 msgid ", logo remplacé"
 msgstr ", logo zastąpione"
@@ -5733,8 +5796,13 @@ msgstr "Margines strony (mm)"
 msgid "Espacement entre étiquettes (mm)"
 msgstr "Odstęp między etykietami (mm)"
 
-msgid "Choisir un format de planche remplit la largeur et la hauteur ; modifier une dimension passe au format personnalisé. La marge et l'espacement ne servent qu'au format personnalisé."
-msgstr "Wybór formatu arkusza uzupełnia szerokość i wysokość; zmiana wymiaru przełącza na format własny. Margines i odstęp dotyczą tylko formatu własnego."
+msgid ""
+"Choisir un format de planche remplit la largeur et la hauteur ; modifier une "
+"dimension passe au format personnalisé. La marge et l'espacement ne servent "
+"qu'au format personnalisé."
+msgstr ""
+"Wybór formatu arkusza uzupełnia szerokość i wysokość; zmiana wymiaru "
+"przełącza na format własny. Margines i odstęp dotyczą tylko formatu własnego."
 
 msgid "Taille du QR code (mm)"
 msgstr "Rozmiar kodu QR (mm)"
@@ -5751,21 +5819,39 @@ msgstr "Ramka do cięcia"
 msgid "Texte de l'étiquette"
 msgstr "Tekst etykiety"
 
-msgid "Une ligne de ce texte = une ligne sur l'étiquette. Marqueurs remplacés par la valeur du matériel :"
-msgstr "Jeden wiersz tego tekstu = jeden wiersz na etykiecie. Znaczniki zastępowane wartością sprzętu:"
+msgid ""
+"Une ligne de ce texte = une ligne sur l'étiquette. Marqueurs remplacés par "
+"la valeur du matériel :"
+msgstr ""
+"Jeden wiersz tego tekstu = jeden wiersz na etykiecie. Znaczniki zastępowane "
+"wartością sprzętu:"
 
-msgid "{manufacturers_id} donne le nom du fabricant, {entity} celui de l'entité. Une ligne dont tous les marqueurs sont vides n'est pas imprimée."
-msgstr "{manufacturers_id} daje nazwę producenta, {entity} nazwę jednostki. Wiersz, którego wszystkie znaczniki są puste, nie jest drukowany."
+msgid ""
+"{manufacturers_id} donne le nom du fabricant, {entity} celui de l'entité. "
+"Une ligne dont tous les marqueurs sont vides n'est pas imprimée."
+msgstr ""
+"{manufacturers_id} daje nazwę producenta, {entity} nazwę jednostki. Wiersz, "
+"którego wszystkie znaczniki są puste, nie jest drukowany."
 
 msgid "Mise en page des étiquettes QR"
 msgstr "Układ etykiet QR"
 
-msgid "Utilisée par l'étiquette d'un matériel (onglet Passeport matériel) et par la planche de l'action de masse « Imprimer les étiquettes QR », qui peut l'ajuster pour une impression."
-msgstr "Używany przez etykietę sprzętu (karta Paszport sprzętu) i przez arkusz akcji masowej „Drukuj etykiety QR”, który może go dostosować na potrzeby jednego wydruku."
+msgid ""
+"Utilisée par l'étiquette d'un matériel (onglet Passeport matériel) et par la "
+"planche de l'action de masse « Imprimer les étiquettes QR », qui peut "
+"l'ajuster pour une impression."
+msgstr ""
+"Używany przez etykietę sprzętu (karta Paszport sprzętu) i przez arkusz akcji "
+"masowej „Drukuj etykiety QR”, który może go dostosować na potrzeby jednego "
+"wydruku."
 
 #, php-format
-msgid "Taille réelle à l'impression : %1$s x %2$s mm. Mise en page et texte réglables dans la configuration du plugin (onglet Compléments)."
-msgstr "Rzeczywisty rozmiar wydruku: %1$s x %2$s mm. Układ i tekst można ustawić w konfiguracji wtyczki (karta Dodatki)."
+msgid ""
+"Taille réelle à l'impression : %1$s x %2$s mm. Mise en page et texte "
+"réglables dans la configuration du plugin (onglet Compléments)."
+msgstr ""
+"Rzeczywisty rozmiar wydruku: %1$s x %2$s mm. Układ i tekst można ustawić w "
+"konfiguracji wtyczki (karta Dodatki)."
 
 msgid "Télécharger en PNG"
 msgstr "Pobierz jako PNG"
@@ -5779,11 +5865,20 @@ msgstr "Zastosuj"
 msgid "Revenir aux réglages de l'entité"
 msgstr "Wróć do ustawień jednostki"
 
-msgid "Ces réglages ne valent que pour cette impression. Les réglages par défaut se changent dans la configuration du plugin (onglet Compléments)."
-msgstr "Te ustawienia dotyczą tylko tego wydruku. Ustawienia domyślne zmienia się w konfiguracji wtyczki (karta Dodatki)."
+msgid ""
+"Ces réglages ne valent que pour cette impression. Les réglages par défaut se "
+"changent dans la configuration du plugin (onglet Compléments)."
+msgstr ""
+"Te ustawienia dotyczą tylko tego wydruku. Ustawienia domyślne zmienia się w "
+"konfiguracji wtyczki (karta Dodatki)."
 
-msgid "Dans la boîte d'impression, choisissez la taille réelle (sans mise à l'échelle) et aucune marge pour que les étiquettes tombent juste sur la planche."
-msgstr "W oknie drukowania wybierz rzeczywisty rozmiar (bez skalowania) i brak marginesów, aby etykiety trafiły dokładnie na arkusz."
+msgid ""
+"Dans la boîte d'impression, choisissez la taille réelle (sans mise à "
+"l'échelle) et aucune marge pour que les étiquettes tombent juste sur la "
+"planche."
+msgstr ""
+"W oknie drukowania wybierz rzeczywisty rozmiar (bez skalowania) i brak "
+"marginesów, aby etykiety trafiły dokładnie na arkusz."
 
 #, php-format
 msgid "Code : %s"
@@ -5809,10 +5904,21 @@ msgid "En-tête de maîtrise documentaire (ISO)"
 msgstr "Nagłówek nadzoru nad dokumentacją (ISO)"
 
 msgid "Afficher un en-tête de maîtrise documentaire sur chaque page des PDF"
-msgstr "Wyświetlaj nagłówek nadzoru nad dokumentacją na każdej stronie plików PDF"
+msgstr ""
+"Wyświetlaj nagłówek nadzoru nad dokumentacją na każdej stronie plików PDF"
 
-msgid "Cartouche attendu par les organisations certifiées : entreprise, type et titre du document, code du formulaire, révision, date de création du modèle et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit (onglets Attribution, Restitution...), pas à chaque fiche. Les documents déjà générés ne changent pas."
-msgstr "Metryka wymagana przez organizacje certyfikowane: firma, typ i tytuł dokumentu, kod formularza, wersja, data utworzenia szablonu i „Strona X z Y”. Kod i wersję ustawia się w każdym szablonie (karty Przypisanie, Zwrot...), a nie w każdym formularzu. Dokumenty już wygenerowane nie zmieniają się."
+msgid ""
+"Cartouche attendu par les organisations certifiées : entreprise, type et "
+"titre du document, code du formulaire, révision, date de création du modèle "
+"et « Page X sur Y ». Le code et la révision se règlent dans chaque gabarit "
+"(onglets Attribution, Restitution...), pas à chaque fiche. Les documents "
+"déjà générés ne changent pas."
+msgstr ""
+"Metryka wymagana przez organizacje certyfikowane: firma, typ i tytuł "
+"dokumentu, kod formularza, wersja, data utworzenia szablonu i „Strona X z "
+"Y”. Kod i wersję ustawia się w każdym szablonie (karty Przypisanie, "
+"Zwrot...), a nie w każdym formularzu. Dokumenty już wygenerowane nie "
+"zmieniają się."
 
 msgid "Type de document"
 msgstr "Typ dokumentu"
@@ -5820,8 +5926,12 @@ msgstr "Typ dokumentu"
 msgid "Exemple : Enregistrement"
 msgstr "Przykład: Zapis"
 
-msgid "Optionnel : affiché au-dessus du titre du document dans l'en-tête. L'aperçu se met à jour avant l'enregistrement."
-msgstr "Opcjonalnie: wyświetlany nad tytułem dokumentu w nagłówku. Podgląd aktualizuje się przed zapisaniem."
+msgid ""
+"Optionnel : affiché au-dessus du titre du document dans l'en-tête. L'aperçu "
+"se met à jour avant l'enregistrement."
+msgstr ""
+"Opcjonalnie: wyświetlany nad tytułem dokumentu w nagłówku. Podgląd "
+"aktualizuje się przed zapisaniem."
 
 msgid "Maîtrise documentaire (en-tête ISO)"
 msgstr "Nadzór nad dokumentacją (nagłówek ISO)"
@@ -5841,14 +5951,33 @@ msgstr "Przykład: B"
 msgid "Date de révision"
 msgstr "Data wersji"
 
-msgid "Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est activé dans la configuration de l'entité (onglet Général). Changez la révision quand le texte du modèle change : elle vaut pour toutes les fiches générées ensuite."
-msgstr "Drukowane w nagłówku nadzoru nad dokumentacją na każdej stronie, jeśli jest on włączony w konfiguracji jednostki (karta Ogólne). Zmień wersję, gdy zmienia się tekst szablonu: obowiązuje ona dla wszystkich formularzy wygenerowanych później."
+msgid ""
+"Imprimés dans l'en-tête de maîtrise documentaire de chaque page, s'il est "
+"activé dans la configuration de l'entité (onglet Général). Changez la "
+"révision quand le texte du modèle change : elle vaut pour toutes les fiches "
+"générées ensuite."
+msgstr ""
+"Drukowane w nagłówku nadzoru nad dokumentacją na każdej stronie, jeśli jest "
+"on włączony w konfiguracji jednostki (karta Ogólne). Zmień wersję, gdy "
+"zmienia się tekst szablonu: obowiązuje ona dla wszystkich formularzy "
+"wygenerowanych później."
 
-msgid "Technicien de la fiche : le technicien responsable du matériel, s'il est renseigné"
-msgstr "Technik formularza: technik odpowiedzialny za sprzęt, jeśli został wskazany"
+msgid ""
+"Technicien de la fiche : le technicien responsable du matériel, s'il est "
+"renseigné"
+msgstr ""
+"Technik formularza: technik odpowiedzialny za sprzęt, jeśli został wskazany"
 
-msgid "Le champ « Technicien » du matériel désigne alors le technicien de la fiche (variable {technicien}, notifications, brouillons à envoyer). Sans technicien responsable, ou si la case est décochée, c'est la personne qui génère la fiche, comme avant."
-msgstr "Pole „Technik” sprzętu wskazuje wtedy technika formularza (zmienna {technicien}, powiadomienia, wersje robocze do wysłania). Bez technika odpowiedzialnego lub gdy pole nie jest zaznaczone, jest to osoba generująca formularz, jak dotychczas."
+msgid ""
+"Le champ « Technicien » du matériel désigne alors le technicien de la fiche "
+"(variable {technicien}, notifications, brouillons à envoyer). Sans "
+"technicien responsable, ou si la case est décochée, c'est la personne qui "
+"génère la fiche, comme avant."
+msgstr ""
+"Pole „Technik” sprzętu wskazuje wtedy technika formularza (zmienna "
+"{technicien}, powiadomienia, wersje robocze do wysłania). Bez technika "
+"odpowiedzialnego lub gdy pole nie jest zaznaczone, jest to osoba generująca "
+"formularz, jak dotychczas."
 
 msgid "Choisissez le fichier du scan signé."
 msgstr "Wybierz plik podpisanego skanu."
@@ -5857,8 +5986,12 @@ msgstr "Wybierz plik podpisanego skanu."
 msgid "Le scan dépasse la taille maximale (%d Mo)."
 msgstr "Skan przekracza maksymalny rozmiar (%d MB)."
 
-msgid "Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de signature électronique ne fonctionne plus."
-msgstr "Skan dołączony: formularz ma teraz status „Podpisano na papierze”. Link do podpisu elektronicznego już nie działa."
+msgid ""
+"Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de "
+"signature électronique ne fonctionne plus."
+msgstr ""
+"Skan dołączony: formularz ma teraz status „Podpisano na papierze”. Link do "
+"podpisu elektronicznego już nie działa."
 
 msgid "Scan signé sur papier"
 msgstr "Skan podpisany na papierze"
@@ -5870,8 +6003,12 @@ msgid "Signé sur papier"
 msgstr "Podpisano na papierze"
 
 #, php-format
-msgid "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le scan du document signé est joint au ticket."
-msgstr "Formularz nr %1$d (%2$s) dla %3$s „%4$s” został podpisany na papierze. Skan podpisanego dokumentu jest dołączony do zgłoszenia."
+msgid ""
+"La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le "
+"scan du document signé est joint au ticket."
+msgstr ""
+"Formularz nr %1$d (%2$s) dla %3$s „%4$s” został podpisany na papierze. Skan "
+"podpisanego dokumentu jest dołączony do zgłoszenia."
 
 msgid "Version papier inconnue."
 msgstr "Nieznana wersja papierowa."
@@ -5881,12 +6018,20 @@ msgid "État des lieux imprimable de la fiche n° %1$s généré par %2$s"
 msgstr "Protokół stanu do druku formularza nr %1$s wygenerowany przez %2$s"
 
 #, php-format
-msgid "Version papier de la fiche n° %1$s générée par %2$s, pour une signature à la main"
-msgstr "Wersja papierowa formularza nr %1$s wygenerowana przez %2$s, do podpisu odręcznego"
+msgid ""
+"Version papier de la fiche n° %1$s générée par %2$s, pour une signature à la "
+"main"
+msgstr ""
+"Wersja papierowa formularza nr %1$s wygenerowana przez %2$s, do podpisu "
+"odręcznego"
 
 #, php-format
-msgid "Fiche n° %1$s signée sur papier : scan joint par %2$s (signature datée du %3$s)"
-msgstr "Formularz nr %1$s podpisany na papierze: skan dołączony przez %2$s (podpis z dnia %3$s)"
+msgid ""
+"Fiche n° %1$s signée sur papier : scan joint par %2$s (signature datée du "
+"%3$s)"
+msgstr ""
+"Formularz nr %1$s podpisany na papierze: skan dołączony przez %2$s (podpis z "
+"dnia %3$s)"
 
 msgid "Le fichier du scan est vide."
 msgstr "Plik skanu jest pusty."
@@ -5894,14 +6039,22 @@ msgstr "Plik skanu jest pusty."
 msgid "Type de fichier refusé : joignez un scan au format PDF, JPEG ou PNG."
 msgstr "Odrzucony typ pliku: dołącz skan w formacie PDF, JPEG lub PNG."
 
-msgid "Le contenu du fichier ne correspond pas à son extension : joignez un vrai scan au format PDF, JPEG ou PNG."
-msgstr "Zawartość pliku nie odpowiada jego rozszerzeniu: dołącz prawdziwy skan w formacie PDF, JPEG lub PNG."
+msgid ""
+"Le contenu du fichier ne correspond pas à son extension : joignez un vrai "
+"scan au format PDF, JPEG ou PNG."
+msgstr ""
+"Zawartość pliku nie odpowiada jego rozszerzeniu: dołącz prawdziwy skan w "
+"formacie PDF, JPEG lub PNG."
 
 msgid "Vous n'avez pas le droit de modifier cette fiche."
 msgstr "Nie masz uprawnień do modyfikacji tego formularza."
 
-msgid "La version papier n'est pas possible pour cette fiche (déjà signée, en attente du responsable, expirée ou annulée)."
-msgstr "Wersja papierowa nie jest możliwa dla tego formularza (już podpisany, oczekuje na przełożonego, wygasły lub anulowany)."
+msgid ""
+"La version papier n'est pas possible pour cette fiche (déjà signée, en "
+"attente du responsable, expirée ou annulée)."
+msgstr ""
+"Wersja papierowa nie jest możliwa dla tego formularza (już podpisany, "
+"oczekuje na przełożonego, wygasły lub anulowany)."
 
 msgid "Date de signature invalide."
 msgstr "Nieprawidłowa data podpisu."
@@ -5923,8 +6076,12 @@ msgid "Fiche signée à la main, sur papier"
 msgstr "Formularz podpisany odręcznie, na papierze"
 
 #, php-format
-msgid "Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est le scan joint (empreinte ci-dessous)."
-msgstr "Skan dołączony przez %1$s dnia %2$s. Brak podpisu elektronicznego: dowodem jest dołączony skan (skrót poniżej)."
+msgid ""
+"Scan joint par %1$s le %2$s. Aucune signature électronique : la preuve est "
+"le scan joint (empreinte ci-dessous)."
+msgstr ""
+"Skan dołączony przez %1$s dnia %2$s. Brak podpisu elektronicznego: dowodem "
+"jest dołączony skan (skrót poniżej)."
 
 msgid "Ouvrir le scan signé"
 msgstr "Otwórz podpisany skan"
@@ -5932,8 +6089,15 @@ msgstr "Otwórz podpisany skan"
 msgid "Version papier (signature à la main)"
 msgstr "Wersja papierowa (podpis odręczny)"
 
-msgid "Si la signature électronique n'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n'est pas joint, rien n'est enregistré comme signé."
-msgstr "Jeśli podpis elektroniczny nie jest możliwy: wydrukuj wypełniony formularz, poproś o podpis odręczny, a następnie dołącz tutaj skan podpisanego dokumentu. Dopóki skan nie zostanie dołączony, nic nie jest zapisywane jako podpisane."
+msgid ""
+"Si la signature électronique n'est pas possible : imprimez la fiche pré-"
+"remplie, faites-la signer à la main, puis joignez ici le scan du document "
+"signé. Tant que le scan n'est pas joint, rien n'est enregistré comme signé."
+msgstr ""
+"Jeśli podpis elektroniczny nie jest możliwy: wydrukuj wypełniony formularz, "
+"poproś o podpis odręczny, a następnie dołącz tutaj skan podpisanego "
+"dokumentu. Dopóki skan nie zostanie dołączony, nic nie jest zapisywane jako "
+"podpisane."
 
 msgid "Imprimer pour signature à la main"
 msgstr "Drukuj do podpisu odręcznego"
@@ -5955,8 +6119,12 @@ msgstr "Skan podpisanego dokumentu"
 msgid "PDF, JPEG ou PNG, %d Mo maximum."
 msgstr "PDF, JPEG lub PNG, maksymalnie %d MB."
 
-msgid "La fiche passera à « Signé sur papier » et le lien de signature électronique déjà envoyé ne fonctionnera plus. Continuer ?"
-msgstr "Formularz otrzyma status „Podpisano na papierze”, a wysłany już link do podpisu elektronicznego przestanie działać. Kontynuować?"
+msgid ""
+"La fiche passera à « Signé sur papier » et le lien de signature électronique "
+"déjà envoyé ne fonctionnera plus. Continuer ?"
+msgstr ""
+"Formularz otrzyma status „Podpisano na papierze”, a wysłany już link do "
+"podpisu elektronicznego przestanie działać. Kontynuować?"
 
 msgid "La fiche passera à « Signé sur papier ». Continuer ?"
 msgstr "Formularz otrzyma status „Podpisano na papierze”. Kontynuować?"
@@ -5989,8 +6157,12 @@ msgstr "Protokół stanu sprzętu"
 msgid "Fiche « %1$s », référence n°%2$s"
 msgstr "Formularz „%1$s”, numer referencyjny %2$s"
 
-msgid "À compléter à la main au moment de la remise ou du retour du matériel. Cochez une case par ligne."
-msgstr "Do wypełnienia odręcznie przy wydaniu lub zwrocie sprzętu. Zaznacz jedno pole w każdym wierszu."
+msgid ""
+"À compléter à la main au moment de la remise ou du retour du matériel. "
+"Cochez une case par ligne."
+msgstr ""
+"Do wypełnienia odręcznie przy wydaniu lub zwrocie sprzętu. Zaznacz jedno "
+"pole w każdym wierszu."
 
 msgid "État de chaque élément"
 msgstr "Stan każdego elementu"
@@ -6022,15 +6194,23 @@ msgstr "zużycie"
 msgid "pièce manquante"
 msgstr "brakująca część"
 
-msgid "Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage majeur."
-msgstr "Punkty już zapisane w GLPI: żółty = drobne uszkodzenie, czerwony = poważne uszkodzenie."
+msgid ""
+"Points déjà relevés dans GLPI : jaune = dommage mineur, rouge = dommage "
+"majeur."
+msgstr ""
+"Punkty już zapisane w GLPI: żółty = drobne uszkodzenie, czerwony = poważne "
+"uszkodzenie."
 
 msgid "Notes"
 msgstr "Uwagi"
 
 #, php-format
-msgid "Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le scan signé est ensuite joint à la fiche dans GLPI."
-msgstr "Wersja papierowa formularza nr %1$s, wygenerowana %2$s: do podpisania odręcznie. Podpisany skan jest następnie dołączany do formularza w GLPI."
+msgid ""
+"Version papier de la fiche n° %1$s, générée le %2$s : à signer à la main. Le "
+"scan signé est ensuite joint à la fiche dans GLPI."
+msgstr ""
+"Wersja papierowa formularza nr %1$s, wygenerowana %2$s: do podpisania "
+"odręcznie. Podpisany skan jest następnie dołączany do formularza w GLPI."
 
 #, php-format
 msgid "pour le compte de %s"
@@ -6048,8 +6228,14 @@ msgstr "Podpis, poprzedzony adnotacją „Przeczytałem i akceptuję”:"
 msgid "Version papier, à signer à la main."
 msgstr "Wersja papierowa, do podpisania odręcznie."
 
-msgid "Vérifiez les informations, complétez l'état des lieux en dernière page, puis faites signer chaque cadre. Le scan du document signé est ensuite joint à la fiche dans GLPI."
-msgstr "Sprawdź informacje, wypełnij protokół stanu na ostatniej stronie, a następnie poproś o podpis w każdym polu. Skan podpisanego dokumentu jest następnie dołączany do formularza w GLPI."
+msgid ""
+"Vérifiez les informations, complétez l'état des lieux en dernière page, puis "
+"faites signer chaque cadre. Le scan du document signé est ensuite joint à la "
+"fiche dans GLPI."
+msgstr ""
+"Sprawdź informacje, wypełnij protokół stanu na ostatniej stronie, a "
+"następnie poproś o podpis w każdym polu. Skan podpisanego dokumentu jest "
+"następnie dołączany do formularza w GLPI."
 
 msgid "Observations ou réserves"
 msgstr "Uwagi lub zastrzeżenia"
@@ -6057,17 +6243,29 @@ msgstr "Uwagi lub zastrzeżenia"
 msgid "Attestation d'effacement enregistrée et signée."
 msgstr "Zaświadczenie o usunięciu danych zapisane i podpisane."
 
-msgid "Une attestation d'effacement se crée depuis l'onglet « Effacement des données » du matériel concerné."
-msgstr "Zaświadczenie o usunięciu tworzy się w zakładce „Usuwanie danych” danego sprzętu."
+msgid ""
+"Une attestation d'effacement se crée depuis l'onglet « Effacement des "
+"données » du matériel concerné."
+msgstr ""
+"Zaświadczenie o usunięciu tworzy się w zakładce „Usuwanie danych” danego "
+"sprzętu."
 
 msgid "Attestation annulée : elle ne compte plus pour la sortie du matériel."
 msgstr "Zaświadczenie anulowane: nie liczy się już przy wydaniu sprzętu."
 
-msgid "Aucune attestation d'effacement des données valable pour ce matériel : l'entité l'exige avant un don, une vente ou une destruction."
-msgstr "Brak ważnego zaświadczenia o usunięciu danych dla tego sprzętu: jednostka wymaga go przed darowizną, sprzedażą lub zniszczeniem."
+msgid ""
+"Aucune attestation d'effacement des données valable pour ce matériel : "
+"l'entité l'exige avant un don, une vente ou une destruction."
+msgstr ""
+"Brak ważnego zaświadczenia o usunięciu danych dla tego sprzętu: jednostka "
+"wymaga go przed darowizną, sprzedażą lub zniszczeniem."
 
-msgid "Aucune attestation d'effacement des données valable pour ce matériel : pensez à l'enregistrer avant un don, une vente ou une destruction."
-msgstr "Brak ważnego zaświadczenia o usunięciu danych dla tego sprzętu: pamiętaj, aby je zapisać przed darowizną, sprzedażą lub zniszczeniem."
+msgid ""
+"Aucune attestation d'effacement des données valable pour ce matériel : "
+"pensez à l'enregistrer avant un don, une vente ou une destruction."
+msgstr ""
+"Brak ważnego zaświadczenia o usunięciu danych dla tego sprzętu: pamiętaj, "
+"aby je zapisać przed darowizną, sprzedażą lub zniszczeniem."
 
 msgid "Effacement des données"
 msgstr "Usuwanie danych"
@@ -6088,10 +6286,13 @@ msgid "Effacement cryptographique (destruction de la clé de chiffrement)"
 msgstr "Kasowanie kryptograficzne (zniszczenie klucza szyfrowania)"
 
 msgid "Réinitialisation d'usine avec chiffrement actif (téléphone, tablette)"
-msgstr "Przywrócenie ustawień fabrycznych przy włączonym szyfrowaniu (telefon, tablet)"
+msgstr ""
+"Przywrócenie ustawień fabrycznych przy włączonym szyfrowaniu (telefon, "
+"tablet)"
 
 msgid "Destruction physique du support (broyage, perçage, démagnétisation)"
-msgstr "Fizyczne zniszczenie nośnika (rozdrobnienie, przewiercenie, rozmagnesowanie)"
+msgstr ""
+"Fizyczne zniszczenie nośnika (rozdrobnienie, przewiercenie, rozmagnesowanie)"
 
 msgid "Aucune norme suivie"
 msgstr "Bez normy"
@@ -6175,8 +6376,12 @@ msgstr "Nieznana norma usuwania."
 msgid "Résultat de vérification inconnu."
 msgstr "Nieznany wynik weryfikacji."
 
-msgid "Indiquez au moins un support effacé : cochez un disque de l'inventaire ou saisissez-le."
-msgstr "Podaj co najmniej jeden usunięty nośnik: zaznacz dysk z inwentarza lub wpisz go."
+msgid ""
+"Indiquez au moins un support effacé : cochez un disque de l'inventaire ou "
+"saisissez-le."
+msgstr ""
+"Podaj co najmniej jeden usunięty nośnik: zaznacz dysk z inwentarza lub wpisz "
+"go."
 
 msgid "Échec de la création de l'attestation."
 msgstr "Nie udało się utworzyć zaświadczenia."
@@ -6236,24 +6441,53 @@ msgid "cette réattribution"
 msgstr "tym ponownym przydzieleniem"
 
 #, php-format
-msgid "Attestation d'effacement des données exigée avant %s : enregistrez-la d'abord depuis l'onglet « Effacement des données » du matériel."
-msgstr "Przed %s wymagane jest zaświadczenie o usunięciu danych: najpierw zapisz je w zakładce „Usuwanie danych” sprzętu."
+msgid ""
+"Attestation d'effacement des données exigée avant %s : enregistrez-la "
+"d'abord depuis l'onglet « Effacement des données » du matériel."
+msgstr ""
+"Przed %s wymagane jest zaświadczenie o usunięciu danych: najpierw zapisz je "
+"w zakładce „Usuwanie danych” sprzętu."
 
 #, php-format
-msgid "Attention : aucune attestation d'effacement des données n'est enregistrée pour ce matériel avant %s. Pensez à l'ajouter depuis l'onglet « Effacement des données »."
-msgstr "Uwaga: przed %s nie zapisano zaświadczenia o usunięciu danych dla tego sprzętu. Pamiętaj, aby je dodać w zakładce „Usuwanie danych”."
+msgid ""
+"Attention : aucune attestation d'effacement des données n'est enregistrée "
+"pour ce matériel avant %s. Pensez à l'ajouter depuis l'onglet « Effacement "
+"des données »."
+msgstr ""
+"Uwaga: przed %s nie zapisano zaświadczenia o usunięciu danych dla tego "
+"sprzętu. Pamiętaj, aby je dodać w zakładce „Usuwanie danych”."
 
 msgid "Enregistrer l'attestation"
 msgstr "Zapisz zaświadczenie"
 
-msgid "Avant qu'un matériel change de mains, le technicien enregistre une attestation d'effacement des données (onglet « Effacement des données » du matériel) : méthode, supports, outil, vérification, rapport joint, signature. Les fiches de don, de vente et de destruction la mentionnent dans leur PDF. Ce réglage décide si elle est exigée."
-msgstr "Zanim sprzęt zmieni właściciela, technik zapisuje zaświadczenie o usunięciu danych (zakładka „Usuwanie danych” sprzętu): metoda, nośniki, narzędzie, weryfikacja, załączony raport, podpis. Formularze darowizny, sprzedaży i zniszczenia wspominają o nim w PDF. To ustawienie decyduje, czy jest wymagane."
+msgid ""
+"Avant qu'un matériel change de mains, le technicien enregistre une "
+"attestation d'effacement des données (onglet « Effacement des données » du "
+"matériel) : méthode, supports, outil, vérification, rapport joint, "
+"signature. Les fiches de don, de vente et de destruction la mentionnent dans "
+"leur PDF. Ce réglage décide si elle est exigée."
+msgstr ""
+"Zanim sprzęt zmieni właściciela, technik zapisuje zaświadczenie o usunięciu "
+"danych (zakładka „Usuwanie danych” sprzętu): metoda, nośniki, narzędzie, "
+"weryfikacja, załączony raport, podpis. Formularze darowizny, sprzedaży i "
+"zniszczenia wspominają o nim w PDF. To ustawienie decyduje, czy jest "
+"wymagane."
 
 msgid "Attestation d'effacement exigée"
 msgstr "Wymagane zaświadczenie o usunięciu"
 
-msgid "Avertir : la fiche est créée et envoyée, avec un message au technicien. Bloquer : un don, une vente ou une destruction n'est pas créé, une réattribution reste en brouillon, tant qu'aucune attestation valable n'existe. Une attestation est valable si l'effacement a eu lieu après la dernière remise du matériel à une personne."
-msgstr "Ostrzegaj: formularz jest tworzony i wysyłany z komunikatem dla technika. Blokuj: darowizna, sprzedaż lub zniszczenie nie są tworzone, a ponowne przydzielenie pozostaje szkicem, dopóki nie istnieje ważne zaświadczenie. Zaświadczenie jest ważne, jeśli usunięcie nastąpiło po ostatnim przekazaniu sprzętu osobie."
+msgid ""
+"Avertir : la fiche est créée et envoyée, avec un message au technicien. "
+"Bloquer : un don, une vente ou une destruction n'est pas créé, une "
+"réattribution reste en brouillon, tant qu'aucune attestation valable "
+"n'existe. Une attestation est valable si l'effacement a eu lieu après la "
+"dernière remise du matériel à une personne."
+msgstr ""
+"Ostrzegaj: formularz jest tworzony i wysyłany z komunikatem dla technika. "
+"Blokuj: darowizna, sprzedaż lub zniszczenie nie są tworzone, a ponowne "
+"przydzielenie pozostaje szkicem, dopóki nie istnieje ważne zaświadczenie. "
+"Zaświadczenie jest ważne, jeśli usunięcie nastąpiło po ostatnim przekazaniu "
+"sprzętu osobie."
 
 msgid "Fiches concernées"
 msgstr "Dotyczy formularzy"
@@ -6274,7 +6508,9 @@ msgstr "Wykonał(a)"
 msgid "Empreinte de l'attestation (SHA-256)"
 msgstr "Skrót zaświadczenia (SHA-256)"
 
-msgid "Aucune attestation d'effacement des données n'est enregistrée pour ce matériel."
+msgid ""
+"Aucune attestation d'effacement des données n'est enregistrée pour ce "
+"matériel."
 msgstr "Dla tego sprzętu nie zapisano zaświadczenia o usunięciu danych."
 
 #, php-format
@@ -6299,12 +6535,21 @@ msgstr "Pojemność"
 msgid "Chiffrement"
 msgstr "Szyfrowanie"
 
-msgid "Je soussigné(e) atteste que les données des supports listés ci-dessus ont été effacées selon la méthode indiquée, avant que ce matériel ne soit donné, vendu, détruit ou réattribué."
-msgstr "Ja, niżej podpisany(-a), zaświadczam, że dane z wymienionych powyżej nośników zostały usunięte wskazaną metodą, zanim ten sprzęt zostanie przekazany w darowiźnie, sprzedany, zniszczony lub ponownie przydzielony."
+msgid ""
+"Je soussigné(e) atteste que les données des supports listés ci-dessus ont "
+"été effacées selon la méthode indiquée, avant que ce matériel ne soit donné, "
+"vendu, détruit ou réattribué."
+msgstr ""
+"Ja, niżej podpisany(-a), zaświadczam, że dane z wymienionych powyżej "
+"nośników zostały usunięte wskazaną metodą, zanim ten sprzęt zostanie "
+"przekazany w darowiźnie, sprzedany, zniszczony lub ponownie przydzielony."
 
 #, php-format
-msgid "Attestation d'effacement n°%d : Document généré par GLPI (plugin assetsign)"
-msgstr "Zaświadczenie o usunięciu nr %d: Dokument wygenerowany przez GLPI (wtyczka assetsign)"
+msgid ""
+"Attestation d'effacement n°%d : Document généré par GLPI (plugin assetsign)"
+msgstr ""
+"Zaświadczenie o usunięciu nr %d: Dokument wygenerowany przez GLPI (wtyczka "
+"assetsign)"
 
 #, php-format
 msgid "Attestation d'effacement n°%d"
@@ -6326,8 +6571,12 @@ msgstr "Anulowane %1$s przez %2$s"
 msgid "Annuler cette attestation"
 msgstr "Anuluj to zaświadczenie"
 
-msgid "Si l'attestation a été saisie par erreur : elle reste consultable mais ne compte plus pour la sortie du matériel."
-msgstr "Jeśli zaświadczenie wprowadzono przez pomyłkę: pozostaje dostępne, ale nie liczy się już przy wydaniu sprzętu."
+msgid ""
+"Si l'attestation a été saisie par erreur : elle reste consultable mais ne "
+"compte plus pour la sortie du matériel."
+msgstr ""
+"Jeśli zaświadczenie wprowadzono przez pomyłkę: pozostaje dostępne, ale nie "
+"liczy się już przy wydaniu sprzętu."
 
 msgid "Motif de l'annulation"
 msgstr "Powód anulowania"
@@ -6338,12 +6587,22 @@ msgstr "Anuluj zaświadczenie"
 msgid "Matériels sortis sans attestation d'effacement"
 msgstr "Sprzęt wydany bez zaświadczenia o usunięciu"
 
-msgid "Toutes les fiches de don, de vente et de destruction ont une attestation d'effacement valable."
-msgstr "Wszystkie formularze darowizny, sprzedaży i zniszczenia mają ważne zaświadczenie o usunięciu."
+msgid ""
+"Toutes les fiches de don, de vente et de destruction ont une attestation "
+"d'effacement valable."
+msgstr ""
+"Wszystkie formularze darowizny, sprzedaży i zniszczenia mają ważne "
+"zaświadczenie o usunięciu."
 
 #, php-format
-msgid "Fiches de don, de vente et de destruction dont le matériel n'avait pas d'attestation valable (les %d plus récentes sont examinées). Ouvrez l'onglet du matériel pour enregistrer l'attestation."
-msgstr "Formularze darowizny, sprzedaży i zniszczenia, których sprzęt nie miał ważnego zaświadczenia (sprawdzane jest %d najnowszych). Otwórz zakładkę sprzętu, aby zapisać zaświadczenie."
+msgid ""
+"Fiches de don, de vente et de destruction dont le matériel n'avait pas "
+"d'attestation valable (les %d plus récentes sont examinées). Ouvrez l'onglet "
+"du matériel pour enregistrer l'attestation."
+msgstr ""
+"Formularze darowizny, sprzedaży i zniszczenia, których sprzęt nie miał "
+"ważnego zaświadczenia (sprawdzane jest %d najnowszych). Otwórz zakładkę "
+"sprzętu, aby zapisać zaświadczenie."
 
 msgid "Attestation valable : ce matériel peut sortir."
 msgstr "Ważne zaświadczenie: ten sprzęt może zostać wydany."
@@ -6361,8 +6620,12 @@ msgstr "Dotyczy: %s."
 msgid "Aucune attestation d'effacement pour ce matériel."
 msgstr "Brak zaświadczenia o usunięciu dla tego sprzętu."
 
-msgid "Avant de donner, vendre, détruire ou réattribuer ce matériel, effacez ses données puis enregistrez ici comment cela a été fait."
-msgstr "Przed przekazaniem, sprzedażą, zniszczeniem lub ponownym przydzieleniem tego sprzętu usuń jego dane, a następnie zapisz tutaj, jak to zrobiono."
+msgid ""
+"Avant de donner, vendre, détruire ou réattribuer ce matériel, effacez ses "
+"données puis enregistrez ici comment cela a été fait."
+msgstr ""
+"Przed przekazaniem, sprzedażą, zniszczeniem lub ponownym przydzieleniem tego "
+"sprzętu usuń jego dane, a następnie zapisz tutaj, jak to zrobiono."
 
 msgid "Nouvelle attestation d'effacement"
 msgstr "Nowe zaświadczenie o usunięciu"
@@ -6376,17 +6639,28 @@ msgstr "Zastosowana norma"
 msgid "Ex. nom et version du logiciel d'effacement"
 msgstr "Np. nazwa i wersja oprogramowania do usuwania"
 
-msgid "Aucun disque ni volume dans l'inventaire de ce matériel : décrivez les supports ci-dessous."
-msgstr "Brak dysków i woluminów w inwentarzu tego sprzętu: opisz nośniki poniżej."
+msgid ""
+"Aucun disque ni volume dans l'inventaire de ce matériel : décrivez les "
+"supports ci-dessous."
+msgstr ""
+"Brak dysków i woluminów w inwentarzu tego sprzętu: opisz nośniki poniżej."
 
-msgid "Autres supports, un par ligne (ex. mémoire interne du téléphone, clé USB n° de série...)"
-msgstr "Inne nośniki, jeden w wierszu (np. pamięć wewnętrzna telefonu, pendrive nr seryjny...)"
+msgid ""
+"Autres supports, un par ligne (ex. mémoire interne du téléphone, clé USB n° "
+"de série...)"
+msgstr ""
+"Inne nośniki, jeden w wierszu (np. pamięć wewnętrzna telefonu, pendrive nr "
+"seryjny...)"
 
 msgid "Résultat de la vérification"
 msgstr "Wynik weryfikacji"
 
-msgid "Une attestation en échec est conservée mais ne permet pas la sortie du matériel."
-msgstr "Zaświadczenie z niepowodzeniem jest zachowywane, ale nie pozwala na wydanie sprzętu."
+msgid ""
+"Une attestation en échec est conservée mais ne permet pas la sortie du "
+"matériel."
+msgstr ""
+"Zaświadczenie z niepowodzeniem jest zachowywane, ale nie pozwala na wydanie "
+"sprzętu."
 
 msgid "Rapport de l'outil (facultatif)"
 msgstr "Raport narzędzia (opcjonalnie)"
@@ -6406,21 +6680,40 @@ msgstr "Otwórz ustawienia tej jednostki"
 msgid "Réglages de l'entité"
 msgstr "Ustawienia jednostki"
 
-msgid "Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui n'ont pas leurs propres réglages)."
-msgstr "Ustawienia dotyczą wybranej jednostki (oraz jej podjednostek bez własnych ustawień)."
+msgid ""
+"Les réglages s'appliquent à l'entité choisie (et à ses sous-entités qui "
+"n'ont pas leurs propres réglages)."
+msgstr ""
+"Ustawienia dotyczą wybranej jednostki (oraz jej podjednostek bez własnych "
+"ustawień)."
 
 msgid "Seules les adresses web (protocole http ou https) sont acceptées."
 msgstr "Akceptowane są tylko adresy internetowe (protokół http lub https)."
 
-msgid "Cette adresse vise le serveur lui-même ou un réseau interne. Un administrateur peut autoriser les adresses internes dans la configuration du plugin."
-msgstr "Ten adres wskazuje na sam serwer lub sieć wewnętrzną. Administrator może zezwolić na adresy wewnętrzne w konfiguracji wtyczki."
+msgid ""
+"Cette adresse vise le serveur lui-même ou un réseau interne. Un "
+"administrateur peut autoriser les adresses internes dans la configuration du "
+"plugin."
+msgstr ""
+"Ten adres wskazuje na sam serwer lub sieć wewnętrzną. Administrator może "
+"zezwolić na adresy wewnętrzne w konfiguracji wtyczki."
 
 #, php-format
-msgid "GLPI refuse les adresses internes pour ce plugin : ajoutez %s à la constante GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (config/local_define.php)."
-msgstr "GLPI odrzuca adresy wewnętrzne dla tej wtyczki: dodaj %s do stałej GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (config/local_define.php)."
+msgid ""
+"GLPI refuse les adresses internes pour ce plugin : ajoutez %s à la constante "
+"GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (config/local_define."
+"php)."
+msgstr ""
+"GLPI odrzuca adresy wewnętrzne dla tej wtyczki: dodaj %s do stałej "
+"GLPI_SERVERSIDE_URL_ALLOWED_PRIVATE_NETWORKS_CONTEXTS (config/local_define."
+"php)."
 
-msgid "Le serveur a répondu par une redirection, qui n'est jamais suivie : indiquez l'adresse finale."
-msgstr "Serwer odpowiedział przekierowaniem, które nigdy nie jest wykonywane: podaj adres docelowy."
+msgid ""
+"Le serveur a répondu par une redirection, qui n'est jamais suivie : indiquez "
+"l'adresse finale."
+msgstr ""
+"Serwer odpowiedział przekierowaniem, które nigdy nie jest wykonywane: podaj "
+"adres docelowy."
 
 msgid "Adresse invalide."
 msgstr "Nieprawidłowy adres."
@@ -6434,14 +6727,28 @@ msgstr "Dozwolone"
 msgid "Refusées"
 msgstr "Odrzucane"
 
-msgid "Par sécurité, le plugin n'appelle jamais une adresse interne (le serveur lui-même, un réseau privé, les métadonnées d'un hébergeur cloud) et ne suit jamais une redirection. Autorisez les adresses internes seulement si votre outil de messagerie est hébergé sur votre réseau (Mattermost, Rocket.Chat). Ce réglage vaut pour toutes les entités."
-msgstr "Ze względów bezpieczeństwa wtyczka nigdy nie wywołuje adresu wewnętrznego (samego serwera, sieci prywatnej, metadanych dostawcy chmury) i nigdy nie wykonuje przekierowań. Zezwalaj na adresy wewnętrzne tylko wtedy, gdy narzędzie do komunikacji jest hostowane w Twojej sieci (Mattermost, Rocket.Chat). To ustawienie dotyczy wszystkich jednostek."
+msgid ""
+"Par sécurité, le plugin n'appelle jamais une adresse interne (le serveur lui-"
+"même, un réseau privé, les métadonnées d'un hébergeur cloud) et ne suit "
+"jamais une redirection. Autorisez les adresses internes seulement si votre "
+"outil de messagerie est hébergé sur votre réseau (Mattermost, Rocket.Chat). "
+"Ce réglage vaut pour toutes les entités."
+msgstr ""
+"Ze względów bezpieczeństwa wtyczka nigdy nie wywołuje adresu wewnętrznego "
+"(samego serwera, sieci prywatnej, metadanych dostawcy chmury) i nigdy nie "
+"wykonuje przekierowań. Zezwalaj na adresy wewnętrzne tylko wtedy, gdy "
+"narzędzie do komunikacji jest hostowane w Twojej sieci (Mattermost, Rocket."
+"Chat). To ustawienie dotyczy wszystkich jednostek."
 
 msgid "Autoriser les adresses internes"
 msgstr "Zezwalaj na adresy wewnętrzne"
 
-msgid "Seul un administrateur de GLPI (droit de modifier la configuration générale) peut changer ce réglage."
-msgstr "Tylko administrator GLPI (uprawnienie do zmiany konfiguracji ogólnej) może zmienić to ustawienie."
+msgid ""
+"Seul un administrateur de GLPI (droit de modifier la configuration générale) "
+"peut changer ce réglage."
+msgstr ""
+"Tylko administrator GLPI (uprawnienie do zmiany konfiguracji ogólnej) może "
+"zmienić to ustawienie."
 
 msgid "À quoi sert cette page ?"
 msgstr "Do czego służy ta strona?"
@@ -6449,59 +6756,135 @@ msgstr "Do czego służy ta strona?"
 msgid "Ce qui est attendu :"
 msgstr "Czego się od Ciebie oczekuje:"
 
-msgid "Toutes les fiches d'attribution du parc (remise, restitution, don, vente, destruction) et leur état de signature. Le plugin crée la fiche quand un matériel est affecté ou repris dans GLPI."
-msgstr "Wszystkie karty przydziału sprzętu (wydanie, zwrot, darowizna, sprzedaż, zniszczenie) i stan ich podpisu. Wtyczka tworzy kartę, gdy sprzęt zostaje przydzielony lub odebrany w GLPI."
+msgid ""
+"Toutes les fiches d'attribution du parc (remise, restitution, don, vente, "
+"destruction) et leur état de signature. Le plugin crée la fiche quand un "
+"matériel est affecté ou repris dans GLPI."
+msgstr ""
+"Wszystkie karty przydziału sprzętu (wydanie, zwrot, darowizna, sprzedaż, "
+"zniszczenie) i stan ich podpisu. Wtyczka tworzy kartę, gdy sprzęt zostaje "
+"przydzielony lub odebrany w GLPI."
 
-msgid "Suivez les fiches en attente de signature : copiez un nouveau lien, relancez ou annulez au besoin. « Nouvelle attribution » crée une fiche à la main pour un matériel."
-msgstr "Śledź karty oczekujące na podpis: skopiuj nowy link, przypomnij lub anuluj w razie potrzeby. „Nowe przekazanie” tworzy kartę ręcznie dla sprzętu."
+msgid ""
+"Suivez les fiches en attente de signature : copiez un nouveau lien, relancez "
+"ou annulez au besoin. « Nouvelle attribution » crée une fiche à la main pour "
+"un matériel."
+msgstr ""
+"Śledź karty oczekujące na podpis: skopiuj nowy link, przypomnij lub anuluj w "
+"razie potrzeby. „Nowe przekazanie” tworzy kartę ręcznie dla sprzętu."
 
-msgid "Les déplacements physiques de matériel sans bénéficiaire à faire signer : transfert entre sites, retour au stock, envoi en réparation."
-msgstr "Fizyczne przemieszczenia sprzętu bez odbiorcy, który musi podpisać: przeniesienie między lokalizacjami, zwrot do magazynu, wysyłka do naprawy."
+msgid ""
+"Les déplacements physiques de matériel sans bénéficiaire à faire signer : "
+"transfert entre sites, retour au stock, envoi en réparation."
+msgstr ""
+"Fizyczne przemieszczenia sprzętu bez odbiorcy, który musi podpisać: "
+"przeniesienie między lokalizacjami, zwrot do magazynu, wysyłka do naprawy."
 
-msgid "Enregistrez chaque déplacement avec son lieu de départ, sa destination et sa date ; il apparaît ensuite dans le passeport du matériel."
-msgstr "Zapisz każde przemieszczenie z miejscem początkowym, miejscem docelowym i datą; pojawi się ono następnie w paszporcie sprzętu."
+msgid ""
+"Enregistrez chaque déplacement avec son lieu de départ, sa destination et sa "
+"date ; il apparaît ensuite dans le passeport du matériel."
+msgstr ""
+"Zapisz każde przemieszczenie z miejscem początkowym, miejscem docelowym i "
+"datą; pojawi się ono następnie w paszporcie sprzętu."
 
-msgid "Les dossiers de départ des salariés : tout le matériel à restituer par une même personne, signé en une seule fois."
-msgstr "Teczki odejść pracowników: cały sprzęt do zwrotu przez jedną osobę, podpisany za jednym razem."
+msgid ""
+"Les dossiers de départ des salariés : tout le matériel à restituer par une "
+"même personne, signé en une seule fois."
+msgstr ""
+"Teczki odejść pracowników: cały sprzęt do zwrotu przez jedną osobę, "
+"podpisany za jednym razem."
 
-msgid "Suivez l'avancement des signatures et relancez si besoin. Un départ se prépare depuis l'onglet AssetSign du compte de la personne."
-msgstr "Śledź postęp podpisów i w razie potrzeby przypominaj. Odejście przygotowuje się z karty AssetSign konta danej osoby."
+msgid ""
+"Suivez l'avancement des signatures et relancez si besoin. Un départ se "
+"prépare depuis l'onglet AssetSign du compte de la personne."
+msgstr ""
+"Śledź postęp podpisów i w razie potrzeby przypominaj. Odejście przygotowuje "
+"się z karty AssetSign konta danej osoby."
 
-msgid "Les campagnes d'attestation de détention : chaque personne confirme le matériel qu'elle détient, ou signale un écart."
-msgstr "Kampanie potwierdzania posiadania: każda osoba potwierdza posiadany sprzęt lub zgłasza rozbieżność."
+msgid ""
+"Les campagnes d'attestation de détention : chaque personne confirme le "
+"matériel qu'elle détient, ou signale un écart."
+msgstr ""
+"Kampanie potwierdzania posiadania: każda osoba potwierdza posiadany sprzęt "
+"lub zgłasza rozbieżność."
 
-msgid "Lancez une campagne avec « Nouvelle campagne », puis suivez le taux de réponse et les écarts, et relancez les personnes sans réponse avant la date limite."
-msgstr "Uruchom kampanię przyciskiem „Nowa kampania”, następnie śledź odsetek odpowiedzi i rozbieżności oraz przypominaj osobom bez odpowiedzi przed terminem."
+msgid ""
+"Lancez une campagne avec « Nouvelle campagne », puis suivez le taux de "
+"réponse et les écarts, et relancez les personnes sans réponse avant la date "
+"limite."
+msgstr ""
+"Uruchom kampanię przyciskiem „Nowa kampania”, następnie śledź odsetek "
+"odpowiedzi i rozbieżności oraz przypominaj osobom bez odpowiedzi przed "
+"terminem."
 
-msgid "Les preuves d'effacement des données d'un matériel avant un don, une vente ou une destruction."
-msgstr "Dowody usunięcia danych ze sprzętu przed darowizną, sprzedażą lub zniszczeniem."
+msgid ""
+"Les preuves d'effacement des données d'un matériel avant un don, une vente "
+"ou une destruction."
+msgstr ""
+"Dowody usunięcia danych ze sprzętu przed darowizną, sprzedażą lub "
+"zniszczeniem."
 
-msgid "Enregistrez une attestation pour chaque matériel qui quitte le parc. La liste du haut montre les matériels déjà sortis sans attestation, à rattraper."
-msgstr "Zarejestruj zaświadczenie dla każdego sprzętu opuszczającego park. Lista u góry pokazuje sprzęt, który już wyszedł bez zaświadczenia, do uzupełnienia."
+msgid ""
+"Enregistrez une attestation pour chaque matériel qui quitte le parc. La "
+"liste du haut montre les matériels déjà sortis sans attestation, à rattraper."
+msgstr ""
+"Zarejestruj zaświadczenie dla każdego sprzętu opuszczającego park. Lista u "
+"góry pokazuje sprzęt, który już wyszedł bez zaświadczenia, do uzupełnienia."
 
-msgid "Les fiches internes de maintenance ou de préparation d'un matériel : points de contrôle, commentaire et PDF."
-msgstr "Wewnętrzne karty konserwacji lub przygotowania sprzętu: punkty kontrolne, komentarz i PDF."
+msgid ""
+"Les fiches internes de maintenance ou de préparation d'un matériel : points "
+"de contrôle, commentaire et PDF."
+msgstr ""
+"Wewnętrzne karty konserwacji lub przygotowania sprzętu: punkty kontrolne, "
+"komentarz i PDF."
 
-msgid "Créez une fiche en choisissant le matériel, puis remplissez les points de contrôle. Une fiche créée n'est plus modifiée."
-msgstr "Utwórz kartę, wybierając sprzęt, a następnie wypełnij punkty kontrolne. Utworzona karta nie jest już zmieniana."
+msgid ""
+"Créez une fiche en choisissant le matériel, puis remplissez les points de "
+"contrôle. Une fiche créée n'est plus modifiée."
+msgstr ""
+"Utwórz kartę, wybierając sprzęt, a następnie wypełnij punkty kontrolne. "
+"Utworzona karta nie jest już zmieniana."
 
-msgid "Les indicateurs environnementaux du parc des entités actives : empreinte de fabrication, réemploi, âge et filières de fin de vie."
-msgstr "Wskaźniki środowiskowe parku aktywnych jednostek: ślad produkcyjny, ponowne użycie, wiek i ścieżki końca życia."
+msgid ""
+"Les indicateurs environnementaux du parc des entités actives : empreinte de "
+"fabrication, réemploi, âge et filières de fin de vie."
+msgstr ""
+"Wskaźniki środowiskowe parku aktywnych jednostek: ślad produkcyjny, ponowne "
+"użycie, wiek i ścieżki końca życia."
 
-msgid "Rien à saisir ici : les chiffres viennent des données renseignées sur les matériels. Complétez-les pour améliorer le taux de couverture."
-msgstr "Nic tu nie trzeba wpisywać: liczby pochodzą z danych uzupełnionych w sprzęcie. Uzupełnij je, aby poprawić wskaźnik pokrycia."
+msgid ""
+"Rien à saisir ici : les chiffres viennent des données renseignées sur les "
+"matériels. Complétez-les pour améliorer le taux de couverture."
+msgstr ""
+"Nic tu nie trzeba wpisywać: liczby pochodzą z danych uzupełnionych w "
+"sprzęcie. Uzupełnij je, aby poprawić wskaźnik pokrycia."
 
-msgid "Les matériels qui arrivent en fin d'amortissement sur la période choisie, avec le budget de remplacement par année."
-msgstr "Sprzęt, którego amortyzacja kończy się w wybranym okresie, z budżetem wymiany na każdy rok."
+msgid ""
+"Les matériels qui arrivent en fin d'amortissement sur la période choisie, "
+"avec le budget de remplacement par année."
+msgstr ""
+"Sprzęt, którego amortyzacja kończy się w wybranym okresie, z budżetem "
+"wymiany na każdy rok."
 
-msgid "Choisissez la période, puis exportez la liste en CSV ou créez un ticket de changement groupé pour planifier le remplacement."
-msgstr "Wybierz okres, a następnie wyeksportuj listę do CSV lub utwórz zbiorcze zgłoszenie zmiany, aby zaplanować wymianę."
+msgid ""
+"Choisissez la période, puis exportez la liste en CSV ou créez un ticket de "
+"changement groupé pour planifier le remplacement."
+msgstr ""
+"Wybierz okres, a następnie wyeksportuj listę do CSV lub utwórz zbiorcze "
+"zgłoszenie zmiany, aby zaplanować wymianę."
 
-msgid "Le matériel qui vous est confié et les documents qui attendent votre signature."
+msgid ""
+"Le matériel qui vous est confié et les documents qui attendent votre "
+"signature."
 msgstr "Powierzony Ci sprzęt i dokumenty oczekujące na Twój podpis."
 
-msgid "Signez les documents en attente. En cas de problème avec un matériel, signalez-le depuis cette page : un ticket est créé pour le service informatique."
-msgstr "Podpisz oczekujące dokumenty. W razie problemu ze sprzętem zgłoś go z tej strony: zostanie utworzone zgłoszenie dla działu IT."
+msgid ""
+"Signez les documents en attente. En cas de problème avec un matériel, "
+"signalez-le depuis cette page : un ticket est créé pour le service "
+"informatique."
+msgstr ""
+"Podpisz oczekujące dokumenty. W razie problemu ze sprzętem zgłoś go z tej "
+"strony: zostanie utworzone zgłoszenie dla działu IT."
 
 msgid "Passation"
 msgstr "Przekazanie między użytkownikami"
@@ -6512,8 +6895,13 @@ msgstr "Zakończono: sprzęt przypisany w GLPI"
 msgid "En attente des deux signatures"
 msgstr "Oczekuje na oba podpisy"
 
-msgid "Le détenteur sortant signe la restitution, le nouveau détenteur signe la remise. L'attribution du matériel dans GLPI ne change qu'après les deux signatures."
-msgstr "Dotychczasowy użytkownik podpisuje zwrot, nowy użytkownik podpisuje przekazanie. Przypisanie sprzętu w GLPI zmienia się dopiero po obu podpisach."
+msgid ""
+"Le détenteur sortant signe la restitution, le nouveau détenteur signe la "
+"remise. L'attribution du matériel dans GLPI ne change qu'après les deux "
+"signatures."
+msgstr ""
+"Dotychczasowy użytkownik podpisuje zwrot, nowy użytkownik podpisuje "
+"przekazanie. Przypisanie sprzętu w GLPI zmienia się dopiero po obu podpisach."
 
 msgid "Restitution par"
 msgstr "Zwrot przez"
@@ -6529,11 +6917,22 @@ msgid "Fiche n° %s"
 msgstr "Formularz nr %s"
 
 #, php-format
-msgid "%s signe la restitution du matériel ; la personne choisie ci-dessous signe sa remise."
-msgstr "%s podpisuje zwrot sprzętu; osoba wybrana poniżej podpisuje jego przekazanie."
+msgid ""
+"%s signe la restitution du matériel ; la personne choisie ci-dessous signe "
+"sa remise."
+msgstr ""
+"%s podpisuje zwrot sprzętu; osoba wybrana poniżej podpisuje jego przekazanie."
 
-msgid "Le matériel reste attribué au détenteur actuel dans GLPI jusqu'à ce que les deux fiches soient signées, puis il passe automatiquement à la nouvelle personne. Si l'une des deux fiches est annulée ou expire, l'autre est annulée aussi."
-msgstr "Sprzęt pozostaje przypisany w GLPI do obecnego użytkownika, dopóki oba formularze nie zostaną podpisane, a potem automatycznie przechodzi na nową osobę. Jeśli jeden z formularzy zostanie anulowany lub wygaśnie, drugi również zostaje anulowany."
+msgid ""
+"Le matériel reste attribué au détenteur actuel dans GLPI jusqu'à ce que les "
+"deux fiches soient signées, puis il passe automatiquement à la nouvelle "
+"personne. Si l'une des deux fiches est annulée ou expire, l'autre est "
+"annulée aussi."
+msgstr ""
+"Sprzęt pozostaje przypisany w GLPI do obecnego użytkownika, dopóki oba "
+"formularze nie zostaną podpisane, a potem automatycznie przechodzi na nową "
+"osobę. Jeśli jeden z formularzy zostanie anulowany lub wygaśnie, drugi "
+"również zostaje anulowany."
 
 msgid "Nouveau détenteur"
 msgstr "Nowy użytkownik"
@@ -6541,30 +6940,50 @@ msgstr "Nowy użytkownik"
 msgid "Préparer la passation"
 msgstr "Przygotuj przekazanie"
 
-msgid "Passer le matériel de son utilisateur actuel à un autre : chacun signe, l'attribution GLPI suit après les deux signatures."
-msgstr "Przekaż sprzęt od obecnego użytkownika innemu: każdy podpisuje, przypisanie w GLPI następuje po obu podpisach."
+msgid ""
+"Passer le matériel de son utilisateur actuel à un autre : chacun signe, "
+"l'attribution GLPI suit après les deux signatures."
+msgstr ""
+"Przekaż sprzęt od obecnego użytkownika innemu: każdy podpisuje, przypisanie "
+"w GLPI następuje po obu podpisach."
 
 msgid "Choisissez une autre personne que le détenteur actuel."
 msgstr "Wybierz inną osobę niż obecny użytkownik."
 
 #, php-format
-msgid "Passation demandée de %1$s à %2$s : restitution n° %3$s et remise n° %4$s à signer"
-msgstr "Zlecono przekazanie od %1$s do %2$s: zwrot nr %3$s i przekazanie nr %4$s do podpisania"
+msgid ""
+"Passation demandée de %1$s à %2$s : restitution n° %3$s et remise n° %4$s à "
+"signer"
+msgstr ""
+"Zlecono przekazanie od %1$s do %2$s: zwrot nr %3$s i przekazanie nr %4$s do "
+"podpisania"
 
 msgid "Ce matériel figure dans un dossier de départ en cours."
 msgstr "Ten sprzęt jest częścią trwającej procedury odejścia."
 
 #, php-format
-msgid "Passation terminée : matériel attribué à %1$s après les deux signatures (restitution n° %2$s, remise n° %3$s)"
-msgstr "Przekazanie zakończone: sprzęt przypisany do %1$s po obu podpisach (zwrot nr %2$s, przekazanie nr %3$s)"
+msgid ""
+"Passation terminée : matériel attribué à %1$s après les deux signatures "
+"(restitution n° %2$s, remise n° %3$s)"
+msgstr ""
+"Przekazanie zakończone: sprzęt przypisany do %1$s po obu podpisach (zwrot nr "
+"%2$s, przekazanie nr %3$s)"
 
 #, php-format
-msgid "Annulée automatiquement : la fiche jumelle n° %s de la passation a été annulée ou a expiré"
-msgstr "Anulowano automatycznie: powiązany formularz nr %s przekazania został anulowany lub wygasł"
+msgid ""
+"Annulée automatiquement : la fiche jumelle n° %s de la passation a été "
+"annulée ou a expiré"
+msgstr ""
+"Anulowano automatycznie: powiązany formularz nr %s przekazania został "
+"anulowany lub wygasł"
 
 #, php-format
-msgid "Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures."
-msgstr "Przekazanie przygotowane: %1$s podpisuje zwrot, %2$s podpisuje przekazanie. Sprzęt przejdzie na %2$s w GLPI po obu podpisach."
+msgid ""
+"Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le "
+"matériel passera à %2$s dans GLPI après les deux signatures."
+msgstr ""
+"Przekazanie przygotowane: %1$s podpisuje zwrot, %2$s podpisuje przekazanie. "
+"Sprzęt przejdzie na %2$s w GLPI po obu podpisach."
 
 #, php-format
 msgid "Une signature sur deux : en attente de %s"
@@ -6712,8 +7131,11 @@ msgid "Cette campagne est clôturée : elle ne reçoit plus de scan."
 msgstr "Ta kampania jest zamknięta: nie przyjmuje już skanów."
 
 #, php-format
-msgid "Plusieurs matériels correspondent à « %s » : scannez l'étiquette QR ou saisissez le numéro de série."
-msgstr "Kilka urządzeń pasuje do „%s”: zeskanuj etykietę QR lub wpisz numer seryjny."
+msgid ""
+"Plusieurs matériels correspondent à « %s » : scannez l'étiquette QR ou "
+"saisissez le numéro de série."
+msgstr ""
+"Kilka urządzeń pasuje do „%s”: zeskanuj etykietę QR lub wpisz numer seryjny."
 
 #, php-format
 msgid "« %s » est déjà scanné dans cette campagne."
@@ -6764,8 +7186,12 @@ msgstr "Nie znaleziono kampanii."
 msgid "Nouvelle campagne d'inventaire"
 msgstr "Nowa kampania inwentaryzacji"
 
-msgid "Aucun lieu dans vos entités : créez d'abord les lieux (salles, étages) dans Configuration > Intitulés > Lieux."
-msgstr "Brak lokalizacji w Twoich jednostkach: najpierw utwórz lokalizacje (sale, piętra) w Ustawienia > Listy rozwijane > Lokalizacje."
+msgid ""
+"Aucun lieu dans vos entités : créez d'abord les lieux (salles, étages) dans "
+"Configuration > Intitulés > Lieux."
+msgstr ""
+"Brak lokalizacji w Twoich jednostkach: najpierw utwórz lokalizacje (sale, "
+"piętra) w Ustawienia > Listy rozwijane > Lokalizacje."
 
 msgid "Exemple : inventaire du 2e étage"
 msgstr "Przykład: inwentaryzacja 2. piętra"
@@ -6806,14 +7232,24 @@ msgstr "Utworzona %s"
 msgid "clôturée le %s"
 msgstr "zamknięta %s"
 
-msgid "La caméra n'est pas disponible dans ce navigateur (elle exige une connexion HTTPS) : utilisez la saisie manuelle."
-msgstr "Kamera nie jest dostępna w tej przeglądarce (wymaga połączenia HTTPS): użyj wprowadzania ręcznego."
+msgid ""
+"La caméra n'est pas disponible dans ce navigateur (elle exige une connexion "
+"HTTPS) : utilisez la saisie manuelle."
+msgstr ""
+"Kamera nie jest dostępna w tej przeglądarce (wymaga połączenia HTTPS): użyj "
+"wprowadzania ręcznego."
 
-msgid "Accès à la caméra refusé : autorisez-le dans le navigateur, ou utilisez la saisie manuelle."
-msgstr "Odmówiono dostępu do kamery: zezwól na niego w przeglądarce lub użyj wprowadzania ręcznego."
+msgid ""
+"Accès à la caméra refusé : autorisez-le dans le navigateur, ou utilisez la "
+"saisie manuelle."
+msgstr ""
+"Odmówiono dostępu do kamery: zezwól na niego w przeglądarce lub użyj "
+"wprowadzania ręcznego."
 
 msgid "Visez une étiquette QR : chaque matériel reconnu s'ajoute ci-dessous."
-msgstr "Skieruj kamerę na etykietę QR: każde rozpoznane urządzenie zostanie dodane poniżej."
+msgstr ""
+"Skieruj kamerę na etykietę QR: każde rozpoznane urządzenie zostanie dodane "
+"poniżej."
 
 msgid "Le scan n'a pas pu être enregistré : réessayez."
 msgstr "Nie udało się zapisać skanu: spróbuj ponownie."
@@ -6836,8 +7272,18 @@ msgstr "Raport uzgodnienia"
 msgid "Actualiser"
 msgstr "Odśwież"
 
-msgid "Trouvé : scanné et rangé dans ce lieu dans GLPI. À un autre emplacement : scanné ici, mais GLPI le place ailleurs. Absent : attendu dans ce lieu, pas scanné. En trop : code scanné qui ne correspond à aucun matériel de vos entités. Rien n'est modifié dans GLPI : corrigez les écarts depuis la fiche du matériel."
-msgstr "Znaleziony: zeskanowany i zapisany w GLPI w tej lokalizacji. W innej lokalizacji: zeskanowany tutaj, ale GLPI umieszcza go gdzie indziej. Brak: oczekiwany w tej lokalizacji, nie zeskanowany. Nadmiarowy: zeskanowany kod, który nie odpowiada żadnemu urządzeniu Twoich jednostek. Nic nie jest zmieniane w GLPI: popraw rozbieżności w karcie urządzenia."
+msgid ""
+"Trouvé : scanné et rangé dans ce lieu dans GLPI. À un autre emplacement : "
+"scanné ici, mais GLPI le place ailleurs. Absent : attendu dans ce lieu, pas "
+"scanné. En trop : code scanné qui ne correspond à aucun matériel de vos "
+"entités. Rien n'est modifié dans GLPI : corrigez les écarts depuis la fiche "
+"du matériel."
+msgstr ""
+"Znaleziony: zeskanowany i zapisany w GLPI w tej lokalizacji. W innej "
+"lokalizacji: zeskanowany tutaj, ale GLPI umieszcza go gdzie indziej. Brak: "
+"oczekiwany w tej lokalizacji, nie zeskanowany. Nadmiarowy: zeskanowany kod, "
+"który nie odpowiada żadnemu urządzeniu Twoich jednostek. Nic nie jest "
+"zmieniane w GLPI: popraw rozbieżności w karcie urządzenia."
 
 msgid "Aucun matériel attendu ni scanné pour l'instant."
 msgstr "Na razie brak oczekiwanych lub zeskanowanych urządzeń."
@@ -6851,14 +7297,220 @@ msgstr "Zamknąć kampanię? Nie będzie już przyjmować skanów."
 msgid "Clôturer la campagne"
 msgstr "Zamknij kampanię"
 
-msgid "L'inventaire physique, salle par salle : on scanne les étiquettes QR du matériel présent (ou on saisit son numéro de série) et le plugin le compare à ce que GLPI attend dans ce lieu."
-msgstr "Inwentaryzacja fizyczna, sala po sali: skanuje się etykiety QR obecnych urządzeń (lub wpisuje ich numer seryjny), a wtyczka porównuje je z tym, czego GLPI oczekuje w tej lokalizacji."
+msgid ""
+"L'inventaire physique, salle par salle : on scanne les étiquettes QR du "
+"matériel présent (ou on saisit son numéro de série) et le plugin le compare "
+"à ce que GLPI attend dans ce lieu."
+msgstr ""
+"Inwentaryzacja fizyczna, sala po sali: skanuje się etykiety QR obecnych "
+"urządzeń (lub wpisuje ich numer seryjny), a wtyczka porównuje je z tym, "
+"czego GLPI oczekuje w tej lokalizacji."
 
-msgid "Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un autre emplacement, en trop. Rien n'est modifié dans le parc : corrigez vous-même les écarts. L'export CSV sert de preuve d'inventaire."
-msgstr "Utwórz kampanię dla lokalizacji, zeskanuj każde urządzenie kamerą telefonu lub tabletu, a następnie przeczytaj raport: znaleziony, brak, w innej lokalizacji, nadmiarowy. Nic nie jest zmieniane w zasobach: samodzielnie popraw rozbieżności. Eksport CSV służy jako dowód inwentaryzacji."
+msgid ""
+"Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du "
+"téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un "
+"autre emplacement, en trop. Rien n'est modifié dans le parc : corrigez vous-"
+"même les écarts. L'export CSV sert de preuve d'inventaire."
+msgstr ""
+"Utwórz kampanię dla lokalizacji, zeskanuj każde urządzenie kamerą telefonu "
+"lub tabletu, a następnie przeczytaj raport: znaleziony, brak, w innej "
+"lokalizacji, nadmiarowy. Nic nie jest zmieniane w zasobach: samodzielnie "
+"popraw rozbieżności. Eksport CSV służy jako dowód inwentaryzacji."
 
 msgid "Inventaire physique"
 msgid_plural "Inventaires physiques"
 msgstr[0] "Inwentaryzacja fizyczna"
 msgstr[1] "Inwentaryzacje fizyczne"
 msgstr[2] "Inwentaryzacji fizycznych"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Photos de l'état des lieux"
+msgstr "Zdjęcia protokołu stanu"
+
+#: templates/pdf/_condition_photos.html.twig
+msgid ""
+"Les photos sont jointes à la fiche dans GLPI ; leur empreinte SHA-256 ci-"
+"dessous permet de vérifier qu'elles n'ont pas changé."
+msgstr ""
+"Zdjęcia są dołączone do karty w GLPI; ich skrót SHA-256 poniżej pozwala "
+"sprawdzić, że się nie zmieniły."
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Avant : à la remise"
+msgstr "Przed: przy przekazaniu"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Après : à la restitution"
+msgstr "Po: przy zwrocie"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "Photo n° %d"
+msgstr "Zdjęcie nr %d"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Pas de photo"
+msgstr "Brak zdjęcia"
+
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "%d photo"
+msgid_plural "%d photos"
+msgstr[0] "%d zdjęcie"
+msgstr[1] "%d zdjęcia"
+msgstr[2] "%d zdjęć"
+
+#: templates/_condition_photos.html.twig
+msgid "Reproduites dans le PDF"
+msgstr "Drukowane w PDF"
+
+#: templates/_condition_photos.html.twig
+msgid "Empreintes seules dans le PDF"
+msgstr "Tylko skróty w PDF"
+
+#: templates/_condition_photos.html.twig
+msgid ""
+"Comparez l'état du matériel à la remise (à gauche) et à la restitution (à "
+"droite). Les photos de la restitution s'ajoutent tant que la fiche n'est pas "
+"signée."
+msgstr ""
+"Porównaj stan sprzętu przy przekazaniu (po lewej) i przy zwrocie (po "
+"prawej). Zdjęcia zwrotu można dodawać, dopóki karta nie zostanie podpisana."
+
+#: templates/_condition_photos.html.twig
+msgid ""
+"Photographiez le matériel au moment de la remise : ces photos serviront de "
+"point de comparaison à sa restitution. Elles s'ajoutent tant que la fiche "
+"n'est pas signée."
+msgstr ""
+"Sfotografuj sprzęt w chwili przekazania: zdjęcia posłużą do porównania przy "
+"zwrocie. Można je dodawać, dopóki karta nie zostanie podpisana."
+
+#: templates/_condition_photos.html.twig
+msgid ""
+"Aucune fiche de remise lisible pour ce matériel : seules les photos de la "
+"restitution s'affichent."
+msgstr ""
+"Brak dostępnej karty przekazania dla tego sprzętu: wyświetlane są tylko "
+"zdjęcia zwrotu."
+
+#: templates/_condition_photos.html.twig
+msgid "Aucune photo pour l'instant."
+msgstr "Na razie brak zdjęć."
+
+#: templates/_condition_photos.html.twig
+msgid "Prendre une photo"
+msgstr "Zrób zdjęcie"
+
+#: templates/_condition_photos.html.twig
+msgid "Ou choisir des photos"
+msgstr "Lub wybierz zdjęcia"
+
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid ""
+"JPEG, PNG ou WebP, %1$d Mo au plus par photo, %2$d photos par fiche. Sur un "
+"téléphone, « Prendre une photo » ouvre l'appareil photo. La position GPS et "
+"les autres métadonnées sont retirées à l'envoi."
+msgstr ""
+"JPEG, PNG lub WebP, maksymalnie %1$d MB na zdjęcie, %2$d zdjęć na kartę. Na "
+"telefonie „Zrób zdjęcie” otwiera aparat. Pozycja GPS i inne metadane są "
+"usuwane podczas przesyłania."
+
+#: templates/_condition_photos.html.twig
+msgid "Supprimer cette photo"
+msgstr "Usuń to zdjęcie"
+
+#: templates/config_form.html.twig
+msgid "Reproduire les photos de l'état des lieux dans le PDF signé"
+msgstr "Umieszczaj zdjęcia protokołu stanu w podpisanym PDF"
+
+#: templates/config_form.html.twig
+msgid ""
+"Désactivé : le PDF ne cite que l'empreinte SHA-256 de chaque photo, les "
+"photos restent consultables sur la fiche dans GLPI. Activé : les photos (et, "
+"pour une restitution, celles de la remise) sont imprimées dans le PDF, qui "
+"devient plus lourd."
+msgstr ""
+"Wyłączone: PDF podaje tylko skrót SHA-256 każdego zdjęcia, zdjęcia pozostają "
+"dostępne na karcie w GLPI. Włączone: zdjęcia (a przy zwrocie także zdjęcia z "
+"przekazania) są drukowane w PDF, który staje się większy."
+
+#: front/assetsign.form.php:99
+#, php-format
+msgid "%d photo ajoutée."
+msgid_plural "%d photos ajoutées."
+msgstr[0] "Dodano %d zdjęcie."
+msgstr[1] "Dodano %d zdjęcia."
+msgstr[2] "Dodano %d zdjęć."
+
+#: front/assetsign.form.php:112
+msgid "Photo supprimée."
+msgstr "Zdjęcie usunięte."
+
+#: src/Api/AssetsignFormController.php:100 src/ConditionPhoto.php:80
+#, php-format
+msgid "La photo dépasse la taille maximale (%d Mo)."
+msgstr "Zdjęcie przekracza maksymalny rozmiar (%d MB)."
+
+#: src/Api/AssetsignFormController.php:103 src/ConditionPhoto.php:73
+#: src/ConditionPhoto.php:109 src/ConditionPhoto.php:118
+#: src/ConditionPhoto.php:182 src/ConditionPhoto.php:200
+#: src/ConditionPhoto.php:205
+msgid "Échec de l'envoi de la photo."
+msgstr "Nie udało się przesłać zdjęcia."
+
+#: src/Api/AssetsignFormController.php:108
+#, php-format
+msgid "Photo %1$d : %2$s"
+msgstr "Zdjęcie %1$d: %2$s"
+
+#: src/Api/AssetsignFormController.php:112
+msgid "Prenez ou choisissez au moins une photo."
+msgstr "Zrób lub wybierz co najmniej jedno zdjęcie."
+
+#: src/ConditionPhoto.php:77
+msgid "Le fichier de la photo est vide."
+msgstr "Plik zdjęcia jest pusty."
+
+#: src/ConditionPhoto.php:85
+msgid "Type de fichier refusé : joignez une photo au format JPEG, PNG ou WebP."
+msgstr "Odrzucony typ pliku: dołącz zdjęcie w formacie JPEG, PNG lub WebP."
+
+#: src/ConditionPhoto.php:89 src/ConditionPhoto.php:97
+msgid "Le contenu du fichier n'est pas une photo valide."
+msgstr "Zawartość pliku nie jest prawidłowym zdjęciem."
+
+#: src/ConditionPhoto.php:92
+#, php-format
+msgid "La photo est trop grande (%d mégapixels au plus)."
+msgstr "Zdjęcie jest za duże (maksymalnie %d megapikseli)."
+
+#: src/ConditionPhoto.php:166
+msgid "Les photos ne concernent que les fiches de remise et de restitution."
+msgstr "Zdjęcia dotyczą tylko kart przekazania i zwrotu."
+
+#: src/ConditionPhoto.php:172
+msgid ""
+"Les photos ne peuvent plus changer : la fiche est signée, expirée ou annulée."
+msgstr ""
+"Zdjęć nie można już zmienić: karta jest podpisana, wygasła lub anulowana."
+
+#: src/ConditionPhoto.php:175
+#, php-format
+msgid "Une fiche compte %d photos au plus."
+msgstr "Karta może zawierać maksymalnie %d zdjęć."
+
+#: src/ConditionPhoto.php:190
+#, php-format
+msgid "Photo de l'état des lieux - fiche n° %s"
+msgstr "Zdjęcie protokołu stanu - karta nr %s"
+
+#: src/ConditionPhoto.php:235
+msgid "Photo introuvable."
+msgstr "Nie znaleziono zdjęcia."

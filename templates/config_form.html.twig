@@ -745,6 +745,13 @@
             <label class="form-check-label" for="enable_damage_annotation">{{ __('État des lieux visuel (annotation de dommages)', 'assetsign') }}</label>
             <div class="form-text">{{ __('Permet de repérer des dommages sur 3 vues génériques (arrière, avant, dessous) : reportés sur le PDF pour les fiches signées, et affichés directement sur la fiche pour les fiches de maintenance.', 'assetsign') }}</div>
           </div>
+          {# Issue #369 : photos de l'etat des lieux dans le PDF signe. #}
+          <div class="mb-3 form-check">
+            <input type="hidden" name="photos_in_pdf" value="0">
+            <input type="checkbox" name="photos_in_pdf" value="1" class="form-check-input" id="photos_in_pdf" {{ config.photos_in_pdf|default(0) ? 'checked' : '' }}>
+            <label class="form-check-label" for="photos_in_pdf"><i class="ti ti-camera me-1"></i>{{ __('Reproduire les photos de l\'état des lieux dans le PDF signé', 'assetsign') }}</label>
+            <div class="form-text">{{ __('Désactivé : le PDF ne cite que l\'empreinte SHA-256 de chaque photo, les photos restent consultables sur la fiche dans GLPI. Activé : les photos (et, pour une restitution, celles de la remise) sont imprimées dans le PDF, qui devient plus lourd.', 'assetsign') }}</div>
+          </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="show_qr_code" value="0">
             <input type="checkbox" name="show_qr_code" value="1" class="form-check-input" id="show_qr_code" {{ config.show_qr_code|default(0) ? 'checked' : '' }}>
