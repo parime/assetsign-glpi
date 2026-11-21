@@ -6053,3 +6053,172 @@ msgstr ""
 "The check runs every week; “Run the check” runs it immediately. Open each "
 "sheet with an anomaly to see what changed: nothing is fixed automatically. "
 "The CSV export is evidence of the check."
+
+msgid "Trouvé"
+msgstr "Found"
+
+msgid "À un autre emplacement"
+msgstr "At another location"
+
+msgid "Absent"
+msgstr "Missing"
+
+msgid "En trop"
+msgstr "Extra"
+
+msgid "Saisissez ou scannez un code."
+msgstr "Type or scan a code."
+
+msgid "Cette campagne est clôturée : elle ne reçoit plus de scan."
+msgstr "This campaign is closed: it no longer accepts scans."
+
+#, php-format
+msgid "Plusieurs matériels correspondent à « %s » : scannez l'étiquette QR ou saisissez le numéro de série."
+msgstr "Several items match \"%s\": scan the QR label or type the serial number."
+
+#, php-format
+msgid "« %s » est déjà scanné dans cette campagne."
+msgstr "\"%s\" is already scanned in this campaign."
+
+#, php-format
+msgid "« %s » : aucun matériel GLPI ne correspond (en trop)."
+msgstr "\"%s\": no GLPI item matches (extra)."
+
+#, php-format
+msgid "« %s » : trouvé."
+msgstr "\"%s\": found."
+
+#, php-format
+msgid "« %s » : trouvé, mais enregistré dans GLPI à un autre emplacement."
+msgstr "\"%s\": found, but recorded in GLPI at another location."
+
+msgid "Résultat"
+msgstr "Result"
+
+msgid "Numéro de série"
+msgstr "Serial number"
+
+msgid "Numéro d'inventaire"
+msgstr "Inventory number"
+
+msgid "Emplacement dans GLPI"
+msgstr "Location in GLPI"
+
+msgid "Code scanné"
+msgstr "Scanned code"
+
+msgid "Date du scan"
+msgstr "Scan date"
+
+msgid "Scanné par"
+msgstr "Scanned by"
+
+msgid "Indiquez un nom et un lieu pour la campagne."
+msgstr "Enter a name and a location for the campaign."
+
+msgid "Campagne clôturée : le rapport est figé."
+msgstr "Campaign closed: the report is frozen."
+
+msgid "Campagne introuvable."
+msgstr "Campaign not found."
+
+msgid "Nouvelle campagne d'inventaire"
+msgstr "New inventory campaign"
+
+msgid "Aucun lieu dans vos entités : créez d'abord les lieux (salles, étages) dans Configuration > Intitulés > Lieux."
+msgstr "No location in your entities: first create the locations (rooms, floors) in Setup > Dropdowns > Locations."
+
+msgid "Exemple : inventaire du 2e étage"
+msgstr "Example: 2nd floor inventory"
+
+msgid "Lieu à inventorier"
+msgstr "Location to inventory"
+
+msgid "Inclure les sous-lieux (salles du bâtiment, par exemple)"
+msgstr "Include sub-locations (rooms of the building, for example)"
+
+msgid "Créer la campagne"
+msgstr "Create the campaign"
+
+msgid "Campagnes d'inventaire physique"
+msgstr "Physical inventory campaigns"
+
+msgid "Lieu"
+msgstr "Location"
+
+msgid "Scans"
+msgstr "Scans"
+
+msgid "Toutes les campagnes d'inventaire"
+msgstr "All inventory campaigns"
+
+#, php-format
+msgid "Lieu : %s"
+msgstr "Location: %s"
+
+msgid "avec ses sous-lieux"
+msgstr "with its sub-locations"
+
+#, php-format
+msgid "Créée le %s"
+msgstr "Created on %s"
+
+#, php-format
+msgid "clôturée le %s"
+msgstr "closed on %s"
+
+msgid "La caméra n'est pas disponible dans ce navigateur (elle exige une connexion HTTPS) : utilisez la saisie manuelle."
+msgstr "The camera is not available in this browser (it requires an HTTPS connection): use manual entry."
+
+msgid "Accès à la caméra refusé : autorisez-le dans le navigateur, ou utilisez la saisie manuelle."
+msgstr "Camera access denied: allow it in the browser, or use manual entry."
+
+msgid "Visez une étiquette QR : chaque matériel reconnu s'ajoute ci-dessous."
+msgstr "Point at a QR label: each recognised item is added below."
+
+msgid "Le scan n'a pas pu être enregistré : réessayez."
+msgstr "The scan could not be saved: try again."
+
+msgid "Scanner les étiquettes QR"
+msgstr "Scan the QR labels"
+
+msgid "Démarrer la caméra"
+msgstr "Start the camera"
+
+msgid "Arrêter la caméra"
+msgstr "Stop the camera"
+
+msgid "Saisie manuelle : numéro de série, numéro d'inventaire ou nom"
+msgstr "Manual entry: serial number, inventory number or name"
+
+msgid "Rapport de rapprochement"
+msgstr "Reconciliation report"
+
+msgid "Actualiser"
+msgstr "Refresh"
+
+msgid "Trouvé : scanné et rangé dans ce lieu dans GLPI. À un autre emplacement : scanné ici, mais GLPI le place ailleurs. Absent : attendu dans ce lieu, pas scanné. En trop : code scanné qui ne correspond à aucun matériel de vos entités. Rien n'est modifié dans GLPI : corrigez les écarts depuis la fiche du matériel."
+msgstr "Found: scanned and stored in this location in GLPI. At another location: scanned here, but GLPI places it elsewhere. Missing: expected in this location, not scanned. Extra: scanned code matching no item of your entities. Nothing is changed in GLPI: fix the gaps from the item's form."
+
+msgid "Aucun matériel attendu ni scanné pour l'instant."
+msgstr "No item expected or scanned yet."
+
+msgid "Scan"
+msgstr "Scan"
+
+msgid "Clôturer la campagne ? Elle ne recevra plus de scan."
+msgstr "Close the campaign? It will no longer accept scans."
+
+msgid "Clôturer la campagne"
+msgstr "Close the campaign"
+
+msgid "L'inventaire physique, salle par salle : on scanne les étiquettes QR du matériel présent (ou on saisit son numéro de série) et le plugin le compare à ce que GLPI attend dans ce lieu."
+msgstr "Physical inventory, room by room: scan the QR labels of the items present (or type their serial number) and the plugin compares them with what GLPI expects in this location."
+
+msgid "Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un autre emplacement, en trop. Rien n'est modifié dans le parc : corrigez vous-même les écarts. L'export CSV sert de preuve d'inventaire."
+msgstr "Create a campaign for a location, scan each item with the phone or tablet camera, then read the report: found, missing, at another location, extra. Nothing is changed in the fleet: fix the gaps yourself. The CSV export serves as inventory evidence."
+
+msgid "Inventaire physique"
+msgid_plural "Inventaires physiques"
+msgstr[0] "Physical inventory"
+msgstr[1] "Physical inventories"

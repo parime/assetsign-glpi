@@ -6677,3 +6677,172 @@ msgstr ""
 "A verificação roda toda semana; “Executar a verificação” a executa "
 "imediatamente. Abra cada ficha com anomalia para entender o que mudou: nada é"
 " corrigido automaticamente. A exportação CSV serve como prova da verificação."
+
+msgid "Trouvé"
+msgstr "Encontrado"
+
+msgid "À un autre emplacement"
+msgstr "Em outro local"
+
+msgid "Absent"
+msgstr "Ausente"
+
+msgid "En trop"
+msgstr "Excedente"
+
+msgid "Saisissez ou scannez un code."
+msgstr "Digite ou escaneie um código."
+
+msgid "Cette campagne est clôturée : elle ne reçoit plus de scan."
+msgstr "Esta campanha está encerrada: não aceita mais leituras."
+
+#, php-format
+msgid "Plusieurs matériels correspondent à « %s » : scannez l'étiquette QR ou saisissez le numéro de série."
+msgstr "Vários equipamentos correspondem a \"%s\": escaneie a etiqueta QR ou digite o número de série."
+
+#, php-format
+msgid "« %s » est déjà scanné dans cette campagne."
+msgstr "\"%s\" já foi lido nesta campanha."
+
+#, php-format
+msgid "« %s » : aucun matériel GLPI ne correspond (en trop)."
+msgstr "\"%s\": nenhum equipamento do GLPI corresponde (excedente)."
+
+#, php-format
+msgid "« %s » : trouvé."
+msgstr "\"%s\": encontrado."
+
+#, php-format
+msgid "« %s » : trouvé, mais enregistré dans GLPI à un autre emplacement."
+msgstr "\"%s\": encontrado, mas registrado no GLPI em outro local."
+
+msgid "Résultat"
+msgstr "Resultado"
+
+msgid "Numéro de série"
+msgstr "Número de série"
+
+msgid "Numéro d'inventaire"
+msgstr "Número de inventário"
+
+msgid "Emplacement dans GLPI"
+msgstr "Local no GLPI"
+
+msgid "Code scanné"
+msgstr "Código lido"
+
+msgid "Date du scan"
+msgstr "Data da leitura"
+
+msgid "Scanné par"
+msgstr "Lido por"
+
+msgid "Indiquez un nom et un lieu pour la campagne."
+msgstr "Informe um nome e um local para a campanha."
+
+msgid "Campagne clôturée : le rapport est figé."
+msgstr "Campanha encerrada: o relatório está congelado."
+
+msgid "Campagne introuvable."
+msgstr "Campanha não encontrada."
+
+msgid "Nouvelle campagne d'inventaire"
+msgstr "Nova campanha de inventário"
+
+msgid "Aucun lieu dans vos entités : créez d'abord les lieux (salles, étages) dans Configuration > Intitulés > Lieux."
+msgstr "Nenhum local nas suas entidades: crie primeiro os locais (salas, andares) em Configurar > Listas suspensas > Locais."
+
+msgid "Exemple : inventaire du 2e étage"
+msgstr "Exemplo: inventário do 2º andar"
+
+msgid "Lieu à inventorier"
+msgstr "Local a inventariar"
+
+msgid "Inclure les sous-lieux (salles du bâtiment, par exemple)"
+msgstr "Incluir os sublocais (salas do prédio, por exemplo)"
+
+msgid "Créer la campagne"
+msgstr "Criar a campanha"
+
+msgid "Campagnes d'inventaire physique"
+msgstr "Campanhas de inventário físico"
+
+msgid "Lieu"
+msgstr "Local"
+
+msgid "Scans"
+msgstr "Leituras"
+
+msgid "Toutes les campagnes d'inventaire"
+msgstr "Todas as campanhas de inventário"
+
+#, php-format
+msgid "Lieu : %s"
+msgstr "Local: %s"
+
+msgid "avec ses sous-lieux"
+msgstr "com seus sublocais"
+
+#, php-format
+msgid "Créée le %s"
+msgstr "Criada em %s"
+
+#, php-format
+msgid "clôturée le %s"
+msgstr "encerrada em %s"
+
+msgid "La caméra n'est pas disponible dans ce navigateur (elle exige une connexion HTTPS) : utilisez la saisie manuelle."
+msgstr "A câmera não está disponível neste navegador (exige uma conexão HTTPS): use a digitação manual."
+
+msgid "Accès à la caméra refusé : autorisez-le dans le navigateur, ou utilisez la saisie manuelle."
+msgstr "Acesso à câmera negado: autorize-o no navegador ou use a digitação manual."
+
+msgid "Visez une étiquette QR : chaque matériel reconnu s'ajoute ci-dessous."
+msgstr "Aponte para uma etiqueta QR: cada equipamento reconhecido é adicionado abaixo."
+
+msgid "Le scan n'a pas pu être enregistré : réessayez."
+msgstr "Não foi possível salvar a leitura: tente novamente."
+
+msgid "Scanner les étiquettes QR"
+msgstr "Ler as etiquetas QR"
+
+msgid "Démarrer la caméra"
+msgstr "Iniciar a câmera"
+
+msgid "Arrêter la caméra"
+msgstr "Parar a câmera"
+
+msgid "Saisie manuelle : numéro de série, numéro d'inventaire ou nom"
+msgstr "Digitação manual: número de série, número de inventário ou nome"
+
+msgid "Rapport de rapprochement"
+msgstr "Relatório de conciliação"
+
+msgid "Actualiser"
+msgstr "Atualizar"
+
+msgid "Trouvé : scanné et rangé dans ce lieu dans GLPI. À un autre emplacement : scanné ici, mais GLPI le place ailleurs. Absent : attendu dans ce lieu, pas scanné. En trop : code scanné qui ne correspond à aucun matériel de vos entités. Rien n'est modifié dans GLPI : corrigez les écarts depuis la fiche du matériel."
+msgstr "Encontrado: lido e registrado neste local no GLPI. Em outro local: lido aqui, mas o GLPI o coloca em outro lugar. Ausente: esperado neste local, não lido. Excedente: código lido que não corresponde a nenhum equipamento das suas entidades. Nada é alterado no GLPI: corrija as divergências na ficha do equipamento."
+
+msgid "Aucun matériel attendu ni scanné pour l'instant."
+msgstr "Nenhum equipamento esperado nem lido por enquanto."
+
+msgid "Scan"
+msgstr "Leitura"
+
+msgid "Clôturer la campagne ? Elle ne recevra plus de scan."
+msgstr "Encerrar a campanha? Ela não aceitará mais leituras."
+
+msgid "Clôturer la campagne"
+msgstr "Encerrar a campanha"
+
+msgid "L'inventaire physique, salle par salle : on scanne les étiquettes QR du matériel présent (ou on saisit son numéro de série) et le plugin le compare à ce que GLPI attend dans ce lieu."
+msgstr "O inventário físico, sala por sala: leem-se as etiquetas QR dos equipamentos presentes (ou digita-se o número de série) e o plugin os compara com o que o GLPI espera neste local."
+
+msgid "Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un autre emplacement, en trop. Rien n'est modifié dans le parc : corrigez vous-même les écarts. L'export CSV sert de preuve d'inventaire."
+msgstr "Crie uma campanha para um local, leia cada equipamento com a câmera do telefone ou do tablet e depois consulte o relatório: encontrado, ausente, em outro local, excedente. Nada é alterado no parque: corrija você mesmo as divergências. A exportação CSV serve como prova de inventário."
+
+msgid "Inventaire physique"
+msgid_plural "Inventaires physiques"
+msgstr[0] "Inventário físico"
+msgstr[1] "Inventários físicos"

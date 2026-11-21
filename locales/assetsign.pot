@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 11:42+0000\n"
+"POT-Creation-Date: 2026-11-21 16:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,7 +97,9 @@ msgstr ""
 #: templates/pdf/attestation.html.twig templates/integrity.html.twig
 #: templates/movement_form.html.twig templates/qr_label.html.twig
 #: templates/departure_form.html.twig templates/wipeattestation_list.html.twig
-#: templates/drafts_to_send.html.twig templates/assetsign_form.html.twig
+#: templates/drafts_to_send.html.twig
+#: templates/physicalinventory_form.html.twig
+#: templates/assetsign_form.html.twig
 #: templates/ticket_preparation_tab.html.twig templates/my_signatures.html.twig
 #: templates/ticket_tab.html.twig templates/movement_create.html.twig
 #: templates/renewal.html.twig templates/maintenance_create.html.twig
@@ -107,8 +109,8 @@ msgstr ""
 #: src/IntegrityCheck.php:282 src/Maintenance.php:99 src/Movement.php:136
 #: src/NotificationTargetAssetsign.php:262
 #: src/NotificationTargetAttestation.php:127
-#: src/NotificationTargetDeparture.php:124 src/Renewal.php:177
-#: src/WipeAttestation.php:153
+#: src/NotificationTargetDeparture.php:124 src/PhysicalInventory.php:463
+#: src/Renewal.php:177 src/WipeAttestation.php:153
 msgid "Matériel"
 msgstr ""
 
@@ -186,6 +188,7 @@ msgid "Une précision à ajouter avant de signer (optionnel)."
 msgstr ""
 
 #: templates/sign_page.html.twig templates/damage_annotation_edit.html.twig
+#: templates/physicalinventory_form.html.twig
 #: templates/assetsign_form.html.twig templates/template_form.html.twig
 #: templates/config_form.html.twig templates/passport_tab.html.twig
 msgid "Enregistrer"
@@ -376,11 +379,12 @@ msgid ""
 "27001 A.5.10 et A.6.3)."
 msgstr ""
 
-#: templates/campaign_list.html.twig
+#: templates/campaign_list.html.twig templates/physicalinventory_list.html.twig
 msgid "Aucune campagne pour l'instant"
 msgstr ""
 
-#: templates/campaign_list.html.twig src/NotificationTargetAttestation.php:120
+#: templates/campaign_list.html.twig templates/physicalinventory_list.html.twig
+#: src/NotificationTargetAttestation.php:120
 msgid "Campagne"
 msgstr ""
 
@@ -405,11 +409,13 @@ msgstr ""
 msgid "Charte informatique"
 msgstr ""
 
-#: templates/campaign_list.html.twig templates/campaign_form.html.twig
+#: templates/campaign_list.html.twig templates/physicalinventory_list.html.twig
+#: templates/physicalinventory_form.html.twig templates/campaign_form.html.twig
 msgid "Ouverte"
 msgstr ""
 
-#: templates/campaign_list.html.twig templates/campaign_form.html.twig
+#: templates/campaign_list.html.twig templates/physicalinventory_list.html.twig
+#: templates/physicalinventory_form.html.twig templates/campaign_form.html.twig
 msgid "Clôturée"
 msgstr ""
 
@@ -579,7 +585,8 @@ msgstr ""
 #: templates/pdf/handover.html.twig templates/pdf/departure_summary.html.twig
 #: templates/pdf/attestation.html.twig templates/wipeattestation_list.html.twig
 #: templates/drafts_to_send.html.twig templates/assetsign_form.html.twig
-#: templates/assetsign_tab.html.twig src/Renewal.php:177
+#: templates/assetsign_tab.html.twig src/PhysicalInventory.php:463
+#: src/Renewal.php:177
 msgid "Type"
 msgstr ""
 
@@ -675,10 +682,10 @@ msgid "Chiffrement"
 msgstr ""
 
 #: templates/pdf/wipe_attestation.html.twig templates/pdf/maintenance.html.twig
-#: templates/movement_form.html.twig templates/movement_tab.html.twig
-#: templates/assetsign_form.html.twig templates/maintenance_tab.html.twig
-#: templates/movement_create.html.twig templates/maintenance_create.html.twig
-#: templates/maintenance_form.html.twig
+#: templates/physicalinventory_list.html.twig templates/movement_form.html.twig
+#: templates/movement_tab.html.twig templates/assetsign_form.html.twig
+#: templates/maintenance_tab.html.twig templates/movement_create.html.twig
+#: templates/maintenance_create.html.twig templates/maintenance_form.html.twig
 #: templates/wipeattestation_form.html.twig
 #: templates/wipeattestation_tab.html.twig front/campaign.form.php:139
 #: src/Movement.php:198 src/NotificationTargetAttestation.php:124
@@ -1196,7 +1203,8 @@ msgstr ""
 msgid "Lancer le contrôle"
 msgstr ""
 
-#: templates/integrity.html.twig templates/renewal.html.twig
+#: templates/integrity.html.twig templates/physicalinventory_form.html.twig
+#: templates/renewal.html.twig
 msgid "Exporter (CSV)"
 msgstr ""
 
@@ -1240,6 +1248,48 @@ msgstr ""
 
 #: templates/integrity.html.twig
 msgid "Anomalies"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Nouvelle campagne d'inventaire"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid ""
+"Aucun lieu dans vos entités : créez d'abord les lieux (salles, étages) dans "
+"Configuration > Intitulés > Lieux."
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig templates/campaign_form.html.twig
+msgid "Nom de la campagne"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Exemple : inventaire du 2e étage"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Lieu à inventorier"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Inclure les sous-lieux (salles du bâtiment, par exemple)"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Créer la campagne"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Campagnes d'inventaire physique"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Lieu"
+msgstr ""
+
+#: templates/physicalinventory_list.html.twig
+msgid "Scans"
 msgstr ""
 
 #: templates/config_transfer.html.twig
@@ -1647,6 +1697,110 @@ msgstr ""
 #: templates/drafts_to_send.html.twig templates/assetsign_form.html.twig
 #: templates/confirm_modal.html.twig templates/assetsign_tab.html.twig
 msgid "Envoyer pour signature"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Toutes les campagnes d'inventaire"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+#, php-format
+msgid "Lieu : %s"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "avec ses sous-lieux"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+#, php-format
+msgid "Créée le %s"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+#, php-format
+msgid "clôturée le %s"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid ""
+"La caméra n'est pas disponible dans ce navigateur (elle exige une connexion "
+"HTTPS) : utilisez la saisie manuelle."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid ""
+"Accès à la caméra refusé : autorisez-le dans le navigateur, ou utilisez la "
+"saisie manuelle."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Visez une étiquette QR : chaque matériel reconnu s'ajoute ci-dessous."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Le scan n'a pas pu être enregistré : réessayez."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Scanner les étiquettes QR"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Démarrer la caméra"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Arrêter la caméra"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Saisie manuelle : numéro de série, numéro d'inventaire ou nom"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Rapport de rapprochement"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Actualiser"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid ""
+"Trouvé : scanné et rangé dans ce lieu dans GLPI. À un autre emplacement : "
+"scanné ici, mais GLPI le place ailleurs. Absent : attendu dans ce lieu, pas "
+"scanné. En trop : code scanné qui ne correspond à aucun matériel de vos "
+"entités. Rien n'est modifié dans GLPI : corrigez les écarts depuis la fiche "
+"du matériel."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Aucun matériel attendu ni scanné pour l'instant."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig src/PhysicalInventory.php:463
+msgid "Résultat"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig src/PhysicalInventory.php:463
+msgid "Numéro de série"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig src/PhysicalInventory.php:464
+msgid "Emplacement dans GLPI"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Scan"
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Clôturer la campagne ? Elle ne recevra plus de scan."
+msgstr ""
+
+#: templates/physicalinventory_form.html.twig
+msgid "Clôturer la campagne"
 msgstr ""
 
 #: templates/pending_signatures_banner.html.twig
@@ -4088,10 +4242,6 @@ msgid ""
 "la Configuration."
 msgstr ""
 
-#: templates/campaign_form.html.twig
-msgid "Nom de la campagne"
-msgstr ""
-
 #: templates/campaign_form.html.twig src/Campaign.php:124
 #, php-format
 msgid "Attestation de détention %s"
@@ -5219,7 +5369,7 @@ msgstr ""
 msgid "%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)"
 msgstr ""
 
-#: front/integrity.php:57
+#: front/integrity.php:55
 msgid "Tâche planifiée"
 msgstr ""
 
@@ -5275,6 +5425,18 @@ msgstr[1] ""
 
 #: front/mysignatures.php:138
 msgid "Mes documents à signer"
+msgstr ""
+
+#: front/physicalinventory.form.php:45
+msgid "Campagne clôturée : le rapport est figé."
+msgstr ""
+
+#: front/physicalinventory.php:38
+msgid "Indiquez un nom et un lieu pour la campagne."
+msgstr ""
+
+#: front/physicalinventoryscan.php:30
+msgid "Campagne introuvable."
 msgstr ""
 
 #: front/renewal.php:39
@@ -5342,7 +5504,7 @@ msgstr ""
 msgid "RSE : taux de seconde vie"
 msgstr ""
 
-#: hook.php:602
+#: hook.php:604
 #, php-format
 msgid ""
 "Désinstallation interrompue : impossible d'archiver les références de "
@@ -6770,13 +6932,28 @@ msgid ""
 "rien n'est corrigé automatiquement. L'export CSV sert de preuve de contrôle."
 msgstr ""
 
-#: src/MenuSection.php:127
+#: src/MenuSection.php:117
+msgid ""
+"L'inventaire physique, salle par salle : on scanne les étiquettes QR du "
+"matériel présent (ou on saisit son numéro de série) et le plugin le compare "
+"à ce que GLPI attend dans ce lieu."
+msgstr ""
+
+#: src/MenuSection.php:118
+msgid ""
+"Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du "
+"téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un "
+"autre emplacement, en trop. Rien n'est modifié dans le parc : corrigez vous-"
+"même les écarts. L'export CSV sert de preuve d'inventaire."
+msgstr ""
+
+#: src/MenuSection.php:132
 msgid ""
 "Le matériel qui vous est confié et les documents qui attendent votre "
 "signature."
 msgstr ""
 
-#: src/MenuSection.php:128
+#: src/MenuSection.php:133
 msgid ""
 "Signez les documents en attente. En cas de problème avec un matériel, "
 "signalez-le depuis cette page : un ticket est créé pour le service "
@@ -7217,6 +7394,79 @@ msgstr ""
 
 #: src/PendingSignatures.php:185
 msgid "Ce document n'attend pas votre signature."
+msgstr ""
+
+#: src/PhysicalInventory.php:46
+msgid "Inventaire physique"
+msgid_plural "Inventaires physiques"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/PhysicalInventory.php:74
+msgid "Trouvé"
+msgstr ""
+
+#: src/PhysicalInventory.php:75
+msgid "À un autre emplacement"
+msgstr ""
+
+#: src/PhysicalInventory.php:76
+msgid "Absent"
+msgstr ""
+
+#: src/PhysicalInventory.php:77
+msgid "En trop"
+msgstr ""
+
+#: src/PhysicalInventory.php:302
+msgid "Saisissez ou scannez un code."
+msgstr ""
+
+#: src/PhysicalInventory.php:305
+msgid "Cette campagne est clôturée : elle ne reçoit plus de scan."
+msgstr ""
+
+#: src/PhysicalInventory.php:310
+#, php-format
+msgid ""
+"Plusieurs matériels correspondent à « %s » : scannez l'étiquette QR ou "
+"saisissez le numéro de série."
+msgstr ""
+
+#: src/PhysicalInventory.php:319
+#, php-format
+msgid "« %s » est déjà scanné dans cette campagne."
+msgstr ""
+
+#: src/PhysicalInventory.php:333
+#, php-format
+msgid "« %s » : aucun matériel GLPI ne correspond (en trop)."
+msgstr ""
+
+#: src/PhysicalInventory.php:337
+#, php-format
+msgid "« %s » : trouvé."
+msgstr ""
+
+#: src/PhysicalInventory.php:337
+#, php-format
+msgid "« %s » : trouvé, mais enregistré dans GLPI à un autre emplacement."
+msgstr ""
+
+#: src/PhysicalInventory.php:464
+msgid "Numéro d'inventaire"
+msgstr ""
+
+#: src/PhysicalInventory.php:464
+msgid "Code scanné"
+msgstr ""
+
+#: src/PhysicalInventory.php:465
+msgid "Date du scan"
+msgstr ""
+
+#: src/PhysicalInventory.php:465
+msgid "Scanné par"
 msgstr ""
 
 #: src/QrLabelBatch.php:63
