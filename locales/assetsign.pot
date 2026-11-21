@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 11:42+0000\n"
+"POT-Creation-Date: 2026-11-21 15:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -747,6 +747,38 @@ msgstr ""
 #: templates/pdf/maintenance.html.twig
 #, php-format
 msgid "Fiche de maintenance #%d : Document généré par GLPI (plugin assetsign)"
+msgstr ""
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Photos de l'état des lieux"
+msgstr ""
+
+#: templates/pdf/_condition_photos.html.twig
+msgid ""
+"Les photos sont jointes à la fiche dans GLPI ; leur empreinte SHA-256 ci-"
+"dessous permet de vérifier qu'elles n'ont pas changé."
+msgstr ""
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Avant : à la remise"
+msgstr ""
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Après : à la restitution"
+msgstr ""
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "Photo n° %d"
+msgstr ""
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Pas de photo"
 msgstr ""
 
 #: templates/pdf/handover.html.twig
@@ -1533,7 +1565,7 @@ msgid ""
 msgstr ""
 
 #: templates/departure_form.html.twig templates/assetsign_form.html.twig
-#: src/Assetsign.php:624
+#: src/Assetsign.php:626
 msgid "Relancer maintenant"
 msgstr ""
 
@@ -1550,6 +1582,75 @@ msgstr ""
 msgid "%d relance(s) envoyée(s)"
 msgstr ""
 
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "%d photo"
+msgid_plural "%d photos"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/_condition_photos.html.twig
+msgid "Reproduites dans le PDF"
+msgstr ""
+
+#: templates/_condition_photos.html.twig
+msgid "Empreintes seules dans le PDF"
+msgstr ""
+
+#: templates/_condition_photos.html.twig
+msgid ""
+"Comparez l'état du matériel à la remise (à gauche) et à la restitution (à "
+"droite). Les photos de la restitution s'ajoutent tant que la fiche n'est pas "
+"signée."
+msgstr ""
+
+#: templates/_condition_photos.html.twig
+msgid ""
+"Photographiez le matériel au moment de la remise : ces photos serviront de "
+"point de comparaison à sa restitution. Elles s'ajoutent tant que la fiche "
+"n'est pas signée."
+msgstr ""
+
+#: templates/_condition_photos.html.twig templates/assetsign_form.html.twig
+#, php-format
+msgid "Fiche n° %s"
+msgstr ""
+
+#: templates/_condition_photos.html.twig
+msgid ""
+"Aucune fiche de remise lisible pour ce matériel : seules les photos de la "
+"restitution s'affichent."
+msgstr ""
+
+#: templates/_condition_photos.html.twig
+msgid "Aucune photo pour l'instant."
+msgstr ""
+
+#: templates/_condition_photos.html.twig
+msgid "Prendre une photo"
+msgstr ""
+
+#: templates/_condition_photos.html.twig
+msgid "Ou choisir des photos"
+msgstr ""
+
+#: templates/_condition_photos.html.twig templates/assetsign_form.html.twig
+#: templates/confirm_modal.html.twig
+msgid "Ajouter"
+msgstr ""
+
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid ""
+"JPEG, PNG ou WebP, %1$d Mo au plus par photo, %2$d photos par fiche. Sur un "
+"téléphone, « Prendre une photo » ouvre l'appareil photo. La position GPS et "
+"les autres métadonnées sont retirées à l'envoi."
+msgstr ""
+
+#: templates/_condition_photos.html.twig
+msgid "Supprimer cette photo"
+msgstr ""
+
 #: templates/movement_tab.html.twig
 msgid "Aucun mouvement enregistré pour ce matériel."
 msgstr ""
@@ -1564,7 +1665,7 @@ msgstr[1] ""
 msgid "Destination"
 msgstr ""
 
-#: templates/movement_tab.html.twig src/Assetsign.php:1372 src/Departure.php:82
+#: templates/movement_tab.html.twig src/Assetsign.php:1374 src/Departure.php:82
 #: src/Movement.php:191
 msgid "Signé"
 msgstr ""
@@ -1745,7 +1846,7 @@ msgstr[1] ""
 msgid "Référence : %s"
 msgstr ""
 
-#: templates/assetsign_form.html.twig src/Assetsign.php:1181
+#: templates/assetsign_form.html.twig src/Assetsign.php:1183
 msgid "Passation"
 msgstr ""
 
@@ -1784,11 +1885,6 @@ msgstr ""
 
 #: templates/assetsign_form.html.twig
 msgid "Cette fiche"
-msgstr ""
-
-#: templates/assetsign_form.html.twig
-#, php-format
-msgid "Fiche n° %s"
 msgstr ""
 
 #: templates/assetsign_form.html.twig
@@ -1956,7 +2052,7 @@ msgstr ""
 msgid "Annuler cette demande de signature ?"
 msgstr ""
 
-#: templates/assetsign_form.html.twig src/Assetsign.php:626
+#: templates/assetsign_form.html.twig src/Assetsign.php:628
 msgid "Annuler la demande"
 msgstr ""
 
@@ -2192,10 +2288,6 @@ msgstr ""
 
 #: templates/assetsign_form.html.twig
 msgid "Ajouter un accessoire"
-msgstr ""
-
-#: templates/assetsign_form.html.twig templates/confirm_modal.html.twig
-msgid "Ajouter"
 msgstr ""
 
 #: templates/assetsign_form.html.twig
@@ -3278,6 +3370,18 @@ msgid ""
 "Permet de repérer des dommages sur 3 vues génériques (arrière, avant, "
 "dessous) : reportés sur le PDF pour les fiches signées, et affichés "
 "directement sur la fiche pour les fiches de maintenance."
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Reproduire les photos de l'état des lieux dans le PDF signé"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid ""
+"Désactivé : le PDF ne cite que l'empreinte SHA-256 de chaque photo, les "
+"photos restent consultables sur la fiche dans GLPI. Activé : les photos (et, "
+"pour une restitution, celles de la remise) sont imprimées dans le PDF, qui "
+"devient plus lourd."
 msgstr ""
 
 #: templates/config_form.html.twig
@@ -4754,7 +4858,7 @@ msgid ""
 "destruction."
 msgstr ""
 
-#: templates/attributions_home.html.twig hook.php:226 src/Assetsign.php:935
+#: templates/attributions_home.html.twig hook.php:226 src/Assetsign.php:937
 msgid "Attributions en attente de signature"
 msgstr ""
 
@@ -5086,6 +5190,17 @@ msgid ""
 "ou depuis son onglet Attributions (don, vente, destruction)."
 msgstr ""
 
+#: front/assetsign.form.php:99
+#, php-format
+msgid "%d photo ajoutée."
+msgid_plural "%d photos ajoutées."
+msgstr[0] ""
+msgstr[1] ""
+
+#: front/assetsign.form.php:112
+msgid "Photo supprimée."
+msgstr ""
+
 #: front/assign_user_asset.php:49
 msgid "Matériel assigné."
 msgstr ""
@@ -5206,7 +5321,7 @@ msgstr ""
 msgid "Restitution signée. Merci !"
 msgstr ""
 
-#: front/departure.form.php:125 src/Api/AssetsignFormController.php:111
+#: front/departure.form.php:125 src/Api/AssetsignFormController.php:155
 msgid "Relance envoyée."
 msgstr ""
 
@@ -5219,7 +5334,7 @@ msgstr ""
 msgid "%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)"
 msgstr ""
 
-#: front/integrity.php:57
+#: front/integrity.php:55
 msgid "Tâche planifiée"
 msgstr ""
 
@@ -5314,15 +5429,15 @@ msgstr ""
 msgid "Attestation annulée : elle ne compte plus pour la sortie du matériel."
 msgstr ""
 
-#: hook.php:220 src/Config.php:227
+#: hook.php:220 src/Config.php:229
 msgid "Assetsign & signature"
 msgstr ""
 
-#: hook.php:233 src/Assetsign.php:936
+#: hook.php:233 src/Assetsign.php:938
 msgid "Attributions signées"
 msgstr ""
 
-#: hook.php:240 src/Assetsign.php:937
+#: hook.php:240 src/Assetsign.php:939
 msgid "Attributions expirées"
 msgstr ""
 
@@ -5342,7 +5457,7 @@ msgstr ""
 msgid "RSE : taux de seconde vie"
 msgstr ""
 
-#: hook.php:602
+#: hook.php:604
 #, php-format
 msgid ""
 "Désinstallation interrompue : impossible d'archiver les références de "
@@ -5359,21 +5474,42 @@ msgid_plural "Accessoires d'attribution"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Api/AssetsignFormController.php:60
+#: src/Api/AssetsignFormController.php:61
 msgid "Fiche créée."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:87
+#: src/Api/AssetsignFormController.php:100 src/ConditionPhoto.php:80
+#, php-format
+msgid "La photo dépasse la taille maximale (%d Mo)."
+msgstr ""
+
+#: src/Api/AssetsignFormController.php:103 src/ConditionPhoto.php:73
+#: src/ConditionPhoto.php:109 src/ConditionPhoto.php:118
+#: src/ConditionPhoto.php:182 src/ConditionPhoto.php:200
+#: src/ConditionPhoto.php:205
+msgid "Échec de l'envoi de la photo."
+msgstr ""
+
+#: src/Api/AssetsignFormController.php:108
+#, php-format
+msgid "Photo %1$d : %2$s"
+msgstr ""
+
+#: src/Api/AssetsignFormController.php:112
+msgid "Prenez ou choisissez au moins une photo."
+msgstr ""
+
+#: src/Api/AssetsignFormController.php:131
 msgid "Choisissez le fichier du scan signé."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:90 src/PaperSignature.php:185
+#: src/Api/AssetsignFormController.php:134 src/PaperSignature.php:185
 #, php-format
 msgid "Le scan dépasse la taille maximale (%d Mo)."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:93 src/Assetsign.php:3771
-#: src/Assetsign.php:3783 src/Assetsign.php:3795 src/Movement.php:418
+#: src/Api/AssetsignFormController.php:137 src/Assetsign.php:3773
+#: src/Assetsign.php:3785 src/Assetsign.php:3797 src/Movement.php:418
 #: src/Movement.php:430 src/Movement.php:442 src/PaperSignature.php:116
 #: src/PaperSignature.php:178 src/PaperSignature.php:255
 #: src/PaperSignature.php:273 src/PaperSignature.php:278
@@ -5382,76 +5518,76 @@ msgstr ""
 msgid "Échec de l'envoi du document."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:105
+#: src/Api/AssetsignFormController.php:149
 msgid ""
 "Scan joint : la fiche est maintenant « Signé sur papier ». Le lien de "
 "signature électronique ne fonctionne plus."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:117
+#: src/Api/AssetsignFormController.php:161
 msgid "Demande annulée."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:128
+#: src/Api/AssetsignFormController.php:172
 msgid "Signature déléguée."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:134
+#: src/Api/AssetsignFormController.php:178
 msgid "Délégation révoquée : le bénéficiaire d'origine peut de nouveau signer."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:165
+#: src/Api/AssetsignFormController.php:209
 msgid "Élément ajouté : il apparaît sur le document."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:183
+#: src/Api/AssetsignFormController.php:227
 msgid "Feuille d'attribution envoyée pour signature."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:192
+#: src/Api/AssetsignFormController.php:236
 msgid "Attribution définitive : aucune date de retour."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:193
+#: src/Api/AssetsignFormController.php:237
 #, php-format
 msgid "Prêt : retour prévu le %s."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:202
+#: src/Api/AssetsignFormController.php:246
 msgid "Feuille modifiée."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:209
+#: src/Api/AssetsignFormController.php:253
 msgid "Contrôle du retour enregistré."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:211
+#: src/Api/AssetsignFormController.php:255
 #, php-format
 msgid "%d élément remis en stock dans GLPI."
 msgid_plural "%d éléments remis en stock dans GLPI."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Api/AssetsignFormController.php:214
+#: src/Api/AssetsignFormController.php:258
 #, php-format
 msgid "%d ticket ouvert pour un élément manquant."
 msgid_plural "%d tickets ouverts pour des éléments manquants."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Api/AssetsignFormController.php:223
+#: src/Api/AssetsignFormController.php:267
 msgid "Feuille rattachée au ticket."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:224
+#: src/Api/AssetsignFormController.php:268
 msgid "Feuille détachée du ticket."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:238
+#: src/Api/AssetsignFormController.php:282
 msgid "Aucune feuille ne sera envoyée pour cette attribution."
 msgstr ""
 
-#: src/Api/AssetsignFormController.php:251
+#: src/Api/AssetsignFormController.php:295
 #, php-format
 msgid "%d élément connecté ajouté."
 msgid_plural "%d éléments connectés ajoutés."
@@ -5466,8 +5602,8 @@ msgstr ""
 
 #: src/Api/EnvironmentalDataFormController.php:41
 #: src/Api/PassportBackfillController.php:40 src/Api/QrLabelController.php:65
-#: src/Api/ResidualValueFormController.php:40 src/Assetsign.php:2089
-#: src/Assetsign.php:2292
+#: src/Api/ResidualValueFormController.php:40 src/Assetsign.php:2091
+#: src/Assetsign.php:2294
 msgid "Matériel introuvable."
 msgstr ""
 
@@ -5560,7 +5696,7 @@ msgstr ""
 msgid "Ce document ne correspond pas à votre compte utilisateur."
 msgstr ""
 
-#: src/Api/SignController.php:403 src/Assetsign.php:2914
+#: src/Api/SignController.php:403 src/Assetsign.php:2916
 msgid "La signature sur place n'est pas possible pour cette fiche."
 msgstr ""
 
@@ -5690,431 +5826,431 @@ msgstr ""
 msgid "Scan signé sur papier"
 msgstr ""
 
-#: src/Assetsign.php:636
+#: src/Assetsign.php:638
 msgid "Envoyer une relance de signature aux attributions sélectionnées ?"
 msgstr ""
 
-#: src/Assetsign.php:641
+#: src/Assetsign.php:643
 msgid ""
 "Annuler les demandes de signature sélectionnées ? Le lien envoyé au "
 "bénéficiaire deviendra invalide."
 msgstr ""
 
-#: src/Assetsign.php:710 src/Assetsign.php:723
+#: src/Assetsign.php:712 src/Assetsign.php:725
 msgid "Attributions"
 msgstr ""
 
-#: src/Assetsign.php:714
+#: src/Assetsign.php:716
 msgid "Remise de matériel"
 msgstr ""
 
-#: src/Assetsign.php:815
+#: src/Assetsign.php:817
 msgid ""
 "Aucune attestation d'effacement des données valable pour ce matériel : "
 "l'entité l'exige avant un don, une vente ou une destruction."
 msgstr ""
 
-#: src/Assetsign.php:816
+#: src/Assetsign.php:818
 msgid ""
 "Aucune attestation d'effacement des données valable pour ce matériel : "
 "pensez à l'enregistrer avant un don, une vente ou une destruction."
 msgstr ""
 
-#: src/Assetsign.php:934
+#: src/Assetsign.php:936
 msgid "Brouillons à envoyer"
 msgstr ""
 
-#: src/Assetsign.php:1153 src/Transfer.php:88
+#: src/Assetsign.php:1155 src/Transfer.php:88
 msgid "Vous n'avez pas le droit de modifier ce matériel."
 msgstr ""
 
-#: src/Assetsign.php:1154 src/Transfer.php:91
+#: src/Assetsign.php:1156 src/Transfer.php:91
 msgid "Désactivé dans la configuration de l'entité."
 msgstr ""
 
-#: src/Assetsign.php:1166 src/Transfer.php:85
+#: src/Assetsign.php:1168 src/Transfer.php:85
 msgid "Aucun utilisateur n'a ce matériel."
 msgstr ""
 
-#: src/Assetsign.php:1175
+#: src/Assetsign.php:1177
 msgid "Remettre le matériel à un utilisateur : il le signe à réception."
 msgstr ""
 
-#: src/Assetsign.php:1177
+#: src/Assetsign.php:1179
 msgid ""
 "Reprendre le matériel à son utilisateur actuel : il signe la restitution."
 msgstr ""
 
-#: src/Assetsign.php:1182
+#: src/Assetsign.php:1184
 msgid ""
 "Passer le matériel de son utilisateur actuel à un autre : chacun signe, "
 "l'attribution GLPI suit après les deux signatures."
 msgstr ""
 
-#: src/Assetsign.php:1184
+#: src/Assetsign.php:1186
 msgid "Céder le matériel à une personne ou un organisme."
 msgstr ""
 
-#: src/Assetsign.php:1185
+#: src/Assetsign.php:1187
 msgid "Vendre le matériel, avec son prix et sa date de vente."
 msgstr ""
 
-#: src/Assetsign.php:1186
+#: src/Assetsign.php:1188
 msgid "Faire détruire le matériel par un prestataire."
 msgstr ""
 
-#: src/Assetsign.php:1196
+#: src/Assetsign.php:1198
 msgid "Remise"
 msgstr ""
 
-#: src/Assetsign.php:1303
+#: src/Assetsign.php:1305
 msgid "Départ de la personne"
 msgstr ""
 
-#: src/Assetsign.php:1304
+#: src/Assetsign.php:1306
 msgid ""
 "Une seule fiche de restitution groupée pour tout le matériel affecté, signée "
 "en une fois."
 msgstr ""
 
-#: src/Assetsign.php:1306
+#: src/Assetsign.php:1308
 msgid "Préparer le départ"
 msgstr ""
 
-#: src/Assetsign.php:1309
+#: src/Assetsign.php:1311
 #, php-format
 msgid "Départ en cours : %d matériel(s) à restituer."
 msgstr ""
 
-#: src/Assetsign.php:1312
+#: src/Assetsign.php:1314
 msgid "Voir le départ"
 msgstr ""
 
-#: src/Assetsign.php:1327
+#: src/Assetsign.php:1329
 msgid "Arrivée de la personne"
 msgstr ""
 
-#: src/Assetsign.php:1328
+#: src/Assetsign.php:1330
 msgid ""
 "Un ticket pour l'équipe avec les étapes à suivre (poste, licences, accès) ; "
 "le matériel se remet ensuite depuis ce ticket."
 msgstr ""
 
-#: src/Assetsign.php:1330
+#: src/Assetsign.php:1332
 msgid "Préparer l'arrivée"
 msgstr ""
 
-#: src/Assetsign.php:1332
+#: src/Assetsign.php:1334
 #, php-format
 msgid "Arrivée en cours : ticket n°%d."
 msgstr ""
 
-#: src/Assetsign.php:1334
+#: src/Assetsign.php:1336
 msgid "Voir le ticket d'arrivée"
 msgstr ""
 
-#: src/Assetsign.php:1368
+#: src/Assetsign.php:1370
 msgid "Brouillon"
 msgstr ""
 
-#: src/Assetsign.php:1369 src/Attestation.php:61
+#: src/Assetsign.php:1371 src/Attestation.php:61
 msgid "En attente"
 msgstr ""
 
-#: src/Assetsign.php:1370
+#: src/Assetsign.php:1372
 msgid "Envoyé"
 msgstr ""
 
-#: src/Assetsign.php:1371
+#: src/Assetsign.php:1373
 msgid "Consulté"
 msgstr ""
 
-#: src/Assetsign.php:1373
+#: src/Assetsign.php:1375
 msgid "Expiré"
 msgstr ""
 
-#: src/Assetsign.php:1374 src/Departure.php:83 src/Movement.php:89
+#: src/Assetsign.php:1376 src/Departure.php:83 src/Movement.php:89
 msgid "Annulé"
 msgstr ""
 
-#: src/Assetsign.php:1375
+#: src/Assetsign.php:1377
 msgid "Remis (bénéficiaire externe, sans signature)"
 msgstr ""
 
-#: src/Assetsign.php:1376
+#: src/Assetsign.php:1378
 msgid "Signé par le bénéficiaire, en attente du responsable"
 msgstr ""
 
-#: src/Assetsign.php:1377
+#: src/Assetsign.php:1379
 msgid "Signé sur papier"
 msgstr ""
 
-#: src/Assetsign.php:1570
+#: src/Assetsign.php:1572
 msgid "don"
 msgstr ""
 
-#: src/Assetsign.php:1570
+#: src/Assetsign.php:1572
 msgid "vente"
 msgstr ""
 
-#: src/Assetsign.php:1570
+#: src/Assetsign.php:1572
 msgid "destruction"
 msgstr ""
 
-#: src/Assetsign.php:1597
+#: src/Assetsign.php:1599
 msgid ""
 "Ce matériel n'a pas d'utilisateur assigné : ce changement d'État ne peut "
 "donc pas générer de fiche d'attribution ou de restitution. Assignez un "
 "utilisateur sur la fiche du matériel si une signature est attendue."
 msgstr ""
 
-#: src/Assetsign.php:1780
+#: src/Assetsign.php:1782
 msgid ""
 "Feuille préparée en brouillon : rien n'a été envoyé. Envoyez-la depuis "
 "l'onglet Attributions du matériel quand vous le souhaitez."
 msgstr ""
 
-#: src/Assetsign.php:1842 src/Assetsign.php:1920
+#: src/Assetsign.php:1844 src/Assetsign.php:1922
 msgid "Cette feuille a déjà été envoyée."
 msgstr ""
 
-#: src/Assetsign.php:1884
+#: src/Assetsign.php:1886
 msgid "Seule une attribution peut être un prêt."
 msgstr ""
 
-#: src/Assetsign.php:1887
+#: src/Assetsign.php:1889
 msgid "Cette feuille est annulée ou expirée."
 msgstr ""
 
-#: src/Assetsign.php:1893
+#: src/Assetsign.php:1895
 msgid "Date de retour invalide."
 msgstr ""
 
-#: src/Assetsign.php:1896
+#: src/Assetsign.php:1898
 msgid "La date de retour prévue ne peut pas être dans le passé."
 msgstr ""
 
-#: src/Assetsign.php:1928
+#: src/Assetsign.php:1930
 msgid "Bénéficiaire introuvable ou inactif."
 msgstr ""
 
-#: src/Assetsign.php:1938
+#: src/Assetsign.php:1940
 msgid "Ce modèle de document ne correspond pas à ce type de fiche."
 msgstr ""
 
-#: src/Assetsign.php:2084 src/Assetsign.php:2277
+#: src/Assetsign.php:2086 src/Assetsign.php:2279
 #, php-format
 msgid "Type de matériel invalide : %s"
 msgstr ""
 
-#: src/Assetsign.php:2100 src/Assetsign.php:2273
+#: src/Assetsign.php:2102 src/Assetsign.php:2275
 msgid "Le bénéficiaire (utilisateur GLPI) est obligatoire."
 msgstr ""
 
-#: src/Assetsign.php:2103
+#: src/Assetsign.php:2105
 msgid "Choisissez une autre personne que le détenteur actuel."
 msgstr ""
 
-#: src/Assetsign.php:2136 src/Assetsign.php:2321
+#: src/Assetsign.php:2138 src/Assetsign.php:2323
 msgid "Échec de la création de la fiche."
 msgstr ""
 
-#: src/Assetsign.php:2158
+#: src/Assetsign.php:2160
 #, php-format
 msgid ""
 "Passation demandée de %1$s à %2$s : restitution n° %3$s et remise n° %4$s à "
 "signer"
 msgstr ""
 
-#: src/Assetsign.php:2260
+#: src/Assetsign.php:2262
 msgid "Ce type de fiche ne peut pas être créé manuellement."
 msgstr ""
 
-#: src/Assetsign.php:2269
+#: src/Assetsign.php:2271
 msgid "Le nom du bénéficiaire externe est obligatoire."
 msgstr ""
 
-#: src/Assetsign.php:2413
+#: src/Assetsign.php:2415
 #, php-format
 msgid ""
 "État mis à jour automatiquement (%s) suite à la création d'une fiche par le "
 "plugin Assetsign & signature."
 msgstr ""
 
-#: src/Assetsign.php:2452
+#: src/Assetsign.php:2454
 msgid "Annulée automatiquement (matériel réaffecté avant signature)"
 msgstr ""
 
-#: src/Assetsign.php:2472
+#: src/Assetsign.php:2474
 msgid ""
 "Cette demande ne peut plus être annulée (déjà signée, expirée ou déjà "
 "annulée)."
 msgstr ""
 
-#: src/Assetsign.php:2516
+#: src/Assetsign.php:2518
 msgid ""
 "Cette demande ne peut plus être déléguée (déjà signée, expirée ou annulée)."
 msgstr ""
 
-#: src/Assetsign.php:2521
+#: src/Assetsign.php:2523
 msgid ""
 "La délégation n'est possible que pour un bénéficiaire interne (compte GLPI)."
 msgstr ""
 
-#: src/Assetsign.php:2524
+#: src/Assetsign.php:2526
 msgid "Le compte délégué doit être différent du bénéficiaire d'origine."
 msgstr ""
 
-#: src/Assetsign.php:2533
+#: src/Assetsign.php:2535
 msgid "La délégation de signature est désactivée pour cette entité."
 msgstr ""
 
-#: src/Assetsign.php:2538
+#: src/Assetsign.php:2540
 msgid "Compte utilisateur délégué introuvable."
 msgstr ""
 
-#: src/Assetsign.php:2541
+#: src/Assetsign.php:2543
 msgid "Le compte délégué est désactivé ou supprimé."
 msgstr ""
 
-#: src/Assetsign.php:2550
+#: src/Assetsign.php:2552
 msgid "Le compte délégué n'a pas accès à l'entité de ce dossier."
 msgstr ""
 
-#: src/Assetsign.php:2565
+#: src/Assetsign.php:2567
 #, php-format
 msgid "Signature déléguée à %s (motif : %s)"
 msgstr ""
 
-#: src/Assetsign.php:2602
+#: src/Assetsign.php:2604
 msgid "Cette demande n'est pas déléguée."
 msgstr ""
 
-#: src/Assetsign.php:2605
+#: src/Assetsign.php:2607
 msgid ""
 "Cette délégation ne peut plus être révoquée (déjà signée, expirée ou "
 "annulée)."
 msgstr ""
 
-#: src/Assetsign.php:2619
+#: src/Assetsign.php:2621
 msgid "Délégation de signature révoquée"
 msgstr ""
 
-#: src/Assetsign.php:2911
+#: src/Assetsign.php:2913
 msgid "Vous n'avez pas le droit de faire signer cette fiche."
 msgstr ""
 
-#: src/Assetsign.php:3044
+#: src/Assetsign.php:3046
 msgid "Ordinateur"
 msgstr ""
 
-#: src/Assetsign.php:3045
+#: src/Assetsign.php:3047
 msgid "Écran"
 msgstr ""
 
-#: src/Assetsign.php:3046
+#: src/Assetsign.php:3048
 msgid "Périphérique"
 msgstr ""
 
-#: src/Assetsign.php:3047
+#: src/Assetsign.php:3049
 msgid "Téléphone"
 msgstr ""
 
-#: src/Assetsign.php:3130
+#: src/Assetsign.php:3132
 msgid ""
 "Cette fiche est déjà signée : sa liste de matériel ne peut plus changer."
 msgstr ""
 
-#: src/Assetsign.php:3135 src/Assetsign.php:3153 src/Assetsign.php:3478
+#: src/Assetsign.php:3137 src/Assetsign.php:3155 src/Assetsign.php:3480
 msgid "Élément introuvable ou non visible avec vos droits."
 msgstr ""
 
-#: src/Assetsign.php:3150
+#: src/Assetsign.php:3152
 msgid "C'est déjà le matériel principal de cette fiche."
 msgstr ""
 
-#: src/Assetsign.php:3151
+#: src/Assetsign.php:3153
 msgid "Cet élément figure déjà sur cette fiche."
 msgstr ""
 
-#: src/Assetsign.php:3152
+#: src/Assetsign.php:3154
 msgid "Cet élément figure déjà sur une autre fiche en attente de signature."
 msgstr ""
 
-#: src/Assetsign.php:3276
+#: src/Assetsign.php:3278
 msgid "Le contrôle du retour n'est plus modifiable sur cette feuille."
 msgstr ""
 
-#: src/Assetsign.php:3338
+#: src/Assetsign.php:3340
 #, php-format
 msgid ""
 "%1$s « %2$s » n'a pas été rendu avec %3$s par %4$s (feuille de restitution "
 "n° %5$d)."
 msgstr ""
 
-#: src/Assetsign.php:3350
+#: src/Assetsign.php:3352
 #, php-format
 msgid "Matériel non rendu : %s"
 msgstr ""
 
-#: src/Assetsign.php:3470
+#: src/Assetsign.php:3472
 msgid ""
 "Ce type de matériel ne déclenche pas de feuille d'attribution (Configuration "
 "> Général)."
 msgstr ""
 
-#: src/Assetsign.php:3474 src/Assetsign.php:3515
+#: src/Assetsign.php:3476 src/Assetsign.php:3517
 msgid "Le bénéficiaire doit être un demandeur du ticket."
 msgstr ""
 
-#: src/Assetsign.php:3481
+#: src/Assetsign.php:3483
 msgid "Ce matériel est déjà attribué à cette personne."
 msgstr ""
 
-#: src/Assetsign.php:3488
+#: src/Assetsign.php:3490
 msgid ""
 "La feuille n'a pas pu être créée : vérifiez que l'attribution déclenche une "
 "feuille pour cette entité (Configuration > Général)."
 msgstr ""
 
-#: src/Assetsign.php:3566
+#: src/Assetsign.php:3568
 #, php-format
 msgid ""
 "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée sur papier. Le "
 "scan du document signé est joint au ticket."
 msgstr ""
 
-#: src/Assetsign.php:3567
+#: src/Assetsign.php:3569
 #, php-format
 msgid ""
 "La feuille n° %1$d (%2$s) pour %3$s « %4$s » a été signée. Le document signé "
 "est joint au ticket."
 msgstr ""
 
-#: src/Assetsign.php:3583
+#: src/Assetsign.php:3585
 msgid ""
 "Le ticket n'a pas pu être résolu automatiquement après la signature (un "
 "champ obligatoire du ticket n'est sans doute pas renseigné, comme la "
 "catégorie) : résolvez-le manuellement."
 msgstr ""
 
-#: src/Assetsign.php:4226
+#: src/Assetsign.php:4231
 msgid "Envoie les relances de signature dues"
 msgstr ""
 
-#: src/Assetsign.php:4227
+#: src/Assetsign.php:4232
 msgid "Marque comme expirées les attributions hors délai"
 msgstr ""
 
-#: src/Assetsign.php:4228
+#: src/Assetsign.php:4233
 msgid "Alerte le technicien des attributions sur le point d'expirer"
 msgstr ""
 
-#: src/Assetsign.php:4229
+#: src/Assetsign.php:4234
 msgid "Rappelle au technicien les feuilles restées en brouillon"
 msgstr ""
 
-#: src/Assetsign.php:4243 src/Assetsign.php:4282
+#: src/Assetsign.php:4248 src/Assetsign.php:4287
 msgid "Cette attribution ne peut plus être relancée (déjà signée ou expirée)."
 msgstr ""
 
@@ -6271,147 +6407,192 @@ msgstr ""
 msgid "Adresse invalide."
 msgstr ""
 
-#: src/Config.php:222
+#: src/ConditionPhoto.php:77
+msgid "Le fichier de la photo est vide."
+msgstr ""
+
+#: src/ConditionPhoto.php:85
+msgid "Type de fichier refusé : joignez une photo au format JPEG, PNG ou WebP."
+msgstr ""
+
+#: src/ConditionPhoto.php:89 src/ConditionPhoto.php:97
+msgid "Le contenu du fichier n'est pas une photo valide."
+msgstr ""
+
+#: src/ConditionPhoto.php:92
+#, php-format
+msgid "La photo est trop grande (%d mégapixels au plus)."
+msgstr ""
+
+#: src/ConditionPhoto.php:166
+msgid "Les photos ne concernent que les fiches de remise et de restitution."
+msgstr ""
+
+#: src/ConditionPhoto.php:169 src/ConditionPhoto.php:231
+#: src/PaperSignature.php:215
+msgid "Vous n'avez pas le droit de modifier cette fiche."
+msgstr ""
+
+#: src/ConditionPhoto.php:172
+msgid ""
+"Les photos ne peuvent plus changer : la fiche est signée, expirée ou annulée."
+msgstr ""
+
+#: src/ConditionPhoto.php:175
+#, php-format
+msgid "Une fiche compte %d photos au plus."
+msgstr ""
+
+#: src/ConditionPhoto.php:190
+#, php-format
+msgid "Photo de l'état des lieux - fiche n° %s"
+msgstr ""
+
+#: src/ConditionPhoto.php:235
+msgid "Photo introuvable."
+msgstr ""
+
+#: src/Config.php:224
 msgid "AssetSign : Signature électronique"
 msgstr ""
 
-#: src/Config.php:328
+#: src/Config.php:330
 msgid "Signature intégrée (canvas)"
 msgstr ""
 
-#: src/Config.php:397 src/Config.php:430
+#: src/Config.php:399 src/Config.php:432
 msgid "Échec de l'envoi du logo."
 msgstr ""
 
-#: src/Config.php:403
+#: src/Config.php:405
 msgid "Le logo doit être une image (PNG, JPG, GIF ou WEBP)."
 msgstr ""
 
-#: src/Config.php:408
+#: src/Config.php:410
 #, php-format
 msgid "Le logo dépasse %1$d × %2$d pixels : choisissez une image plus petite."
 msgstr ""
 
-#: src/Config.php:466
+#: src/Config.php:468
 msgid "Votre compte GLPI n'a pas d'adresse e-mail enregistrée."
 msgstr ""
 
-#: src/Config.php:480
+#: src/Config.php:482
 msgid "E-mail de test: Assetsign & signature"
 msgstr ""
 
-#: src/Config.php:482
+#: src/Config.php:484
 msgid ""
 "Cet e-mail confirme que la configuration d'envoi du plugin Assetsign & "
 "signature fonctionne."
 msgstr ""
 
-#: src/Config.php:486
+#: src/Config.php:488
 msgid "Le serveur de messagerie a refusé l'envoi."
 msgstr ""
 
-#: src/Config.php:743
+#: src/Config.php:745
 msgid ""
 "Adresse du webhook refusée : elle doit commencer par https:// et ne pas "
 "viser le serveur lui-même."
 msgstr ""
 
-#: src/Config.php:757
+#: src/Config.php:759
 msgid "Les réglages de référence précédents sont conservés."
 msgstr ""
 
-#: src/Config.php:984
+#: src/Config.php:987
 #, php-format
 msgid ""
 "Préfixe refusé : %d caractères au plus, lettres sans accent, chiffres, tiret "
 "ou souligné, en commençant par une lettre ou un chiffre."
 msgstr ""
 
-#: src/Config.php:988
+#: src/Config.php:991
 #, php-format
 msgid "Format de référence refusé : %d caractères au plus."
 msgstr ""
 
-#: src/Config.php:992
+#: src/Config.php:995
 #, php-format
 msgid "Format de référence refusé : marqueur inconnu. Marqueurs admis : %s."
 msgstr ""
 
-#: src/Config.php:995
+#: src/Config.php:998
 msgid "Format de référence refusé : il doit contenir {seq} ou {aleatoire}."
 msgstr ""
 
-#: src/Config.php:996
+#: src/Config.php:999
 msgid ""
 "Format de référence refusé : pour recommencer à 1 chaque année, le format "
 "doit contenir {annee}."
 msgstr ""
 
-#: src/Config.php:997
+#: src/Config.php:1000
 msgid ""
 "Format de référence refusé : en dehors des marqueurs, seuls les lettres sans "
 "accent, les chiffres, le tiret et le souligné sont admis."
 msgstr ""
 
-#: src/ConfigTransfer.php:348
+#: src/ConfigTransfer.php:349
 msgid "Choisissez un fichier de configuration (.json)."
 msgstr ""
 
-#: src/ConfigTransfer.php:357
+#: src/ConfigTransfer.php:358
 #, php-format
 msgid "Le fichier dépasse la taille maximale (%d Mo)."
 msgstr ""
 
-#: src/ConfigTransfer.php:373
+#: src/ConfigTransfer.php:374
 msgid "Ce fichier n'est pas un JSON valide."
 msgstr ""
 
-#: src/ConfigTransfer.php:376
+#: src/ConfigTransfer.php:377
 msgid "Ce fichier n'est pas une configuration AssetSign."
 msgstr ""
 
-#: src/ConfigTransfer.php:379
+#: src/ConfigTransfer.php:380
 msgid ""
 "Ce fichier n'est pas une configuration AssetSign dans un format reconnu."
 msgstr ""
 
-#: src/ConfigTransfer.php:435
+#: src/ConfigTransfer.php:436
 #, php-format
 msgid "Fichier refusé : la valeur « %s » est inconnue ou invalide."
 msgstr ""
 
-#: src/ConfigTransfer.php:593
+#: src/ConfigTransfer.php:594
 #, php-format
 msgid ""
 "Logo refusé : image PNG, JPG, GIF ou WEBP attendue, de %1$d Ko et %2$d × "
 "%3$d pixels au plus."
 msgstr ""
 
-#: src/ConfigTransfer.php:638
+#: src/ConfigTransfer.php:639
 #, php-format
 msgid ""
 "« %s » n'est jamais importé (secret ou propre à l'instance d'origine) : à "
 "ressaisir si besoin."
 msgstr ""
 
-#: src/ConfigTransfer.php:668
+#: src/ConfigTransfer.php:669
 #, php-format
 msgid "%1$s : « %2$s » n'existe pas sur cette instance, ignoré."
 msgstr ""
 
-#: src/ConfigTransfer.php:751
+#: src/ConfigTransfer.php:752
 #, php-format
 msgid "Gabarit « %s » ignoré : vous n'avez pas le droit de le modifier."
 msgstr ""
 
-#: src/ConfigTransfer.php:760
+#: src/ConfigTransfer.php:761
 #, php-format
 msgid ""
 "Gabarit « %s » ignoré : vous n'avez pas le droit d'en créer dans cette "
 "entité."
 msgstr ""
 
-#: src/ConfigTransfer.php:901
+#: src/ConfigTransfer.php:902
 #, php-format
 msgid "%1$s : « %2$s » est introuvable dans l'entité cible, ignoré."
 msgstr ""
@@ -7057,10 +7238,6 @@ msgid ""
 "scan au format PDF, JPEG ou PNG."
 msgstr ""
 
-#: src/PaperSignature.php:215
-msgid "Vous n'avez pas le droit de modifier cette fiche."
-msgstr ""
-
 #: src/PaperSignature.php:218
 msgid ""
 "La version papier n'est pas possible pour cette fiche (déjà signée, en "
@@ -7186,7 +7363,7 @@ msgid_plural "%d ans"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Pdf/HandoverPdfBuilder.php:416 src/Pdf/PdfRenderingHelpers.php:184
+#: src/Pdf/HandoverPdfBuilder.php:418 src/Pdf/PdfRenderingHelpers.php:184
 msgid "Exemple : petite rayure sur le capot, sans gravité."
 msgstr ""
 

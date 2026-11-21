@@ -6677,3 +6677,160 @@ msgstr ""
 "A verificação roda toda semana; “Executar a verificação” a executa "
 "imediatamente. Abra cada ficha com anomalia para entender o que mudou: nada é"
 " corrigido automaticamente. A exportação CSV serve como prova da verificação."
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Photos de l'état des lieux"
+msgstr "Fotos do laudo de estado"
+
+#: templates/pdf/_condition_photos.html.twig
+msgid "Les photos sont jointes à la fiche dans GLPI ; leur empreinte SHA-256 ci-dessous permet de vérifier qu'elles n'ont pas changé."
+msgstr "As fotos estão anexadas à ficha no GLPI; a impressão digital SHA-256 abaixo permite verificar que não mudaram."
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Avant : à la remise"
+msgstr "Antes: na entrega"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Après : à la restitution"
+msgstr "Depois: na devolução"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "Photo n° %d"
+msgstr "Foto n.º %d"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Pas de photo"
+msgstr "Sem foto"
+
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "%d photo"
+msgid_plural "%d photos"
+msgstr[0] "%d foto"
+msgstr[1] "%d fotos"
+
+#: templates/_condition_photos.html.twig
+msgid "Reproduites dans le PDF"
+msgstr "Reproduzidas no PDF"
+
+#: templates/_condition_photos.html.twig
+msgid "Empreintes seules dans le PDF"
+msgstr "Apenas impressões digitais no PDF"
+
+#: templates/_condition_photos.html.twig
+msgid "Comparez l'état du matériel à la remise (à gauche) et à la restitution (à droite). Les photos de la restitution s'ajoutent tant que la fiche n'est pas signée."
+msgstr "Compare o estado do equipamento na entrega (à esquerda) e na devolução (à direita). As fotos da devolução podem ser adicionadas enquanto a ficha não estiver assinada."
+
+#: templates/_condition_photos.html.twig
+msgid "Photographiez le matériel au moment de la remise : ces photos serviront de point de comparaison à sa restitution. Elles s'ajoutent tant que la fiche n'est pas signée."
+msgstr "Fotografe o equipamento no momento da entrega: essas fotos servirão de referência na devolução. Podem ser adicionadas enquanto a ficha não estiver assinada."
+
+#: templates/_condition_photos.html.twig
+msgid "Aucune fiche de remise lisible pour ce matériel : seules les photos de la restitution s'affichent."
+msgstr "Nenhuma ficha de entrega legível para este equipamento: apenas as fotos da devolução são exibidas."
+
+#: templates/_condition_photos.html.twig
+msgid "Aucune photo pour l'instant."
+msgstr "Nenhuma foto por enquanto."
+
+#: templates/_condition_photos.html.twig
+msgid "Prendre une photo"
+msgstr "Tirar uma foto"
+
+#: templates/_condition_photos.html.twig
+msgid "Ou choisir des photos"
+msgstr "Ou escolher fotos"
+
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "JPEG, PNG ou WebP, %1$d Mo au plus par photo, %2$d photos par fiche. Sur un téléphone, « Prendre une photo » ouvre l'appareil photo. La position GPS et les autres métadonnées sont retirées à l'envoi."
+msgstr "JPEG, PNG ou WebP, no máximo %1$d MB por foto, %2$d fotos por ficha. Num telefone, «Tirar uma foto» abre a câmera. A posição GPS e os outros metadados são removidos no envio."
+
+#: templates/_condition_photos.html.twig
+msgid "Supprimer cette photo"
+msgstr "Excluir esta foto"
+
+#: templates/config_form.html.twig
+msgid "Reproduire les photos de l'état des lieux dans le PDF signé"
+msgstr "Reproduzir as fotos do laudo de estado no PDF assinado"
+
+#: templates/config_form.html.twig
+msgid "Désactivé : le PDF ne cite que l'empreinte SHA-256 de chaque photo, les photos restent consultables sur la fiche dans GLPI. Activé : les photos (et, pour une restitution, celles de la remise) sont imprimées dans le PDF, qui devient plus lourd."
+msgstr "Desativado: o PDF cita apenas a impressão digital SHA-256 de cada foto; as fotos continuam visíveis na ficha no GLPI. Ativado: as fotos (e, numa devolução, as da entrega) são impressas no PDF, que fica mais pesado."
+
+#: front/assetsign.form.php:99
+#, php-format
+msgid "%d photo ajoutée."
+msgid_plural "%d photos ajoutées."
+msgstr[0] "%d foto adicionada."
+msgstr[1] "%d fotos adicionadas."
+
+#: front/assetsign.form.php:112
+msgid "Photo supprimée."
+msgstr "Foto excluída."
+
+#: src/Api/AssetsignFormController.php:100 src/ConditionPhoto.php:80
+#, php-format
+msgid "La photo dépasse la taille maximale (%d Mo)."
+msgstr "A foto excede o tamanho máximo (%d MB)."
+
+#: src/Api/AssetsignFormController.php:103 src/ConditionPhoto.php:73
+#: src/ConditionPhoto.php:109 src/ConditionPhoto.php:118
+#: src/ConditionPhoto.php:182 src/ConditionPhoto.php:200
+#: src/ConditionPhoto.php:205
+msgid "Échec de l'envoi de la photo."
+msgstr "Falha no envio da foto."
+
+#: src/Api/AssetsignFormController.php:108
+#, php-format
+msgid "Photo %1$d : %2$s"
+msgstr "Foto %1$d: %2$s"
+
+#: src/Api/AssetsignFormController.php:112
+msgid "Prenez ou choisissez au moins une photo."
+msgstr "Tire ou escolha pelo menos uma foto."
+
+#: src/ConditionPhoto.php:77
+msgid "Le fichier de la photo est vide."
+msgstr "O arquivo da foto está vazio."
+
+#: src/ConditionPhoto.php:85
+msgid "Type de fichier refusé : joignez une photo au format JPEG, PNG ou WebP."
+msgstr "Tipo de arquivo recusado: anexe uma foto em formato JPEG, PNG ou WebP."
+
+#: src/ConditionPhoto.php:89 src/ConditionPhoto.php:97
+msgid "Le contenu du fichier n'est pas une photo valide."
+msgstr "O conteúdo do arquivo não é uma foto válida."
+
+#: src/ConditionPhoto.php:92
+#, php-format
+msgid "La photo est trop grande (%d mégapixels au plus)."
+msgstr "A foto é grande demais (no máximo %d megapixels)."
+
+#: src/ConditionPhoto.php:166
+msgid "Les photos ne concernent que les fiches de remise et de restitution."
+msgstr "As fotos só se aplicam às fichas de entrega e de devolução."
+
+#: src/ConditionPhoto.php:172
+msgid "Les photos ne peuvent plus changer : la fiche est signée, expirée ou annulée."
+msgstr "As fotos não podem mais mudar: a ficha está assinada, expirada ou cancelada."
+
+#: src/ConditionPhoto.php:175
+#, php-format
+msgid "Une fiche compte %d photos au plus."
+msgstr "Uma ficha comporta no máximo %d fotos."
+
+#: src/ConditionPhoto.php:190
+#, php-format
+msgid "Photo de l'état des lieux - fiche n° %s"
+msgstr "Foto do laudo de estado - ficha n.º %s"
+
+#: src/ConditionPhoto.php:235
+msgid "Photo introuvable."
+msgstr "Foto não encontrada."

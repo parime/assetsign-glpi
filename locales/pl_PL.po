@@ -6692,3 +6692,162 @@ msgstr ""
 "Kontrola działa co tydzień; „Uruchom kontrolę” uruchamia ją od razu. Otwórz "
 "każdą kartę z nieprawidłowością, aby zobaczyć, co się zmieniło: nic nie jest "
 "poprawiane automatycznie. Eksport CSV służy jako dowód kontroli."
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Photos de l'état des lieux"
+msgstr "Zdjęcia protokołu stanu"
+
+#: templates/pdf/_condition_photos.html.twig
+msgid "Les photos sont jointes à la fiche dans GLPI ; leur empreinte SHA-256 ci-dessous permet de vérifier qu'elles n'ont pas changé."
+msgstr "Zdjęcia są dołączone do karty w GLPI; ich skrót SHA-256 poniżej pozwala sprawdzić, że się nie zmieniły."
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Avant : à la remise"
+msgstr "Przed: przy przekazaniu"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Après : à la restitution"
+msgstr "Po: przy zwrocie"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "Photo n° %d"
+msgstr "Zdjęcie nr %d"
+
+#: templates/pdf/_condition_photos.html.twig
+#: templates/_condition_photos.html.twig
+msgid "Pas de photo"
+msgstr "Brak zdjęcia"
+
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "%d photo"
+msgid_plural "%d photos"
+msgstr[0] "%d zdjęcie"
+msgstr[1] "%d zdjęcia"
+msgstr[2] "%d zdjęć"
+
+#: templates/_condition_photos.html.twig
+msgid "Reproduites dans le PDF"
+msgstr "Drukowane w PDF"
+
+#: templates/_condition_photos.html.twig
+msgid "Empreintes seules dans le PDF"
+msgstr "Tylko skróty w PDF"
+
+#: templates/_condition_photos.html.twig
+msgid "Comparez l'état du matériel à la remise (à gauche) et à la restitution (à droite). Les photos de la restitution s'ajoutent tant que la fiche n'est pas signée."
+msgstr "Porównaj stan sprzętu przy przekazaniu (po lewej) i przy zwrocie (po prawej). Zdjęcia zwrotu można dodawać, dopóki karta nie zostanie podpisana."
+
+#: templates/_condition_photos.html.twig
+msgid "Photographiez le matériel au moment de la remise : ces photos serviront de point de comparaison à sa restitution. Elles s'ajoutent tant que la fiche n'est pas signée."
+msgstr "Sfotografuj sprzęt w chwili przekazania: zdjęcia posłużą do porównania przy zwrocie. Można je dodawać, dopóki karta nie zostanie podpisana."
+
+#: templates/_condition_photos.html.twig
+msgid "Aucune fiche de remise lisible pour ce matériel : seules les photos de la restitution s'affichent."
+msgstr "Brak dostępnej karty przekazania dla tego sprzętu: wyświetlane są tylko zdjęcia zwrotu."
+
+#: templates/_condition_photos.html.twig
+msgid "Aucune photo pour l'instant."
+msgstr "Na razie brak zdjęć."
+
+#: templates/_condition_photos.html.twig
+msgid "Prendre une photo"
+msgstr "Zrób zdjęcie"
+
+#: templates/_condition_photos.html.twig
+msgid "Ou choisir des photos"
+msgstr "Lub wybierz zdjęcia"
+
+#: templates/_condition_photos.html.twig
+#, php-format
+msgid "JPEG, PNG ou WebP, %1$d Mo au plus par photo, %2$d photos par fiche. Sur un téléphone, « Prendre une photo » ouvre l'appareil photo. La position GPS et les autres métadonnées sont retirées à l'envoi."
+msgstr "JPEG, PNG lub WebP, maksymalnie %1$d MB na zdjęcie, %2$d zdjęć na kartę. Na telefonie „Zrób zdjęcie” otwiera aparat. Pozycja GPS i inne metadane są usuwane podczas przesyłania."
+
+#: templates/_condition_photos.html.twig
+msgid "Supprimer cette photo"
+msgstr "Usuń to zdjęcie"
+
+#: templates/config_form.html.twig
+msgid "Reproduire les photos de l'état des lieux dans le PDF signé"
+msgstr "Umieszczaj zdjęcia protokołu stanu w podpisanym PDF"
+
+#: templates/config_form.html.twig
+msgid "Désactivé : le PDF ne cite que l'empreinte SHA-256 de chaque photo, les photos restent consultables sur la fiche dans GLPI. Activé : les photos (et, pour une restitution, celles de la remise) sont imprimées dans le PDF, qui devient plus lourd."
+msgstr "Wyłączone: PDF podaje tylko skrót SHA-256 każdego zdjęcia, zdjęcia pozostają dostępne na karcie w GLPI. Włączone: zdjęcia (a przy zwrocie także zdjęcia z przekazania) są drukowane w PDF, który staje się większy."
+
+#: front/assetsign.form.php:99
+#, php-format
+msgid "%d photo ajoutée."
+msgid_plural "%d photos ajoutées."
+msgstr[0] "Dodano %d zdjęcie."
+msgstr[1] "Dodano %d zdjęcia."
+msgstr[2] "Dodano %d zdjęć."
+
+#: front/assetsign.form.php:112
+msgid "Photo supprimée."
+msgstr "Zdjęcie usunięte."
+
+#: src/Api/AssetsignFormController.php:100 src/ConditionPhoto.php:80
+#, php-format
+msgid "La photo dépasse la taille maximale (%d Mo)."
+msgstr "Zdjęcie przekracza maksymalny rozmiar (%d MB)."
+
+#: src/Api/AssetsignFormController.php:103 src/ConditionPhoto.php:73
+#: src/ConditionPhoto.php:109 src/ConditionPhoto.php:118
+#: src/ConditionPhoto.php:182 src/ConditionPhoto.php:200
+#: src/ConditionPhoto.php:205
+msgid "Échec de l'envoi de la photo."
+msgstr "Nie udało się przesłać zdjęcia."
+
+#: src/Api/AssetsignFormController.php:108
+#, php-format
+msgid "Photo %1$d : %2$s"
+msgstr "Zdjęcie %1$d: %2$s"
+
+#: src/Api/AssetsignFormController.php:112
+msgid "Prenez ou choisissez au moins une photo."
+msgstr "Zrób lub wybierz co najmniej jedno zdjęcie."
+
+#: src/ConditionPhoto.php:77
+msgid "Le fichier de la photo est vide."
+msgstr "Plik zdjęcia jest pusty."
+
+#: src/ConditionPhoto.php:85
+msgid "Type de fichier refusé : joignez une photo au format JPEG, PNG ou WebP."
+msgstr "Odrzucony typ pliku: dołącz zdjęcie w formacie JPEG, PNG lub WebP."
+
+#: src/ConditionPhoto.php:89 src/ConditionPhoto.php:97
+msgid "Le contenu du fichier n'est pas une photo valide."
+msgstr "Zawartość pliku nie jest prawidłowym zdjęciem."
+
+#: src/ConditionPhoto.php:92
+#, php-format
+msgid "La photo est trop grande (%d mégapixels au plus)."
+msgstr "Zdjęcie jest za duże (maksymalnie %d megapikseli)."
+
+#: src/ConditionPhoto.php:166
+msgid "Les photos ne concernent que les fiches de remise et de restitution."
+msgstr "Zdjęcia dotyczą tylko kart przekazania i zwrotu."
+
+#: src/ConditionPhoto.php:172
+msgid "Les photos ne peuvent plus changer : la fiche est signée, expirée ou annulée."
+msgstr "Zdjęć nie można już zmienić: karta jest podpisana, wygasła lub anulowana."
+
+#: src/ConditionPhoto.php:175
+#, php-format
+msgid "Une fiche compte %d photos au plus."
+msgstr "Karta może zawierać maksymalnie %d zdjęć."
+
+#: src/ConditionPhoto.php:190
+#, php-format
+msgid "Photo de l'état des lieux - fiche n° %s"
+msgstr "Zdjęcie protokołu stanu - karta nr %s"
+
+#: src/ConditionPhoto.php:235
+msgid "Photo introuvable."
+msgstr "Nie znaleziono zdjęcia."
