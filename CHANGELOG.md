@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Contrôle d'intégrité périodique des preuves signées** (#371) : nouvelle page Outils > AssetSign
+  > Pilotage du parc > Contrôle d'intégrité des preuves, et tâche planifiée hebdomadaire
+  `assetsignIntegrity`. Pour chaque fiche signée, elle vérifie que le PDF signé (ou le scan papier)
+  existe toujours, que son empreinte SHA-256 est celle de la preuve de signature et qu'il reste
+  rattaché au matériel ; une fiche signée sans PDF ni preuve est aussi signalée. Bouton « Lancer le
+  contrôle », historique des 60 derniers contrôles limité aux entités de l'utilisateur, export CSV
+  des anomalies comme preuve d'audit. Rien n'est corrigé automatiquement.
+
 ## [2.27.0] - 2026-11-21
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).

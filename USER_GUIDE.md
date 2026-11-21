@@ -23,7 +23,7 @@ AssetSign n'ajoute **qu'une entrée** aux menus de GLPI : **Outils > AssetSign**
 | **Attributions** | Attributions (liste et nouvelle attribution), Mouvements, Départs, Campagnes d'attestation |
 | **Attestations d'effacement des données** | Attestations et matériels sortis sans attestation |
 | **Fiches de maintenance** | Fiches de maintenance et de préparation de poste |
-| **Pilotage du parc** | Tableau de bord RSE, Renouvellement du parc |
+| **Pilotage du parc** | Tableau de bord RSE, Renouvellement du parc, Contrôle d'intégrité des preuves |
 
 Chaque onglet n'apparaît que si votre profil a le droit correspondant (par exemple, un profil qui n'a que le droit Maintenance ne voit que les fiches de maintenance). Les anciennes adresses (favoris) continuent de fonctionner.
 
@@ -203,6 +203,18 @@ Vue symétrique du Passeport matériel : une frise chronologique de tout ce qu'u
 
 Voir aussi [ROADMAP.md](ROADMAP.md) pour ce qui est envisagé.
 
+### Contrôle d'intégrité des preuves
+
+Outils > AssetSign > Pilotage du parc > **Contrôle d'intégrité des preuves**. Chaque semaine, la
+tâche planifiée `assetsignIntegrity` vérifie toutes les fiches signées (ou en attente de
+contre-signature) : le PDF signé ou le scan papier existe toujours dans GLPI et sur le disque, son
+empreinte SHA-256 est celle enregistrée dans la preuve de signature, et le document reste rattaché
+au matériel. Une fiche marquée signée sans PDF ni preuve est aussi signalée. Le bouton **Lancer le
+contrôle** le relance aussitôt (droit de modification AssetSign) ; l'export CSV de la liste des
+anomalies sert de preuve de contrôle lors d'un audit. Rien n'est corrigé automatiquement : ouvrez la
+fiche en cause pour comprendre ce qui a changé. Les 60 derniers contrôles sont conservés, chaque
+utilisateur n'en voit que la part de ses entités.
+
 ### Alternative au cron GLPI
 
 Le CronTask GLPI (**Administration > Actions automatiques** > `assetsignReminders` / `assetsignExpire` / `assetsignExpiryWarning`) est actif par défaut et suffit dans la plupart des cas.
@@ -290,7 +302,7 @@ AssetSign adds **a single entry** to GLPI's menus: **Tools > AssetSign**. At the
 | **Assignments** | Assignments (list and new assignment), Movements, Departures, Attestation campaigns |
 | **Data wiping attestations** | Attestations and equipment that left without one |
 | **Maintenance records** | Maintenance and workstation preparation records |
-| **Fleet management** | CSR dashboard, Fleet renewal |
+| **Fleet management** | CSR dashboard, Fleet renewal, Integrity check of signed proofs |
 
 Each tab only appears if your profile has the matching right (for instance, a profile with only the Maintenance right only sees maintenance records). Old addresses (bookmarks) keep working.
 
@@ -454,6 +466,17 @@ A view symmetrical to the Asset Passport: a timeline of everything a person has 
 - Automated test coverage: deliberately partial today, to be extended as the plugin evolves (see [ARCHITECTURE.md](ARCHITECTURE.md#tests-automatisés)).
 
 See also [ROADMAP.md](ROADMAP.md) for what's under consideration.
+
+### Integrity check of signed proofs
+
+Tools > AssetSign > Fleet management > **Integrity check of signed proofs**. Every week, the
+`assetsignIntegrity` automatic action checks every signed sheet (or sheet awaiting
+countersignature): the signed PDF or paper scan still exists in GLPI and on disk, its SHA-256 hash
+matches the one recorded in the signature proof, and the document is still attached to the asset. A
+sheet marked as signed without any PDF or proof is reported too. The **Run the check** button runs
+it immediately (AssetSign update right); the CSV export of the anomalies is evidence of the check
+for an audit. Nothing is fixed automatically: open the sheet concerned to see what changed. The last
+60 checks are kept, and each user only sees the part covering their entities.
 
 ### Alternative to the GLPI cron
 

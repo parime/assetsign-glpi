@@ -243,6 +243,13 @@ foreach (['A' => $a, 'B' => $b] as $suffix => $entity) {
     $ids['movement_' . $suffix] = $insert('glpi_plugin_assetsign_movements', [
         'entities_id' => $entity, 'itemtype' => 'Computer', 'items_id' => $ids['computer_' . $suffix],
     ]);
+    // Issue #371 : fiche signee sans PDF (anomalie du controle d'integrite), sur un PC distinct
+    // pour ne pas fausser l'etat de assetsign_B dans l'instantane.
+    $proofComputer = (int) $computer->add(['name' => 'PC securite ' . $suffix . ' preuve', 'entities_id' => $entity]);
+    $insert('glpi_plugin_assetsign_assetsigns', [
+        'entities_id' => $entity, 'itemtype' => 'Computer', 'items_id' => $proofComputer,
+        'users_id' => $leaving, 'type' => Assetsign::TYPE_HANDOVER, 'status' => Assetsign::STATUS_SIGNED,
+    ]);
     // Issue #322 : attestation d'effacement des donnees.
     $ids['wipe_' . $suffix] = $insert('glpi_plugin_assetsign_wipeattestations', [
         'entities_id' => $entity, 'itemtype' => 'Computer', 'items_id' => $ids['computer_' . $suffix],
@@ -268,4 +275,6 @@ foreach (['A' => $a, 'B' => $b] as $suffix => $entity) {
     ]);
 }
 
+// Issue #371 : un controle d'integrite enregistre, pour la page front/integrity.php.
+\GlpiPlugin\Assetsign\IntegrityCheck::run();
 echo json_encode($ids), "\n";
