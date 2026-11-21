@@ -226,7 +226,7 @@ final class Transfer {
    /** Message de confirmation apres la creation (fiches envoyees ou laissees en brouillon). */
    public static function createdMessage(Assetsign $return, Assetsign $handover): string {
       return sprintf(
-         __('Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel lui sera attribué dans GLPI après les deux signatures.', 'assetsign'),
+         __('Passation préparée : %1$s signe la restitution, %2$s signe la remise. Le matériel passera à %2$s dans GLPI après les deux signatures.', 'assetsign'),
          self::userName((int) $return->fields['users_id']),
          self::userName((int) $handover->fields['users_id'])
       );
