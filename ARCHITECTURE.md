@@ -34,6 +34,8 @@ assetsign/
 ├── templates/               # gabarits Twig (admin + PDF + page de signature)
 ├── public/                  # ressources statiques (obligatoire depuis GLPI 11, cf. TROUBLESHOOTING.md)
 │   ├── js/sign/              # signature_pad.js, PDF.js, sign.js, damage-annotation.js, csrf-queue.js
+│   ├── js/inventory/         # scan.js : scan des étiquettes QR (inventaire physique, #368)
+│   ├── lib/scan/             # jsQR 1.4.0 (Apache-2.0), décodage QR dans le navigateur, sans CDN
 │   ├── css/                  # feuille de style des pages d'administration du plugin
 │   └── images/damage-views/  # 3 vraies vues de référence pour l'état des lieux visuel (JPG)
 ├── locales/                 # traductions (fr_FR, en_GB, es_ES, de_DE, it_IT)

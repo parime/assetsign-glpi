@@ -6692,3 +6692,173 @@ msgstr ""
 "Kontrola działa co tydzień; „Uruchom kontrolę” uruchamia ją od razu. Otwórz "
 "każdą kartę z nieprawidłowością, aby zobaczyć, co się zmieniło: nic nie jest "
 "poprawiane automatycznie. Eksport CSV służy jako dowód kontroli."
+
+msgid "Trouvé"
+msgstr "Znaleziony"
+
+msgid "À un autre emplacement"
+msgstr "W innej lokalizacji"
+
+msgid "Absent"
+msgstr "Brak"
+
+msgid "En trop"
+msgstr "Nadmiarowy"
+
+msgid "Saisissez ou scannez un code."
+msgstr "Wpisz lub zeskanuj kod."
+
+msgid "Cette campagne est clôturée : elle ne reçoit plus de scan."
+msgstr "Ta kampania jest zamknięta: nie przyjmuje już skanów."
+
+#, php-format
+msgid "Plusieurs matériels correspondent à « %s » : scannez l'étiquette QR ou saisissez le numéro de série."
+msgstr "Kilka urządzeń pasuje do „%s”: zeskanuj etykietę QR lub wpisz numer seryjny."
+
+#, php-format
+msgid "« %s » est déjà scanné dans cette campagne."
+msgstr "„%s” został już zeskanowany w tej kampanii."
+
+#, php-format
+msgid "« %s » : aucun matériel GLPI ne correspond (en trop)."
+msgstr "„%s”: żadne urządzenie GLPI nie pasuje (nadmiarowy)."
+
+#, php-format
+msgid "« %s » : trouvé."
+msgstr "„%s”: znaleziony."
+
+#, php-format
+msgid "« %s » : trouvé, mais enregistré dans GLPI à un autre emplacement."
+msgstr "„%s”: znaleziony, ale w GLPI zapisany w innej lokalizacji."
+
+msgid "Résultat"
+msgstr "Wynik"
+
+msgid "Numéro de série"
+msgstr "Numer seryjny"
+
+msgid "Numéro d'inventaire"
+msgstr "Numer inwentarzowy"
+
+msgid "Emplacement dans GLPI"
+msgstr "Lokalizacja w GLPI"
+
+msgid "Code scanné"
+msgstr "Zeskanowany kod"
+
+msgid "Date du scan"
+msgstr "Data skanu"
+
+msgid "Scanné par"
+msgstr "Zeskanowane przez"
+
+msgid "Indiquez un nom et un lieu pour la campagne."
+msgstr "Podaj nazwę i lokalizację kampanii."
+
+msgid "Campagne clôturée : le rapport est figé."
+msgstr "Kampania zamknięta: raport został zamrożony."
+
+msgid "Campagne introuvable."
+msgstr "Nie znaleziono kampanii."
+
+msgid "Nouvelle campagne d'inventaire"
+msgstr "Nowa kampania inwentaryzacji"
+
+msgid "Aucun lieu dans vos entités : créez d'abord les lieux (salles, étages) dans Configuration > Intitulés > Lieux."
+msgstr "Brak lokalizacji w Twoich jednostkach: najpierw utwórz lokalizacje (sale, piętra) w Ustawienia > Listy rozwijane > Lokalizacje."
+
+msgid "Exemple : inventaire du 2e étage"
+msgstr "Przykład: inwentaryzacja 2. piętra"
+
+msgid "Lieu à inventorier"
+msgstr "Lokalizacja do inwentaryzacji"
+
+msgid "Inclure les sous-lieux (salles du bâtiment, par exemple)"
+msgstr "Uwzględnij podlokalizacje (na przykład sale budynku)"
+
+msgid "Créer la campagne"
+msgstr "Utwórz kampanię"
+
+msgid "Campagnes d'inventaire physique"
+msgstr "Kampanie inwentaryzacji fizycznej"
+
+msgid "Lieu"
+msgstr "Lokalizacja"
+
+msgid "Scans"
+msgstr "Skany"
+
+msgid "Toutes les campagnes d'inventaire"
+msgstr "Wszystkie kampanie inwentaryzacji"
+
+#, php-format
+msgid "Lieu : %s"
+msgstr "Lokalizacja: %s"
+
+msgid "avec ses sous-lieux"
+msgstr "wraz z podlokalizacjami"
+
+#, php-format
+msgid "Créée le %s"
+msgstr "Utworzona %s"
+
+#, php-format
+msgid "clôturée le %s"
+msgstr "zamknięta %s"
+
+msgid "La caméra n'est pas disponible dans ce navigateur (elle exige une connexion HTTPS) : utilisez la saisie manuelle."
+msgstr "Kamera nie jest dostępna w tej przeglądarce (wymaga połączenia HTTPS): użyj wprowadzania ręcznego."
+
+msgid "Accès à la caméra refusé : autorisez-le dans le navigateur, ou utilisez la saisie manuelle."
+msgstr "Odmówiono dostępu do kamery: zezwól na niego w przeglądarce lub użyj wprowadzania ręcznego."
+
+msgid "Visez une étiquette QR : chaque matériel reconnu s'ajoute ci-dessous."
+msgstr "Skieruj kamerę na etykietę QR: każde rozpoznane urządzenie zostanie dodane poniżej."
+
+msgid "Le scan n'a pas pu être enregistré : réessayez."
+msgstr "Nie udało się zapisać skanu: spróbuj ponownie."
+
+msgid "Scanner les étiquettes QR"
+msgstr "Skanuj etykiety QR"
+
+msgid "Démarrer la caméra"
+msgstr "Uruchom kamerę"
+
+msgid "Arrêter la caméra"
+msgstr "Zatrzymaj kamerę"
+
+msgid "Saisie manuelle : numéro de série, numéro d'inventaire ou nom"
+msgstr "Wprowadzanie ręczne: numer seryjny, numer inwentarzowy lub nazwa"
+
+msgid "Rapport de rapprochement"
+msgstr "Raport uzgodnienia"
+
+msgid "Actualiser"
+msgstr "Odśwież"
+
+msgid "Trouvé : scanné et rangé dans ce lieu dans GLPI. À un autre emplacement : scanné ici, mais GLPI le place ailleurs. Absent : attendu dans ce lieu, pas scanné. En trop : code scanné qui ne correspond à aucun matériel de vos entités. Rien n'est modifié dans GLPI : corrigez les écarts depuis la fiche du matériel."
+msgstr "Znaleziony: zeskanowany i zapisany w GLPI w tej lokalizacji. W innej lokalizacji: zeskanowany tutaj, ale GLPI umieszcza go gdzie indziej. Brak: oczekiwany w tej lokalizacji, nie zeskanowany. Nadmiarowy: zeskanowany kod, który nie odpowiada żadnemu urządzeniu Twoich jednostek. Nic nie jest zmieniane w GLPI: popraw rozbieżności w karcie urządzenia."
+
+msgid "Aucun matériel attendu ni scanné pour l'instant."
+msgstr "Na razie brak oczekiwanych lub zeskanowanych urządzeń."
+
+msgid "Scan"
+msgstr "Skan"
+
+msgid "Clôturer la campagne ? Elle ne recevra plus de scan."
+msgstr "Zamknąć kampanię? Nie będzie już przyjmować skanów."
+
+msgid "Clôturer la campagne"
+msgstr "Zamknij kampanię"
+
+msgid "L'inventaire physique, salle par salle : on scanne les étiquettes QR du matériel présent (ou on saisit son numéro de série) et le plugin le compare à ce que GLPI attend dans ce lieu."
+msgstr "Inwentaryzacja fizyczna, sala po sali: skanuje się etykiety QR obecnych urządzeń (lub wpisuje ich numer seryjny), a wtyczka porównuje je z tym, czego GLPI oczekuje w tej lokalizacji."
+
+msgid "Créez une campagne pour un lieu, scannez chaque matériel avec la caméra du téléphone ou de la tablette, puis lisez le rapport : trouvé, absent, à un autre emplacement, en trop. Rien n'est modifié dans le parc : corrigez vous-même les écarts. L'export CSV sert de preuve d'inventaire."
+msgstr "Utwórz kampanię dla lokalizacji, zeskanuj każde urządzenie kamerą telefonu lub tabletu, a następnie przeczytaj raport: znaleziony, brak, w innej lokalizacji, nadmiarowy. Nic nie jest zmieniane w zasobach: samodzielnie popraw rozbieżności. Eksport CSV służy jako dowód inwentaryzacji."
+
+msgid "Inventaire physique"
+msgid_plural "Inventaires physiques"
+msgstr[0] "Inwentaryzacja fizyczna"
+msgstr[1] "Inwentaryzacje fizyczne"
+msgstr[2] "Inwentaryzacji fizycznych"
