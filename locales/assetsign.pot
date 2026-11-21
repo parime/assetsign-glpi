@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 11:35+0000\n"
+"POT-Creation-Date: 2026-11-21 11:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6746,28 +6746,28 @@ msgstr ""
 
 #: src/MenuSection.php:107
 msgid ""
+"Les matériels qui arrivent en fin d'amortissement sur la période choisie, "
+"avec le budget de remplacement par année."
+msgstr ""
+
+#: src/MenuSection.php:108
+msgid ""
+"Choisissez la période, puis exportez la liste en CSV ou créez un ticket de "
+"changement groupé pour planifier le remplacement."
+msgstr ""
+
+#: src/MenuSection.php:112
+msgid ""
 "Vérifie que chaque fiche signée garde sa preuve : le PDF signé (ou le scan "
 "papier) existe toujours, son empreinte SHA-256 n'a pas changé et il reste "
 "rattaché au matériel."
 msgstr ""
 
-#: src/MenuSection.php:108
+#: src/MenuSection.php:113
 msgid ""
 "Le contrôle tourne chaque semaine ; « Lancer le contrôle » le relance "
 "aussitôt. Ouvrez chaque fiche en anomalie pour comprendre ce qui a changé : "
 "rien n'est corrigé automatiquement. L'export CSV sert de preuve de contrôle."
-msgstr ""
-
-#: src/MenuSection.php:112
-msgid ""
-"Les matériels qui arrivent en fin d'amortissement sur la période choisie, "
-"avec le budget de remplacement par année."
-msgstr ""
-
-#: src/MenuSection.php:113
-msgid ""
-"Choisissez la période, puis exportez la liste en CSV ou créez un ticket de "
-"changement groupé pour planifier le remplacement."
 msgstr ""
 
 #: src/MenuSection.php:127
