@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.28.0] - 2026-11-21
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Added
 
 - **Contrôle d'intégrité périodique des preuves signées** (#371) : nouvelle page Outils > AssetSign
