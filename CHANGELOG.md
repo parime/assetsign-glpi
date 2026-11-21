@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.29.0] - 2026-11-21
+
 ### Added
 
 - **Photos de l'état des lieux, comparaison avant/après** (#369) : sur une fiche de remise ou de
