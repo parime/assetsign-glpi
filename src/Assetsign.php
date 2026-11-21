@@ -376,6 +376,22 @@ class Assetsign extends Compat\Base\AssetsignBase
       }
    }
 
+    /**
+     * Issue #370 : fiche d'une passation : a chaque changement de statut, l'attribution GLPI suit
+     * une fois les deux fiches signees, et l'annulation de l'une annule l'autre (cf. Transfer).
+     */
+   public function post_updateItem($history = true) {
+       parent::post_updateItem($history);
+      if (in_array('status', $this->updates, true) && (int) ($this->fields['transfer_peer_id'] ?? 0) > 0) {
+         try {
+             Transfer::onStatusChange($this);
+         } catch (\Throwable $e) {
+             // Jamais bloquant pour la signature elle-meme : l'echec est journalise.
+             \Toolbox::logInFile('assetsign', sprintf("Passation de la fiche #%d : %s\n", $this->getID(), $e->getMessage()), true);
+         }
+      }
+   }
+
     /** Issue #273 : la reference est figee a la creation, aucune mise a jour ne peut la changer. */
    public function prepareInputForUpdate($input) {
        unset($input['reference']);
@@ -555,6 +571,7 @@ class Assetsign extends Compat\Base\AssetsignBase
            'open_tickets'     => $this->isNewID($ID) || !$this->isStillEditable() ? [] : $this->getBeneficiaryOpenTickets(),
            // Issue #181 : lignes « type d'element GLPI » du kit et objets reels choisis.
            'kit_item_lines'   => $this->isNewID($ID) ? [] : $this->getKitItemLines(),
+           'transfer'         => $this->isNewID($ID) ? null : Transfer::getDisplayData($this),
            'csrf_token'   => \Session::getNewCSRFToken(),
        ]);
 
@@ -1159,6 +1176,10 @@ class Assetsign extends Compat\Base\AssetsignBase
            ['action' => 'return', 'type' => self::TYPE_RETURN, 'reason' => $returnReason,
                'help' => __('Reprendre le matériel à son utilisateur actuel : il signe la restitution.', 'assetsign')],
        ];
+       // Issue #370 : passation directe du detenteur actuel a un autre (deux fiches, deux signatures).
+       $cards[] = ['action' => 'transfer', 'type' => 'transfer', 'reason' => Transfer::unavailableReason($item, $config),
+           'label' => __('Passation', 'assetsign'), 'icon' => Transfer::getIcon(),
+           'help' => __('Passer le matériel de son utilisateur actuel à un autre : chacun signe, l\'attribution GLPI suit après les deux signatures.', 'assetsign')];
        foreach ([
           self::TYPE_DON         => __('Céder le matériel à une personne ou un organisme.', 'assetsign'),
           self::TYPE_VENTE       => __('Vendre le matériel, avec son prix et sa date de vente.', 'assetsign'),
@@ -1168,6 +1189,9 @@ class Assetsign extends Compat\Base\AssetsignBase
               'reason' => array_key_exists($type, $manualTypes) ? '' : $disabled];
        }
        foreach ($cards as &$card) {
+         if (isset($card['label'])) {
+             continue;
+         }
           // « Remise » plutot que le nom generique du type (« Attribution »), face a « Restitution ».
           $card['label'] = $card['type'] === self::TYPE_HANDOVER ? __('Remise', 'assetsign') : ($types[$card['type']] ?? '');
           $card['icon'] = $icons[$card['type']] ?? 'ti ti-file';
@@ -1399,6 +1423,10 @@ class Assetsign extends Compat\Base\AssetsignBase
        // Issue #174 : element attribue au beneficiaire parce qu'il est remis avec un autre materiel
        // (deja sur la feuille de ce materiel) : pas de feuille separee.
       if (!empty($item->input['_assetsign_handed_item'])) {
+          return;
+      }
+       // Issue #370 : attribution faite par une passation dont les deux fiches sont signees.
+      if (!empty($item->input['_assetsign_transfer'])) {
           return;
       }
 
@@ -2035,6 +2063,110 @@ class Assetsign extends Compat\Base\AssetsignBase
        $assetsign->attachConnectedItemsIfConfigured();
        $assetsign->launchWorkflow(null, true);
        return $assetsign;
+   }
+
+    /**
+     * Issue #370 : passation directe du detenteur actuel ($item->users_id) a $toUsersId. Cree deux
+     * fiches jumelees (transfer_peer_id) : la restitution du sortant, qui reprend le materiel remis
+     * avec, et la remise a l'entrant ; les envoie toutes les deux pour signature (envoi immediat,
+     * comme la creation manuelle). L'attribution GLPI ne change pas ici : seulement apres les deux
+     * signatures (Transfer::onStatusChange()). Les fiches en attente de ce materiel sont annulees,
+     * comme lors d'une reaffectation.
+     *
+     * @return array{return: self, handover: self}
+     *
+     * @throws \RuntimeException|\InvalidArgumentException avant toute ecriture
+     */
+   public static function createTransfer(string $itemtype, int $items_id, int $toUsersId): array {
+       global $DB;
+
+      if (!in_array($itemtype, Config::getAllManageableItemtypes(), true) || !is_subclass_of($itemtype, CommonDBTM::class)) {
+          throw new \InvalidArgumentException(sprintf(__('Type de matériel invalide : %s', 'assetsign'), $itemtype));
+      }
+       $item = new $itemtype();
+       // Meme message que le materiel n'existe pas ou soit hors de portee (cf. createManual()).
+      if (!$item->getFromDB($items_id) || !$item->can($items_id, READ)) {
+          throw new \RuntimeException(__('Matériel introuvable.', 'assetsign'));
+      }
+       $entitiesId = (int) $item->fields['entities_id'];
+       $config = Config::getForEntity($entitiesId);
+       $reason = Transfer::unavailableReason($item, $config);
+      if ($reason !== '') {
+          throw new \RuntimeException($reason);
+      }
+       $fromUsersId = (int) $item->fields['users_id'];
+       $toUser = new \User();
+      if ($toUsersId <= 0 || !$toUser->getFromDB($toUsersId)) {
+          throw new \InvalidArgumentException(__('Le bénéficiaire (utilisateur GLPI) est obligatoire.', 'assetsign'));
+      }
+      if ($toUsersId === $fromUsersId) {
+          throw new \InvalidArgumentException(__('Choisissez une autre personne que le détenteur actuel.', 'assetsign'));
+      }
+
+       // Issue #322 : attestation d'effacement exigee avant une reattribution.
+       $wipeMode = WipeRequirement::check($itemtype, $items_id, $entitiesId, self::TYPE_HANDOVER, $toUsersId);
+      if ($wipeMode === WipeRequirement::MODE_BLOCK) {
+          throw new \RuntimeException(WipeRequirement::message($wipeMode, self::TYPE_HANDOVER));
+      }
+
+       $handoverId = self::findLastHandoverId($item);
+       self::cancelPendingAssetsignsFor($item);
+
+       $sheets = [];
+      foreach ([self::TYPE_RETURN => $fromUsersId, self::TYPE_HANDOVER => $toUsersId] as $type => $usersId) {
+          $template = Template::getDefaultFor($type, $entitiesId);
+          $sheet = new self();
+          $id = $sheet->add([
+              'entities_id'                   => $entitiesId,
+              'itemtype'                      => $itemtype,
+              'items_id'                      => $items_id,
+              'users_id'                      => $usersId,
+              'users_id_tech'                 => self::resolveTechnicianId($item),
+              'type'                          => $type,
+              'status'                        => self::STATUS_PENDING,
+              'plugin_assetsign_templates_id' => $template ? $template->getID() : 0,
+              'plugin_assetsign_kits_id'      => self::resolveKitForAutomaticCreation($item, $type),
+              'transfer_peer_id'              => isset($sheets[self::TYPE_RETURN]) ? $sheets[self::TYPE_RETURN]->getID() : 0,
+          ]);
+         if (!$id) {
+             CreationFailure::record($itemtype, $items_id, $entitiesId, $type, 'Echec de l\'insertion en base (passation).');
+            if (isset($sheets[self::TYPE_RETURN])) {
+                $DB->update(self::getTable(), ['status' => self::STATUS_CANCELLED], ['id' => $sheets[self::TYPE_RETURN]->getID()]);
+            }
+             throw new \RuntimeException(__('Échec de la création de la fiche.', 'assetsign'));
+         }
+          $sheet->getFromDB($id);
+          $sheets[$type] = $sheet;
+      }
+       $return = $sheets[self::TYPE_RETURN];
+       $handover = $sheets[self::TYPE_HANDOVER];
+       // Lien dans les deux sens : ecrit directement (aucun changement de statut a suivre).
+       $DB->update(self::getTable(), ['transfer_peer_id' => $handover->getID()], ['id' => $return->getID()]);
+       $return->fields['transfer_peer_id'] = $handover->getID();
+
+       // Issue #178 : la restitution reprend le materiel remis avec ce poste...
+       $return->copyHandedItemsFromLastHandover($handoverId);
+       // ... et la remise a l'entrant le reprend aussi : il lui est attribue avec le materiel principal,
+       // apres les deux signatures (Transfer::complete()).
+      foreach (AssetsignItem::getForAssetsign($return->getID()) as $row) {
+          AssetsignItem::attach($handover, (string) $row['itemtype'], (int) $row['items_id']);
+      }
+       $return->launchWorkflow($config);
+       $handover->launchWorkflow($config);
+
+       \Log::history($items_id, $itemtype, ['0', '', sprintf(
+           __('Passation demandée de %1$s à %2$s : restitution n° %3$s et remise n° %4$s à signer', 'assetsign'),
+           (string) \User::getFriendlyNameById($fromUsersId),
+           $toUser->getFriendlyName(),
+           self::displayReference($return->fields),
+           self::displayReference($handover->fields)
+       )], 0, \Log::HISTORY_LOG_SIMPLE_MESSAGE);
+
+      if ($wipeMode === WipeRequirement::MODE_WARN) {
+          Session::addMessageAfterRedirect(WipeRequirement::message($wipeMode, self::TYPE_HANDOVER), false, WARNING);
+      }
+
+       return ['return' => $return, 'handover' => $handover];
    }
 
     /**
@@ -3033,7 +3165,9 @@ class Assetsign extends Compat\Base\AssetsignBase
       if ((int) $this->fields['type'] !== self::TYPE_HANDOVER
           || (int) $this->fields['status'] === self::STATUS_DRAFT
           || (int) ($this->fields['beneficiary_type'] ?? self::BENEFICIARY_INTERNAL) !== self::BENEFICIARY_INTERNAL
-          || (int) ($config->fields['assign_handed_items'] ?? 1) !== 1) {
+          || (int) ($config->fields['assign_handed_items'] ?? 1) !== 1
+          // Issue #370 : passation : rien n'est attribue avant les deux signatures.
+          || Transfer::isAwaitingCompletion($this)) {
           return 0;
       }
        $changed = 0;
@@ -4513,6 +4647,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                 `plugin_assetsign_templates_id` int unsigned NOT NULL DEFAULT 0,
                 `plugin_assetsign_kits_id` int unsigned NOT NULL DEFAULT 0,
                 `plugin_assetsign_departures_id` int unsigned NOT NULL DEFAULT 0,
+                `transfer_peer_id` int unsigned NOT NULL DEFAULT 0,
                 `type` tinyint NOT NULL DEFAULT 0,
                 `status` tinyint NOT NULL DEFAULT 0,
                 `document_id_unsigned` int unsigned NOT NULL DEFAULT 0,
@@ -4556,6 +4691,7 @@ class Assetsign extends Compat\Base\AssetsignBase
                 KEY `plugin_assetsign_templates_id` (`plugin_assetsign_templates_id`),
                 KEY `plugin_assetsign_kits_id` (`plugin_assetsign_kits_id`),
                 KEY `plugin_assetsign_departures_id` (`plugin_assetsign_departures_id`),
+                KEY `transfer_peer_id` (`transfer_peer_id`),
                 KEY `reference` (`reference`),
                 KEY `is_deleted` (`is_deleted`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
@@ -4694,6 +4830,13 @@ class Assetsign extends Compat\Base\AssetsignBase
              $migration->addField($table, 'paper_scan_users_id', 'integer', ['value' => 0, 'after' => 'document_id_paper_scan']);
              $migration->addField($table, 'paper_signature_date', 'date', ['after' => 'paper_scan_users_id']);
              $migration->migrationOneTable($table);
+         }
+         // Issue #370 : passation directe, fiche jumelle (restitution du detenteur sortant <->
+         // remise a l'entrant). 0 = fiche ordinaire : aucun effet sur les fiches existantes.
+         if (!$DB->fieldExists($table, 'transfer_peer_id')) {
+             $migration->addField($table, 'transfer_peer_id', 'fkey', ['after' => 'plugin_assetsign_departures_id']);
+             $migration->migrationOneTable($table);
+             $migration->addKey($table, 'transfer_peer_id');
          }
       }
 

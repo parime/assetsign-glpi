@@ -29,6 +29,41 @@
       </div>
     {% endif %}
 
+    {# Issue #370 : passation directe, deux fiches jumelles. #}
+    {% if transfer|default(null) %}
+      <div class="card mb-3" style="border-left: 4px solid var(--tblr-info);" id="assetsign-transfer">
+        <div class="card-header">
+          <h3 class="card-title"><i class="ti ti-arrows-exchange me-1"></i>{{ __('Passation', 'assetsign') }}</h3>
+          <div class="card-actions">
+            {% if transfer.complete %}
+              <span class="badge bg-green-lt"><i class="ti ti-check me-1"></i>{{ __('Terminée : matériel attribué dans GLPI', 'assetsign') }}</span>
+            {% elseif transfer.aborted %}
+              <span class="badge bg-secondary-lt"><i class="ti ti-x me-1"></i>{{ __('Annulée', 'assetsign') }}</span>
+            {% else %}
+              <span class="badge bg-orange-lt"><i class="ti ti-hourglass me-1"></i>{{ __('En attente des deux signatures', 'assetsign') }}</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="text-secondary small mb-2">{{ __('Le détenteur sortant signe la restitution, le nouveau détenteur signe la remise. L\'attribution du matériel dans GLPI ne change qu\'après les deux signatures.', 'assetsign') }}</p>
+          <div class="list-group">
+            {% for step in [{label: __('Restitution par', 'assetsign'), icon: 'ti ti-arrow-back-up', line: transfer.return}, {label: __('Remise à', 'assetsign'), icon: 'ti ti-user-check', line: transfer.handover}] %}
+              <div class="list-group-item d-flex flex-wrap align-items-center gap-2{{ step.line.is_current ? ' bg-azure-lt' : '' }}">
+                <i class="{{ step.icon }}"></i>
+                <span>{{ step.label }} <strong>{{ step.line.user }}</strong></span>
+                <span class="badge {{ step.line.badge }}">{{ step.line.status }}</span>
+                {% if step.line.is_current %}
+                  <span class="small ms-auto">{{ __('Cette fiche', 'assetsign') }}</span>
+                {% else %}
+                  <a href="{{ step.line.url }}" class="ms-auto">{{ __('Fiche n° %s', 'assetsign')|format(step.line.reference) }}</a>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
     {# Issue #170 : brouillon pas encore envoye (attribution confirmee plus tard) #}
     {% if item.fields.status == 0 and can_edit_accessories %}
       <div class="alert alert-warning d-flex align-items-center gap-2">

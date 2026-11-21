@@ -177,6 +177,9 @@ if [ "$ROLE" = limited ]; then
   expect "front/assign_user_asset.php : restitution d'un PC de B (nouvelle attribution)" 404 "$(post assign_user_asset.php "assign=1&open_sheet=1&itemtype=Computer&items_id=$(id computer_B)&users_id=0")"
   post assetsign.form.php "create_manual=1&open_sheet=1&type=3&itemtype=Computer&items_id=$(id computer_B)&users_id=$(id partant_A)" > /dev/null
   echo "    front/assetsign.form.php (create_manual sur un PC de B) : verifie en base par la CI"
+  # Issue #370 : passation d'un PC de B (deux fiches, attribution apres signature).
+  post assetsign.form.php "create_transfer=1&itemtype=Computer&items_id=$(id computer_B)&users_id=$(id partant_A)" > /dev/null
+  echo "    front/assetsign.form.php (create_transfer sur un PC de B) : verifie en base par la CI"
   echo "    front/residualvalue.form.php, front/environmentaldata.form.php, front/passport_backfill.php : verifies en base par la CI"
 fi
 

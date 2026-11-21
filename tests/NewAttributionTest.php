@@ -127,7 +127,7 @@ class NewAttributionTest extends AssetsignTestCase
 
        $cards = array_column(Assetsign::actionCards($computer)['cards'], null, 'type');
 
-       $this->assertSame(['handover', 'return', 'manual', 'manual', 'manual'], array_column(array_values($cards), 'action'));
+       $this->assertSame(['handover', 'return', 'transfer', 'manual', 'manual', 'manual'], array_column(array_values($cards), 'action'));
        $this->assertSame('', $cards[Assetsign::TYPE_HANDOVER]['reason']);
        $this->assertNotSame('', $cards[Assetsign::TYPE_RETURN]['reason'], 'Sans utilisateur, rien a restituer.');
        $this->assertSame('', $cards[Assetsign::TYPE_DON]['reason']);

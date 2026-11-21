@@ -61,6 +61,20 @@ final class AssetsignFormController
    }
 
     /**
+     * Issue #370 : passation directe du detenteur actuel a la personne choisie (deux fiches).
+     *
+     * @throws \RuntimeException|\InvalidArgumentException message pour l'utilisateur
+     */
+   public function createTransfer(array $post): string {
+       $sheets = Assetsign::createTransfer(
+           (string) ($post['itemtype'] ?? ''),
+           (int) ($post['items_id'] ?? 0),
+           (int) ($post['users_id'] ?? 0)
+       );
+       return \GlpiPlugin\Assetsign\Transfer::createdMessage($sheets['return'], $sheets['handover']);
+   }
+
+    /**
      * Issue #276 : joint le scan de la version papier signee a la main. Le fichier doit etre un vrai
      * upload HTTP de cette requete ; son contenu est controle par PaperSignature::attachScan().
      *

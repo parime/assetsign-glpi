@@ -41,6 +41,22 @@ if (isset($_POST['create_manual'])) {
     Html::back();
 }
 
+// Issue #370 : passation directe d'un detenteur a un autre (page Nouvelle attribution).
+if (isset($_POST['create_transfer'])) {
+    Session::checkRight(Assetsign::$rightname, UPDATE);
+    $itemtype = (string) ($_POST['itemtype'] ?? '');
+    $itemsId = (int) ($_POST['items_id'] ?? 0);
+    $before = Assetsign::latestIdFor($itemtype, $itemsId);
+   try {
+       Session::addMessageAfterRedirect($controller->createTransfer($_POST));
+   } catch (\Throwable $e) {
+       Session::addMessageAfterRedirect($e->getMessage(), false, ERROR);
+   }
+    // La fiche de remise (la derniere creee) s'ouvre ; son encadre mene a la restitution.
+    Assetsign::redirectToNewSheet($itemtype, $itemsId, $before);
+    Html::back();
+}
+
 $id = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
 $assetsign = new Assetsign();
 
