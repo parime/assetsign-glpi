@@ -60,7 +60,7 @@ class ConditionPhoto extends CommonDBTM
         return in_array((int) ($sheet->fields['type'] ?? -1), [Assetsign::TYPE_HANDOVER, Assetsign::TYPE_RETURN], true);
     }
 
-    public static function canEdit(Assetsign $sheet): bool
+    public static function canEditSheet(Assetsign $sheet): bool
     {
         return self::isApplicable($sheet)
             && $sheet->isStillEditable()
@@ -232,7 +232,7 @@ class ConditionPhoto extends CommonDBTM
      */
     public static function removeFromSheet(Assetsign $sheet, int $photoId): void
     {
-        if (!self::canEdit($sheet)) {
+        if (!self::canEditSheet($sheet)) {
             throw new \RuntimeException(__('Vous n\'avez pas le droit de modifier cette fiche.', 'assetsign'));
         }
         $photo = new self();
@@ -337,7 +337,7 @@ class ConditionPhoto extends CommonDBTM
             'is_return' => $isReturn,
             'photos'    => self::forDisplay($sheet),
             'before'    => $before,
-            'can_edit'  => self::canEdit($sheet),
+            'can_edit'  => self::canEditSheet($sheet),
             'max'       => self::MAX_PER_SHEET,
             'max_mb'    => (int) (self::MAX_BYTES / 1024 / 1024),
             'in_pdf'    => (bool) (Config::getForEntity((int) $sheet->fields['entities_id'])->fields['photos_in_pdf'] ?? false),

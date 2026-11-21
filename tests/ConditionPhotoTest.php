@@ -191,7 +191,7 @@ final class ConditionPhotoTest extends AssetsignTestCase
         $right = $_SESSION['glpiactiveprofile'][Assetsign::$rightname] ?? 0;
         $_SESSION['glpiactiveprofile'][Assetsign::$rightname] = READ;
         try {
-            $this->assertFalse(ConditionPhoto::canEdit($sheet));
+            $this->assertFalse(ConditionPhoto::canEditSheet($sheet));
             $this->expectException(\RuntimeException::class);
             ConditionPhoto::addToSheet($sheet, $png, 2);
         } finally {
