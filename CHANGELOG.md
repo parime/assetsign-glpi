@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.27.0] - 2026-11-21
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Added
 
 - **Passation directe d'un détenteur à un autre** (#370) : nouvelle carte « Passation » de la page
