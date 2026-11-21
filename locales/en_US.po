@@ -5932,3 +5932,124 @@ msgstr "Handover prepared: %1$s signs the return, %2$s signs the handover. The e
 #, php-format
 msgid "Une signature sur deux : en attente de %s"
 msgstr "One of two signatures: waiting for %s"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:51
+msgid "Contrôle d'intégrité des preuves"
+msgstr "Integrity check of signed proofs"
+
+#: src/IntegrityCheck.php:79
+msgid "Preuve de signature absente"
+msgstr "Signature proof missing"
+
+#: src/IntegrityCheck.php:80
+msgid "Aucun PDF signé enregistré"
+msgstr "No signed PDF recorded"
+
+#: src/IntegrityCheck.php:81
+msgid "Document supprimé de GLPI"
+msgstr "Document deleted from GLPI"
+
+#: src/IntegrityCheck.php:82
+msgid "Fichier absent du disque"
+msgstr "File missing from disk"
+
+#: src/IntegrityCheck.php:83
+msgid "Empreinte SHA-256 modifiée"
+msgstr "SHA-256 hash changed"
+
+#: src/IntegrityCheck.php:84
+msgid "Document détaché du matériel"
+msgstr "Document detached from the asset"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Fiche"
+msgstr "Sheet"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Anomalie"
+msgstr "Anomaly"
+
+#: src/IntegrityCheck.php:298
+msgid ""
+"Contrôle l'intégrité des preuves signées (PDF présent, empreinte inchangée, "
+"document rattaché)"
+msgstr ""
+"Checks the integrity of signed proofs (PDF present, hash unchanged, document "
+"attached)"
+
+#: front/integrity.php:35 src/IntegrityCheck.php:306
+#, php-format
+msgid "%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)"
+msgstr "%d anomaly(ies) in %d signed sheet(s) checked"
+
+#: front/integrity.php:57
+msgid "Tâche planifiée"
+msgstr "Automatic action"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "%d anomalie(s)"
+msgstr "%d anomaly(ies)"
+
+#: templates/integrity.html.twig
+msgid "Aucune anomalie"
+msgstr "No anomaly"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "Dernier contrôle le %1$s (%2$s) : %3$d fiche(s) signée(s) contrôlée(s)."
+msgstr "Last check on %1$s (%2$s): %3$d signed sheet(s) checked."
+
+#: templates/integrity.html.twig
+msgid ""
+"Aucun contrôle effectué pour l'instant : la tâche planifiée tourne chaque "
+"semaine, ou lancez-le maintenant."
+msgstr "No check run yet: the automatic action runs every week, or run it now."
+
+#: templates/integrity.html.twig
+msgid "Lancer le contrôle"
+msgstr "Run the check"
+
+#: templates/integrity.html.twig
+msgid "Fréquence : Configuration > Actions automatiques (assetsignIntegrity)"
+msgstr "Frequency: Setup > Automatic actions (assetsignIntegrity)"
+
+#: templates/integrity.html.twig
+msgid "Toutes les preuves contrôlées sont intactes."
+msgstr "All checked proofs are intact."
+
+#: templates/integrity.html.twig
+msgid "Contrôles précédents"
+msgstr "Previous checks"
+
+#: templates/integrity.html.twig
+msgid "Lancé par"
+msgstr "Run by"
+
+#: templates/integrity.html.twig
+msgid "Fiches contrôlées"
+msgstr "Sheets checked"
+
+#: templates/integrity.html.twig
+msgid "Anomalies"
+msgstr "Anomalies"
+
+#: src/MenuSection.php:107
+msgid ""
+"Vérifie que chaque fiche signée garde sa preuve : le PDF signé (ou le scan "
+"papier) existe toujours, son empreinte SHA-256 n'a pas changé et il reste "
+"rattaché au matériel."
+msgstr ""
+"Checks that every signed sheet keeps its proof: the signed PDF (or paper "
+"scan) still exists, its SHA-256 hash has not changed and it is still attached"
+" to the asset."
+
+#: src/MenuSection.php:108
+msgid ""
+"Le contrôle tourne chaque semaine ; « Lancer le contrôle » le relance "
+"aussitôt. Ouvrez chaque fiche en anomalie pour comprendre ce qui a changé : "
+"rien n'est corrigé automatiquement. L'export CSV sert de preuve de contrôle."
+msgstr ""
+"The check runs every week; “Run the check” runs it immediately. Open each "
+"sheet with an anomaly to see what changed: nothing is fixed automatically. "
+"The CSV export is evidence of the check."

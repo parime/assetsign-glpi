@@ -5952,3 +5952,126 @@ msgstr "Traspaso preparado: %1$s firma la devolución y %2$s firma la entrega. E
 #, php-format
 msgid "Une signature sur deux : en attente de %s"
 msgstr "Una de las dos firmas: a la espera de %s"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:51
+msgid "Contrôle d'intégrité des preuves"
+msgstr "Control de integridad de las pruebas"
+
+#: src/IntegrityCheck.php:79
+msgid "Preuve de signature absente"
+msgstr "Falta la prueba de firma"
+
+#: src/IntegrityCheck.php:80
+msgid "Aucun PDF signé enregistré"
+msgstr "No hay ningún PDF firmado registrado"
+
+#: src/IntegrityCheck.php:81
+msgid "Document supprimé de GLPI"
+msgstr "Documento eliminado de GLPI"
+
+#: src/IntegrityCheck.php:82
+msgid "Fichier absent du disque"
+msgstr "Archivo ausente del disco"
+
+#: src/IntegrityCheck.php:83
+msgid "Empreinte SHA-256 modifiée"
+msgstr "Huella SHA-256 modificada"
+
+#: src/IntegrityCheck.php:84
+msgid "Document détaché du matériel"
+msgstr "Documento desvinculado del equipo"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Fiche"
+msgstr "Ficha"
+
+#: templates/integrity.html.twig src/IntegrityCheck.php:282
+msgid "Anomalie"
+msgstr "Anomalía"
+
+#: src/IntegrityCheck.php:298
+msgid ""
+"Contrôle l'intégrité des preuves signées (PDF présent, empreinte inchangée, "
+"document rattaché)"
+msgstr ""
+"Controla la integridad de las pruebas firmadas (PDF presente, huella sin "
+"cambios, documento vinculado)"
+
+#: front/integrity.php:35 src/IntegrityCheck.php:306
+#, php-format
+msgid "%d anomalie(s) sur %d fiche(s) signée(s) contrôlée(s)"
+msgstr "%d anomalía(s) en %d ficha(s) firmada(s) controlada(s)"
+
+#: front/integrity.php:57
+msgid "Tâche planifiée"
+msgstr "Acción automática"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "%d anomalie(s)"
+msgstr "%d anomalía(s)"
+
+#: templates/integrity.html.twig
+msgid "Aucune anomalie"
+msgstr "Ninguna anomalía"
+
+#: templates/integrity.html.twig
+#, php-format
+msgid "Dernier contrôle le %1$s (%2$s) : %3$d fiche(s) signée(s) contrôlée(s)."
+msgstr "Último control el %1$s (%2$s): %3$d ficha(s) firmada(s) controlada(s)."
+
+#: templates/integrity.html.twig
+msgid ""
+"Aucun contrôle effectué pour l'instant : la tâche planifiée tourne chaque "
+"semaine, ou lancez-le maintenant."
+msgstr ""
+"Aún no se ha realizado ningún control: la acción automática se ejecuta cada "
+"semana, o lánzelo ahora."
+
+#: templates/integrity.html.twig
+msgid "Lancer le contrôle"
+msgstr "Lanzar el control"
+
+#: templates/integrity.html.twig
+msgid "Fréquence : Configuration > Actions automatiques (assetsignIntegrity)"
+msgstr "Frecuencia: Configuración > Acciones automáticas (assetsignIntegrity)"
+
+#: templates/integrity.html.twig
+msgid "Toutes les preuves contrôlées sont intactes."
+msgstr "Todas las pruebas controladas están intactas."
+
+#: templates/integrity.html.twig
+msgid "Contrôles précédents"
+msgstr "Controles anteriores"
+
+#: templates/integrity.html.twig
+msgid "Lancé par"
+msgstr "Lanzado por"
+
+#: templates/integrity.html.twig
+msgid "Fiches contrôlées"
+msgstr "Fichas controladas"
+
+#: templates/integrity.html.twig
+msgid "Anomalies"
+msgstr "Anomalías"
+
+#: src/MenuSection.php:107
+msgid ""
+"Vérifie que chaque fiche signée garde sa preuve : le PDF signé (ou le scan "
+"papier) existe toujours, son empreinte SHA-256 n'a pas changé et il reste "
+"rattaché au matériel."
+msgstr ""
+"Comprueba que cada ficha firmada conserva su prueba: el PDF firmado (o el "
+"escaneo en papel) sigue existiendo, su huella SHA-256 no ha cambiado y sigue "
+"vinculado al equipo."
+
+#: src/MenuSection.php:108
+msgid ""
+"Le contrôle tourne chaque semaine ; « Lancer le contrôle » le relance "
+"aussitôt. Ouvrez chaque fiche en anomalie pour comprendre ce qui a changé : "
+"rien n'est corrigé automatiquement. L'export CSV sert de preuve de contrôle."
+msgstr ""
+"El control se ejecuta cada semana; «Lanzar el control» lo ejecuta de "
+"inmediato. Abra cada ficha con anomalía para entender qué ha cambiado: nada "
+"se corrige automáticamente. La exportación CSV sirve como prueba del control."
