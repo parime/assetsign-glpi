@@ -3513,6 +3513,7 @@ msgid ""
 msgstr ""
 
 #: templates/config_form.html.twig
+#, php-format
 msgid ""
 "Seuil de valeur résiduelle déclenchant « Réévaluer l'usage » (% du prix "
 "d'achat)"
