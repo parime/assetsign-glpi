@@ -24,15 +24,20 @@ namespace GlpiPlugin\Assetsign\Tests;
 trait PdfTextExtraction
 {
     /**
-     * Texte de chaque page (chaînes UTF-16BE dans des flux compressés).
+     * Texte de chaque flux de contenu de page (chaînes UTF-16BE dans des flux compressés).
+     *
+     * Les flux sont découpés selon leur longueur déclarée (/Length), pas par une expression
+     * régulière « stream ... endstream » : les données compressées sont binaires et changent avec le
+     * contenu (date d'impression...). Quand leur dernier octet valait \r, ou qu'elles contenaient
+     * « \nendstream », l'ancienne lecture coupait le flux, gzuncompress() échouait et la page
+     * disparaissait du résultat (issue #393).
      *
      * @return list<string>
      */
     protected function extractPageTexts(string $pdf): array
     {
-        preg_match_all('/stream\r?\n(.*?)\r?\nendstream/s', $pdf, $streams);
         $pages = [];
-        foreach ($streams[1] as $stream) {
+        foreach ($this->extractPdfStreams($pdf) as $stream) {
             $content = @gzuncompress($stream);
             if ($content === false || !str_contains($content, ' Tf ')) {
                 continue;
@@ -45,6 +50,78 @@ trait PdfTextExtraction
             $pages[] = $text;
         }
         return $pages;
+    }
+
+    /**
+     * Nombre réel de pages : objets « /Type /Page » situés hors des données des flux, recoupés avec
+     * le /Count de l'arbre des pages. -1 si les deux ne concordent pas (PDF incohérent).
+     */
+    protected function pdfPageCount(string $pdf): int
+    {
+        $outside = '';
+        $offset = 0;
+        $this->extractPdfStreams($pdf, $ranges);
+        foreach ($ranges as [$start, $length]) {
+            $outside .= substr($pdf, $offset, $start - $offset);
+            $offset = $start + $length;
+        }
+        $outside .= substr($pdf, $offset);
+        $objects = (int) preg_match_all('/\/Type\s*\/Page(?![A-Za-z])/', $outside);
+        preg_match_all('/\/Count\s+(\d+)/', $outside, $counts);
+        $declared = $counts[1] === [] ? 0 : max(array_map('intval', $counts[1]));
+        return $objects === $declared ? $objects : -1;
+    }
+
+    /**
+     * Diagnostic pour un message d'échec : taille, pages, flux et leur décompression, début du PDF
+     * (octets non imprimables remplacés par des points).
+     */
+    protected function describePdf(string $pdf): string
+    {
+        $streams = $this->extractPdfStreams($pdf);
+        $decoded = 0;
+        $withText = 0;
+        foreach ($streams as $stream) {
+            $content = @gzuncompress($stream);
+            if ($content !== false) {
+                $decoded++;
+                $withText += str_contains($content, ' Tf ') ? 1 : 0;
+            }
+        }
+        return sprintf(
+            "\nPDF de %d octets ; pages selon l'arbre des pages : %d ; flux : %d (décompressés : %d, avec du texte : %d).\nDébut du PDF :\n%s",
+            strlen($pdf),
+            $this->pdfPageCount($pdf),
+            count($streams),
+            $decoded,
+            $withText,
+            (string) preg_replace('/[^\x20-\x7E\n]/', '.', substr($pdf, 0, 600))
+        );
+    }
+
+    /**
+     * Données brutes de chaque flux, découpées selon la longueur /Length de leur dictionnaire.
+     *
+     * @param list<array{int, int}>|null $ranges reçoit la position et la longueur de chaque flux
+     * @return list<string>
+     */
+    private function extractPdfStreams(string $pdf, ?array &$ranges = null): array
+    {
+        $streams = [];
+        $ranges = [];
+        $offset = 0;
+        $pattern = '/\d+\s+\d+\s+obj\s*(<<(?:(?!endobj).)*?>>)\s*stream\r?\n/s';
+        while (preg_match($pattern, $pdf, $match, PREG_OFFSET_CAPTURE, $offset) === 1) {
+            $start = $match[0][1] + strlen($match[0][0]);
+            if (preg_match('/\/Length\s+(\d+)\b(?!\s+\d+\s+R)/', $match[1][0], $length) !== 1) {
+                $offset = $start;
+                continue;
+            }
+            $streams[] = substr($pdf, $start, (int) $length[1]);
+            $ranges[] = [$start, (int) $length[1]];
+            $offset = $start + (int) $length[1];
+        }
+        return $streams;
     }
 
     /**
