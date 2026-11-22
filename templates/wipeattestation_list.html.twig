@@ -33,7 +33,7 @@
               <td>{% if e.item_url %}<a href="{{ e.item_url }}">{{ e.item }}</a>{% else %}{{ e.item }}{% endif %}</td>
               <td>{{ e.date|formatted_datetime }}</td>
               <td>{{ e.status }}</td>
-              <td>{% if e.tab_url %}<a href="{{ e.tab_url }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-eraser me-1"></i>{{ __('Enregistrer l\'attestation', 'assetsign') }}</a>{% endif %}</td>
+              <td>{% if e.tab_url %}<a href="{{ e.tab_url }}" class="btn btn-sm btn-outline-secondary"><i class="ti ti-eraser me-1"></i>{{ __('Enregistrer l\'attestation', 'assetsign') }}</a>{% endif %}</td>
             </tr>
           {% endfor %}
         </tbody>

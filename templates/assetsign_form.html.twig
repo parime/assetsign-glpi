@@ -101,7 +101,7 @@
               <button type="submit" name="update_draft" class="btn btn-secondary">{{ __('Enregistrer', 'assetsign') }}</button>
             </div>
             <div class="col-auto">
-              <a class="btn btn-outline-primary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&preview_draft=1"><i class="ti ti-eye me-1"></i>{{ __('Aperçu du document', 'assetsign') }}</a>
+              <a class="btn btn-outline-secondary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&preview_draft=1"><i class="ti ti-eye me-1"></i>{{ __('Aperçu du document', 'assetsign') }}</a>
             </div>
           </form>
           <p class="form-text mb-0 mt-2">{{ __('Le matériel remis avec, les accessoires, les observations, le kit et l\'état des lieux se complètent plus bas sur cette page. Rien n\'est envoyé tant que vous n\'avez pas cliqué sur « Envoyer pour signature ».', 'assetsign') }}</p>
@@ -272,7 +272,7 @@
         <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
           <input type="hidden" name="id" value="{{ item.fields.id }}">
-          <button type="submit" name="copy_link" class="btn btn-outline-primary" title="{{ __('Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L\'ancien lien cesse de fonctionner.', 'assetsign') }}">
+          <button type="submit" name="copy_link" class="btn btn-outline-secondary" title="{{ __('Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L\'ancien lien cesse de fonctionner.', 'assetsign') }}">
             <i class="ti ti-link me-1"></i>{{ __('Copier un nouveau lien', 'assetsign') }}
           </button>
         </form>
@@ -283,7 +283,7 @@
         <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
           <input type="hidden" name="id" value="{{ item.fields.id }}">
-          <button type="submit" name="sign_in_person" class="btn btn-outline-primary" title="{{ __('Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet écran, en votre présence.', 'assetsign') }}">
+          <button type="submit" name="sign_in_person" class="btn btn-outline-secondary" title="{{ __('Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet écran, en votre présence.', 'assetsign') }}">
             <i class="ti ti-device-tablet me-1"></i>{{ __('Faire signer sur place', 'assetsign') }}
           </button>
         </form>
@@ -317,7 +317,7 @@
         <div class="card-body">
           <p class="text-muted mb-3">{{ __('Si la signature électronique n\'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n\'est pas joint, rien n\'est enregistré comme signé.', 'assetsign') }}</p>
           <div class="d-flex flex-wrap gap-2 mb-2">
-            <a class="btn btn-outline-primary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&paper_pdf=form">
+            <a class="btn btn-outline-secondary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&paper_pdf=form">
               <i class="ti ti-printer me-1"></i>{{ __('Imprimer pour signature à la main', 'assetsign') }}
             </a>
             <a class="btn btn-outline-secondary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&paper_pdf=condition">

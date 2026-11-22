@@ -20,7 +20,11 @@ crawl http-403 front/notificationtarget*.form.php : cible de notification du cœ
 # Le jeton de signature (Token) n'a pas d'écran : la fiche générique que GLPI construit pour toute
 # classe CommonDBTM porte un attribut ARIA du cœur (.input). Aucun lien du plugin n'y mène.
 crawl axe:aria-allowed-attr front/token.form.php : fiche générique du cœur GLPI pour une classe interne sans écran
+crawl axe:label front/token.form.php : fiche générique du cœur GLPI (champ .input sans libellé) pour une classe interne sans écran
 # « Mon matériel et mes documents » est la page personnelle de chacun : entrée du portail
 # simplifié (helpdesk_menu_entry) et bandeau de l'accueil quand un document attend une signature.
 # Elle n'est volontairement pas une sous-page de Parc > AssetSign, réservée aux gestionnaires.
 crawl orphan front/mysignatures.php : page personnelle, ouverte par l'entrée du portail simplifié et le bandeau de l'accueil
+# Éditeur de texte riche TinyMCE fourni par le cœur GLPI (texte de la charte d'un gabarit) : la
+# poignée de redimensionnement de sa barre d'état porte un attribut ARIA refusé par axe.
+crawl axe:aria-prohibited-attr front/template.form.php : poignée de redimensionnement de l'éditeur TinyMCE du cœur GLPI

@@ -86,7 +86,7 @@ class PassportEventKitSummaryTest extends AssetsignTestCase
        $html = ob_get_clean();
 
        $this->assertStringContainsString('1/1', $html);
-       $this->assertStringContainsString('#2fb344', $html, 'Kit complet : badge vert attendu.');
+       $this->assertStringContainsString('bg-success-subtle', $html, 'Kit complet : badge vert attendu.');
    }
 
    public function testShowForItemDisplaysMissingAccessoryBadgeInOrange(): void {
@@ -106,7 +106,7 @@ class PassportEventKitSummaryTest extends AssetsignTestCase
        $html = ob_get_clean();
 
        $this->assertStringContainsString('1/2', $html);
-       $this->assertStringContainsString('#f76707', $html, 'Un accessoire manquant sur deux : badge orange attendu.');
+       $this->assertStringContainsString('bg-warning-subtle', $html, 'Un accessoire manquant sur deux : badge orange attendu.');
        $this->assertStringContainsString('PHPUnit PassportKit Souris Manquante', $html, 'Le nom de l\'accessoire manquant doit etre affiche.');
    }
 
@@ -125,7 +125,7 @@ class PassportEventKitSummaryTest extends AssetsignTestCase
        $html = ob_get_clean();
 
        $this->assertStringContainsString('0/1', $html);
-       $this->assertStringContainsString('#dc3545', $html, 'Rien de revenu : perte totale, badge rouge attendu.');
+       $this->assertStringContainsString('bg-danger-subtle', $html, 'Rien de revenu : perte totale, badge rouge attendu.');
    }
 
    public function testShowForItemDoesNotAttachKitSummaryToUnrelatedEventWithColliddingSourceId(): void {

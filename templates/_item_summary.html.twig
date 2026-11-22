@@ -38,6 +38,6 @@
     </div>
   </div>
   {% if show_link|default(false) and summary.url|default('') %}
-    <a href="{{ summary.url }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-external-link me-1"></i>{{ __('Ouvrir la fiche du matériel', 'assetsign') }}</a>
+    <a href="{{ summary.url }}" class="btn btn-sm btn-outline-secondary"><i class="ti ti-external-link me-1"></i>{{ __('Ouvrir la fiche du matériel', 'assetsign') }}</a>
   {% endif %}
 </div>

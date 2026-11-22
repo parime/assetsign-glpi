@@ -64,7 +64,7 @@
           <label class="form-label mb-0" for="residual_value_manual">{{ __('Valeur résiduelle manuelle', 'assetsign') }}</label>
           <input type="number" step="0.01" min="0" name="manual_value" id="residual_value_manual" class="form-control" style="width: 140px;" value="{{ residual_value_manual_raw is not null ? residual_value_manual_raw : '' }}">
         </div>
-        <button type="submit" class="btn btn-sm btn-outline-primary">{{ __('Enregistrer', 'assetsign') }}</button>
+        <button type="submit" class="btn btn-sm btn-outline-secondary">{{ __('Enregistrer', 'assetsign') }}</button>
       </form>
       {% if residual_value_manual_raw is not null %}
         <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/residualvalue.form.php">
@@ -154,7 +154,7 @@
           </select>
         </div>
         <div class="col-auto">
-          <button type="submit" class="btn btn-sm btn-outline-primary">{{ __('Enregistrer', 'assetsign') }}</button>
+          <button type="submit" class="btn btn-sm btn-outline-secondary">{{ __('Enregistrer', 'assetsign') }}</button>
         </div>
       </form>
       {% if environmental %}

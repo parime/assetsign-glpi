@@ -71,7 +71,7 @@
               <td class="text-nowrap">
                 <a href="{{ config('root_doc') }}/plugins/assetsign/front/wipeattestation.form.php?id={{ a.id }}" class="btn btn-sm btn-outline-secondary"><i class="ti ti-eye me-1"></i>{{ __('Voir', 'assetsign') }}</a>
                 {% if a.documents_id %}
-                  <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ a.documents_id }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="ti ti-file-type-pdf me-1"></i>PDF</a>
+                  <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ a.documents_id }}" target="_blank" class="btn btn-sm btn-outline-secondary"><i class="ti ti-file-type-pdf me-1"></i>PDF</a>
                 {% endif %}
               </td>
             </tr>

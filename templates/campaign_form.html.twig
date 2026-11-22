@@ -93,7 +93,7 @@
           <form method="post" action="{{ action }}" class="d-flex gap-2 ms-auto">
             <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
             <input type="hidden" name="id" value="{{ campaign.id }}">
-            <button type="submit" name="remind" value="1" class="btn btn-outline-primary btn-sm"{{ stats.pending == 0 ? ' disabled' : '' }}><i class="ti ti-bell-ringing me-1"></i>{{ __('Relancer les non-répondants', 'assetsign') }}</button>
+            <button type="submit" name="remind" value="1" class="btn btn-outline-secondary btn-sm"{{ stats.pending == 0 ? ' disabled' : '' }}><i class="ti ti-bell-ringing me-1"></i>{{ __('Relancer les non-répondants', 'assetsign') }}</button>
             <button type="submit" name="close" value="1" class="btn btn-outline-danger btn-sm" onclick="return confirm({{ __('Clôturer la campagne ? Les personnes sans réponse ne pourront plus attester.', 'assetsign')|json_encode }});"><i class="ti ti-lock me-1"></i>{{ __('Clôturer', 'assetsign') }}</button>
           </form>
         {% endif %}

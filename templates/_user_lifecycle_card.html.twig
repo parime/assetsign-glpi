@@ -21,7 +21,7 @@
     <div class="text-muted small">{{ card.open_url ? card.open_text : card.help }}</div>
   </div>
   {% if card.open_url %}
-    <a class="btn btn-outline-primary" href="{{ card.open_url }}"><i class="ti {{ card.open_icon }} me-1"></i>{{ card.open_label }}</a>
+    <a class="btn btn-outline-secondary" href="{{ card.open_url }}"><i class="ti {{ card.open_icon }} me-1"></i>{{ card.open_label }}</a>
   {% else %}
     <form method="post" action="{{ card.form_url }}" class="m-0">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">

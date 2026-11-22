@@ -19,7 +19,7 @@
       <h3 class="card-title mb-0"><i class="ti ti-recycle me-2"></i>{{ __('Renouvellement du parc', 'assetsign') }}</h3>
       <div class="btn-group ms-auto" role="group">
         {% for h in horizons %}
-          <a class="btn btn-sm {{ h == horizon ? 'btn-primary' : 'btn-outline-primary' }}" href="{{ self_url }}?horizon={{ h }}">{{ __('%d mois', 'assetsign')|format(h) }}</a>
+          <a class="btn btn-sm {{ h == horizon ? 'btn-primary' : 'btn-outline-secondary' }}" href="{{ self_url }}?horizon={{ h }}">{{ __('%d mois', 'assetsign')|format(h) }}</a>
         {% endfor %}
       </div>
     </div>
