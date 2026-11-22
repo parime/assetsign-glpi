@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Test des classes `*-subtle` / `*-emphasis`** (parime/glpi-plugin-template#10).
+  GLPI et Tabler ne définissent `bg-X-subtle` et `text-X-emphasis` que pour les couleurs de thème
+  (primary, success, warning, danger...) : un badge de couleur nommée (orange, blue, green...)
+  s'afficherait sans fond. AssetSign n'utilise aujourd'hui que des couleurs de thème ;
+  `tests/SubtleColorClassesTest.php` échoue dès que le code (Twig, PHP, JS) utilise une classe de
+  ce type que ni Tabler ni `public/css/assetsign.css` ne définissent, y compris les couleurs de
+  l'inventaire physique (`PhysicalInventory::getStatusColors()`).
+
 ## [2.30.0] - 2026-11-21
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
