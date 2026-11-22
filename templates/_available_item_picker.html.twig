@@ -17,8 +17,8 @@
 {% set available = available_items|default({}) %}
 {% if available|length %}
   <div class="col-12 col-lg-auto">
-    <label class="form-label"><i class="ti ti-package me-1"></i>{{ __('Matériel disponible', 'assetsign') }}</label>
-    <select name="available_item" class="form-select" style="min-width: 320px;">
+    <label class="form-label" for="assetsign-available-item-picker-available-item"><i class="ti ti-package me-1"></i>{{ __('Matériel disponible', 'assetsign') }}</label>
+    <select id="assetsign-available-item-picker-available-item" name="available_item" class="form-select" style="min-width: 320px;">
       <option value="">-----</option>
       {% for group, rows in available %}
         <optgroup label="{{ group }}">

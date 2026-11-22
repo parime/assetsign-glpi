@@ -102,12 +102,12 @@
             </a>
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Nom de l\'expéditeur', 'assetsign') }}</label>
-            <input type="text" name="sender_name" class="form-control" value="{{ config.sender_name|default('') }}">
+            <label class="form-label" for="assetsign-config-form-sender-name">{{ __('Nom de l\'expéditeur', 'assetsign') }}</label>
+            <input id="assetsign-config-form-sender-name" type="text" name="sender_name" class="form-control" value="{{ config.sender_name|default('') }}">
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('E-mail de l\'expéditeur', 'assetsign') }}</label>
-            <input type="email" name="sender_email" class="form-control" value="{{ config.sender_email|default('') }}">
+            <label class="form-label" for="assetsign-config-form-sender-email">{{ __('E-mail de l\'expéditeur', 'assetsign') }}</label>
+            <input id="assetsign-config-form-sender-email" type="email" name="sender_email" class="form-control" value="{{ config.sender_email|default('') }}">
           </div>
 
           <div class="mb-3">
@@ -122,7 +122,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Logo à afficher sur les fiches PDF', 'assetsign') }}</label>
+            <label class="form-label" for="assetsign-logo-file">{{ __('Logo à afficher sur les fiches PDF', 'assetsign') }}</label>
             {% if logo_is_forced %}
               <div class="alert alert-info py-2 px-3 mb-2">
                 {{ __('Le logo affiché ci-dessous est actuellement imposé par une entité parente (voir plus bas). Un logo envoyé ici ne sera utilisé que si cette imposition est retirée.', 'assetsign') }}
@@ -151,14 +151,14 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Nom de l\'entreprise', 'assetsign') }}</label>
-            <input type="text" name="company_name" class="form-control" value="{{ config.company_name|default('') }}">
+            <label class="form-label" for="assetsign-config-form-company-name">{{ __('Nom de l\'entreprise', 'assetsign') }}</label>
+            <input id="assetsign-config-form-company-name" type="text" name="company_name" class="form-control" value="{{ config.company_name|default('') }}">
             <div class="form-text">{{ __('Optionnel : affiché à côté du logo sur les fiches PDF, en complément (pas en remplacement) du logo.', 'assetsign') }}</div>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Lien vers la charte informatique complète', 'assetsign') }}</label>
-            <input type="url" name="charter_url" class="form-control" placeholder="https://intranet.exemple.fr/charte-informatique.pdf" value="{{ config.charter_url|default('') }}">
+            <label class="form-label" for="assetsign-config-form-charter-url">{{ __('Lien vers la charte informatique complète', 'assetsign') }}</label>
+            <input id="assetsign-config-form-charter-url" type="url" name="charter_url" class="form-control" placeholder="https://intranet.exemple.fr/charte-informatique.pdf" value="{{ config.charter_url|default('') }}">
             <div class="form-text">{{ __('Optionnel : URL vers un document ou une page existante (intranet, PDF déjà en ligne...). Si renseigné, un lien cliquable apparaît sur la fiche PDF, en plus du texte de la charte défini dans le gabarit : commun à tous les types.', 'assetsign') }}</div>
           </div>
 
@@ -171,12 +171,12 @@
             </label>
             <div class="row g-2 mt-1">
               <div class="col-sm-6">
-                <label class="form-label">{{ __('Renouvellement (mois)', 'assetsign') }}</label>
-                <input type="number" name="charter_renewal_months" class="form-control" min="1" max="60" value="{{ config.charter_renewal_months|default(12) }}">
+                <label class="form-label" for="assetsign-config-form-charter-renewal-months">{{ __('Renouvellement (mois)', 'assetsign') }}</label>
+                <input id="assetsign-config-form-charter-renewal-months" type="number" name="charter_renewal_months" class="form-control" min="1" max="60" value="{{ config.charter_renewal_months|default(12) }}">
               </div>
               <div class="col-sm-6">
-                <label class="form-label">{{ __('Délai pour signer (jours)', 'assetsign') }}</label>
-                <input type="number" name="charter_deadline_days" class="form-control" min="1" max="365" value="{{ config.charter_deadline_days|default(30) }}">
+                <label class="form-label" for="assetsign-config-form-charter-deadline-days">{{ __('Délai pour signer (jours)', 'assetsign') }}</label>
+                <input id="assetsign-config-form-charter-deadline-days" type="number" name="charter_deadline_days" class="form-control" min="1" max="365" value="{{ config.charter_deadline_days|default(30) }}">
               </div>
             </div>
             <div class="form-text">{{ __('Une campagne de charte est lancée pour cette entité et ses sous-entités à chaque période (tâche planifiée assetsignCampaigns), avec les relances habituelles. À la date limite, un ticket liste les personnes qui ne l\'ont pas signée ; aucun compte n\'est bloqué.', 'assetsign') }}</div>
@@ -190,8 +190,8 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Fournisseur de signature', 'assetsign') }}</label>
-            <select name="default_provider" class="form-select">
+            <label class="form-label" for="assetsign-config-form-default-provider">{{ __('Fournisseur de signature', 'assetsign') }}</label>
+            <select id="assetsign-config-form-default-provider" name="default_provider" class="form-select">
               {% for key, label in providers %}
                 <option value="{{ key }}" {{ config.default_provider|default('canvas') == key ? 'selected' : '' }}>{{ label }}</option>
               {% endfor %}
@@ -199,26 +199,26 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Délais de relance (jours, séparés par des virgules : ex: 3,7,7)', 'assetsign') }}</label>
-            <input type="text" name="reminder_delays" class="form-control" value="{{ config.reminder_delays|default('3,7,7') }}">
+            <label class="form-label" for="assetsign-config-form-reminder-delays">{{ __('Délais de relance (jours, séparés par des virgules : ex: 3,7,7)', 'assetsign') }}</label>
+            <input id="assetsign-config-form-reminder-delays" type="text" name="reminder_delays" class="form-control" value="{{ config.reminder_delays|default('3,7,7') }}">
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Nombre maximum de relances (0 = illimité)', 'assetsign') }}</label>
-            <input type="number" name="max_reminders" class="form-control" value="{{ config.max_reminders|default(0) }}" min="0">
+            <label class="form-label" for="assetsign-config-form-max-reminders">{{ __('Nombre maximum de relances (0 = illimité)', 'assetsign') }}</label>
+            <input id="assetsign-config-form-max-reminders" type="number" name="max_reminders" class="form-control" value="{{ config.max_reminders|default(0) }}" min="0">
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Durée de validité du lien de signature (jours)', 'assetsign') }}</label>
-            <input type="number" name="link_validity_days" class="form-control" value="{{ config.link_validity_days|default(30) }}" min="1">
+            <label class="form-label" for="assetsign-config-form-link-validity-days">{{ __('Durée de validité du lien de signature (jours)', 'assetsign') }}</label>
+            <input id="assetsign-config-form-link-validity-days" type="number" name="link_validity_days" class="form-control" value="{{ config.link_validity_days|default(30) }}" min="1">
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Alerter le technicien avant expiration (jours avant, 0 = désactivé)', 'assetsign') }}</label>
-            <input type="number" name="expiry_warning_days" class="form-control" value="{{ config.expiry_warning_days|default(3) }}" min="0">
+            <label class="form-label" for="assetsign-config-form-expiry-warning-days">{{ __('Alerter le technicien avant expiration (jours avant, 0 = désactivé)', 'assetsign') }}</label>
+            <input id="assetsign-config-form-expiry-warning-days" type="number" name="expiry_warning_days" class="form-control" value="{{ config.expiry_warning_days|default(3) }}" min="0">
             <div class="form-text">{{ __('Le technicien à l\'origine de l\'attribution reçoit un e-mail quand il reste ce nombre de jours avant l\'expiration du lien, pour pouvoir relancer le bénéficiaire autrement (appel, passage sur place) avant qu\'il ne soit trop tard.', 'assetsign') }}</div>
           </div>
           {# Issue #179 #}
           <div class="mb-3">
-            <label class="form-label">{{ __('Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)', 'assetsign') }}</label>
-            <input type="number" name="draft_reminder_days" class="form-control" value="{{ config.draft_reminder_days|default(3) }}" min="0">
+            <label class="form-label" for="assetsign-config-form-draft-reminder-days">{{ __('Rappeler au technicien une feuille restée en brouillon après (jours, 0 = désactivé)', 'assetsign') }}</label>
+            <input id="assetsign-config-form-draft-reminder-days" type="number" name="draft_reminder_days" class="form-control" value="{{ config.draft_reminder_days|default(3) }}" min="0">
             <div class="form-text">{{ __('Une feuille préparée mais jamais envoyée (bouton « Plus tard », mode d\'envoi manuel) est rappelée par e-mail au technicien, puis chaque semaine tant qu\'elle reste en brouillon. Les brouillons apparaissent aussi sur la page d\'accueil.', 'assetsign') }}</div>
           </div>
 
@@ -307,8 +307,8 @@
           </div>
           {# Issue #193 : pret temporaire #}
           <div class="mb-3">
-            <label class="form-label"><i class="ti ti-clock-share me-1"></i>{{ __('Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)', 'assetsign') }}</label>
-            <input type="number" name="loan_reminder_days" class="form-control" value="{{ config.loan_reminder_days|default(3) }}" min="0" max="60">
+            <label class="form-label" for="assetsign-config-form-loan-reminder-days"><i class="ti ti-clock-share me-1"></i>{{ __('Prêt temporaire : rappeler le retour prévu (jours avant, 0 = désactivé)', 'assetsign') }}</label>
+            <input id="assetsign-config-form-loan-reminder-days" type="number" name="loan_reminder_days" class="form-control" value="{{ config.loan_reminder_days|default(3) }}" min="0" max="60">
             <div class="form-text">{{ __('Une attribution avec une date de retour prévue est un prêt. Le bénéficiaire et le technicien reçoivent un e-mail ce nombre de jours avant l\'échéance.', 'assetsign') }}</div>
           </div>
           <div class="mb-3 form-check">
@@ -522,8 +522,8 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Symbole monétaire', 'assetsign') }}</label>
-            <input type="text" name="currency_symbol" class="form-control" style="width: 80px;" maxlength="8" value="{{ config.currency_symbol|default('€') }}">
+            <label class="form-label" for="assetsign-config-form-currency-symbol">{{ __('Symbole monétaire', 'assetsign') }}</label>
+            <input id="assetsign-config-form-currency-symbol" type="text" name="currency_symbol" class="form-control" style="width: 80px;" maxlength="8" value="{{ config.currency_symbol|default('€') }}">
             <div class="form-text">{{ __('Affiché après le prix sur la fiche PDF (ex: €, $, CHF).', 'assetsign') }}</div>
           </div>
 
@@ -772,12 +772,12 @@
           </fieldset>
           <div class="row">
             <div class="col-auto mb-3">
-              <label class="form-label">{{ __('Texte du filigrane sur l\'aperçu', 'assetsign') }}</label>
-              <input type="text" name="preview_watermark_text" class="form-control" maxlength="32" value="{{ config.preview_watermark_text|default('APERÇU') }}">
+              <label class="form-label" for="assetsign-config-form-preview-watermark-text">{{ __('Texte du filigrane sur l\'aperçu', 'assetsign') }}</label>
+              <input id="assetsign-config-form-preview-watermark-text" type="text" name="preview_watermark_text" class="form-control" maxlength="32" value="{{ config.preview_watermark_text|default('APERÇU') }}">
             </div>
             <div class="col-auto mb-3">
-              <label class="form-label">{{ __('Opacité du filigrane (%)', 'assetsign') }}</label>
-              <input type="number" name="preview_watermark_opacity" min="5" max="100" class="form-control" style="width: 100px;" value="{{ config.preview_watermark_opacity|default(25) }}">
+              <label class="form-label" for="assetsign-config-form-preview-watermark-opacity">{{ __('Opacité du filigrane (%)', 'assetsign') }}</label>
+              <input id="assetsign-config-form-preview-watermark-opacity" type="number" name="preview_watermark_opacity" min="5" max="100" class="form-control" style="width: 100px;" value="{{ config.preview_watermark_opacity|default(25) }}">
             </div>
           </div>
           <div class="form-text mb-3">{{ __('Affiché uniquement sur l\'aperçu en direct (jamais sur le vrai PDF), pour éviter toute confusion entre les deux.', 'assetsign') }}</div>
@@ -879,11 +879,11 @@
           <h4>{{ __('Calcul du score', 'assetsign') }}</h4>
           <div class="form-text mb-2">{{ __('Les poids sont relatifs : ils n’ont pas à totaliser 100. Un facteur à 0 est ignoré.', 'assetsign') }}</div>
           <div class="row g-2 mb-4" style="max-width: 500px;">
-            <div class="col-6"><label class="form-label">{{ __('Poids : Âge', 'assetsign') }}</label><input type="number" name="health_weight_age" class="form-control" min="0" value="{{ config.health_weight_age|default(30) }}"></div>
-            <div class="col-6"><label class="form-label">{{ __('Poids : Incidents', 'assetsign') }}</label><input type="number" name="health_weight_incidents" class="form-control" min="0" value="{{ config.health_weight_incidents|default(30) }}"></div>
-            <div class="col-6"><label class="form-label">{{ __('Poids : État physique', 'assetsign') }}</label><input type="number" name="health_weight_damage" class="form-control" min="0" value="{{ config.health_weight_damage|default(25) }}"></div>
-            <div class="col-6"><label class="form-label">{{ __('Poids : Mouvements', 'assetsign') }}</label><input type="number" name="health_weight_movements" class="form-control" min="0" value="{{ config.health_weight_movements|default(15) }}"></div>
-            <div class="col-6"><label class="form-label">{{ __('Poids : Consommation d\'énergie', 'assetsign') }}</label><input type="number" name="health_weight_energy" class="form-control" min="0" value="{{ config.health_weight_energy|default(0) }}"></div>
+            <div class="col-6"><label class="form-label" for="assetsign-config-form-health-weight-age">{{ __('Poids : Âge', 'assetsign') }}</label><input id="assetsign-config-form-health-weight-age" type="number" name="health_weight_age" class="form-control" min="0" value="{{ config.health_weight_age|default(30) }}"></div>
+            <div class="col-6"><label class="form-label" for="assetsign-config-form-health-weight-incidents">{{ __('Poids : Incidents', 'assetsign') }}</label><input id="assetsign-config-form-health-weight-incidents" type="number" name="health_weight_incidents" class="form-control" min="0" value="{{ config.health_weight_incidents|default(30) }}"></div>
+            <div class="col-6"><label class="form-label" for="assetsign-config-form-health-weight-damage">{{ __('Poids : État physique', 'assetsign') }}</label><input id="assetsign-config-form-health-weight-damage" type="number" name="health_weight_damage" class="form-control" min="0" value="{{ config.health_weight_damage|default(25) }}"></div>
+            <div class="col-6"><label class="form-label" for="assetsign-config-form-health-weight-movements">{{ __('Poids : Mouvements', 'assetsign') }}</label><input id="assetsign-config-form-health-weight-movements" type="number" name="health_weight_movements" class="form-control" min="0" value="{{ config.health_weight_movements|default(15) }}"></div>
+            <div class="col-6"><label class="form-label" for="assetsign-config-form-health-weight-energy">{{ __('Poids : Consommation d\'énergie', 'assetsign') }}</label><input id="assetsign-config-form-health-weight-energy" type="number" name="health_weight_energy" class="form-control" min="0" value="{{ config.health_weight_energy|default(0) }}"></div>
           </div>
           <div class="form-text mb-4" style="max-width: 500px;">{{ __('Consommation d\'énergie : moyenne journalière sur 12 mois calculée par le plugin Carbon (entièrement dégradé à partir de 1 kWh par jour). Ignorée si le plugin Carbon n\'est pas actif ou n\'a rien calculé pour le matériel.', 'assetsign') }}</div>
           <h4>{{ __('Couleurs et seuils', 'assetsign') }}</h4>
@@ -891,7 +891,7 @@
           <div class="row g-3" style="max-width: 720px;">
             <div class="col-md-4"><label class="form-label">{{ __('Bon', 'assetsign') }}</label><div class="input-group"><input type="color" name="health_score_good_color" class="form-control form-control-color" value="{{ config.health_score_good_color|default('#2fb344') }}"><input type="number" name="health_score_good_threshold" class="form-control" min="0" max="100" value="{{ config.health_score_good_threshold|default(70) }}"><span class="input-group-text">%</span></div></div>
             <div class="col-md-4"><label class="form-label">{{ __('Vigilance', 'assetsign') }}</label><div class="input-group"><input type="color" name="health_score_warning_color" class="form-control form-control-color" value="{{ config.health_score_warning_color|default('#f76707') }}"><input type="number" name="health_score_warning_threshold" class="form-control" min="0" max="100" value="{{ config.health_score_warning_threshold|default(40) }}"><span class="input-group-text">%</span></div></div>
-            <div class="col-md-4"><label class="form-label">{{ __('Critique', 'assetsign') }}</label><input type="color" name="health_score_critical_color" class="form-control form-control-color" value="{{ config.health_score_critical_color|default('#d63939') }}"><div class="form-text">{{ __('En dessous du seuil Vigilance.', 'assetsign') }}</div></div>
+            <div class="col-md-4"><label class="form-label" for="assetsign-config-form-health-score-critical-color">{{ __('Critique', 'assetsign') }}</label><input id="assetsign-config-form-health-score-critical-color" type="color" name="health_score_critical_color" class="form-control form-control-color" value="{{ config.health_score_critical_color|default('#d63939') }}"><div class="form-text">{{ __('En dessous du seuil Vigilance.', 'assetsign') }}</div></div>
           </div>
         </div>
         {# ---------------------------------------------------------------- Valeur résiduelle #}
@@ -904,8 +904,8 @@
             <div class="form-text">{{ __('Rien n\'est affiché tant que le prix d\'achat n\'est pas connu (onglet Infocom du matériel) : jamais une estimation inventée.', 'assetsign') }}</div>
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Durée de vie utile (mois)', 'assetsign') }}</label>
-            <input type="number" name="residual_value_duration_months" class="form-control" style="width: 140px;" value="{{ config.residual_value_duration_months|default(60) }}" min="1">
+            <label class="form-label" for="assetsign-config-form-residual-value-duration-months">{{ __('Durée de vie utile (mois)', 'assetsign') }}</label>
+            <input id="assetsign-config-form-residual-value-duration-months" type="number" name="residual_value_duration_months" class="form-control" style="width: 140px;" value="{{ config.residual_value_duration_months|default(60) }}" min="1">
             <div class="form-text">{{ __('Durée sur laquelle la valeur d\'achat est amortie de façon linéaire jusqu\'à 0 - la "durée personnalisable" du calcul, propre à cette entité.', 'assetsign') }}</div>
           </div>
         </div>
@@ -922,8 +922,8 @@
             <div class="form-text">{{ __('« Prévoir un remplacement » se déclenche en dessous du seuil « Vigilance » déjà réglé dans l\'onglet Score de santé : pas de second réglage redondant pour la même notion.', 'assetsign') }}</div>
           </div>
           <div class="mb-3">
-            <label class="form-label">{{ __('Seuil de valeur résiduelle déclenchant « Réévaluer l\'usage » (% du prix d\'achat)', 'assetsign') }}</label>
-            <input type="number" name="residual_value_low_threshold_percent" class="form-control" style="width: 140px;" min="0" max="100" value="{{ config.residual_value_low_threshold_percent|default(20) }}">
+            <label class="form-label" for="assetsign-config-form-residual-value-low-threshold-percent">{{ __('Seuil de valeur résiduelle déclenchant « Réévaluer l\'usage » (% du prix d\'achat)', 'assetsign') }}</label>
+            <input id="assetsign-config-form-residual-value-low-threshold-percent" type="number" name="residual_value_low_threshold_percent" class="form-control" style="width: 140px;" min="0" max="100" value="{{ config.residual_value_low_threshold_percent|default(20) }}">
             <div class="form-text">{{ __('En dessous de ce pourcentage du prix d\'achat d\'origine, la recommandation « Réévaluer l\'usage » est affichée.', 'assetsign') }}</div>
           </div>
         </div>
@@ -958,8 +958,8 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">{{ __('Anonymiser l\'identité des bénéficiaires après (années, 0 = jamais)', 'assetsign') }}</label>
-            <input type="number" name="passport_retention_years" class="form-control" style="width: 140px;" value="{{ config.passport_retention_years|default(3) }}" min="0">
+            <label class="form-label" for="assetsign-config-form-passport-retention-years">{{ __('Anonymiser l\'identité des bénéficiaires après (années, 0 = jamais)', 'assetsign') }}</label>
+            <input id="assetsign-config-form-passport-retention-years" type="number" name="passport_retention_years" class="form-control" style="width: 140px;" value="{{ config.passport_retention_years|default(3) }}" min="0">
             <div class="form-text">{{ __('Passé ce délai, le nom et l\'e-mail du bénéficiaire sont retirés des événements du Passeport matériel (l\'événement et sa date restent visibles). N\'affecte jamais les fiches d\'attribution/restitution elles-mêmes.', 'assetsign') }}</div>
           </div>
 
@@ -1003,7 +1003,7 @@
     <div class="card-header">{{ __('Aperçu de la fiche générée', 'assetsign') }}</div>
     <div class="card-body p-2">
       <p class="text-muted small px-1">{{ __('Exemple avec des données fictives, mêmes gabarits Twig que le vrai PDF. L\'aperçu se met à jour automatiquement dès que vous modifiez un réglage ou changez d\'onglet, avant même d\'enregistrer.', 'assetsign') }}</p>
-      <iframe id="assetsign-preview-frame" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
+      <iframe id="assetsign-preview-frame" title="{{ __('Aperçu de la fiche générée', 'assetsign') }}" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
     </div>
   </div>
 </div>
@@ -1028,8 +1028,8 @@
       {% endif %}
 
       <div class="mb-3">
-        <label class="form-label">{{ __('Nom du gabarit', 'assetsign') }}</label>
-        <input type="text" name="name" form="{{ form_id }}" class="form-control" value="{{ template.fields.name|default('') }}" required>
+        <label class="form-label" for="assetsign-config-form-name">{{ __('Nom du gabarit', 'assetsign') }}</label>
+        <input id="assetsign-config-form-name" type="text" name="name" form="{{ form_id }}" class="form-control" value="{{ template.fields.name|default('') }}" required>
       </div>
 
       <div class="mb-3 form-check">

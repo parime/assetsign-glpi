@@ -10,3 +10,17 @@ gitleaks tests/security/access-matrix.sh:generic-api-key:177 : jeton forgé du t
 # du matériel : un gestionnaire de parc les cherche à côté des ordinateurs. Les réglages restent
 # dans Configuration > Plugins > AssetSign.
 menus-entree-native assets > GlpiPlugin\Assetsign\Menu : unique entrée d'usage, la vie du matériel se cherche dans Parc
+
+# Issue #392 : parcours des pages (pages-mode bloquant).
+# Les classes NotificationTarget* du plugin héritent de la table du cœur glpi_notificationtargets :
+# le parcours en déduit une « fiche » front/notificationtarget*.form.php que GLPI refuse (403) par
+# conception, une cible de notification ne s'ouvrant pas en fiche (elle se règle depuis la
+# notification, Configuration > Notifications).
+crawl http-403 front/notificationtarget*.form.php : cible de notification du cœur, sans fiche propre par conception de GLPI
+# Le jeton de signature (Token) n'a pas d'écran : la fiche générique que GLPI construit pour toute
+# classe CommonDBTM porte un attribut ARIA du cœur (.input). Aucun lien du plugin n'y mène.
+crawl axe:aria-allowed-attr front/token.form.php : fiche générique du cœur GLPI pour une classe interne sans écran
+# « Mon matériel et mes documents » est la page personnelle de chacun : entrée du portail
+# simplifié (helpdesk_menu_entry) et bandeau de l'accueil quand un document attend une signature.
+# Elle n'est volontairement pas une sous-page de Parc > AssetSign, réservée aux gestionnaires.
+crawl orphan front/mysignatures.php : page personnelle, ouverte par l'entrée du portail simplifié et le bandeau de l'accueil

@@ -113,8 +113,8 @@
             {% do call('GlpiPlugin\\Assetsign\\Accessory::dropdown', [{'name': 'plugin_assetsign_accessories_id'}]) %}
           </div>
           <div class="col-auto">
-            <label class="form-label">{{ __('Quantité', 'assetsign') }}</label>
-            <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 90px;">
+            <label class="form-label" for="assetsign-confirm-modal-quantity">{{ __('Quantité', 'assetsign') }}</label>
+            <input id="assetsign-confirm-modal-quantity" type="number" name="quantity" value="1" min="1" class="form-control" style="width: 90px;">
           </div>
           <div class="col-auto">
             <button type="submit" name="add_accessory" class="btn btn-secondary">{{ __('Ajouter', 'assetsign') }}</button>

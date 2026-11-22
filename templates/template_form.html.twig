@@ -23,13 +23,13 @@
       <input type="hidden" name="entities_id" value="{{ item.fields.entities_id|default(0) }}">
 
       <div class="mb-3">
-        <label class="form-label">{{ __('Nom du gabarit', 'assetsign') }}</label>
-        <input type="text" name="name" class="form-control" value="{{ item.fields.name|default('') }}" required>
+        <label class="form-label" for="assetsign-template-form-name">{{ __('Nom du gabarit', 'assetsign') }}</label>
+        <input id="assetsign-template-form-name" type="text" name="name" class="form-control" value="{{ item.fields.name|default('') }}" required>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">{{ __('Type d\'attribution concerné', 'assetsign') }}</label>
-        <select name="type" class="form-select">
+        <label class="form-label" for="assetsign-template-form-type">{{ __('Type d\'attribution concerné', 'assetsign') }}</label>
+        <select id="assetsign-template-form-type" name="type" class="form-select">
           {% for value, label in types %}
             <option value="{{ value }}" {{ item.fields.type is defined and item.fields.type == value ? 'selected' : '' }}>{{ label }}</option>
           {% endfor %}
@@ -94,7 +94,7 @@
     <div class="card-header">{{ __('Aperçu de la fiche générée', 'assetsign') }}</div>
     <div class="card-body p-2">
       <p class="text-muted small px-1">{{ __('Exemple avec des données fictives. L\'aperçu se met à jour automatiquement dès que vous modifiez le texte ou une case à cocher, avant même d\'enregistrer.', 'assetsign') }}</p>
-      <iframe id="assetsign-template-preview-frame" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
+      <iframe id="assetsign-template-preview-frame" title="{{ __('Aperçu de la fiche générée', 'assetsign') }}" srcdoc="{{ preview_html|e('html_attr') }}" style="width: 100%; height: 640px; border: 1px solid #ddd; border-radius: 4px; background: #fff;"></iframe>
     </div>
   </div>
 </div>

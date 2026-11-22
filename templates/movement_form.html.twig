@@ -93,7 +93,7 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div>
-          <input type="file" name="document_file" class="form-control form-control-sm">
+          <input type="file" name="document_file" class="form-control form-control-sm" aria-label="{{ __('File') }}">
         </div>
         <button type="submit" name="attach_document" class="btn btn-outline-secondary btn-sm">{{ __('Joindre le document', 'assetsign') }}</button>
       </form>
@@ -106,8 +106,8 @@
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <button type="submit" name="mark_in_transit" class="btn btn-outline-warning btn-sm">{{ __('Marquer comme en cours (départ effectif)', 'assetsign') }}</button>
         <div>
-          <label class="form-label small mb-0">{{ __('Date d\'arrivée', 'assetsign') }}</label>
-          <input type="datetime-local" name="date_to" class="form-control form-control-sm">
+          <label class="form-label small mb-0" for="assetsign-movement-form-date-to">{{ __('Date d\'arrivée', 'assetsign') }}</label>
+          <input id="assetsign-movement-form-date-to" type="datetime-local" name="date_to" class="form-control form-control-sm">
         </div>
         <button type="submit" name="mark_completed" class="btn btn-outline-success btn-sm">{{ __('Marquer comme terminé (arrivée effective)', 'assetsign') }}</button>
         <button type="submit" name="cancel_movement" class="btn btn-outline-danger btn-sm" onclick="return confirm({{ __('Annuler ce mouvement ?', 'assetsign')|json_encode|raw }});">{{ __('Annuler le mouvement', 'assetsign') }}</button>

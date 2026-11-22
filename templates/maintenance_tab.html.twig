@@ -110,8 +110,8 @@
         </div>
 
         <div class="mb-2 mt-2">
-          <label class="form-label">{{ __('Commentaire', 'assetsign') }}</label>
-          <textarea name="comment" class="form-control" rows="3"></textarea>
+          <label class="form-label" for="assetsign-maintenance-tab-comment">{{ __('Commentaire', 'assetsign') }}</label>
+          <textarea id="assetsign-maintenance-tab-comment" name="comment" class="form-control" rows="3"></textarea>
         </div>
 
         {% include '@assetsign/damage_annotation_edit.html.twig' %}

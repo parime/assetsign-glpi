@@ -154,8 +154,8 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
-          <label class="form-label"><i class="ti ti-ticket me-1"></i>{{ __('Rattacher à un ticket ouvert du bénéficiaire', 'assetsign') }}</label>
-          <select name="tickets_id" class="form-select form-select-sm">
+          <label class="form-label" for="assetsign-assetsign-form-tickets-id"><i class="ti ti-ticket me-1"></i>{{ __('Rattacher à un ticket ouvert du bénéficiaire', 'assetsign') }}</label>
+          <select id="assetsign-assetsign-form-tickets-id" name="tickets_id" class="form-select form-select-sm">
             {% for id, label in open_tickets %}<option value="{{ id }}">{{ label }}</option>{% endfor %}
           </select>
         </div>
@@ -385,8 +385,8 @@
           {% do call('User::dropdown', [{'name': 'delegate_users_id', 'right': 'all', 'entity': item.fields.entities_id}]) %}
         </div>
         <div class="col-auto">
-          <label class="form-label">{{ __('Motif', 'assetsign') }}</label>
-          <input type="text" name="delegation_reason" class="form-control">
+          <label class="form-label" for="assetsign-assetsign-form-delegation-reason">{{ __('Motif', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-delegation-reason" type="text" name="delegation_reason" class="form-control">
         </div>
         <div class="col-auto">
           <button type="submit" name="delegate_signature" class="btn btn-secondary">{{ __('Déléguer', 'assetsign') }}</button>
@@ -473,12 +473,12 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
-          <label class="form-label">{{ __('Prix', 'assetsign') }}</label>
-          <input type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;" value="{{ vente_details.fields.price|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
+          <label class="form-label" for="assetsign-assetsign-form-price">{{ __('Prix', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-price" type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;" value="{{ vente_details.fields.price|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
         </div>
         <div class="col-auto">
-          <label class="form-label">{{ __('Date de vente', 'assetsign') }}</label>
-          <input type="date" name="sale_date" class="form-control" value="{{ vente_details.fields.sale_date|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
+          <label class="form-label" for="assetsign-assetsign-form-sale-date">{{ __('Date de vente', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-sale-date" type="date" name="sale_date" class="form-control" value="{{ vente_details.fields.sale_date|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
         </div>
         {% if can_edit_vente_details %}
           <div class="col-auto">
@@ -497,8 +497,8 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
-          <label class="form-label">{{ __('Organisme bénéficiaire', 'assetsign') }}</label>
-          <input type="text" name="organization_name" class="form-control" value="{{ don_details.fields.organization_name|default('') }}" {{ can_edit_don_details ? '' : 'readonly' }}>
+          <label class="form-label" for="assetsign-assetsign-form-organization-name">{{ __('Organisme bénéficiaire', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-organization-name" type="text" name="organization_name" class="form-control" value="{{ don_details.fields.organization_name|default('') }}" {{ can_edit_don_details ? '' : 'readonly' }}>
         </div>
         {% if can_edit_don_details %}
           <div class="col-auto">
@@ -517,8 +517,8 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
-          <label class="form-label">{{ __('Prestataire', 'assetsign') }}</label>
-          <input type="text" name="provider_name" class="form-control" value="{{ destruction_details.fields.provider_name|default('') }}" {{ can_edit_destruction_details ? '' : 'readonly' }}>
+          <label class="form-label" for="assetsign-assetsign-form-provider-name">{{ __('Prestataire', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-provider-name" type="text" name="provider_name" class="form-control" value="{{ destruction_details.fields.provider_name|default('') }}" {{ can_edit_destruction_details ? '' : 'readonly' }}>
         </div>
         {% if can_edit_destruction_details %}
           <div class="col-auto">
@@ -723,12 +723,12 @@
           {% do call('GlpiPlugin\\Assetsign\\Accessory::dropdown', [{'name': 'plugin_assetsign_accessories_id'}]) %}
         </div>
         <div class="col-auto">
-          <label class="form-label">{{ __('Quantité', 'assetsign') }}</label>
-          <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 90px;">
+          <label class="form-label" for="assetsign-assetsign-form-quantity">{{ __('Quantité', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-quantity" type="number" name="quantity" value="1" min="1" class="form-control" style="width: 90px;">
         </div>
         <div class="col-auto">
-          <label class="form-label">{{ __('Commentaire', 'assetsign') }}</label>
-          <input type="text" name="comment" class="form-control">
+          <label class="form-label" for="assetsign-assetsign-form-comment">{{ __('Commentaire', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-comment" type="text" name="comment" class="form-control">
         </div>
         <div class="col-auto">
           <button type="submit" name="add_accessory" class="btn btn-secondary">{{ __('Ajouter', 'assetsign') }}</button>
