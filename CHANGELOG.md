@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- CI : contrôles de sécurité communs glpi-plugin-security v1.10.1 (secrets, dépendances, CodeQL,
+  test de mise à jour depuis la version publiée, tests d'intégration en français, parcours de toutes
+  les pages) ; étape Trivy et job Dependency Review de la CI du plugin retirés, couverts par le
+  workflow commun (npm audit et composer audit gardés).
+
 ### Fixed
 
 - **Test instable du PDF papier (#393).** La lecture des PDF dans les tests découpait les flux
