@@ -68,38 +68,6 @@ jobs:
       - name: Récupère le code du plugin
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
 
-      - name: "Analyse de sécurité du dépôt (Trivy : secrets, mauvaises configurations et vulnérabilités)"
-        # --scanners vuln,secret,misconfig : le scan de vulnerabilites fait ici
-        # double emploi avec composer/npm audit plus bas (meme source de
-        # donnees pour la partie dependances), mais volontairement conserve -
-        # deux verifications valent mieux qu'aucune en cas de defaillance ou
-        # de decalage de l'une des deux. Tourne directement sur le checkout,
-        # avant meme Docker : aucun besoin de GLPI pour ce scan.
-        #
-        # Binaire officiel telecharge directement (pas de `curl | sh`, corrige
-        # le 2026-08-12 suite au signalement Semgrep gha-curl-pipe-shell : un
-        # `# nosemgrep` sur la ligne concernee ne s'est pas revele fiable a
-        # l'interieur d'un bloc `run: |` multi-lignes en pratique, corriger la
-        # cause reelle plutot que de s'acharner sur la suppression) : la
-        # version taguee est verifiee contre le fichier de checksums SHA256
-        # officiellement publie par le projet avant toute extraction/execution,
-        # exactement ce que Semgrep recommande dans son propre message.
-        #
-        # Version lue via l'API authentifiee (gh + GITHUB_TOKEN) : sans jeton, le quota anonyme
-        # partage par les runners s'epuise et VERSION restait vide (echec 2026-11-08, PR #306).
-        # Telechargements avec nouvelles tentatives sur les erreurs passageres de GitHub (502/504).
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          VERSION="$(gh api repos/aquasecurity/trivy/releases/latest --jq '.tag_name' | sed 's/^v//')"
-          test -n "$VERSION" || { echo "::error::version de Trivy introuvable"; exit 1; }
-          curl -sfLO --retry 5 --retry-all-errors --retry-delay 3 "https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz"
-          curl -sfLO --retry 5 --retry-all-errors --retry-delay 3 "https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_checksums.txt"
-          sha256sum --ignore-missing -c "trivy_${VERSION}_checksums.txt"
-          tar xzf "trivy_${VERSION}_Linux-64bit.tar.gz" trivy
-          install -m 0755 trivy /usr/local/bin/trivy
-          trivy fs --scanners vuln,secret,misconfig --exit-code 1 .
-
       # npm audit lit package.json, pas les fichiers reellement servis : sans ce controle, une PR
       # Dependabot qui ne met a jour que le manifeste (deja arrive : pdfjs-dist declare 6.4.299,
       # fichiers restes en 6.2.108) ferait auditer une version que le plugin n'embarque pas.
@@ -423,7 +391,7 @@ jobs:
   # Meme plugin, meme suite PHPUnit, sur GLPI 12 (cf. src/Compat/) : sans ce
   # job, la compatibilite 12 pourrait regresser silencieusement (la CI principale ci-dessus ne
   # tourne que sur GLPI 11). Volontairement limite a l'installation + aux tests : les analyses
-  # (Trivy, audits, PHPStan, phpcs) ne dependent pas de la version de GLPI et tournent deja
+  # (audits, PHPStan, phpcs) ne dependent pas de la version de GLPI et tournent deja
   # ci-dessus. Job separe plutot qu'une matrice sur `test` : une matrice renommerait le check
   # requis par la protection de branche.
   test-glpi12:
@@ -579,8 +547,8 @@ jobs:
           exit $status
 
   semgrep:
-    # Analyse par motifs (SAST) : distincte de Trivy plus haut, qui couvre
-    # secrets/mauvaises configurations/vulnérabilités connues des dépendances
+    # Analyse par motifs (SAST) : distincte de Trivy et Gitleaks (workflow commun security.yml),
+    # qui couvrent secrets et vulnérabilités connues des dépendances
     # mais ne détecte pas des patterns de code dangereux (ex: injection SQL,
     # usage risqué d'une fonction PHP) - deux outils complémentaires, pas
     # redondants. Job séparé (pas une étape du job "test") : ne nécessite ni
@@ -609,20 +577,6 @@ jobs:
       # et local : ne depend ni du token Semgrep ni du registre de regles en ligne.
       - name: "Semgrep - regles securite GLPI du projet"
         run: semgrep scan --config .semgrep/ --error --metrics=off
-
-  # Bloque une PR qui ajoute ou met a jour une dependance (composer, npm, actions) ayant un avis de
-  # securite connu - avant la fusion, la ou Dependabot ne previent qu'apres coup.
-  dependency-review:
-    name: "Dependency Review"
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    steps:
-      - name: Récupère le code du plugin
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (SHA pinned, cf. Semgrep gha-mutable-action-tag)
-      - name: Dependency review
-        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0 (SHA pinned)
-        with:
-          fail-on-severity: moderate
 
   validation:
     # Verifie que les fichiers de configuration du depot sont bien formes,

@@ -1,0 +1,6 @@
+# Exceptions justifiées des contrôles de sécurité communs (parime/glpi-plugin-security).
+# Format : « <contrôle> <identifiant> : <justification> », une par ligne ; « # » : commentaire.
+
+# Jeton de simulation volontairement forgé (32 caractères hexadécimaux 0123…) : la matrice d'accès
+# vérifie qu'un jeton inconnu n'applique aucun import. Ce n'est le secret d'aucun service.
+gitleaks tests/security/access-matrix.sh:generic-api-key:177 : jeton forgé du test d'accès (import refusé), aucun secret réel
