@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Test instable du PDF papier (#393).** La lecture des PDF dans les tests découpait les flux
+  par une expression régulière « stream ... endstream » : quand les données compressées, qui
+  changent avec la minute d'impression, finissaient par un retour chariot, le flux était coupé, ne
+  se décompressait plus et la page disparaissait (« 0 page au lieu de 1 », dans les trois jobs qui
+  imprimaient la même minute). Les flux sont maintenant lus selon leur longueur `/Length`, le nombre
+  de pages vient de l'arbre des pages, et un échec affiche un diagnostic (taille, flux, début du
+  PDF). Le code du plugin n'est pas en cause : le PDF produit était valide.
+
 ### Added
 
 - **Test des classes `*-subtle` / `*-emphasis`** (parime/glpi-plugin-template#10).

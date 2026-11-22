@@ -30,6 +30,8 @@ use GlpiPlugin\Assetsign\Template;
  */
 class DocumentControlHeaderTest extends AssetsignTestCase
 {
+    use PdfTextExtraction;
+
     private const CODE = 'FOR-TEST-274';
 
     public function testDisabledByDefault(): void
@@ -111,13 +113,12 @@ class DocumentControlHeaderTest extends AssetsignTestCase
         $this->assertStringContainsString(DocumentControlHeader::PAGE_COUNT_TOKEN, $html);
 
         $pdf = $builder->renderPdf($html);
-        // Nombre réel de pages lu dans l'arbre des pages du PDF : l'extraction texte, volontairement
-        // minimale, peut perdre un flux de page (test instable avant ce correctif, « 1 sur 18 »
-        // imprimé pour 17 flux extraits).
+        // Nombre réel de pages lu dans l'arbre des pages du PDF. Les flux sont découpés selon leur
+        // /Length (issue #393) : chaque page doit être lue, sans tolérance.
         $pageCount = $this->pdfPageCount($pdf);
-        $this->assertGreaterThanOrEqual(10, $pageCount, 'The test document must span at least 10 pages ("Page X of Y" with two digits).');
+        $this->assertGreaterThanOrEqual(10, $pageCount, 'The test document must span at least 10 pages ("Page X of Y" with two digits).' . $this->describePdf($pdf));
         $pages = $this->extractPageTexts($pdf);
-        $this->assertGreaterThanOrEqual($pageCount - 2, count($pages), 'Almost every page must be readable by the test extraction.');
+        $this->assertCount($pageCount, $pages, 'Every page must be readable by the test extraction.' . $this->describePdf($pdf));
 
         $numbers = [];
         foreach ($pages as $index => $text) {
@@ -276,50 +277,5 @@ class DocumentControlHeaderTest extends AssetsignTestCase
         ]);
         $assetsign->getFromDB($id);
         return $assetsign;
-    }
-
-    /**
-     * Nombre réel de pages, lu dans l'arbre des pages du PDF (/Count n). Plus sûr que le nombre de
-     * flux extraits par extractPageTexts() : un flux de page dont le contenu binaire contient une fin
-     * de ligne suivie de « endstream » est coupé par l'expression régulière et peut manquer.
-     */
-    private function pdfPageCount(string $pdf): int
-    {
-        preg_match_all('/\/Count\s+(\d+)/', $pdf, $counts);
-        return $counts[1] === [] ? 0 : max(array_map('intval', $counts[1]));
-    }
-
-    /**
-     * Texte de chaque page d'un PDF produit par Dompdf (moteur CPDF, police DejaVu : chaînes en
-     * UTF-16BE dans des flux compressés). Suffisant pour ces assertions, pas un lecteur PDF général.
-     *
-     * @return list<string>
-     */
-    private function extractPageTexts(string $pdf): array
-    {
-        preg_match_all('/stream\r?\n(.*?)\r?\nendstream/s', $pdf, $streams);
-        $pages = [];
-        foreach ($streams[1] as $stream) {
-            $content = @gzuncompress($stream);
-            if ($content === false || !str_contains($content, ' Tf ')) {
-                continue;
-            }
-            preg_match_all('/\[\((.*?)\)\]\s*TJ/s', $content, $strings);
-            $text = '';
-            foreach ($strings[1] as $raw) {
-                $bytes = preg_replace_callback(
-                    '/\\\\([nrtbf()\\\\]|[0-7]{1,3})/',
-                    static fn (array $m): string => match ($m[1]) {
-                        'n' => "\n", 'r' => "\r", 't' => "\t", 'b' => "\x08", 'f' => "\f",
-                        '(', ')', '\\' => $m[1],
-                        default => chr(octdec($m[1])),
-                    },
-                    $raw
-                );
-                $text .= mb_convert_encoding((string) $bytes, 'UTF-8', 'UTF-16BE') . ' ';
-            }
-            $pages[] = $text;
-        }
-        return $pages;
     }
 }

@@ -111,11 +111,15 @@ final class PaperSignatureTest extends AssetsignTestCase
 
         $this->assertStringStartsWith('%PDF-', $pdf);
         $pages = $this->extractPageTexts($pdf);
-        $this->assertGreaterThanOrEqual(2, count($pages), 'Fiche puis etat des lieux.');
+        $this->assertGreaterThanOrEqual(2, $this->pdfPageCount($pdf), 'Fiche puis etat des lieux.' . $this->describePdf($pdf));
+        $this->assertCount($this->pdfPageCount($pdf), $pages, 'Chaque page est lue.' . $this->describePdf($pdf));
         $this->assertStringContainsString('Lecteurfictif', implode(' ', $pages));
 
         $condition = PaperSignature::renderPdf($assetsign, PaperSignature::VARIANT_CONDITION, $technician);
-        $this->assertCount(1, $this->extractPageTexts($condition), 'Etat des lieux imprimable : une page A4.');
+        // Nombre de pages lu dans l'arbre des pages, et texte de chaque page (issue #393 : un flux
+        // coupe par l'ancienne lecture « stream ... endstream » donnait parfois 0 page).
+        $this->assertSame(1, $this->pdfPageCount($condition), 'Etat des lieux imprimable : une page A4.' . $this->describePdf($condition));
+        $this->assertCount(1, $this->extractPageTexts($condition), 'Texte de la page lisible.' . $this->describePdf($condition));
 
         $assetsign->getFromDB($assetsign->getID());
         $this->assertSame(Assetsign::STATUS_SENT, (int) $assetsign->fields['status'], 'Imprimer ne signe rien.');
