@@ -14,3 +14,4 @@
 /.semgrep export-ignore
 /.yamllint.yml export-ignore
 /phpstan.glpi12.neon export-ignore
+/.glpi-security-exceptions export-ignore
