@@ -27,7 +27,7 @@ global $CFG_GLPI, $DB;
 
 Session::checkRight(Profile::RIGHT_ASSETSIGN, READ);
 
-Html::header(Campaign::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Campaign::class);
+Html::header(Campaign::getTypeName(2), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Campaign::class);
 \GlpiPlugin\Assetsign\MenuSection::show(\GlpiPlugin\Assetsign\Campaign::class);
 
 $rows = [];

@@ -45,7 +45,7 @@ if (!$maintenance->getFromDB($id) || !$maintenance->can($id, READ)) {
     throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 
-Html::header(Maintenance::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, Maintenance::class);
+Html::header(Maintenance::getTypeName(1), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, Maintenance::class);
 
 $maintenance->showForm($id);
 

@@ -19,7 +19,7 @@ use GlpiPlugin\Assetsign\Movement;
 
 Session::checkRight(Movement::$rightname, READ);
 
-Html::header(Movement::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Movement::class);
+Html::header(Movement::getTypeName(2), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Movement::class);
 \GlpiPlugin\Assetsign\MenuSection::show(\GlpiPlugin\Assetsign\Movement::class);
 
 Movement::showCreateForm();

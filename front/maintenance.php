@@ -19,7 +19,7 @@ use GlpiPlugin\Assetsign\Maintenance;
 
 Session::checkRight(Maintenance::$rightname, READ);
 
-Html::header(Maintenance::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, Maintenance::class);
+Html::header(Maintenance::getTypeName(2), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, Maintenance::class);
 \GlpiPlugin\Assetsign\MenuSection::show(Maintenance::class);
 
 Maintenance::showCreateForm();

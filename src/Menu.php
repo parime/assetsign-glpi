@@ -20,13 +20,15 @@ namespace GlpiPlugin\Assetsign;
 use CommonGLPI;
 
 /**
- * Issue #330 : la seule entrée du plugin dans le menu Outils (« AssetSign »).
+ * Issue #330 : la seule entrée d'usage du plugin dans les menus de GLPI (« AssetSign »), rangée
+ * dans Parc depuis l'issue #392 : la remise, la restitution, l'inventaire physique et le
+ * renouvellement sont la vie du matériel, qu'un gestionnaire cherche à côté des ordinateurs.
  *
  * Règle commune aux plugins : les réglages se font depuis la page de configuration du plugin
  * (Configuration > Plugins > AssetSign) et le plugin n'ajoute qu'une entrée d'usage aux menus de
  * GLPI. Les écrans d'usage (attributions, mouvements, départs, campagnes, attestations
  * d'effacement, fiches de maintenance, pilotage du parc) sont les sous-pages de cette entrée :
- * options GLPI (fil d'Ariane « Outils > AssetSign > Page », boutons Ajouter/Rechercher de la page)
+ * options GLPI (fil d'Ariane « Parc > AssetSign > Page », boutons Ajouter/Rechercher de la page)
  * et barre d'onglets commune en tête de chaque page (MenuSection::show()).
  *
  * Classe sans table : seule l'ancre de menu. Chaque sous-page garde son propre droit (son
@@ -49,7 +51,7 @@ class Menu extends CommonGLPI
    }
 
    public static function getSectorizedDetails(): array {
-       return ['tools', self::class];
+       return ['assets', self::class];
    }
 
     /**

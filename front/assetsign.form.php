@@ -71,7 +71,7 @@ if ($id <= 0 && $_POST === [] && Session::haveRight(Assetsign::$rightname, UPDAT
           throw new \Glpi\Exception\Http\NotFoundHttpException();
       }
    }
-    Html::header(Assetsign::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, Assetsign::class);
+    Html::header(Assetsign::getTypeName(1), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, Assetsign::class);
     Assetsign::showNewAttribution((string) ($_GET['q'] ?? ''), $newItem);
     Html::footer();
     return;
@@ -360,7 +360,7 @@ if (isset($_POST['submit_checklist'])) {
 
 Session::checkRight(Assetsign::$rightname, READ);
 
-Html::header(Assetsign::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, Assetsign::class);
+Html::header(Assetsign::getTypeName(1), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, Assetsign::class);
 
 $assetsign->showForm($id);
 

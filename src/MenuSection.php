@@ -20,7 +20,7 @@ namespace GlpiPlugin\Assetsign;
 use Glpi\Application\View\TemplateRenderer;
 
 /**
- * Issue #330 : organisation des sous-pages de l'unique entrée Outils > AssetSign (Menu).
+ * Issue #330 : organisation des sous-pages de l'unique entrée Parc > AssetSign (Menu).
  *
  * Quatre rubriques, chacune avec ses pages : Attributions (attributions, mouvements, départs,
  * campagnes d'attestation), Attestations d'effacement, Fiches de maintenance (droit propre,
@@ -122,7 +122,7 @@ final class MenuSection
 
     /**
      * Issue #336 : encadré d'aide de « Mon matériel et mes documents » (front/mysignatures.php),
-     * page ouverte à tout utilisateur connecté, hors des sous-pages de Outils > AssetSign.
+     * page ouverte à tout utilisateur connecté, hors des sous-pages de Parc > AssetSign.
      *
      * @return array{page: string, purpose: string, expected: string}
      */

@@ -162,7 +162,7 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
-     * Enregistre sous le secteur 'tools' (Outils), pas 'admin' (cf.
+     * Enregistre sous le secteur 'assets' (Parc, issue #392), pas 'admin' (cf.
      * Hooks::MENU_TOADD dans setup.php) : sans cette declaration, tout code
      * coeur GLPI qui construit le fil d'Ariane via getHeaderParameters()
      * (cf. CommonGLPI::getHeaderParameters(), appelee par
@@ -170,11 +170,11 @@ class Assetsign extends Compat\Base\AssetsignBase
      * chercherait Assetsign dans le secteur 'admin', ou elle n'existe pas.
      */
    public static function getSectorizedDetails(): array {
-       return ['tools', Menu::class, self::class];
+       return ['assets', Menu::class, self::class];
    }
 
     /**
-     * Sous-page « Attributions » de l'entrée Outils > AssetSign (Menu, issue #330) : recherche
+     * Sous-page « Attributions » de l'entrée Parc > AssetSign (Menu, issue #330) : recherche
      * seule, la création passe par le formulaire guidé de la page. Les intitulés (gabarits,
      * accessoires, kits, points de contrôle) ne sont plus des options de ce menu : ce sont des
      * intitulés natifs, rangés dans Configuration > Intitulés.

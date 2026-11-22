@@ -805,7 +805,8 @@
               </div>
             {% endfor %}
           </div>
-          <a href="{{ config('root_doc') }}/plugins/assetsign/front/wipeattestation.php" class="btn btn-outline-secondary"><i class="ti ti-eraser me-1"></i>{{ __('Voir les attestations et les matériels sortis sans attestation', 'assetsign') }}</a>
+          {# Issue #392 : pas de lien vers l'exploitation dans la configuration ; la phrase indique le menu. #}
+          <p class="form-text"><i class="ti ti-info-circle me-1"></i>{{ __('Au quotidien, cette liste se trouve dans %s.', 'assetsign')|format(__('Assets') ~ ' > AssetSign > ' ~ call('GlpiPlugin\\Assetsign\\WipeAttestation::getTypeName', [2])) }}</p>
         </div>
 
         {# ---------------------------------------------------------------- Maintenance #}
@@ -818,7 +819,7 @@
             <div class="form-text">{{ __('Si activé, un pavé de signature (identique à celui d\'une vente) apparaît sur le formulaire de création : la fiche ne peut pas être créée sans signature. Le technicien est déjà connecté, aucun e-mail ni page séparée n\'est utilisé.', 'assetsign') }}</div>
           </div>
           <a href="{{ config('root_doc') }}/front/dropdown.php?itemtype=GlpiPlugin%5CAssetsign%5CMaintenanceChecklistItem" class="btn btn-outline-secondary">{{ __('Gérer les points de contrôle', 'assetsign') }}</a>
-          <a href="{{ config('root_doc') }}/plugins/assetsign/front/maintenance.php" class="btn btn-outline-secondary">{{ __('Voir les fiches de maintenance', 'assetsign') }}</a>
+          <p class="form-text mt-2"><i class="ti ti-info-circle me-1"></i>{{ __('Au quotidien, cette liste se trouve dans %s.', 'assetsign')|format(__('Assets') ~ ' > AssetSign > ' ~ call('GlpiPlugin\\Assetsign\\Maintenance::getTypeName', [2])) }}</p>
         </div>
 
         {# ---------------------------------------------------------------- Mouvements #}
@@ -828,7 +829,7 @@
             <input type="hidden" name="enable_movements" value="0">
             <input type="checkbox" name="enable_movements" value="1" class="form-check-input" id="enable_movements" {{ config.enable_movements|default(0) ? 'checked' : '' }}>
             <label class="form-check-label" for="enable_movements">{{ __('Activer les mouvements structurés', 'assetsign') }}</label>
-            <div class="form-text">{{ __('Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, ainsi qu\'une entrée dédiée dans le menu Outils.', 'assetsign') }}</div>
+            <div class="form-text">{{ __('Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, ainsi qu\'une page dans le menu Parc > AssetSign.', 'assetsign') }}</div>
           </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="enable_movement_signature" value="0">
@@ -836,7 +837,7 @@
             <label class="form-check-label" for="enable_movement_signature">{{ __('Faire signer le mouvement (pavé de signature)', 'assetsign') }}</label>
             <div class="form-text">{{ __('Si activé, un pavé de signature (identique à celui de la fiche de maintenance) apparaît sur le formulaire de création : le mouvement ne peut pas être créé sans signature. La personne présente est déjà connectée, aucun e-mail ni page séparée n\'est utilisé.', 'assetsign') }}</div>
           </div>
-          <a href="{{ config('root_doc') }}/plugins/assetsign/front/movement.php" class="btn btn-outline-secondary">{{ __('Voir les mouvements', 'assetsign') }}</a>
+          <p class="form-text"><i class="ti ti-info-circle me-1"></i>{{ __('Au quotidien, cette liste se trouve dans %s.', 'assetsign')|format(__('Assets') ~ ' > AssetSign > ' ~ call('GlpiPlugin\\Assetsign\\Assetsign::getTypeName', [2]) ~ ' > ' ~ call('GlpiPlugin\\Assetsign\\Movement::getTypeName', [2])) }}</p>
         </div>
 
         {# ---------------------------------------------------------------- Délégation de signature #}

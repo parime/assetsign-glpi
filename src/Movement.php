@@ -75,9 +75,9 @@ class Movement extends Compat\Base\MovementBase
        return 'ti ti-truck-delivery';
    }
 
-    /** Secteur 'tools' (Outils), pas 'admin' - même raison que Assetsign::getSectorizedDetails(). */
+    /** Secteur 'assets' (Parc), pas 'admin' - même raison que Assetsign::getSectorizedDetails(). */
    public static function getSectorizedDetails(): array {
-       return ['tools', Menu::class, self::class];
+       return ['assets', Menu::class, self::class];
    }
 
     /** @return array<int, string> Libellé de chaque statut, par constante STATUS_*. */

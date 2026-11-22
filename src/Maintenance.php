@@ -69,15 +69,15 @@ class Maintenance extends Compat\Base\MaintenanceBase
    }
 
     /**
-     * Enregistre sous le secteur 'tools' (Outils), pas 'admin' - meme raison
+     * Enregistre sous le secteur 'assets' (Parc), pas 'admin' - meme raison
      * que Assetsign::getSectorizedDetails().
      */
    public static function getSectorizedDetails(): array {
-       return ['tools', Menu::class, self::class];
+       return ['assets', Menu::class, self::class];
    }
 
     /**
-     * Sous-page « Fiches de maintenance » de l'entrée Outils > AssetSign (Menu, issue #330). Les
+     * Sous-page « Fiches de maintenance » de l'entrée Parc > AssetSign (Menu, issue #330). Les
      * points de contrôle de maintenance sont un intitulé natif (Configuration > Intitulés).
      */
    public static function getMenuContent(): array {

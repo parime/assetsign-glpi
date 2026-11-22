@@ -1025,10 +1025,6 @@ msgid "Gérer les points de contrôle"
 msgstr "Gerenciar os itens do checklist"
 
 #: templates/config_form.html.twig
-msgid "Voir les fiches de maintenance"
-msgstr "Ver os formulários de manutenção"
-
-#: templates/config_form.html.twig
 msgid ""
 "Un mouvement structuré généralise la notion de remise à n'importe quel "
 "déplacement physique de matériel (transfert inter-site, retour au stock, "
@@ -1049,10 +1045,15 @@ msgstr "Ativar as movimentações estruturadas"
 #: templates/config_form.html.twig
 msgid ""
 "Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, "
-"ainsi qu'une entrée dédiée dans le menu Outils."
+"ainsi qu'une page dans le menu Parc > AssetSign."
 msgstr ""
-"Adiciona uma aba \"Movimentações\" a cada ativo gerenciado pelo plugin, além "
-"de uma entrada dedicada no menu Ferramentas."
+"Adiciona uma aba \"Movimentações\" a cada ativo gerenciado pelo plugin, "
+"além de uma página no menu Ativos > AssetSign."
+
+#: templates/config_form.html.twig
+#, php-format
+msgid "Au quotidien, cette liste se trouve dans %s."
+msgstr "No dia a dia, esta lista fica em %s."
 
 #: templates/config_form.html.twig
 msgid "Faire signer le mouvement (pavé de signature)"
@@ -1069,10 +1070,6 @@ msgstr ""
 "manutenção) aparece no formulário de criação: a movimentação não pode ser "
 "criada sem assinatura. A pessoa presente já está conectada, nenhum e-mail ou "
 "página separada é usado."
-
-#: templates/config_form.html.twig
-msgid "Voir les mouvements"
-msgstr "Ver as movimentações"
 
 #: templates/config_form.html.twig
 msgid ""
@@ -6465,9 +6462,6 @@ msgstr ""
 
 msgid "Fiches concernées"
 msgstr "Fichas envolvidas"
-
-msgid "Voir les attestations et les matériels sortis sans attestation"
-msgstr "Ver os atestados e os equipamentos que saíram sem atestado"
 
 msgid "Attestation"
 msgstr "Atestado"

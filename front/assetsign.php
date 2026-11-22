@@ -29,7 +29,7 @@ Session::checkRight(Assetsign::$rightname, READ);
 // lise quoi que ce soit.
 unset($_GET['as_map'], $_POST['as_map'], $_REQUEST['as_map']);
 
-Html::header(Assetsign::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, Assetsign::class);
+Html::header(Assetsign::getTypeName(2), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, Assetsign::class);
 \GlpiPlugin\Assetsign\MenuSection::show(\GlpiPlugin\Assetsign\Assetsign::class);
 
 // Issue #282 : compteurs cliquables et nouvelle attribution, au-dessus de la liste.

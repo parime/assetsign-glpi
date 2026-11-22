@@ -26,7 +26,7 @@ use GlpiPlugin\Assetsign\WipeAttestation;
 
 Session::checkRight(WipeAttestation::$rightname, READ);
 
-Html::header(WipeAttestation::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, WipeAttestation::class);
+Html::header(WipeAttestation::getTypeName(2), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, WipeAttestation::class);
 MenuSection::show(WipeAttestation::class);
 
 TemplateRenderer::getInstance()->display('@assetsign/wipeattestation_list.html.twig', [
