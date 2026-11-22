@@ -21,7 +21,7 @@ use CommonGLPI;
 use Session;
 
 /**
- * Issue #142 : Outils > AssetSign, rubrique « Pilotage du parc », page « Tableau de bord RSE » (ancre CommonGLPI sans table, vers
+ * Issue #142 : Parc > AssetSign, rubrique « Pilotage du parc », page « Tableau de bord RSE » (ancre CommonGLPI sans table, vers
  * front/csr.php), visible avec le droit de lecture assetsign.
  */
 class CsrDashboard extends CommonGLPI
@@ -45,7 +45,7 @@ class CsrDashboard extends CommonGLPI
       if (!Session::haveRight(Profile::RIGHT_ASSETSIGN, READ)) {
           return false;
       }
-       // Première page de la rubrique « Pilotage du parc » de Outils > AssetSign (MenuSection).
+       // Première page de la rubrique « Pilotage du parc » de Parc > AssetSign (MenuSection).
        return [
            'title' => self::getMenuName(),
            'page'  => '/plugins/assetsign/front/csr.php',

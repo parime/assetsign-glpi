@@ -16,7 +16,7 @@
 <div class="card mb-3">
   <div class="card-header d-flex align-items-center gap-2">
     <h3 class="card-title mb-0"><i class="ti ti-alert-triangle me-2 {{ exits is empty ? 'text-success' : 'text-warning' }}"></i>{{ __('Matériels sortis sans attestation d\'effacement', 'assetsign') }}</h3>
-    <span class="badge {{ exits is empty ? 'bg-green-lt' : 'bg-orange-lt' }}">{{ exits|length }}</span>
+    <span class="badge {{ exits is empty ? 'bg-success-subtle text-success-emphasis' : 'bg-warning-subtle text-warning-emphasis' }}">{{ exits|length }}</span>
   </div>
   {% if exits is empty %}
     <div class="card-body text-secondary"><i class="ti ti-circle-check me-1 text-success"></i>{{ __('Toutes les fiches de don, de vente et de destruction ont une attestation d\'effacement valable.', 'assetsign') }}</div>
@@ -33,7 +33,7 @@
               <td>{% if e.item_url %}<a href="{{ e.item_url }}">{{ e.item }}</a>{% else %}{{ e.item }}{% endif %}</td>
               <td>{{ e.date|formatted_datetime }}</td>
               <td>{{ e.status }}</td>
-              <td>{% if e.tab_url %}<a href="{{ e.tab_url }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-eraser me-1"></i>{{ __('Enregistrer l\'attestation', 'assetsign') }}</a>{% endif %}</td>
+              <td>{% if e.tab_url %}<a href="{{ e.tab_url }}" class="btn btn-sm btn-outline-secondary"><i class="ti ti-eraser me-1"></i>{{ __('Enregistrer l\'attestation', 'assetsign') }}</a>{% endif %}</td>
             </tr>
           {% endfor %}
         </tbody>

@@ -242,7 +242,7 @@ function plugin_init_assetsign(): void {
     // pour chaque plugin actif : aucune entree $PLUGIN_HOOKS n'est necessaire pour ce
     // hook "auto", le nom de fonction est resolu par convention).
 
-    // --- Menu Outils : une seule entrée « AssetSign » (issue #330) ----------------------
+    // --- Menu Parc : une seule entrée « AssetSign » (issues #330 et #392) ----------------------
     // Règle commune aux plugins : les réglages se font depuis la page du plugin
     // (Configuration > Plugins > AssetSign, Hooks::CONFIG_PAGE plus haut) et le plugin n'ajoute
     // qu'UNE entrée d'usage aux menus de GLPI. Les écrans d'usage (attributions, mouvements,
@@ -250,11 +250,14 @@ function plugin_init_assetsign(): void {
     // sont les sous-pages de cette entrée, avec une barre d'onglets commune
     // (GlpiPlugin\Assetsign\Menu et MenuSection). Les intitulés (gabarits, accessoires, kits,
     // points de contrôle) restent dans Configuration > Intitulés, comme tout intitulé de GLPI.
+    // Issue #392 : secteur 'assets' (Parc) et non plus 'tools' (Outils) : c'est la vie du matériel,
+    // cherchée à côté des ordinateurs. Entrée déclarée dans .glpi-security-exceptions
+    // (menus-entree-native), comme toute entrée dans un secteur natif de GLPI.
     // Format attendu par le coeur GLPI : une LISTE PLATE de classes par categorie
     // (pas le format documente ['types'=>[...],'icon'=>'...']) : piege deja
     // rencontre et documente dans TROUBLESHOOTING.md.
     $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign'] = [
-        'tools' => [\GlpiPlugin\Assetsign\Menu::class],
+        'assets' => [\GlpiPlugin\Assetsign\Menu::class],
     ];
 
     if (Plugin::isPluginActive('assetsign')) {

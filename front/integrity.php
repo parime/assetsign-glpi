@@ -58,7 +58,7 @@ foreach ($runs as $run) {
    ];
 }
 
-Html::header(IntegrityCheck::getTypeName(), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, IntegrityCheck::class);
+Html::header(IntegrityCheck::getTypeName(), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, IntegrityCheck::class);
 \GlpiPlugin\Assetsign\MenuSection::show(IntegrityCheck::class);
 
 TemplateRenderer::getInstance()->display('@assetsign/integrity.html.twig', [

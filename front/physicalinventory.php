@@ -41,7 +41,7 @@ if (isset($_POST['launch'])) {
    Html::redirect($formUrl . '?id=' . $campaign->getID());
 }
 
-Html::header(PhysicalInventory::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, PhysicalInventory::class);
+Html::header(PhysicalInventory::getTypeName(2), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, PhysicalInventory::class);
 \GlpiPlugin\Assetsign\MenuSection::show(PhysicalInventory::class);
 
 $rows = [];

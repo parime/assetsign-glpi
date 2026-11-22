@@ -31,7 +31,7 @@ global $CFG_GLPI;
 
 Session::checkRight(Profile::RIGHT_ASSETSIGN, READ);
 
-Html::header(CsrDashboard::getTypeName(), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, CsrDashboard::class);
+Html::header(CsrDashboard::getTypeName(), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, CsrDashboard::class);
 \GlpiPlugin\Assetsign\MenuSection::show(\GlpiPlugin\Assetsign\CsrDashboard::class);
 
 $config = Config::getForEntity((int) Session::getActiveEntity());

@@ -138,7 +138,7 @@ $isHelpdesk = Session::getCurrentInterface() === 'helpdesk';
 if ($isHelpdesk) {
    Html::helpHeader($title);
 } else {
-   Html::header($title, $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Departure::class);
+   Html::header($title, $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Departure::class);
 }
 
 $lines = $departure->getItemLines();

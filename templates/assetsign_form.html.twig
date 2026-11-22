@@ -12,6 +12,7 @@
  # (at your option) any later version. See LICENSE for the full text.
  # -------------------------------------------------------------------------
  #}
+{% import '@assetsign/components/_badge_colors.html.twig' as badge_colors %}
 <div class="card">
   <div class="card-body">
     <h2>{{ _n('Attribution', 'Attributions', 1, 'assetsign') }} #{{ item.fields.id }} - {{ types[item.fields.type] }}</h2>
@@ -36,13 +37,13 @@
           <h3 class="card-title"><i class="ti ti-arrows-exchange me-1"></i>{{ __('Passation', 'assetsign') }}</h3>
           <div class="card-actions">
             {% if transfer.complete %}
-              <span class="badge bg-green-lt"><i class="ti ti-check me-1"></i>{{ __('Terminée : matériel attribué dans GLPI', 'assetsign') }}</span>
+              <span class="badge bg-success-subtle text-success-emphasis"><i class="ti ti-check me-1"></i>{{ __('Terminée : matériel attribué dans GLPI', 'assetsign') }}</span>
             {% elseif transfer.aborted %}
-              <span class="badge bg-secondary-lt"><i class="ti ti-x me-1"></i>{{ __('Annulée', 'assetsign') }}</span>
+              <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-x me-1"></i>{{ __('Annulée', 'assetsign') }}</span>
             {% elseif transfer.waiting_for|default('') != '' %}
-              <span class="badge bg-orange-lt"><i class="ti ti-hourglass me-1"></i>{{ __('Une signature sur deux : en attente de %s', 'assetsign')|format(transfer.waiting_for) }}</span>
+              <span class="badge bg-warning-subtle text-warning-emphasis"><i class="ti ti-hourglass me-1"></i>{{ __('Une signature sur deux : en attente de %s', 'assetsign')|format(transfer.waiting_for) }}</span>
             {% else %}
-              <span class="badge bg-orange-lt"><i class="ti ti-hourglass me-1"></i>{{ __('En attente des deux signatures', 'assetsign') }}</span>
+              <span class="badge bg-warning-subtle text-warning-emphasis"><i class="ti ti-hourglass me-1"></i>{{ __('En attente des deux signatures', 'assetsign') }}</span>
             {% endif %}
           </div>
         </div>
@@ -50,7 +51,7 @@
           <p class="text-secondary small mb-2">{{ __('Le détenteur sortant signe la restitution, le nouveau détenteur signe la remise. L\'attribution du matériel dans GLPI ne change qu\'après les deux signatures.', 'assetsign') }}</p>
           <div class="list-group">
             {% for step in [{label: __('Restitution par', 'assetsign'), icon: 'ti ti-arrow-back-up', line: transfer.return}, {label: __('Remise à', 'assetsign'), icon: 'ti ti-user-check', line: transfer.handover}] %}
-              <div class="list-group-item d-flex flex-wrap align-items-center gap-2{{ step.line.is_current ? ' bg-azure-lt' : '' }}">
+              <div class="list-group-item d-flex flex-wrap align-items-center gap-2{{ step.line.is_current ? ' bg-info-subtle text-info-emphasis' : '' }}">
                 <i class="{{ step.icon }}"></i>
                 <span>{{ step.label }} <strong>{{ step.line.user }}</strong></span>
                 <span class="badge {{ step.line.badge }}">{{ step.line.status }}</span>
@@ -100,7 +101,7 @@
               <button type="submit" name="update_draft" class="btn btn-secondary">{{ __('Enregistrer', 'assetsign') }}</button>
             </div>
             <div class="col-auto">
-              <a class="btn btn-outline-primary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&preview_draft=1"><i class="ti ti-eye me-1"></i>{{ __('Aperçu du document', 'assetsign') }}</a>
+              <a class="btn btn-outline-secondary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&preview_draft=1"><i class="ti ti-eye me-1"></i>{{ __('Aperçu du document', 'assetsign') }}</a>
             </div>
           </form>
           <p class="form-text mb-0 mt-2">{{ __('Le matériel remis avec, les accessoires, les observations, le kit et l\'état des lieux se complètent plus bas sur cette page. Rien n\'est envoyé tant que vous n\'avez pas cliqué sur « Envoyer pour signature ».', 'assetsign') }}</p>
@@ -120,9 +121,9 @@
           {% if loan_until %}
             <strong>{{ __('Prêt temporaire', 'assetsign') }}</strong> - {{ __('retour prévu le %s', 'assetsign')|format(loan_until|formatted_date) }}
             {% if loan_is_returned %}
-              <span class="badge bg-green-lt ms-1"><i class="ti ti-check"></i> {{ __('Rendu', 'assetsign') }}</span>
+              <span class="badge bg-success-subtle text-success-emphasis ms-1"><i class="ti ti-check"></i> {{ __('Rendu', 'assetsign') }}</span>
             {% elseif loan_overdue %}
-              <span class="badge bg-red-lt ms-1"><i class="ti ti-alert-triangle"></i> {{ __('En retard', 'assetsign') }}</span>
+              <span class="badge bg-danger-subtle text-danger-emphasis ms-1"><i class="ti ti-alert-triangle"></i> {{ __('En retard', 'assetsign') }}</span>
             {% endif %}
             {% if item.fields.loan_tickets_id|default(0) > 0 %}
               <a class="ms-2" href="{{ 'Ticket'|itemtype_form_path(item.fields.loan_tickets_id) }}"><i class="ti ti-ticket me-1"></i>{{ __('Ticket n° %d', 'assetsign')|format(item.fields.loan_tickets_id) }}</a>
@@ -153,8 +154,8 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
-          <label class="form-label"><i class="ti ti-ticket me-1"></i>{{ __('Rattacher à un ticket ouvert du bénéficiaire', 'assetsign') }}</label>
-          <select name="tickets_id" class="form-select form-select-sm">
+          <label class="form-label" for="assetsign-assetsign-form-tickets-id"><i class="ti ti-ticket me-1"></i>{{ __('Rattacher à un ticket ouvert du bénéficiaire', 'assetsign') }}</label>
+          <select id="assetsign-assetsign-form-tickets-id" name="tickets_id" class="form-select form-select-sm">
             {% for id, label in open_tickets %}<option value="{{ id }}">{{ label }}</option>{% endfor %}
           </select>
         </div>
@@ -169,7 +170,7 @@
         <th>{{ __('Statut', 'assetsign') }}</th>
         <td>
           {# Issue #276 : pastille distincte pour une fiche signée sur papier. #}
-          <span class="badge {{ status_badges[item.fields.status]|default('bg-secondary-lt') }}">
+          <span class="badge {{ status_badges[item.fields.status]|default('bg-secondary-subtle text-secondary-emphasis') }}">
             {% if paper.is_signed|default(false) %}<i class="ti ti-writing-sign me-1"></i>{% endif %}{{ statuses[item.fields.status] }}
           </span>
         </td>
@@ -271,7 +272,7 @@
         <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
           <input type="hidden" name="id" value="{{ item.fields.id }}">
-          <button type="submit" name="copy_link" class="btn btn-outline-primary" title="{{ __('Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L\'ancien lien cesse de fonctionner.', 'assetsign') }}">
+          <button type="submit" name="copy_link" class="btn btn-outline-secondary" title="{{ __('Sans e-mail : crée un nouveau lien à envoyer vous-même (Teams, chat, SMS). L\'ancien lien cesse de fonctionner.', 'assetsign') }}">
             <i class="ti ti-link me-1"></i>{{ __('Copier un nouveau lien', 'assetsign') }}
           </button>
         </form>
@@ -282,7 +283,7 @@
         <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php">
           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
           <input type="hidden" name="id" value="{{ item.fields.id }}">
-          <button type="submit" name="sign_in_person" class="btn btn-outline-primary" title="{{ __('Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet écran, en votre présence.', 'assetsign') }}">
+          <button type="submit" name="sign_in_person" class="btn btn-outline-secondary" title="{{ __('Pour une personne qui ne peut pas se connecter à GLPI : elle signe sur cet écran, en votre présence.', 'assetsign') }}">
             <i class="ti ti-device-tablet me-1"></i>{{ __('Faire signer sur place', 'assetsign') }}
           </button>
         </form>
@@ -316,7 +317,7 @@
         <div class="card-body">
           <p class="text-muted mb-3">{{ __('Si la signature électronique n\'est pas possible : imprimez la fiche pré-remplie, faites-la signer à la main, puis joignez ici le scan du document signé. Tant que le scan n\'est pas joint, rien n\'est enregistré comme signé.', 'assetsign') }}</p>
           <div class="d-flex flex-wrap gap-2 mb-2">
-            <a class="btn btn-outline-primary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&paper_pdf=form">
+            <a class="btn btn-outline-secondary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&paper_pdf=form">
               <i class="ti ti-printer me-1"></i>{{ __('Imprimer pour signature à la main', 'assetsign') }}
             </a>
             <a class="btn btn-outline-secondary" target="_blank" href="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php?id={{ item.fields.id }}&paper_pdf=condition">
@@ -384,8 +385,8 @@
           {% do call('User::dropdown', [{'name': 'delegate_users_id', 'right': 'all', 'entity': item.fields.entities_id}]) %}
         </div>
         <div class="col-auto">
-          <label class="form-label">{{ __('Motif', 'assetsign') }}</label>
-          <input type="text" name="delegation_reason" class="form-control">
+          <label class="form-label" for="assetsign-assetsign-form-delegation-reason">{{ __('Motif', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-delegation-reason" type="text" name="delegation_reason" class="form-control">
         </div>
         <div class="col-auto">
           <button type="submit" name="delegate_signature" class="btn btn-secondary">{{ __('Déléguer', 'assetsign') }}</button>
@@ -472,12 +473,12 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
-          <label class="form-label">{{ __('Prix', 'assetsign') }}</label>
-          <input type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;" value="{{ vente_details.fields.price|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
+          <label class="form-label" for="assetsign-assetsign-form-price">{{ __('Prix', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-price" type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;" value="{{ vente_details.fields.price|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
         </div>
         <div class="col-auto">
-          <label class="form-label">{{ __('Date de vente', 'assetsign') }}</label>
-          <input type="date" name="sale_date" class="form-control" value="{{ vente_details.fields.sale_date|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
+          <label class="form-label" for="assetsign-assetsign-form-sale-date">{{ __('Date de vente', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-sale-date" type="date" name="sale_date" class="form-control" value="{{ vente_details.fields.sale_date|default('') }}" {{ can_edit_vente_details ? '' : 'readonly' }}>
         </div>
         {% if can_edit_vente_details %}
           <div class="col-auto">
@@ -496,8 +497,8 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
-          <label class="form-label">{{ __('Organisme bénéficiaire', 'assetsign') }}</label>
-          <input type="text" name="organization_name" class="form-control" value="{{ don_details.fields.organization_name|default('') }}" {{ can_edit_don_details ? '' : 'readonly' }}>
+          <label class="form-label" for="assetsign-assetsign-form-organization-name">{{ __('Organisme bénéficiaire', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-organization-name" type="text" name="organization_name" class="form-control" value="{{ don_details.fields.organization_name|default('') }}" {{ can_edit_don_details ? '' : 'readonly' }}>
         </div>
         {% if can_edit_don_details %}
           <div class="col-auto">
@@ -516,8 +517,8 @@
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="id" value="{{ item.fields.id }}">
         <div class="col-auto">
-          <label class="form-label">{{ __('Prestataire', 'assetsign') }}</label>
-          <input type="text" name="provider_name" class="form-control" value="{{ destruction_details.fields.provider_name|default('') }}" {{ can_edit_destruction_details ? '' : 'readonly' }}>
+          <label class="form-label" for="assetsign-assetsign-form-provider-name">{{ __('Prestataire', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-provider-name" type="text" name="provider_name" class="form-control" value="{{ destruction_details.fields.provider_name|default('') }}" {{ can_edit_destruction_details ? '' : 'readonly' }}>
         </div>
         {% if can_edit_destruction_details %}
           <div class="col-auto">
@@ -654,7 +655,7 @@
       </p>
       {% if kit_completeness is not null %}
         <div class="mb-2">
-          <span class="badge" style="background-color: {{ kit_completeness.color }}; color: #fff;">
+          <span class="badge {{ badge_colors.classes(kit_completeness.color) }}">
             <i class="ti ti-package"></i> {{ kit_completeness.returned_count }}/{{ kit_completeness.expected_total }} {{ __('accessoires du kit restitués', 'assetsign') }}
           </span>
           {% if kit_completeness.missing_names|length %}
@@ -722,12 +723,12 @@
           {% do call('GlpiPlugin\\Assetsign\\Accessory::dropdown', [{'name': 'plugin_assetsign_accessories_id'}]) %}
         </div>
         <div class="col-auto">
-          <label class="form-label">{{ __('Quantité', 'assetsign') }}</label>
-          <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 90px;">
+          <label class="form-label" for="assetsign-assetsign-form-quantity">{{ __('Quantité', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-quantity" type="number" name="quantity" value="1" min="1" class="form-control" style="width: 90px;">
         </div>
         <div class="col-auto">
-          <label class="form-label">{{ __('Commentaire', 'assetsign') }}</label>
-          <input type="text" name="comment" class="form-control">
+          <label class="form-label" for="assetsign-assetsign-form-comment">{{ __('Commentaire', 'assetsign') }}</label>
+          <input id="assetsign-assetsign-form-comment" type="text" name="comment" class="form-control">
         </div>
         <div class="col-auto">
           <button type="submit" name="add_accessory" class="btn btn-secondary">{{ __('Ajouter', 'assetsign') }}</button>
@@ -757,10 +758,10 @@
               <td>
                 <a href="{{ i.itemtype|itemtype_form_path(i.items_id) }}">{{ i.name|default('#' ~ i.items_id) }}</a>
                 {% if i.is_automatic %}
-                  <span class="badge bg-blue-lt ms-1" title="{{ __('Ajouté automatiquement : connecté au matériel dans GLPI', 'assetsign') }}"><i class="ti ti-plug-connected"></i> {{ __('Connecté', 'assetsign') }}</span>
+                  <span class="badge bg-primary-subtle text-primary-emphasis ms-1" title="{{ __('Ajouté automatiquement : connecté au matériel dans GLPI', 'assetsign') }}"><i class="ti ti-plug-connected"></i> {{ __('Connecté', 'assetsign') }}</span>
                 {% endif %}
                 {% if i.assigned_to_other %}
-                  <span class="badge bg-orange-lt ms-1" title="{{ __('Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire.', 'assetsign') }}"><i class="ti ti-alert-triangle"></i> {{ __('Affecté à %s', 'assetsign')|format(i.assigned_to_other) }}</span>
+                  <span class="badge bg-warning-subtle text-warning-emphasis ms-1" title="{{ __('Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire.', 'assetsign') }}"><i class="ti ti-alert-triangle"></i> {{ __('Affecté à %s', 'assetsign')|format(i.assigned_to_other) }}</span>
                 {% endif %}
               </td>
               <td>{{ [i.manufacturer, i.model]|filter(v => v)|join(' ')|default('-') }}</td>
@@ -786,7 +787,7 @@
 
     {# Issue #178 : controle du retour, element par element (feuilles de restitution) #}
     {% if is_return|default(false) and inventoried_items|default([])|length %}
-      {% set state_badges = {0: 'bg-secondary-lt', 1: 'bg-green-lt', 2: 'bg-red-lt', 3: 'bg-orange-lt'} %}
+      {% set state_badges = {0: 'bg-secondary-subtle text-secondary-emphasis', 1: 'bg-success-subtle text-success-emphasis', 2: 'bg-danger-subtle text-danger-emphasis', 3: 'bg-warning-subtle text-warning-emphasis'} %}
       <div class="card mt-3 mb-3">
         <div class="card-header"><h4 class="card-title"><i class="ti ti-checklist me-1"></i>{{ __('Contrôle du retour', 'assetsign') }}</h4></div>
         <div class="card-body">

@@ -54,10 +54,10 @@
                 <td>
                   <div class="fw-bold">{{ row.type }}</div>
                   {% if row.is_cosigner %}
-                    <span class="badge bg-purple-lt"><i class="ti ti-users me-1"></i>{{ __('Contre-signature (responsable)', 'assetsign') }}</span>
+                    <span class="badge bg-primary-subtle text-primary-emphasis"><i class="ti ti-users me-1"></i>{{ __('Contre-signature (responsable)', 'assetsign') }}</span>
                     <div class="text-muted small">{{ __('Bénéficiaire : %s', 'assetsign')|format(row.beneficiary) }}</div>
                   {% elseif row.is_delegate %}
-                    <span class="badge bg-azure-lt"><i class="ti ti-arrow-forward-up me-1"></i>{{ __('Signature déléguée', 'assetsign') }}</span>
+                    <span class="badge bg-info-subtle text-info-emphasis"><i class="ti ti-arrow-forward-up me-1"></i>{{ __('Signature déléguée', 'assetsign') }}</span>
                     <div class="text-muted small">{{ __('Pour le compte de %s', 'assetsign')|format(row.beneficiary) }}</div>
                   {% endif %}
                 </td>

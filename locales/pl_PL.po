@@ -1028,10 +1028,6 @@ msgid "Gérer les points de contrôle"
 msgstr "Zarządzaj punktami listy kontrolnej"
 
 #: templates/config_form.html.twig
-msgid "Voir les fiches de maintenance"
-msgstr "Wyświetlaj formularze konserwacji"
-
-#: templates/config_form.html.twig
 msgid ""
 "Un mouvement structuré généralise la notion de remise à n'importe quel "
 "déplacement physique de matériel (transfert inter-site, retour au stock, "
@@ -1052,10 +1048,15 @@ msgstr "Włącz ustrukturyzowane przemieszczenia"
 #: templates/config_form.html.twig
 msgid ""
 "Ajoute un onglet « Mouvements » sur chaque matériel géré par le plugin, "
-"ainsi qu'une entrée dédiée dans le menu Outils."
+"ainsi qu'une page dans le menu Parc > AssetSign."
 msgstr ""
 "Dodaje zakładkę \"Przemieszczenia\" do każdego zasobu obsługiwanego przez "
-"wtyczkę oraz osobną pozycję w menu Narzędzia."
+"wtyczkę oraz stronę w menu Zasoby > AssetSign."
+
+#: templates/config_form.html.twig
+#, php-format
+msgid "Au quotidien, cette liste se trouve dans %s."
+msgstr "Na co dzień ta lista znajduje się w %s."
 
 #: templates/config_form.html.twig
 msgid "Faire signer le mouvement (pavé de signature)"
@@ -1072,10 +1073,6 @@ msgstr ""
 "jak w formularzu konserwacji): przemieszczenia nie można utworzyć bez "
 "podpisu. Obecna osoba jest już zalogowana, nie używa się e-maila ani osobnej "
 "strony."
-
-#: templates/config_form.html.twig
-msgid "Voir les mouvements"
-msgstr "Wyświetlaj przemieszczenia"
 
 #: templates/config_form.html.twig
 msgid ""
@@ -6491,9 +6488,6 @@ msgstr ""
 
 msgid "Fiches concernées"
 msgstr "Dotyczy formularzy"
-
-msgid "Voir les attestations et les matériels sortis sans attestation"
-msgstr "Zobacz zaświadczenia i sprzęt wydany bez zaświadczenia"
 
 msgid "Attestation"
 msgstr "Zaświadczenie"

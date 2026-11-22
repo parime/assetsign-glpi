@@ -70,8 +70,8 @@
     <div class="card mb-3">
       <div class="card-header d-flex align-items-center gap-2">
         <h3 class="card-title mb-0"><i class="ti ti-clipboard-check me-2"></i>{{ campaign.name }}</h3>
-        <span class="badge {{ is_open ? 'bg-blue-lt' : 'bg-secondary-lt' }}">{{ is_open ? __('Ouverte', 'assetsign') : __('Clôturée', 'assetsign') }}</span>
-        {% if is_open and is_past_deadline %}<span class="badge bg-red-lt">{{ __('Date limite dépassée', 'assetsign') }}</span>{% endif %}
+        <span class="badge {{ is_open ? 'bg-primary-subtle text-primary-emphasis' : 'bg-secondary-subtle text-secondary-emphasis' }}">{{ is_open ? __('Ouverte', 'assetsign') : __('Clôturée', 'assetsign') }}</span>
+        {% if is_open and is_past_deadline %}<span class="badge bg-danger-subtle text-danger-emphasis">{{ __('Date limite dépassée', 'assetsign') }}</span>{% endif %}
         <a href="{{ list_url }}" class="ms-auto small">{{ __('Toutes les campagnes', 'assetsign') }}</a>
       </div>
       <div class="card-body">
@@ -93,7 +93,7 @@
           <form method="post" action="{{ action }}" class="d-flex gap-2 ms-auto">
             <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
             <input type="hidden" name="id" value="{{ campaign.id }}">
-            <button type="submit" name="remind" value="1" class="btn btn-outline-primary btn-sm"{{ stats.pending == 0 ? ' disabled' : '' }}><i class="ti ti-bell-ringing me-1"></i>{{ __('Relancer les non-répondants', 'assetsign') }}</button>
+            <button type="submit" name="remind" value="1" class="btn btn-outline-secondary btn-sm"{{ stats.pending == 0 ? ' disabled' : '' }}><i class="ti ti-bell-ringing me-1"></i>{{ __('Relancer les non-répondants', 'assetsign') }}</button>
             <button type="submit" name="close" value="1" class="btn btn-outline-danger btn-sm" onclick="return confirm({{ __('Clôturer la campagne ? Les personnes sans réponse ne pourront plus attester.', 'assetsign')|json_encode }});"><i class="ti ti-lock me-1"></i>{{ __('Clôturer', 'assetsign') }}</button>
           </form>
         {% endif %}
@@ -115,7 +115,7 @@
           </thead>
           <tbody>
             {% for line in lines %}
-              {% set status_class = {0: 'bg-secondary-lt', 1: 'bg-green-lt', 2: 'bg-orange-lt'}[line.status]|default('bg-secondary-lt') %}
+              {% set status_class = {0: 'bg-secondary-subtle text-secondary-emphasis', 1: 'bg-success-subtle text-success-emphasis', 2: 'bg-warning-subtle text-warning-emphasis'}[line.status]|default('bg-secondary-subtle text-secondary-emphasis') %}
               <tr>
                 <td><a href="{{ attestation_url ~ line.id }}">{{ line.user }}</a></td>
                 <td>{{ line.items }}</td>

@@ -162,7 +162,7 @@ class Assetsign extends Compat\Base\AssetsignBase
    }
 
     /**
-     * Enregistre sous le secteur 'tools' (Outils), pas 'admin' (cf.
+     * Enregistre sous le secteur 'assets' (Parc, issue #392), pas 'admin' (cf.
      * Hooks::MENU_TOADD dans setup.php) : sans cette declaration, tout code
      * coeur GLPI qui construit le fil d'Ariane via getHeaderParameters()
      * (cf. CommonGLPI::getHeaderParameters(), appelee par
@@ -170,11 +170,11 @@ class Assetsign extends Compat\Base\AssetsignBase
      * chercherait Assetsign dans le secteur 'admin', ou elle n'existe pas.
      */
    public static function getSectorizedDetails(): array {
-       return ['tools', Menu::class, self::class];
+       return ['assets', Menu::class, self::class];
    }
 
     /**
-     * Sous-page « Attributions » de l'entrée Outils > AssetSign (Menu, issue #330) : recherche
+     * Sous-page « Attributions » de l'entrée Parc > AssetSign (Menu, issue #330) : recherche
      * seule, la création passe par le formulaire guidé de la page. Les intitulés (gabarits,
      * accessoires, kits, points de contrôle) ne sont plus des options de ce menu : ce sont des
      * intitulés natifs, rangés dans Configuration > Intitulés.
@@ -866,17 +866,17 @@ class Assetsign extends Compat\Base\AssetsignBase
      */
    public static function getStatusBadgeClasses(): array {
        return [
-           self::STATUS_DRAFT                  => 'bg-secondary-lt',
-           self::STATUS_PENDING                => 'bg-yellow-lt',
-           self::STATUS_SENT                   => 'bg-azure-lt',
-           self::STATUS_VIEWED                 => 'bg-azure-lt',
-           self::STATUS_SIGNED                 => 'bg-green-lt',
-           self::STATUS_EXPIRED                => 'bg-red-lt',
-           self::STATUS_CANCELLED              => 'bg-secondary-lt',
-           self::STATUS_COMPLETED_NO_SIGNATURE => 'bg-green-lt',
-           self::STATUS_AWAITING_COSIGNATURE   => 'bg-orange-lt',
+           self::STATUS_DRAFT                  => 'bg-secondary-subtle text-secondary-emphasis',
+           self::STATUS_PENDING                => 'bg-warning-subtle text-warning-emphasis',
+           self::STATUS_SENT                   => 'bg-info-subtle text-info-emphasis',
+           self::STATUS_VIEWED                 => 'bg-info-subtle text-info-emphasis',
+           self::STATUS_SIGNED                 => 'bg-success-subtle text-success-emphasis',
+           self::STATUS_EXPIRED                => 'bg-danger-subtle text-danger-emphasis',
+           self::STATUS_CANCELLED              => 'bg-secondary-subtle text-secondary-emphasis',
+           self::STATUS_COMPLETED_NO_SIGNATURE => 'bg-success-subtle text-success-emphasis',
+           self::STATUS_AWAITING_COSIGNATURE   => 'bg-warning-subtle text-warning-emphasis',
            // Issue #276 : couleur distincte du vert de la signature electronique.
-           self::STATUS_SIGNED_ON_PAPER        => 'bg-teal-lt',
+           self::STATUS_SIGNED_ON_PAPER        => 'bg-info-subtle text-info-emphasis',
        ];
    }
 
@@ -933,10 +933,10 @@ class Assetsign extends Compat\Base\AssetsignBase
    public static function showHome(): void {
        $base = ['is_deleted' => 0] + getEntitiesRestrictCriteria(self::getTable(), '', '', true);
        $groups = [
-           ['statuses' => [self::STATUS_DRAFT], 'label' => __('Brouillons à envoyer', 'assetsign'), 'icon' => 'ti ti-pencil', 'color' => 'bg-secondary-lt'],
-           ['statuses' => [self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED, self::STATUS_AWAITING_COSIGNATURE], 'label' => __('Attributions en attente de signature', 'assetsign'), 'icon' => 'ti ti-clock', 'color' => 'bg-azure-lt'],
-           ['statuses' => [...self::STATUSES_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE], 'label' => __('Attributions signées', 'assetsign'), 'icon' => 'ti ti-circle-check', 'color' => 'bg-green-lt'],
-           ['statuses' => [self::STATUS_EXPIRED], 'label' => __('Attributions expirées', 'assetsign'), 'icon' => 'ti ti-alert-triangle', 'color' => 'bg-red-lt'],
+           ['statuses' => [self::STATUS_DRAFT], 'label' => __('Brouillons à envoyer', 'assetsign'), 'icon' => 'ti ti-pencil', 'color' => 'bg-secondary-subtle text-secondary-emphasis'],
+           ['statuses' => [self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED, self::STATUS_AWAITING_COSIGNATURE], 'label' => __('Attributions en attente de signature', 'assetsign'), 'icon' => 'ti ti-clock', 'color' => 'bg-info-subtle text-info-emphasis'],
+           ['statuses' => [...self::STATUSES_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE], 'label' => __('Attributions signées', 'assetsign'), 'icon' => 'ti ti-circle-check', 'color' => 'bg-success-subtle text-success-emphasis'],
+           ['statuses' => [self::STATUS_EXPIRED], 'label' => __('Attributions expirées', 'assetsign'), 'icon' => 'ti ti-alert-triangle', 'color' => 'bg-danger-subtle text-danger-emphasis'],
        ];
        $counters = [];
        foreach ($groups as $group) {

@@ -87,7 +87,7 @@ $isHelpdesk = Session::getCurrentInterface() === 'helpdesk';
 if ($isHelpdesk) {
     Html::helpHeader($title);
 } else {
-    Html::header($title, $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Campaign::class);
+    Html::header($title, $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Campaign::class);
 }
 
 $campaign = $attestation->getCampaign();

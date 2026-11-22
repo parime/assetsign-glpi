@@ -30,7 +30,7 @@
             <tr>
               <td>{{ s.item }}</td>
               <td>{{ s.beneficiary }}</td>
-              <td>{% if s.is_draft %}<span class="badge bg-orange-lt">{{ s.status }}</span>{% else %}{{ s.status }}{% endif %}</td>
+              <td>{% if s.is_draft %}<span class="badge bg-warning-subtle text-warning-emphasis">{{ s.status }}</span>{% else %}{{ s.status }}{% endif %}</td>
               <td class="text-end"><a href="{{ sheet_url }}?id={{ s.id }}">{{ s.is_draft ? __('Compléter et envoyer', 'assetsign') : __('Voir', 'assetsign') }}</a></td>
             </tr>
           {% endfor %}
@@ -47,14 +47,14 @@
           <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
           <input type="hidden" name="tickets_id" value="{{ ticket.fields.id }}">
           <div class="col-auto">
-            <label class="form-label">{{ __('Bénéficiaire', 'assetsign') }}</label>
-            <select name="users_id" class="form-select">
+            <label class="form-label" for="assetsign-ticket-tab-users-id">{{ __('Bénéficiaire', 'assetsign') }}</label>
+            <select id="assetsign-ticket-tab-users-id" name="users_id" class="form-select">
               {% for id, name in requesters %}<option value="{{ id }}">{{ name }}</option>{% endfor %}
             </select>
           </div>
           <div class="col-auto">
-            <label class="form-label">{{ __('Matériel disponible', 'assetsign') }}</label>
-            <select name="available_item" class="form-select" style="min-width: 320px;">
+            <label class="form-label" for="assetsign-ticket-tab-available-item">{{ __('Matériel disponible', 'assetsign') }}</label>
+            <select id="assetsign-ticket-tab-available-item" name="available_item" class="form-select" style="min-width: 320px;">
               {% for group, rows in available %}
                 <optgroup label="{{ group }}">
                   {% for r in rows %}

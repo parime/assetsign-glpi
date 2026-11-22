@@ -29,7 +29,7 @@ global $CFG_GLPI, $DB;
 
 Session::checkRight(Profile::RIGHT_ASSETSIGN, READ);
 
-Html::header(Departure::getTypeName(2), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Departure::class);
+Html::header(Departure::getTypeName(2), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, \GlpiPlugin\Assetsign\Departure::class);
 \GlpiPlugin\Assetsign\MenuSection::show(\GlpiPlugin\Assetsign\Departure::class);
 
 $showAll = !empty($_GET['all']);

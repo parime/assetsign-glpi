@@ -17,7 +17,7 @@
   <div class="card mb-3">
     <div class="card-header d-flex align-items-center gap-2">
       <h3 class="card-title mb-0"><i class="ti ti-door-exit me-2"></i>{{ __('Départ de %s', 'assetsign')|format(user_name) }}</h3>
-      {% set status_class = {0: 'bg-blue-lt', 1: 'bg-green-lt', 2: 'bg-secondary-lt'}[departure.status]|default('bg-secondary-lt') %}
+      {% set status_class = {0: 'bg-primary-subtle text-primary-emphasis', 1: 'bg-success-subtle text-success-emphasis', 2: 'bg-secondary-subtle text-secondary-emphasis'}[departure.status]|default('bg-secondary-subtle text-secondary-emphasis') %}
       <span class="badge {{ status_class }} ms-2">{{ status_label }}</span>
       {% if can_manage %}<a href="{{ list_url }}" class="ms-auto small">{{ __('Tous les départs', 'assetsign') }}</a>{% endif %}
     </div>
@@ -61,7 +61,7 @@
               </td>
               <td>{{ line.serial }}</td>
               <td>{{ line.otherserial }}</td>
-              <td><span class="badge {{ line.status == 4 ? 'bg-green-lt' : (line.status == 7 ? 'bg-secondary-lt' : 'bg-yellow-lt') }}">{{ line.status_label }}</span></td>
+              <td><span class="badge {{ line.status == 4 ? 'bg-success-subtle text-success-emphasis' : (line.status == 7 ? 'bg-secondary-subtle text-secondary-emphasis' : 'bg-warning-subtle text-warning-emphasis') }}">{{ line.status_label }}</span></td>
             </tr>
           {% endfor %}
         </tbody>
@@ -130,7 +130,7 @@
     <form method="post" action="{{ action }}" class="d-flex gap-2">
       <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
       <input type="hidden" name="id" value="{{ departure.id }}">
-      <button type="submit" name="remind" value="1" class="btn btn-outline-primary"><i class="ti ti-bell-ringing me-1"></i>{{ __('Relancer maintenant', 'assetsign') }}</button>
+      <button type="submit" name="remind" value="1" class="btn btn-outline-secondary"><i class="ti ti-bell-ringing me-1"></i>{{ __('Relancer maintenant', 'assetsign') }}</button>
       <button type="submit" name="cancel" value="1" class="btn btn-outline-danger" onclick="return confirm({{ __('Annuler ce départ et ses fiches en attente ?', 'assetsign')|json_encode }});"><i class="ti ti-x me-1"></i>{{ __('Annuler le départ', 'assetsign') }}</button>
       {% if departure.reminder_count > 0 %}<span class="text-muted small align-self-center">{{ __('%d relance(s) envoyée(s)', 'assetsign')|format(departure.reminder_count) }}</span>{% endif %}
     </form>

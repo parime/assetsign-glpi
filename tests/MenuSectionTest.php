@@ -39,7 +39,7 @@ use GlpiPlugin\Assetsign\Template;
 use GlpiPlugin\Assetsign\WipeAttestation;
 
 /**
- * Issue #330 : une seule entrée Outils > AssetSign ; les écrans d'usage en sont les sous-pages
+ * Issue #330 : une seule entrée Parc > AssetSign (#392) ; les écrans d'usage en sont les sous-pages
  * (options GLPI et barre d'onglets), chacun visible seulement avec son droit.
  */
 final class MenuSectionTest extends AssetsignTestCase
@@ -66,10 +66,21 @@ final class MenuSectionTest extends AssetsignTestCase
        $_SESSION['glpiactiveprofile'][Profile::RIGHT_MAINTENANCE] = $maintenance;
    }
 
-   public function testTheToolsMenuHasASingleEntry(): void {
+   public function testTheAssetsMenuHasASingleEntry(): void {
        global $PLUGIN_HOOKS;
 
-       $this->assertSame(['tools' => [Menu::class]], $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign']);
+       $this->assertSame(['assets' => [Menu::class]], $PLUGIN_HOOKS[Hooks::MENU_TOADD]['assetsign']);
+   }
+
+    /**
+     * Issue #392 : les écrans d'usage sont rangés dans Parc, comme l'entrée de menu (fil d'Ariane
+     * « Parc > AssetSign > Page » et menu actif cohérents).
+     */
+   public function testUsageScreensAreSectorizedInAssets(): void {
+       $this->assertSame(['assets', Menu::class], Menu::getSectorizedDetails());
+      foreach ([Assetsign::class, Maintenance::class, Movement::class, WipeAttestation::class] as $class) {
+          $this->assertSame(['assets', Menu::class, $class], $class::getSectorizedDetails(), $class);
+      }
    }
 
    public function testAllSubPagesAreOptionsOfTheEntry(): void {

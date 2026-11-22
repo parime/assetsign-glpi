@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **AssetSign est passé d'Outils à Parc (#392).** L'unique entrée d'usage du plugin est désormais
+  **Parc > AssetSign** : remise, restitution, mouvements, départs, campagnes d'attestation,
+  attestations d'effacement, fiches de maintenance et pilotage du parc (indicateurs RSE,
+  renouvellement, contrôle d'intégrité, inventaire physique) sont la vie du matériel, qu'un
+  gestionnaire cherche à côté des ordinateurs. Les quatre rubriques, les droits et les adresses
+  `front/*.php` ne changent pas ; le fil d'Ariane et le menu actif suivent (« Parc > AssetSign >
+  page »). Le menu étant gardé en session, **se reconnecter** pour voir la nouvelle entrée.
+- **Configuration sans liens vers l'exploitation (#392).** Les boutons « Voir les attestations… »,
+  « Voir les fiches de maintenance » et « Voir les mouvements » des onglets Effacement,
+  Maintenance et Mouvements de la page de configuration sont remplacés par une phrase qui indique
+  où trouver la liste (Parc > AssetSign > …) : la page de configuration ne contient que des
+  réglages. Les contrôles communs d'ergonomie et de parcours des pages redeviennent bloquants.
 - CI : contrôles de sécurité communs glpi-plugin-security v1.10.1 (secrets, dépendances, CodeQL,
   test de mise à jour depuis la version publiée, tests d'intégration en français, parcours de toutes
   les pages) ; étape Trivy et job Dependency Review de la CI du plugin retirés, couverts par le

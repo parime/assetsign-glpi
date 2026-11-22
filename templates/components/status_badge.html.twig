@@ -12,5 +12,6 @@
  # (at your option) any later version. See LICENSE for the full text.
  # -------------------------------------------------------------------------
  #}
-{# Badge coloré d'un statut dans une liste. #}
-<span class="badge" style="background-color: {{ color }}; color: #fff;">{{ label }}</span>
+{# Badge coloré d'un statut dans une liste (classes de la charte, issue #392). #}
+{% import '@assetsign/components/_badge_colors.html.twig' as badge_colors %}
+<span class="badge {{ badge_colors.classes(color) }}">{{ label }}</span>

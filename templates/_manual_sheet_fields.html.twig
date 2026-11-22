@@ -35,37 +35,37 @@
   {% do call('User::dropdown', [{'name': 'users_id', 'right': 'all', 'entity': entities_id}]) %}
 </div>
 <div class="col-auto assetsign-manual-external-field" style="display: none;">
-  <label class="form-label">{{ __('Nom du bénéficiaire externe', 'assetsign') }}</label>
-  <input type="text" name="external_name" class="form-control" placeholder="{{ __('Ex. Association Locale, Jean Dupont...', 'assetsign') }}">
+  <label class="form-label" for="assetsign-manual-sheet-fields-external-name">{{ __('Nom du bénéficiaire externe', 'assetsign') }}</label>
+  <input id="assetsign-manual-sheet-fields-external-name" type="text" name="external_name" class="form-control" placeholder="{{ __('Ex. Association Locale, Jean Dupont...', 'assetsign') }}">
 </div>
 <div class="col-auto assetsign-manual-external-field" style="display: none;">
-  <label class="form-label">{{ __('Contact (facultatif)', 'assetsign') }}</label>
-  <input type="text" name="external_contact" class="form-control" placeholder="{{ __('E-mail ou téléphone', 'assetsign') }}">
+  <label class="form-label" for="assetsign-manual-sheet-fields-external-contact">{{ __('Contact (facultatif)', 'assetsign') }}</label>
+  <input id="assetsign-manual-sheet-fields-external-contact" type="text" name="external_contact" class="form-control" placeholder="{{ __('E-mail ou téléphone', 'assetsign') }}">
 </div>
 
 <div class="col-auto assetsign-manual-type-field assetsign-manual-vente-field" style="display: none;">
-  <label class="form-label">{{ __('Prix', 'assetsign') }}</label>
-  <input type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;">
+  <label class="form-label" for="assetsign-manual-sheet-fields-price">{{ __('Prix', 'assetsign') }}</label>
+  <input id="assetsign-manual-sheet-fields-price" type="number" name="price" step="0.01" min="0" class="form-control" style="width: 110px;">
 </div>
 <div class="col-auto assetsign-manual-type-field assetsign-manual-vente-field" style="display: none;">
-  <label class="form-label">{{ __('Date de vente', 'assetsign') }}</label>
-  <input type="date" name="sale_date" class="form-control">
+  <label class="form-label" for="assetsign-manual-sheet-fields-sale-date">{{ __('Date de vente', 'assetsign') }}</label>
+  <input id="assetsign-manual-sheet-fields-sale-date" type="date" name="sale_date" class="form-control">
 </div>
 
 <div class="col-auto assetsign-manual-type-field assetsign-manual-don-field" style="display: none;">
-  <label class="form-label">{{ __('Organisme bénéficiaire', 'assetsign') }}</label>
-  <input type="text" name="organization_name" class="form-control" placeholder="{{ __('Ex. Association Locale...', 'assetsign') }}">
+  <label class="form-label" for="assetsign-manual-sheet-fields-organization-name">{{ __('Organisme bénéficiaire', 'assetsign') }}</label>
+  <input id="assetsign-manual-sheet-fields-organization-name" type="text" name="organization_name" class="form-control" placeholder="{{ __('Ex. Association Locale...', 'assetsign') }}">
 </div>
 <div class="col-auto assetsign-manual-type-field assetsign-manual-don-field" style="display: none;">
-  <label class="form-label">{{ __('Justificatif (facultatif)', 'assetsign') }}</label>
-  <input type="file" name="justificatif" class="form-control">
+  <label class="form-label" for="assetsign-manual-sheet-fields-justificatif">{{ __('Justificatif (facultatif)', 'assetsign') }}</label>
+  <input id="assetsign-manual-sheet-fields-justificatif" type="file" name="justificatif" class="form-control">
 </div>
 
 <div class="col-auto assetsign-manual-type-field assetsign-manual-destruction-field" style="display: none;">
-  <label class="form-label">{{ __('Prestataire', 'assetsign') }}</label>
-  <input type="text" name="provider_name" class="form-control" placeholder="{{ __('Ex. Prestataire Exemple SAS...', 'assetsign') }}">
+  <label class="form-label" for="assetsign-manual-sheet-fields-provider-name">{{ __('Prestataire', 'assetsign') }}</label>
+  <input id="assetsign-manual-sheet-fields-provider-name" type="text" name="provider_name" class="form-control" placeholder="{{ __('Ex. Prestataire Exemple SAS...', 'assetsign') }}">
 </div>
 <div class="col-auto assetsign-manual-type-field assetsign-manual-destruction-field" style="display: none;">
-  <label class="form-label">{{ __('Certificat de destruction (facultatif)', 'assetsign') }}</label>
-  <input type="file" name="certificat" class="form-control">
+  <label class="form-label" for="assetsign-manual-sheet-fields-certificat">{{ __('Certificat de destruction (facultatif)', 'assetsign') }}</label>
+  <input id="assetsign-manual-sheet-fields-certificat" type="file" name="certificat" class="form-control">
 </div>

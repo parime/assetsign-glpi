@@ -59,6 +59,6 @@ if (isset($_POST['cancel_attestation'])) {
     Html::back();
 }
 
-Html::header(WipeAttestation::getTypeName(1), $_SERVER['PHP_SELF'], 'tools', \GlpiPlugin\Assetsign\Menu::class, WipeAttestation::class);
+Html::header(WipeAttestation::getTypeName(1), $_SERVER['PHP_SELF'], 'assets', \GlpiPlugin\Assetsign\Menu::class, WipeAttestation::class);
 $attestation->showForm($id);
 Html::footer();

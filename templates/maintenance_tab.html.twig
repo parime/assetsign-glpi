@@ -53,7 +53,7 @@
         <div class="btn-group mb-3" role="group">
           {% for kind, label in kind_labels %}
             <input type="radio" class="btn-check" name="kind" value="{{ kind }}" id="assetsign-kind-{{ kind }}" autocomplete="off" {{ kind == preset_kind ? 'checked' : '' }}>
-            <label class="btn btn-outline-primary" for="assetsign-kind-{{ kind }}"><i class="ti {{ kind == 1 ? 'ti-checklist' : 'ti-tool' }} me-1"></i>{{ label }}</label>
+            <label class="btn btn-outline-secondary" for="assetsign-kind-{{ kind }}"><i class="ti {{ kind == 1 ? 'ti-checklist' : 'ti-tool' }} me-1"></i>{{ label }}</label>
           {% endfor %}
         </div>
 
@@ -110,8 +110,8 @@
         </div>
 
         <div class="mb-2 mt-2">
-          <label class="form-label">{{ __('Commentaire', 'assetsign') }}</label>
-          <textarea name="comment" class="form-control" rows="3"></textarea>
+          <label class="form-label" for="assetsign-maintenance-tab-comment">{{ __('Commentaire', 'assetsign') }}</label>
+          <textarea id="assetsign-maintenance-tab-comment" name="comment" class="form-control" rows="3"></textarea>
         </div>
 
         {% include '@assetsign/damage_annotation_edit.html.twig' %}

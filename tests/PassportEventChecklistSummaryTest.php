@@ -68,7 +68,7 @@ class PassportEventChecklistSummaryTest extends AssetsignTestCase
         $html = ob_get_clean();
 
         $this->assertStringContainsString('1/2', $html, "Un seul des deux points configures rempli doit afficher '1/2'.");
-        $this->assertStringContainsString('#f76707', $html, 'Rempli partiellement : badge orange attendu.');
+        $this->assertStringContainsString('bg-warning-subtle', $html, 'Rempli partiellement : badge orange attendu.');
     }
 
     public function testShowForItemDisplaysCompleteChecklistBadgeInGreen(): void
@@ -94,7 +94,7 @@ class PassportEventChecklistSummaryTest extends AssetsignTestCase
         $html = ob_get_clean();
 
         $this->assertStringContainsString('1/1', $html);
-        $this->assertStringContainsString('#2fb344', $html, 'Tous les points remplis : badge vert attendu.');
+        $this->assertStringContainsString('bg-success-subtle', $html, 'Tous les points remplis : badge vert attendu.');
     }
 
     public function testShowForItemOmitsBadgeWhenNoChecklistConfiguredForThisMovementType(): void
