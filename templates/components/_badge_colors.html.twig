@@ -1,0 +1,24 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #392 (contrôle d'accessibilité du parcours des pages) : une couleur de statut (#2fb344,
+ # #f76707...) devient les classes de la charte bg-*-subtle text-*-emphasis, au contraste
+ # suffisant ; un texte blanc sur ces couleurs ne l'était pas.
+ # Usage : {% import '@assetsign/components/_badge_colors.html.twig' as badge_colors %}
+ #         <span class="badge {{ badge_colors.classes(color) }}">...</span> #}
+{% macro classes(color) %}
+{%- set kinds = {'#2fb344': 'success', '#f76707': 'warning', '#d63939': 'danger', '#dc3545': 'danger', '#6c757d': 'secondary'} -%}
+{%- set kind = kinds[color|default('')|lower] ?? 'secondary' -%}
+bg-{{ kind }}-subtle text-{{ kind }}-emphasis
+{%- endmacro %}

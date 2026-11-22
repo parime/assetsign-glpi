@@ -48,7 +48,7 @@
             {% for r in results %}
               <a href="{{ form_url }}?{{ {itemtype: r.itemtype, items_id: r.id}|url_encode }}" class="list-group-item list-group-item-action">
                 <div class="d-flex align-items-center gap-3">
-                  <span class="avatar bg-primary-lt"><i class="{{ r.icon }}"></i></span>
+                  <span class="avatar bg-primary-subtle text-primary-emphasis"><i class="{{ r.icon }}"></i></span>
                   <div class="flex-fill">
                     <div class="fw-bold">{{ r.name ?: '-' }} <span class="text-secondary fw-normal">· {{ r.type }}</span></div>
                     <div class="small text-secondary">
@@ -84,7 +84,7 @@
             <label class="card card-sm h-100 assetsign-action-card" for="assetsign-action-{{ c.type }}">
               <span class="card-body d-flex flex-column gap-1">
                 <span class="d-flex align-items-center gap-2">
-                  <span class="avatar avatar-sm bg-primary-lt"><i class="{{ c.icon }}"></i></span>
+                  <span class="avatar avatar-sm bg-primary-subtle text-primary-emphasis"><i class="{{ c.icon }}"></i></span>
                   <span class="fw-bold">{{ c.label }}</span>
                 </span>
                 <span class="small text-secondary">{{ c.help }}</span>

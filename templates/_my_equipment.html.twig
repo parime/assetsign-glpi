@@ -21,7 +21,7 @@
   <div class="card-header">
     <h3 class="card-title">
       <i class="ti ti-devices me-2"></i>{{ __('Mon matériel', 'assetsign') }}
-      {% if equipment|length > 0 %}<span class="badge bg-blue-lt ms-2">{{ equipment|length }}</span>{% endif %}
+      {% if equipment|length > 0 %}<span class="badge bg-primary-subtle text-primary-emphasis ms-2">{{ equipment|length }}</span>{% endif %}
     </h3>
   </div>
 
@@ -43,7 +43,7 @@
         <div class="list-group-item">
           <div class="d-flex flex-wrap align-items-center gap-3">
             <div class="flex-fill">
-              <div><span class="badge bg-secondary-lt me-1">{{ e.type_label }}</span><strong>{{ e.name }}</strong></div>
+              <div><span class="badge bg-secondary-subtle text-secondary-emphasis me-1">{{ e.type_label }}</span><strong>{{ e.name }}</strong></div>
               <div class="text-muted small">
                 {{ [e.model, e.serial ? __('N° de série : %s', 'assetsign')|format(e.serial) : '', e.otherserial ? __('N° d\'inventaire : %s', 'assetsign')|format(e.otherserial) : '']|filter(v => v)|join(' · ') }}
               </div>

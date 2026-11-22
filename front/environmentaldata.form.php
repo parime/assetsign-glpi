@@ -19,6 +19,11 @@ use GlpiPlugin\Assetsign\Api\EnvironmentalDataFormController;
 use GlpiPlugin\Assetsign\PassportEvent;
 
 Session::checkRight(PassportEvent::$rightname, UPDATE);
+// Issue #392 : page d'action, appelée par un formulaire en POST. Ouverte directement (lien,
+// favori, parcours des pages), elle répond 400 au lieu d'afficher l'accueil sous son adresse.
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+    throw new \Glpi\Exception\Http\BadRequestHttpException();
+}
 
 try {
    Session::addMessageAfterRedirect((new EnvironmentalDataFormController())->run($_POST));

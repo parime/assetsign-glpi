@@ -22,7 +22,7 @@
            alt="{{ __('Photo n° %d', 'assetsign')|format(photo.number) }}">
     </a>
     <figcaption class="small text-secondary mt-1">
-      <span class="badge bg-azure-lt">{{ __('Photo n° %d', 'assetsign')|format(photo.number) }}</span>
+      <span class="badge bg-info-subtle text-info-emphasis">{{ __('Photo n° %d', 'assetsign')|format(photo.number) }}</span>
       {{ photo.date }} - {{ photo.user }}
       {% if can_delete %}
         <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/assetsign.form.php" class="d-inline">
@@ -43,11 +43,11 @@
   <div class="card-header">
     <h3 class="card-title"><i class="ti ti-camera me-1"></i>{{ __('Photos de l\'état des lieux', 'assetsign') }}</h3>
     <div class="card-actions d-flex gap-1">
-      <span class="badge bg-blue-lt">{{ _n('%d photo', '%d photos', photos.photos|length, 'assetsign')|format(photos.photos|length) }}</span>
+      <span class="badge bg-primary-subtle text-primary-emphasis">{{ _n('%d photo', '%d photos', photos.photos|length, 'assetsign')|format(photos.photos|length) }}</span>
       {% if photos.in_pdf %}
-        <span class="badge bg-green-lt"><i class="ti ti-file-type-pdf me-1"></i>{{ __('Reproduites dans le PDF', 'assetsign') }}</span>
+        <span class="badge bg-success-subtle text-success-emphasis"><i class="ti ti-file-type-pdf me-1"></i>{{ __('Reproduites dans le PDF', 'assetsign') }}</span>
       {% else %}
-        <span class="badge bg-secondary-lt"><i class="ti ti-fingerprint me-1"></i>{{ __('Empreintes seules dans le PDF', 'assetsign') }}</span>
+        <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-fingerprint me-1"></i>{{ __('Empreintes seules dans le PDF', 'assetsign') }}</span>
       {% endif %}
     </div>
   </div>

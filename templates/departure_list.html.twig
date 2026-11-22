@@ -40,7 +40,7 @@
           </thead>
           <tbody>
             {% for row in rows %}
-              {% set status_class = {0: 'bg-blue-lt', 1: 'bg-green-lt', 2: 'bg-secondary-lt'}[row.status]|default('bg-secondary-lt') %}
+              {% set status_class = {0: 'bg-primary-subtle text-primary-emphasis', 1: 'bg-success-subtle text-success-emphasis', 2: 'bg-secondary-subtle text-secondary-emphasis'}[row.status]|default('bg-secondary-subtle text-secondary-emphasis') %}
               <tr>
                 <td><a href="{{ form_url ~ row.id }}">{{ row.user }}</a></td>
                 <td>{{ row.date_departure ? row.date_departure|formatted_date : '-' }}</td>

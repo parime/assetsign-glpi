@@ -37,7 +37,7 @@
           <tr>
             <td>
               {{ d.item|default('-') }}
-              {% if not d.mine %}<span class="badge bg-secondary-lt ms-1" title="{{ __('Préparée automatiquement, sans technicien', 'assetsign') }}"><i class="ti ti-robot"></i> {{ __('Automatique', 'assetsign') }}</span>{% endif %}
+              {% if not d.mine %}<span class="badge bg-secondary-subtle text-secondary-emphasis ms-1" title="{{ __('Préparée automatiquement, sans technicien', 'assetsign') }}"><i class="ti ti-robot"></i> {{ __('Automatique', 'assetsign') }}</span>{% endif %}
             </td>
             <td>{{ d.beneficiary|default('-') }}</td>
             <td>{{ d.type }}</td>

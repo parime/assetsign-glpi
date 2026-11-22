@@ -12,11 +12,12 @@
  # (at your option) any later version. See LICENSE for the full text.
  # -------------------------------------------------------------------------
  #}
+{% import '@assetsign/components/_badge_colors.html.twig' as badge_colors %}
 <div class="card">
   <div class="card-body">
     <h2>
       {{ _n('Mouvement', 'Mouvements', 1, 'assetsign') }} #{{ item.fields.id }}
-      <span class="badge" style="background-color: {{ status_color }}; color: #fff;">
+      <span class="badge {{ badge_colors.classes(status_color) }}">
         {{ statuses[item.fields.status]|default('') }}
       </span>
     </h2>

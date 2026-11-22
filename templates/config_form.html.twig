@@ -86,10 +86,10 @@
                 <div class="fw-bold">{{ __('Version du plugin', 'assetsign') }}</div>
                 <div class="text-muted small">
                   {{ __('Version installée', 'assetsign') }}
-                  <span class="badge bg-blue-lt">v{{ installed_version }}</span>
+                  <span class="badge bg-primary-subtle text-primary-emphasis">v{{ installed_version }}</span>
                   {% if latest_github_version %}
                     {{ __('Dernière version sur GitHub', 'assetsign') }}
-                    <span class="badge {{ latest_github_version != installed_version ? 'bg-orange-lt' : 'bg-green-lt' }}">v{{ latest_github_version }}</span>
+                    <span class="badge {{ latest_github_version != installed_version ? 'bg-warning-subtle text-warning-emphasis' : 'bg-success-subtle text-success-emphasis' }}">v{{ latest_github_version }}</span>
                   {% endif %}
                 </div>
               </div>
@@ -274,7 +274,7 @@
                 {% if http_allow_private %}
                   <span class="badge bg-warning text-dark ms-2">{{ __('Autorisées', 'assetsign') }}</span>
                 {% else %}
-                  <span class="badge bg-success ms-2">{{ __('Refusées', 'assetsign') }}</span>
+                  <span class="badge bg-success-subtle text-success-emphasis ms-2">{{ __('Refusées', 'assetsign') }}</span>
                 {% endif %}
               </div>
               <div class="form-text mb-2">{{ __('Par sécurité, le plugin n\'appelle jamais une adresse interne (le serveur lui-même, un réseau privé, les métadonnées d\'un hébergeur cloud) et ne suit jamais une redirection. Autorisez les adresses internes seulement si votre outil de messagerie est hébergé sur votre réseau (Mattermost, Rocket.Chat). Ce réglage vaut pour toutes les entités.', 'assetsign') }}</div>

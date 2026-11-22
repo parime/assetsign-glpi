@@ -12,6 +12,7 @@
  # (at your option) any later version. See LICENSE for the full text.
  # -------------------------------------------------------------------------
  #}
+{% import '@assetsign/components/_badge_colors.html.twig' as badge_colors %}
 {% if can_backfill %}
   <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/passport_backfill.php" class="mb-2">
     <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
@@ -64,14 +65,14 @@
             {% endif %}
             {% if event.checklist_summary is defined %}
               <div class="mt-1">
-                <span class="badge" style="background-color: {{ event.checklist_summary.color }}; color: #fff;">
+                <span class="badge {{ badge_colors.classes(event.checklist_summary.color) }}">
                   <i class="ti ti-checklist"></i> {{ event.checklist_summary.done }}/{{ event.checklist_summary.total }} {{ __('contrôles qualité', 'assetsign') }}
                 </span>
               </div>
             {% endif %}
             {% if event.kit_summary is defined %}
               <div class="mt-1">
-                <span class="badge" style="background-color: {{ event.kit_summary.color }}; color: #fff;" title="{{ event.kit_summary.kit_name }}">
+                <span class="badge {{ badge_colors.classes(event.kit_summary.color) }}" title="{{ event.kit_summary.kit_name }}">
                   <i class="ti ti-package"></i> {{ event.kit_summary.returned_count }}/{{ event.kit_summary.expected_total }} {{ __('accessoires du kit restitués', 'assetsign') }}
                 </span>
                 {% if event.kit_summary.missing_names|length %}

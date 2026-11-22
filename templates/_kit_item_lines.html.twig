@@ -20,7 +20,7 @@
       {% set complete = line.provided >= line.expected %}
       <div class="list-group-item">
         <div class="d-flex align-items-center gap-2 flex-wrap">
-          <span class="badge {{ complete ? 'bg-green-lt' : 'bg-orange-lt' }}">
+          <span class="badge {{ complete ? 'bg-success-subtle text-success-emphasis' : 'bg-warning-subtle text-warning-emphasis' }}">
             <i class="ti {{ complete ? 'ti-circle-check' : 'ti-hourglass' }}"></i> {{ line.provided }}/{{ line.expected }}
           </span>
           <strong>{{ line.label }}</strong>

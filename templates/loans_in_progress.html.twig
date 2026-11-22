@@ -17,7 +17,7 @@
   <div class="card-header d-flex align-items-center">
     <h3 class="card-title"><i class="ti ti-clock-share me-1"></i>{{ __('Prêts en cours', 'assetsign') }}</h3>
     {% if overdue_count > 0 %}
-      <span class="badge bg-red-lt ms-2"><i class="ti ti-alert-triangle"></i> {{ _n('%d en retard', '%d en retard', overdue_count, 'assetsign')|format(overdue_count) }}</span>
+      <span class="badge bg-danger-subtle text-danger-emphasis ms-2"><i class="ti ti-alert-triangle"></i> {{ _n('%d en retard', '%d en retard', overdue_count, 'assetsign')|format(overdue_count) }}</span>
     {% endif %}
     <a class="ms-auto" href="{{ list_url }}">{{ __('Voir tous les prêts', 'assetsign') }} <i class="ti ti-arrow-right"></i></a>
   </div>
@@ -39,7 +39,7 @@
             <td>
               {{ l.loan_until|formatted_date }}
               {% if l.overdue %}
-                <span class="badge bg-red-lt ms-1"><i class="ti ti-alert-triangle"></i> {{ __('En retard', 'assetsign') }}</span>
+                <span class="badge bg-danger-subtle text-danger-emphasis ms-1"><i class="ti ti-alert-triangle"></i> {{ __('En retard', 'assetsign') }}</span>
               {% endif %}
             </td>
             <td class="text-end text-nowrap">

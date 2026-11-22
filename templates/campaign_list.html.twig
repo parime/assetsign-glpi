@@ -57,7 +57,7 @@
           <tbody>
             {% for row in rows %}
               <tr>
-                <td><a href="{{ form_url }}?id={{ row.id }}">{{ row.name }}</a>{% if row.is_charter %} <span class="badge bg-purple-lt">{{ __('Charte informatique', 'assetsign') }}</span>{% endif %}<div class="text-muted small">{{ row.date_creation|formatted_datetime }}</div></td>
+                <td><a href="{{ form_url }}?id={{ row.id }}">{{ row.name }}</a>{% if row.is_charter %} <span class="badge bg-primary-subtle text-primary-emphasis">{{ __('Charte informatique', 'assetsign') }}</span>{% endif %}<div class="text-muted small">{{ row.date_creation|formatted_datetime }}</div></td>
                 <td>{{ row.date_deadline ? row.date_deadline|formatted_date : '-' }}</td>
                 <td>
                   <div class="d-flex align-items-center gap-2">
@@ -65,8 +65,8 @@
                     <span>{{ row.stats.response_rate }} % ({{ row.stats.responded }} / {{ row.stats.total }})</span>
                   </div>
                 </td>
-                <td>{% if row.stats.discrepancy > 0 %}<span class="badge bg-orange-lt">{{ row.stats.discrepancy }}</span>{% else %}0{% endif %}</td>
-                <td><span class="badge {{ row.is_open ? 'bg-blue-lt' : 'bg-secondary-lt' }}">{{ row.is_open ? __('Ouverte', 'assetsign') : __('Clôturée', 'assetsign') }}</span></td>
+                <td>{% if row.stats.discrepancy > 0 %}<span class="badge bg-warning-subtle text-warning-emphasis">{{ row.stats.discrepancy }}</span>{% else %}0{% endif %}</td>
+                <td><span class="badge {{ row.is_open ? 'bg-primary-subtle text-primary-emphasis' : 'bg-secondary-subtle text-secondary-emphasis' }}">{{ row.is_open ? __('Ouverte', 'assetsign') : __('Clôturée', 'assetsign') }}</span></td>
               </tr>
             {% endfor %}
           </tbody>

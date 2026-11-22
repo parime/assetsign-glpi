@@ -18,7 +18,7 @@
   <div class="card mb-3">
     <div class="card-header d-flex align-items-center gap-2">
       <h3 class="card-title mb-0"><i class="ti {{ is_charter ? 'ti-file-certificate' : 'ti-clipboard-check' }} me-2"></i>{{ (is_charter ? __('Charte informatique de %s', 'assetsign') : __('Attestation de détention de %s', 'assetsign'))|format(user_name) }}</h3>
-      {% set status_class = {0: 'bg-secondary-lt', 1: 'bg-green-lt', 2: 'bg-orange-lt'}[attestation.status]|default('bg-secondary-lt') %}
+      {% set status_class = {0: 'bg-secondary-subtle text-secondary-emphasis', 1: 'bg-success-subtle text-success-emphasis', 2: 'bg-warning-subtle text-warning-emphasis'}[attestation.status]|default('bg-secondary-subtle text-secondary-emphasis') %}
       <span class="badge {{ status_class }}">{{ status_label }}</span>
     </div>
     <div class="card-body">

@@ -866,17 +866,17 @@ class Assetsign extends Compat\Base\AssetsignBase
      */
    public static function getStatusBadgeClasses(): array {
        return [
-           self::STATUS_DRAFT                  => 'bg-secondary-lt',
-           self::STATUS_PENDING                => 'bg-yellow-lt',
-           self::STATUS_SENT                   => 'bg-azure-lt',
-           self::STATUS_VIEWED                 => 'bg-azure-lt',
-           self::STATUS_SIGNED                 => 'bg-green-lt',
-           self::STATUS_EXPIRED                => 'bg-red-lt',
-           self::STATUS_CANCELLED              => 'bg-secondary-lt',
-           self::STATUS_COMPLETED_NO_SIGNATURE => 'bg-green-lt',
-           self::STATUS_AWAITING_COSIGNATURE   => 'bg-orange-lt',
+           self::STATUS_DRAFT                  => 'bg-secondary-subtle text-secondary-emphasis',
+           self::STATUS_PENDING                => 'bg-warning-subtle text-warning-emphasis',
+           self::STATUS_SENT                   => 'bg-info-subtle text-info-emphasis',
+           self::STATUS_VIEWED                 => 'bg-info-subtle text-info-emphasis',
+           self::STATUS_SIGNED                 => 'bg-success-subtle text-success-emphasis',
+           self::STATUS_EXPIRED                => 'bg-danger-subtle text-danger-emphasis',
+           self::STATUS_CANCELLED              => 'bg-secondary-subtle text-secondary-emphasis',
+           self::STATUS_COMPLETED_NO_SIGNATURE => 'bg-success-subtle text-success-emphasis',
+           self::STATUS_AWAITING_COSIGNATURE   => 'bg-warning-subtle text-warning-emphasis',
            // Issue #276 : couleur distincte du vert de la signature electronique.
-           self::STATUS_SIGNED_ON_PAPER        => 'bg-teal-lt',
+           self::STATUS_SIGNED_ON_PAPER        => 'bg-info-subtle text-info-emphasis',
        ];
    }
 
@@ -933,10 +933,10 @@ class Assetsign extends Compat\Base\AssetsignBase
    public static function showHome(): void {
        $base = ['is_deleted' => 0] + getEntitiesRestrictCriteria(self::getTable(), '', '', true);
        $groups = [
-           ['statuses' => [self::STATUS_DRAFT], 'label' => __('Brouillons à envoyer', 'assetsign'), 'icon' => 'ti ti-pencil', 'color' => 'bg-secondary-lt'],
-           ['statuses' => [self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED, self::STATUS_AWAITING_COSIGNATURE], 'label' => __('Attributions en attente de signature', 'assetsign'), 'icon' => 'ti ti-clock', 'color' => 'bg-azure-lt'],
-           ['statuses' => [...self::STATUSES_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE], 'label' => __('Attributions signées', 'assetsign'), 'icon' => 'ti ti-circle-check', 'color' => 'bg-green-lt'],
-           ['statuses' => [self::STATUS_EXPIRED], 'label' => __('Attributions expirées', 'assetsign'), 'icon' => 'ti ti-alert-triangle', 'color' => 'bg-red-lt'],
+           ['statuses' => [self::STATUS_DRAFT], 'label' => __('Brouillons à envoyer', 'assetsign'), 'icon' => 'ti ti-pencil', 'color' => 'bg-secondary-subtle text-secondary-emphasis'],
+           ['statuses' => [self::STATUS_PENDING, self::STATUS_SENT, self::STATUS_VIEWED, self::STATUS_AWAITING_COSIGNATURE], 'label' => __('Attributions en attente de signature', 'assetsign'), 'icon' => 'ti ti-clock', 'color' => 'bg-info-subtle text-info-emphasis'],
+           ['statuses' => [...self::STATUSES_SIGNED, self::STATUS_COMPLETED_NO_SIGNATURE], 'label' => __('Attributions signées', 'assetsign'), 'icon' => 'ti ti-circle-check', 'color' => 'bg-success-subtle text-success-emphasis'],
+           ['statuses' => [self::STATUS_EXPIRED], 'label' => __('Attributions expirées', 'assetsign'), 'icon' => 'ti ti-alert-triangle', 'color' => 'bg-danger-subtle text-danger-emphasis'],
        ];
        $counters = [];
        foreach ($groups as $group) {

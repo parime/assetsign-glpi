@@ -12,6 +12,7 @@
  # (at your option) any later version. See LICENSE for the full text.
  # -------------------------------------------------------------------------
  #}
+{% import '@assetsign/components/_badge_colors.html.twig' as badge_colors %}
 {# Issue #282 : identité du matériel en tuiles (libellé discret, valeur en gras, icône), plutôt
    qu'une ligne de texte. #}
 <div class="card mb-4 passport-identity-card" style="border-left: 4px solid var(--tblr-primary);">
@@ -24,7 +25,7 @@
       <div class="col-6 col-md-4 col-xl-3"><div class="d-flex align-items-start gap-2"><i class="ti ti-barcode text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('N° série', 'assetsign') }}</div><div class="fw-bold">{{ identity.serial }}</div></div></div></div>
     {% endif %}
     {% if identity.state %}
-      <div class="col-6 col-md-4 col-xl-3"><div class="d-flex align-items-start gap-2"><i class="ti ti-activity text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('État', 'assetsign') }}</div><div class="fw-bold"><span class="badge bg-blue-lt">{{ identity.state }}</span></div></div></div></div>
+      <div class="col-6 col-md-4 col-xl-3"><div class="d-flex align-items-start gap-2"><i class="ti ti-activity text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('État', 'assetsign') }}</div><div class="fw-bold"><span class="badge bg-primary-subtle text-primary-emphasis">{{ identity.state }}</span></div></div></div></div>
     {% endif %}
     {% if identity.user %}
       <div class="col-6 col-md-4 col-xl-3"><div class="d-flex align-items-start gap-2"><i class="ti ti-user text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('Utilisateur actuel', 'assetsign') }}</div><div class="fw-bold">{{ identity.user }}</div></div></div></div>
@@ -91,7 +92,7 @@
         {% if environmental.confidence_label %}
           <div class="col-auto">
             <strong>{{ __('Niveau de confiance', 'assetsign') }} :</strong>
-            <span class="badge" style="background-color: {{ environmental.confidence_color }}; color: #fff;">{{ environmental.confidence_label }}</span>
+            <span class="badge {{ badge_colors.classes(environmental.confidence_color) }}">{{ environmental.confidence_label }}</span>
           </div>
         {% endif %}
         {% if environmental.date_mod %}
@@ -176,7 +177,7 @@
     <div class="row g-2 mb-2">
       <div class="col-auto">
         <strong>{{ __('Impact évité', 'assetsign') }} :</strong>
-        <span class="badge" style="background-color: #2fb344; color: #fff;">{{ reuse_benefit.avoided_impact|number_format(2, '.', '') }} kg CO2-eq</span>
+        <span class="badge bg-success-subtle text-success-emphasis">{{ reuse_benefit.avoided_impact|number_format(2, '.', '') }} kg CO2-eq</span>
         {% if reuse_benefit.footprint_source == 'carbon' %}
           <span class="text-muted small">({{ __('empreinte de fabrication du plugin Carbon', 'assetsign') }})</span>
         {% endif %}
@@ -258,13 +259,13 @@
 {% endif %}
 
 <div class="passport-summary mb-4">
-  <h4>{{ __('Vies du matériel', 'assetsign') }} <span class="badge bg-blue-lt">{{ lives|length }}</span></h4>
+  <h4>{{ __('Vies du matériel', 'assetsign') }} <span class="badge bg-primary-subtle text-primary-emphasis">{{ lives|length }}</span></h4>
   {% if lives|length %}
     <ul class="passport-lives-list">
       {% for life in lives %}
         <li>
           <strong>{{ life.name }}</strong>
-          {% if life.is_external %}<span class="badge bg-secondary-lt ms-1">{{ __('externe', 'assetsign') }}</span>{% endif %}
+          {% if life.is_external %}<span class="badge bg-secondary-subtle text-secondary-emphasis ms-1">{{ __('externe', 'assetsign') }}</span>{% endif %}
           <span class="text-muted small ms-2">
             {{ life.start|formatted_date }} → {{ life.end ? life.end|formatted_date : __('aujourd\'hui', 'assetsign') }}
             ({{ life.duration }})
@@ -295,7 +296,7 @@
             <strong>{{ event.type_label }}</strong>
             {% if event.snapshot_name %}
               - {{ event.snapshot_name }}
-              {% if event.snapshot_is_external|default(false) %}<span class="badge bg-secondary-lt">{{ __('externe', 'assetsign') }}</span>{% endif %}
+              {% if event.snapshot_is_external|default(false) %}<span class="badge bg-secondary-subtle text-secondary-emphasis">{{ __('externe', 'assetsign') }}</span>{% endif %}
             {% elseif event.is_anonymized %}
               - <span class="text-muted">{{ __('bénéficiaire anonymisé', 'assetsign') }}</span>
             {% endif %}
@@ -304,14 +305,14 @@
             {% endif %}
             {% if event.checklist_summary is defined %}
               <div class="mt-1">
-                <span class="badge" style="background-color: {{ event.checklist_summary.color }}; color: #fff;">
+                <span class="badge {{ badge_colors.classes(event.checklist_summary.color) }}">
                   <i class="ti ti-checklist"></i> {{ event.checklist_summary.done }}/{{ event.checklist_summary.total }} {{ __('contrôles qualité', 'assetsign') }}
                 </span>
               </div>
             {% endif %}
             {% if event.kit_summary is defined %}
               <div class="mt-1">
-                <span class="badge" style="background-color: {{ event.kit_summary.color }}; color: #fff;" title="{{ event.kit_summary.kit_name }}">
+                <span class="badge {{ badge_colors.classes(event.kit_summary.color) }}" title="{{ event.kit_summary.kit_name }}">
                   <i class="ti ti-package"></i> {{ event.kit_summary.returned_count }}/{{ event.kit_summary.expected_total }} {{ __('accessoires du kit restitués', 'assetsign') }}
                 </span>
                 {% if event.kit_summary.missing_names|length %}
@@ -326,7 +327,7 @@
                   <i class="ti ti-arrow-right"></i>
                   {{ event.movement_summary.location_to|default(__('lieu inconnu', 'assetsign')) }}
                 </span>
-                <span class="badge" style="background-color: {{ event.movement_summary.status_color }}; color: #fff;">{{ event.movement_summary.status_label }}</span>
+                <span class="badge {{ badge_colors.classes(event.movement_summary.status_color) }}">{{ event.movement_summary.status_label }}</span>
               </div>
             {% endif %}
             {% if event.source_url %}

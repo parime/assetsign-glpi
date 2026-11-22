@@ -25,9 +25,12 @@ use GlpiPlugin\Assetsign\Arrival;
 use GlpiPlugin\Assetsign\ArrivalLogic;
 use GlpiPlugin\Assetsign\Profile;
 
-global $CFG_GLPI;
-
 Session::checkLoginUser();
+// Issue #392 : page d'action, appelée par un formulaire en POST. Ouverte directement (lien,
+// favori, parcours des pages), elle répond 400 au lieu d'afficher l'accueil sous son adresse.
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+    throw new \Glpi\Exception\Http\BadRequestHttpException();
+}
 
 if (isset($_POST['prepare'])) {
    Session::checkRight(Profile::RIGHT_ASSETSIGN, UPDATE);
@@ -50,4 +53,4 @@ if (isset($_POST['prepare'])) {
    Html::redirect(Ticket::getFormURLWithID($ticketsId));
 }
 
-Html::redirect($CFG_GLPI['root_doc'] . '/front/central.php');
+throw new \Glpi\Exception\Http\BadRequestHttpException();

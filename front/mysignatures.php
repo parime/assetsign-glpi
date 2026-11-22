@@ -77,7 +77,9 @@ $isHelpdesk = Session::getCurrentInterface() === 'helpdesk';
 if ($isHelpdesk) {
     Html::helpHeader($title);
 } else {
-    Html::header($title, $selfUrl);
+    // Issue #392 : interface standard, page rangée sous l'entrée du plugin (fil d'Ariane
+    // « Parc > AssetSign »), comme les autres écrans d'usage.
+    Html::header($title, $selfUrl, 'assets', \GlpiPlugin\Assetsign\Menu::class);
 }
 
 $types = Assetsign::getTypes();

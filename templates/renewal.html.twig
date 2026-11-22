@@ -72,7 +72,7 @@
                 <td><span class="text-muted small">{{ r.type }}</span><br><a href="{{ r.url }}">{{ r.name }}</a></td>
                 <td>{{ r.user }}</td>
                 <td>{{ r.start ? r.start|formatted_date : '' }}</td>
-                <td><span class="badge {{ r.end_of_life < today ? 'bg-red-lt' : 'bg-orange-lt' }}">{{ r.end_of_life|formatted_date }}</span></td>
+                <td><span class="badge {{ r.end_of_life < today ? 'bg-danger-subtle text-danger-emphasis' : 'bg-warning-subtle text-warning-emphasis' }}">{{ r.end_of_life|formatted_date }}</span></td>
                 <td class="text-end">{{ r.value > 0 ? r.value|number_format(2, ',', ' ') ~ ' €' : '-' }}</td>
               </tr>
             {% endfor %}

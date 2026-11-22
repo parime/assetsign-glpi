@@ -12,6 +12,7 @@
  # (at your option) any later version. See LICENSE for the full text.
  # -------------------------------------------------------------------------
  #}
+{% import '@assetsign/components/_badge_colors.html.twig' as badge_colors %}
 <div class="card">
   <div class="card-body">
     {% if movements|length == 0 %}
@@ -32,7 +33,7 @@
           <tr>
             <td>{{ m.location_from_name|default('') }}{% if m.date_from %}<br><span class="text-muted small">{{ m.date_from }}</span>{% endif %}</td>
             <td>{{ m.location_to_name|default('') }}{% if m.date_to %}<br><span class="text-muted small">{{ m.date_to }}</span>{% endif %}</td>
-            <td><span class="badge" style="background-color: {{ m.status_color }}; color: #fff;">{{ m.status_label }}</span></td>
+            <td><span class="badge {{ badge_colors.classes(m.status_color) }}">{{ m.status_label }}</span></td>
             <td>{% if m.is_signed %}<i class="ti ti-check text-success"></i>{% else %}<i class="ti ti-minus text-muted"></i>{% endif %}</td>
             <td><a href="{{ config('root_doc') }}/plugins/assetsign/front/movement.form.php?id={{ m.id }}">{{ __('Voir', 'assetsign') }}</a></td>
           </tr>

@@ -12,6 +12,7 @@
  # (at your option) any later version. See LICENSE for the full text.
  # -------------------------------------------------------------------------
  #}
+{% import '@assetsign/components/_badge_colors.html.twig' as badge_colors %}
 <div class="card">
   <div class="card-body">
     <h2>{{ _n('Attribution', 'Attributions', 1, 'assetsign') }} #{{ item.fields.id }} - {{ types[item.fields.type] }}</h2>
@@ -36,13 +37,13 @@
           <h3 class="card-title"><i class="ti ti-arrows-exchange me-1"></i>{{ __('Passation', 'assetsign') }}</h3>
           <div class="card-actions">
             {% if transfer.complete %}
-              <span class="badge bg-green-lt"><i class="ti ti-check me-1"></i>{{ __('Terminée : matériel attribué dans GLPI', 'assetsign') }}</span>
+              <span class="badge bg-success-subtle text-success-emphasis"><i class="ti ti-check me-1"></i>{{ __('Terminée : matériel attribué dans GLPI', 'assetsign') }}</span>
             {% elseif transfer.aborted %}
-              <span class="badge bg-secondary-lt"><i class="ti ti-x me-1"></i>{{ __('Annulée', 'assetsign') }}</span>
+              <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-x me-1"></i>{{ __('Annulée', 'assetsign') }}</span>
             {% elseif transfer.waiting_for|default('') != '' %}
-              <span class="badge bg-orange-lt"><i class="ti ti-hourglass me-1"></i>{{ __('Une signature sur deux : en attente de %s', 'assetsign')|format(transfer.waiting_for) }}</span>
+              <span class="badge bg-warning-subtle text-warning-emphasis"><i class="ti ti-hourglass me-1"></i>{{ __('Une signature sur deux : en attente de %s', 'assetsign')|format(transfer.waiting_for) }}</span>
             {% else %}
-              <span class="badge bg-orange-lt"><i class="ti ti-hourglass me-1"></i>{{ __('En attente des deux signatures', 'assetsign') }}</span>
+              <span class="badge bg-warning-subtle text-warning-emphasis"><i class="ti ti-hourglass me-1"></i>{{ __('En attente des deux signatures', 'assetsign') }}</span>
             {% endif %}
           </div>
         </div>
@@ -50,7 +51,7 @@
           <p class="text-secondary small mb-2">{{ __('Le détenteur sortant signe la restitution, le nouveau détenteur signe la remise. L\'attribution du matériel dans GLPI ne change qu\'après les deux signatures.', 'assetsign') }}</p>
           <div class="list-group">
             {% for step in [{label: __('Restitution par', 'assetsign'), icon: 'ti ti-arrow-back-up', line: transfer.return}, {label: __('Remise à', 'assetsign'), icon: 'ti ti-user-check', line: transfer.handover}] %}
-              <div class="list-group-item d-flex flex-wrap align-items-center gap-2{{ step.line.is_current ? ' bg-azure-lt' : '' }}">
+              <div class="list-group-item d-flex flex-wrap align-items-center gap-2{{ step.line.is_current ? ' bg-info-subtle text-info-emphasis' : '' }}">
                 <i class="{{ step.icon }}"></i>
                 <span>{{ step.label }} <strong>{{ step.line.user }}</strong></span>
                 <span class="badge {{ step.line.badge }}">{{ step.line.status }}</span>
@@ -120,9 +121,9 @@
           {% if loan_until %}
             <strong>{{ __('Prêt temporaire', 'assetsign') }}</strong> - {{ __('retour prévu le %s', 'assetsign')|format(loan_until|formatted_date) }}
             {% if loan_is_returned %}
-              <span class="badge bg-green-lt ms-1"><i class="ti ti-check"></i> {{ __('Rendu', 'assetsign') }}</span>
+              <span class="badge bg-success-subtle text-success-emphasis ms-1"><i class="ti ti-check"></i> {{ __('Rendu', 'assetsign') }}</span>
             {% elseif loan_overdue %}
-              <span class="badge bg-red-lt ms-1"><i class="ti ti-alert-triangle"></i> {{ __('En retard', 'assetsign') }}</span>
+              <span class="badge bg-danger-subtle text-danger-emphasis ms-1"><i class="ti ti-alert-triangle"></i> {{ __('En retard', 'assetsign') }}</span>
             {% endif %}
             {% if item.fields.loan_tickets_id|default(0) > 0 %}
               <a class="ms-2" href="{{ 'Ticket'|itemtype_form_path(item.fields.loan_tickets_id) }}"><i class="ti ti-ticket me-1"></i>{{ __('Ticket n° %d', 'assetsign')|format(item.fields.loan_tickets_id) }}</a>
@@ -169,7 +170,7 @@
         <th>{{ __('Statut', 'assetsign') }}</th>
         <td>
           {# Issue #276 : pastille distincte pour une fiche signée sur papier. #}
-          <span class="badge {{ status_badges[item.fields.status]|default('bg-secondary-lt') }}">
+          <span class="badge {{ status_badges[item.fields.status]|default('bg-secondary-subtle text-secondary-emphasis') }}">
             {% if paper.is_signed|default(false) %}<i class="ti ti-writing-sign me-1"></i>{% endif %}{{ statuses[item.fields.status] }}
           </span>
         </td>
@@ -654,7 +655,7 @@
       </p>
       {% if kit_completeness is not null %}
         <div class="mb-2">
-          <span class="badge" style="background-color: {{ kit_completeness.color }}; color: #fff;">
+          <span class="badge {{ badge_colors.classes(kit_completeness.color) }}">
             <i class="ti ti-package"></i> {{ kit_completeness.returned_count }}/{{ kit_completeness.expected_total }} {{ __('accessoires du kit restitués', 'assetsign') }}
           </span>
           {% if kit_completeness.missing_names|length %}
@@ -757,10 +758,10 @@
               <td>
                 <a href="{{ i.itemtype|itemtype_form_path(i.items_id) }}">{{ i.name|default('#' ~ i.items_id) }}</a>
                 {% if i.is_automatic %}
-                  <span class="badge bg-blue-lt ms-1" title="{{ __('Ajouté automatiquement : connecté au matériel dans GLPI', 'assetsign') }}"><i class="ti ti-plug-connected"></i> {{ __('Connecté', 'assetsign') }}</span>
+                  <span class="badge bg-primary-subtle text-primary-emphasis ms-1" title="{{ __('Ajouté automatiquement : connecté au matériel dans GLPI', 'assetsign') }}"><i class="ti ti-plug-connected"></i> {{ __('Connecté', 'assetsign') }}</span>
                 {% endif %}
                 {% if i.assigned_to_other %}
-                  <span class="badge bg-orange-lt ms-1" title="{{ __('Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire.', 'assetsign') }}"><i class="ti ti-alert-triangle"></i> {{ __('Affecté à %s', 'assetsign')|format(i.assigned_to_other) }}</span>
+                  <span class="badge bg-warning-subtle text-warning-emphasis ms-1" title="{{ __('Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire.', 'assetsign') }}"><i class="ti ti-alert-triangle"></i> {{ __('Affecté à %s', 'assetsign')|format(i.assigned_to_other) }}</span>
                 {% endif %}
               </td>
               <td>{{ [i.manufacturer, i.model]|filter(v => v)|join(' ')|default('-') }}</td>
@@ -786,7 +787,7 @@
 
     {# Issue #178 : controle du retour, element par element (feuilles de restitution) #}
     {% if is_return|default(false) and inventoried_items|default([])|length %}
-      {% set state_badges = {0: 'bg-secondary-lt', 1: 'bg-green-lt', 2: 'bg-red-lt', 3: 'bg-orange-lt'} %}
+      {% set state_badges = {0: 'bg-secondary-subtle text-secondary-emphasis', 1: 'bg-success-subtle text-success-emphasis', 2: 'bg-danger-subtle text-danger-emphasis', 3: 'bg-warning-subtle text-warning-emphasis'} %}
       <div class="card mt-3 mb-3">
         <div class="card-header"><h4 class="card-title"><i class="ti ti-checklist me-1"></i>{{ __('Contrôle du retour', 'assetsign') }}</h4></div>
         <div class="card-body">

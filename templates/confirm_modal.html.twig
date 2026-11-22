@@ -46,10 +46,10 @@
                     </span>
                   </span>
                   {% if i.is_automatic %}
-                    <span class="badge bg-blue-lt"><i class="ti ti-plug-connected"></i> {{ __('Connecté', 'assetsign') }}</span>
+                    <span class="badge bg-primary-subtle text-primary-emphasis"><i class="ti ti-plug-connected"></i> {{ __('Connecté', 'assetsign') }}</span>
                   {% endif %}
                   {% if i.assigned_to_other %}
-                    <span class="badge bg-orange-lt" title="{{ __('Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire.', 'assetsign') }}"><i class="ti ti-alert-triangle"></i> {{ __('Affecté à %s', 'assetsign')|format(i.assigned_to_other) }}</span>
+                    <span class="badge bg-warning-subtle text-warning-emphasis" title="{{ __('Dans GLPI, cet élément est affecté à une autre personne que le bénéficiaire.', 'assetsign') }}"><i class="ti ti-alert-triangle"></i> {{ __('Affecté à %s', 'assetsign')|format(i.assigned_to_other) }}</span>
                   {% endif %}
                 </label>
               {% endfor %}

@@ -197,7 +197,7 @@ final class Transfer {
             'reference'   => Assetsign::displayReference($s->fields),
             'user'        => self::userName((int) $s->fields['users_id']),
             'status'      => $statuses[$status] ?? '',
-            'badge'       => $badges[$status] ?? 'bg-secondary-lt',
+            'badge'       => $badges[$status] ?? 'bg-secondary-subtle text-secondary-emphasis',
             'is_signed'   => in_array($status, Assetsign::STATUSES_SIGNED, true),
             'url'         => $s->getLinkURL(),
             'is_current'  => false,

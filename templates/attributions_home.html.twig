@@ -49,14 +49,14 @@
       {% for p in pending %}
         <div class="list-group-item">
           <div class="d-flex flex-wrap align-items-center gap-2">
-            <span class="avatar avatar-sm bg-secondary-lt"><i class="{{ type_icons[p.type]|default('ti ti-file') }}"></i></span>
+            <span class="avatar avatar-sm bg-secondary-subtle text-secondary-emphasis"><i class="{{ type_icons[p.type]|default('ti ti-file') }}"></i></span>
             <div class="flex-fill" style="min-width: 12rem;">
               <a href="{{ new_url }}?id={{ p.id }}" class="fw-bold">{{ p.item }}</a>
               <div class="small text-secondary">
                 {{ types[p.type]|default('') }}{% if p.beneficiary %} · {{ p.beneficiary }}{% endif %}{% if p.date_sent %} · {{ __('Envoyé le', 'assetsign') }} {{ p.date_sent|formatted_datetime }}{% endif %}
               </div>
             </div>
-            <span class="badge {{ status_badges[p.status]|default('bg-secondary-lt') }}">{{ statuses[p.status] }}</span>
+            <span class="badge {{ status_badges[p.status]|default('bg-secondary-subtle text-secondary-emphasis') }}">{{ statuses[p.status] }}</span>
             {% if can_update %}
               <div class="d-flex flex-wrap gap-1">
                 <form method="post" action="{{ new_url }}" class="d-inline">

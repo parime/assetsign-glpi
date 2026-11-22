@@ -12,6 +12,7 @@
  # (at your option) any later version. See LICENSE for the full text.
  # -------------------------------------------------------------------------
  #}
+{% import '@assetsign/components/_badge_colors.html.twig' as badge_colors %}
 {# Issue #322 : onglet « Effacement des données » du matériel : attestations et création. #}
 <div class="card">
   <div class="card-body">
@@ -56,15 +57,15 @@
             <tr>
               <td>{{ a.date_wipe|formatted_datetime }}</td>
               <td>{{ a.method_label }}{% if a.level_label %}<div class="text-secondary small">{{ a.level_label }}</div>{% endif %}</td>
-              <td><span class="badge" style="background-color: {{ a.result_color }}; color: #fff;">{{ a.result_label }}</span></td>
+              <td><span class="badge {{ badge_colors.classes(a.result_color) }}">{{ a.result_label }}</span></td>
               <td>{{ a.technician }}</td>
               <td>
                 {% if a.is_cancelled %}
-                  <span class="badge bg-secondary-lt"><i class="ti ti-ban me-1"></i>{{ __('Annulée', 'assetsign') }}</span>
+                  <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-ban me-1"></i>{{ __('Annulée', 'assetsign') }}</span>
                 {% elseif a.id == valid_id %}
-                  <span class="badge bg-green-lt"><i class="ti ti-shield-check me-1"></i>{{ __('Valable', 'assetsign') }}</span>
+                  <span class="badge bg-success-subtle text-success-emphasis"><i class="ti ti-shield-check me-1"></i>{{ __('Valable', 'assetsign') }}</span>
                 {% else %}
-                  <span class="badge bg-orange-lt">{{ __('Plus valable (matériel remis depuis, ou échec)', 'assetsign') }}</span>
+                  <span class="badge bg-warning-subtle text-warning-emphasis">{{ __('Plus valable (matériel remis depuis, ou échec)', 'assetsign') }}</span>
                 {% endif %}
               </td>
               <td class="text-nowrap">
@@ -123,7 +124,7 @@
                   <i class="ti {{ m.kind == 'drive' ? 'ti-device-sd-card' : 'ti-folders' }} me-1"></i>{{ m.label }}
                   {% if m.serial %}<span class="text-secondary"> - {{ __('N° de série', 'assetsign') }} {{ m.serial }}</span>{% endif %}
                   {% if m.capacity %}<span class="text-secondary"> - {{ m.capacity }}</span>{% endif %}
-                  {% if m.encryption %}<span class="badge bg-secondary-lt ms-1">{{ m.encryption }}</span>{% endif %}
+                  {% if m.encryption %}<span class="badge bg-secondary-subtle text-secondary-emphasis ms-1">{{ m.encryption }}</span>{% endif %}
                 </span>
               </label>
             {% endfor %}
