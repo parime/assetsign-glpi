@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   propre réglage « Vérifier les nouvelles versions sur GitHub », actif par défaut, global, réservé
   aux administrateurs de GLPI, à désactiver sur un serveur sans accès à Internet. Aucune
   information sur l'instance n'est envoyée.
-- **CI : contrôles de sécurité communs glpi-plugin-security v1.11.1** (encadré « Version du plugin »
+- **CI : contrôles de sécurité communs glpi-plugin-security v1.11.2** (encadré « Version du plugin »
   exigé). Une PR qui ne touche que la documentation saute les contrôles qui démarrent un vrai GLPI
   (`heavy-paths`) ; un nouveau commit sur une PR annule l'exécution précédente de la CI et des
   contrôles communs, jamais un push de main ou dev.
