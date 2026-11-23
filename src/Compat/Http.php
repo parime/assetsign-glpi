@@ -21,7 +21,8 @@ use GlpiPlugin\Assetsign\Config;
 
 /**
  * Point de passage unique de TOUS les appels HTTP sortants du plugin (issues #335 et #347) :
- * webhooks de messagerie et verification de la derniere version publiee.
+ * webhooks de messagerie et verification de la derniere version publiee (get(), composant commun
+ * PluginVersion, issue #396).
  *
  * - Client HTTP du cœur GLPI, donc son proxy : Glpi\Toolbox\HttpClient en GLPI 12,
  *   Toolbox::getGuzzleClient() en GLPI 11 (le premier n'existe pas en GLPI 11).
@@ -163,6 +164,50 @@ final class Http
      * @return array{status: int, body: string}|null
      */
    public static function request(string $method, string $url, array $options = [], ?string &$error = null): ?array {
+       $response = self::perform($method, $url, $options, $error);
+      if ($response === null) {
+          return null;
+      }
+       $status = $response['status'];
+      if ($status >= 300 && $status < 400) {
+          $error = self::ERROR_REDIRECT . ': HTTP ' . $status;
+          return null;
+      }
+      if ($status < 200 || $status >= 300) {
+          $error = self::ERROR_STATUS . ': HTTP ' . $status;
+          return null;
+      }
+       return ['status' => $status, 'body' => $response['body']];
+   }
+
+    /**
+     * Issue #396 : requete GET dont la reponse est rendue telle quelle, quel que soit son code
+     * (304, 403, 404... sont des reponses, pas des erreurs), avec ses en-tetes en minuscules
+     * (ETag). Memes garanties que request() : adresse controlee, client du cœur (proxy),
+     * redirection jamais suivie, delai total borne. Signature attendue par PluginVersion.
+     *
+     * @param array<string, string> $headers
+     * @return array{status: int, body: string, headers: array<string, string>}
+     * @throws \RuntimeException adresse refusee ou echec reseau (le message garde celui du client,
+     *         « timed out » compris, pour distinguer un delai depasse)
+     */
+   public static function get(string $url, array $headers = [], int $timeout = self::DEFAULT_TIMEOUT): array {
+       $error = null;
+       $response = self::perform('GET', $url, ['headers' => $headers, 'timeout' => $timeout], $error);
+      if ($response === null) {
+          throw new \RuntimeException((string) $error);
+      }
+       return $response;
+   }
+
+    /**
+     * Controle de l'adresse puis envoi, sans filtrage sur le code HTTP. Null en cas de refus ou
+     * d'echec reseau, $error recevant alors « code : detail ».
+     *
+     * @param array{headers?: array<string, string>, json?: array<mixed>, timeout?: int} $options
+     * @return array{status: int, body: string, headers: array<string, string>}|null
+     */
+   private static function perform(string $method, string $url, array $options, ?string &$error): ?array {
        $error = null;
        $allowPrivate = self::allowsPrivateNetworks();
        $pinnedIp = null;
@@ -191,32 +236,29 @@ final class Http
 
       try {
          if ($glpi12) {
-             [$status, $body] = self::sendWithGlpi12($method, $url, $host, $pin, $headers, $timeout, $options);
+             [$status, $body, $responseHeaders] = self::sendWithGlpi12($method, $url, $host, $pin, $headers, $timeout, $options);
          } else {
-             [$status, $body] = self::sendWithGlpi11($method, $url, $host, $pin, $headers, $timeout, $options);
+             [$status, $body, $responseHeaders] = self::sendWithGlpi11($method, $url, $host, $pin, $headers, $timeout, $options);
          }
       } catch (\Throwable $e) {
           $error = self::ERROR_TRANSPORT . ': ' . $e->getMessage();
           return null;
       }
-
-      if ($status >= 300 && $status < 400) {
-          $error = self::ERROR_REDIRECT . ': HTTP ' . $status;
-          return null;
-      }
-      if ($status < 200 || $status >= 300) {
-          $error = self::ERROR_STATUS . ': HTTP ' . $status;
-          return null;
-      }
-       return ['status' => $status, 'body' => $body];
+       return ['status' => $status, 'body' => $body, 'headers' => $responseHeaders];
    }
 
     /**
-     * @return string Le corps de la reponse, ou '' en cas d'echec, $error decrivant alors la cause.
+     * En-tetes d'une reponse : noms en minuscules, premiere valeur seulement.
+     *
+     * @param array<array-key, mixed> $headers
+     * @return array<string, string>
      */
-   public static function getContent(string $url, ?string &$error = null): string {
-       $response = self::request('GET', $url, [], $error);
-       return $response['body'] ?? '';
+   private static function flattenHeaders(array $headers): array {
+       $flat = [];
+      foreach ($headers as $name => $values) {
+          $flat[strtolower((string) $name)] = (string) (is_array($values) ? ($values[0] ?? '') : $values);
+      }
+       return $flat;
    }
 
     /**
@@ -259,7 +301,7 @@ final class Http
     /**
      * @param array<string, string> $headers
      * @param array<string, mixed> $options
-     * @return array{0: int, 1: string}
+     * @return array{0: int, 1: string, 2: array<string, string>}
      */
    private static function sendWithGlpi12(string $method, string $url, string $host, ?string $pin, array $headers, int $timeout, array $options): array {
        $request = ['headers' => $headers, 'timeout' => $timeout, 'max_duration' => $timeout, 'max_redirects' => 0];
@@ -275,21 +317,26 @@ final class Http
       try {
           $response = (new \Glpi\Toolbox\HttpClient(self::CONTEXT))->request(strtoupper($method), $url, $request);
       } catch (\Throwable $e) {
-          // Le client du cœur leve une exception pour toute reponse 3xx, 4xx ou 5xx : on en garde
-          // le code, traite ensuite comme pour GLPI 11 (redirection refusee, code hors 2xx).
+          // Le client du cœur leve une exception pour toute reponse 3xx, 4xx ou 5xx, qui porte la
+          // reponse : on en garde le code, le corps et les en-tetes, traites ensuite comme pour
+          // GLPI 11 (redirection refusee par request(), 304 et 403 lus par get()).
           $failed = method_exists($e, 'getResponse') ? $e->getResponse() : null;
-         if (is_object($failed) && method_exists($failed, 'getStatusCode')) {
-             return [(int) $failed->getStatusCode(), ''];
+         if (!is_object($failed) || !method_exists($failed, 'getStatusCode')) {
+             throw $e;
          }
-          throw $e;
+          $response = $failed;
       }
-       return [$response->getStatusCode(), $response->getContent(false)];
+       return [
+           (int) $response->getStatusCode(),
+           (string) $response->getContent(false),
+           self::flattenHeaders($response->getHeaders(false)),
+       ];
    }
 
     /**
      * @param array<string, string> $headers
      * @param array<string, mixed> $options
-     * @return array{0: int, 1: string}
+     * @return array{0: int, 1: string, 2: array<string, string>}
      */
    private static function sendWithGlpi11(string $method, string $url, string $host, ?string $pin, array $headers, int $timeout, array $options): array {
        $request = [
@@ -310,7 +357,7 @@ final class Http
           }
        }
        $response = \Toolbox::getGuzzleClient(['timeout' => $timeout])->request(strtoupper($method), $url, $request);
-       return [$response->getStatusCode(), (string) $response->getBody()];
+       return [$response->getStatusCode(), (string) $response->getBody(), self::flattenHeaders($response->getHeaders())];
    }
 
     /** @return list<string> */

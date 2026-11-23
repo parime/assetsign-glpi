@@ -7552,3 +7552,93 @@ msgstr "Foto non trovata."
 
 #~ msgid "Points de contrôle de maintenance"
 #~ msgstr "Punti di controllo di manutenzione"
+
+msgid "la vérification est désactivée dans les réglages ci-dessous"
+msgstr "la verifica è disattivata nelle impostazioni qui sotto"
+
+msgid ""
+"GitHub est injoignable depuis le serveur GLPI (pas d'accès à Internet, proxy"
+" ou pare-feu)"
+msgstr ""
+"GitHub non è raggiungibile dal server GLPI (nessun accesso a Internet, proxy"
+" o firewall)"
+
+msgid ""
+"la limite de requêtes de GitHub est atteinte, un nouvel essai sera fait "
+"d'ici une heure"
+msgstr ""
+"il limite di richieste di GitHub è stato raggiunto, un nuovo tentativo sarà "
+"fatto entro un'ora"
+
+msgid "GitHub n'a pas répondu dans les 3 secondes"
+msgstr "GitHub non ha risposto entro 3 secondi"
+
+msgid "aucune version n'est encore publiée sur GitHub"
+msgstr "nessuna versione è ancora pubblicata su GitHub"
+
+msgid "la réponse de GitHub est illisible"
+msgstr "non è stato possibile leggere la risposta di GitHub"
+
+msgid "À jour"
+msgstr "Aggiornato"
+
+msgid "Mise à jour disponible : %s"
+msgstr "Aggiornamento disponibile: %s"
+
+msgid "Dernière version inconnue"
+msgstr "Ultima versione sconosciuta"
+
+msgid "Notes de version"
+msgstr "Note di rilascio"
+
+msgid "Télécharger l'archive"
+msgstr "Scarica l'archivio"
+
+msgid "La dernière vérification a échoué : %s."
+msgstr "L'ultima verifica non è riuscita: %s."
+
+msgid "Résultat de la dernière vérification réussie (%s) affiché."
+msgstr "Viene mostrato il risultato dell'ultima verifica riuscita (%s)."
+
+msgid "Raison : %s."
+msgstr "Motivo: %s."
+
+msgid "Dernière vérification réussie : %s."
+msgstr "Ultima verifica riuscita: %s."
+
+msgid "Aucune vérification réussie pour l'instant."
+msgstr "Nessuna verifica riuscita finora."
+
+msgid "Voir les versions sur GitHub"
+msgstr "Vedi le versioni su GitHub"
+
+msgid ""
+"Dernière vérification : %s (nouvelle vérification toutes les 12 heures)."
+msgstr "Ultima verifica: %s (nuova verifica ogni 12 ore)."
+
+msgid "Vérifier les nouvelles versions sur GitHub"
+msgstr "Verificare le nuove versioni su GitHub"
+
+msgid ""
+"Lit la dernière version publiée sur GitHub au plus toutes les 12 heures, "
+"sans envoyer aucune information sur ce GLPI. À désactiver sur un serveur "
+"sans accès à Internet. Ce réglage vaut pour toutes les entités."
+msgstr ""
+"Legge l'ultima versione pubblicata su GitHub al massimo ogni 12 ore, senza "
+"inviare alcuna informazione su questo GLPI. Disattivarlo su un server senza "
+"accesso a Internet. Questa impostazione vale per tutte le entità."
+
+msgid "Fiches signées"
+msgstr "Schede firmate"
+
+msgid "Sortie du parc"
+msgstr "Uscita dal parco"
+
+msgid "Maintenance et mouvements"
+msgstr "Manutenzione e movimenti"
+
+msgid "Passeports"
+msgstr "Passaporti"
+
+msgid "Rubriques de la configuration"
+msgstr "Sezioni della configurazione"

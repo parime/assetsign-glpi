@@ -9,6 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Configuration rangée en 6 rubriques (#401).** Les 18 onglets de Configuration > Plugins >
+  AssetSign (sur cinq lignes) deviennent 6 rubriques sur une ligne : Général ; Fiches signées
+  (Attribution, Restitution, Compléments, Délégation de signature, Contre-signature) ; Sortie du parc
+  (Don, Vente, Destruction, Réforme, Effacement des données) ; Maintenance et mouvements ;
+  Passeports (matériel, environnemental, valeur résiduelle) ; Pilotage du parc (Score de santé, Aide
+  à la décision). Les pages de la rubrique ouverte s'affichent dans une seconde barre, accessible au
+  clavier ; aucun réglage ne change, l'aperçu en direct suit la page ouverte.
+- **Encadré « Version du plugin » commun à tous les plugins (#396).** En tête de l'onglet Général
+  de la configuration : version installée, dernière version publiée sur GitHub et badge « À jour »,
+  « Mise à jour disponible » (liens vers les notes de version et l'archive) ou « Dernière version
+  inconnue » **avec la raison** (GitHub injoignable, limite de requêtes atteinte, délai de 3 s
+  dépassé, aucune version publiée, réponse illisible, vérification désactivée) et la date de la
+  dernière vérification réussie. Auparavant, un échec de lecture de GitHub n'affichait rien.
+  Résultat gardé 12 h (ETag), dernier résultat réussi réutilisé si GitHub ne répond pas, proxy de
+  GLPI. La vérification ne dépend plus de l'action automatique « checkupdate » de GLPI : elle a son
+  propre réglage « Vérifier les nouvelles versions sur GitHub », actif par défaut, global, réservé
+  aux administrateurs de GLPI, à désactiver sur un serveur sans accès à Internet. Aucune
+  information sur l'instance n'est envoyée.
+- **CI : contrôles de sécurité communs glpi-plugin-security v1.11.2** (encadré « Version du plugin »
+  exigé). Une PR qui ne touche que la documentation saute les contrôles qui démarrent un vrai GLPI
+  (`heavy-paths`) ; un nouveau commit sur une PR annule l'exécution précédente de la CI et des
+  contrôles communs, jamais un push de main ou dev.
 - **AssetSign est passé d'Outils à Parc (#392).** L'unique entrée d'usage du plugin est désormais
   **Parc > AssetSign** : remise, restitution, mouvements, départs, campagnes d'attestation,
   attestations d'effacement, fiches de maintenance et pilotage du parc (indicateurs RSE,

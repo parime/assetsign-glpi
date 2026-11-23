@@ -28,3 +28,4 @@ crawl orphan front/mysignatures.php : page personnelle, ouverte par l'entrée du
 # Éditeur de texte riche TinyMCE fourni par le cœur GLPI (texte de la charte d'un gabarit) : la
 # poignée de redimensionnement de sa barre d'état porte un attribut ARIA refusé par axe.
 crawl axe:aria-prohibited-attr front/template.form.php : poignée de redimensionnement de l'éditeur TinyMCE du cœur GLPI
+crawl axe:aria-prohibited-attr front/config.php : poignée de redimensionnement de l'éditeur TinyMCE du cœur GLPI (gabarits édités dans les onglets de la configuration)

@@ -340,8 +340,9 @@ class Config extends Compat\Base\ConfigBase
            'reforme_states'  => $config->getReformeStates(),
            'logo_document'   => $logoDocument,
            'logo_is_forced'  => $logoIsForced,
-           'installed_version'     => PLUGIN_ASSETSIGN_VERSION,
-           'latest_github_version' => self::getLatestGithubVersion(),
+           // Issue #396 : encadre commun « Version du plugin » et son reglage global.
+           'plugin_version'        => self::getPluginVersionStatus(),
+           'version_check_enabled' => self::isVersionCheckEnabled(),
            // Gabarit par defaut de chaque type, edite directement dans l'onglet
            // correspondant plutot que sur l'ecran separe front/template.form.php
            // (cf. ROADMAP.md, "Rapprocher la gestion des gabarits de
@@ -495,54 +496,31 @@ class Config extends Compat\Base\ConfigBase
    }
 
     /**
-     * Derniere version publiee sur GitHub (release la plus recente, hors
-     * pre-release), pour affichage a cote de la version installee en
-     * configuration : permet de detecter immediatement qu'un environnement
-     * tourne sur une version anterieure a celle publiee, sans avoir a
-     * comparer des fichiers un par un (piege deja rencontre, cf.
-     * TROUBLESHOOTING.md : deux environnements affichant le meme numero mais
-     * des commits en realite differents). Mise en cache 24h (meme duree et
-     * meme mecanisme que RSSFeed::getRSSFeed() du cœur GLPI, `$GLPI_CACHE`) :
-     * l'API GitHub non authentifiee est limitee a 60 requetes/heure par IP,
-     * largement insuffisant si appelee a chaque affichage de la page.
-     * Client HTTP du cœur GLPI (pas un appel HTTP direct), via Compat\Http
-     * (Toolbox::getURLContent() en GLPI 11, Glpi\Toolbox\HttpClient en
-     * GLPI 12) : reutilise la gestion de proxy/timeout/erreurs deja etablie
-     * par le cœur GLPI pour ce type d'appel.
-     * Opt-in : aucun appel sortant tant que l'action automatique native
-     * "checkupdate" de GLPI (Configuration > Actions automatiques, desactivee
-     * par defaut) n'est pas activee : refuser la verification de mise a jour
-     * de GLPI lui-meme refuse aussi celle-ci, sans reglage propre au plugin.
-     * @return string|null Numero de version (sans le "v" du tag), ou null si
-     *         l'appel a echoue (pas de connexion, API GitHub indisponible...)
-     *         ou si la verification est desactivee.
+     * Issue #396 : reglage « Verifier les nouvelles versions sur GitHub » du composant commun
+     * « Version du plugin » (PluginVersion). Global, comme l'autorisation des adresses internes
+     * (Compat\Http::CONFIG_CONTEXT) : la version installee est la meme pour toutes les entites.
+     * Garde dans la table de configuration du cœur (contexte plugin:assetsign) ; active par
+     * defaut, une valeur absente vaut donc « active ».
      */
-   public static function getLatestGithubVersion(): ?string {
-       global $GLPI_CACHE;
+   public const VERSION_CHECK_KEY = 'version_check';
 
-       $checkUpdate = new \CronTask();
-      if (!$checkUpdate->getFromDBbyName('CronTask', 'checkupdate') || (int) $checkUpdate->fields['state'] === \CronTask::STATE_DISABLE) {
-          return null;
-      }
+   public static function isVersionCheckEnabled(): bool {
+       $values = \Config::getConfigurationValues(Compat\Http::CONFIG_CONTEXT, [self::VERSION_CHECK_KEY]);
+       return (string) ($values[self::VERSION_CHECK_KEY] ?? '1') !== '0';
+   }
 
-       $cacheKey = 'plugin_assetsign_latest_github_version';
-       $cached = $GLPI_CACHE->get($cacheKey);
-      if ($cached !== null) {
-          return $cached === '' ? null : $cached;
-      }
+   public static function setVersionCheckEnabled(bool $enabled): void {
+       \Config::setConfigurationValues(Compat\Http::CONFIG_CONTEXT, [self::VERSION_CHECK_KEY => $enabled ? '1' : '0']);
+   }
 
-       $error = '';
-       $json = Compat\Http::getContent('https://api.github.com/repos/parime/assetsign-glpi/releases/latest', $error);
-       $version = null;
-      if (!empty($json)) {
-          $data = json_decode($json, true);
-         if (is_array($data) && !empty($data['tag_name']) && is_string($data['tag_name'])) {
-             $version = ltrim($data['tag_name'], 'v');
-         }
-      }
-
-       $GLPI_CACHE->set($cacheKey, $version ?? '', DAY_TIMESTAMP);
-       return $version;
+    /**
+     * Etat a afficher dans l'encadre « Version du plugin » (tableau de PluginVersion::status()).
+     *
+     * @return array<string, mixed>
+     */
+   public static function getPluginVersionStatus(): array {
+       return (new PluginVersion('assetsign', 'parime/assetsign-glpi', PLUGIN_ASSETSIGN_VERSION))
+           ->status(self::isVersionCheckEnabled());
    }
 
    public static function getItemtypeLabels(): array {

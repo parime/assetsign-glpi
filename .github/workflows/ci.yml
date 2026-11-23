@@ -19,13 +19,13 @@ on:
     - cron: '17 3 * * *'
   workflow_dispatch:
 
-# Annule les executions en cours de la meme branche/PR des qu'un nouveau push
-# arrive : sans ca, plusieurs push rapproches (ex: corrections successives
-# sur une PR) empilent des runs Docker/GLPI concurrents qui consomment des
-# minutes CI pour un resultat qui sera de toute facon remplace.
+# Un nouveau commit sur une pull request annule l'execution precedente de cette
+# PR : sans ca, des corrections successives empilent des runs Docker/GLPI pour un
+# resultat qui sera de toute facon remplace. Push sur main ou dev, planification
+# et lancement manuel : un groupe par execution (run_id), jamais annules.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # Principe du moindre privilege (alerte CodeQL actions/missing-workflow-permissions) : sans bloc
 # explicite, GITHUB_TOKEN recoit les permissions par defaut du depot (souvent plus large que

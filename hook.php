@@ -669,7 +669,12 @@ function plugin_assetsign_uninstall(): bool {
    }
 
     // Issue #347 : reglage global des appels sortants (table de configuration du cœur).
-    \Config::deleteConfigurationValues(\GlpiPlugin\Assetsign\Compat\Http::CONFIG_CONTEXT, [\GlpiPlugin\Assetsign\Compat\Http::CONFIG_ALLOW_PRIVATE]);
+    \Config::deleteConfigurationValues(\GlpiPlugin\Assetsign\Compat\Http::CONFIG_CONTEXT, [
+        \GlpiPlugin\Assetsign\Compat\Http::CONFIG_ALLOW_PRIVATE,
+        // Issue #396 : reglage du composant « Version du plugin », et son etat dans le cache de GLPI.
+        \GlpiPlugin\Assetsign\Config::VERSION_CHECK_KEY,
+    ]);
+    \GlpiPlugin\Assetsign\PluginVersion::uninstall('assetsign');
     Profile::uninstall();
     NotificationTargetAssetsign::uninstall();
     NotificationTargetDeparture::uninstall();
