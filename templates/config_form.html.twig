@@ -22,6 +22,45 @@
     <span class="text-muted small">{{ __('Les réglages s\'appliquent à l\'entité choisie (et à ses sous-entités qui n\'ont pas leurs propres réglages).', 'assetsign') }}</span>
   </div>
 </form>
+{# Charte commune (au plus 7 onglets par barre, une seule ligne) : 18 écrans de réglages rangés en
+   6 rubriques. La barre des pages de la rubrique ouverte est remplie depuis son <template> : les
+   pages des autres rubriques ne sont pas dans le document, donc jamais atteintes au clavier. #}
+<ul class="nav nav-tabs mb-2" role="tablist" aria-label="{{ __('Rubriques de la configuration', 'assetsign') }}" id="assetsign-config-groups">
+  <li class="nav-item" role="presentation"><button class="nav-link text-body active" type="button" role="tab" aria-selected="true" data-assetsign-config-group="general" data-assetsign-first-tab="#tab-general">{{ __('Général', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="documents" data-assetsign-first-tab="#tab-handover">{{ __('Fiches signées', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="exit" data-assetsign-first-tab="#tab-don">{{ __('Sortie du parc', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="operations" data-assetsign-first-tab="#tab-maintenance">{{ __('Maintenance et mouvements', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="passports" data-assetsign-first-tab="#tab-passport">{{ __('Passeports', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="steering" data-assetsign-first-tab="#tab-health">{{ __('Pilotage du parc', 'assetsign') }}</button></li>
+</ul>
+<ul class="nav nav-tabs mb-3" role="tablist" id="assetsign-config-pages"></ul>
+<template data-assetsign-config-pages="documents">
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-handover" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Attribution', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-return" type="button" role="tab" data-assetsign-preview-type="1">{{ __('Restitution', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Compléments', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-delegation" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Délégation de signature', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-cosignature" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Contre-signature', 'assetsign') }}</button></li>
+</template>
+<template data-assetsign-config-pages="exit">
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-don" type="button" role="tab" data-assetsign-preview-type="3">{{ __('Don', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-vente" type="button" role="tab" data-assetsign-preview-type="4">{{ __('Vente', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-destruction" type="button" role="tab" data-assetsign-preview-type="5">{{ __('Destruction', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-reforme" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Réforme', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-wipe" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Effacement des données', 'assetsign') }}</button></li>
+</template>
+<template data-assetsign-config-pages="operations">
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Maintenance', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-movements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Mouvements', 'assetsign') }}</button></li>
+</template>
+<template data-assetsign-config-pages="passports">
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport matériel', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-environmental" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport environnemental', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-residual-value" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Valeur résiduelle', 'assetsign') }}</button></li>
+</template>
+<template data-assetsign-config-pages="steering">
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Score de santé', 'assetsign') }}</button></li>
+  <li class="nav-item" role="presentation"><button class="nav-link text-body" data-bs-toggle="tab" data-bs-target="#tab-decision-aid" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Aide à la décision', 'assetsign') }}</button></li>
+</template>
 <div class="row flex-nowrap align-items-start" style="gap: 1rem;">
 <div class="col" style="min-width: 320px;">
 <div class="card">
@@ -54,45 +93,6 @@
       <input type="hidden" name="entities_id" value="{{ entity_id }}">
       <input type="hidden" name="type" id="assetsign-preview-type" value="0">
 
-      {# Charte commune (au plus 7 onglets par barre, une seule ligne) : 18 écrans de réglages rangés en
-         6 rubriques. La barre des pages de la rubrique ouverte est remplie depuis son <template> : les
-         pages des autres rubriques ne sont pas dans le document, donc jamais atteintes au clavier. #}
-      <ul class="nav nav-tabs mb-2" role="tablist" aria-label="{{ __('Rubriques de la configuration', 'assetsign') }}" id="assetsign-config-groups">
-        <li class="nav-item" role="presentation"><button class="nav-link text-body active" type="button" role="tab" aria-selected="true" data-assetsign-config-group="general" data-assetsign-first-tab="#tab-general"><i class="ti ti-settings me-1" aria-hidden="true"></i>{{ __('Général', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="documents" data-assetsign-first-tab="#tab-handover"><i class="ti ti-signature me-1" aria-hidden="true"></i>{{ __('Fiches signées', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="exit" data-assetsign-first-tab="#tab-don"><i class="ti ti-recycle me-1" aria-hidden="true"></i>{{ __('Sortie du parc', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="operations" data-assetsign-first-tab="#tab-maintenance"><i class="ti ti-tool me-1" aria-hidden="true"></i>{{ __('Maintenance et mouvements', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="passports" data-assetsign-first-tab="#tab-passport"><i class="ti ti-id me-1" aria-hidden="true"></i>{{ __('Passeports', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link text-body" type="button" role="tab" aria-selected="false" data-assetsign-config-group="steering" data-assetsign-first-tab="#tab-health"><i class="ti ti-chart-line me-1" aria-hidden="true"></i>{{ __('Pilotage du parc', 'assetsign') }}</button></li>
-      </ul>
-      <ul class="nav nav-pills mb-3" role="tablist" id="assetsign-config-pages"></ul>
-      <template data-assetsign-config-pages="documents">
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-handover" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Attribution', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-return" type="button" role="tab" data-assetsign-preview-type="1">{{ __('Restitution', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-complements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Compléments', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-delegation" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Délégation de signature', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-cosignature" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Contre-signature', 'assetsign') }}</button></li>
-      </template>
-      <template data-assetsign-config-pages="exit">
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-don" type="button" role="tab" data-assetsign-preview-type="3">{{ __('Don', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-vente" type="button" role="tab" data-assetsign-preview-type="4">{{ __('Vente', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-destruction" type="button" role="tab" data-assetsign-preview-type="5">{{ __('Destruction', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-reforme" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Réforme', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-wipe" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Effacement des données', 'assetsign') }}</button></li>
-      </template>
-      <template data-assetsign-config-pages="operations">
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-maintenance" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Maintenance', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-movements" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Mouvements', 'assetsign') }}</button></li>
-      </template>
-      <template data-assetsign-config-pages="passports">
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-passport" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport matériel', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-environmental" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Passeport environnemental', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-residual-value" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Valeur résiduelle', 'assetsign') }}</button></li>
-      </template>
-      <template data-assetsign-config-pages="steering">
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-health" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Score de santé', 'assetsign') }}</button></li>
-        <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-decision-aid" type="button" role="tab" data-assetsign-preview-type="0">{{ __('Aide à la décision', 'assetsign') }}</button></li>
-      </template>
 
       <div class="tab-content">
 
