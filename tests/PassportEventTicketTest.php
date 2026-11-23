@@ -68,7 +68,7 @@ class PassportEventTicketTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Ticket', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-event="ticket"', $html);
         $this->assertStringContainsString('PHPUnit Ecran casse', $html);
         $this->assertStringContainsString('id=' . $ticketId, $html);
         $this->assertNoStrayNumericTextNode($html, 'La frise avec ticket lié doit se rendre sans fuite Twig.');

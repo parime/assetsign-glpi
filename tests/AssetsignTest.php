@@ -37,6 +37,8 @@ use RuntimeException;
  */
 class AssetsignTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage;
+
     public function testCreateManualRejectsAutomaticallyTriggeredTypes(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit CreateManual Guard');
@@ -502,7 +504,7 @@ class AssetsignTest extends AssetsignTestCase
         // en CI, qui rend en anglais).
         $messages = implode(' ', $_SESSION['MESSAGE_AFTER_REDIRECT'][INFO] ?? []);
         $this->assertStringContainsString(
-            __('don', 'assetsign'),
+            'donation',
             $messages,
             "Un message INFO doit inviter a creer la fiche de don manuellement (cf. TROUBLESHOOTING.md)."
         );
@@ -1060,7 +1062,7 @@ class AssetsignTest extends AssetsignTestCase
         );
         $messages = implode(' ', $_SESSION['MESSAGE_AFTER_REDIRECT'][INFO] ?? []);
         $this->assertStringContainsString(
-            __('destruction', 'assetsign'),
+            'destruction',
             $messages,
             'Un message INFO doit inviter a creer la fiche de destruction manuellement.'
         );

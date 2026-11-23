@@ -58,7 +58,7 @@ class PassportEventUserTest extends AssetsignTestCase
 
         $this->assertStringContainsString('PHPUnit PC Passport User', $html);
         $this->assertStringContainsString('SN-12345', $html);
-        $this->assertStringContainsString(__('Attribution', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-event="' . PassportEvent::TYPE_ATTRIBUTION . '"', $html);
         $this->assertNoStrayNumericTextNode($html, 'Le Passeport utilisateur doit se rendre sans fuite Twig.');
     }
 
@@ -79,7 +79,7 @@ class PassportEventUserTest extends AssetsignTestCase
         PassportEvent::showForUser($user);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="timeline-empty"', $html);
     }
 
     public function testShowForUserExcludesEventsFromEntitiesOutsideSessionScope(): void
@@ -134,7 +134,7 @@ class PassportEventUserTest extends AssetsignTestCase
         PassportEvent::showForUser($user);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('matériel supprimé', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-device-purged="1"', $html);
         $this->assertStringNotContainsString('SN-PURGED', $html);
     }
 

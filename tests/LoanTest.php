@@ -165,7 +165,7 @@ final class LoanTest extends AssetsignTestCase
 
        $html = (new HandoverPdfBuilder())->renderHtml($sheet);
 
-       $this->assertStringContainsString('Prêt temporaire', $html);
+       $this->assertStringContainsString('data-assetsign-block="loan"', $html);
        $this->assertStringContainsString(date('d/m/Y', strtotime('+10 days')), $html);
    }
 }

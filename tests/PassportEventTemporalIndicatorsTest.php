@@ -29,6 +29,8 @@ use GlpiPlugin\Assetsign\Assetsign;
  */
 class PassportEventTemporalIndicatorsTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage;
+
     private function insertInfocom(string $itemtype, int $items_id, array $fields): void
     {
         global $DB;
@@ -49,14 +51,10 @@ class PassportEventTemporalIndicatorsTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        // htmlspecialchars() : Twig echappe l'apostrophe en &#039; a l'affichage,
-        // la chaine __() brute (avec apostrophe litterale) ne matcherait jamais.
-        $this->assertStringContainsString(htmlspecialchars(__('depuis l\'achat', 'assetsign'), ENT_QUOTES), $html);
-        // Passe par _n() plutot qu'un "1 an" code en dur : depend de la langue de la
-        // session de test (regression reelle trouvee le 2026-08-23 - "1 an" ne
-        // matchait plus une fois locales/en_GB.po effectivement traduit, la chaine
-        // francaise ne remontant plus par repli sur traduction manquante).
-        $this->assertStringContainsString(sprintf(_n('%d an', '%d ans', 1, 'assetsign'), 1), $html);
+        // Texte composé « durée + source » sans identifiant stable : langue forcée en
+        // anglais (trait ForcesEnglishLanguage, issue #397), comparé à la chaîne littérale.
+        $this->assertStringContainsString('since purchase', $html);
+        $this->assertStringContainsString('1 year', $html);
     }
 
     public function testAgeFallsBackToDateCreationWithoutInfocom(): void
@@ -70,7 +68,7 @@ class PassportEventTemporalIndicatorsTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(htmlspecialchars(__('depuis l\'entrée dans GLPI', 'assetsign'), ENT_QUOTES), $html);
+        $this->assertStringContainsString('since entering GLPI', $html);
     }
 
     public function testUsedAndStockDurationsAreComputedFromLives(): void
@@ -97,8 +95,8 @@ class PassportEventTemporalIndicatorsTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Temps utilisé', 'assetsign'), $html);
-        $this->assertStringContainsString(__('Temps en stock', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-identity="used-duration"', $html);
+        $this->assertStringContainsString('data-assetsign-identity="stock-duration"', $html);
         $this->assertNoStrayNumericTextNode($html, 'Les indicateurs temporels doivent se rendre sans fuite Twig.');
     }
 
@@ -118,7 +116,7 @@ class PassportEventTemporalIndicatorsTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Âge', 'assetsign') . ' :', $html);
+        $this->assertStringNotContainsString('data-assetsign-identity="age"', $html);
         $this->assertNoStrayNumericTextNode($html, 'Sans aucune source de date, la frise ne doit jamais planter.');
     }
 

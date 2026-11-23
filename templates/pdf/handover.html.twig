@@ -142,7 +142,7 @@
 
 {# Issue #193 : pret temporaire #}
 {% if loan_until|default(null) %}
-<h2>{{ __('Prêt temporaire', 'assetsign') }}</h2>
+<h2 data-assetsign-block="loan">{{ __('Prêt temporaire', 'assetsign') }}</h2>
 <table class="info-table">
     <tr><th>{{ __('Retour prévu au plus tard le', 'assetsign') }}</th><td><strong>{{ loan_until }}</strong></td></tr>
 </table>

@@ -64,7 +64,7 @@
     {% endfor %}
 </ul>
 {% else %}
-<p class="legal-text">{{ __('Aucun point de contrôle validé.', 'assetsign') }}</p>
+<p class="legal-text" data-assetsign-block="checklist-empty">{{ __('Aucun point de contrôle validé.', 'assetsign') }}</p>
 {% endif %}
 
 {% if comment %}

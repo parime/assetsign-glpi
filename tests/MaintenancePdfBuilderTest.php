@@ -67,7 +67,7 @@ final class MaintenancePdfBuilderTest extends AssetsignTestCase
        $this->assertStringContainsString('class="checklist"', $html, 'Au moins un point de controle rempli doit produire la liste, pas le message "aucun".');
        $this->assertStringContainsString('PHPUnit Etat general', $html);
        $this->assertStringContainsString('Bon etat', $html);
-       $this->assertStringNotContainsString('Aucun point de contrôle validé.', $html);
+       $this->assertStringNotContainsString('data-assetsign-block="checklist-empty"', $html);
    }
 
    public function testRenderHtmlShowsTheNoChecklistMessageWhenNothingWasFilled(): void {
@@ -80,7 +80,7 @@ final class MaintenancePdfBuilderTest extends AssetsignTestCase
 
        $html = (new MaintenancePdfBuilder())->renderHtml($maintenance);
 
-       $this->assertStringContainsString('Aucun point de contrôle validé.', $html);
+       $this->assertStringContainsString('data-assetsign-block="checklist-empty"', $html);
        $this->assertStringNotContainsString('class="checklist"', $html);
    }
 
@@ -124,7 +124,7 @@ final class MaintenancePdfBuilderTest extends AssetsignTestCase
 
        $html = (new MaintenancePdfBuilder())->renderHtml($maintenance);
 
-       $this->assertStringContainsString('État des lieux visuel', $html);
+       $this->assertStringContainsString('class="damage-pdf-views"', $html);
    }
 
    public function testRenderHtmlOmitsDamageViewsSectionWhenAnnotationIsDisabled(): void {
@@ -136,7 +136,7 @@ final class MaintenancePdfBuilderTest extends AssetsignTestCase
 
        $html = (new MaintenancePdfBuilder())->renderHtml($maintenance);
 
-       $this->assertStringNotContainsString('État des lieux visuel', $html, 'enable_damage_annotation=0 (le defaut) ne doit jamais inclure la section.');
+       $this->assertStringNotContainsString('class="damage-pdf-views"', $html, 'enable_damage_annotation=0 (le defaut) ne doit jamais inclure la section.');
    }
 
    public function testRenderHtmlIncludesTheSignatureBlockOnlyWhenSignatureIsRequired(): void {

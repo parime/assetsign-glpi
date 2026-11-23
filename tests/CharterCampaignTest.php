@@ -30,6 +30,8 @@ use GlpiPlugin\Assetsign\Template;
  */
 final class CharterCampaignTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage;
+
    private static function fakeSignaturePng(): string {
        $image = imagecreatetruecolor(200, 80);
        imagefill($image, 0, 0, imagecolorallocate($image, 255, 255, 255));
@@ -93,7 +95,7 @@ final class CharterCampaignTest extends AssetsignTestCase
        $campaign = $this->launchCharter($entityId);
 
        $this->assertTrue($campaign->isCharter());
-       $this->assertSame(sprintf(__('Charte informatique %s', 'assetsign'), date('Y')), (string) $campaign->fields['name']);
+       $this->assertSame('IT charter ' . date('Y'), (string) $campaign->fields['name']);
        $this->assertGreaterThan(0, $this->attestationFor($campaign, $withoutEquipment)->getID(), 'La charte concerne tout le monde, matériel ou pas.');
        $this->assertStringContainsString('verrouiller sa session', (string) $campaign->fields['charter_content']);
 
@@ -176,7 +178,7 @@ final class CharterCampaignTest extends AssetsignTestCase
        $this->assertSame(64, strlen((string) $attestation->fields['signature_hash']));
        $document = new \Document();
        $document->getFromDB((int) $attestation->fields['documents_id']);
-       $this->assertStringStartsWith(sprintf(__('Charte informatique signée - %s', 'assetsign'), ''), (string) $document->fields['name']);
+       $this->assertStringStartsWith('Signed IT charter - ', (string) $document->fields['name']);
    }
 
    public function testNonSignersGetOneTicketOnceTheDeadlineHasPassed(): void {

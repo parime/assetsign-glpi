@@ -34,6 +34,8 @@ use User;
  */
 class PassportBackfillControllerTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage;
+
     public function testRunForItemReturnsNoEventMessageForItemWithoutLogs(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit PassportBackfillController Item');
@@ -48,7 +50,7 @@ class PassportBackfillControllerTest extends AssetsignTestCase
         // language isn't guaranteed to be French, and this assertion is about the controller's
         // OWN formatting logic (does it call formatResult() at all, does it pick the "zero"
         // branch), not about a specific translation's wording.
-        $this->assertSame(__('Aucun nouvel événement trouvé dans l\'historique.', 'assetsign'), $message);
+        $this->assertSame('No new event found in the history.', $message);
     }
 
     public function testRunForItemThrowsForInvalidItemtype(): void
@@ -108,7 +110,7 @@ class PassportBackfillControllerTest extends AssetsignTestCase
         // language isn't guaranteed to be French, and this assertion is about the controller's
         // OWN formatting logic (does it call formatResult() at all, does it pick the "zero"
         // branch), not about a specific translation's wording.
-        $this->assertSame(__('Aucun nouvel événement trouvé dans l\'historique.', 'assetsign'), $message);
+        $this->assertSame('No new event found in the history.', $message);
     }
 
     public function testRunForUserThrowsWhenUserNotFound(): void

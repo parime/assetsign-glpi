@@ -31,9 +31,9 @@ class ChecklistItemTest extends AssetsignTestCase
 {
     public function testParseOptionsFiltersEmptyLines(): void
     {
-        $options = ChecklistItem::parseOptions("Bon\n\nMoyen\r\nMauvais\n  \n");
+        $options = ChecklistItem::parseOptions("Bon\n\nPassable\r\nMauvais\n  \n");
 
-        $this->assertSame(['Bon', 'Moyen', 'Mauvais'], $options);
+        $this->assertSame(['Bon', 'Passable', 'Mauvais'], $options);
     }
 
     public function testAddEncodesMovementTypesToJson(): void
@@ -98,13 +98,13 @@ class ChecklistItemTest extends AssetsignTestCase
             'entities_id'    => 0,
             'name'           => 'PHPUnit Checklist Select',
             'type'           => ChecklistItem::TYPE_SELECT,
-            'options'        => "Bon\nMoyen\nMauvais",
+            'options'        => "Bon\nPassable\nMauvais",
             'is_active'      => 1,
             'movement_types' => [Assetsign::TYPE_VENTE],
         ]);
 
         $forVente = ChecklistItem::getActiveItemsForMovementType(Assetsign::TYPE_VENTE);
         $this->assertSame(ChecklistItem::TYPE_SELECT, $forVente[$select->getID()]['type']);
-        $this->assertSame(['Bon', 'Moyen', 'Mauvais'], $forVente[$select->getID()]['options']);
+        $this->assertSame(['Bon', 'Passable', 'Mauvais'], $forVente[$select->getID()]['options']);
     }
 }
