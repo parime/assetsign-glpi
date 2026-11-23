@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Configuration rangée en 6 rubriques (#401).** Les 18 onglets de Configuration > Plugins >
+  AssetSign (sur cinq lignes) deviennent 6 rubriques sur une ligne : Général ; Fiches signées
+  (Attribution, Restitution, Compléments, Délégation de signature, Contre-signature) ; Sortie du parc
+  (Don, Vente, Destruction, Réforme, Effacement des données) ; Maintenance et mouvements ;
+  Passeports (matériel, environnemental, valeur résiduelle) ; Pilotage du parc (Score de santé, Aide
+  à la décision). Les pages de la rubrique ouverte s'affichent dans une seconde barre, accessible au
+  clavier ; aucun réglage ne change, l'aperçu en direct suit la page ouverte.
 - **Encadré « Version du plugin » commun à tous les plugins (#396).** En tête de l'onglet Général
   de la configuration : version installée, dernière version publiée sur GitHub et badge « À jour »,
   « Mise à jour disponible » (liens vers les notes de version et l'archive) ou « Dernière version
