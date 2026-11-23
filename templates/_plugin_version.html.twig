@@ -1,0 +1,93 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #396 : encadré commun « Version du plugin » (charte section 9 bis, repris de
+   parime/glpi-plugin-template#12), en tête de l'onglet Général de la page de configuration.
+   Reçoit le tableau de PluginVersion::status() :
+   {% include '@assetsign/_plugin_version.html.twig' with {plugin_version: plugin_version} %} #}
+{% set pv = plugin_version %}
+{% set reasons = {
+   'disabled':         __('la vérification est désactivée dans les réglages ci-dessous', 'assetsign'),
+   'unreachable':      __('GitHub est injoignable depuis le serveur GLPI (pas d\'accès à Internet, proxy ou pare-feu)', 'assetsign'),
+   'rate_limited':     __('la limite de requêtes de GitHub est atteinte, un nouvel essai sera fait d\'ici une heure', 'assetsign'),
+   'timeout':          __('GitHub n\'a pas répondu dans les 3 secondes', 'assetsign'),
+   'no_release':       __('aucune version n\'est encore publiée sur GitHub', 'assetsign'),
+   'invalid_response': __('la réponse de GitHub est illisible', 'assetsign'),
+} %}
+<div class="card card-sm mb-3" id="assetsign-plugin-version">
+   <div class="card-body d-flex align-items-start gap-3">
+      <i class="ti ti-brand-github fs-1 text-muted"></i>
+      <div class="flex-fill">
+         <div class="fw-bold mb-1">{{ __('Version du plugin', 'assetsign') }}</div>
+         <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="text-muted small">{{ __('Version installée', 'assetsign') }}</span>
+            <span class="badge bg-primary-subtle text-primary-emphasis"><i class="ti ti-package me-1"></i>v{{ pv.installed }}</span>
+            {% if pv.latest %}
+               <span class="text-muted small">{{ __('Dernière version sur GitHub', 'assetsign') }}</span>
+               <span class="badge bg-secondary-subtle text-secondary-emphasis"><i class="ti ti-tag me-1"></i>v{{ pv.latest }}</span>
+            {% endif %}
+
+            {% if pv.state == 'up_to_date' %}
+               {% include '@assetsign/_badge.html.twig' with {kind: 'ok', label: __('À jour', 'assetsign')} %}
+            {% elseif pv.state == 'update_available' %}
+               {% include '@assetsign/_badge.html.twig' with {
+                  kind: 'warning',
+                  label: __('Mise à jour disponible : %s', 'assetsign')|format('v' ~ pv.latest),
+               } %}
+            {% else %}
+               {% include '@assetsign/_badge.html.twig' with {kind: 'neutral', label: __('Dernière version inconnue', 'assetsign')} %}
+            {% endif %}
+         </div>
+
+         {% if pv.state == 'update_available' %}
+            <div class="mt-2 d-flex flex-wrap gap-2">
+               <a href="{{ pv.release_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary">
+                  <i class="ti ti-notes me-1"></i>{{ __('Notes de version', 'assetsign') }}
+               </a>
+               {% if pv.download_url %}
+                  <a href="{{ pv.download_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary">
+                     <i class="ti ti-download me-1"></i>{{ __('Télécharger l\'archive', 'assetsign') }}
+                  </a>
+               {% endif %}
+            </div>
+         {% endif %}
+
+         {% if pv.reason %}
+            <div class="text-muted small mt-2">
+               <i class="ti ti-info-circle me-1"></i>
+               {% if pv.stale %}
+                  {{ __('La dernière vérification a échoué : %s.', 'assetsign')|format(reasons[pv.reason] ?? pv.reason) }}
+                  {{ __('Résultat de la dernière vérification réussie (%s) affiché.', 'assetsign')|format(pv.last_success|formatted_datetime) }}
+               {% else %}
+                  {{ __('Raison : %s.', 'assetsign')|format(reasons[pv.reason] ?? pv.reason) }}
+                  {% if pv.reason != 'disabled' %}
+                     {% if pv.last_success %}
+                        {{ __('Dernière vérification réussie : %s.', 'assetsign')|format(pv.last_success|formatted_datetime) }}
+                     {% else %}
+                        {{ __('Aucune vérification réussie pour l\'instant.', 'assetsign') }}
+                     {% endif %}
+                  {% endif %}
+               {% endif %}
+               {% if pv.reason != 'disabled' %}
+                  <a href="{{ pv.release_url }}" target="_blank" rel="noopener noreferrer">{{ __('Voir les versions sur GitHub', 'assetsign') }}</a>
+               {% endif %}
+            </div>
+         {% elseif pv.checked_at %}
+            <div class="text-muted small mt-2">
+               <i class="ti ti-clock me-1"></i>{{ __('Dernière vérification : %s (nouvelle vérification toutes les 12 heures).', 'assetsign')|format(pv.checked_at|formatted_datetime) }}
+            </div>
+         {% endif %}
+      </div>
+   </div>
+</div>

@@ -79,21 +79,20 @@
 
         {# ---------------------------------------------------------------- Général #}
         <div class="tab-pane fade show active" id="tab-general" role="tabpanel">
-          <div class="card card-sm mb-3">
-            <div class="card-body d-flex align-items-center gap-3">
-              <i class="ti ti-brand-github fs-1 text-muted"></i>
-              <div>
-                <div class="fw-bold">{{ __('Version du plugin', 'assetsign') }}</div>
-                <div class="text-muted small">
-                  {{ __('Version installée', 'assetsign') }}
-                  <span class="badge bg-primary-subtle text-primary-emphasis">v{{ installed_version }}</span>
-                  {% if latest_github_version %}
-                    {{ __('Dernière version sur GitHub', 'assetsign') }}
-                    <span class="badge {{ latest_github_version != installed_version ? 'bg-warning-subtle text-warning-emphasis' : 'bg-success-subtle text-success-emphasis' }}">v{{ latest_github_version }}</span>
-                  {% endif %}
-                </div>
+          {# Issue #396 : encadré commun « Version du plugin » (parime/glpi-plugin-template#12). #}
+          {% include '@assetsign/_plugin_version.html.twig' with {plugin_version: plugin_version} %}
+          {# Réglage global (toutes les entités), comme les adresses internes : administrateurs de GLPI. #}
+          <div class="mb-3">
+            {% if http_can_edit_private %}
+              <div class="form-check form-switch">
+                <input type="hidden" name="version_check" value="0">
+                <input type="checkbox" name="version_check" value="1" class="form-check-input" id="assetsign_version_check" {{ version_check_enabled ? 'checked' : '' }}>
+                <label class="form-check-label" for="assetsign_version_check">{{ __('Vérifier les nouvelles versions sur GitHub', 'assetsign') }}</label>
               </div>
-            </div>
+              <div class="form-text">{{ __('Lit la dernière version publiée sur GitHub au plus toutes les 12 heures, sans envoyer aucune information sur ce GLPI. À désactiver sur un serveur sans accès à Internet. Ce réglage vaut pour toutes les entités.', 'assetsign') }}</div>
+            {% elseif not version_check_enabled %}
+              <div class="form-text"><i class="ti ti-lock me-1"></i>{{ __('Seul un administrateur de GLPI (droit de modifier la configuration générale) peut changer ce réglage.', 'assetsign') }}</div>
+            {% endif %}
           </div>
           {# Issue #279 : export et import de cette configuration (page dediee, droits verifies la-bas). #}
           <div class="mb-3">

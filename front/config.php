@@ -57,6 +57,10 @@ if (isset($_POST['update'])) {
    if (isset($_POST['http_allow_private_networks']) && Session::haveRight('config', UPDATE)) {
        \GlpiPlugin\Assetsign\Compat\Http::setAllowPrivateNetworks(!empty($_POST['http_allow_private_networks']));
    }
+    // Issue #396 : verification des nouvelles versions sur GitHub, reglage global lui aussi.
+   if (isset($_POST['version_check']) && Session::haveRight('config', UPDATE)) {
+       Config::setVersionCheckEnabled(!empty($_POST['version_check']));
+   }
     Session::addMessageAfterRedirect(__('Configuration enregistrée.', 'assetsign'));
     Html::back();
 }
