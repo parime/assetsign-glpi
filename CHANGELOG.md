@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Contrôles de sécurité communs v1.11.3 : l'encadré « Version du plugin » est vérifié comme premier
+  bloc de la page de configuration (écart `config-version-premier`, parime/glpi-plugin-template#18) ;
+  il l'était déjà, en tête du premier onglet.
 - **Configuration rangée en 6 rubriques (#401).** Les 18 onglets de Configuration > Plugins >
   AssetSign (sur cinq lignes) deviennent 6 rubriques sur une ligne : Général ; Fiches signées
   (Attribution, Restitution, Compléments, Délégation de signature, Contre-signature) ; Sortie du parc
