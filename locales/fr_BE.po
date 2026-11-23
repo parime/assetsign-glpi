@@ -7604,3 +7604,18 @@ msgstr ""
 "Lit la dernière version publiée sur GitHub au plus toutes les 12 heures, "
 "sans envoyer aucune information sur ce GLPI. À désactiver sur un serveur "
 "sans accès à Internet. Ce réglage vaut pour toutes les entités."
+
+msgid "Fiches signées"
+msgstr "Fiches signées"
+
+msgid "Sortie du parc"
+msgstr "Sortie du parc"
+
+msgid "Maintenance et mouvements"
+msgstr "Maintenance et mouvements"
+
+msgid "Passeports"
+msgstr "Passeports"
+
+msgid "Rubriques de la configuration"
+msgstr "Rubriques de la configuration"

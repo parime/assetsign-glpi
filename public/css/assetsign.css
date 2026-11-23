@@ -230,3 +230,15 @@
     background: #fff !important;
     color-scheme: light;
 }
+
+/* Onglets du plugin focalisés au clavier : GLPI leur donne sa couleur de focus, de contraste
+   insuffisant (3,26, axe-core) ; texte du corps à la place, contour de focus conservé. */
+[role="tablist"] .nav-link:not(.active):focus,
+[role="tablist"] .nav-link:not(.active):focus-visible {
+    color: var(--tblr-body-color);
+}
+
+[role="tablist"].nav-pills .nav-link.active:focus,
+[role="tablist"].nav-pills .nav-link.active:focus-visible {
+    color: var(--tblr-nav-pills-link-active-color, #fff);
+}

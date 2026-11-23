@@ -7497,3 +7497,18 @@ msgstr ""
 "Reads the latest release published on GitHub at most every 12 hours, without"
 " sending any information about this GLPI. Turn it off on a server without "
 "Internet access. This setting applies to all entities."
+
+msgid "Fiches signées"
+msgstr "Signed forms"
+
+msgid "Sortie du parc"
+msgstr "Leaving the inventory"
+
+msgid "Maintenance et mouvements"
+msgstr "Maintenance and movements"
+
+msgid "Passeports"
+msgstr "Passports"
+
+msgid "Rubriques de la configuration"
+msgstr "Configuration sections"

@@ -8059,3 +8059,23 @@ msgstr ""
 #: templates/config_form.html.twig
 msgid "Vérifier les nouvelles versions sur GitHub"
 msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Fiches signées"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Sortie du parc"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Maintenance et mouvements"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Passeports"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Rubriques de la configuration"
+msgstr ""

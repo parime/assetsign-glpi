@@ -7627,3 +7627,18 @@ msgstr ""
 "Legge l'ultima versione pubblicata su GitHub al massimo ogni 12 ore, senza "
 "inviare alcuna informazione su questo GLPI. Disattivarlo su un server senza "
 "accesso a Internet. Questa impostazione vale per tutte le entità."
+
+msgid "Fiches signées"
+msgstr "Schede firmate"
+
+msgid "Sortie du parc"
+msgstr "Uscita dal parco"
+
+msgid "Maintenance et mouvements"
+msgstr "Manutenzione e movimenti"
+
+msgid "Passeports"
+msgstr "Passaporti"
+
+msgid "Rubriques de la configuration"
+msgstr "Sezioni della configurazione"

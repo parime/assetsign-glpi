@@ -7671,3 +7671,18 @@ msgstr ""
 "Liest höchstens alle 12 Stunden die neueste auf GitHub veröffentlichte "
 "Version, ohne Informationen über dieses GLPI zu senden. Auf einem Server "
 "ohne Internetzugang deaktivieren. Diese Einstellung gilt für alle Entitäten."
+
+msgid "Fiches signées"
+msgstr "Unterschriebene Formulare"
+
+msgid "Sortie du parc"
+msgstr "Ausscheiden aus dem Bestand"
+
+msgid "Maintenance et mouvements"
+msgstr "Wartung und Bewegungen"
+
+msgid "Passeports"
+msgstr "Pässe"
+
+msgid "Rubriques de la configuration"
+msgstr "Bereiche der Konfiguration"

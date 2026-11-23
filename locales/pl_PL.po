@@ -7582,3 +7582,18 @@ msgstr ""
 "Odczytuje najnowsze wydanie opublikowane w GitHub najwyżej co 12 godzin, bez"
 " wysyłania jakichkolwiek informacji o tym GLPI. Wyłącz na serwerze bez "
 "dostępu do Internetu. To ustawienie dotyczy wszystkich jednostek."
+
+msgid "Fiches signées"
+msgstr "Podpisane formularze"
+
+msgid "Sortie du parc"
+msgstr "Wycofanie z zasobów"
+
+msgid "Maintenance et mouvements"
+msgstr "Konserwacja i przemieszczenia"
+
+msgid "Passeports"
+msgstr "Paszporty"
+
+msgid "Rubriques de la configuration"
+msgstr "Sekcje konfiguracji"
