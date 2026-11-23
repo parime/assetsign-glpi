@@ -52,8 +52,8 @@ class PassportEventInfocomTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Achat', 'assetsign'), $html);
-        $this->assertStringContainsString(__('Mise en service', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-event="buy_date"', $html);
+        $this->assertStringContainsString('data-assetsign-event="use_date"', $html);
         $this->assertStringContainsString('999,90', $html);
         $this->assertNoStrayNumericTextNode($html, 'La frise avec dates Infocom doit se rendre sans fuite Twig.');
     }
@@ -72,8 +72,8 @@ class PassportEventInfocomTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Début de garantie', 'assetsign'), $html);
-        $this->assertStringContainsString(__('Fin de garantie', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-event="warranty_date"', $html);
+        $this->assertStringContainsString('data-assetsign-event="warranty_end"', $html);
     }
 
     public function testShowForItemHidesInfocomDatesWhenDisabled(): void
@@ -90,7 +90,7 @@ class PassportEventInfocomTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Commande', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-event="order_date"', $html);
     }
 
     public function testInfocomPseudoEventsDoNotAffectLivesCount(): void
@@ -133,7 +133,7 @@ class PassportEventInfocomTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="timeline-empty"', $html);
         $this->assertNoStrayNumericTextNode($html, 'L\'absence totale d\'Infocom ne doit jamais faire planter la frise.');
     }
 
@@ -150,7 +150,7 @@ class PassportEventInfocomTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="timeline-empty"', $html);
     }
 
     public function testShowForItemHandlesPartialInfocomIndependently(): void
@@ -166,10 +166,10 @@ class PassportEventInfocomTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Réforme', 'assetsign'), $html);
-        $this->assertStringNotContainsString(__('Achat', 'assetsign'), $html);
-        $this->assertStringNotContainsString(__('Commande', 'assetsign'), $html);
-        $this->assertStringNotContainsString(__('Début de garantie', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-event="decommission_date"', $html);
+        $this->assertStringNotContainsString('data-assetsign-event="buy_date"', $html);
+        $this->assertStringNotContainsString('data-assetsign-event="order_date"', $html);
+        $this->assertStringNotContainsString('data-assetsign-event="warranty_date"', $html);
     }
 
     public function testShowForItemDoesNotCrashWhenNoEventTypeIsVisible(): void
@@ -190,7 +190,7 @@ class PassportEventInfocomTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Aucun événement enregistré pour le moment.', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="timeline-empty"', $html);
     }
 
     public function testShowForItemSkipsInfocomWhenItemtypeCannotApply(): void
@@ -217,6 +217,6 @@ class PassportEventInfocomTest extends AssetsignTestCase
             $CFG_GLPI['infocom_types'] = $previousInfocomTypes;
         }
 
-        $this->assertStringNotContainsString(__('Achat', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-event="buy_date"', $html);
     }
 }

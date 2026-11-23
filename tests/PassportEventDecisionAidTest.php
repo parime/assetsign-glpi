@@ -31,6 +31,8 @@ use GlpiPlugin\Assetsign\PassportEvent;
  */
 class PassportEventDecisionAidTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage;
+
    private function insertInfocom(string $itemtype, int $items_id, array $fields): void {
        global $DB;
        $DB->insert('glpi_infocoms', array_merge([
@@ -77,12 +79,10 @@ class PassportEventDecisionAidTest extends AssetsignTestCase
        PassportEvent::showForItem($computer);
        $html = ob_get_clean();
 
-       $this->assertStringContainsString(__('Prévoir un remplacement', 'assetsign'), $html);
-       // Passe par __()/sprintf() plutot qu'un litteral francais brut : la
-       // suite tourne parfois avec l'anglais comme langue active (cf. CI),
-       // un texte source fige echouerait alors a tort.
-       $this->assertStringContainsString(sprintf(__('score de santé faible : %d/100', 'assetsign'), 70), $html);
-       $this->assertStringNotContainsString($this->htmlLabel(__('Réévaluer l\'usage', 'assetsign')), $html);
+       $this->assertStringContainsString('data-assetsign-recommendation="replace"', $html);
+       // Motif avec le score : langue forcée en anglais (trait ForcesEnglishLanguage, issue #397).
+       $this->assertStringContainsString('low health score: 70/100', $html);
+       $this->assertStringNotContainsString('data-assetsign-recommendation="reassess"', $html);
        $this->assertNoStrayNumericTextNode($html, 'Le module d\'aide à la décision doit se rendre sans fuite Twig.');
    }
 
@@ -110,14 +110,14 @@ class PassportEventDecisionAidTest extends AssetsignTestCase
        PassportEvent::showForItem($computer);
        $html = ob_get_clean();
 
-       $this->assertStringContainsString($this->htmlLabel(__('Réévaluer l\'usage', 'assetsign')), $html);
+       $this->assertStringContainsString('data-assetsign-recommendation="reassess"', $html);
        // Idem ci-dessus (testLowHealthScoreTriggersReplacementRecommendation) :
        // __()/sprintf() plutot qu'un litteral francais brut.
        $this->assertStringContainsString(
-           $this->htmlLabel(sprintf(__('valeur résiduelle faible : %d %% du prix d\'achat', 'assetsign'), 0)),
+           'low residual value: 0% of the purchase price',
            $html
        );
-       $this->assertStringNotContainsString(__('Prévoir un remplacement', 'assetsign'), $html);
+       $this->assertStringNotContainsString('data-assetsign-recommendation="replace"', $html);
        $this->assertNoStrayNumericTextNode($html, 'Le module d\'aide à la décision doit se rendre sans fuite Twig.');
    }
 
@@ -147,8 +147,8 @@ class PassportEventDecisionAidTest extends AssetsignTestCase
        // Un vrai outil d'aide a la decision ne doit jamais cacher un facteur
        // contributif au profit d'un autre : les deux recommandations doivent
        // apparaitre simultanement.
-       $this->assertStringContainsString(__('Prévoir un remplacement', 'assetsign'), $html);
-       $this->assertStringContainsString($this->htmlLabel(__('Réévaluer l\'usage', 'assetsign')), $html);
+       $this->assertStringContainsString('data-assetsign-recommendation="replace"', $html);
+       $this->assertStringContainsString('data-assetsign-recommendation="reassess"', $html);
    }
 
    public function testNothingDisplayedWhenBothIndicatorsAreHealthy(): void {
@@ -173,9 +173,9 @@ class PassportEventDecisionAidTest extends AssetsignTestCase
        PassportEvent::showForItem($computer);
        $html = ob_get_clean();
 
-       $this->assertStringNotContainsString(__('Prévoir un remplacement', 'assetsign'), $html);
-       $this->assertStringNotContainsString($this->htmlLabel(__('Réévaluer l\'usage', 'assetsign')), $html);
-       $this->assertStringNotContainsString(__('Aide à la décision', 'assetsign'), $html);
+       $this->assertStringNotContainsString('data-assetsign-recommendation="replace"', $html);
+       $this->assertStringNotContainsString('data-assetsign-recommendation="reassess"', $html);
+       $this->assertStringNotContainsString('data-assetsign-block="decision-aid"', $html);
    }
 
    public function testMissingPurchaseValueNeverInventsResidualRecommendation(): void {
@@ -197,8 +197,8 @@ class PassportEventDecisionAidTest extends AssetsignTestCase
        PassportEvent::showForItem($computer);
        $html = ob_get_clean();
 
-       $this->assertStringNotContainsString($this->htmlLabel(__('Réévaluer l\'usage', 'assetsign')), $html);
-       $this->assertStringNotContainsString(__('Aide à la décision', 'assetsign'), $html);
+       $this->assertStringNotContainsString('data-assetsign-recommendation="reassess"', $html);
+       $this->assertStringNotContainsString('data-assetsign-block="decision-aid"', $html);
    }
 
    public function testManualResidualValueWithKnownPurchasePriceCanStillTriggerRecommendation(): void {
@@ -222,7 +222,7 @@ class PassportEventDecisionAidTest extends AssetsignTestCase
        PassportEvent::showForItem($computer);
        $html = ob_get_clean();
 
-       $this->assertStringContainsString($this->htmlLabel(__('Réévaluer l\'usage', 'assetsign')), $html);
+       $this->assertStringContainsString('data-assetsign-recommendation="reassess"', $html);
    }
 
    public function testDecisionAidDisabledHidesRecommendationsEvenWhenTriggered(): void {
@@ -248,8 +248,8 @@ class PassportEventDecisionAidTest extends AssetsignTestCase
        PassportEvent::showForItem($computer);
        $html = ob_get_clean();
 
-       $this->assertStringNotContainsString(__('Prévoir un remplacement', 'assetsign'), $html);
-       $this->assertStringNotContainsString($this->htmlLabel(__('Réévaluer l\'usage', 'assetsign')), $html);
-       $this->assertStringNotContainsString(__('Aide à la décision', 'assetsign'), $html);
+       $this->assertStringNotContainsString('data-assetsign-recommendation="replace"', $html);
+       $this->assertStringNotContainsString('data-assetsign-recommendation="reassess"', $html);
+       $this->assertStringNotContainsString('data-assetsign-block="decision-aid"', $html);
    }
 }

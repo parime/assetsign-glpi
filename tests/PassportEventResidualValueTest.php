@@ -61,7 +61,7 @@ class PassportEventResidualValueTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Valeur résiduelle (estimée)', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-residual="estimated"', $html);
         // Tolerance sur le montant exact (le "temps ecoule depuis" glisse d'une
         // fraction de jour entre la preparation du fixture et l'affichage) :
         // on verifie l'ordre de grandeur (moitie du prix d'achat) plutot qu'un
@@ -117,8 +117,8 @@ class PassportEventResidualValueTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Valeur résiduelle (estimée)', 'assetsign'), $html);
-        $this->assertStringNotContainsString(__('Valeur résiduelle (saisie manuelle)', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-residual="estimated"', $html);
+        $this->assertStringNotContainsString('data-assetsign-residual="manual"', $html);
     }
 
     public function testManualOverrideTakesPrecedenceOverComputedValue(): void
@@ -143,8 +143,8 @@ class PassportEventResidualValueTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Valeur résiduelle (saisie manuelle)', 'assetsign'), $html);
-        $this->assertStringNotContainsString(__('Valeur résiduelle (estimée)', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-residual="manual"', $html);
+        $this->assertStringNotContainsString('data-assetsign-residual="estimated"', $html);
         $this->assertStringContainsString('42,50', $html);
     }
 
@@ -174,7 +174,7 @@ class PassportEventResidualValueTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Valeur résiduelle (estimée)', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-residual="estimated"', $html);
         $this->assertNoStrayNumericTextNode($html, 'Une durée de vie utile à zéro ne doit jamais provoquer de division par zéro ni de plantage.');
     }
 
@@ -196,9 +196,9 @@ class PassportEventResidualValueTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Valeur résiduelle (estimée)', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-residual="estimated"', $html);
         // Fonctionnalite desactivee : le formulaire de saisie manuelle ne doit pas
         // non plus apparaitre (cf. residual_value_enabled dans passport_tab.html.twig).
-        $this->assertStringNotContainsString(__('Valeur résiduelle manuelle', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-block="residual-value-form"', $html);
     }
 }

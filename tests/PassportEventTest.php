@@ -133,7 +133,7 @@ class PassportEventTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Imprimer une étiquette QR code', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-action="qr-label"', $html);
         // '&' est echappe en '&amp;' par Twig dans un attribut href (auto-echappement,
         // comportement attendu) : verifie les deux parametres separement plutot
         // qu'une chaine de requete brute avec un '&' litteral.
@@ -152,7 +152,7 @@ class PassportEventTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Imprimer une étiquette QR code', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-action="qr-label"', $html);
     }
 
     public function testGetLivesForItemGroupsConsecutiveAttributionsBySameUser(): void

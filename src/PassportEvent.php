@@ -929,13 +929,14 @@ class PassportEvent extends Compat\Base\PassportEventBase
      * d'aide a la decision ne doit jamais cacher un facteur contributif.
      * @param array{score: int, breakdown: array}|null $health Deja calcule par showForItem() (jamais un second calcul).
      * @param array{value: float, is_manual: bool}|null $residual Deja calcule par showForItem() (jamais un second calcul).
-     * @return list<array{label: string, reason: string, severity: string}> severity: 'warning'|'critical'. Tableau vide si rien a signaler ou si les deux indicateurs sources sont indisponibles.
+     * @return list<array{code: string, label: string, reason: string, severity: string}> severity: 'warning'|'critical'. Tableau vide si rien a signaler ou si les deux indicateurs sources sont indisponibles.
      */
    private static function getDecisionAidRecommendations(Config $config, CommonDBTM $item, ?array $health, ?array $residual): array {
        $recommendations = [];
 
       if ($health !== null && $health['score'] < (int) $config->fields['health_score_warning_threshold']) {
           $recommendations[] = [
+              'code'     => 'replace',
               'label'    => __('Prévoir un remplacement', 'assetsign'),
               'reason'   => sprintf(__('score de santé faible : %d/100', 'assetsign'), $health['score']),
               'severity' => 'critical',
@@ -949,6 +950,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
              $threshold = (int) $config->fields['residual_value_low_threshold_percent'];
             if ($percent < $threshold) {
                 $recommendations[] = [
+                    'code'     => 'reassess',
                     'label'    => __('Réévaluer l\'usage', 'assetsign'),
                     'reason'   => sprintf(__('valeur résiduelle faible : %d %% du prix d\'achat', 'assetsign'), (int) round($percent)),
                     'severity' => 'warning',
@@ -971,7 +973,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
      * supplementaire. `event_type` volontairement absent (jamais un entier,
      * meme pas -1) : getLivesForItem() ne doit jamais pouvoir les confondre
      * avec un evenement reel, meme par erreur de comparaison de type.
-     * @return list<array{type_label: string, date: string, source_url: null, snapshot_name: string, is_anonymized: int, comment: string}>
+     * @return list<array{key: string, type_label: string, date: string, source_url: null, snapshot_name: string, is_anonymized: int, comment: string}>
      */
    private static function getInfocomPseudoEvents(CommonDBTM $item, Config $config): array {
       if (!\Infocom::canApplyOn($item->getType())) {
@@ -998,6 +1000,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
              continue;
           }
           $events[] = [
+              'key'           => $field,
               'type_label'    => $label,
               'date'          => substr((string) $date, 0, 10) . ' 00:00:00', // colonne DATE (pas DATETIME) : heure neutre pour trier/afficher comme les evenements reels.
               'source_url'    => null,
@@ -1018,6 +1021,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
        $warrantyMonths = (int) ($infocom->fields['warranty_duration'] ?? 0);
        if (!empty($infocom->fields['warranty_date']) && $warrantyMonths > 0) {
           $events[] = [
+              'key'           => 'warranty_end',
               'type_label'    => __('Fin de garantie', 'assetsign'),
               'date'          => date('Y-m-d', strtotime($infocom->fields['warranty_date'] . " +{$warrantyMonths} months")) . ' 00:00:00',
               'source_url'    => null,
@@ -1040,7 +1044,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
      * personnes consultant le meme Passeport materiel peuvent donc voir un
      * nombre de tickets different, exactement comme si elles consultaient
      * directement l'onglet Ticket du materiel.
-     * @return list<array{type_label: string, date: string, source_url: string, snapshot_name: string, is_anonymized: int, comment: string}>
+     * @return list<array{key: string, type_label: string, date: string, source_url: string, snapshot_name: string, is_anonymized: int, comment: string}>
      */
    private static function getLinkedTicketPseudoEvents(CommonDBTM $item): array {
        global $DB;
@@ -1066,6 +1070,7 @@ class PassportEvent extends Compat\Base\PassportEventBase
              continue; // Droit reel sur CE ticket precis, jamais suppose depuis le droit generique verifie plus haut.
          }
           $events[] = [
+              'key'           => 'ticket',
               'type_label'    => __('Ticket', 'assetsign'),
               'date'          => (string) $row['date'],
               'source_url'    => $ticket->getLinkURL(),

@@ -34,5 +34,5 @@ jobs:
       seed-command: php plugins/assetsign/tests/security/setup.php
       # Charte commune bloquante : licence, en-têtes, documentation et langues conformes (#342).
       charter-mode: error
-      # Assertions de test sur des libellés traduits, en avertissement le temps de l'issue #397.
-      translated-assertions-mode: warning
+      # Assertions de test sur des libellés traduits : bloquant (#397).
+      translated-assertions-mode: error

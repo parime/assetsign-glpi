@@ -36,14 +36,14 @@ class MaintenanceTest extends AssetsignTestCase
     {
         $checkboxId = $this->createChecklistItem('PHPUnit Checkbox', MaintenanceChecklistItem::TYPE_CHECKBOX);
         $textId = $this->createChecklistItem('PHPUnit Texte', MaintenanceChecklistItem::TYPE_TEXT);
-        $selectId = $this->createChecklistItem('PHPUnit Select', MaintenanceChecklistItem::TYPE_SELECT, "Bon\nMoyen\nMauvais");
+        $selectId = $this->createChecklistItem('PHPUnit Select', MaintenanceChecklistItem::TYPE_SELECT, "Bon\nPassable\nMauvais");
 
         $items = Maintenance::getActiveChecklistItems();
 
         $this->assertSame(MaintenanceChecklistItem::TYPE_CHECKBOX, $items[$checkboxId]['type']);
         $this->assertSame(MaintenanceChecklistItem::TYPE_TEXT, $items[$textId]['type']);
         $this->assertSame(MaintenanceChecklistItem::TYPE_SELECT, $items[$selectId]['type']);
-        $this->assertSame(['Bon', 'Moyen', 'Mauvais'], $items[$selectId]['options']);
+        $this->assertSame(['Bon', 'Passable', 'Mauvais'], $items[$selectId]['options']);
         $this->assertSame([], $items[$checkboxId]['options'], "Un point sans options n'en renvoie aucune.");
     }
 
@@ -64,7 +64,7 @@ class MaintenanceTest extends AssetsignTestCase
     {
         $checkboxId = $this->createChecklistItem('PHPUnit Checkbox Create', MaintenanceChecklistItem::TYPE_CHECKBOX);
         $textId = $this->createChecklistItem('PHPUnit Texte Create', MaintenanceChecklistItem::TYPE_TEXT);
-        $selectId = $this->createChecklistItem('PHPUnit Select Create', MaintenanceChecklistItem::TYPE_SELECT, "Bon\nMoyen\nMauvais");
+        $selectId = $this->createChecklistItem('PHPUnit Select Create', MaintenanceChecklistItem::TYPE_SELECT, "Bon\nPassable\nMauvais");
 
         $entityId = $this->createTestEntity(0, 'PHPUnit Maintenance Create');
         $computer = $this->createTestComputer($entityId, 'PHPUnit PC Maintenance');
@@ -72,7 +72,7 @@ class MaintenanceTest extends AssetsignTestCase
         $id = Maintenance::createWithChecklist('Computer', $computer->getID(), $entityId, [
             $checkboxId => '1',
             $textId     => 'Ecran fissuré',
-            $selectId   => 'Moyen',
+            $selectId   => 'Passable',
         ], 'Commentaire de test');
 
         $this->assertGreaterThan(0, $id);
@@ -88,7 +88,7 @@ class MaintenanceTest extends AssetsignTestCase
 
         $this->assertNull($byId['PHPUnit Checkbox Create']['value'], "Une case a cocher n'enregistre aucune valeur, seule sa presence compte.");
         $this->assertSame('Ecran fissuré', $byId['PHPUnit Texte Create']['value']);
-        $this->assertSame('Moyen', $byId['PHPUnit Select Create']['value']);
+        $this->assertSame('Passable', $byId['PHPUnit Select Create']['value']);
     }
 
     public function testCreateWithChecklistSkipsEmptyTextAndSelectValues(): void

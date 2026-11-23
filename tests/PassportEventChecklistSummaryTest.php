@@ -115,6 +115,6 @@ class PassportEventChecklistSummaryTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString('contrôles qualité', $html);
+        $this->assertStringNotContainsString('data-assetsign-badge="checklist"', $html);
     }
 }

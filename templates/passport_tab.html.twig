@@ -38,23 +38,23 @@
       <div class="col-6 col-md-4 col-xl-3"><div class="d-flex align-items-start gap-2"><i class="ti ti-shield-check text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('Fin de garantie', 'assetsign') }}</div><div class="fw-bold">{{ identity.warranty_end|formatted_date }}</div></div></div></div>
     {% endif %}
     {% if identity.age %}
-      <div class="col-6 col-md-4 col-xl-3"><div class="d-flex align-items-start gap-2"><i class="ti ti-calendar-time text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('Âge', 'assetsign') }}</div><div class="fw-bold">{{ identity.age }}</div></div></div></div>
+      <div class="col-6 col-md-4 col-xl-3" data-assetsign-identity="age"><div class="d-flex align-items-start gap-2"><i class="ti ti-calendar-time text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('Âge', 'assetsign') }}</div><div class="fw-bold">{{ identity.age }}</div></div></div></div>
     {% endif %}
     {% if identity.used_duration %}
-      <div class="col-6 col-md-4 col-xl-3"><div class="d-flex align-items-start gap-2"><i class="ti ti-player-play text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('Temps utilisé', 'assetsign') }}</div><div class="fw-bold">{{ identity.used_duration }}{{ identity.used_percent is not null ? ' (' ~ identity.used_percent ~ '%)' : '' }}</div></div></div></div>
+      <div class="col-6 col-md-4 col-xl-3" data-assetsign-identity="used-duration"><div class="d-flex align-items-start gap-2"><i class="ti ti-player-play text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('Temps utilisé', 'assetsign') }}</div><div class="fw-bold">{{ identity.used_duration }}{{ identity.used_percent is not null ? ' (' ~ identity.used_percent ~ '%)' : '' }}</div></div></div></div>
     {% endif %}
     {% if identity.stock_duration %}
-      <div class="col-6 col-md-4 col-xl-3"><div class="d-flex align-items-start gap-2"><i class="ti ti-packages text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('Temps en stock', 'assetsign') }}</div><div class="fw-bold">{{ identity.stock_duration }}</div></div></div></div>
+      <div class="col-6 col-md-4 col-xl-3" data-assetsign-identity="stock-duration"><div class="d-flex align-items-start gap-2"><i class="ti ti-packages text-secondary fs-3"></i><div><div class="text-secondary small">{{ __('Temps en stock', 'assetsign') }}</div><div class="fw-bold">{{ identity.stock_duration }}</div></div></div></div>
     {% endif %}
     {% if identity.residual_value %}
-      <div class="col-6 col-md-4 col-xl-3"><div class="d-flex align-items-start gap-2"><i class="ti ti-coin text-secondary fs-3"></i><div><div class="text-secondary small">{{ identity.residual_value_is_manual ? __('Valeur résiduelle (saisie manuelle)', 'assetsign') : __('Valeur résiduelle (estimée)', 'assetsign') }}</div><div class="fw-bold">{{ identity.residual_value }}</div></div></div></div>
+      <div class="col-6 col-md-4 col-xl-3" data-assetsign-residual="{{ identity.residual_value_is_manual ? 'manual' : 'estimated' }}"><div class="d-flex align-items-start gap-2"><i class="ti ti-coin text-secondary fs-3"></i><div><div class="text-secondary small">{{ identity.residual_value_is_manual ? __('Valeur résiduelle (saisie manuelle)', 'assetsign') : __('Valeur résiduelle (estimée)', 'assetsign') }}</div><div class="fw-bold">{{ identity.residual_value }}</div></div></div></div>
     {% endif %}
     </div>
   </div>
 </div>
 
 {% if residual_value_enabled and can_backfill %}
-  <div class="mb-4">
+  <div class="mb-4" data-assetsign-block="residual-value-form">
     <div class="d-flex align-items-end gap-2 flex-wrap">
       <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/residualvalue.form.php" class="d-flex align-items-end gap-2">
         <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
@@ -81,7 +81,7 @@
 {% endif %}
 
 {% if environmental_enabled %}
-  <div class="mb-4">
+  <div class="mb-4" data-assetsign-block="environmental">
     <h4>{{ __('Empreinte environnementale (fabrication)', 'assetsign') }}</h4>
     {% if environmental %}
       <div class="row g-2 mb-2">
@@ -100,7 +100,7 @@
         {% endif %}
       </div>
     {% elseif not carbon or carbon.embodied_kg is null %}
-      <p class="text-muted">{{ __('Empreinte de fabrication non renseignée.', 'assetsign') }}</p>
+      <p class="text-muted" data-assetsign-block="environmental-missing">{{ __('Empreinte de fabrication non renseignée.', 'assetsign') }}</p>
     {% endif %}
 
     {# Issue #228 : impacts calculés par le plugin Carbon (lecture seule). #}
@@ -172,7 +172,7 @@
 {% endif %}
 
 {% if reuse_benefit_enabled and reuse_benefit %}
-  <div class="mb-4">
+  <div class="mb-4" data-assetsign-block="reuse-benefit">
     <h4>{{ __('Bénéfice du réemploi', 'assetsign') }}</h4>
     <div class="row g-2 mb-2">
       <div class="col-auto">
@@ -183,9 +183,9 @@
         {% endif %}
       </div>
       <div class="col-auto">
-        {{ reuse_benefit.is_still_in_service
+        <span data-assetsign-reuse-status="{{ reuse_benefit.is_still_in_service ? 'in-service' : 'decommissioned' }}">{{ reuse_benefit.is_still_in_service
           ? __('Encore en service', 'assetsign')
-          : __('Réformé', 'assetsign') }}
+          : __('Réformé', 'assetsign') }}</span>
         {{ __('après', 'assetsign') }} {{ reuse_benefit.actual_years }} {{ __('an(s)', 'assetsign') }}
         ({{ __('durée d\'amortissement prévue', 'assetsign') }} : {{ reuse_benefit.planned_years }} {{ __('an(s)', 'assetsign') }})
       </div>
@@ -196,7 +196,7 @@
 
 {% if health %}
   {# Issue #282 : score en grand, une barre par facteur (la longueur montre la dégradation). #}
-  <div class="card mb-4">
+  <div class="card mb-4" data-assetsign-block="health-score">
     <div class="card-body d-flex flex-wrap gap-4 align-items-center">
       <div class="text-center">
         <div class="text-secondary small">{{ __('Score de santé', 'assetsign') }}</div>
@@ -222,11 +222,11 @@
 {% endif %}
 
 {% if decision_aid|length %}
-  <div class="mb-4">
+  <div class="mb-4" data-assetsign-block="decision-aid">
     <strong>{{ __('Aide à la décision', 'assetsign') }}</strong>
     <div class="mt-2">
       {% for reco in decision_aid %}
-        <div class="alert alert-{{ reco.severity == 'critical' ? 'danger' : 'warning' }} d-flex align-items-start gap-2 py-2 px-3 mb-2">
+        <div data-assetsign-recommendation="{{ reco.code }}" class="alert alert-{{ reco.severity == 'critical' ? 'danger' : 'warning' }} d-flex align-items-start gap-2 py-2 px-3 mb-2">
           <i class="ti ti-{{ reco.severity == 'critical' ? 'alert-triangle' : 'alert-circle' }} fs-3"></i>
           <div>
             <div class="fw-bold">{{ reco.label }}</div>
@@ -251,7 +251,7 @@
       </form>
     {% endif %}
     {% if qr_label_enabled %}
-      <a href="{{ qr_label_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary">
+      <a data-assetsign-action="qr-label" href="{{ qr_label_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary">
         <i class="ti ti-qrcode"></i> {{ __('Imprimer une étiquette QR code', 'assetsign') }}
       </a>
     {% endif %}
@@ -293,7 +293,7 @@
         <div class="passport-timeline-body">
           <div class="passport-timeline-date text-muted small">{{ event.date|relative_datetime }}</div>
           <div class="passport-timeline-content">
-            <strong>{{ event.type_label }}</strong>
+            <strong data-assetsign-event="{{ event.key|default(event.event_type|default('')) }}">{{ event.type_label }}</strong>
             {% if event.snapshot_name %}
               - {{ event.snapshot_name }}
               {% if event.snapshot_is_external|default(false) %}<span class="badge bg-secondary-subtle text-secondary-emphasis">{{ __('externe', 'assetsign') }}</span>{% endif %}
@@ -305,14 +305,14 @@
             {% endif %}
             {% if event.checklist_summary is defined %}
               <div class="mt-1">
-                <span class="badge {{ badge_colors.classes(event.checklist_summary.color) }}">
+                <span data-assetsign-badge="checklist" class="badge {{ badge_colors.classes(event.checklist_summary.color) }}">
                   <i class="ti ti-checklist"></i> {{ event.checklist_summary.done }}/{{ event.checklist_summary.total }} {{ __('contrôles qualité', 'assetsign') }}
                 </span>
               </div>
             {% endif %}
             {% if event.kit_summary is defined %}
               <div class="mt-1">
-                <span class="badge {{ badge_colors.classes(event.kit_summary.color) }}" title="{{ event.kit_summary.kit_name }}">
+                <span data-assetsign-badge="kit" class="badge {{ badge_colors.classes(event.kit_summary.color) }}" title="{{ event.kit_summary.kit_name }}">
                   <i class="ti ti-package"></i> {{ event.kit_summary.returned_count }}/{{ event.kit_summary.expected_total }} {{ __('accessoires du kit restitués', 'assetsign') }}
                 </span>
                 {% if event.kit_summary.missing_names|length %}
@@ -339,5 +339,5 @@
     {% endfor %}
   </div>
 {% else %}
-  <p class="text-muted">{{ __('Aucun événement enregistré pour le moment.', 'assetsign') }}</p>
+  <p class="text-muted" data-assetsign-block="timeline-empty">{{ __('Aucun événement enregistré pour le moment.', 'assetsign') }}</p>
 {% endif %}

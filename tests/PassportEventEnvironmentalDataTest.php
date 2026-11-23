@@ -44,7 +44,7 @@ class PassportEventEnvironmentalDataTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Empreinte environnementale (fabrication)', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-block="environmental"', $html);
     }
 
     public function testEnabledWithoutAnySavedDataShowsExplicitAbsence(): void
@@ -61,7 +61,7 @@ class PassportEventEnvironmentalDataTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Empreinte environnementale (fabrication)', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="environmental"', $html);
         // Jamais une valeur inventee : le message d'absence explicite doit
         // apparaitre, jamais un chiffre (0, ou une estimation quelconque).
         // "kg CO2-eq" reste legitimement present dans le LABEL du formulaire de
@@ -70,7 +70,7 @@ class PassportEventEnvironmentalDataTest extends AssetsignTestCase
         // est deja enregistree) prouve qu'aucun chiffre n'est affiche. Marqueur
         // HTML precis plutot que le libelle traduit du bouton (cf. commentaire de
         // testClearedDataDisplaysExplicitAbsenceAgain() pour la raison).
-        $this->assertStringContainsString(__('Empreinte de fabrication non renseignée.', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="environmental-missing"', $html);
         $this->assertStringNotContainsString('name="carbon_footprint_manufacturing" value=""', $html);
     }
 
@@ -99,7 +99,7 @@ class PassportEventEnvironmentalDataTest extends AssetsignTestCase
         $this->assertStringContainsString('kg CO2-eq', $html);
         $this->assertStringContainsString(EnvironmentalData::getSourceLabels()[EnvironmentalData::SOURCE_MANUFACTURER], $html);
         $this->assertStringContainsString(EnvironmentalData::getConfidenceLabels()[EnvironmentalData::CONFIDENCE_HIGH], $html);
-        $this->assertStringNotContainsString(__('Empreinte de fabrication non renseignée.', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-block="environmental-missing"', $html);
     }
 
     /**
@@ -126,7 +126,7 @@ class PassportEventEnvironmentalDataTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Empreinte de fabrication non renseignée.', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="environmental-missing"', $html);
         $this->assertStringNotContainsString('156.75', $html);
         // "kg CO2-eq" reste legitimement present dans le LABEL du champ de
         // saisie (cf. templates/passport_tab.html.twig) - seule la ligne

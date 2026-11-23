@@ -27,6 +27,8 @@ use GlpiPlugin\Assetsign\MaintenanceChecklistItem;
  */
 class MaintenancePreparationTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage;
+
    private function createItem(string $name, int $usage, bool $mandatory): int {
        return (int) (new MaintenanceChecklistItem())->add([
            'entities_id'     => 0,
@@ -118,7 +120,7 @@ class MaintenancePreparationTest extends AssetsignTestCase
        $maintenance->getFromDB($id);
        $this->assertSame(Maintenance::KIND_PREPARATION, (int) $maintenance->fields['kind']);
        $this->assertSame($ticketsId, (int) $maintenance->fields['tickets_id']);
-       $this->assertStringContainsString(__('Préparation de poste', 'assetsign'), $maintenance->getDocumentTitle());
+       $this->assertStringContainsString('Workstation preparation', $maintenance->getDocumentTitle());
 
        $followups = (new \ITILFollowup())->find(['itemtype' => \Ticket::class, 'items_id' => $ticketsId]);
        $this->assertCount(1, $followups);

@@ -27,6 +27,8 @@ use RuntimeException;
  */
 class TokenTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage;
+
     public function testCreateForAssetsignReturnsAUsableRawToken(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit Token Create');
@@ -127,7 +129,7 @@ class TokenTest extends AssetsignTestCase
             // texte francais en dur : ce test doit rester valable quelle que soit
             // la langue de l'environnement d'execution (meme piege que deja
             // rencontre et corrige sur AssetsignTest.php - cf. TROUBLESHOOTING.md).
-            $this->assertSame(__('Trop de tentatives, lien désactivé par sécurité.', 'assetsign'), $e->getMessage());
+            $this->assertSame('Too many attempts, link disabled for security.', $e->getMessage());
         }
 
         // Le jeton est desormais desactive : meme un appel "propre" (dans la
@@ -138,7 +140,7 @@ class TokenTest extends AssetsignTestCase
             Token::validate($raw);
             $this->fail('Le jeton desactive ne doit plus jamais etre accepte.');
         } catch (RuntimeException $e) {
-            $this->assertSame(__('Ce lien de signature n\'est plus valide.', 'assetsign'), $e->getMessage());
+            $this->assertSame('This signature link is no longer valid.', $e->getMessage());
         }
     }
 

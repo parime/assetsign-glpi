@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Tests : plus aucune assertion ne compare un libellé traduit (#397). Les blocs du passeport et des
+  PDF portent des attributs `data-assetsign-*` stables que les tests vérifient ; les quelques tests
+  qui vérifient un message traduit forcent la langue anglaise puis la restaurent. Le contrôle
+  commun « Assertions de test sans libellé traduit » devient bloquant.
 - Contrôles de sécurité communs v1.11.3 : l'encadré « Version du plugin » est vérifié comme premier
   bloc de la page de configuration (écart `config-version-premier`, parime/glpi-plugin-template#18) ;
   il l'était déjà, en tête du premier onglet.

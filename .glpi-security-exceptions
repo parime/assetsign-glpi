@@ -29,3 +29,18 @@ crawl orphan front/mysignatures.php : page personnelle, ouverte par l'entrée du
 # poignée de redimensionnement de sa barre d'état porte un attribut ARIA refusé par axe.
 crawl axe:aria-prohibited-attr front/template.form.php : poignée de redimensionnement de l'éditeur TinyMCE du cœur GLPI
 crawl axe:aria-prohibited-attr front/config.php : poignée de redimensionnement de l'éditeur TinyMCE du cœur GLPI (gabarits édités dans les onglets de la configuration)
+
+# Issue #397 : assertions qui vérifient un texte traduit, avec la langue forcée en anglais puis restaurée.
+translated-assertion tests/AssetsignFormControllerTest.php::testCreateManualCreatesAssetsignAndReturnsSuccessMessage : message renvoyé à l'utilisateur testé tel quel, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/AssetsignFormControllerTest.php::testSendReminderDelegatesToModel : message renvoyé à l'utilisateur testé tel quel, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/AssetsignFormControllerTest.php::testCreateManualCreatesDestructionAssetsignWithProviderName : message renvoyé à l'utilisateur testé tel quel, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/AssetsignTest.php::testHandleStateBasedTriggerWarnsWhenHandoverHasNoUser : message renvoyé à l'utilisateur testé tel quel, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/MaintenancePreparationTest.php::testPreparationIsReportedOnTheTicketWithoutChangingIt : message renvoyé à l'utilisateur testé tel quel, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/PassportBackfillControllerTest.php::testRunForItemReturnsNoEventMessageForItemWithoutLogs : message renvoyé à l'utilisateur testé tel quel, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/PassportBackfillControllerTest.php::testRunForUserReturnsNoEventMessageForUserWithoutLogs : message renvoyé à l'utilisateur testé tel quel, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/TokenTest.php::testTokenIsDisabledAfterTooManyAttempts : message renvoyé à l'utilisateur testé tel quel, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/PassportEventDecisionAidTest.php::testLowHealthScoreTriggersReplacementRecommendation : texte composé avec un nombre, sans identifiant stable, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/PassportEventDecisionAidTest.php::testLowResidualValueTriggersReassessRecommendation : texte composé avec un nombre, sans identifiant stable, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/PassportEventTemporalIndicatorsTest.php::testAgeUsesInfocomBuyDateWhenAvailable : texte composé avec un nombre, sans identifiant stable, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/PassportEventTemporalIndicatorsTest.php::testAgeFallsBackToDateCreationWithoutInfocom : texte composé avec un nombre, sans identifiant stable, langue forcée en anglais (trait ForcesEnglishLanguage)
+translated-assertion tests/PdfLanguageTest.php : la traduction du PDF dans la langue du bénéficiaire est l'objet même du test (langues fixées par le test)

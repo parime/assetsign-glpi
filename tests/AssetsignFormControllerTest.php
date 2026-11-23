@@ -30,6 +30,8 @@ use InvalidArgumentException;
  */
 class AssetsignFormControllerTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage;
+
     public function testCreateManualCreatesAssetsignAndReturnsSuccessMessage(): void
     {
         $entityId = $this->createTestEntity(0, 'PHPUnit AssetsignFormController CreateManual');
@@ -45,7 +47,7 @@ class AssetsignFormControllerTest extends AssetsignTestCase
 
         // __() plutot qu'un litteral en dur : la session PHPUnit n'est pas
         // forcement en francais (CI anglaise), cf. TROUBLESHOOTING.md.
-        $this->assertSame(__('Fiche créée.', 'assetsign'), $message);
+        $this->assertSame('Form created.', $message);
 
         $created = new Assetsign();
         $this->assertTrue(
@@ -79,7 +81,7 @@ class AssetsignFormControllerTest extends AssetsignTestCase
 
         $message = (new AssetsignFormController())->sendReminder($assetsign);
 
-        $this->assertSame(__('Relance envoyée.', 'assetsign'), $message);
+        $this->assertSame('Reminder sent.', $message);
         $assetsign->getFromDB($assetsign->getID());
         $this->assertSame(1, (int) $assetsign->fields['reminder_count']);
     }
@@ -185,7 +187,7 @@ class AssetsignFormControllerTest extends AssetsignTestCase
             'provider_name' => 'Prestataire Controller',
         ]);
 
-        $this->assertSame(__('Fiche créée.', 'assetsign'), $message);
+        $this->assertSame('Form created.', $message);
 
         $created = new Assetsign();
         $this->assertTrue($created->getFromDBByCrit(['itemtype' => 'Computer', 'items_id' => $computer->getID(), 'type' => Assetsign::TYPE_DESTRUCTION]));

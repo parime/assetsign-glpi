@@ -164,13 +164,10 @@ class PassportEventKitSummaryTest extends AssetsignTestCase
        PassportEvent::showForItem($computer);
        $html = ob_get_clean();
 
-       // __() (pas la chaine francaise en dur) : la locale par defaut de
-       // l'environnement de test rend en anglais (cf. les autres tests de ce
-       // fichier, qui evitent deja le texte traduit au profit du badge "1/1"
-       // et de sa couleur).
+       // Attribut data-assetsign-badge plutôt que le libellé traduit (issue #397).
        $this->assertSame(
            1,
-           substr_count($html, __('accessoires du kit restitués', 'assetsign')),
+           substr_count($html, 'data-assetsign-badge="kit"'),
            'Le badge de completude du kit ne doit apparaitre QUE sur la ligne de Restitution reelle, jamais sur un evenement sans rapport dont l\'id source coincide.'
        );
    }
@@ -187,6 +184,6 @@ class PassportEventKitSummaryTest extends AssetsignTestCase
        PassportEvent::showForItem($computer);
        $html = ob_get_clean();
 
-       $this->assertStringNotContainsString('accessoires du kit restitués', $html);
+       $this->assertStringNotContainsString('data-assetsign-badge="kit"', $html);
    }
 }

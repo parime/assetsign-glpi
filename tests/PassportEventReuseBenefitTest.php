@@ -32,6 +32,8 @@ use GlpiPlugin\Assetsign\PassportEvent;
  */
 class PassportEventReuseBenefitTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage;
+
     private function insertInfocom(string $itemtype, int $items_id, array $fields): void
     {
         global $DB;
@@ -60,7 +62,7 @@ class PassportEventReuseBenefitTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Bénéfice du réemploi', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-block="reuse-benefit"', $html);
     }
 
     public function testEnabledWithoutSinkTimeDisplaysNothing(): void
@@ -84,7 +86,7 @@ class PassportEventReuseBenefitTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Bénéfice du réemploi', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-block="reuse-benefit"', $html);
     }
 
     public function testEnabledWithoutEnvironmentalDataDisplaysNothing(): void
@@ -108,7 +110,7 @@ class PassportEventReuseBenefitTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Bénéfice du réemploi', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-block="reuse-benefit"', $html);
     }
 
     /**
@@ -139,7 +141,7 @@ class PassportEventReuseBenefitTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Bénéfice du réemploi', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-block="reuse-benefit"', $html);
     }
 
     public function testExceedingPlannedDurationComputesProportionalAvoidedImpact(): void
@@ -166,8 +168,8 @@ class PassportEventReuseBenefitTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Bénéfice du réemploi', 'assetsign'), $html);
-        $this->assertStringContainsString(__('Encore en service', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="reuse-benefit"', $html);
+        $this->assertStringContainsString('data-assetsign-reuse-status="in-service"', $html);
         // Tolerance sur le nombre exact (annees calendaires approximees a
         // 365.25 jours dans le calcul, cf. getReuseBenefit()) : ~250 kg CO2-eq
         // attendu (100% de l'empreinte), jamais un nombre negatif ni 0.
@@ -199,16 +201,16 @@ class PassportEventReuseBenefitTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Bénéfice du réemploi', 'assetsign'), $html);
-        $this->assertStringContainsString(__('Réformé', 'assetsign'), $html);
-        $this->assertStringNotContainsString(__('Encore en service', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="reuse-benefit"', $html);
+        $this->assertStringContainsString('data-assetsign-reuse-status="decommissioned"', $html);
+        $this->assertStringNotContainsString('data-assetsign-reuse-status="in-service"', $html);
         // Duree reelle affichee doit etre ~6 ans (10 - 4), pas ~10 ans : preuve
         // que decommission_date est bien utilisee comme borne de fin, pas la
         // date du jour. Chaines passees par __() (pas de texte francais en dur) :
         // la CI s'execute en anglais, contrairement a l'instance de developpement
         // partagee qui s'execute en francais (cf. TROUBLESHOOTING.md).
         $this->assertStringContainsString(
-            sprintf('%s 6 %s', __('après', 'assetsign'), __('an(s)', 'assetsign')),
+            'after 6 year(s)',
             $html
         );
     }

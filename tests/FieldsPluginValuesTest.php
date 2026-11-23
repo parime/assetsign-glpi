@@ -33,6 +33,10 @@ use GlpiPlugin\Assetsign\Template;
  */
 final class FieldsPluginValuesTest extends AssetsignTestCase
 {
+    use ForcesEnglishLanguage {
+        setUp as private forceEnglishSetUp;
+    }
+
    private static int $containersId = 0;
 
    /** @var array<string, string> libellé => nom système */
@@ -72,7 +76,7 @@ final class FieldsPluginValuesTest extends AssetsignTestCase
    }
 
    protected function setUp(): void {
-       parent::setUp();
+       $this->forceEnglishSetUp();
       if (self::$containersId === 0) {
           $this->markTestSkipped('Plugin Fields non installé.');
       }
@@ -115,8 +119,8 @@ final class FieldsPluginValuesTest extends AssetsignTestCase
 
        $values = FieldsPluginValues::getValues('Computer', $computer->getID(), [self::$containersId]);
        $this->assertSame(
-           // Oui/non dans la langue de la session (« Yes » en CI, « Oui » en français).
-           ['BC-PHPUNIT-114', __('Yes'), '31/12/2027'],
+           // Langue forcée en anglais (trait ForcesEnglishLanguage, issue #397).
+           ['BC-PHPUNIT-114', 'Yes', '31/12/2027'],
            array_column($values, 'value')
        );
        $this->assertSame('Bon de commande', $values[0]['label']);

@@ -62,7 +62,7 @@ class PassportEventHealthScoreTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringContainsString(__('Score de santé', 'assetsign'), $html);
+        $this->assertStringContainsString('data-assetsign-block="health-score"', $html);
         $this->assertStringContainsString('100/100', $html);
         $this->assertNoStrayNumericTextNode($html, 'Le score de santé doit se rendre sans fuite Twig.');
     }
@@ -123,7 +123,7 @@ class PassportEventHealthScoreTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Score de santé', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-block="health-score"', $html);
     }
 
     public function testAllWeightsAtZeroReturnsNoScore(): void
@@ -139,7 +139,7 @@ class PassportEventHealthScoreTest extends AssetsignTestCase
         PassportEvent::showForItem($computer);
         $html = ob_get_clean();
 
-        $this->assertStringNotContainsString(__('Score de santé', 'assetsign'), $html);
+        $this->assertStringNotContainsString('data-assetsign-block="health-score"', $html);
     }
 
     public function testDamageMarkersIncreaseDegradation(): void
