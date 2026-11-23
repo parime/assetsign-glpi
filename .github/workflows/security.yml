@@ -16,11 +16,21 @@ on:
 permissions:
   contents: read
 
+# Un nouveau commit sur une pull request annule l'exécution précédente de cette PR ; push sur main
+# et lancement manuel : un groupe par exécution (run_id), jamais annulés.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   security:
-    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.10.2
+    uses: parime/glpi-plugin-security/.github/workflows/plugin-security.yml@v1.11.1
     with:
       plugin-key: assetsign
+      # Contrôles lourds (vrai GLPI : onglets et notifications, intégration en français, mise à
+      # jour, parcours des pages) seulement si la PR touche autre chose que la documentation ; tout
+      # tourne sur les push (main).
+      heavy-paths: '* !docs/* !changes/* !*.md !*.png !*.jpg !*.jpeg !*.gif !*.svg !*.webp'
       seed-command: php plugins/assetsign/tests/security/setup.php
       # Charte commune bloquante : licence, en-têtes, documentation et langues conformes (#342).
       charter-mode: error
