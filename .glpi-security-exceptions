@@ -29,15 +29,3 @@ crawl orphan front/mysignatures.php : page personnelle, ouverte par l'entrée du
 # poignée de redimensionnement de sa barre d'état porte un attribut ARIA refusé par axe.
 crawl axe:aria-prohibited-attr front/template.form.php : poignée de redimensionnement de l'éditeur TinyMCE du cœur GLPI
 crawl axe:aria-prohibited-attr front/config.php : poignée de redimensionnement de l'éditeur TinyMCE du cœur GLPI (gabarits édités dans les onglets de la configuration)
-crawl onglets-clavier front/assetsign.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/movement.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/wipeattestation.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/maintenance.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/template.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/accessory.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/kit.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/maintenancechecklistitem.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/checklistitem.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/maintenance.form.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/movement.form.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
-crawl onglets-clavier front/wipeattestation.form.php : barre masquée « Recherches enregistrées » du cœur GLPI (panneau saved-searches, aucun onglet visible), pas une barre du plugin
