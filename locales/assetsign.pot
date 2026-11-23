@@ -7965,3 +7965,97 @@ msgstr ""
 #: src/PhysicalInventory.php:465
 msgid "Scanné par"
 msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Aucune vérification réussie pour l'instant."
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Dernière version inconnue"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+#, php-format
+msgid ""
+"Dernière vérification : %s (nouvelle vérification toutes les 12 heures)."
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+#, php-format
+msgid "Dernière vérification réussie : %s."
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid ""
+"GitHub est injoignable depuis le serveur GLPI (pas d'accès à Internet, proxy"
+" ou pare-feu)"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "GitHub n'a pas répondu dans les 3 secondes"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+#, php-format
+msgid "La dernière vérification a échoué : %s."
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+#, php-format
+msgid "Mise à jour disponible : %s"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Notes de version"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+#, php-format
+msgid "Raison : %s."
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+#, php-format
+msgid "Résultat de la dernière vérification réussie (%s) affiché."
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Télécharger l'archive"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "Voir les versions sur GitHub"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "aucune version n'est encore publiée sur GitHub"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid ""
+"la limite de requêtes de GitHub est atteinte, un nouvel essai sera fait "
+"d'ici une heure"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "la réponse de GitHub est illisible"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "la vérification est désactivée dans les réglages ci-dessous"
+msgstr ""
+
+#: templates/_plugin_version.html.twig
+msgid "À jour"
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid ""
+"Lit la dernière version publiée sur GitHub au plus toutes les 12 heures, "
+"sans envoyer aucune information sur ce GLPI. À désactiver sur un serveur "
+"sans accès à Internet. Ce réglage vaut pour toutes les entités."
+msgstr ""
+
+#: templates/config_form.html.twig
+msgid "Vérifier les nouvelles versions sur GitHub"
+msgstr ""

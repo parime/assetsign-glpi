@@ -7422,3 +7422,78 @@ msgstr "Photo not found."
 
 #~ msgid "Points de contrôle de maintenance"
 #~ msgstr "Maintenance checklist items"
+
+msgid "la vérification est désactivée dans les réglages ci-dessous"
+msgstr "the check is turned off in the settings below"
+
+msgid ""
+"GitHub est injoignable depuis le serveur GLPI (pas d'accès à Internet, proxy"
+" ou pare-feu)"
+msgstr ""
+"GitHub cannot be reached from the GLPI server (no Internet access, proxy or "
+"firewall)"
+
+msgid ""
+"la limite de requêtes de GitHub est atteinte, un nouvel essai sera fait "
+"d'ici une heure"
+msgstr ""
+"the GitHub request limit is reached, a new attempt will be made within an "
+"hour"
+
+msgid "GitHub n'a pas répondu dans les 3 secondes"
+msgstr "GitHub did not answer within 3 seconds"
+
+msgid "aucune version n'est encore publiée sur GitHub"
+msgstr "no release is published on GitHub yet"
+
+msgid "la réponse de GitHub est illisible"
+msgstr "the answer from GitHub could not be read"
+
+msgid "À jour"
+msgstr "Up to date"
+
+msgid "Mise à jour disponible : %s"
+msgstr "Update available: %s"
+
+msgid "Dernière version inconnue"
+msgstr "Latest version unknown"
+
+msgid "Notes de version"
+msgstr "Release notes"
+
+msgid "Télécharger l'archive"
+msgstr "Download the archive"
+
+msgid "La dernière vérification a échoué : %s."
+msgstr "Last check failed: %s."
+
+msgid "Résultat de la dernière vérification réussie (%s) affiché."
+msgstr "Result of the last successful check (%s) shown."
+
+msgid "Raison : %s."
+msgstr "Reason: %s."
+
+msgid "Dernière vérification réussie : %s."
+msgstr "Last successful check: %s."
+
+msgid "Aucune vérification réussie pour l'instant."
+msgstr "No successful check yet."
+
+msgid "Voir les versions sur GitHub"
+msgstr "See the releases on GitHub"
+
+msgid ""
+"Dernière vérification : %s (nouvelle vérification toutes les 12 heures)."
+msgstr "Last checked: %s (checked again every 12 hours)."
+
+msgid "Vérifier les nouvelles versions sur GitHub"
+msgstr "Check for new versions on GitHub"
+
+msgid ""
+"Lit la dernière version publiée sur GitHub au plus toutes les 12 heures, "
+"sans envoyer aucune information sur ce GLPI. À désactiver sur un serveur "
+"sans accès à Internet. Ce réglage vaut pour toutes les entités."
+msgstr ""
+"Reads the latest release published on GitHub at most every 12 hours, without"
+" sending any information about this GLPI. Turn it off on a server without "
+"Internet access. This setting applies to all entities."
