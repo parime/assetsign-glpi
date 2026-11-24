@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.31.0] - 2026-11-24
 
+- Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
+
 ### Added
 
 - **Chaîne de possession d'un matériel saisi (#326, ISO 27001 A.5.28 collecte des preuves).**
