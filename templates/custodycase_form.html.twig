@@ -34,7 +34,7 @@
         <tr><th>{{ __('Motif', 'assetsign') }}</th><td style="white-space: pre-line;">{{ case.reason }}</td></tr>
         <tr><th>{{ __('État constaté', 'assetsign') }}</th><td style="white-space: pre-line;">{{ case.condition_note|default('-') }}</td></tr>
         <tr><th>{{ __('Détenteur actuel', 'assetsign') }}</th><td>{{ case.name_holder }}</td></tr>
-        <tr><th>{{ __('Lieu de stockage', 'assetsign') }}</th><td>{{ location_name|default('-') }}{% if case.storage %} - {{ case.storage }}{% endif %}</td></tr>
+        <tr><th>{{ __('Lieu de stockage', 'assetsign') }}</th><td>{{ [location_name, case.storage]|filter(v => v)|join(' - ')|default('-') }}</td></tr>
         {% if ticket_name %}<tr><th>{{ __('Ticket') }}</th><td><a href="{{ config('root_doc') }}/front/ticket.form.php?id={{ case.tickets_id }}">{{ ticket_name }}</a></td></tr>{% endif %}
         {% if incident_name %}<tr><th>{{ __('Incident de sécurité', 'assetsign') }}</th><td><a href="{{ incident_url }}">{{ incident_name }}</a></td></tr>{% endif %}
         <tr><th>{{ __('Ouverte par', 'assetsign') }}</th><td>{{ opened_by }}</td></tr>

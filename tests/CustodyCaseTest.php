@@ -38,9 +38,14 @@ class CustodyCaseTest extends AssetsignTestCase
 
     private int $savedRight = 0;
 
+    private mixed $savedEntity = null;
+
     protected function setUp(): void
     {
         parent::setUp();
+        // Les listes déroulantes d'utilisateurs lisent la configuration de l'entité active.
+        $this->savedEntity = $_SESSION['glpiactive_entity'] ?? null;
+        $_SESSION['glpiactive_entity'] ??= 0;
         $this->savedRight = (int) ($_SESSION['glpiactiveprofile'][Profile::RIGHT_CUSTODY] ?? 0);
         $_SESSION['glpiactiveprofile'][Profile::RIGHT_CUSTODY] = ALLSTANDARDRIGHT;
     }
@@ -48,6 +53,7 @@ class CustodyCaseTest extends AssetsignTestCase
     protected function tearDown(): void
     {
         $_SESSION['glpiactiveprofile'][Profile::RIGHT_CUSTODY] = $this->savedRight;
+        $_SESSION['glpiactive_entity'] = $this->savedEntity;
         parent::tearDown();
     }
 

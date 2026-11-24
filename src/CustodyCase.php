@@ -121,8 +121,7 @@ class CustodyCase extends Compat\Base\CustodyCaseBase
       if ($incidentId <= 0 || !self::isGrcAvailable()) {
           return null;
       }
-       $class = self::GRC_INCIDENT_CLASS;
-       $incident = new $class();
+       $incident = getItemForItemtype(self::GRC_INCIDENT_CLASS);
       if (!$incident instanceof CommonDBTM || !$incident->getFromDB($incidentId) || !$incident->can($incidentId, READ)) {
           return null;
       }
@@ -201,7 +200,7 @@ class CustodyCase extends Compat\Base\CustodyCaseBase
        return $item instanceof Ticket || (self::isGrcAvailable() && is_a($item, self::GRC_INCIDENT_CLASS));
    }
 
-    /** @return array<string, int> critère des fiches liées à l'objet de l'onglet */
+    /** @return array<string, int|string> critère des fiches liées à l'objet de l'onglet */
    private static function criteriaFor(CommonDBTM $item): array {
       if ($item instanceof Ticket) {
           return ['tickets_id' => $item->getID()];

@@ -84,8 +84,8 @@ final class CustodyPdfBuilder
        $photos = [];
       foreach ($case->getPhotos() as $photo) {
           $photos[] = [
-              'sha256' => (string) ($photo['sha256'] ?? ''),
-              'image'  => $this->imageDataUri((int) ($photo['documents_id'] ?? 0), 'image/jpeg'),
+              'sha256' => $photo['sha256'],
+              'image'  => $this->imageDataUri($photo['documents_id'], 'image/jpeg'),
           ];
       }
 

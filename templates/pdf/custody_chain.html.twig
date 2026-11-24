@@ -72,7 +72,7 @@
     <tr><th colspan="2">{{ loop.index }}. {{ e.type_label }}{% if e.closure_label %} : {{ e.closure_label }}{% endif %} - {{ e.event_date|date('d/m/Y H:i') }}</th></tr>
     <tr><th>{{ __('Remis par', 'assetsign') }}</th><td>{{ e.name_from }}</td></tr>
     <tr><th>{{ __('Reçu par', 'assetsign') }}</th><td>{{ e.name_to }}</td></tr>
-    <tr><th>{{ __('Lieu de stockage', 'assetsign') }}</th><td>{{ e.location_name|default('-') }}{% if e.storage %} - {{ e.storage }}{% endif %}</td></tr>
+    <tr><th>{{ __('Lieu de stockage', 'assetsign') }}</th><td>{{ [e.location_name, e.storage]|filter(v => v)|join(' - ')|default('-') }}</td></tr>
     {% if e.comment %}<tr><th>{{ __('Commentaire', 'assetsign') }}</th><td style="white-space: pre-line;">{{ e.comment }}</td></tr>{% endif %}
     <tr>
         <td style="width: 50%; text-align: center;">
