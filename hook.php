@@ -461,6 +461,9 @@ function plugin_assetsign_install(): bool {
     // Issue #322 : attestations d'effacement des donnees (apres Config::install(), dont elle
     // complete les types visibles du passeport).
     WipeAttestation::install($migration);
+    // Issue #326 : chaines de possession des materiels saisis et leurs etapes signees.
+    \GlpiPlugin\Assetsign\CustodyCase::install($migration);
+    \GlpiPlugin\Assetsign\CustodyEvent::install($migration);
     Reminder::install($migration);
     Profile::install($migration);
 
@@ -633,6 +636,9 @@ function plugin_assetsign_uninstall(): bool {
         // que le reste de cette liste.
         'glpi_plugin_assetsign_movements',
         'glpi_plugin_assetsign_wipeattestations',
+        // Issue #326 : etapes avant les chaines de possession.
+        \GlpiPlugin\Assetsign\CustodyEvent::TABLE,
+        'glpi_plugin_assetsign_custodycases',
         'glpi_plugin_assetsign_tokens',
         'glpi_plugin_assetsign_assetsignaccessories',
         'glpi_plugin_assetsign_assetsignitems',

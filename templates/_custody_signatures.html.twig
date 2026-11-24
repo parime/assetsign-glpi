@@ -1,0 +1,33 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #326 : les deux signatures sur place d'une étape (remet / reçoit). Le formulaire porte
+   data-assetsign-pads ; public/js/sign/custody-signatures.js écrit les tracés à l'envoi. #}
+<div class="row g-3 mt-1">
+  <div class="col-md-6">
+    <label class="form-label"><i class="ti ti-writing-sign me-1"></i>{{ __('Signature de la personne qui remet', 'assetsign') }}</label>
+    <canvas class="assetsign-signature-pad w-100" data-assetsign-pad="signature_from"></canvas>
+    <button type="button" class="btn btn-sm btn-secondary mt-1" data-assetsign-pad-clear="signature_from">{{ __('Effacer', 'assetsign') }}</button>
+    <input type="hidden" name="signature_from" value="">
+  </div>
+  <div class="col-md-6">
+    <label class="form-label"><i class="ti ti-writing-sign me-1"></i>{{ __('Signature de la personne qui reçoit', 'assetsign') }}</label>
+    <canvas class="assetsign-signature-pad w-100" data-assetsign-pad="signature_to"></canvas>
+    <button type="button" class="btn btn-sm btn-secondary mt-1" data-assetsign-pad-clear="signature_to">{{ __('Effacer', 'assetsign') }}</button>
+    <input type="hidden" name="signature_to" value="">
+  </div>
+</div>
+<p class="form-hint mt-1"><i class="ti ti-info-circle me-1"></i>{{ __('Les deux personnes signent ici, sur cet écran, au moment de la remise. L\'étape ne pourra plus être modifiée.', 'assetsign') }}</p>
+<script src="{{ config('root_doc') }}/plugins/assetsign/lib/sign/signature_pad.umd.min.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>
+<script src="{{ config('root_doc') }}/plugins/assetsign/js/sign/custody-signatures.js?v={{ constant('PLUGIN_ASSETSIGN_VERSION') }}"></script>

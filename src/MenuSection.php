@@ -40,10 +40,11 @@ final class MenuSection
                'icon'  => Assetsign::getIcon(),
                'pages' => [Assetsign::class, Movement::class, Departure::class, Campaign::class],
            ],
+           // Issue #326 : sortie du parc (effacement) et saisie d'un materiel (chaine de possession).
            'wipe' => [
-               'label' => WipeAttestation::getTypeName(2),
+               'label' => __('Sortie et saisie', 'assetsign'),
                'icon'  => WipeAttestation::getIcon(),
-               'pages' => [WipeAttestation::class],
+               'pages' => [WipeAttestation::class, CustodyCase::class],
            ],
            'maintenance' => [
                'label' => Maintenance::getTypeName(2),
@@ -91,6 +92,11 @@ final class MenuSection
                'page'     => 'wipe',
                'purpose'  => __('Les preuves d\'effacement des données d\'un matériel avant un don, une vente ou une destruction.', 'assetsign'),
                'expected' => __('Enregistrez une attestation pour chaque matériel qui quitte le parc. La liste du haut montre les matériels déjà sortis sans attestation, à rattraper.', 'assetsign'),
+           ],
+           CustodyCase::class => [
+               'page'     => 'custody',
+               'purpose'  => __('Les matériels retirés à leur utilisateur pour un incident de sécurité ou une enquête, et leur chaîne de possession : qui les a pris, quand, où ils sont stockés et chaque remise d\'une personne à une autre.', 'assetsign'),
+               'expected' => __('Une saisie s\'ouvre depuis l\'onglet « Chaîne de possession » du matériel, du ticket ou de l\'incident. Chaque transfert et la clôture sont signés par les deux personnes ; le PDF garde tout l\'historique et l\'empreinte de chaque version.', 'assetsign'),
            ],
            Maintenance::class => [
                'page'     => 'maintenance',

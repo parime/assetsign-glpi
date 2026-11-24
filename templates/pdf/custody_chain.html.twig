@@ -1,0 +1,110 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+<!DOCTYPE html>
+<html lang="{{ html_lang|default('fr') }}">
+<head>
+<meta charset="UTF-8">
+<title>{{ document_title }}</title>
+{% include '@assetsign/pdf/_pdf_style.html.twig' %}
+</head>
+<body>
+{# Issue #326 : chaîne de possession d'un matériel saisi, historique complet à chaque version. #}
+{% include '@assetsign/pdf/_doc_header.html.twig' with {doc_header_title: __('Chaîne de possession', 'assetsign')} %}
+
+{% if logo_data_uri or company_name %}
+<div class="header-logo">
+  {% if logo_data_uri %}<img src="{{ logo_data_uri }}" alt="">{% endif %}
+  {% if company_name %}<div class="company-name">{{ company_name }}</div>{% endif %}
+</div>
+{% endif %}
+
+<h1>{{ __('Chaîne de possession', 'assetsign') }}</h1>
+<p class="meta">{{ __('Chaîne de possession n°%1$d : version %2$d du document, établie le %3$s', 'assetsign')|format(case.id, version, generated_at|date('d/m/Y H:i')) }}</p>
+
+<h2>{{ __('Matériel saisi', 'assetsign') }}</h2>
+<table class="info-table">
+    <tr><th>{{ __('Type', 'assetsign') }}</th><td>{{ itemtype }}</td></tr>
+    <tr><th>{{ __('Nom GLPI', 'assetsign') }}</th><td>{{ item.name|default('-') }}</td></tr>
+    {% if item.manufacturer_name|default('') %}<tr><th>{{ __('Marque', 'assetsign') }}</th><td>{{ item.manufacturer_name }}</td></tr>{% endif %}
+    {% if item.model_name|default('') %}<tr><th>{{ __('Modèle', 'assetsign') }}</th><td>{{ item.model_name }}</td></tr>{% endif %}
+    <tr><th>{{ __('N° de série', 'assetsign') }}</th><td>{{ item.serial|default('-') }}</td></tr>
+    <tr><th>{{ __('N° d\'inventaire', 'assetsign') }}</th><td>{{ item.otherserial|default('-') }}</td></tr>
+</table>
+
+<h2>{{ __('Saisie', 'assetsign') }}</h2>
+<table class="info-table">
+    <tr><th>{{ __('Date de la saisie', 'assetsign') }}</th><td>{{ case.date_seized|date('d/m/Y H:i') }}</td></tr>
+    <tr><th>{{ __('N° de scellé', 'assetsign') }}</th><td>{{ case.seal_number|default('-') }}</td></tr>
+    <tr><th>{{ __('Motif', 'assetsign') }}</th><td style="white-space: pre-line;">{{ case.reason }}</td></tr>
+    <tr><th>{{ __('État constaté', 'assetsign') }}</th><td style="white-space: pre-line;">{{ case.condition_note|default('-') }}</td></tr>
+    {% if ticket_name %}<tr><th>{{ __('Ticket') }}</th><td>{{ ticket_name }} (n°{{ case.tickets_id }})</td></tr>{% endif %}
+    {% if incident_name %}<tr><th>{{ __('Incident de sécurité', 'assetsign') }}</th><td>{{ incident_name }} (n°{{ case.plugin_grcmanager_securityincidents_id }})</td></tr>{% endif %}
+    <tr><th>{{ __('Statut', 'assetsign') }}</th><td>{{ status_label }}{% if closure_label %} : {{ closure_label }}{% endif %}</td></tr>
+</table>
+
+{% if photos is not empty %}
+<h2>{{ __('Photos de la saisie', 'assetsign') }}</h2>
+<table class="info-table">
+    {% for p in photos %}
+    <tr>
+        <td style="width: 45%;">{% if p.image %}<img src="{{ p.image }}" style="max-width: 100%; max-height: 160px;">{% else %}-{% endif %}</td>
+        <td style="font-size: 8pt; word-break: break-all;">{{ __('Photo %d', 'assetsign')|format(loop.index) }}<br>SHA-256 : {{ p.sha256 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<h2>{{ __('Étapes signées', 'assetsign') }}</h2>
+{% for e in events %}
+<table class="info-table">
+    <tr><th colspan="2">{{ loop.index }}. {{ e.type_label }}{% if e.closure_label %} : {{ e.closure_label }}{% endif %} - {{ e.event_date|date('d/m/Y H:i') }}</th></tr>
+    <tr><th>{{ __('Remis par', 'assetsign') }}</th><td>{{ e.name_from }}</td></tr>
+    <tr><th>{{ __('Reçu par', 'assetsign') }}</th><td>{{ e.name_to }}</td></tr>
+    <tr><th>{{ __('Lieu de stockage', 'assetsign') }}</th><td>{{ e.location_name|default('-') }}{% if e.storage %} - {{ e.storage }}{% endif %}</td></tr>
+    {% if e.comment %}<tr><th>{{ __('Commentaire', 'assetsign') }}</th><td style="white-space: pre-line;">{{ e.comment }}</td></tr>{% endif %}
+    <tr>
+        <td style="width: 50%; text-align: center;">
+            {% if e.sig_from_image %}<img src="{{ e.sig_from_image }}" class="signature-img">{% endif %}
+            <p class="proof">{{ __('Signature de %s (remet)', 'assetsign')|format(e.name_from) }}</p>
+        </td>
+        <td style="width: 50%; text-align: center;">
+            {% if e.sig_to_image %}<img src="{{ e.sig_to_image }}" class="signature-img">{% endif %}
+            <p class="proof">{{ __('Signature de %s (reçoit)', 'assetsign')|format(e.name_to) }}</p>
+        </td>
+    </tr>
+    <tr><td colspan="2" class="proof" style="font-size: 7pt; word-break: break-all;">
+        {{ __('Signé sur place le %1$s, enregistré par %2$s', 'assetsign')|format(e.signed_at|date('d/m/Y H:i'), e.recorded_by|default('-')) }}{% if e.ip_address %} ({{ e.ip_address }}){% endif %}<br>
+        {{ __('Empreintes des signatures (SHA-256) : %1$s / %2$s', 'assetsign')|format(e.sig_from_hash, e.sig_to_hash) }}
+    </td></tr>
+</table>
+{% endfor %}
+
+<h2>{{ __('Versions précédentes de ce document', 'assetsign') }}</h2>
+{% if previous is empty %}
+<p class="legal-text">{{ __('Première version : aucune version précédente.', 'assetsign') }}</p>
+{% else %}
+<table class="info-table">
+    <tr><th>{{ __('Version', 'assetsign') }}</th><th>{{ __('Établie le', 'assetsign') }}</th><th>{{ __('Empreinte (SHA-256)', 'assetsign') }}</th></tr>
+    {% for p in previous %}
+    <tr><td>{{ p.version }}</td><td>{{ p.date|date('d/m/Y H:i') }}</td><td style="font-size: 8pt; word-break: break-all;">{{ p.hash }}</td></tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<p class="legal-text">{{ __('Chaque étape est signée sur place par la personne qui remet la pièce et par celle qui la reçoit. Une étape enregistrée ne se modifie plus : toute nouvelle étape produit une nouvelle version de ce document, qui reprend l\'empreinte des versions précédentes.', 'assetsign') }}</p>
+
+<div class="footer">{{ __('Chaîne de possession n°%1$d, version %2$d : Document généré par GLPI (plugin assetsign)', 'assetsign')|format(case.id, version) }}</div>
+</body>
+</html>

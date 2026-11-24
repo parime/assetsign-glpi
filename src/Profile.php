@@ -37,8 +37,12 @@ class Profile extends \CommonGLPI
     // organisation peut vouloir l'ouvrir a des techniciens qui n'ont pas acces
     // aux assetsigns/signatures.
    public const RIGHT_MAINTENANCE = 'plugin_assetsign_maintenance';
+    // Issue #326 : droit dedie a la chaine de possession d'un materiel saisi (incident, enquete) :
+    // une piece saisie n'est visible que des personnes autorisees, pas de tous les techniciens
+    // qui gerent les remises. Accorde seulement a Super-Admin a l'installation.
+   public const RIGHT_CUSTODY = 'plugin_assetsign_custody';
 
-   private const ALL_RIGHTS = [self::RIGHT_ASSETSIGN, self::RIGHT_CONFIG, self::RIGHT_TEMPLATE, self::RIGHT_MAINTENANCE];
+   private const ALL_RIGHTS = [self::RIGHT_ASSETSIGN, self::RIGHT_CONFIG, self::RIGHT_TEMPLATE, self::RIGHT_MAINTENANCE, self::RIGHT_CUSTODY];
 
     /**
      * Droits operationnels (utilisation quotidienne : consulter/creer/modifier
@@ -142,6 +146,7 @@ class Profile extends \CommonGLPI
            ['itemtype' => Assetsign::class, 'label' => Assetsign::getTypeName(\Session::getPluralNumber()), 'field' => self::RIGHT_ASSETSIGN],
            ['itemtype' => Maintenance::class, 'label' => Maintenance::getTypeName(\Session::getPluralNumber()), 'field' => self::RIGHT_MAINTENANCE],
            ['itemtype' => Template::class, 'label' => Template::getTypeName(\Session::getPluralNumber()), 'field' => self::RIGHT_TEMPLATE],
+           ['itemtype' => CustodyCase::class, 'label' => CustodyCase::getTypeName(\Session::getPluralNumber()), 'field' => self::RIGHT_CUSTODY],
            // Seule la modification du parametrage est controlee (Config::RIGHTNAME, UPDATE).
            ['rights' => [READ => __('Read'), UPDATE => __('Update')], 'label' => __('Setup'), 'field' => self::RIGHT_CONFIG],
        ];
