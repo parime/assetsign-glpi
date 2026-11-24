@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.31.0] - 2026-11-24
+
 ### Added
 
 - **Chaîne de possession d'un matériel saisi (#326, ISO 27001 A.5.28 collecte des preuves).**
@@ -21,6 +23,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   rubrique « Attestations d'effacement des données » devenant « Sortie et saisie ». Droit dédié
   « Chaînes de possession » sur le profil (Super-Admin seul à l'installation) ; écrans absents du
   passeport du matériel.
+
+- **Test des classes `*-subtle` / `*-emphasis`** (parime/glpi-plugin-template#10).
+  GLPI et Tabler ne définissent `bg-X-subtle` et `text-X-emphasis` que pour les couleurs de thème
+  (primary, success, warning, danger...) : un badge de couleur nommée (orange, blue, green...)
+  s'afficherait sans fond. AssetSign n'utilise aujourd'hui que des couleurs de thème ;
+  `tests/SubtleColorClassesTest.php` échoue dès que le code (Twig, PHP, JS) utilise une classe de
+  ce type que ni Tabler ni `public/css/assetsign.css` ne définissent, y compris les couleurs de
+  l'inventaire physique (`PhysicalInventory::getStatusColors()`).
 
 ### Changed
 
@@ -79,16 +89,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   imprimaient la même minute). Les flux sont maintenant lus selon leur longueur `/Length`, le nombre
   de pages vient de l'arbre des pages, et un échec affiche un diagnostic (taille, flux, début du
   PDF). Le code du plugin n'est pas en cause : le PDF produit était valide.
-
-### Added
-
-- **Test des classes `*-subtle` / `*-emphasis`** (parime/glpi-plugin-template#10).
-  GLPI et Tabler ne définissent `bg-X-subtle` et `text-X-emphasis` que pour les couleurs de thème
-  (primary, success, warning, danger...) : un badge de couleur nommée (orange, blue, green...)
-  s'afficherait sans fond. AssetSign n'utilise aujourd'hui que des couleurs de thème ;
-  `tests/SubtleColorClassesTest.php` échoue dès que le code (Twig, PHP, JS) utilise une classe de
-  ce type que ni Tabler ni `public/css/assetsign.css` ne définissent, y compris les couleurs de
-  l'inventaire physique (`PhysicalInventory::getStatusColors()`).
 
 ## [2.30.0] - 2026-11-21
 
