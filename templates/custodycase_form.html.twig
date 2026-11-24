@@ -93,16 +93,19 @@
   </div>
 
   {% if can_update %}
-    <div class="card mb-3">
+    {% for mode in ['transfer', 'close'] %}
+    <div class="card mb-3" id="assetsign-custody-{{ mode }}">
       <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs" role="tablist">
-          <li class="nav-item" role="presentation"><a href="#assetsign-custody-transfer" class="nav-link active" data-bs-toggle="tab" role="tab" aria-selected="true"><i class="ti ti-arrows-exchange me-1"></i>{{ __('Transférer la pièce', 'assetsign') }}</a></li>
-          <li class="nav-item" role="presentation"><a href="#assetsign-custody-close" class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" tabindex="-1"><i class="ti ti-lock-open me-1"></i>{{ __('Clôturer la saisie', 'assetsign') }}</a></li>
-        </ul>
+        <h3 class="card-title">
+          {% if mode == 'transfer' %}
+            <i class="ti ti-arrows-exchange me-2"></i>{{ __('Transférer la pièce', 'assetsign') }}
+          {% else %}
+            <i class="ti ti-lock-open me-2"></i>{{ __('Clôturer la saisie', 'assetsign') }}
+          {% endif %}
+        </h3>
       </div>
-      <div class="card-body tab-content">
-        {% for mode in ['transfer', 'close'] %}
-          <div class="tab-pane {{ mode == 'transfer' ? 'active show' : '' }}" id="assetsign-custody-{{ mode }}" role="tabpanel">
+      <div class="card-body">
+          <div>
             <p class="text-secondary">
               {% if mode == 'transfer' %}
                 {{ __('%s remet la pièce à une autre personne : les deux signent ici.', 'assetsign')|format(case.name_holder) }}
@@ -160,8 +163,8 @@
               </button>
             </form>
           </div>
-        {% endfor %}
       </div>
     </div>
+    {% endfor %}
   {% endif %}
 </div>
