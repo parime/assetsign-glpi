@@ -7642,3 +7642,296 @@ msgstr "Passaporti"
 
 msgid "Rubriques de la configuration"
 msgstr "Sezioni della configurazione"
+
+msgid "Chaîne de possession"
+msgid_plural "Chaînes de possession"
+msgstr[0] "Catena di custodia"
+msgstr[1] "Catene di custodia"
+
+msgid "Chaîne de possession n°%1$d : version %2$d du document, établie le %3$s"
+msgstr "Catena di custodia n. %1$d: versione %2$d del documento, redatta il %3$s"
+
+msgid "Matériel saisi"
+msgstr "Dispositivo sequestrato"
+
+msgid "Saisie"
+msgstr "Sequestro"
+
+msgid "Date de la saisie"
+msgstr "Data del sequestro"
+
+msgid "N° de scellé"
+msgstr "N. di sigillo"
+
+msgid "État constaté"
+msgstr "Stato rilevato"
+
+msgid "Incident de sécurité"
+msgstr "Incidente di sicurezza"
+
+msgid "Photos de la saisie"
+msgstr "Foto del sequestro"
+
+msgid "Photo %d"
+msgstr "Foto %d"
+
+msgid "Étapes signées"
+msgstr "Fasi firmate"
+
+msgid "Remis par"
+msgstr "Consegnato da"
+
+msgid "Reçu par"
+msgstr "Ricevuto da"
+
+msgid "Lieu de stockage"
+msgstr "Luogo di custodia"
+
+msgid "Signature de %s (remet)"
+msgstr "Firma di %s (consegna)"
+
+msgid "Signature de %s (reçoit)"
+msgstr "Firma di %s (riceve)"
+
+msgid "Signé sur place le %1$s, enregistré par %2$s"
+msgstr "Firmato sul posto il %1$s, registrato da %2$s"
+
+msgid "Empreintes des signatures (SHA-256) : %1$s / %2$s"
+msgstr "Impronte delle firme (SHA-256): %1$s / %2$s"
+
+msgid "Versions précédentes de ce document"
+msgstr "Versioni precedenti di questo documento"
+
+msgid "Première version : aucune version précédente."
+msgstr "Prima versione: nessuna versione precedente."
+
+msgid "Version"
+msgstr "Versione"
+
+msgid "Établie le"
+msgstr "Redatta il"
+
+msgid "Empreinte (SHA-256)"
+msgstr "Impronta (SHA-256)"
+
+msgid "Chaque étape est signée sur place par la personne qui remet la pièce et par celle qui la reçoit. Une étape enregistrée ne se modifie plus : toute nouvelle étape produit une nouvelle version de ce document, qui reprend l'empreinte des versions précédentes."
+msgstr "Ogni fase è firmata sul posto dalla persona che consegna il reperto e da quella che lo riceve. Una fase registrata non si modifica più: ogni nuova fase produce una nuova versione di questo documento, che riporta l'impronta delle versioni precedenti."
+
+msgid "Chaîne de possession n°%1$d, version %2$d : Document généré par GLPI (plugin assetsign)"
+msgstr "Catena di custodia n. %1$d, versione %2$d: Documento generato da GLPI (plugin assetsign)"
+
+msgid "Signature de la personne qui remet"
+msgstr "Firma della persona che consegna"
+
+msgid "Signature de la personne qui reçoit"
+msgstr "Firma della persona che riceve"
+
+msgid "Les deux personnes signent ici, sur cet écran, au moment de la remise. L'étape ne pourra plus être modifiée."
+msgstr "Le due persone firmano qui, su questo schermo, al momento della consegna. La fase non potrà più essere modificata."
+
+msgid "Chaîne de possession n°%d"
+msgstr "Catena di custodia n. %d"
+
+msgid "Télécharger le PDF (version %d)"
+msgstr "Scarica il PDF (versione %d)"
+
+msgid "Détenteur actuel"
+msgstr "Detentore attuale"
+
+msgid "Ouverte par"
+msgstr "Aperta da"
+
+msgid "Empreinte du PDF actuel (SHA-256)"
+msgstr "Impronta del PDF attuale (SHA-256)"
+
+msgid "Étape"
+msgstr "Fase"
+
+msgid "Version du PDF"
+msgstr "Versione del PDF"
+
+msgid "Enregistrée par %s"
+msgstr "Registrata da %s"
+
+msgid "Version %d"
+msgstr "Versione %d"
+
+msgid "Transférer la pièce"
+msgstr "Trasferire il reperto"
+
+msgid "Clôturer la saisie"
+msgstr "Chiudere il sequestro"
+
+msgid "%s remet la pièce à une autre personne : les deux signent ici."
+msgstr "%s consegna il reperto a un'altra persona: entrambe firmano qui."
+
+msgid "Fin de la saisie : la pièce est rendue à son utilisateur, conservée ou détruite. %s et la personne qui la reçoit (ou qui la détruit) signent ici."
+msgstr "Fine del sequestro: il reperto è restituito al suo utente, conservato o distrutto. %s e la persona che lo riceve (o che lo distrugge) firmano qui."
+
+msgid "Les deux personnes doivent signer avant l'enregistrement."
+msgstr "Le due persone devono firmare prima del salvataggio."
+
+msgid "Issue de la saisie"
+msgstr "Esito del sequestro"
+
+msgid "Choisissez"
+msgstr "Scegliere"
+
+msgid "Reçu par (ou détruit par)"
+msgstr "Ricevuto da (o distrutto da)"
+
+msgid "Ou nom d'une personne sans compte GLPI"
+msgstr "Oppure nome di una persona senza account GLPI"
+
+msgid "Précision sur le stockage"
+msgstr "Dettagli sulla custodia"
+
+msgid "Signer et clôturer"
+msgstr "Firma e chiudi"
+
+msgid "Signer le transfert"
+msgstr "Firma il trasferimento"
+
+msgid "Aucun matériel saisi ici."
+msgstr "Nessun dispositivo sequestrato qui."
+
+msgid "Quand un matériel est retiré à son utilisateur pour un incident ou une enquête, ouvrez sa chaîne de possession : chaque remise d'une personne à une autre y est signée par les deux, jusqu'à la restitution, la conservation ou la destruction."
+msgstr "Quando un dispositivo viene ritirato al suo utente per un incidente o un'indagine, aprite la sua catena di custodia: ogni consegna da una persona a un'altra è firmata da entrambe, fino alla restituzione, alla conservazione o alla distruzione."
+
+msgid "N°"
+msgstr "N."
+
+msgid "Ouvrir"
+msgstr "Apri"
+
+msgid "Saisir un matériel"
+msgstr "Sequestrare un dispositivo"
+
+msgid "Ajoutez d'abord le matériel concerné à %s (onglet des éléments liés), puis revenez ici pour ouvrir sa chaîne de possession."
+msgstr "Aggiungete prima il dispositivo interessato a %s (scheda degli elementi collegati), poi tornate qui per aprire la sua catena di custodia."
+
+msgid "Date et heure de la saisie"
+msgstr "Data e ora del sequestro"
+
+msgid "Ex. 17"
+msgstr "Es. 17"
+
+msgid "Motif de la saisie"
+msgstr "Motivo del sequestro"
+
+msgid "Ex. poste soupçonné d'être compromis, conservé pour analyse"
+msgstr "Es. postazione sospettata di essere compromessa, conservata per analisi"
+
+msgid "Ex. allumé, écran verrouillé, câble réseau débranché"
+msgstr "Es. acceso, schermo bloccato, cavo di rete scollegato"
+
+msgid "Ticket lié (facultatif)"
+msgstr "Ticket collegato (facoltativo)"
+
+msgid "Incident de sécurité lié (facultatif)"
+msgstr "Incidente di sicurezza collegato (facoltativo)"
+
+msgid "Remis par (personne à qui le matériel est retiré)"
+msgstr "Consegnato da (persona a cui viene ritirato il dispositivo)"
+
+msgid "Ex. armoire forte, étagère 2"
+msgstr "Es. armadio blindato, ripiano 2"
+
+msgid "Photos (facultatif)"
+msgstr "Foto (facoltative)"
+
+msgid "%d photos au plus ; leur empreinte SHA-256 figure sur le PDF."
+msgstr "Al massimo %d foto; la loro impronta SHA-256 compare nel PDF."
+
+msgid "Signer et ouvrir la chaîne de possession"
+msgstr "Firma e apri la catena di custodia"
+
+msgid "Chaîne de possession ouverte : la saisie est signée et le PDF enregistré."
+msgstr "Catena di custodia aperta: il sequestro è firmato e il PDF registrato."
+
+msgid "Une chaîne de possession s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident de sécurité."
+msgstr "Una catena di custodia si apre dalla scheda « Catena di custodia » del dispositivo, del ticket o dell'incidente di sicurezza."
+
+msgid "Saisie clôturée : le PDF a une nouvelle version."
+msgstr "Sequestro chiuso: il PDF ha una nuova versione."
+
+msgid "Transfert signé : le PDF a une nouvelle version."
+msgstr "Trasferimento firmato: il PDF ha una nuova versione."
+
+msgid "Sous scellé"
+msgstr "Sotto sigillo"
+
+msgid "Restitution à l'utilisateur"
+msgstr "Restituzione all'utente"
+
+msgid "Conservation (archivage de la pièce)"
+msgstr "Conservazione (archiviazione del reperto)"
+
+msgid "Indiquez le motif de la saisie."
+msgstr "Indicate il motivo del sequestro."
+
+msgid "Une saisie compte %d photos au plus."
+msgstr "Un sequestro conta al massimo %d foto."
+
+msgid "Indiquez la personne qui remet le matériel."
+msgstr "Indicate la persona che consegna il dispositivo."
+
+msgid "Indiquez la personne qui reçoit le matériel."
+msgstr "Indicate la persona che riceve il dispositivo."
+
+msgid "Ticket introuvable."
+msgstr "Ticket non trovato."
+
+msgid "Incident de sécurité introuvable."
+msgstr "Incidente di sicurezza non trovato."
+
+msgid "Échec de l'ouverture de la chaîne de possession."
+msgstr "Apertura della catena di custodia non riuscita."
+
+msgid "Photo de la saisie %1$d - chaîne de possession n°%2$d"
+msgstr "Foto del sequestro %1$d - catena di custodia n. %2$d"
+
+msgid "Choisissez l'issue de la saisie : restitution, conservation ou destruction."
+msgstr "Scegliete l'esito del sequestro: restituzione, conservazione o distruzione."
+
+msgid "Cette étape ne peut pas précéder la saisie."
+msgstr "Questa fase non può precedere il sequestro."
+
+msgid "Signature de la personne qui remet (%1$s) - chaîne de possession n°%2$d"
+msgstr "Firma della persona che consegna (%1$s) - catena di custodia n. %2$d"
+
+msgid "Signature de la personne qui reçoit (%1$s) - chaîne de possession n°%2$d"
+msgstr "Firma della persona che riceve (%1$s) - catena di custodia n. %2$d"
+
+msgid "Échec de l'enregistrement de la chaîne de possession."
+msgstr "Registrazione della catena di custodia non riuscita."
+
+msgid "La personne qui remet et celle qui reçoit doivent être différentes."
+msgstr "La persona che consegna e quella che riceve devono essere diverse."
+
+msgid "Cette chaîne de possession est clôturée : elle ne change plus."
+msgstr "Questa catena di custodia è chiusa: non cambia più."
+
+msgid "Date de l'étape invalide."
+msgstr "Data della fase non valida."
+
+msgid "La date de l'étape ne peut pas être dans le futur."
+msgstr "La data della fase non può essere nel futuro."
+
+msgid "%1$s - Chaîne de possession n°%2$d - %3$s (version %4$d)"
+msgstr "%1$s - Catena di custodia n. %2$d - %3$s (versione %4$d)"
+
+msgid "Transfert"
+msgstr "Trasferimento"
+
+msgid "Clôture"
+msgstr "Chiusura"
+
+msgid "Sortie et saisie"
+msgstr "Uscita e sequestro"
+
+msgid "Les matériels retirés à leur utilisateur pour un incident de sécurité ou une enquête, et leur chaîne de possession : qui les a pris, quand, où ils sont stockés et chaque remise d'une personne à une autre."
+msgstr "I dispositivi ritirati al loro utente per un incidente di sicurezza o un'indagine, e la loro catena di custodia: chi li ha presi, quando, dove sono custoditi e ogni consegna da una persona a un'altra."
+
+msgid "Une saisie s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident. Chaque transfert et la clôture sont signés par les deux personnes ; le PDF garde tout l'historique et l'empreinte de chaque version."
+msgstr "Un sequestro si apre dalla scheda « Catena di custodia » del dispositivo, del ticket o dell'incidente. Ogni trasferimento e la chiusura sono firmati da entrambe le persone; il PDF conserva tutta la cronologia e l'impronta di ogni versione."

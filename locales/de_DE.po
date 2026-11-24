@@ -7686,3 +7686,296 @@ msgstr "Pässe"
 
 msgid "Rubriques de la configuration"
 msgstr "Bereiche der Konfiguration"
+
+msgid "Chaîne de possession"
+msgid_plural "Chaînes de possession"
+msgstr[0] "Beweismittelkette"
+msgstr[1] "Beweismittelketten"
+
+msgid "Chaîne de possession n°%1$d : version %2$d du document, établie le %3$s"
+msgstr "Beweismittelkette Nr. %1$d: Version %2$d des Dokuments, erstellt am %3$s"
+
+msgid "Matériel saisi"
+msgstr "Sichergestelltes Gerät"
+
+msgid "Saisie"
+msgstr "Sicherstellung"
+
+msgid "Date de la saisie"
+msgstr "Datum der Sicherstellung"
+
+msgid "N° de scellé"
+msgstr "Siegel-Nr."
+
+msgid "État constaté"
+msgstr "Festgestellter Zustand"
+
+msgid "Incident de sécurité"
+msgstr "Sicherheitsvorfall"
+
+msgid "Photos de la saisie"
+msgstr "Fotos der Sicherstellung"
+
+msgid "Photo %d"
+msgstr "Foto %d"
+
+msgid "Étapes signées"
+msgstr "Unterzeichnete Schritte"
+
+msgid "Remis par"
+msgstr "Übergeben von"
+
+msgid "Reçu par"
+msgstr "Erhalten von"
+
+msgid "Lieu de stockage"
+msgstr "Lagerort"
+
+msgid "Signature de %s (remet)"
+msgstr "Unterschrift von %s (übergibt)"
+
+msgid "Signature de %s (reçoit)"
+msgstr "Unterschrift von %s (erhält)"
+
+msgid "Signé sur place le %1$s, enregistré par %2$s"
+msgstr "Vor Ort unterzeichnet am %1$s, erfasst von %2$s"
+
+msgid "Empreintes des signatures (SHA-256) : %1$s / %2$s"
+msgstr "Hashwerte der Unterschriften (SHA-256): %1$s / %2$s"
+
+msgid "Versions précédentes de ce document"
+msgstr "Frühere Versionen dieses Dokuments"
+
+msgid "Première version : aucune version précédente."
+msgstr "Erste Version: keine frühere Version."
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Établie le"
+msgstr "Erstellt am"
+
+msgid "Empreinte (SHA-256)"
+msgstr "Hashwert (SHA-256)"
+
+msgid "Chaque étape est signée sur place par la personne qui remet la pièce et par celle qui la reçoit. Une étape enregistrée ne se modifie plus : toute nouvelle étape produit une nouvelle version de ce document, qui reprend l'empreinte des versions précédentes."
+msgstr "Jeder Schritt wird vor Ort von der übergebenden und von der empfangenden Person unterzeichnet. Ein erfasster Schritt ist nicht mehr änderbar: Jeder neue Schritt erzeugt eine neue Version dieses Dokuments, die den Hashwert der früheren Versionen enthält."
+
+msgid "Chaîne de possession n°%1$d, version %2$d : Document généré par GLPI (plugin assetsign)"
+msgstr "Beweismittelkette Nr. %1$d, Version %2$d: Von GLPI erzeugtes Dokument (Plugin assetsign)"
+
+msgid "Signature de la personne qui remet"
+msgstr "Unterschrift der übergebenden Person"
+
+msgid "Signature de la personne qui reçoit"
+msgstr "Unterschrift der empfangenden Person"
+
+msgid "Les deux personnes signent ici, sur cet écran, au moment de la remise. L'étape ne pourra plus être modifiée."
+msgstr "Beide Personen unterschreiben hier auf diesem Bildschirm, im Moment der Übergabe. Der Schritt kann danach nicht mehr geändert werden."
+
+msgid "Chaîne de possession n°%d"
+msgstr "Beweismittelkette Nr. %d"
+
+msgid "Télécharger le PDF (version %d)"
+msgstr "PDF herunterladen (Version %d)"
+
+msgid "Détenteur actuel"
+msgstr "Aktueller Besitzer"
+
+msgid "Ouverte par"
+msgstr "Eröffnet von"
+
+msgid "Empreinte du PDF actuel (SHA-256)"
+msgstr "Hashwert des aktuellen PDF (SHA-256)"
+
+msgid "Étape"
+msgstr "Schritt"
+
+msgid "Version du PDF"
+msgstr "PDF-Version"
+
+msgid "Enregistrée par %s"
+msgstr "Erfasst von %s"
+
+msgid "Version %d"
+msgstr "Version %d"
+
+msgid "Transférer la pièce"
+msgstr "Gerät übergeben"
+
+msgid "Clôturer la saisie"
+msgstr "Sicherstellung abschließen"
+
+msgid "%s remet la pièce à une autre personne : les deux signent ici."
+msgstr "%s übergibt das Gerät an eine andere Person: Beide unterschreiben hier."
+
+msgid "Fin de la saisie : la pièce est rendue à son utilisateur, conservée ou détruite. %s et la personne qui la reçoit (ou qui la détruit) signent ici."
+msgstr "Ende der Sicherstellung: Das Gerät wird seinem Benutzer zurückgegeben, aufbewahrt oder vernichtet. %s und die Person, die es erhält (oder vernichtet), unterschreiben hier."
+
+msgid "Les deux personnes doivent signer avant l'enregistrement."
+msgstr "Beide Personen müssen vor dem Speichern unterschreiben."
+
+msgid "Issue de la saisie"
+msgstr "Ausgang der Sicherstellung"
+
+msgid "Choisissez"
+msgstr "Bitte wählen"
+
+msgid "Reçu par (ou détruit par)"
+msgstr "Erhalten von (oder vernichtet von)"
+
+msgid "Ou nom d'une personne sans compte GLPI"
+msgstr "Oder Name einer Person ohne GLPI-Konto"
+
+msgid "Précision sur le stockage"
+msgstr "Angaben zur Lagerung"
+
+msgid "Signer et clôturer"
+msgstr "Unterschreiben und abschließen"
+
+msgid "Signer le transfert"
+msgstr "Übergabe unterschreiben"
+
+msgid "Aucun matériel saisi ici."
+msgstr "Hier wurde kein Gerät sichergestellt."
+
+msgid "Quand un matériel est retiré à son utilisateur pour un incident ou une enquête, ouvrez sa chaîne de possession : chaque remise d'une personne à une autre y est signée par les deux, jusqu'à la restitution, la conservation ou la destruction."
+msgstr "Wenn ein Gerät seinem Benutzer für einen Vorfall oder eine Untersuchung abgenommen wird, eröffnen Sie seine Beweismittelkette: Jede Übergabe von einer Person an eine andere wird von beiden unterschrieben, bis zur Rückgabe, Aufbewahrung oder Vernichtung."
+
+msgid "N°"
+msgstr "Nr."
+
+msgid "Ouvrir"
+msgstr "Öffnen"
+
+msgid "Saisir un matériel"
+msgstr "Gerät sicherstellen"
+
+msgid "Ajoutez d'abord le matériel concerné à %s (onglet des éléments liés), puis revenez ici pour ouvrir sa chaîne de possession."
+msgstr "Fügen Sie zuerst das betroffene Gerät zu %s hinzu (Registerkarte der verknüpften Elemente) und kehren Sie dann hierher zurück, um seine Beweismittelkette zu eröffnen."
+
+msgid "Date et heure de la saisie"
+msgstr "Datum und Uhrzeit der Sicherstellung"
+
+msgid "Ex. 17"
+msgstr "Z. B. 17"
+
+msgid "Motif de la saisie"
+msgstr "Grund der Sicherstellung"
+
+msgid "Ex. poste soupçonné d'être compromis, conservé pour analyse"
+msgstr "Z. B. Arbeitsplatz vermutlich kompromittiert, zur Analyse aufbewahrt"
+
+msgid "Ex. allumé, écran verrouillé, câble réseau débranché"
+msgstr "Z. B. eingeschaltet, Bildschirm gesperrt, Netzwerkkabel abgezogen"
+
+msgid "Ticket lié (facultatif)"
+msgstr "Verknüpftes Ticket (optional)"
+
+msgid "Incident de sécurité lié (facultatif)"
+msgstr "Verknüpfter Sicherheitsvorfall (optional)"
+
+msgid "Remis par (personne à qui le matériel est retiré)"
+msgstr "Übergeben von (Person, der das Gerät abgenommen wird)"
+
+msgid "Ex. armoire forte, étagère 2"
+msgstr "Z. B. Tresorraum, Regal 2"
+
+msgid "Photos (facultatif)"
+msgstr "Fotos (optional)"
+
+msgid "%d photos au plus ; leur empreinte SHA-256 figure sur le PDF."
+msgstr "Höchstens %d Fotos; ihr SHA-256-Hashwert steht im PDF."
+
+msgid "Signer et ouvrir la chaîne de possession"
+msgstr "Unterschreiben und Beweismittelkette eröffnen"
+
+msgid "Chaîne de possession ouverte : la saisie est signée et le PDF enregistré."
+msgstr "Beweismittelkette eröffnet: Die Sicherstellung ist unterschrieben und das PDF gespeichert."
+
+msgid "Une chaîne de possession s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident de sécurité."
+msgstr "Eine Beweismittelkette wird über die Registerkarte « Beweismittelkette » des Geräts, des Tickets oder des Sicherheitsvorfalls eröffnet."
+
+msgid "Saisie clôturée : le PDF a une nouvelle version."
+msgstr "Sicherstellung abgeschlossen: Das PDF hat eine neue Version."
+
+msgid "Transfert signé : le PDF a une nouvelle version."
+msgstr "Übergabe unterschrieben: Das PDF hat eine neue Version."
+
+msgid "Sous scellé"
+msgstr "Versiegelt"
+
+msgid "Restitution à l'utilisateur"
+msgstr "Rückgabe an den Benutzer"
+
+msgid "Conservation (archivage de la pièce)"
+msgstr "Aufbewahrung (Archivierung des Geräts)"
+
+msgid "Indiquez le motif de la saisie."
+msgstr "Geben Sie den Grund der Sicherstellung an."
+
+msgid "Une saisie compte %d photos au plus."
+msgstr "Eine Sicherstellung umfasst höchstens %d Fotos."
+
+msgid "Indiquez la personne qui remet le matériel."
+msgstr "Geben Sie die Person an, die das Gerät übergibt."
+
+msgid "Indiquez la personne qui reçoit le matériel."
+msgstr "Geben Sie die Person an, die das Gerät erhält."
+
+msgid "Ticket introuvable."
+msgstr "Ticket nicht gefunden."
+
+msgid "Incident de sécurité introuvable."
+msgstr "Sicherheitsvorfall nicht gefunden."
+
+msgid "Échec de l'ouverture de la chaîne de possession."
+msgstr "Die Beweismittelkette konnte nicht eröffnet werden."
+
+msgid "Photo de la saisie %1$d - chaîne de possession n°%2$d"
+msgstr "Foto der Sicherstellung %1$d - Beweismittelkette Nr. %2$d"
+
+msgid "Choisissez l'issue de la saisie : restitution, conservation ou destruction."
+msgstr "Wählen Sie den Ausgang der Sicherstellung: Rückgabe, Aufbewahrung oder Vernichtung."
+
+msgid "Cette étape ne peut pas précéder la saisie."
+msgstr "Dieser Schritt kann nicht vor der Sicherstellung liegen."
+
+msgid "Signature de la personne qui remet (%1$s) - chaîne de possession n°%2$d"
+msgstr "Unterschrift der übergebenden Person (%1$s) - Beweismittelkette Nr. %2$d"
+
+msgid "Signature de la personne qui reçoit (%1$s) - chaîne de possession n°%2$d"
+msgstr "Unterschrift der empfangenden Person (%1$s) - Beweismittelkette Nr. %2$d"
+
+msgid "Échec de l'enregistrement de la chaîne de possession."
+msgstr "Die Beweismittelkette konnte nicht gespeichert werden."
+
+msgid "La personne qui remet et celle qui reçoit doivent être différentes."
+msgstr "Die übergebende und die empfangende Person müssen verschieden sein."
+
+msgid "Cette chaîne de possession est clôturée : elle ne change plus."
+msgstr "Diese Beweismittelkette ist abgeschlossen: Sie ändert sich nicht mehr."
+
+msgid "Date de l'étape invalide."
+msgstr "Ungültiges Datum des Schritts."
+
+msgid "La date de l'étape ne peut pas être dans le futur."
+msgstr "Das Datum des Schritts darf nicht in der Zukunft liegen."
+
+msgid "%1$s - Chaîne de possession n°%2$d - %3$s (version %4$d)"
+msgstr "%1$s - Beweismittelkette Nr. %2$d - %3$s (Version %4$d)"
+
+msgid "Transfert"
+msgstr "Übergabe"
+
+msgid "Clôture"
+msgstr "Abschluss"
+
+msgid "Sortie et saisie"
+msgstr "Ausgang und Sicherstellung"
+
+msgid "Les matériels retirés à leur utilisateur pour un incident de sécurité ou une enquête, et leur chaîne de possession : qui les a pris, quand, où ils sont stockés et chaque remise d'une personne à une autre."
+msgstr "Geräte, die ihrem Benutzer für einen Sicherheitsvorfall oder eine Untersuchung abgenommen wurden, und ihre Beweismittelkette: wer sie genommen hat, wann, wo sie gelagert werden und jede Übergabe von einer Person an eine andere."
+
+msgid "Une saisie s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident. Chaque transfert et la clôture sont signés par les deux personnes ; le PDF garde tout l'historique et l'empreinte de chaque version."
+msgstr "Eine Sicherstellung wird über die Registerkarte « Beweismittelkette » des Geräts, des Tickets oder des Vorfalls eröffnet. Jede Übergabe und der Abschluss werden von beiden Personen unterschrieben; das PDF bewahrt den gesamten Verlauf und den Hashwert jeder Version."

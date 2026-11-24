@@ -74,6 +74,9 @@ expect "front/movement.form.php : mouvement de B"             $NF   "$(code "$P/
 # Issue #322 : attestation d'effacement des donnees.
 expect "front/wipeattestation.form.php : attestation de A"    200   "$(code "$P/wipeattestation.form.php?id=$(id wipe_A)")"
 expect "front/wipeattestation.form.php : attestation de B"    $NF   "$(code "$P/wipeattestation.form.php?id=$(id wipe_B)")"
+# Issue #326 : chaine de possession d'un materiel saisi.
+expect "front/custodycase.form.php : saisie de A"             200   "$(code "$P/custodycase.form.php?id=$(id custody_A)")"
+expect "front/custodycase.form.php : saisie de B"             $NF   "$(code "$P/custodycase.form.php?id=$(id custody_B)")"
 expect "front/departure.form.php : depart de A"               200   "$(code "$P/departure.form.php?id=$(id departure_A)")"
 expect "front/departure.form.php : depart de B"               $DENY "$(code "$P/departure.form.php?id=$(id departure_B)")"
 expect "front/campaign.form.php : campagne de A"              200   "$(code "$P/campaign.form.php?id=$(id campaign_A)")"
@@ -116,13 +119,13 @@ expect "front/assetsign.form.php : nouvelle attribution, PC de A" 200 "$(code "$
 expect "front/assetsign.form.php : nouvelle attribution, PC de B" $NF "$(code "$P/assetsign.form.php?itemtype=Computer&items_id=$(id computer_B)")"
 
 # --- Listes et tableaux : objets de A seulement (et la page ne plante pas) ---
-for list in front/assetsign.php front/maintenance.php front/movement.php front/wipeattestation.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php front/integrity.php front/physicalinventory.php; do
+for list in front/assetsign.php front/maintenance.php front/movement.php front/wipeattestation.php front/custodycase.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php front/integrity.php front/physicalinventory.php; do
   body=$(page "$BASE/plugins/assetsign/$list?all=1")
   expect "$list : la liste s'affiche" 200 "$(code "$BASE/plugins/assetsign/$list?all=1")"
   # Ces listes nomment les objets : le super-admin y voit B, le technicien jamais. Les autres ne
   # nomment pas les objets : elles doivent seulement s'afficher sans erreur et sans B.
   case "$list" in
-    front/assetsign.php|front/maintenance.php|front/wipeattestation.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php|front/integrity.php|front/physicalinventory.php)
+    front/assetsign.php|front/maintenance.php|front/wipeattestation.php|front/custodycase.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php|front/integrity.php|front/physicalinventory.php)
       shows "$list : objets de B" "securite B" "$SEE_B" "$body" ;;
     *)
       shows "$list : aucun objet de B" "securite B" non "$body" ;;
@@ -130,7 +133,7 @@ for list in front/assetsign.php front/maintenance.php front/movement.php front/w
   # Issue #336 : encadré « À quoi sert cette page ? » sur les pages d'usage (les pages d'intitulés
   # n'en ont pas). Pour un profil sans le droit, la page répond 403 avant tout affichage.
   case "$list" in
-    front/assetsign.php|front/maintenance.php|front/movement.php|front/wipeattestation.php|front/departure.php|front/campaign.php|front/csr.php|front/renewal.php|front/integrity.php|front/physicalinventory.php)
+    front/assetsign.php|front/maintenance.php|front/movement.php|front/wipeattestation.php|front/custodycase.php|front/departure.php|front/campaign.php|front/csr.php|front/renewal.php|front/integrity.php|front/physicalinventory.php)
       shows "$list : encadré d'aide" "assetsign-page-help" oui "$body" ;;
   esac
 done
@@ -156,6 +159,10 @@ expect "front/maintenance.form.php : maintenance d'un PC de B" $NF_POST "$(post 
 expect "front/movement.form.php : mouvement d'un PC de B"    $NF_POST "$(post movement.form.php "create=1&itemtype=Computer&items_id=$(id computer_B)&locations_id_to=0")"
 expect "front/wipeattestation.form.php : attestation d'un PC de B" $NF_POST "$(post wipeattestation.form.php "create=1&itemtype=Computer&items_id=$(id computer_B)&method=overwrite&media_other=disque")"
 expect "front/wipeattestation.form.php : annuler l'attestation de B" $NF_POST "$(post wipeattestation.form.php "cancel_attestation=1&id=$(id wipe_B)&cancel_reason=test")"
+# Issue #326 : saisie d'un PC de B, transfert et cloture d'une saisie de B.
+expect "front/custodycase.form.php : saisie d'un PC de B"     $NF_POST "$(post custodycase.form.php "open=1&item=Computer:$(id computer_B)&reason=securite")"
+expect "front/custodycase.form.php : transfert de la saisie de B" $NF_POST "$(post custodycase.form.php "transfer=1&id=$(id custody_B)&name_to=securite")"
+expect "front/custodycase.form.php : cloture de la saisie de B" $NF_POST "$(post custodycase.form.php "close=1&id=$(id custody_B)&closure=returned&name_to=securite")"
 if [ "$ROLE" = limited ]; then
   # Appel AJAX : le refus est rendu en JSON ("success":false), pas par un code HTTP.
   marker=$(curl -s -c "$JAR" -b "$JAR" \
