@@ -127,6 +127,14 @@ if (($argv[1] ?? '') === 'xss') {
         'comment' => $canary, 'tool' => $canary, 'signer_name' => $canary, 'cancel_reason' => $canary, 'is_cancelled' => 1,
         'media' => json_encode([['label' => $canary, 'serial' => $canary, 'capacity' => $canary, 'encryption' => $canary, 'source' => 'manual']]),
     ], ['id' => $ids['wipe_A']]);
+    // Issue #326 : chaine de possession (fiche et etape signee).
+    $set('custodycases', [
+        'reason' => $canary, 'condition_note' => $canary, 'seal_number' => $canary, 'name_holder' => $canary, 'storage' => $canary,
+    ], ['id' => $ids['custody_A']]);
+    $DB->insert('glpi_plugin_assetsign_custodyevents', [
+        'plugin_assetsign_custodycases_id' => $ids['custody_A'], 'event_type' => 1, 'event_date' => date('Y-m-d H:i:s'),
+        'name_from' => $canary, 'name_to' => $canary, 'storage' => $canary, 'comment' => $canary, 'pdf_hash' => $canary,
+    ]);
     foreach (['templates', 'kits', 'accessories', 'checklistitems', 'maintenancechecklistitems'] as $table) {
         $set($table, ['name' => $canary, 'comment' => $canary], ['id' => $ids[$table . '_A']]);
     }
@@ -161,7 +169,7 @@ if (($argv[1] ?? '') === 'snapshot') {
     $snapshot = [
         'computer_B.users_id' => (int) ($DB->request(['SELECT' => ['users_id'], 'FROM' => 'glpi_computers', 'WHERE' => ['id' => $computerB]])->current()['users_id'] ?? -1),
     ];
-    foreach (['assetsigns', 'maintenances', 'movements', 'wipeattestations', 'residualvalues', 'environmentaldatas', 'events'] as $table) {
+    foreach (['assetsigns', 'maintenances', 'movements', 'wipeattestations', 'custodycases', 'residualvalues', 'environmentaldatas', 'events'] as $table) {
         $snapshot[$table . '(computer_B)'] = countElementsInTable('glpi_plugin_assetsign_' . $table, ['itemtype' => 'Computer', 'items_id' => $computerB]);
     }
     foreach ($DB->request(['FROM' => 'glpi_plugin_assetsign_assetsigns', 'WHERE' => ['itemtype' => 'Computer', 'items_id' => $computerB]]) as $row) {
@@ -171,6 +179,10 @@ if (($argv[1] ?? '') === 'snapshot') {
         // Issue #276 : version papier (impression tracee, scan joint).
         $snapshot['assetsign_B.paper'] = (string) ($row['paper_printed_at'] ?? '') . '/' . (int) ($row['document_id_paper_scan'] ?? 0);
     }
+    // Issue #326 : etapes des chaines de possession de l'entite B (aucune ne doit s'ajouter).
+    $snapshot['custodyevents_B'] = countElementsInTable('glpi_plugin_assetsign_custodyevents', [
+        'plugin_assetsign_custodycases_id' => array_merge([0], array_column(iterator_to_array($DB->request(['SELECT' => ['id'], 'FROM' => 'glpi_plugin_assetsign_custodycases', 'WHERE' => ['entities_id' => $b]])), 'id')),
+    ]);
     // Issue #221 : dossiers d'arrivee et tickets de l'entite B.
     $snapshot['arrivals_B'] = countElementsInTable('glpi_plugin_assetsign_arrivals', ['entities_id' => $b]);
     $snapshot['tickets_B'] = countElementsInTable('glpi_tickets', ['entities_id' => $b]);
@@ -222,6 +234,7 @@ $profileId = (int) $profile->getID();
 ProfileRight::updateProfileRights($profileId, [
     'plugin_assetsign_assetsign'   => ALLSTANDARDRIGHT,
     'plugin_assetsign_maintenance' => ALLSTANDARDRIGHT,
+    'plugin_assetsign_custody'     => ALLSTANDARDRIGHT,
     'plugin_assetsign_template'    => ALLSTANDARDRIGHT,
     'plugin_assetsign_config'      => ALLSTANDARDRIGHT,
     'dropdown'                     => ALLSTANDARDRIGHT,
@@ -280,6 +293,12 @@ foreach (['A' => $a, 'B' => $b] as $suffix => $entity) {
     $ids['wipe_' . $suffix] = $insert('glpi_plugin_assetsign_wipeattestations', [
         'entities_id' => $entity, 'itemtype' => 'Computer', 'items_id' => $ids['computer_' . $suffix],
         'method' => 'overwrite', 'date_wipe' => date('Y-m-d H:i:s'), 'media' => '[]',
+    ]);
+    // Issue #326 : chaine de possession ouverte.
+    $ids['custody_' . $suffix] = $insert('glpi_plugin_assetsign_custodycases', [
+        'entities_id' => $entity, 'itemtype' => 'Computer', 'items_id' => $ids['computer_' . $suffix],
+        'reason' => 'Saisie securite ' . $suffix, 'seal_number' => 'Scelle securite ' . $suffix, 'date_seized' => date('Y-m-d H:i:s'),
+        'users_id_holder' => $leaving, 'name_holder' => 'Detenteur securite ' . $suffix,
     ]);
     $ids['departure_' . $suffix] = $insert('glpi_plugin_assetsign_departures', [
         'entities_id' => $entity, 'users_id' => $leaving, 'status' => 1, 'trigger_type' => 1,

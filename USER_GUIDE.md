@@ -21,7 +21,7 @@ AssetSign n'ajoute **qu'une entrée** aux menus de GLPI : **Parc > AssetSign**. 
 | Rubrique | Pages |
 |---|---|
 | **Attributions** | Attributions (liste et nouvelle attribution), Mouvements, Départs, Campagnes d'attestation |
-| **Attestations d'effacement des données** | Attestations et matériels sortis sans attestation |
+| **Sortie et saisie** | Attestations d'effacement des données (et matériels sortis sans attestation), Chaînes de possession des matériels saisis |
 | **Fiches de maintenance** | Fiches de maintenance et de préparation de poste |
 | **Pilotage du parc** | Tableau de bord RSE, Renouvellement du parc, Contrôle d'intégrité des preuves, Inventaires physiques |
 
@@ -252,6 +252,29 @@ jamais le parc : corrigez les écarts depuis la fiche du matériel. Il faut le d
 AssetSign pour consulter, et le droit de modification pour créer une campagne et scanner ; seul le
 matériel de vos entités est pris en compte.
 
+### Chaîne de possession d'un matériel saisi
+
+Quand un ordinateur, un téléphone ou un disque est retiré à son utilisateur pour un incident de
+sécurité ou une enquête, ouvrez sa **chaîne de possession** depuis l'onglet **Chaîne de possession**
+du matériel, du ticket ou de l'incident de sécurité (quand le plugin GRC est installé) : date et heure,
+motif, état constaté, numéro de scellé, photos, lieu de stockage. La personne qui remet le matériel
+et celle qui le reçoit **signent toutes les deux sur l'écran** ; une personne sans compte GLPI
+(enquêteur externe, prestataire) se saisit par son nom.
+
+Chaque **transfert** (de A à B, avec le nouveau lieu de stockage) et la **clôture** (restitution à
+l'utilisateur, conservation ou destruction) se signent de la même façon depuis la fiche. Une étape
+enregistrée ne se modifie plus et la fiche ne se supprime pas. Après chaque étape, un **nouveau PDF**
+reprend tout l'historique avec les deux signatures de chaque étape, l'empreinte SHA-256 des photos et
+celle de chaque version précédente du document : les versions précédentes restent jointes, une
+version retouchée se voit à la lecture de la suivante. Le PDF est joint à la fiche, au matériel, au
+ticket et à l'incident (le registre des preuves de GRC l'inscrit avec son empreinte).
+
+La liste de toutes les pièces saisies est dans Parc > AssetSign > Sortie et saisie > **Chaînes de
+possession**. Ces écrans exigent le **droit dédié « Chaînes de possession »** (Administration >
+Profils > onglet AssetSign), accordé au seul Super-Admin à l'installation : le droit des remises ne
+suffit pas. Exemple fictif : « Portable PC-0042 saisi le 3 mars, scellé n° 17, remis par le
+technicien à l'équipe d'investigation, stocké dans l'armoire forte du site de Lyon ».
+
 ### Alternative au cron GLPI
 
 Le CronTask GLPI (**Administration > Actions automatiques** > `assetsignReminders` / `assetsignExpire` / `assetsignExpiryWarning`) est actif par défaut et suffit dans la plupart des cas.
@@ -337,7 +360,7 @@ AssetSign adds **a single entry** to GLPI's menus: **Assets > AssetSign**. At th
 | Section | Pages |
 |---|---|
 | **Assignments** | Assignments (list and new assignment), Movements, Departures, Attestation campaigns |
-| **Data wiping attestations** | Attestations and equipment that left without one |
+| **Exit and seizure** | Data wiping attestations (and equipment that left without one), Chains of custody of seized items |
 | **Maintenance records** | Maintenance and workstation preparation records |
 | **Fleet management** | CSR dashboard, Fleet renewal, Integrity check of signed proofs, Physical inventories |
 
@@ -548,6 +571,27 @@ this location, not scanned), *Extra* (a code matching no item of your entities).
 the inventory evidence; **Close the campaign** freezes the report. The plugin never changes the
 fleet: fix the gaps from the item's form. Viewing requires the AssetSign read right; creating a
 campaign and scanning require the update right; only items of your entities are taken into account.
+
+### Chain of custody of a seized item
+
+When a computer, a phone or a disk is taken from its user for a security incident or an
+investigation, open its **chain of custody** from the **Chain of custody** tab of the item, of the
+ticket or of the security incident (when the GRC plugin is installed): date and time, reason,
+observed condition, seal number, photos, storage location. The person handing the item over and the
+person receiving it **both sign on the screen**; a person without a GLPI account (external
+investigator, contractor) is entered by name.
+
+Each **transfer** (from A to B, with the new storage location) and the **closure** (return to the
+user, retention or destruction) are signed the same way from the record. A recorded step can no
+longer be changed and the record cannot be deleted. After each step, a **new PDF** contains the whole
+history with both signatures of each step, the SHA-256 hash of the photos and that of every previous
+version of the document: previous versions stay attached, and a tampered version shows when reading
+the next one. The PDF is attached to the record, the item, the ticket and the incident (the GRC
+evidence register records it with its hash).
+
+The list of all seized items is in Assets > AssetSign > Exit and seizure > **Chains of custody**.
+These screens require the **dedicated "Chains of custody" right** (Administration > Profiles >
+AssetSign tab), granted only to Super-Admin on installation: the handover right is not enough.
 
 ### Alternative to the GLPI cron
 

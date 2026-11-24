@@ -8079,3 +8079,450 @@ msgstr ""
 #: templates/config_form.html.twig
 msgid "Rubriques de la configuration"
 msgstr ""
+
+#: templates/pdf/custody_chain.html.twig src/CustodyCase.php:76
+#: src/CustodyCase.php:223
+msgid "Chaîne de possession"
+msgid_plural "Chaînes de possession"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/pdf/custody_chain.html.twig
+#, php-format
+msgid "Chaîne de possession n°%1$d : version %2$d du document, établie le %3$s"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_tab.html.twig
+msgid "Matériel saisi"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig src/CustodyEvent.php:41
+msgid "Saisie"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+#: templates/custodycase_tab.html.twig src/CustodyCase.php:150
+msgid "Date de la saisie"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+#: templates/custodycase_tab.html.twig src/CustodyCase.php:149
+msgid "N° de scellé"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+#: templates/custodycase_tab.html.twig
+msgid "État constaté"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+#: src/CustodyCase.php:250
+msgid "Incident de sécurité"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+msgid "Photos de la saisie"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+#, php-format
+msgid "Photo %d"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+msgid "Étapes signées"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+msgid "Remis par"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+#: templates/custodycase_tab.html.twig
+msgid "Reçu par"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig templates/custodycase_form.html.twig
+#: templates/custodycase_tab.html.twig src/CustodyCase.php:153
+msgid "Lieu de stockage"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+#, php-format
+msgid "Signature de %s (remet)"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+#, php-format
+msgid "Signature de %s (reçoit)"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+#, php-format
+msgid "Signé sur place le %1$s, enregistré par %2$s"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+#, php-format
+msgid "Empreintes des signatures (SHA-256) : %1$s / %2$s"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+msgid "Versions précédentes de ce document"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+msgid "Première version : aucune version précédente."
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+msgid "Version"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+msgid "Établie le"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+msgid "Empreinte (SHA-256)"
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+msgid ""
+"Chaque étape est signée sur place par la personne qui remet la pièce et par "
+"celle qui la reçoit. Une étape enregistrée ne se modifie plus : toute "
+"nouvelle étape produit une nouvelle version de ce document, qui reprend "
+"l'empreinte des versions précédentes."
+msgstr ""
+
+#: templates/pdf/custody_chain.html.twig
+#, php-format
+msgid ""
+"Chaîne de possession n°%1$d, version %2$d : Document généré par GLPI (plugin "
+"assetsign)"
+msgstr ""
+
+#: templates/_custody_signatures.html.twig
+msgid "Signature de la personne qui remet"
+msgstr ""
+
+#: templates/_custody_signatures.html.twig
+msgid "Signature de la personne qui reçoit"
+msgstr ""
+
+#: templates/_custody_signatures.html.twig
+msgid ""
+"Les deux personnes signent ici, sur cet écran, au moment de la remise. "
+"L'étape ne pourra plus être modifiée."
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+#, php-format
+msgid "Chaîne de possession n°%d"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+#, php-format
+msgid "Télécharger le PDF (version %d)"
+msgstr ""
+
+#: templates/custodycase_form.html.twig templates/custodycase_tab.html.twig
+#: src/CustodyCase.php:152
+msgid "Détenteur actuel"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+msgid "Ouverte par"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+msgid "Empreinte du PDF actuel (SHA-256)"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+msgid "Étape"
+msgstr ""
+
+#: templates/custodycase_form.html.twig src/CustodyCase.php:157
+msgid "Version du PDF"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+#, php-format
+msgid "Enregistrée par %s"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+#, php-format
+msgid "Version %d"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+msgid "Transférer la pièce"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+msgid "Clôturer la saisie"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+#, php-format
+msgid "%s remet la pièce à une autre personne : les deux signent ici."
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+#, php-format
+msgid ""
+"Fin de la saisie : la pièce est rendue à son utilisateur, conservée ou "
+"détruite. %s et la personne qui la reçoit (ou qui la détruit) signent ici."
+msgstr ""
+
+#: templates/custodycase_form.html.twig templates/custodycase_tab.html.twig
+msgid "Les deux personnes doivent signer avant l'enregistrement."
+msgstr ""
+
+#: templates/custodycase_form.html.twig src/CustodyCase.php:155
+msgid "Issue de la saisie"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+msgid "Choisissez"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+msgid "Reçu par (ou détruit par)"
+msgstr ""
+
+#: templates/custodycase_form.html.twig templates/custodycase_tab.html.twig
+msgid "Ou nom d'une personne sans compte GLPI"
+msgstr ""
+
+#: templates/custodycase_form.html.twig templates/custodycase_tab.html.twig
+msgid "Précision sur le stockage"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+msgid "Signer et clôturer"
+msgstr ""
+
+#: templates/custodycase_form.html.twig
+msgid "Signer le transfert"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Aucun matériel saisi ici."
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid ""
+"Quand un matériel est retiré à son utilisateur pour un incident ou une "
+"enquête, ouvrez sa chaîne de possession : chaque remise d'une personne à une "
+"autre y est signée par les deux, jusqu'à la restitution, la conservation ou "
+"la destruction."
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "N°"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Ouvrir"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Saisir un matériel"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+#, php-format
+msgid ""
+"Ajoutez d'abord le matériel concerné à %s (onglet des éléments liés), puis "
+"revenez ici pour ouvrir sa chaîne de possession."
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Date et heure de la saisie"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Ex. 17"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Motif de la saisie"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Ex. poste soupçonné d'être compromis, conservé pour analyse"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Ex. allumé, écran verrouillé, câble réseau débranché"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Ticket lié (facultatif)"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Incident de sécurité lié (facultatif)"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Remis par (personne à qui le matériel est retiré)"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Ex. armoire forte, étagère 2"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Photos (facultatif)"
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+#, php-format
+msgid "%d photos au plus ; leur empreinte SHA-256 figure sur le PDF."
+msgstr ""
+
+#: templates/custodycase_tab.html.twig
+msgid "Signer et ouvrir la chaîne de possession"
+msgstr ""
+
+#: front/custodycase.form.php:31
+msgid ""
+"Chaîne de possession ouverte : la saisie est signée et le PDF enregistré."
+msgstr ""
+
+#: front/custodycase.form.php:43
+msgid ""
+"Une chaîne de possession s'ouvre depuis l'onglet « Chaîne de possession » du "
+"matériel, du ticket ou de l'incident de sécurité."
+msgstr ""
+
+#: front/custodycase.form.php:56
+msgid "Saisie clôturée : le PDF a une nouvelle version."
+msgstr ""
+
+#: front/custodycase.form.php:59
+msgid "Transfert signé : le PDF a une nouvelle version."
+msgstr ""
+
+#: src/CustodyCase.php:96
+msgid "Sous scellé"
+msgstr ""
+
+#: src/CustodyCase.php:108
+msgid "Restitution à l'utilisateur"
+msgstr ""
+
+#: src/CustodyCase.php:109
+msgid "Conservation (archivage de la pièce)"
+msgstr ""
+
+#: src/CustodyCase.php:340
+msgid "Indiquez le motif de la saisie."
+msgstr ""
+
+#: src/CustodyCase.php:343
+#, php-format
+msgid "Une saisie compte %d photos au plus."
+msgstr ""
+
+#: src/CustodyCase.php:346
+msgid "Indiquez la personne qui remet le matériel."
+msgstr ""
+
+#: src/CustodyCase.php:347 src/CustodyCase.php:450
+msgid "Indiquez la personne qui reçoit le matériel."
+msgstr ""
+
+#: src/CustodyCase.php:352
+msgid "Ticket introuvable."
+msgstr ""
+
+#: src/CustodyCase.php:356
+msgid "Incident de sécurité introuvable."
+msgstr ""
+
+#: src/CustodyCase.php:386
+msgid "Échec de l'ouverture de la chaîne de possession."
+msgstr ""
+
+#: src/CustodyCase.php:391
+#, php-format
+msgid "Photo de la saisie %1$d - chaîne de possession n°%2$d"
+msgstr ""
+
+#: src/CustodyCase.php:436
+msgid ""
+"Choisissez l'issue de la saisie : restitution, conservation ou destruction."
+msgstr ""
+
+#: src/CustodyCase.php:448
+msgid "Cette étape ne peut pas précéder la saisie."
+msgstr ""
+
+#: src/CustodyCase.php:498
+#, php-format
+msgid "Signature de la personne qui remet (%1$s) - chaîne de possession n°%2$d"
+msgstr ""
+
+#: src/CustodyCase.php:499
+#, php-format
+msgid ""
+"Signature de la personne qui reçoit (%1$s) - chaîne de possession n°%2$d"
+msgstr ""
+
+#: src/CustodyCase.php:593 src/CustodyCase.php:607 src/CustodyCase.php:612
+#: src/Pdf/CustodyPdfBuilder.php:140
+msgid "Échec de l'enregistrement de la chaîne de possession."
+msgstr ""
+
+#: src/CustodyCase.php:643
+msgid "La personne qui remet et celle qui reçoit doivent être différentes."
+msgstr ""
+
+#: src/CustodyCase.php:649
+msgid "Cette chaîne de possession est clôturée : elle ne change plus."
+msgstr ""
+
+#: src/CustodyCase.php:661
+msgid "Date de l'étape invalide."
+msgstr ""
+
+#: src/CustodyCase.php:664
+msgid "La date de l'étape ne peut pas être dans le futur."
+msgstr ""
+
+#: src/CustodyCase.php:716
+#, php-format
+msgid "%1$s - Chaîne de possession n°%2$d - %3$s (version %4$d)"
+msgstr ""
+
+#: src/CustodyEvent.php:42
+msgid "Transfert"
+msgstr ""
+
+#: src/CustodyEvent.php:43
+msgid "Clôture"
+msgstr ""
+
+#: src/MenuSection.php:45
+msgid "Sortie et saisie"
+msgstr ""
+
+#: src/MenuSection.php:98
+msgid ""
+"Les matériels retirés à leur utilisateur pour un incident de sécurité ou une "
+"enquête, et leur chaîne de possession : qui les a pris, quand, où ils sont "
+"stockés et chaque remise d'une personne à une autre."
+msgstr ""
+
+#: src/MenuSection.php:99
+msgid ""
+"Une saisie s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du "
+"ticket ou de l'incident. Chaque transfert et la clôture sont signés par les "
+"deux personnes ; le PDF garde tout l'historique et l'empreinte de chaque "
+"version."
+msgstr ""

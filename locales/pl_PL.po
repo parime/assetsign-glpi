@@ -7597,3 +7597,297 @@ msgstr "Paszporty"
 
 msgid "Rubriques de la configuration"
 msgstr "Sekcje konfiguracji"
+
+msgid "Chaîne de possession"
+msgid_plural "Chaînes de possession"
+msgstr[0] "Łańcuch dowodowy"
+msgstr[1] "Łańcuchy dowodowe"
+msgstr[2] "Łańcuchów dowodowych"
+
+msgid "Chaîne de possession n°%1$d : version %2$d du document, établie le %3$s"
+msgstr "Łańcuch dowodowy nr %1$d: wersja %2$d dokumentu, sporządzona %3$s"
+
+msgid "Matériel saisi"
+msgstr "Zabezpieczony sprzęt"
+
+msgid "Saisie"
+msgstr "Zabezpieczenie"
+
+msgid "Date de la saisie"
+msgstr "Data zabezpieczenia"
+
+msgid "N° de scellé"
+msgstr "Nr plomby"
+
+msgid "État constaté"
+msgstr "Stwierdzony stan"
+
+msgid "Incident de sécurité"
+msgstr "Incydent bezpieczeństwa"
+
+msgid "Photos de la saisie"
+msgstr "Zdjęcia z zabezpieczenia"
+
+msgid "Photo %d"
+msgstr "Zdjęcie %d"
+
+msgid "Étapes signées"
+msgstr "Podpisane etapy"
+
+msgid "Remis par"
+msgstr "Przekazał(a)"
+
+msgid "Reçu par"
+msgstr "Odebrał(a)"
+
+msgid "Lieu de stockage"
+msgstr "Miejsce przechowywania"
+
+msgid "Signature de %s (remet)"
+msgstr "Podpis: %s (przekazuje)"
+
+msgid "Signature de %s (reçoit)"
+msgstr "Podpis: %s (odbiera)"
+
+msgid "Signé sur place le %1$s, enregistré par %2$s"
+msgstr "Podpisano na miejscu %1$s, zarejestrował(a) %2$s"
+
+msgid "Empreintes des signatures (SHA-256) : %1$s / %2$s"
+msgstr "Skróty podpisów (SHA-256): %1$s / %2$s"
+
+msgid "Versions précédentes de ce document"
+msgstr "Poprzednie wersje tego dokumentu"
+
+msgid "Première version : aucune version précédente."
+msgstr "Pierwsza wersja: brak poprzednich wersji."
+
+msgid "Version"
+msgstr "Wersja"
+
+msgid "Établie le"
+msgstr "Sporządzona"
+
+msgid "Empreinte (SHA-256)"
+msgstr "Skrót (SHA-256)"
+
+msgid "Chaque étape est signée sur place par la personne qui remet la pièce et par celle qui la reçoit. Une étape enregistrée ne se modifie plus : toute nouvelle étape produit une nouvelle version de ce document, qui reprend l'empreinte des versions précédentes."
+msgstr "Każdy etap jest podpisywany na miejscu przez osobę przekazującą i osobę odbierającą. Zarejestrowanego etapu nie można już zmienić: każdy nowy etap tworzy nową wersję tego dokumentu, która zawiera skróty poprzednich wersji."
+
+msgid "Chaîne de possession n°%1$d, version %2$d : Document généré par GLPI (plugin assetsign)"
+msgstr "Łańcuch dowodowy nr %1$d, wersja %2$d: Dokument wygenerowany przez GLPI (wtyczka assetsign)"
+
+msgid "Signature de la personne qui remet"
+msgstr "Podpis osoby przekazującej"
+
+msgid "Signature de la personne qui reçoit"
+msgstr "Podpis osoby odbierającej"
+
+msgid "Les deux personnes signent ici, sur cet écran, au moment de la remise. L'étape ne pourra plus être modifiée."
+msgstr "Obie osoby podpisują tutaj, na tym ekranie, w chwili przekazania. Etapu nie będzie można już zmienić."
+
+msgid "Chaîne de possession n°%d"
+msgstr "Łańcuch dowodowy nr %d"
+
+msgid "Télécharger le PDF (version %d)"
+msgstr "Pobierz PDF (wersja %d)"
+
+msgid "Détenteur actuel"
+msgstr "Obecny posiadacz"
+
+msgid "Ouverte par"
+msgstr "Otwarty przez"
+
+msgid "Empreinte du PDF actuel (SHA-256)"
+msgstr "Skrót bieżącego PDF (SHA-256)"
+
+msgid "Étape"
+msgstr "Etap"
+
+msgid "Version du PDF"
+msgstr "Wersja PDF"
+
+msgid "Enregistrée par %s"
+msgstr "Zarejestrował(a) %s"
+
+msgid "Version %d"
+msgstr "Wersja %d"
+
+msgid "Transférer la pièce"
+msgstr "Przekaż sprzęt"
+
+msgid "Clôturer la saisie"
+msgstr "Zamknij zabezpieczenie"
+
+msgid "%s remet la pièce à une autre personne : les deux signent ici."
+msgstr "%s przekazuje sprzęt innej osobie: obie podpisują tutaj."
+
+msgid "Fin de la saisie : la pièce est rendue à son utilisateur, conservée ou détruite. %s et la personne qui la reçoit (ou qui la détruit) signent ici."
+msgstr "Koniec zabezpieczenia: sprzęt zostaje zwrócony użytkownikowi, zachowany lub zniszczony. %s i osoba, która go odbiera (lub niszczy), podpisują tutaj."
+
+msgid "Les deux personnes doivent signer avant l'enregistrement."
+msgstr "Obie osoby muszą podpisać przed zapisaniem."
+
+msgid "Issue de la saisie"
+msgstr "Wynik zabezpieczenia"
+
+msgid "Choisissez"
+msgstr "Wybierz"
+
+msgid "Reçu par (ou détruit par)"
+msgstr "Odebrał(a) (lub zniszczył(a))"
+
+msgid "Ou nom d'une personne sans compte GLPI"
+msgstr "Lub nazwisko osoby bez konta GLPI"
+
+msgid "Précision sur le stockage"
+msgstr "Szczegóły przechowywania"
+
+msgid "Signer et clôturer"
+msgstr "Podpisz i zamknij"
+
+msgid "Signer le transfert"
+msgstr "Podpisz przekazanie"
+
+msgid "Aucun matériel saisi ici."
+msgstr "Brak zabezpieczonego sprzętu."
+
+msgid "Quand un matériel est retiré à son utilisateur pour un incident ou une enquête, ouvrez sa chaîne de possession : chaque remise d'une personne à une autre y est signée par les deux, jusqu'à la restitution, la conservation ou la destruction."
+msgstr "Gdy sprzęt zostaje odebrany użytkownikowi w związku z incydentem lub dochodzeniem, otwórz jego łańcuch dowodowy: każde przekazanie od jednej osoby do drugiej podpisują obie, aż do zwrotu, zachowania lub zniszczenia."
+
+msgid "N°"
+msgstr "Nr"
+
+msgid "Ouvrir"
+msgstr "Otwórz"
+
+msgid "Saisir un matériel"
+msgstr "Zabezpiecz sprzęt"
+
+msgid "Ajoutez d'abord le matériel concerné à %s (onglet des éléments liés), puis revenez ici pour ouvrir sa chaîne de possession."
+msgstr "Najpierw dodaj dany sprzęt do: %s (karta powiązanych elementów), a następnie wróć tutaj, aby otworzyć jego łańcuch dowodowy."
+
+msgid "Date et heure de la saisie"
+msgstr "Data i godzina zabezpieczenia"
+
+msgid "Ex. 17"
+msgstr "Np. 17"
+
+msgid "Motif de la saisie"
+msgstr "Powód zabezpieczenia"
+
+msgid "Ex. poste soupçonné d'être compromis, conservé pour analyse"
+msgstr "Np. stanowisko podejrzane o naruszenie, zachowane do analizy"
+
+msgid "Ex. allumé, écran verrouillé, câble réseau débranché"
+msgstr "Np. włączony, ekran zablokowany, kabel sieciowy odłączony"
+
+msgid "Ticket lié (facultatif)"
+msgstr "Powiązane zgłoszenie (opcjonalnie)"
+
+msgid "Incident de sécurité lié (facultatif)"
+msgstr "Powiązany incydent bezpieczeństwa (opcjonalnie)"
+
+msgid "Remis par (personne à qui le matériel est retiré)"
+msgstr "Przekazał(a) (osoba, której odbierany jest sprzęt)"
+
+msgid "Ex. armoire forte, étagère 2"
+msgstr "Np. sejf, półka 2"
+
+msgid "Photos (facultatif)"
+msgstr "Zdjęcia (opcjonalnie)"
+
+msgid "%d photos au plus ; leur empreinte SHA-256 figure sur le PDF."
+msgstr "Najwyżej %d zdjęć; ich skrót SHA-256 jest w PDF."
+
+msgid "Signer et ouvrir la chaîne de possession"
+msgstr "Podpisz i otwórz łańcuch dowodowy"
+
+msgid "Chaîne de possession ouverte : la saisie est signée et le PDF enregistré."
+msgstr "Łańcuch dowodowy otwarty: zabezpieczenie jest podpisane, a PDF zapisany."
+
+msgid "Une chaîne de possession s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident de sécurité."
+msgstr "Łańcuch dowodowy otwiera się z karty « Łańcuch dowodowy » sprzętu, zgłoszenia lub incydentu bezpieczeństwa."
+
+msgid "Saisie clôturée : le PDF a une nouvelle version."
+msgstr "Zabezpieczenie zamknięte: PDF ma nową wersję."
+
+msgid "Transfert signé : le PDF a une nouvelle version."
+msgstr "Przekazanie podpisane: PDF ma nową wersję."
+
+msgid "Sous scellé"
+msgstr "Pod plombą"
+
+msgid "Restitution à l'utilisateur"
+msgstr "Zwrot użytkownikowi"
+
+msgid "Conservation (archivage de la pièce)"
+msgstr "Zachowanie (archiwizacja sprzętu)"
+
+msgid "Indiquez le motif de la saisie."
+msgstr "Podaj powód zabezpieczenia."
+
+msgid "Une saisie compte %d photos au plus."
+msgstr "Zabezpieczenie obejmuje najwyżej %d zdjęć."
+
+msgid "Indiquez la personne qui remet le matériel."
+msgstr "Wskaż osobę przekazującą sprzęt."
+
+msgid "Indiquez la personne qui reçoit le matériel."
+msgstr "Wskaż osobę odbierającą sprzęt."
+
+msgid "Ticket introuvable."
+msgstr "Nie znaleziono zgłoszenia."
+
+msgid "Incident de sécurité introuvable."
+msgstr "Nie znaleziono incydentu bezpieczeństwa."
+
+msgid "Échec de l'ouverture de la chaîne de possession."
+msgstr "Nie udało się otworzyć łańcucha dowodowego."
+
+msgid "Photo de la saisie %1$d - chaîne de possession n°%2$d"
+msgstr "Zdjęcie z zabezpieczenia %1$d - łańcuch dowodowy nr %2$d"
+
+msgid "Choisissez l'issue de la saisie : restitution, conservation ou destruction."
+msgstr "Wybierz wynik zabezpieczenia: zwrot, zachowanie lub zniszczenie."
+
+msgid "Cette étape ne peut pas précéder la saisie."
+msgstr "Ten etap nie może poprzedzać zabezpieczenia."
+
+msgid "Signature de la personne qui remet (%1$s) - chaîne de possession n°%2$d"
+msgstr "Podpis osoby przekazującej (%1$s) - łańcuch dowodowy nr %2$d"
+
+msgid "Signature de la personne qui reçoit (%1$s) - chaîne de possession n°%2$d"
+msgstr "Podpis osoby odbierającej (%1$s) - łańcuch dowodowy nr %2$d"
+
+msgid "Échec de l'enregistrement de la chaîne de possession."
+msgstr "Nie udało się zapisać łańcucha dowodowego."
+
+msgid "La personne qui remet et celle qui reçoit doivent être différentes."
+msgstr "Osoba przekazująca i odbierająca muszą być różne."
+
+msgid "Cette chaîne de possession est clôturée : elle ne change plus."
+msgstr "Ten łańcuch dowodowy jest zamknięty: już się nie zmienia."
+
+msgid "Date de l'étape invalide."
+msgstr "Nieprawidłowa data etapu."
+
+msgid "La date de l'étape ne peut pas être dans le futur."
+msgstr "Data etapu nie może być w przyszłości."
+
+msgid "%1$s - Chaîne de possession n°%2$d - %3$s (version %4$d)"
+msgstr "%1$s - Łańcuch dowodowy nr %2$d - %3$s (wersja %4$d)"
+
+msgid "Transfert"
+msgstr "Przekazanie"
+
+msgid "Clôture"
+msgstr "Zamknięcie"
+
+msgid "Sortie et saisie"
+msgstr "Wycofanie i zabezpieczenie"
+
+msgid "Les matériels retirés à leur utilisateur pour un incident de sécurité ou une enquête, et leur chaîne de possession : qui les a pris, quand, où ils sont stockés et chaque remise d'une personne à une autre."
+msgstr "Sprzęt odebrany użytkownikowi w związku z incydentem bezpieczeństwa lub dochodzeniem oraz jego łańcuch dowodowy: kto go zabrał, kiedy, gdzie jest przechowywany i każde przekazanie od jednej osoby do drugiej."
+
+msgid "Une saisie s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident. Chaque transfert et la clôture sont signés par les deux personnes ; le PDF garde tout l'historique et l'empreinte de chaque version."
+msgstr "Zabezpieczenie otwiera się z karty « Łańcuch dowodowy » sprzętu, zgłoszenia lub incydentu. Każde przekazanie i zamknięcie podpisują obie osoby; PDF zachowuje całą historię i skrót każdej wersji."

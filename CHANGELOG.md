@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Chaîne de possession d'un matériel saisi (#326, ISO 27001 A.5.28 collecte des preuves).**
+  Onglet « Chaîne de possession » sur les matériels gérés, les tickets et, quand le plugin GRC est
+  actif, ses incidents de sécurité : ouverture de la saisie (motif, état constaté, numéro de scellé,
+  photos, lieu de stockage, ticket et incident liés), puis transferts et clôture (restitution,
+  conservation ou destruction). Chaque étape est signée sur place par la personne qui remet et par
+  celle qui reçoit (compte GLPI ou nom saisi), puis ne se modifie plus ; la fiche ne se supprime
+  pas. Après chaque étape, une nouvelle version du PDF reprend tout l'historique, les empreintes
+  SHA-256 des signatures et des photos et celles des versions précédentes, qui restent jointes ; le
+  PDF est lié à la fiche, au matériel, au ticket et à l'incident. Liste dans Parc > AssetSign, la
+  rubrique « Attestations d'effacement des données » devenant « Sortie et saisie ». Droit dédié
+  « Chaînes de possession » sur le profil (Super-Admin seul à l'installation) ; écrans absents du
+  passeport du matériel.
+
 ### Changed
 
 - Tests : plus aucune assertion ne compare un libellé traduit (#397). Les blocs du passeport et des

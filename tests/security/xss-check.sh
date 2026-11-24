@@ -62,6 +62,7 @@ for url in \
   "assetsign.form.php?id=$(id assetsign_A)" "campaign.form.php?id=$(id campaign_A)" \
   "attestation.form.php?id=$(id attestation_A)" "departure.form.php?id=$(id departure_A)" \
   "maintenance.form.php?id=$(id maintenance_A)" "movement.form.php?id=$(id movement_A)"   "wipeattestation.form.php?id=$(id wipe_A)" wipeattestation.php \
+  "custodycase.form.php?id=$(id custody_A)" custodycase.php \
   "template.form.php?id=$(id templates_A)" "kit.form.php?id=$(id kits_A)" "accessory.form.php?id=$(id accessories_A)" \
   "checklistitem.form.php?id=$(id checklistitems_A)" "maintenancechecklistitem.form.php?id=$(id maintenancechecklistitems_A)" \
   "config.php?entities_id=$(id a)" "qrlabel.php?itemtype=Computer&items_id=$(id computer_A)" \
@@ -71,7 +72,7 @@ for url in \
   "assetsign.form.php?itemtype=Computer&items_id=$(id computer_A)" "assetsign.form.php?q=onload"; do
   check "front/$url" "$P/$url"
 done
-for t in 'GlpiPlugin\Assetsign\Assetsign' 'GlpiPlugin\Assetsign\PassportEvent' 'GlpiPlugin\Assetsign\Maintenance' 'GlpiPlugin\Assetsign\Movement' 'GlpiPlugin\Assetsign\WipeAttestation'; do
+for t in 'GlpiPlugin\Assetsign\Assetsign' 'GlpiPlugin\Assetsign\PassportEvent' 'GlpiPlugin\Assetsign\Maintenance' 'GlpiPlugin\Assetsign\Movement' 'GlpiPlugin\Assetsign\WipeAttestation' 'GlpiPlugin\Assetsign\CustodyCase'; do
   check "onglet $t (ordinateur)" "$(tab Computer "$t" "$(id computer_A)")"
 done
 for t in 'GlpiPlugin\Assetsign\Assetsign' 'GlpiPlugin\Assetsign\PassportEvent'; do

@@ -24,6 +24,7 @@ use GlpiPlugin\Assetsign\Campaign;
 use GlpiPlugin\Assetsign\ChecklistItem;
 use GlpiPlugin\Assetsign\Config;
 use GlpiPlugin\Assetsign\CsrDashboard;
+use GlpiPlugin\Assetsign\CustodyCase;
 use GlpiPlugin\Assetsign\Departure;
 use GlpiPlugin\Assetsign\IntegrityCheck;
 use GlpiPlugin\Assetsign\Kit;
@@ -49,7 +50,7 @@ final class MenuSectionTest extends AssetsignTestCase
 
    protected function setUp(): void {
        parent::setUp();
-      foreach ([Profile::RIGHT_ASSETSIGN, Profile::RIGHT_MAINTENANCE] as $right) {
+      foreach ([Profile::RIGHT_ASSETSIGN, Profile::RIGHT_MAINTENANCE, Profile::RIGHT_CUSTODY] as $right) {
           $this->savedRights[$right] = $_SESSION['glpiactiveprofile'][$right] ?? 0;
       }
    }
@@ -61,9 +62,11 @@ final class MenuSectionTest extends AssetsignTestCase
        parent::tearDown();
    }
 
-   private function setRights(int $assetsign, int $maintenance): void {
+   private function setRights(int $assetsign, int $maintenance, int $custody = 0): void {
        $_SESSION['glpiactiveprofile'][Profile::RIGHT_ASSETSIGN]   = $assetsign;
        $_SESSION['glpiactiveprofile'][Profile::RIGHT_MAINTENANCE] = $maintenance;
+       // Issue #326 : chaîne de possession, droit dédié.
+       $_SESSION['glpiactiveprofile'][Profile::RIGHT_CUSTODY]     = $custody;
    }
 
    public function testTheAssetsMenuHasASingleEntry(): void {
@@ -78,13 +81,13 @@ final class MenuSectionTest extends AssetsignTestCase
      */
    public function testUsageScreensAreSectorizedInAssets(): void {
        $this->assertSame(['assets', Menu::class], Menu::getSectorizedDetails());
-      foreach ([Assetsign::class, Maintenance::class, Movement::class, WipeAttestation::class] as $class) {
+      foreach ([Assetsign::class, Maintenance::class, Movement::class, WipeAttestation::class, CustodyCase::class] as $class) {
           $this->assertSame(['assets', Menu::class, $class], $class::getSectorizedDetails(), $class);
       }
    }
 
    public function testAllSubPagesAreOptionsOfTheEntry(): void {
-       $this->setRights(ALLSTANDARDRIGHT, ALLSTANDARDRIGHT);
+       $this->setRights(ALLSTANDARDRIGHT, ALLSTANDARDRIGHT, ALLSTANDARDRIGHT);
 
        $menu = Menu::getMenuContent();
        $this->assertIsArray($menu);
@@ -93,7 +96,7 @@ final class MenuSectionTest extends AssetsignTestCase
        $this->assertSame(
            [
                Assetsign::class, Movement::class, Departure::class, Campaign::class,
-               WipeAttestation::class, Maintenance::class, CsrDashboard::class, Renewal::class, IntegrityCheck::class, PhysicalInventory::class,
+               WipeAttestation::class, CustodyCase::class, Maintenance::class, CsrDashboard::class, Renewal::class, IntegrityCheck::class, PhysicalInventory::class,
            ],
            array_keys($menu['options'])
        );

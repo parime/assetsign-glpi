@@ -7619,3 +7619,296 @@ msgstr "Passeports"
 
 msgid "Rubriques de la configuration"
 msgstr "Rubriques de la configuration"
+
+msgid "Chaîne de possession"
+msgid_plural "Chaînes de possession"
+msgstr[0] "Chaîne de possession"
+msgstr[1] "Chaînes de possession"
+
+msgid "Chaîne de possession n°%1$d : version %2$d du document, établie le %3$s"
+msgstr "Chaîne de possession n°%1$d : version %2$d du document, établie le %3$s"
+
+msgid "Matériel saisi"
+msgstr "Matériel saisi"
+
+msgid "Saisie"
+msgstr "Saisie"
+
+msgid "Date de la saisie"
+msgstr "Date de la saisie"
+
+msgid "N° de scellé"
+msgstr "N° de scellé"
+
+msgid "État constaté"
+msgstr "État constaté"
+
+msgid "Incident de sécurité"
+msgstr "Incident de sécurité"
+
+msgid "Photos de la saisie"
+msgstr "Photos de la saisie"
+
+msgid "Photo %d"
+msgstr "Photo %d"
+
+msgid "Étapes signées"
+msgstr "Étapes signées"
+
+msgid "Remis par"
+msgstr "Remis par"
+
+msgid "Reçu par"
+msgstr "Reçu par"
+
+msgid "Lieu de stockage"
+msgstr "Lieu de stockage"
+
+msgid "Signature de %s (remet)"
+msgstr "Signature de %s (remet)"
+
+msgid "Signature de %s (reçoit)"
+msgstr "Signature de %s (reçoit)"
+
+msgid "Signé sur place le %1$s, enregistré par %2$s"
+msgstr "Signé sur place le %1$s, enregistré par %2$s"
+
+msgid "Empreintes des signatures (SHA-256) : %1$s / %2$s"
+msgstr "Empreintes des signatures (SHA-256) : %1$s / %2$s"
+
+msgid "Versions précédentes de ce document"
+msgstr "Versions précédentes de ce document"
+
+msgid "Première version : aucune version précédente."
+msgstr "Première version : aucune version précédente."
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Établie le"
+msgstr "Établie le"
+
+msgid "Empreinte (SHA-256)"
+msgstr "Empreinte (SHA-256)"
+
+msgid "Chaque étape est signée sur place par la personne qui remet la pièce et par celle qui la reçoit. Une étape enregistrée ne se modifie plus : toute nouvelle étape produit une nouvelle version de ce document, qui reprend l'empreinte des versions précédentes."
+msgstr "Chaque étape est signée sur place par la personne qui remet la pièce et par celle qui la reçoit. Une étape enregistrée ne se modifie plus : toute nouvelle étape produit une nouvelle version de ce document, qui reprend l'empreinte des versions précédentes."
+
+msgid "Chaîne de possession n°%1$d, version %2$d : Document généré par GLPI (plugin assetsign)"
+msgstr "Chaîne de possession n°%1$d, version %2$d : Document généré par GLPI (plugin assetsign)"
+
+msgid "Signature de la personne qui remet"
+msgstr "Signature de la personne qui remet"
+
+msgid "Signature de la personne qui reçoit"
+msgstr "Signature de la personne qui reçoit"
+
+msgid "Les deux personnes signent ici, sur cet écran, au moment de la remise. L'étape ne pourra plus être modifiée."
+msgstr "Les deux personnes signent ici, sur cet écran, au moment de la remise. L'étape ne pourra plus être modifiée."
+
+msgid "Chaîne de possession n°%d"
+msgstr "Chaîne de possession n°%d"
+
+msgid "Télécharger le PDF (version %d)"
+msgstr "Télécharger le PDF (version %d)"
+
+msgid "Détenteur actuel"
+msgstr "Détenteur actuel"
+
+msgid "Ouverte par"
+msgstr "Ouverte par"
+
+msgid "Empreinte du PDF actuel (SHA-256)"
+msgstr "Empreinte du PDF actuel (SHA-256)"
+
+msgid "Étape"
+msgstr "Étape"
+
+msgid "Version du PDF"
+msgstr "Version du PDF"
+
+msgid "Enregistrée par %s"
+msgstr "Enregistrée par %s"
+
+msgid "Version %d"
+msgstr "Version %d"
+
+msgid "Transférer la pièce"
+msgstr "Transférer la pièce"
+
+msgid "Clôturer la saisie"
+msgstr "Clôturer la saisie"
+
+msgid "%s remet la pièce à une autre personne : les deux signent ici."
+msgstr "%s remet la pièce à une autre personne : les deux signent ici."
+
+msgid "Fin de la saisie : la pièce est rendue à son utilisateur, conservée ou détruite. %s et la personne qui la reçoit (ou qui la détruit) signent ici."
+msgstr "Fin de la saisie : la pièce est rendue à son utilisateur, conservée ou détruite. %s et la personne qui la reçoit (ou qui la détruit) signent ici."
+
+msgid "Les deux personnes doivent signer avant l'enregistrement."
+msgstr "Les deux personnes doivent signer avant l'enregistrement."
+
+msgid "Issue de la saisie"
+msgstr "Issue de la saisie"
+
+msgid "Choisissez"
+msgstr "Choisissez"
+
+msgid "Reçu par (ou détruit par)"
+msgstr "Reçu par (ou détruit par)"
+
+msgid "Ou nom d'une personne sans compte GLPI"
+msgstr "Ou nom d'une personne sans compte GLPI"
+
+msgid "Précision sur le stockage"
+msgstr "Précision sur le stockage"
+
+msgid "Signer et clôturer"
+msgstr "Signer et clôturer"
+
+msgid "Signer le transfert"
+msgstr "Signer le transfert"
+
+msgid "Aucun matériel saisi ici."
+msgstr "Aucun matériel saisi ici."
+
+msgid "Quand un matériel est retiré à son utilisateur pour un incident ou une enquête, ouvrez sa chaîne de possession : chaque remise d'une personne à une autre y est signée par les deux, jusqu'à la restitution, la conservation ou la destruction."
+msgstr "Quand un matériel est retiré à son utilisateur pour un incident ou une enquête, ouvrez sa chaîne de possession : chaque remise d'une personne à une autre y est signée par les deux, jusqu'à la restitution, la conservation ou la destruction."
+
+msgid "N°"
+msgstr "N°"
+
+msgid "Ouvrir"
+msgstr "Ouvrir"
+
+msgid "Saisir un matériel"
+msgstr "Saisir un matériel"
+
+msgid "Ajoutez d'abord le matériel concerné à %s (onglet des éléments liés), puis revenez ici pour ouvrir sa chaîne de possession."
+msgstr "Ajoutez d'abord le matériel concerné à %s (onglet des éléments liés), puis revenez ici pour ouvrir sa chaîne de possession."
+
+msgid "Date et heure de la saisie"
+msgstr "Date et heure de la saisie"
+
+msgid "Ex. 17"
+msgstr "Ex. 17"
+
+msgid "Motif de la saisie"
+msgstr "Motif de la saisie"
+
+msgid "Ex. poste soupçonné d'être compromis, conservé pour analyse"
+msgstr "Ex. poste soupçonné d'être compromis, conservé pour analyse"
+
+msgid "Ex. allumé, écran verrouillé, câble réseau débranché"
+msgstr "Ex. allumé, écran verrouillé, câble réseau débranché"
+
+msgid "Ticket lié (facultatif)"
+msgstr "Ticket lié (facultatif)"
+
+msgid "Incident de sécurité lié (facultatif)"
+msgstr "Incident de sécurité lié (facultatif)"
+
+msgid "Remis par (personne à qui le matériel est retiré)"
+msgstr "Remis par (personne à qui le matériel est retiré)"
+
+msgid "Ex. armoire forte, étagère 2"
+msgstr "Ex. armoire forte, étagère 2"
+
+msgid "Photos (facultatif)"
+msgstr "Photos (facultatif)"
+
+msgid "%d photos au plus ; leur empreinte SHA-256 figure sur le PDF."
+msgstr "%d photos au plus ; leur empreinte SHA-256 figure sur le PDF."
+
+msgid "Signer et ouvrir la chaîne de possession"
+msgstr "Signer et ouvrir la chaîne de possession"
+
+msgid "Chaîne de possession ouverte : la saisie est signée et le PDF enregistré."
+msgstr "Chaîne de possession ouverte : la saisie est signée et le PDF enregistré."
+
+msgid "Une chaîne de possession s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident de sécurité."
+msgstr "Une chaîne de possession s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident de sécurité."
+
+msgid "Saisie clôturée : le PDF a une nouvelle version."
+msgstr "Saisie clôturée : le PDF a une nouvelle version."
+
+msgid "Transfert signé : le PDF a une nouvelle version."
+msgstr "Transfert signé : le PDF a une nouvelle version."
+
+msgid "Sous scellé"
+msgstr "Sous scellé"
+
+msgid "Restitution à l'utilisateur"
+msgstr "Restitution à l'utilisateur"
+
+msgid "Conservation (archivage de la pièce)"
+msgstr "Conservation (archivage de la pièce)"
+
+msgid "Indiquez le motif de la saisie."
+msgstr "Indiquez le motif de la saisie."
+
+msgid "Une saisie compte %d photos au plus."
+msgstr "Une saisie compte %d photos au plus."
+
+msgid "Indiquez la personne qui remet le matériel."
+msgstr "Indiquez la personne qui remet le matériel."
+
+msgid "Indiquez la personne qui reçoit le matériel."
+msgstr "Indiquez la personne qui reçoit le matériel."
+
+msgid "Ticket introuvable."
+msgstr "Ticket introuvable."
+
+msgid "Incident de sécurité introuvable."
+msgstr "Incident de sécurité introuvable."
+
+msgid "Échec de l'ouverture de la chaîne de possession."
+msgstr "Échec de l'ouverture de la chaîne de possession."
+
+msgid "Photo de la saisie %1$d - chaîne de possession n°%2$d"
+msgstr "Photo de la saisie %1$d - chaîne de possession n°%2$d"
+
+msgid "Choisissez l'issue de la saisie : restitution, conservation ou destruction."
+msgstr "Choisissez l'issue de la saisie : restitution, conservation ou destruction."
+
+msgid "Cette étape ne peut pas précéder la saisie."
+msgstr "Cette étape ne peut pas précéder la saisie."
+
+msgid "Signature de la personne qui remet (%1$s) - chaîne de possession n°%2$d"
+msgstr "Signature de la personne qui remet (%1$s) - chaîne de possession n°%2$d"
+
+msgid "Signature de la personne qui reçoit (%1$s) - chaîne de possession n°%2$d"
+msgstr "Signature de la personne qui reçoit (%1$s) - chaîne de possession n°%2$d"
+
+msgid "Échec de l'enregistrement de la chaîne de possession."
+msgstr "Échec de l'enregistrement de la chaîne de possession."
+
+msgid "La personne qui remet et celle qui reçoit doivent être différentes."
+msgstr "La personne qui remet et celle qui reçoit doivent être différentes."
+
+msgid "Cette chaîne de possession est clôturée : elle ne change plus."
+msgstr "Cette chaîne de possession est clôturée : elle ne change plus."
+
+msgid "Date de l'étape invalide."
+msgstr "Date de l'étape invalide."
+
+msgid "La date de l'étape ne peut pas être dans le futur."
+msgstr "La date de l'étape ne peut pas être dans le futur."
+
+msgid "%1$s - Chaîne de possession n°%2$d - %3$s (version %4$d)"
+msgstr "%1$s - Chaîne de possession n°%2$d - %3$s (version %4$d)"
+
+msgid "Transfert"
+msgstr "Transfert"
+
+msgid "Clôture"
+msgstr "Clôture"
+
+msgid "Sortie et saisie"
+msgstr "Sortie et saisie"
+
+msgid "Les matériels retirés à leur utilisateur pour un incident de sécurité ou une enquête, et leur chaîne de possession : qui les a pris, quand, où ils sont stockés et chaque remise d'une personne à une autre."
+msgstr "Les matériels retirés à leur utilisateur pour un incident de sécurité ou une enquête, et leur chaîne de possession : qui les a pris, quand, où ils sont stockés et chaque remise d'une personne à une autre."
+
+msgid "Une saisie s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident. Chaque transfert et la clôture sont signés par les deux personnes ; le PDF garde tout l'historique et l'empreinte de chaque version."
+msgstr "Une saisie s'ouvre depuis l'onglet « Chaîne de possession » du matériel, du ticket ou de l'incident. Chaque transfert et la clôture sont signés par les deux personnes ; le PDF garde tout l'historique et l'empreinte de chaque version."

@@ -1,0 +1,170 @@
+{#
+ # -------------------------------------------------------------------------
+ # AssetSign for GLPI
+ # Copyright (C) 2026 Vincent GUILLOTTE
+ # https://github.com/parime/assetsign-glpi
+ # -------------------------------------------------------------------------
+ # LICENSE
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version. See LICENSE for the full text.
+ # -------------------------------------------------------------------------
+ #}
+{# Issue #326 : fiche d'une chaîne de possession (étapes signées en lecture seule, transfert, clôture). #}
+<div class="container-lg my-3">
+  <div class="card mb-3">
+    <div class="card-header d-flex align-items-center gap-2 flex-wrap">
+      <h3 class="card-title mb-0"><i class="ti ti-shield-lock me-2"></i>{{ __('Chaîne de possession n°%d', 'assetsign')|format(case.id) }}</h3>
+      {% if case.status == 0 %}
+        <span class="badge bg-warning-subtle text-warning-emphasis"><i class="ti ti-lock me-1"></i>{{ status_label }}</span>
+      {% else %}
+        <span class="badge bg-success-subtle text-success-emphasis"><i class="ti ti-lock-open me-1"></i>{{ status_label }} : {{ closure_label }}</span>
+      {% endif %}
+      {% if case.documents_id %}
+        <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ case.documents_id }}" target="_blank" class="btn btn-sm btn-primary ms-auto"><i class="ti ti-file-type-pdf me-1"></i>{{ __('Télécharger le PDF (version %d)', 'assetsign')|format(case.pdf_version) }}</a>
+      {% endif %}
+    </div>
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <tr><th class="w-25">{{ __('Matériel', 'assetsign') }}</th><td>{{ item_type }} : {% if item_url %}<a href="{{ item_url }}">{{ item_name }}</a>{% else %}{{ item_name }}{% endif %}</td></tr>
+        <tr><th>{{ __('Date de la saisie', 'assetsign') }}</th><td>{{ case.date_seized|formatted_datetime }}</td></tr>
+        <tr><th>{{ __('N° de scellé', 'assetsign') }}</th><td>{{ case.seal_number|default('-') }}</td></tr>
+        <tr><th>{{ __('Motif', 'assetsign') }}</th><td style="white-space: pre-line;">{{ case.reason }}</td></tr>
+        <tr><th>{{ __('État constaté', 'assetsign') }}</th><td style="white-space: pre-line;">{{ case.condition_note|default('-') }}</td></tr>
+        <tr><th>{{ __('Détenteur actuel', 'assetsign') }}</th><td>{{ case.name_holder }}</td></tr>
+        <tr><th>{{ __('Lieu de stockage', 'assetsign') }}</th><td>{{ [location_name, case.storage]|filter(v => v)|join(' - ')|default('-') }}</td></tr>
+        {% if ticket_name %}<tr><th>{{ __('Ticket') }}</th><td><a href="{{ config('root_doc') }}/front/ticket.form.php?id={{ case.tickets_id }}">{{ ticket_name }}</a></td></tr>{% endif %}
+        {% if incident_name %}<tr><th>{{ __('Incident de sécurité', 'assetsign') }}</th><td><a href="{{ incident_url }}">{{ incident_name }}</a></td></tr>{% endif %}
+        <tr><th>{{ __('Ouverte par', 'assetsign') }}</th><td>{{ opened_by }}</td></tr>
+        {% if case.pdf_hash %}<tr><th>{{ __('Empreinte du PDF actuel (SHA-256)', 'assetsign') }}</th><td><code class="text-break">{{ case.pdf_hash }}</code></td></tr>{% endif %}
+      </table>
+    </div>
+  </div>
+
+  {% if photos is not empty %}
+    <div class="card mb-3">
+      <div class="card-header"><h3 class="card-title"><i class="ti ti-camera me-2"></i>{{ __('Photos de la saisie', 'assetsign') }}</h3></div>
+      <div class="card-body d-flex flex-wrap gap-3">
+        {% for p in photos %}
+          <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ p.documents_id }}" target="_blank" class="text-center small text-secondary">
+            <img src="{{ config('root_doc') }}/front/document.send.php?docid={{ p.documents_id }}" alt="{{ __('Photo %d', 'assetsign')|format(loop.index) }}" style="max-width: 180px; max-height: 140px;" class="d-block rounded border mb-1">
+            {{ __('Photo %d', 'assetsign')|format(loop.index) }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="card mb-3">
+    <div class="card-header"><h3 class="card-title"><i class="ti ti-timeline me-2"></i>{{ __('Étapes signées', 'assetsign') }}</h3></div>
+    <div class="table-responsive">
+      <table class="table table-vcenter card-table">
+        <thead>
+          <tr>
+            <th>{{ __('Étape', 'assetsign') }}</th>
+            <th>{{ __('Date', 'assetsign') }}</th>
+            <th>{{ __('Remis par', 'assetsign') }}</th>
+            <th>{{ __('Reçu par', 'assetsign') }}</th>
+            <th>{{ __('Lieu de stockage', 'assetsign') }}</th>
+            <th>{{ __('Version du PDF', 'assetsign') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in events %}
+            <tr>
+              <td><i class="{{ e.type_icon }} me-1"></i>{{ e.type_label }}{% if e.closure_label %}<div class="text-secondary small">{{ e.closure_label }}</div>{% endif %}</td>
+              <td>{{ e.event_date|formatted_datetime }}<div class="text-secondary small">{{ __('Enregistrée par %s', 'assetsign')|format(e.recorded_by) }}</div></td>
+              <td>{{ e.name_from }}</td>
+              <td>{{ e.name_to }}</td>
+              <td>{{ e.location_name|default('-') }}{% if e.storage %}<div class="text-secondary small">{{ e.storage }}</div>{% endif %}{% if e.comment %}<div class="small" style="white-space: pre-line;">{{ e.comment }}</div>{% endif %}</td>
+              <td>
+                {% if e.documents_id %}
+                  <a href="{{ config('root_doc') }}/front/document.send.php?docid={{ e.documents_id }}" target="_blank"><i class="ti ti-file-type-pdf me-1"></i>{{ __('Version %d', 'assetsign')|format(e.pdf_version) }}</a>
+                  <div class="small text-secondary text-break"><code>{{ e.pdf_hash }}</code></div>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% if can_update %}
+    {% for mode in ['transfer', 'close'] %}
+    <div class="card mb-3" id="assetsign-custody-{{ mode }}">
+      <div class="card-header">
+        <h3 class="card-title">
+          {% if mode == 'transfer' %}
+            <i class="ti ti-arrows-exchange me-2"></i>{{ __('Transférer la pièce', 'assetsign') }}
+          {% else %}
+            <i class="ti ti-lock-open me-2"></i>{{ __('Clôturer la saisie', 'assetsign') }}
+          {% endif %}
+        </h3>
+      </div>
+      <div class="card-body">
+          <div>
+            <p class="text-secondary">
+              {% if mode == 'transfer' %}
+                {{ __('%s remet la pièce à une autre personne : les deux signent ici.', 'assetsign')|format(case.name_holder) }}
+              {% else %}
+                {{ __('Fin de la saisie : la pièce est rendue à son utilisateur, conservée ou détruite. %s et la personne qui la reçoit (ou qui la détruit) signent ici.', 'assetsign')|format(case.name_holder) }}
+              {% endif %}
+            </p>
+            <form method="post" action="{{ config('root_doc') }}/plugins/assetsign/front/custodycase.form.php"
+                  data-assetsign-pads data-assetsign-pads-required="{{ __('Les deux personnes doivent signer avant l\'enregistrement.', 'assetsign') }}">
+              <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="id" value="{{ case.id }}">
+              <div class="row g-3">
+                {% if mode == 'close' %}
+                  <div class="col-md-6">
+                    <label class="form-label" for="assetsign-custody-closure">{{ __('Issue de la saisie', 'assetsign') }} <span class="text-danger">*</span></label>
+                    <select name="closure" id="assetsign-custody-closure" class="form-select" required>
+                      <option value="">{{ __('Choisissez', 'assetsign') }}</option>
+                      {% for key, label in closure_labels %}<option value="{{ key }}">{{ label }}</option>{% endfor %}
+                    </select>
+                  </div>
+                {% endif %}
+                <div class="col-md-3">
+                  <label class="form-label" for="assetsign-custody-{{ mode }}-date">{{ __('Date et heure', 'assetsign') }}</label>
+                  <input type="datetime-local" name="event_date" id="assetsign-custody-{{ mode }}-date" class="form-control" value="{{ now }}" max="{{ now }}" required>
+                </div>
+              </div>
+              <div class="row g-3 mt-1">
+                <div class="col-md-6">
+                  <div class="form-label">{{ __('Remis par', 'assetsign') }}</div>
+                  <div class="form-control-plaintext fw-bold">{{ case.name_holder }}</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">{{ mode == 'close' ? __('Reçu par (ou détruit par)', 'assetsign') : __('Reçu par', 'assetsign') }} <span class="text-danger">*</span></label>
+                  {% do call('User::dropdown', [{'name': 'users_id_to', 'value': mode == 'close' ? default_return : 0, 'right': 'all', 'entity': case.entities_id, 'entity_sons': true}]) %}
+                  <input type="text" name="name_to" class="form-control mt-1" maxlength="255" placeholder="{{ __('Ou nom d\'une personne sans compte GLPI', 'assetsign') }}">
+                </div>
+              </div>
+              <div class="row g-3 mt-1">
+                <div class="col-md-6">
+                  <label class="form-label">{{ __('Lieu de stockage', 'assetsign') }}</label>
+                  {% do call('Location::dropdown', [{'name': 'locations_id', 'value': case.locations_id, 'entity': case.entities_id, 'entity_sons': true}]) %}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="assetsign-custody-{{ mode }}-storage">{{ __('Précision sur le stockage', 'assetsign') }}</label>
+                  <input type="text" name="storage" id="assetsign-custody-{{ mode }}-storage" class="form-control" maxlength="255" value="{{ mode == 'transfer' ? case.storage : '' }}">
+                </div>
+              </div>
+              <div class="mt-3">
+                <label class="form-label" for="assetsign-custody-{{ mode }}-comment">{{ __('Commentaire', 'assetsign') }}</label>
+                <textarea name="comment" id="assetsign-custody-{{ mode }}-comment" class="form-control" rows="2"></textarea>
+              </div>
+              {% include '@assetsign/_custody_signatures.html.twig' %}
+              <button type="submit" name="{{ mode }}" value="1" class="btn btn-primary mt-3">
+                <i class="ti ti-writing-sign me-1"></i>{{ mode == 'close' ? __('Signer et clôturer', 'assetsign') : __('Signer le transfert', 'assetsign') }}
+              </button>
+            </form>
+          </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+</div>

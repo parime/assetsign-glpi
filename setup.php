@@ -215,6 +215,14 @@ function plugin_init_assetsign(): void {
         'addtabon' => $manageableItemtypes,
     ]);
     $CFG_GLPI['document_types'][] = \GlpiPlugin\Assetsign\WipeAttestation::class;
+    // Issue #326 : chaine de possession d'un materiel saisi, onglet sur les materiels geres, les
+    // tickets et, quand le plugin GRC est actif, ses incidents de securite (aucune dependance dure).
+    $custodyTabs = array_merge($manageableItemtypes, ['Ticket']);
+   if (Plugin::isPluginActive(\GlpiPlugin\Assetsign\CustodyCase::GRC_PLUGIN)) {
+       $custodyTabs[] = \GlpiPlugin\Assetsign\CustodyCase::GRC_INCIDENT_CLASS;
+   }
+    Plugin::registerClass(\GlpiPlugin\Assetsign\CustodyCase::class, ['addtabon' => $custodyTabs]);
+    $CFG_GLPI['document_types'][] = \GlpiPlugin\Assetsign\CustodyCase::class;
 
     // --- Notifications ------------------------------------------------------------
     // Rien a enregistrer explicitement : pour un itemtype namespace (GlpiPlugin\Assetsign\Assetsign),

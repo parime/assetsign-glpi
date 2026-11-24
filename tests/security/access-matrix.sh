@@ -116,13 +116,13 @@ expect "front/assetsign.form.php : nouvelle attribution, PC de A" 200 "$(code "$
 expect "front/assetsign.form.php : nouvelle attribution, PC de B" $NF "$(code "$P/assetsign.form.php?itemtype=Computer&items_id=$(id computer_B)")"
 
 # --- Listes et tableaux : objets de A seulement (et la page ne plante pas) ---
-for list in front/assetsign.php front/maintenance.php front/movement.php front/wipeattestation.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php front/integrity.php front/physicalinventory.php; do
+for list in front/assetsign.php front/maintenance.php front/movement.php front/wipeattestation.php front/custodycase.php front/departure.php front/campaign.php front/template.php front/kit.php front/accessory.php front/checklistitem.php front/maintenancechecklistitem.php front/csr.php front/charterversions.php front/renewal.php front/integrity.php front/physicalinventory.php; do
   body=$(page "$BASE/plugins/assetsign/$list?all=1")
   expect "$list : la liste s'affiche" 200 "$(code "$BASE/plugins/assetsign/$list?all=1")"
   # Ces listes nomment les objets : le super-admin y voit B, le technicien jamais. Les autres ne
   # nomment pas les objets : elles doivent seulement s'afficher sans erreur et sans B.
   case "$list" in
-    front/assetsign.php|front/maintenance.php|front/wipeattestation.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php|front/integrity.php|front/physicalinventory.php)
+    front/assetsign.php|front/maintenance.php|front/wipeattestation.php|front/custodycase.php|front/campaign.php|front/template.php|front/kit.php|front/accessory.php|front/checklistitem.php|front/maintenancechecklistitem.php|front/integrity.php|front/physicalinventory.php)
       shows "$list : objets de B" "securite B" "$SEE_B" "$body" ;;
     *)
       shows "$list : aucun objet de B" "securite B" non "$body" ;;
@@ -130,7 +130,7 @@ for list in front/assetsign.php front/maintenance.php front/movement.php front/w
   # Issue #336 : encadré « À quoi sert cette page ? » sur les pages d'usage (les pages d'intitulés
   # n'en ont pas). Pour un profil sans le droit, la page répond 403 avant tout affichage.
   case "$list" in
-    front/assetsign.php|front/maintenance.php|front/movement.php|front/wipeattestation.php|front/departure.php|front/campaign.php|front/csr.php|front/renewal.php|front/integrity.php|front/physicalinventory.php)
+    front/assetsign.php|front/maintenance.php|front/movement.php|front/wipeattestation.php|front/custodycase.php|front/departure.php|front/campaign.php|front/csr.php|front/renewal.php|front/integrity.php|front/physicalinventory.php)
       shows "$list : encadré d'aide" "assetsign-page-help" oui "$body" ;;
   esac
 done
@@ -184,6 +184,14 @@ expect "front/physicalinventory.form.php : cloturer l'inventaire de B" $DENY_POS
 expect "front/departure.form.php : depart d'une personne de B" $DENY_POST "$(post departure.form.php "prepare=1&users_id=$(id partant_B)")"
 # Issue #221 : preparer l'arrivee d'une personne de B (ticket cree dans son entite).
 expect "front/arrival.form.php : arrivee d'une personne de B" $DENY_POST "$(post arrival.form.php "prepare=1&users_id=$(id partant_B)")"
+# Issue #326 : chaine de possession d'un materiel saisi (ajoutee apres les autres controles pour ne
+# pas decaler les lignes citees dans .glpi-security-exceptions).
+expect "front/custodycase.form.php : saisie de A"             200   "$(code "$P/custodycase.form.php?id=$(id custody_A)")"
+expect "front/custodycase.form.php : saisie de B"             $NF   "$(code "$P/custodycase.form.php?id=$(id custody_B)")"
+# Issue #326 : saisie d'un PC de B, transfert et cloture d'une saisie de B.
+expect "front/custodycase.form.php : saisie d'un PC de B"     $NF_POST "$(post custodycase.form.php "open=1&item=Computer:$(id computer_B)&reason=securite")"
+expect "front/custodycase.form.php : transfert de la saisie de B" $NF_POST "$(post custodycase.form.php "transfer=1&id=$(id custody_B)&name_to=securite")"
+expect "front/custodycase.form.php : cloture de la saisie de B" $NF_POST "$(post custodycase.form.php "close=1&id=$(id custody_B)&closure=returned&name_to=securite")"
 if [ "$ROLE" = limited ]; then
   # Ces trois controleurs repondent toujours par une redirection : le refus se voit en base.
   post residualvalue.form.php "itemtype=Computer&items_id=$(id computer_B)&manual_value=1" > /dev/null
