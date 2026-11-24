@@ -131,8 +131,8 @@
               </div>
               <div class="row g-3 mt-1">
                 <div class="col-md-6">
-                  <label class="form-label">{{ __('Remis par', 'assetsign') }}</label>
-                  <input type="text" class="form-control" value="{{ case.name_holder }}" readonly>
+                  <div class="form-label">{{ __('Remis par', 'assetsign') }}</div>
+                  <div class="form-control-plaintext fw-bold">{{ case.name_holder }}</div>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">{{ mode == 'close' ? __('Reçu par (ou détruit par)', 'assetsign') : __('Reçu par', 'assetsign') }} <span class="text-danger">*</span></label>
@@ -155,7 +155,7 @@
                 <textarea name="comment" id="assetsign-custody-{{ mode }}-comment" class="form-control" rows="2"></textarea>
               </div>
               {% include '@assetsign/_custody_signatures.html.twig' %}
-              <button type="submit" name="{{ mode }}" value="1" class="btn {{ mode == 'close' ? 'btn-success' : 'btn-primary' }} mt-3">
+              <button type="submit" name="{{ mode }}" value="1" class="btn btn-primary mt-3">
                 <i class="ti ti-writing-sign me-1"></i>{{ mode == 'close' ? __('Signer et clôturer', 'assetsign') : __('Signer le transfert', 'assetsign') }}
               </button>
             </form>
