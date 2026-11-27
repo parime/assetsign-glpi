@@ -125,16 +125,25 @@ class EntityRecursiveSchemaTest extends AssetsignTestCase
         global $DB;
 
         $table = CustodyCase::getTable();
-        $migration = new Migration('test410');
-        $migration->dropKey($table, 'is_recursive');
-        $migration->dropField($table, 'is_recursive');
-        $migration->migrationOneTable($table);
-        $this->assertFalse($DB->fieldExists($table, 'is_recursive'));
+        // Modifications de schéma interdites dans la transaction du test (validation implicite) :
+        // rien n'a été écrit avant, la transaction est refermée puis rouverte pour tearDown().
+        $DB->commit();
+        try {
+            $migration = new Migration('test410');
+            $migration->dropKey($table, 'is_recursive');
+            $migration->dropField($table, 'is_recursive');
+            $migration->migrationOneTable($table);
+            $this->assertFalse($DB->fieldExists($table, 'is_recursive', false));
 
-        CustodyCase::install($migration);
-        CustodyCase::install($migration);
+            CustodyCase::install($migration);
+            CustodyCase::install($migration);
 
-        $this->assertTrue($DB->fieldExists($table, 'is_recursive'));
-        $this->assertTrue(isIndex($table, 'is_recursive'));
+            $this->assertTrue($DB->fieldExists($table, 'is_recursive', false));
+            $this->assertTrue(isIndex($table, 'is_recursive'));
+        } finally {
+            // La colonne reste en place pour les autres tests, même si une assertion échoue.
+            CustodyCase::install(new Migration('test410'));
+            $DB->beginTransaction();
+        }
     }
 }
