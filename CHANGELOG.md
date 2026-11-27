@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Erreur à l'ouverture d'un ticket ou d'un matériel après la mise à jour en 2.31.0 (#410).**
+  « Unknown column 'glpi_plugin_assetsign_custodycases.is_recursive' » dès que l'entité active
+  avait une entité parente : l'onglet « Chaîne de possession » filtrait avec les entités parentes,
+  mais la table n'avait pas la colonne `is_recursive` (installation neuve comme mise à jour ;
+  invisible avec la seule entité racine). La mise à jour ajoute la colonne et son index, aussi sur
+  une base déjà passée en 2.31.0. Un test balaie désormais chaque filtre « entités parentes » du
+  plugin et vérifie la colonne de la table visée, et l'onglet est testé depuis une sous-entité.
+
 ## [2.31.0] - 2026-11-24
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
