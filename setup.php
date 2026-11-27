@@ -31,7 +31,7 @@ if (is_readable(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
-define('PLUGIN_ASSETSIGN_VERSION', '2.31.0');
+define('PLUGIN_ASSETSIGN_VERSION', '2.31.1');
 define('PLUGIN_ASSETSIGN_MIN_GLPI', '11.0.0');
 // GLPI 11 ET 12 depuis un seul code source (cf. src/Compat/).
 define('PLUGIN_ASSETSIGN_MAX_GLPI', '12.99.99');
