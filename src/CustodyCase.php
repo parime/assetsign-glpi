@@ -791,12 +791,22 @@ class CustodyCase extends Compat\Base\CustodyCaseBase
 
        $table = self::getTable();
       if ($DB->tableExists($table)) {
+          // Issue #410 : la 2.31.0 créait la table sans `is_recursive`, alors que les onglets et la
+          // liste filtrent les entités avec les entités parentes (fiche visible depuis une
+          // sous-entité) : erreur SQL dès que l'entité active a un parent. Ajout idempotent, qui
+          // répare aussi une base déjà mise à jour en 2.31.0.
+         if (!$DB->fieldExists($table, 'is_recursive')) {
+             $migration->addField($table, 'is_recursive', 'bool', ['value' => 0, 'after' => 'entities_id']);
+             $migration->addKey($table, 'is_recursive');
+             $migration->migrationOneTable($table);
+         }
           return;
       }
        $migration->displayMessage('Création de la table ' . $table);
        $DB->doQuery("CREATE TABLE `$table` (
               `id` int unsigned NOT NULL AUTO_INCREMENT,
               `entities_id` int unsigned NOT NULL DEFAULT 0,
+              `is_recursive` tinyint NOT NULL DEFAULT 0,
               `itemtype` varchar(100) NOT NULL,
               `items_id` int unsigned NOT NULL DEFAULT 0,
               `reason` text,
@@ -822,6 +832,7 @@ class CustodyCase extends Compat\Base\CustodyCaseBase
               PRIMARY KEY (`id`),
               KEY `item` (`itemtype`, `items_id`),
               KEY `entities_id` (`entities_id`),
+              KEY `is_recursive` (`is_recursive`),
               KEY `tickets_id` (`tickets_id`),
               KEY `plugin_grcmanager_securityincidents_id` (`plugin_grcmanager_securityincidents_id`),
               KEY `status` (`status`),
