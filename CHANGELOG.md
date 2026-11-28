@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- PHPStan 2.3.7 (outil de développement) : trois tests redondants retirés dans les fonctions d'envoi
+  de fichier (document de fiche, logo, document de mouvement). Aucun changement de comportement.
+
 ## [2.31.1] - 2026-11-27
 
 - Publiée dans le catalogue de la marketplace GLPI (`assetsign.xml`).
