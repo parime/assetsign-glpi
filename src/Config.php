@@ -396,7 +396,7 @@ class Config extends Compat\Base\ConfigBase
           return 0; // aucun fichier selectionne : rien a faire, pas une erreur
       }
 
-      if (($file['error'] ?? null) !== UPLOAD_ERR_OK || empty($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+      if ($file['error'] !== UPLOAD_ERR_OK || empty($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
           \Session::addMessageAfterRedirect(__('Échec de l\'envoi du logo.', 'assetsign'), false, ERROR);
           return 0;
       }
