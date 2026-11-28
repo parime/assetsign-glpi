@@ -3769,7 +3769,7 @@ class Assetsign extends Compat\Base\AssetsignBase
       if (($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
           return; // aucun fichier selectionne : rien a faire, pas une erreur
       }
-      if (($file['error'] ?? null) !== UPLOAD_ERR_OK || empty($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+      if ($file['error'] !== UPLOAD_ERR_OK || empty($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
           \Session::addMessageAfterRedirect(__('Échec de l\'envoi du document.', 'assetsign'), false, ERROR);
           return;
       }
